@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # MAS 2xxx notes
 
 ## Hosting Locally
@@ -8,3 +9,6 @@
 - Go to `http://localhost:8000`
 
 To remake the notebook type `jupyter-book clean .` followed by a rebuild in the correct directory.
+=======
+# NCL-MAS2901
+>>>>>>> 91ab28ff1488b74bd9471a222b707904f3dd2340
