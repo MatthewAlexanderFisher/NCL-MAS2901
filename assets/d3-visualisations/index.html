@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D3 Visualizations</title>
+    <script>
+        // Function to list all plots dynamically
+        async function listPlots() {
+            const response = await fetch('./plots/');
+            const text = await response.text();
+
+            // Parse the directory listing to find HTML files
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(text, 'text/html');
+            const links = doc.querySelectorAll('a');
+
+            const ul = document.getElementById('plots-list');
+            links.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href.endsWith('.html')) {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = `plots/${href}`;
+                    a.textContent = href.replace('.html', '').replace(/-/g, ' ');
+                    li.appendChild(a);
+                    ul.appendChild(li);
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', listPlots);
+    </script>
+</head>
+<body>
+    <h1>D3 Visualizations</h1>
+    <ul id="plots-list"></ul>
+</body>
+</html>

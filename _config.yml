@@ -1,7 +1,7 @@
 # Book settings
 # Learn more at https://jupyterbook.org/customize/config.html
 
-title: MAS2903 - Notes
+title: MAS2xxx - Notes
 author: Dr Matthew Fisher
 logo: logo.png
 
@@ -19,15 +19,40 @@ latex:
 bibtex_bibfiles:
   - references.bib
 
+options:
+  numbered: true  # Enables numbered sections in the content
+  number_toc: true  # Enables numbered sections in the table of contents
+
 sphinx:
   extra_extensions:
     - sphinxcontrib.tikz
     - sphinx_proof
+
   config:
     mathjax_path: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
-    tikz_proc_suite: 'pdf2svg'  # Example, depends on support
+    tikz_proc_suite: 'pdf2svg'
     tikz_transparent: True
-  
+    html_extra_path: ['assets']
+    html_static_path: ["_static"]
+
+    numfig: true
+    numfig_secnum_depth: 1
+
+    proof_theorem_types:
+      definition: "Definition"
+      example: "Example"
+      theorem: "Theorem"
+      lemma: "Lemma"
+      corollary: "Corollary"
+      remark: "Remark"
+
+
+# sphinx:
+#   config:
+#     proof_default_options:
+#       number: True  # Ensure automatic numbering
+
+
 # Information about where the book exists on the web
 repository:
   url: https://github.com/executablebooks/jupyter-book  # Online location of your book
@@ -41,4 +66,4 @@ html:
   use_repository_button: false
   favicon: _static/favicon.ico  # Adjust the path as needed
   extra_css: ["_static/custom.css"]
-
+  # use_multitoc_numbering: false

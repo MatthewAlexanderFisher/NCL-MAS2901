@@ -1,3 +1,0 @@
-# Rubin Causal Models
-
-ASD

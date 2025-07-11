@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Proof Index &#8212; MAS2903 - Notes</title>
+    <title>Proof Index &#8212; MAS2xxx - Notes</title>
   
   
   
@@ -31,9 +31,9 @@
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=384b581d" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=ca93fcec" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
     <link rel="stylesheet" type="text/css" href="_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=7eff68b9" />
   
@@ -67,6 +67,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'prf-prf';</script>
+    <script src="_static/scripts/iframe-sync.js?v=9aeb698b"></script>
+    <script src="_static/scripts/mode.js?v=e90a07ab"></script>
     <link rel="icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -171,8 +173,8 @@ const thebe_selector_output = ".output, .cell_output"
       
     
     
-    <img src="_static/logo.png" class="logo__image only-light" alt="MAS2903 - Notes - Home"/>
-    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="MAS2903 - Notes - Home"/>`);</script>
+    <img src="_static/logo.png" class="logo__image only-light" alt="MAS2xxx - Notes - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="MAS2xxx - Notes - Home"/>`);</script>
   
   
 </a></div>
@@ -193,23 +195,31 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="content/intro.html">
-                    Causal Inference
+                    Introduction
                 </a>
             </li>
         </ul>
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Structural Causal Models</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Preliminaries</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="content/chapter1/bayesnetwork.html">Graphical Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="content/chapter1/causalgraphs.html">Causal Graphs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="content/chapter1/scm.html">Structural Causal Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/preliminaries/probability.html">1. Probability Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/preliminaries/stat-inference.html">2. Statistical Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/preliminaries/freq-vs-bayes.html">3. Types of Inference</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Potential Outcomes Framework</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Point Estimation</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="content/chapter2/chapter2.html">Rubin Causal Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/point_estimation/freq-point-estimation.html">4. Central Limit Theorem</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Notebooks</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Interval Estimation</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="content/notebooks/causal.html">SCMs in Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/interval_estimation/interval-estimation.html">5. Interval Estimation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hypothesis Testing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="content/hypothesis_testing/hypothesis-testing.html">6. Hypothesis Testing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Prediction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="content/prediction/prediction.html">7. Prediction</a></li>
 </ul>
 
     </div>
@@ -331,108 +341,36 @@ document.write(`
    <h1>Proof Index</h1>
 
    <div class="modindex-jumpbox">
-   <a href="#cap-bad-causal-def"><strong>bad-causal-def</strong></a> | 
-   <a href="#cap-bayesian-network"><strong>bayesian-network</strong></a> | 
-   <a href="#cap-better-causal-def"><strong>better-causal-def</strong></a> | 
-   <a href="#cap-causalgraph"><strong>causalgraph</strong></a> | 
-   <a href="#cap-dag"><strong>dag</strong></a> | 
-   <a href="#cap-definition-3"><strong>definition-3</strong></a> | 
-   <a href="#cap-definition-4"><strong>definition-4</strong></a> | 
-   <a href="#cap-example-2"><strong>example-2</strong></a> | 
-   <a href="#cap-faithful"><strong>faithful</strong></a> | 
-   <a href="#cap-graph-compatibility"><strong>graph-compatibility</strong></a> | 
-   <a href="#cap-scm"><strong>scm</strong></a>
+   <a href="#cap-sample_mean"><strong>sample_mean</strong></a> | 
+   <a href="#cap-sample_variance"><strong>sample_variance</strong></a> | 
+   <a href="#cap-student-example"><strong>student-example</strong></a>
    </div>
 
    <table class="indextable modindextable">
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-bad-causal-def"><td></td><td>
-       <strong>bad-causal-def</strong></td><td></td></tr>
+     <tr class="cap" id="cap-sample_mean"><td></td><td>
+       <strong>sample_mean</strong></td><td></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="content/intro.html#bad-causal-def"><code class="xref">bad-causal-def</code></a> <em>(content/intro)</em></td><td>
+       <a href="content/point_estimation/freq-point-estimation.html#sample_mean"><code class="xref">sample_mean</code></a> <em>(content/point_estimation/freq-point-estimation)</em></td><td>
        <em>definition</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-bayesian-network"><td></td><td>
-       <strong>bayesian-network</strong></td><td></td></tr>
+     <tr class="cap" id="cap-sample_variance"><td></td><td>
+       <strong>sample_variance</strong></td><td></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="content/chapter1/bayesnetwork.html#bayesian-network"><code class="xref">bayesian-network</code></a> <em>(content/chapter1/bayesnetwork)</em></td><td>
+       <a href="content/point_estimation/freq-point-estimation.html#sample_variance"><code class="xref">sample_variance</code></a> <em>(content/point_estimation/freq-point-estimation)</em></td><td>
        <em>definition</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-better-causal-def"><td></td><td>
-       <strong>better-causal-def</strong></td><td></td></tr>
+     <tr class="cap" id="cap-student-example"><td></td><td>
+       <strong>student-example</strong></td><td></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="content/intro.html#better-causal-def"><code class="xref">better-causal-def</code></a> <em>(content/intro)</em></td><td>
-       <em>definition</em></td></tr>
-     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-causalgraph"><td></td><td>
-       <strong>causalgraph</strong></td><td></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="content/chapter1/causalgraphs.html#causalgraph"><code class="xref">causalgraph</code></a> <em>(content/chapter1/causalgraphs)</em></td><td>
-       <em>definition</em></td></tr>
-     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-dag"><td></td><td>
-       <strong>dag</strong></td><td></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="content/chapter1/bayesnetwork.html#dag"><code class="xref">dag</code></a> <em>(content/chapter1/bayesnetwork)</em></td><td>
-       <em>definition</em></td></tr>
-     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-definition-3"><td></td><td>
-       <strong>definition-3</strong></td><td></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="content/chapter1/scm.html#definition-3"><code class="xref">definition-3</code></a> <em>(content/chapter1/scm)</em></td><td>
-       <em>definition</em></td></tr>
-     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-definition-4"><td></td><td>
-       <strong>definition-4</strong></td><td></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="content/chapter1/bayesnetwork.html#definition-4"><code class="xref">definition-4</code></a> <em>(content/chapter1/bayesnetwork)</em></td><td>
-       <em>definition</em></td></tr>
-     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-example-2"><td></td><td>
-       <strong>example-2</strong></td><td></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="content/chapter1/scm.html#example-2"><code class="xref">example-2</code></a> <em>(content/chapter1/scm)</em></td><td>
+       <a href="content/preliminaries/probability.html#student-example"><code class="xref">student-example</code></a> <em>(content/preliminaries/probability)</em></td><td>
        <em>example</em></td></tr>
-     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-faithful"><td></td><td>
-       <strong>faithful</strong></td><td></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="content/chapter1/scm.html#faithful"><code class="xref">faithful</code></a> <em>(content/chapter1/scm)</em></td><td>
-       <em>definition</em></td></tr>
-     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-graph-compatibility"><td></td><td>
-       <strong>graph-compatibility</strong></td><td></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="content/chapter1/bayesnetwork.html#graph-compatibility"><code class="xref">graph-compatibility</code></a> <em>(content/chapter1/bayesnetwork)</em></td><td>
-       <em>definition</em></td></tr>
-     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-scm"><td></td><td>
-       <strong>scm</strong></td><td></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="content/chapter1/scm.html#scm"><code class="xref">scm</code></a> <em>(content/chapter1/scm)</em></td><td>
-       <em>definition</em></td></tr>
    </table>
 
 

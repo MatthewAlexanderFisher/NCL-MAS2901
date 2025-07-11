@@ -1,68 +1,26 @@
-# Causal Inference
+# Introduction
 
-These notes are an exposition of Causal inference. In particular, we focus on the two main approaches:
+Welcome to the online notes for MAS 2XXX (placeholder name).
 
-1. Pearl's Structural Equation Framework
-2. Rubin Causal Models (Potential Outcomes Framework)
+This is a 10-credit module at Newcastle University focussing on introducing the two main types of *statistical inference*.
 
-## Background on Causal Inference
+#### What is Statistical Inference?
 
-### What is Causality?
+Statistical inference is about trying to use data from a sample to say something about a population. Sometimes the population is real and easy to define. For instance we might test a sample of people for the presence of a certain disease, and use this to estimate the proportion of people in the country who have the disease. The population is all people in the country at the time the sample was taken. Obviously we need to make sure that the sample is representative of the population.
 
-There are two broad philosophical approaches.
+On other occasions the population is less well defined. For example, we might test the effectiveness of a medical treatment on a sample of people with a particular condition. We want to say something about the usefulness of the treatment not just for people who have the condition at the time of sampling, but for all people who might develop the condition in the future. What is the population now?
 
-1. *Counterfactual Definition:* Causation as counterfactual statements ``If $X$ had not occurred, $Y$ would not have occurred.
-    - Originates with Hume (1748). Fully synthesised by David Lewis (1973).
-    - Conditional Causal effect
-    - Potential Outcome Framework
-    - Structural Equation Framework
-2. *Interventionist Definition:* An event $X$ causes another event $Y$ if an intervention that changes $X$ also changes $Y$.
-    - Originates with James Woodward (2003) and Judea Pearl (2000).
-    - Conditional Causal Effect
-    - Structural Equation Framework
+There are two main types of Statistical Inference, which this course introduces on:
 
-### Population Level vs. Individual Level Causality
+- **Frequentist Inference:** Based on *frequentist probability*. Treats the parameters of a probability model as fixed but unknown quantities.
+- **Bayesian Inference:** Baes on *subjective probability*. Treats the parameters of a probability model as random variables whose distribution represents our uncertainty about the parameter's values.
 
-1. *Population Level Causality:* General trends and average effects across a group or population.
-    - Uses statistical methods to infer causal relationships from group data.
-    - Often used in epidemiology and social sciences.
-    - Challenges include heterogeneity of treatment effects.
-2. *Individual-Level Causation:* Concerns specific causal relationships for individuals.
-    - Involves deterministic or probabilistic predictions about individual outcomes.
-    - Relevant in clinical decision-making and personalised medicine.
-    - Challenges include data limitations and complexity of individual variability.
+#### Structure of the Course
 
-Causal Inference *usually* deals with population level causation.
+The notes are structured as follows:
 
-### Towards a Definition of counterfactual Causal Inference
+- Part 1: Prelim - 
 
-Let's start with a bad definition of Counterfactual Causality
+#### Further Reading
 
-```{prf:definition}
-:label: bad-causal-def
-
- An event $A$ is said to *cause* event $B$ if and only if $\text{Pr}(B|A)$ is *large* and $\text{Pr}(B|A^c)$ is *small*.
-
-```
-
-For example, if I push an object, it moves; if I don't push the object, it remains stationary.
-
-This simple example makes this approach seem plausible.
-
-- Counterexample:  When ice cream sales are high, drowning incidents are also high. Conversely, when ice cream sales are low, drowning incidents are low.
-
-By our bad definition, ice cream sales cause drowning. We are confusing correlation (or dependence) with causality.
-
-```{prf:definition}
-:label: better-causal-def
-
-An event $A$ is said to cause event $B$ if, after controlling for a set of confounders $\underline{X}$, $\text{Pr}(B|A, \underline{X})$ differs significantly $\text{Pr}(B|A^c, \underline{X})$.
-
-```
-
-- Counter Example Revisited: When ice cream sales are high (event $A$), drowning incidents (event $B$) are also high. Conversely, when ice cream sales are low, drowning incidents are low.
-
-- Identifying Confounders: In the counter example, we can identify $\underline{X}$ as the temperature.
-
-A true cause is temperature. High temperatures lead to more swimming activities, thereby increasing the probability of drowning incidents.
-
+- 

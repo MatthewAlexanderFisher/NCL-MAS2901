@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Histogram with PDF</title>
+    
+    <!-- Include D3.js -->
+    <script src="../node_modules/d3/dist/d3.min.js"></script>
+    
+    <!-- Link styles for responsive layout and aesthetics -->
+    <link rel="stylesheet" href="../styles/bootstrap.css">
+    <link rel="stylesheet" href="../styles/basic.css">
+    <link rel="stylesheet" href="../styles/styles.css">
+    <style>
+        body {
+            background-color: #fff; /* Default light mode */
+            color: #000; /* Default text color */
+            margin: 0; /* Prevent unexpected margins */
+        }
+    </style>
+    
+</head>
+<body>
+    <h2>Statistical Inference by Eye</h2>
+    <!-- Controls for Mean and Variance -->
+    <div class="controls" style="margin-bottom: 20px; text-align: center;">
+        <label for="mean">Mean: <span id="mean-value">0</span></label>
+        <input type="range" id="mean" min="-5" max="5" step="0.1" value="0" style="width: 300px;">
+        <br>
+        <label for="variance">Variance: <span id="variance-value">1</span></label>
+        <input type="range" id="variance" min="0.5" max="5" step="0.1" value="1" style="width: 300px;">
+    </div>
+    
+    <!-- Chart Container -->
+    <div id="chart" style="width: 100%; max-width: 800px; margin: 0 auto;"></div>
+    
+    <!-- Include the updated JavaScript logic -->
+    <script src="../scripts/stat_by_eye.js"></script>
+</body>
+</html>

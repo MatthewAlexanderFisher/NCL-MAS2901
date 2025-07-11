@@ -3,16 +3,45 @@
 
 format: jb-book
 root: content/intro
+options:  # The options key will be applied to all chapters, but not sub-sections
+  numbered: True
+
+# chapters:
+#   - file: content/chapter1/chapter1
+#   - sect
+#   - file: content/chapter1/freq-vs-bayes
+#   - file: content/chapter2/point_estimation
+
 
 parts:
-  - caption: Structural Causal Models
+  - caption: Preliminaries
+    numbered: True
     chapters:
-      - file: content/chapter1/bayesnetwork
-      - file: content/chapter1/causalgraphs
-      - file: content/chapter1/scm
-  - caption: Potential Outcomes Framework
+      - file: content/preliminaries/probability
+      - file: content/preliminaries/stat-inference
+      - file: content/preliminaries/freq-vs-bayes
+  - caption: Point Estimation
+    numbered: True
     chapters:
-      - file: content/chapter2/chapter2
-  - caption: Notebooks
+      - file: content/point_estimation/freq-point-estimation
+      - file: content/point_estimation/bayes-point-estimation
+  - caption: Interval Estimation
+    numbered: True
+    chapters: 
+      - file: content/interval_estimation/interval-estimation
+  - caption: Hypothesis Testing
+    numbered: True
     chapters:
-      - file: content/notebooks/causal
+      - file: content/hypothesis_testing/hypothesis-testing
+  - caption: Prediction
+    numbered: True
+    chapters:
+      - file: content/prediction/prediction
+  - caption: notebooks
+    numbered: false
+    chapters: 
+      - file: content/notebooks/distribution-zoo
+
+
+
+  
