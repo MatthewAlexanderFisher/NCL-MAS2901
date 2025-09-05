@@ -1,0 +1,88 @@
+/*-- scss:defaults --*/
+
+/* ===== Base palette (pastels, dark-tuned) ===== */
+$charcoal: #EAEAEA;   // main text (light grey, softer than pure white)
+$teal:     #5DDCE4;   // definitions / primary accent
+$orange:   #F7B77F;   // examples
+$purple:   #B59AF0;   // important results
+$mint:     #3A4F46;   // emphasis boxes / soft backgrounds
+
+// [data-theme="dark"] {
+//   --brand-fg:        #EAEAEA;
+//   --brand-bg:        #1E1E1E;
+//   --plot-panel-bg:   #2A2D2E;
+
+//   --brand-teal:      #5DDCE4;
+//   --brand-orange:    #F7B77F;
+//   --brand-purple:    #B59AF0;
+//   --brand-mint:      #3A4F46;
+//   --brand-warn:      #F48A75;
+// }
+
+
+:root {
+  --brand-fg:        #EAEAEA;
+  --brand-bg:        #1E1E1E;
+  --plot-panel-bg:   #2A2D2E;
+
+  --brand-teal:      #4da2a8;
+  --brand-orange:    #F7B77F;
+  --brand-purple:    #B59AF0;
+  --brand-mint:      #3A4F46;
+  --brand-warn:      #F48A75;
+  --brand-red:     #eb6b80;
+
+  --brand-teal-hover: #277075;  /* slightly darker for hover */
+  --brand-red-hover: #b62941;  /* slightly darker for hover */
+
+  --surface:         #232628;
+  --surface-weak:    #202325;
+  --border:          #3a3d3f;
+  --fg-muted:        #c5c9ce;
+  --fg-strong:       #e2e6ea;
+}
+
+/* Subtle neutrals & derived tones */
+$bg-dark:   #1E1E1E;                    // page background
+$bg-soft:   #2A2D2E;                    // soft surface (e.g. code blocks)
+$teal-400:  lighten($teal, 12%);        // hover / borders
+$teal-050:  mix($teal, $bg-dark, 20%);  // faint highlight
+$mint-100:  mix($mint, $bg-dark, 30%);  // softer mint panel
+$orange-400: lighten($orange, 12%);
+$purple-400: lighten($purple, 12%);
+
+/* ===== Page & common UI ===== */
+$body-bg:    $bg-dark;     // The page background color.
+$body-color: $charcoal;    // The page text color.
+$link-color: $teal;        // The link color.
+$input-bg:   $bg-soft;     // The background color for HTML inputs.
+$popover-bg: $bg-soft;     // The background color for popovers (e.g. citation preview).
+
+/* ===== Code annotations & copy button ===== */
+$code-annotation-higlight-color: $teal-400; // Border on highlighted lines.
+$code-annotation-higlight-bg:    $teal-050; // Background of highlighted lines.
+
+$btn-code-copy-color:         $teal;        // Copy button colour.
+$btn-code-copy-color-active:  $teal-400;    // Hover/active for copy button.
+
+$code-bg:    $bg-soft;       // Inline/code block background.
+$code-color: $charcoal;      // Inline/code text colour.
+
+/* ===== Callouts ===== */
+$callout-color-note:      $teal;        
+$callout-color-tip:       #7FE3B5;      // softer mint-green
+$callout-color-caution:   $orange;      
+$callout-color-warning:   #F48A75;      // slightly warmer warning
+$callout-color-important: $purple;      
+
+/* ===== Navigation / layout ===== */
+$navbar-bg:  $bg-dark;     
+$navbar-fg:  $charcoal;    
+$navbar-hl:  $teal;        
+
+$sidebar-bg: #242424;      // Sidebar background (slightly lighter than body)
+$sidebar-fg: $charcoal;    
+$sidebar-hl: $teal;        
+
+$footer-bg:  #1A1A1A;      
+$footer-fg:  $charcoal;    

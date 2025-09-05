@@ -1,0 +1,163 @@
+# Probability Theory
+
+::: {.callout-note collapse="true" title="Learning objectives"}
+- Define and work with events (union, intersection, complement) and apply inclusion–exclusion.
+- Distinguish mutually exclusive, exhaustive, and independent events.
+- Compute conditional probabilities and apply Bayes’ theorem.
+- Use partitions and the law of total probability.
+- Define random variables and their distribution functions: cdf, pmf (discrete), and pdf (continuous).
+- Compute probabilities from pmfs/pdfs/cdfs (using sums or areas) and check normalisation.
+- Use distribution notation $f(x)$ with parameters $\theta$; recognise $f(x;\theta)$ (frequentist) versus $f(x\mid \theta)$ (Bayesian).
+:::
+
+Before we delve into statistical inference, we briefly review key ideas from probability theory.
+
+## Probability of Events
+
+We use capital letters $A, B,\ldots$ to denote *events* (things that may or may not occur).
+The complement of $A$ is $A^c$ (“$A$ does not occur”).
+
+* **Intersection and union.**
+  $A\cap B$ means both $A$ *and* $B$ occur.
+  $A\cup B$ means $A$ *or* $B$ (or both) occur.
+
+* **Addition rule (inclusion–exclusion).**
+
+  $$
+  \Pr(A\cup B)=\Pr(A)+\Pr(B)-\Pr(A\cap B).
+  $$
+
+* **Mutually exclusive events.**
+  $A$ and $B$ are *exclusive* if they cannot both occur; then $\Pr(A\cap B)=0$.
+
+* **Exhaustive events.**
+  $A$ and $B$ are *exhaustive* if at least one must occur; then $\Pr(A\cup B)=1$.
+  (The ideas generalise to more than two events.)
+
+* **Independence.**
+  Events $A$ and $B$ are *independent* if
+
+  $$
+  \Pr(A\cap B)=\Pr(A)\Pr(B).
+  $$
+
+* **Conditional probability.**
+  If $\Pr(B)>0$,
+
+  $$
+  \Pr(A\mid B)=\frac{\Pr(A\cap B)}{\Pr(B)}.
+  $$
+
+* **Bayes’ theorem.**
+  If $\Pr(B)>0$,
+
+  $$
+  \Pr(A\mid B)=\frac{\Pr(B\mid A)\Pr(A)}{\Pr(B)}.
+  $$
+
+* **Partitions and the law of total probability.**
+  Events $B_1,\dots,B_n$ form a *partition* if exactly one occurs (mutually exclusive and exhaustive).
+  Then, for any event $A$,
+
+  $$
+  \Pr(A)=\sum_{i=1}^n \Pr(A\mid B_i)\Pr(B_i).
+  $$
+
+::: {#exm-quick-inclusion-check}
+### A quick inclusion–exclusion check
+
+Roll a fair six-sided die. Let $A=\{\text{even}\}$ and $B=\{\text{number} \ge 4\}$. Compute $\Pr(A\cup B)$.
+:::
+
+::: {.callout-tip collapse="true"}
+### Solution
+$\Pr(A)=3/6=1/2$ (even outcomes $2,4,6$).  
+$\Pr(B)=3/6=1/2$ (outcomes $4,5,6$).  
+$\Pr(A\cap B)=2/6=1/3$ (outcomes $4,6$).  
+By inclusion–exclusion,
+
+$$
+\Pr(A\cup B)=\tfrac{1}{2}+\tfrac{1}{2}-\tfrac{1}{3}=\tfrac{2}{3}.
+$$
+:::
+
+::: {#exm-student-example}
+### Student Example
+Seventy percent of students are attentive in lectures and thirty percent are not. If a student is attentive the probability of passing the course is $0.8$. If a student is not attentive the probability of passing the course is $0.1$.
+
+1. A student is selected at random. What is the probability that they pass the course?
+2. Given that the student passed the course, what is the probability that they were attentive?
+:::
+
+::: {.callout-tip collapse="true"}
+### Solution
+Let
+
+- $P$ denote the event of a student passing the course.
+- $A$ denote the event of a student being attentive.
+- $A^c$ denote the event of a student not being attentive.
+
+1. Attentive and inattentive form a partition. By the law of total probability,
+
+$$
+\Pr(P)=\Pr(P\mid A)\Pr(A)+\Pr(P\mid A^c)\Pr(A^c)=0.8\times0.7+0.1\times0.3=0.59.
+$$
+
+2. Using Bayes’ theorem,
+
+$$
+\Pr(A\mid P)=\frac{\Pr(P\mid A)\Pr(A)}{\Pr(P)}
+=\frac{0.8\times0.7}{0.59}=0.949\ \text{(3 s.f.)}.
+$$
+:::
+
+## Random Variables
+
+We use upper-case letters for random variables, e.g. $X, Y, X_1, X_2,\dots$.
+
+* **Cumulative distribution function (cdf).**
+  For any random variable $X$,
+
+  $$
+  F(x)=\Pr(X\le x).
+  $$
+
+* **Discrete case (pmf).**
+  If $X$ is discrete, its *probability mass function* is
+
+  $$
+  p(x)=\Pr(X=x),\qquad \sum_x p(x)=1.
+  $$
+
+* **Continuous case (pdf).**
+  If $X$ is continuous, its *probability density function* satisfies
+
+  $$
+  f(x)=\frac{dF(x)}{dx},\qquad \Pr(a<X\le b)=\int_a^b f(x)\,dx,\qquad \int_{-\infty}^{\infty} f(x)\,dx=1.
+  $$
+
+
+::: {#exm-discrete-cdf}
+### Discrete CDF.
+
+Let $X$ be the outcome of a fair six-sided die. Find $p(x)$ and $F(3)$.
+:::
+
+::: {.callout-tip collapse="true"}
+### Solution
+$p(x)=\Pr(X=x)=1/6$ for $x\in\{1,2,3,4,5,6\}$, and $0$ otherwise.  
+$F(3)=\Pr(X\le 3)=\Pr(\{1,2,3\})=3\times(1/6)=1/2.$
+:::
+
+::: {#exm-continuous-pdf}
+Let $X\sim \mathrm{Uniform}(0,1)$. Compute $\Pr(0.2<X<0.5)$.
+:::
+
+::: {.callout-tip collapse="true"}
+### Solution
+Here $f(x)=1$ for $0<x<1$ and $0$ otherwise.  
+
+$$
+\Pr(0.2<X<0.5)=\int_{0.2}^{0.5} 1\,dx = 0.3.
+$$
+:::

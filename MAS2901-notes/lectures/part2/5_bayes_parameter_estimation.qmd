@@ -1,0 +1,179 @@
+# Bayesian Inference
+
+As discussed in the course introduction, **Bayesian inference** takes a different perspective from the frequentist approach:
+
+* In the frequentist view, the parameter $\theta$ is **fixed but unknown**.
+* In the Bayesian view, the parameter $\theta$ is treated as a **random variable**.
+
+The randomness here does not mean that the parameter is *physically fluctuating* — instead, it reflects our **uncertainty** about its value.
+
+::: {.definition #def-prior}
+### Prior Distribution.
+Our uncertainty about $\theta$ is represented by a probability distribution, called the **prior distribution**:
+
+$$
+\theta \sim \pi(\theta).
+$$
+
+Here $\pi(\theta)$ denotes the prior density (PDF or PMF).
+:::
+
+
+## Why is this useful?
+
+A **key advantage** of Bayesian inference is that it allows us to **incorporate prior information** about the parameter.
+
+::: {.worked-example #exm-prior}
+**Example.**
+Suppose $\theta$ is the average exam score of students in a module. From past experience, the average score tends to be around 60, with most cohorts lying within about 10 marks of this.
+
+We could encode this information as a **Normal prior**:
+
+$$
+\theta \sim \mathcal{N}(\mu=60,\;\sigma^2=10^2).
+$$
+
+This prior expresses our belief *before seeing the new data*.
+:::
+
+
+
+::: {.panel-tabset}
+
+### Python
+
+```{python}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show code"
+
+import matplotlib.pyplot as plt
+import numpy as np
+import math
+
+def normal_pdf(theta, mean, sd):
+    const = 1 / (sd * (2 * math.pi) ** 0.5)
+    exp_term = np.exp(-((theta - mean) / sd) ** 2 / 2)
+    return const * exp_term
+
+mean = 100.0
+sd   = 10.0
+
+theta_grid = np.linspace(mean - 3*sd, mean + 3*sd, 200)
+pdf_values = normal_pdf(theta_grid, mean=mean, sd=sd)
+
+plt.figure()
+plt.plot(theta_grid, pdf_values)
+plt.xlabel(r"$\theta$")
+plt.ylabel("Density")
+plt.title("Normal PDF: mean = 100, sd = 10")
+plt.tight_layout()
+plt.show()  # <- ensures only the figure is rendered
+```
+
+### R
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show code"
+
+mean <- 100
+sd   <- 10
+
+theta_grid <- seq(mean - 3*sd, mean + 3*sd, length.out = 200)
+pdf_values <- dnorm(theta_grid, mean = mean, sd = sd)
+
+plot(theta_grid, pdf_values, type = "l",
+     xlab = expression(theta),
+     ylab = "Density",
+     main = "Normal PDF: mean = 100, sd = 10")
+```
+:::
+
+
+## Bayes’ Theorem
+
+Bayesian inference takes its name from **Bayes’ theorem**, which tells us how to update our beliefs about $\theta$ after seeing data.
+
+Recall from probability that for events $A$ and $B$:
+
+$$
+\Pr(A \mid B) = \frac{\Pr(B \mid A)\,\Pr(A)}{\Pr(B)}.
+$$
+
+To generalise this idea to **random variables and densities**, we use conditional densities:
+
+$$
+f_{Y \mid X}(y \mid x) = \frac{f_{YX}(y,x)}{f_X(x)}.
+$$
+
+::: {.remark #rem-notation}
+**Notation.**
+We will usually write $f(y \mid x)$ rather than $f_{Y \mid X}(y \mid x)$ to keep things simple. Both mean the same thing.
+:::
+
+Using this, we obtain Bayes’ theorem for densities.
+
+::: {.thm #thm-bayes}
+### Bayes’ Theorem for Densities.
+For random variables $X$ and $Y$:
+
+$$
+f(y \mid x) = \frac{f(x \mid y)\,f(y)}{f(x)}.
+$$
+
+:::
+
+::: {.prf #prf-bayes}
+By the definition of conditional density:
+
+$$
+f(y \mid x) = \frac{f(x,y)}{f(x)}, 
+\qquad
+f(x \mid y) = \frac{f(x,y)}{f(y)}.
+$$
+
+Rearranging the second expression gives $f(x,y) = f(x \mid y) f(y)$. Substituting this into the first gives
+
+$$
+f(y \mid x) = \frac{f(x \mid y) f(y)}{f(x)}.
+$$
+:::
+
+---
+
+## Bayes’ Theorem in Statistics
+
+In Bayesian inference, we apply Bayes’ theorem with:
+
+* $y = \theta$ (the parameter, treated as random),
+* $x = \underline{x}$ (the observed data).
+
+This gives:
+
+$$
+\pi(\theta \mid \underline{x}) 
+= \frac{f(\underline{x} \mid \theta)\,\pi(\theta)}{f(\underline{x})}.
+$$
+
+::: {.definition #def-posterior}
+### Posterior Distribution.
+
+$$
+\pi(\theta \mid \underline{x}) 
+= \frac{f(\underline{x} \mid \theta)\,\pi(\theta)}{f(\underline{x})}.
+$$
+
+The **posterior** combines two ingredients:
+
+* The **likelihood** $f(\underline{x} \mid \theta)$ (information from the data).
+* The **prior** $\pi(\theta)$ (information before seeing the data).
+
+The denominator $f(\underline{x})$ is a normalising constant ensuring the posterior integrates to 1.
+:::
+
+::: {.callout-important appearance="minimal"}
+## ✨ Big picture:
+Bayesian inference updates prior beliefs about parameters using the likelihood from the data, producing the posterior distribution which represents *updated uncertainty*.
+:::

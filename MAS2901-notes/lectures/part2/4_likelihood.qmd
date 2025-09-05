@@ -1,0 +1,661 @@
+# Likelihood
+
+The likelihood function is the **joint density (or probability mass) function** of the data:
+
+$$
+f(\underline{x} \mid \theta), \quad \underline{x} = (x_1, \dots, x_n).
+$$
+
+## From Joint Density to Likelihood
+
+Suppose we observe $n$ independent and identically distributed (i.i.d.) samples,
+
+$$
+X_1, \dots, X_n \overset{\text{iid}}{\sim} f_X(x \mid \theta).
+$$
+
+Then the **joint density** is given by multiplying the individual densities:
+
+$$
+f(\underline{x} \mid \theta) 
+= \prod_{i=1}^n f_X(x_i \mid \theta).
+$$
+
+::: {.remark #rem-products}
+### Why products?
+
+* Independence means that joint probabilities factorise into products:
+
+  $$
+  P(A \cap B) = P(A)\,P(B).
+  $$
+* By the same rule, the joint density of independent random variables is the product of their individual densities.
+* This is often the first place where students forget the independence assumption! Without it, you **cannot** just multiply.
+:::
+
+
+## Likelihood Function
+
+::: {.definition #def-likelihood}
+**Likelihood Function.**
+For fixed observed data $\underline{x}$, the **likelihood function** is defined as
+
+$$
+L(\theta \mid \underline{x}) \coloneqq f(\,\underline{x} \mid \theta).
+$$
+
+Here we treat $\theta$ as the **variable**, and \$\underline{x}\$ as fixed.
+:::
+
+
+**Key contrast:**
+
+* Probability/density: function of $\underline{x}$ (data random, parameter fixed).
+* Likelihood: function of $\theta$ (data fixed, parameter variable).
+
+---
+
+:::{.example #exm-bernoulli}
+## Bernoulli Likelihood
+
+Suppose $X_1, \dots, X_n \sim \text{Bernoulli}(p)$ with PMF
+$$
+f_X(x \mid p) = p^x (1-p)^{1-x}, \quad x \in \{0,1\}.
+$$
+The joint PMF is
+$$
+f(\underline{x} \mid p) 
+= \prod_{i=1}^n p^{x_i}(1-p)^{1-x_i}.
+$$
+Collecting terms:
+$$
+L(p \mid \underline{x}) 
+= p^{\sum_i x_i} (1-p)^{n-\sum_i x_i}.
+$$
+:::
+
+::: {.worked-example #ex-bern-likelihood}
+**Worked example.**
+Suppose \$n=5\$ trials give data \$\underline{x} = (1,0,1,1,0)\$. Then \$\sum\_i x\_i = 3\$.
+
+$$
+L(p \mid \underline{x}) = p^3 (1-p)^2.
+$$
+
+* If \$p=0.5\$, \$L(0.5) = 0.5^3 \cdot 0.5^2 = 0.03125\$.
+* If \$p=0.7\$, \$L(0.7) = 0.7^3 \cdot 0.3^2 \approx 0.0309\$.
+* If \$p=0.8\$, \$L(0.8) = 0.8^3 \cdot 0.2^2 = 0.0205\$.
+
+So the data are slightly more likely under \$p=0.5\$ than \$p=0.8\$.
+:::
+
+---
+
+## Maximum Likelihood Estimation
+
+::: {.definition #def-mle}
+**Maximum Likelihood Estimator (MLE).**
+The MLE is the parameter value \$\hat{\theta}\$ that maximises the likelihood function:
+
+$$
+\hat{\theta}_{\text{MLE}} = \arg \max_{\theta \in \Theta} L(\theta \mid \underline{x}).
+$$
+
+:::
+
+Because logs are monotone, it is usually easier to maximise the **log-likelihood**:
+
+$$
+\ell(\theta \mid \underline{x}) = \log L(\theta \mid \underline{x}).
+$$
+
+::: {.worked-example #ex-bern-mle}
+**Worked example (continued).**
+For the Bernoulli case:
+
+$$
+\ell(p \mid \underline{x}) 
+= \Big(\sum_i x_i \Big)\log p + \Big(n-\sum_i x_i\Big)\log(1-p).
+$$
+
+Differentiate and solve:
+
+$$
+\frac{\partial}{\partial p}\ell(p \mid \underline{x}) 
+= \frac{\sum_i x_i}{p} - \frac{n - \sum_i x_i}{1-p} = 0.
+$$
+
+This gives
+
+$$
+\hat{p}_{\text{MLE}} = \frac{1}{n}\sum_{i=1}^n x_i,
+$$
+
+the **sample proportion of successes**.
+:::
+
+---
+
+## Big Picture
+
+* Likelihood tells us how **plausible** each parameter value is, given the data.
+* The MLE chooses the parameter value that makes the observed data most likely.
+* Later, in Bayesian inference, we will combine the likelihood with a **prior distribution** on \$\theta\$ to obtain a **posterior distribution**.
+
+---
+
+
+
+```{ojs}
+//| echo: false
+// --- Data & stats ---
+
+html`<style>
+.plot--large-axis .x-axis .label,
+.plot--large-axis .y-axis .label {
+font-size: 24px; font-weight: 600;
+}
+.plot--large-axis .x-axis text,
+.plot--large-axis .y-axis text {
+font-size: 12px; /* tick labels (optional) */
+}
+</style>`
+
+// X = {
+// resim;
+// const m = trueMu, s = trueSigma;
+// const out = new Array(n);
+// for (let i = 0; i < n; i += 2) {
+// const u = Math.random(), v = Math.random();
+// const R = Math.sqrt(-2 * Math.log(u)), T = 2 * Math.PI * v;
+// const z0 = R * Math.cos(T), z1 = R * Math.sin(T);
+// out[i] = m + s * z0;
+// if (i + 1 < n) out[i + 1] = m + s * z1;
+// }
+// return out;
+// };
+
+// Only resimulate when resim button is clicked or data parameters change
+X = {
+  // Trigger on: resim button, n, trueMu, or trueSigma changes
+  resim; n; trueMu; trueSigma;
+  
+  const m = trueMu, s = trueSigma;
+  const out = new Array(n);
+  for (let i = 0; i < n; i += 2) {
+    const u = Math.random(), v = Math.random();
+    const R = Math.sqrt(-2 * Math.log(u)), T = 2 * Math.PI * v;
+    const z0 = R * Math.cos(T), z1 = R * Math.sin(T);
+    out[i] = m + s * z0;
+    if (i + 1 < n) out[i + 1] = m + s * z1;
+  }
+  return out;
+};
+
+xbar = d3.mean(X);
+S = d3.sum(X, x => (x - xbar) ** 2);
+
+logLik = (mu, sigma2) => {
+  const ss = d3.sum(X, x => (x - mu) ** 2);
+  return -0.5 * n * Math.log(2 * Math.PI * sigma2) - 0.5 * ss / sigma2;
+};
+
+muhat = xbar;
+sigma2hat = S / n;
+
+// --- Grid for contours (axes ticks) ---
+// These only need to update when display parameters change
+muGrid = d3.ticks(muhat - muHalfWidth, muhat + muHalfWidth, gridN)
+sig2Grid = d3.ticks(Math.max(0.05, sigma2hat / 20), sig2Max, gridN).filter(s => s > 0)
+
+// --- Build a row-major grid for Plot.raster / Plot.contour ---
+nx = muGrid.length
+ny = sig2Grid.length
+
+// Memoize the expensive log-likelihood computation
+llValues = {
+  const z = new Float64Array(nx * ny);
+  for (let j = 0; j < ny; ++j) {
+    for (let i = 0; i < nx; ++i) {
+      const s2 = Math.max(1e-6, sig2Grid[j]);
+      z[j * nx + i] = logLik(muGrid[i], s2);
+    }
+  }
+  return z;
+}
+
+
+// ---- Geometry / domains (responsive) ----
+gap = 20
+containerW = width
+plotW = Math.round(Math.max(240, Math.min(600, (containerW - gap) / 2 - 15)))
+plotH = Math.round(plotW * 0.8)
+
+marginTop = 20
+marginRight = 35
+marginBottom = 20
+marginLeft = 35
+innerW = plotW - marginLeft - marginRight
+innerH = plotH - marginTop - marginBottom
+
+muDomain = [muGrid[0], muGrid[muGrid.length - 1]]
+sig2Domain = [sig2Grid[0], sig2Grid[sig2Grid.length - 1]]
+
+// ---- Colour scaling (robust & reactive) ----
+llMax = d3.max(llValues)
+llRel = Float64Array.from(llValues, v => v - llMax)
+
+// Use more efficient quantile computation
+llRelFinite = Array.from(llRel).filter(Number.isFinite)
+llRelSorted = llRelFinite.slice().sort(d3.ascending)
+q05 = d3.quantileSorted(llRelSorted, 0.05) ?? d3.min(llRelFinite)
+
+colorDomain = [q05, 0]
+llRelClipped = Float64Array.from(llRel, v => Math.max(q05, v))
+contourThresholds = d3.ticks(q05, 0, 10)
+
+
+// ---- Left panel: raster (clipped) + contour (same grid) ----
+viewof leftPanel = {
+  const wrap = html`<div style="
+    position: relative;
+    width: ${plotW}px;
+    height: ${plotH}px;
+    flex: 0 0 ${plotW}px;
+    line-height: 0;
+  "></div>`;
+
+  const base = Plot.plot({
+    width: plotW, height: plotH,
+    marginLeft, marginRight, marginTop, marginBottom,
+    style: {
+      background: "var(--brand-bg)",
+      color: "var(--brand-fg)"
+    },
+    x: { label: "μ", domain: muDomain },
+    y: { label: "σ²", domain: sig2Domain },
+    color: {
+      type: "symlog",
+      domain: colorDomain,
+      clamp: true,
+      scheme: "turbo",
+      legend: false
+    },
+    marks: [
+      Plot.raster(llRelClipped, {
+        width: nx, height: ny,
+        x1: muDomain[0], x2: muDomain[1],
+        y1: sig2Domain[0], y2: sig2Domain[1],
+        interpolate: "nearest"
+      }),
+      Plot.dot([{ mu: muhat, sig2: sigma2hat }], {
+        x: "mu", y: "sig2", r: 5, stroke: "currentColor", fill: "var(--brand-bg)"
+      })
+    ]
+  });
+
+  base.classList.add("plot--large-axis");
+  base.style.display = "block";
+  wrap.append(base);
+
+
+  // Crosshair overlay fills wrapper
+  const svg = d3.create("svg")
+    .attr("width", plotW).attr("height", plotH)
+    .style("position", "absolute").style("left", "0").style("top", "0")
+    .style("width", "100%").style("height", "100%")
+    .style("pointer-events", "none");
+
+
+
+  const xScale = d3.scaleLinear().domain(muDomain).range([marginLeft, marginLeft + innerW]);
+  const yScale = d3.scaleLinear().domain(sig2Domain).range([marginTop + innerH, marginTop]);
+
+  const vline = svg.append("line")
+  .attr("x1", xScale(muhat)).attr("x2", xScale(muhat))
+  .attr("y1", marginTop).attr("y2", marginTop + innerH)
+  .attr("stroke", "currentColor");
+
+  const hline = svg.append("line")
+  .attr("x1", marginLeft).attr("x2", marginLeft + innerW)
+  .attr("y1", yScale(sigma2hat)).attr("y2", yScale(sigma2hat))
+  .attr("stroke", "currentColor");
+
+  wrap.append(svg.node());
+
+  // Hitbox fills wrapper; subtract margins in code
+  const hit = html`<div style="
+    position:absolute; left:0; top:0; width:100%; height:100%;
+    cursor:crosshair; background:transparent; touch-action:none;
+  "></div>`;
+  wrap.append(hit);
+
+  const state = { x: muhat, y: sigma2hat, dragging: false };
+  wrap.value = { ...state };            // <-- expose full state via the view's value
+
+  function emit() {
+    wrap.value = { ...state };          // <-- assign a fresh object so equality changes
+    wrap.dispatchEvent(new CustomEvent("input", { bubbles: true }));
+  }
+
+  function setFromEvent(evt) {
+    const r = hit.getBoundingClientRect();
+    let px = evt.clientX - r.left, py = evt.clientY - r.top;
+    px = Math.min(Math.max(0, px - marginLeft), innerW);
+    py = Math.min(Math.max(0, py - marginTop), innerH);
+    state.x = muDomain[0] + (px / innerW) * (muDomain[1] - muDomain[0]);
+    state.y = sig2Domain[1] - (py / innerH) * (sig2Domain[1] - sig2Domain[0]);
+    vline.attr("x1", xScale(state.x)).attr("x2", xScale(state.x));
+    hline.attr("y1", yScale(state.y)).attr("y2", yScale(state.y));
+    emit();                              // <-- notify dependents
+  }
+
+  // RAF throttle for move
+  let raf = 0;
+  function scheduleUpdate(e) {
+    if (raf) return;
+    raf = requestAnimationFrame(() => { raf = 0; setFromEvent(e); });
+  }
+
+  function setDragging(on) {
+    if (state.dragging === on) return;
+    state.dragging = on;
+    emit();                              // <-- notify on drag state changes too
+  }
+
+  hit.addEventListener("pointerdown", (e) => {
+    setDragging(true);
+    setFromEvent(e);
+    hit.setPointerCapture(e.pointerId);
+  });
+
+  hit.addEventListener("pointermove", (e) => {
+    if (state.dragging) scheduleUpdate(e);
+  });
+
+  const endDrag = () => setDragging(false);
+  hit.addEventListener("pointerup", endDrag);
+  hit.addEventListener("pointercancel", endDrag);
+  hit.addEventListener("pointerleave", endDrag);
+
+  // initial notify
+  queueMicrotask(emit);
+
+  return wrap;                           // <-- the view element
+}
+
+
+// isDragging = leftPanel.dragging ?? false
+// console.log(isDragging)
+// numPts = isDragging ? 100 : 200   // fewer x-samples while dragging
+// pdfStroke = isDragging ? 1 : 2   // thinner line while dragging
+
+
+// // Read probe values reactively (no extra visible block)
+// probeRaw = Generators.input(leftPanel.hit);
+// probeMu = (Array.isArray(probeRaw) ? probeRaw[0] : probeRaw?.x) ?? muhat;
+// probeSig2 = (Array.isArray(probeRaw) ? probeRaw[1] : probeRaw?.y) ?? sigma2hat;
+// probeLL = logLik(probeMu, probeSig2);
+
+
+// leftPanel is now { x, y, dragging }
+isDragging = leftPanel.dragging
+numPts     = isDragging ? 100 : 200
+pdfStroke  = isDragging ? 1   : 2
+
+// if you want the probe to follow the crosshair:
+probeMu   = leftPanel.x
+probeSig2 = leftPanel.y
+probeLL = logLik(probeMu, probeSig2);
+
+
+// --- Right panel ---
+normalPdf = (x, mu, sig2) => (1 / Math.sqrt(2 * Math.PI * sig2)) * Math.exp(-((x - mu) ** 2) / (2 * sig2))
+
+xExtent = d3.extent(X)
+xPad = 3 * Math.sqrt(probeSig2)
+xMin = Math.min(xExtent[0], probeMu - xPad)
+xMax = Math.max(xExtent[1], probeMu + xPad)
+
+// PDF curve
+xs = d3.range(numPts).map(i => xMin + (i / (numPts - 1)) * (xMax - xMin))
+pdfYs = xs.map(x => normalPdf(x, probeMu, probeSig2))
+
+// Density reducer
+densityReducer = (values, extent) => values.length / n / (extent.x2 - extent.x1)
+
+// Compute yMax
+bins_ = d3.bin().domain([xMin, xMax]).thresholds(bins)(X);
+densities = bins_.map(b =>
+  (b.length / Math.max(1, n)) / Math.max(1e-9, (b.x1 - b.x0))
+);
+yMax = d3.max(densities);
+
+rightPanel = Plot.plot({
+  width: plotW, height: plotH,
+  marginLeft, marginBottom,
+  x: { label: "Data", domain: [xMin, xMax] },
+  y: { label: "Density" },
+  marks: [
+    Plot.rectY(
+      X,
+      Plot.binX(
+        { y: densityReducer },
+        {
+          x: d => d,
+          thresholds: bins,
+          inset: 0,
+          fill: "var(--brand-red)",
+          fillOpacity: 0.2
+        }
+      )
+    ),
+    Plot.line(xs.map((x, i) => ({ x, y: pdfYs[i] })), {
+      x: "x", y: "y",
+      stroke: "var(--brand-red)",
+      strokeWidth: pdfStroke
+    }),
+    Plot.ruleX(X, {
+      y1: 0,
+      y2: yMax * 0.05,
+      stroke: "var(--brand-red)",
+      strokeWidth: 2,
+      strokeOpacity: 0.8
+    }),
+    Plot.ruleY([0]),
+    Plot.ruleX([probeMu], { stroke: "currentColor", strokeDasharray: "4,3" })
+  ]
+})
+
+probeInfo = md`**Probe:** ${tex`\mu=${probeMu.toFixed(2)},\ \sigma^2=${probeSig2.toFixed(3)}\ \Rightarrow\ \log f(\underline{x} \mid \mu, \sigma^2)=${probeLL.toFixed(2)}`}`
+
+html`<div style="max-width:100%;">
+<div style="display:flex; gap:${gap}px; align-items:flex-start; flex-wrap:nowrap; overflow-x:auto;">
+<div style="flex:0 0 ${plotW}px;">${viewof leftPanel}</div>
+<div style="flex:0 0 ${plotW}px;">${rightPanel}</div>
+</div>
+<div style="margin-top:10px; margin-bottom:-10px">${probeInfo}</div>
+</div>`
+```
+
+```{ojs}
+//| echo: false
+
+// --- Styles: compact, 2-column, collapsible, custom button ---
+html`<style>
+/* ---------- Collapsible container ---------- */
+details.controls-root > summary {
+  list-style: none; cursor: pointer; user-select: none;
+  background: var(--surface, #f1f5f9);
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-weight: 600; font-size: 13px;
+  color: var(--fg-strong, #334155);
+  display: flex; align-items: center; gap: 8px;
+}
+details.controls-root > summary::-webkit-details-marker { display: none; }
+details.controls-root[open] > summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+
+/* ---------- Two-column grid ---------- */
+.controls-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(260px, 1fr);
+  gap: 12px;
+  border: 1px solid var(--border, #e5e7eb); border-top: none;
+  border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;
+  padding: 10px;
+  background: var(--surface-weak, #fafafa);
+  overflow-x: auto; /* prefer scroll over wrapping on narrow screens */
+}
+
+.controls-col { min-width: 260px; }
+.controls-col h4 {
+  margin: 0 0 6px 0;
+  font-size: 12px; font-weight: 700;
+  color: var(--fg-muted, #475569);
+}
+
+/* ---------- Compact Inputs (fixed slider alignment) ---------- */
+.controls-col label { font-size: 12px !important; }
+
+.controls-col input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 18px;                     /* overall control box height */
+  background: transparent;
+  vertical-align: middle;
+  accent-color: var(--brand-teal, #55C3CB);
+}
+
+/* WebKit track */
+.controls-col input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brand-teal, #55C3CB) 35%, transparent);
+}
+
+/* WebKit thumb */
+.controls-col input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--brand-teal, #55C3CB);
+  border: 0;
+  /* Center the 12px thumb over the 4px track: (4 - 12)/2 = -4px */
+  margin-top: -4px;
+}
+
+/* Firefox track */
+.controls-col input[type="range"]::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brand-teal, #55C3CB) 35%, transparent);
+}
+
+/* Firefox thumb (auto-centred; no negative margin needed) */
+.controls-col input[type="range"]::-moz-range-thumb {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--brand-teal, #55C3CB);
+  border: 0;
+}
+
+/* Optional: hide the default filled "progress" colour in Firefox */
+.controls-col input[type="range"]::-moz-range-progress {
+  height: 4px; border-radius: 999px;
+  background: color-mix(in srgb, var(--brand-teal, #55C3CB) 35%, transparent);
+}
+
+
+/* ---------- Button ---------- */
+.btn-resim button {
+  background: var(--brand-teal, #55C3CB);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  transition: filter 120ms ease, background-color 120ms ease;
+}
+
+/* hover effect */
+.btn-resim button:hover {
+  background: color-mix(in srgb, var(--brand-teal, #55C3CB) 88%, black);
+}
+
+/* chevron */
+details.controls-root > summary::before {
+  content: ""; display: inline-block; margin-right: 8px; width: 0; height: 0;
+  border-style: solid; border-width: 3px 0 3px 6px;
+  border-color: transparent transparent transparent var(--fg-strong);
+  transform: rotate(0deg); transform-origin: 3px 50%; transition: transform 50ms ease;
+}
+details.controls-root[open] > summary::before { transform: rotate(90deg); }
+</style>`
+
+// --- Build one merged, collapsible control "input" ---
+viewof controls = {
+  const resimBtn = Inputs.button("Resimulate data");
+  resimBtn.classList.add("btn-resim");
+
+  const leftForm = Inputs.form({
+    n: Inputs.range([1, 400], { value: 10, step: 1, label: md`${tex`n`}` }),
+    trueMu: Inputs.range([-3, 3], { value: 0.5, step: 0.05, label: md`${tex`\mu_{\text{true}}`}` }),
+    trueSigma: Inputs.range([0.3, 3], { value: 1.2, step: 0.05, label: md`${tex`\sigma_{\text{true}}`}` })
+  }, { submit: false });
+
+  const rightForm = Inputs.form({
+    muHalfWidth: Inputs.range([1, 5], { value: 2.5, step: 0.05, label: md`${tex`\mu\text{-range}`}` }),
+    sig2Max: Inputs.range([0.2, 6], { value: 3, step: 0.05, label: md`${tex`\sigma^2\text{ max}`}` }),
+    gridN: Inputs.range([25, 121], { value: 81, step: 4, label: "Grid size" }),
+    bins: Inputs.range([10, 60], { value: 24, step: 1, label: "Histogram bins" })
+  }, { submit: false });
+
+  const root = html`<details class="controls-root" open>
+    <summary>Simulation controls</summary>
+    <div class="controls-grid">
+      <div class="controls-col"><h4>Data & truth</h4></div>
+      <div class="controls-col"><h4>Grid & display</h4></div>
+    </div>
+  </details>`;
+
+  const grid = root.querySelector(".controls-grid");
+  const leftCol = grid.children[0];
+  const rightCol = grid.children[1];
+
+  leftCol.append(leftForm);
+
+  rightCol.append(rightForm);
+  const btnWrap = html`<div style="display:flex; justify-content:flex-start; margin-top:6px;"></div>`;
+  btnWrap.append(resimBtn);
+  rightCol.append(btnWrap);
+
+  // --- Merge values
+  const getValue = () => ({ ...leftForm.value, ...rightForm.value, resim: resimBtn.value });
+  const update = () => {
+    root.value = getValue();
+    root.dispatchEvent(new CustomEvent("input", { bubbles: true }));
+  };
+
+  // ONE listener for all children (sliders + button)
+  grid.addEventListener("input", update);
+
+  queueMicrotask(update);
+  return root;
+}
+
+// --- Expose reactive vars
+n = controls.n
+trueMu = controls.trueMu
+trueSigma = controls.trueSigma
+muHalfWidth = controls.muHalfWidth
+sig2Max = controls.sig2Max
+gridN = controls.gridN
+bins = controls.bins
+resim = controls.resim
+
+
+```

@@ -1,0 +1,598 @@
+# Frequentist Point Estimation
+
+A **statistic** is any function of the sample
+
+$$
+T \;=\; T(X_1,\dots,X_n).
+$$
+
+Because it is built from the random variables $X_1,\dots,X_n$, the statistic $T$ itself is a **random quantity**: its value varies from sample to sample.
+Once the data have been observed $(x_1,\dots,x_n)$, plugging them into the same formula produces a single **non-random number**, which we denote by $t_{\mathrm{obs}}$ (or simply $t$).
+
+When we pick a statistic for the specific purpose of approximating a parameter $\theta$, we call it an **estimator**. Its realised value is the **estimate**.
+
+::: {.callout-tip}
+## Notation rule
+- **Upper-case** letters $(T, \bar X, S^2)$ denote random statistics.  
+- **Lower-case** letters with a subscript “obs” $(t_{\mathrm{obs}}, \bar x, s^2)$ denote the observed values of those statistics.
+:::
+
+## Estimators vs. Estimates
+
+| Concept       | Notation                                                    | Description                                                   |
+| ------------- | ----------------------------------------------------------- | ------------------------------------------------------------- |
+| **Estimator** | $\hat{\theta} = \hat{\theta}(X_1, \dots, X_n)$              | A **function** of the data. A rule for producing an estimate. |
+| **Estimate**  | $\hat{\theta}_{\text{obs}} = \hat{\theta}(x_1, \dots, x_n)$ | The **numerical value** you get after plugging in your data.  |
+
+An estimator is a random variable; an estimate is its realised value.
+
+### Sample Mean and Variance
+
+::: {.definition #def-sample-mean}
+**Sample Mean.**  
+The sample mean of a **random sample** $X_1,\ldots,X_n$ is 
+
+$$
+\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i.
+$$
+:::
+
+::: {.definition #def-sample-variance}
+**Sample Variance.**  
+For a **random sample** $X_1,\ldots,X_n$, the sample variance is
+
+$$
+s^2 = \frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X})^2.
+$$
+:::
+
+### The Randomness of Estimators
+
+The **randomness** of an estimator $\hat{\theta}$ is due to randomness of the sample being plugged into the function.
+
+```{ojs}
+//| echo: false
+
+mutable rngSeed = 1
+mutable meanHistory = []
+mutable resampleClicks = 0
+mutable resetClicks = 0
+mutable lastXbar = null  // Store the previous xbar
+```
+
+```{ojs}
+//| echo: false
+
+// Edge-trigger the Reset
+{
+  if (reset > resetClicks) {
+    mutable meanHistory = [];
+    mutable resetClicks = reset;
+    mutable lastXbar = null;  // Also reset the stored xbar
+  }
+  return html``; // <- prevents "undefined" from being shown
+}
+
+// Edge-trigger the Resample: save the PREVIOUS mean before generating new sample
+{
+  if (resample > resampleClicks) {
+    // If we have a previous mean stored, add it to history
+    if (lastXbar !== null) {
+      mutable meanHistory = [...meanHistory, lastXbar];
+    }
+    // Store current mean for next time
+    mutable lastXbar = xbar;
+    // Then bump seed for new sample
+    mutable rngSeed = rngSeed + 1;
+    mutable resampleClicks = resample;
+  }
+  return html``; // <- prevents "undefined" from being shown
+}
+```
+
+
+```{ojs}
+//| echo: false
+
+// --- Buttons at the top ---
+
+// Helper to make a styled Inputs.button
+function styledButton(label, cls, options = {}) {
+  const el = Inputs.button(label, options);              // <form>…<button>…</button></form>
+  const btn = el.querySelector('button');
+  if (btn) btn.classList.add(cls);                       // add your custom class
+  return el;
+}
+
+// Define themed buttons
+viewof resample = styledButton("Resample", "btn-resample", {
+  reduce: c => (c ?? 0) + 1
+});
+
+viewof reset = styledButton("Reset", "btn-reset", {
+  reduce: c => (c ?? 0) + 1
+});
+
+
+// viewof resample = Inputs.button("Resample", { reduce: c => (c ?? 0) + 1 }) 
+// viewof reset = Inputs.button("Reset", { reduce: c => (c ?? 0) + 1 })
+
+// --- Current sample depends on rngSeed + controls ---
+X = {
+  const rand = d3.randomNormal.source(d3.randomLcg(rngSeed))(controls.trueMu, controls.trueSigma);
+  return d3.range(controls.n).map(rand);
+}
+xbar = d3.mean(X)
+
+// ========= Helpers =========
+makeDensityReducer = (total) => (values, extent) =>
+  values.length / Math.max(1, total) / Math.max(1e-9, extent.x2 - extent.x1);
+
+// ========= Left panel: current sample (histogram + dots at y=0) =========
+leftDensity = makeDensityReducer(controls.n)
+xExtent = d3.extent(X)
+xPad = 3 * controls.trueSigma
+xDomain = [xExtent[0] - 0.1 * (xPad || 1), xExtent[1] + 0.1 * (xPad || 1)]
+
+// === Compute yMax from actual binned densities ===
+bins = d3.bin().domain(xDomain).thresholds(controls.bins)(X);
+densities = bins.map(b =>
+  (b.length / Math.max(1, controls.n)) / Math.max(1e-9, (b.x1 - b.x0))
+);
+yMax = d3.max(densities);
+stickHeight = 0.1 * yMax; // 10% of the current y-range used by the histogram
+
+leftPlot = Plot.plot({
+  width: Math.min(600, Math.max(320, width/2 - 20)),
+  height: 320,
+  style: {
+    background: "var(--plot-panel-bg)",
+    color: "var(--brand-fg)"           // drives 'currentColor'
+  },
+  x: { label: "Data", domain: xDomain },
+  y: { label: "Density" },
+  marks: [
+    // histogram
+    Plot.rectY(
+      X,
+      Plot.binX(
+        { y: leftDensity },
+        {
+          x: d => d,
+          thresholds: controls.bins,
+          inset: 0,
+          fillOpacity: 0.4,
+          fill: "var(--brand-teal)"
+        }
+      )
+    ),
+    // raw points
+    // Plot.dot(
+    //   X.map(x => ({ x, y: 0 })),
+    //   {
+    //     x: "x",
+    //     y: "y",
+    //     r: 2,
+    //     fillOpacity: 0.9,
+    //     fill: "var(--brand-teal)",
+    //     symbol: "cross"
+    //   }
+    // ),
+    Plot.ruleX(
+    X,
+    { y1: 0, y2: yMax * 0.05, stroke: "var(--brand-teal)", strokeWidth: 3, strokeOpacity: 1.}
+    ),
+    // xbar reference
+    Plot.ruleX([xbar], { stroke: "currentColor", strokeDasharray: "4,3" }),
+    Plot.dot([{ x: xbar, y: 0 }], { x: "x", y: "y", r: 3, fill: "currentColor" }),
+    Plot.ruleY([0])
+  ]
+})
+
+// ========= Right panel: saved sample means (strip + hist + optional true curve) =========
+means = meanHistory
+rightDensity = makeDensityReducer(means.length)
+
+mPad = 3 * controls.trueSigma / Math.sqrt(controls.n)
+meansDomain = means.length ? d3.extent(means) : [controls.trueMu - mPad, controls.trueMu + mPad]
+mDomain = [
+  Math.min(meansDomain[0], controls.trueMu - mPad),
+  Math.max(meansDomain[1], controls.trueMu + mPad)
+]
+
+sampleMeanPdf = (x) =>
+  (1 / Math.sqrt(2 * Math.PI * (controls.trueSigma**2 / controls.n))) *
+  Math.exp(-((x - controls.trueMu)**2) / (2 * (controls.trueSigma**2 / controls.n)))
+
+pdfXs = d3.scaleLinear().domain(mDomain).ticks(200)
+pdfData = pdfXs.map(x => ({ x, y: sampleMeanPdf(x) }))
+
+rightPlot = Plot.plot({
+  width: Math.min(600, Math.max(320, width/2 - 20)),
+  height: 320,
+  style: {                     // make the figure match your theme
+    background: "var(--plot-panel-bg)",
+    color: "var(--brand-fg)"   // this drives 'currentColor'
+  },
+  x: { label: "x̄", domain: mDomain },
+  y: { label: "Density" },
+  marks: [
+    Plot.rectY(
+      means,
+      Plot.binX(
+        { y: rightDensity },
+        { x: d => d, thresholds: controls.bins, inset: 0, fillOpacity: 0.3,
+          fill: "var(--brand-red)" }
+      )
+    ),
+    Plot.dot(means.map(m => ({ x: m, y: 0 })), {
+      x: "x", y: "y", r: 2, fillOpacity: 0.7, fill: "var(--brand-red)"
+    }),
+    Plot.dot([{ x: xbar, y: 0 }], {
+      x: "x", y: "y", r: 4, fill: "currentColor"     // uses style.color above
+    }),
+    ...(controls.showTrue
+      ? [Plot.line(pdfData, { x: "x", y: "y", strokeWidth: 2, stroke: "var(--brand-red)" })]
+      : []
+    ),
+    Plot.ruleY([0])
+  ]
+})
+
+// ========= Display =========
+
+
+// html`<div style="
+//   display:flex;
+//   align-items:center;
+//   gap:10px;
+//   margin-bottom:6px;
+//   width:100%;
+// ">
+//   <span style="display:inline-flex;">${viewof resample}</span>
+//   <span style="flex:1 1 auto; min-width:100px;"></span>  <!-- flexible spacer that can shrink -->
+//   <span style="display:inline-flex;">${viewof reset}</span>
+// </div>`
+{
+  // Make the forms behave nicely in the grid
+  for (const f of [viewof resample, viewof reset]) {
+    f.style.margin = "0";
+    f.style.width = "100%";      // inline style beats the library rule
+    f.style.maxWidth = "none";
+    f.style.display = "flex";    // so we can push the button left/right
+  }
+  // Left button to the left, right button to the right
+  viewof resample.style.justifyContent = "flex-start";
+  viewof reset.style.justifyContent    = "flex-end";
+
+  return html`<div class="ojs-toolbar-grid">
+    <div class="left">${viewof resample}</div>
+    <div class="center">
+      ${md`${tex`\bar{x} = ${xbar.toFixed(2)}`}`}
+    </div>
+    <div class="right">${viewof reset}</div>
+  </div>
+
+  <style>
+    .ojs-toolbar-grid{
+      display:grid;
+      grid-template-columns:1fr auto 1fr; /* left, middle, right */
+      align-items:center;
+      width:100%;
+      box-sizing:border-box;
+      margin:0; padding:0;
+    }
+    .ojs-toolbar-grid form{
+      margin:0 !important;
+      width:100% !important;
+      max-width:none !important;
+      display:flex !important;
+    }
+    .ojs-toolbar-grid .left  form{ justify-content:flex-start !important; }
+    .ojs-toolbar-grid .right form{ justify-content:flex-end   !important; }
+
+    .btn.btn-resample{ background: var(--brand-teal); color:#fff; border:none; }
+    .btn.btn-resample:hover{ background: var(--brand-teal-hover); }
+    .btn.btn-reset{ background: var(--brand-red); color:#fff; border:none; }
+    .btn.btn-reset:hover{ background: var(--brand-red-hover); }
+    .btn.btn-resample:focus-visible,
+    .btn.btn-reset:focus-visible{
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+
+    .ojs-toolbar-grid .center{
+      text-align:center;
+      font-size:0.9rem;
+      color: var(--brand-fg);
+    }
+  </style>`;
+}
+
+
+
+
+html`<div style="max-width:100%; display:flex; gap:14px; align-items:flex-start; flex-wrap:nowrap;">
+  <div>${leftPlot}</div>
+  <div>${rightPlot}</div>
+</div>`
+```
+
+```{ojs}
+html`<style>
+details.controls-root > summary {
+  list-style: none; cursor: pointer; user-select: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-weight: 600; font-size: 13px;
+  color: var(--fg-strong);
+  display: flex; align-items: center; gap: 8px;
+}
+details.controls-root > summary::-webkit-details-marker { display: none; }
+details.controls-root[open] > summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+
+/* ---------- Compact Inputs (fixed slider alignment) ---------- */
+.controls-col label { font-size: 12px !important; }
+
+.controls-col input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 18px;                     /* overall control box height */
+  background: transparent;
+  vertical-align: middle;
+  accent-color: var(--brand-teal, #55C3CB);
+}
+
+/* WebKit track */
+.controls-col input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brand-teal, #55C3CB) 35%, transparent);
+}
+
+/* WebKit thumb */
+.controls-col input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--brand-teal, #55C3CB);
+  border: 0;
+  /* Center the 12px thumb over the 4px track: (4 - 12)/2 = -4px */
+  margin-top: -4px;
+}
+
+/* Firefox track */
+.controls-col input[type="range"]::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brand-teal, #55C3CB) 35%, transparent);
+}
+
+/* Firefox thumb (auto-centred; no negative margin needed) */
+.controls-col input[type="range"]::-moz-range-thumb {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--brand-teal, #55C3CB);
+  border: 0;
+}
+
+/* Optional: hide the default filled "progress" colour in Firefox */
+.controls-col input[type="range"]::-moz-range-progress {
+  height: 4px; border-radius: 999px;
+  background: color-mix(in srgb, var(--brand-teal, #55C3CB) 35%, transparent);
+}
+
+.controls-grid {
+  display: grid;
+  grid-template-columns: minmax(260px,1fr) minmax(260px,1fr);
+  gap: 12px;
+  border: 1px solid var(--border); border-top: none;
+  border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;
+  padding: 10px;
+  background: var(--surface-weak);
+  overflow-x: auto;
+}
+.controls-col { min-width: 260px; }
+.controls-col h4 {
+  margin: 0 0 6px 0; font-size: 12px; font-weight: 700;
+  color: var(--fg-muted);
+}
+
+/* chevron */
+details.controls-root > summary::before {
+  content: ""; display: inline-block; margin-right: 8px; width: 0; height: 0;
+  border-style: solid; border-width: 3px 0 3px 6px;
+  border-color: transparent transparent transparent var(--fg-strong);
+  transform: rotate(0deg); transform-origin: 3px 50%; transition: transform 50ms ease;
+}
+details.controls-root[open] > summary::before { transform: rotate(90deg); }
+</style>`
+
+/* ---------- One merged, collapsible control ---------- */
+viewof controls = {
+
+  // Left column: data & truth
+  const leftForm = Inputs.form({
+    n: Inputs.range([1, 400], { value: 10, step: 1, label: md`${tex`n`}` }),
+    trueMu: Inputs.range([-2, 2], { value: 0, step: 0.1, label: md`${tex`\mu_{\text{true}}`}` }),
+    trueSigma: Inputs.range([0.3, 3], { value: 1, step: 0.1, label: md`${tex`\sigma_{\text{true}}`}` })
+  }, { submit: false });
+
+  // Right column: display & actions
+  const rightForm = Inputs.form({
+    bins: Inputs.range([10, 60], { value: 24, step: 1, label: "Histogram bins" }),
+    showTrue: Inputs.toggle({ label: md`Show ${tex`\bar{X}`} distribution`, value: false }),
+    // include the buttons as inputs so their *click counts* become part of form.value
+  }, { submit: false });
+
+  // Collapsible wrapper
+  const root = html`<details class="controls-root" open>
+    <summary>Simulation controls</summary>
+    <div class="controls-grid">
+      <div class="controls-col"><h4>Data & truth</h4></div>
+      <div class="controls-col"><h4>Display & actions</h4></div>
+    </div>
+  </details>`;
+  root.querySelector(".controls-grid").children[0].append(leftForm);
+  root.querySelector(".controls-grid").children[1].append(rightForm);
+
+  // Merge both forms into a single value object
+  const getValue = () => ({ ...leftForm.value, ...rightForm.value });
+  const update = () => {
+    root.value = getValue();
+    root.dispatchEvent(new CustomEvent("input", { bubbles: true }));
+  };
+
+  leftForm.addEventListener("input", update);
+  rightForm.addEventListener("input", update);
+  // make sure button clicks trigger updates even if no 'input' is fired
+
+  queueMicrotask(update);
+  return root;
+}
+
+```
+
+## Bias, Variance, MSE and Consistency
+
+::: {.definition #def-bias}
+**Bias.**  
+The bias of an estimator $\hat{\theta}$ for parameter $\theta$ is
+
+$$
+\mathrm{Bias}(\hat{\theta}) = \mathrm{E}[\hat{\theta}] - \theta.
+$$
+If $\mathrm{Bias}(\hat{\theta}) = 0$, the estimator is **unbiased**.
+:::
+
+::: {.definition #def-variance}
+**Variance.**  
+The variance of an estimator $\hat{\theta}$ is simply
+
+$$
+\mathrm{Var}(\hat{\theta}) = \mathrm{E}\!\big[(\hat{\theta}-\mathrm{E}[\hat{\theta}])^2\big].
+$$
+:::
+
+::: {.definition #def-mse}
+**Mean Squared Error (MSE).**  
+The MSE of $\hat{\theta}$ is defined as
+
+$$
+\mathrm{MSE}(\hat{\theta}) 
+= \mathrm{E}\!\big[(\hat{\theta}-\theta)^2\big] 
+= \mathrm{Var}(\hat{\theta}) + \mathrm{Bias}(\hat{\theta})^2.
+$$
+:::
+
+::: {.definition #def-consistency}
+**Consistency.**  
+An estimator $\hat{\theta}_n$ (depending on sample size $n$) is **consistent** if
+
+$$
+\hat{\theta}_n \;\xrightarrow{p}\; \theta 
+\quad \text{as } n \to \infty,
+$$
+
+i.e. it converges in probability to the true parameter value.
+:::
+
+### Examples
+
+::: {.example #exm-bias1}
+### Bias of the Sample Mean
+For $X_1,\dots,X_n \overset{iid}{\sim}$ distribution with mean $\mu$:
+
+$$
+\mathrm{E}[\bar{X}] = \mu
+\quad\implies\quad 
+\mathrm{Bias}(\bar{X}) = 0.
+$$
+
+So the sample mean is **unbiased** for $\mu$.
+:::
+
+
+::: {.example #exm-variance-sm}
+### Variance of the Sample Mean  
+If $\mathrm{Var}(X_i) = \sigma^2$:
+
+$$
+\mathrm{Var}(\bar{X}) 
+= \frac{1}{n^2} \sum_{i=1}^n \mathrm{Var}(X_i) 
+= \frac{\sigma^2}{n}.
+$$
+
+So as $n$ grows, the estimator becomes more concentrated around $\mu$.
+:::
+
+::: {.example #exm-bias-sv}
+### Bias of the Sample Variance
+If we instead used the “naïve” variance
+
+$$
+s^2_{naive} = \frac{1}{n}\sum_{i=1}^n (X_i - \bar{X})^2,
+$$
+
+then
+
+$$
+\mathrm{E}[s^2_{naive}] = \frac{n-1}{n}\sigma^2,
+$$
+
+which underestimates $\sigma^2$.  
+That is why we divide by $n-1$ instead of $n$.
+:::
+
+
+::: {.example #exm-mse1}
+### MSE of Sample Mean
+
+Suppose we estimate $\mu$ with $\hat{\mu} = c\bar{X}$, where $c$ is a constant.
+
+- Bias:  
+$$
+\mathrm{Bias}(\hat{\mu}) = (c-1)\mu.
+$$
+
+- Variance:  
+$$
+\mathrm{Var}(\hat{\mu}) = c^2 \frac{\sigma^2}{n}.
+$$
+
+- MSE:  
+$$
+\mathrm{MSE}(\hat{\mu}) 
+= \frac{c^2\sigma^2}{n} + (c-1)^2 \mu^2.
+$$
+
+This shows how a biased estimator can still have low MSE if variance is reduced.
+:::
+
+::: {.example #exm-consistency-samplemean}
+### Consistency of $\bar{X}$
+
+By the **Law of Large Numbers**,
+
+$$
+\bar{X} \;\xrightarrow{p}\; \mu,
+$$
+
+so the sample mean is a **consistent** estimator of $\mu$.
+:::
+
+## Central Limit Theorem (CLT)
+
+::: {.definition #def-clt}
+### Central Limit Theorem
+
+If $X_1,\dots,X_n \overset{iid}{\sim}$ distribution with mean $\mu$ and variance $\sigma^2 < \infty$, then
+
+$$
+\frac{\bar{X}-\mu}{\sigma/\sqrt{n}} \;\xrightarrow{d}\; N(0,1).
+$$
+:::
+
+The CLT explains why many estimators (like $\bar{X}$) are approximately normal in large samples, which is crucial for constructing confidence intervals and hypothesis tests.

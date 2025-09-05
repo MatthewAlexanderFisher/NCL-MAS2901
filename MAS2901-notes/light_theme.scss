@@ -1,0 +1,87 @@
+/*-- scss:defaults --*/
+
+
+/* ===== Base palette (pastels) ===== */
+$charcoal: #333333;   // main text
+$teal:     #55C3CB;   // definitions / primary accent
+$orange:   #F39C65;   // examples
+$purple:   #A180DA;   // important results
+$mint:     #DDFFEB;   // emphasis boxes / soft backgrounds
+
+:root {
+  --brand-fg:        #333333;
+  --brand-bg:        #f8f8f8;
+  --plot-panel-bg:   #F7F9FB;
+
+  --brand-teal:      #55C3CB;
+  --brand-orange:    #F39C65;
+  --brand-purple:    #A180DA;
+  --brand-mint:      #DDFFEB;
+  --brand-warn:      #E86D5A;
+  --brand-red:     #e65660;
+
+  --brand-teal-hover: #4da2a8;  /* slightly darker for hover */
+  --brand-red-hover: rgb(173, 39, 24);  /* slightly darker for hover */
+
+  /* add these for controls */
+  --surface:         #f8fafc;   /* card/summary background */
+  --surface-weak:    #fafafa;   /* grid background */
+  --border:          #e5e7eb;   /* thin borders */
+  --fg-muted:        #475569;   /* headings/labels */
+  --fg-strong:       #334155;   /* summary text/chevron */
+}
+
+/* Subtle neutrals & derived tones */
+$bg-white:  #f8f8f8;
+$bg-soft:   #e5ebf0;                     // very light surface for code / blocks
+$teal-600:  darken($teal, 12%);          // for hovers / borders
+$teal-050:  mix($teal, $bg-white, 12%);  // faint highlight
+$mint-100:  mix($mint, $bg-white, 10%);  // softer mint panel
+$orange-600: darken($orange, 10%);
+$purple-600: darken($purple, 10%);
+
+/* ===== Page & common UI ===== */
+$body-bg:    $bg-white;     // The page background color.
+$body-color: $charcoal;     // The page text color.
+$link-color: $teal;         // The link color.
+$input-bg:   $bg-white;     // The background color for HTML inputs.
+$popover-bg: $bg-white;     // The background color for popovers (e.g. citation preview).
+
+/* ===== Code annotations & copy button ===== */
+$code-annotation-higlight-color: $teal-600; // Border on highlighted lines.
+$code-annotation-higlight-bg:    $teal-050; // Background of highlighted lines.
+
+$btn-code-copy-color:         $teal;        // Copy button colour.
+$btn-code-copy-color-active:  $teal-600;    // Hover/active for copy button.
+
+$code-bg:    $bg-soft;       // Inline/code block background.
+$code-color: $charcoal;      // Inline/code text colour.
+
+/* ===== Callouts =====
+   Map to your roles while keeping accessible contrast. */
+$callout-color-note:      $teal;        // general notes
+$callout-color-tip:       #6CCFA7;      // gentle green (pairs with your mint)
+$callout-color-caution:   $orange;      // cautions
+$callout-color-warning:   #E86D5A;      // warmer warning (still pastel-ish)
+$callout-color-important: $purple;      // important results / theorems
+
+/* ===== Navigation / layout ===== */
+$navbar-bg:  $bg-white;     // Navbar background.
+$navbar-fg:  $charcoal;     // Navbar text/icons.
+$navbar-hl:  $teal;         // Navbar link hover/active.
+
+$sidebar-bg: #FAFAFA;       // Sidebar background (slightly off-white).
+$sidebar-fg: $charcoal;     // Sidebar text.
+$sidebar-hl: $teal;         // Sidebar link hover/active.
+
+$footer-bg:  #F6F6F6;       // Footer background.
+$footer-fg:  $charcoal;     // Footer text.
+
+
+/* Body text font */
+$font-family-sans-serif: "Source Sans Pro", "Lato", "Roboto", "Segoe UI", Arial, sans-serif;
+$font-family-serif: "Merriweather", Georgia, "Times New Roman", serif;
+
+
+/* Code blocks font */
+$code-font-family: "Fira Code", monospace;
