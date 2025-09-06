@@ -202,9 +202,11 @@
 \newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
 \usepackage{amsthm}
 \theoremstyle{definition}
-\newtheorem{definition}{Definition}[chapter]
-\theoremstyle{definition}
 \newtheorem{example}{Example}[chapter]
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[chapter]
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[chapter]
 \theoremstyle{remark}
 \AtBeginDocument{\renewcommand*{\proofname}{Proof}}
 \newtheorem*{remark}{Remark}
@@ -310,7 +312,7 @@ estimate of the long-run proportion \(p\) who would choose \(A\).
 
 \end{example}
 
-\begin{tcolorbox}[enhanced jigsaw, left=2mm, titlerule=0mm, bottomrule=.15mm, colframe=quarto-callout-tip-color-frame, arc=.35mm, colback=white, breakable, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution}, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, opacityback=0, toprule=.15mm, leftrule=.75mm, coltitle=black, toptitle=1mm, rightrule=.15mm, bottomtitle=1mm]
+\begin{tcolorbox}[enhanced jigsaw, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, breakable, bottomrule=.15mm, rightrule=.15mm, colback=white, opacitybacktitle=0.6, toprule=.15mm, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, left=2mm, coltitle=black, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution}, opacityback=0, arc=.35mm, leftrule=.75mm]
 
 \textbf{Frequentist.} The natural estimator is the sample proportion
 
@@ -359,7 +361,7 @@ in spirit.
 
 \end{example}
 
-\begin{tcolorbox}[enhanced jigsaw, left=2mm, titlerule=0mm, bottomrule=.15mm, colframe=quarto-callout-tip-color-frame, arc=.35mm, colback=white, breakable, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution}, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, opacityback=0, toprule=.15mm, leftrule=.75mm, coltitle=black, toptitle=1mm, rightrule=.15mm, bottomtitle=1mm]
+\begin{tcolorbox}[enhanced jigsaw, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, breakable, bottomrule=.15mm, rightrule=.15mm, colback=white, opacitybacktitle=0.6, toprule=.15mm, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, left=2mm, coltitle=black, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution}, opacityback=0, arc=.35mm, leftrule=.75mm]
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -373,67 +375,6 @@ in spirit.
 \end{enumerate}
 
 \end{tcolorbox}
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\section*{Structure of the Course}\label{structure-of-the-course}
-\addcontentsline{toc}{section}{Structure of the Course}
-
-\markright{Structure of the Course}
-
-The notes are structured as follows:
-
-\begin{itemize}
-\item
-  Part 1: Preliminaries
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Probability Theory\\
-  \item
-    What is Statistical Inference? (introduces \textbf{statistical
-    models})\\
-  \item
-    Types of Inference\\
-  \end{itemize}
-\item
-  Part 2: Point Estimation
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Estimate vs.~Estimator\\
-  \item
-    Central Limit Theorem\\
-  \item
-    Bias, Mean-Squared Error and Consistency\\
-  \item
-    Likelihood Function\\
-  \item
-    Bayesian Inference\\
-  \end{itemize}
-\item
-  Part 3: Interval Estimation\\
-\item
-  Part 4: Hypothesis Testing\\
-\item
-  Part 5: Prediction
-\item
-  Extras:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Distribution Zoo (covers all the distributions used in the course)\\
-  \item
-    Revision Guide\\
-  \item
-    Question Bank
-  \end{itemize}
-\end{itemize}
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 \section*{Further Reading}\label{further-reading}
 \addcontentsline{toc}{section}{Further Reading}
@@ -450,7 +391,7 @@ The notes are structured as follows:
 
 \chapter{Probability Theory}\label{probability-theory}
 
-\begin{tcolorbox}[enhanced jigsaw, left=2mm, titlerule=0mm, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, arc=.35mm, colback=white, breakable, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Learning objectives}, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, opacityback=0, toprule=.15mm, leftrule=.75mm, coltitle=black, toptitle=1mm, rightrule=.15mm, bottomtitle=1mm]
+\begin{tcolorbox}[enhanced jigsaw, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, breakable, bottomrule=.15mm, rightrule=.15mm, colback=white, opacitybacktitle=0.6, toprule=.15mm, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, left=2mm, coltitle=black, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Learning objectives}, opacityback=0, arc=.35mm, leftrule=.75mm]
 
 \begin{itemize}
 \tightlist
@@ -469,10 +410,6 @@ The notes are structured as follows:
 \item
   Compute probabilities from pmfs/pdfs/cdfs (using sums or areas) and
   check normalisation.
-\item
-  Use distribution notation \(f(x)\) with parameters \(\theta\);
-  recognise \(f(x;\theta)\) (frequentist) versus \(f(x\mid \theta)\)
-  (Bayesian).
 \end{itemize}
 
 \end{tcolorbox}
@@ -480,58 +417,320 @@ The notes are structured as follows:
 Before we delve into statistical inference, we briefly review key ideas
 from probability theory.
 
-\section{Probability of Events}\label{probability-of-events}
-
-We use capital letters \(A, B,\ldots\) to denote \emph{events} (things
-that may or may not occur). The complement of \(A\) is \(A^c\) (``\(A\)
-does not occur'').
+\begin{tcolorbox}[enhanced jigsaw, colbacktitle=quarto-callout-warning-color!10!white, colframe=quarto-callout-warning-color-frame, breakable, bottomrule=.15mm, rightrule=.15mm, colback=white, opacitybacktitle=0.6, toprule=.15mm, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, left=2mm, coltitle=black, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Note on this section}, opacityback=0, arc=.35mm, leftrule=.75mm]
 
 \begin{itemize}
+\tightlist
 \item
-  \textbf{Intersection and union.} \(A\cap B\) means both \(A\)
-  \emph{and} \(B\) occur. \(A\cup B\) means \(A\) \emph{or} \(B\) (or
-  both) occur.
+  This section is provided \textbf{for review and reference only}.
 \item
-  \textbf{Addition rule (inclusion--exclusion).}
-
-  \[
-  \Pr(A\cup B)=\Pr(A)+\Pr(B)-\Pr(A\cap B).
-  \]
+  It will not be examined in detail, but the ideas are useful background
+  for later topics.\\
 \item
-  \textbf{Mutually exclusive events.} \(A\) and \(B\) are
-  \emph{exclusive} if they cannot both occur; then \(\Pr(A\cap B)=0\).
-\item
-  \textbf{Exhaustive events.} \(A\) and \(B\) are \emph{exhaustive} if
-  at least one must occur; then \(\Pr(A\cup B)=1\). (The ideas
-  generalise to more than two events.)
-\item
-  \textbf{Independence.} Events \(A\) and \(B\) are \emph{independent}
-  if
-
-  \[
-  \Pr(A\cap B)=\Pr(A)\Pr(B).
-  \]
-\item
-  \textbf{Conditional probability.} If \(\Pr(B)>0\),
-
-  \[
-  \Pr(A\mid B)=\frac{\Pr(A\cap B)}{\Pr(B)}.
-  \]
-\item
-  \textbf{Bayes' theorem.} If \(\Pr(B)>0\),
-
-  \[
-  \Pr(A\mid B)=\frac{\Pr(B\mid A)\Pr(A)}{\Pr(B)}.
-  \]
-\item
-  \textbf{Partitions and the law of total probability.} Events
-  \(B_1,\dots,B_n\) form a \emph{partition} if exactly one occurs
-  (mutually exclusive and exhaustive). Then, for any event \(A\),
-
-  \[
-  \Pr(A)=\sum_{i=1}^n \Pr(A\mid B_i)\Pr(B_i).
-  \]
+  Much of the content should already be familiar.
 \end{itemize}
+
+\end{tcolorbox}
+
+\section{Probability and Events}\label{probability-and-events}
+
+When working with probability we need three basic ingredients\footnote{\textbf{Note
+  on Probability Theory.} Formally, a probability space is written as a
+  triple \((\Omega,\Sigma,P)\), where \(\Sigma\) is the collection of
+  ``measurable'' events. This level of mathematical detail goes beyond
+  what we need in this course and will \textbf{not be assessed}. (See
+  the \href{https://en.wikipedia.org/wiki/Probability_space}{Wikipedia
+  article on probability spaces} if you are curious.)}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  The \textbf{sample space} \(\Omega\). all possible outcomes of an
+  experiment.\\
+  \emph{Example:} for a coin toss,
+  \(\Omega = \{\text{Heads}, \text{Tails}\}\).\\
+\item
+  \textbf{Events} subsets of the sample space. We use capital letters
+  \(A, B, \ldots\) to denote events.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    The \textbf{complement} of \(A\) is \(A^c\), meaning \(A\) does
+    \emph{not} occur.\\
+  \item
+    The \textbf{intersection} \(A \cap B\) means \(A\) \emph{and} \(B\)
+    occur.\\
+  \item
+    The \textbf{union} \(A \cup B\) means \(A\) \emph{or} \(B\) (or
+    both) occur.\\
+  \end{itemize}
+\item
+  A \textbf{probability distribution} \(\mathrm{Pr}\). Assigns numbers
+  between \(0\) and \(1\) to events, with \(\mathrm{Pr}(\Omega)=1\).
+\end{enumerate}
+
+We can write the definitions of complement, intersection and union
+formally with sets:
+
+\begin{definition}[Complement, Intersection and
+Union]\protect\hypertarget{def-intersect-union}{}\label{def-intersect-union}
+
+~
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Complement:} \(A^c = \{x \in \Omega \mid x \notin A \}\).
+\item
+  \textbf{Intersection:}
+  \(A\cap B = \{x \in \Omega \mid x \in A \text{ and } x \in B\}\).\\
+\item
+  \textbf{Union:}
+  \(A\cup B = \{x \in \Omega \mid x \in A \text{ or } x \in B\}\).\\
+\end{itemize}
+
+\end{definition}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{Visualisation:}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{// Toggle: highlight selection (use explicit values for robust comparisons)}
+\NormalTok{viewof vennOp = Inputs.radio(}
+\NormalTok{  ["None", "A", "B", "Aᶜ", "Union", "Intersection"],}
+\NormalTok{  \{ value: "None", label: "Highlight:" \}}
+\NormalTok{)}
+
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{//| label: fig{-}venn}
+\NormalTok{//| fig{-}cap: "Venn diagram of two events A and B inside the sample space Ω."}
+
+\NormalTok{venn = \{}
+\NormalTok{  const width = 380, height = 280;}
+\NormalTok{  const pad = 18;}
+
+\NormalTok{  const cxA = 145, cyA = 140, r = 90;   // circle A}
+\NormalTok{  const cxB = 235, cyB = 140;           // circle B}
+
+\NormalTok{  const svg = d3.create("svg")}
+\NormalTok{    .attr("width", width)}
+\NormalTok{    .attr("height", height)}
+\NormalTok{    .attr("viewBox", [0, 0, width, height]);}
+
+\NormalTok{  // Sample space Ω (bounding rectangle)}
+\NormalTok{  const omega = svg.append("rect")}
+\NormalTok{    .attr("x", pad).attr("y", pad)}
+\NormalTok{    .attr("width", width {-} 2*pad).attr("height", height {-} 2*pad)}
+\NormalTok{    .attr("rx", 10)}
+\NormalTok{    .attr("fill", "none")}
+\NormalTok{    .attr("stroke", "currentColor")}
+\NormalTok{    .attr("stroke{-}opacity", 0.5);}
+
+\NormalTok{  // Label Ω}
+\NormalTok{  svg.append("text")}
+\NormalTok{    .attr("x", pad + 8).attr("y", pad + 16)}
+\NormalTok{    .text("Ω")}
+\NormalTok{    .style("font{-}weight", 400)}
+\NormalTok{    .style("font{-}size", "14px");}
+
+\NormalTok{  // Colors (CSS vars with fallbacks)}
+\NormalTok{  const colA   = "var({-}{-}brand{-}teal, \#14b8a6)";}
+\NormalTok{  const colB   = "var({-}{-}brand{-}red, \#ef4444)";}
+\NormalTok{  const hilite = "var({-}{-}brand{-}orange, \#F39C65)";}
+\NormalTok{  const grid   = "var({-}{-}plot{-}grid, \#94a3b8)";}
+
+\NormalTok{  // {-}{-}{-} Defs: clips \& mask for A\^{}c {-}{-}{-}}
+\NormalTok{  const defs = svg.append("defs");}
+
+\NormalTok{  defs.append("clipPath").attr("id", "clipA")}
+\NormalTok{    .append("circle").attr("cx", cxA).attr("cy", cyA).attr("r", r);}
+
+\NormalTok{  defs.append("clipPath").attr("id", "clipB")}
+\NormalTok{    .append("circle").attr("cx", cxB).attr("cy", cyB).attr("r", r);}
+
+\NormalTok{  // Mask for A\^{}c: white keeps, black removes (subtract circle A from Ω rect)}
+\NormalTok{  const m = defs.append("mask").attr("id", "maskAc");}
+\NormalTok{  m.append("rect")}
+\NormalTok{    .attr("x", pad).attr("y", pad)}
+\NormalTok{    .attr("width", width {-} 2*pad).attr("height", height {-} 2*pad)}
+\NormalTok{    .attr("rx", 10)}
+\NormalTok{    .attr("fill", "white");}
+\NormalTok{  m.append("circle")}
+\NormalTok{    .attr("cx", cxA).attr("cy", cyA).attr("r", r)}
+\NormalTok{    .attr("fill", "black");}
+
+\NormalTok{  // Base sets (always lightly transparent)}
+\NormalTok{  svg.append("circle")}
+\NormalTok{    .attr("cx", cxA).attr("cy", cyA).attr("r", r)}
+\NormalTok{    .attr("fill", colA).attr("fill{-}opacity", 0.18);}
+
+\NormalTok{  svg.append("circle")}
+\NormalTok{    .attr("cx", cxB).attr("cy", cyB).attr("r", r)}
+\NormalTok{    .attr("fill", colB).attr("fill{-}opacity", 0.18);}
+
+\NormalTok{  // Highlight layer}
+\NormalTok{  if (vennOp === "A") \{}
+\NormalTok{    svg.append("circle")}
+\NormalTok{      .attr("cx", cxA).attr("cy", cyA).attr("r", r)}
+\NormalTok{      .attr("fill", hilite).attr("fill{-}opacity", 0.99);}
+
+\NormalTok{  \} else if (vennOp === "B") \{}
+\NormalTok{    svg.append("circle")}
+\NormalTok{      .attr("cx", cxB).attr("cy", cyB).attr("r", r)}
+\NormalTok{      .attr("fill", hilite).attr("fill{-}opacity", 0.99);}
+
+\NormalTok{  \} else if (vennOp === "Aᶜ") \{}
+\NormalTok{    // Draw Ω in orange, but masked to remove A}
+\NormalTok{    svg.append("rect")}
+\NormalTok{      .attr("x", pad).attr("y", pad)}
+\NormalTok{      .attr("width", width {-} 2*pad).attr("height", height {-} 2*pad)}
+\NormalTok{      .attr("rx", 10)}
+\NormalTok{      .attr("fill", hilite).attr("fill{-}opacity", 0.99)}
+\NormalTok{      .attr("mask", "url(\#maskAc)");}
+
+\NormalTok{  \} else if (vennOp === "Union") \{}
+\NormalTok{    // A ∪ B: overlay both circles solid orange}
+\NormalTok{    svg.append("circle")}
+\NormalTok{      .attr("cx", cxA).attr("cy", cyA).attr("r", r)}
+\NormalTok{      .attr("fill", hilite).attr("fill{-}opacity", 0.99);}
+\NormalTok{    svg.append("circle")}
+\NormalTok{      .attr("cx", cxB).attr("cy", cyB).attr("r", r)}
+\NormalTok{      .attr("fill", hilite).attr("fill{-}opacity", 0.99);}
+
+\NormalTok{  \} else if (vennOp === "Intersection") \{}
+\NormalTok{    // A ∩ B: clip B by A (equivalently clip A by B)}
+\NormalTok{    svg.append("g").attr("clip{-}path", "url(\#clipA)")}
+\NormalTok{      .append("circle")}
+\NormalTok{      .attr("cx", cxB).attr("cy", cyB).attr("r", r)}
+\NormalTok{      .attr("fill", hilite).attr("fill{-}opacity", 0.99);}
+\NormalTok{  \}}
+
+\NormalTok{  // Labels A and B}
+\NormalTok{  svg.append("text")}
+\NormalTok{    .attr("x", cxA {-} 26).attr("y", cyA {-} 8)}
+\NormalTok{    .text("A")}
+\NormalTok{    .style("font{-}size", "14px")}
+\NormalTok{    .style("font{-}weight", 600);}
+
+\NormalTok{  svg.append("text")}
+\NormalTok{    .attr("x", cxB + 22).attr("y", cyB {-} 8)}
+\NormalTok{    .text("B")}
+\NormalTok{    .style("font{-}size", "14px")}
+\NormalTok{    .style("font{-}weight", 600);}
+
+\NormalTok{  // Subtle baseline}
+\NormalTok{  svg.append("line")}
+\NormalTok{    .attr("x1", pad).attr("x2", width {-} pad)}
+\NormalTok{    .attr("y1", height {-} pad {-} 0.5).attr("y2", height {-} pad {-} 0.5)}
+\NormalTok{    .attr("stroke", grid).attr("stroke{-}opacity", 0.2);}
+
+\NormalTok{  return svg.node();}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{definition}[Addition rule
+(inclusion--exclusion)]\protect\hypertarget{def-inclusion-exclusion}{}\label{def-inclusion-exclusion}
+
+\[
+\Pr(A \cup B) = \Pr(A) + \Pr(B) - \Pr(A \cap B).
+\]
+
+\end{definition}
+
+\begin{definition}[Mutually exclusive
+events]\protect\hypertarget{def-exclusive}{}\label{def-exclusive}
+
+Two events \(A\) and \(B\) are \textbf{mutually exclusive} if they
+cannot both occur: \[
+\Pr(A \cap B) = 0.
+\]
+
+\end{definition}
+
+\begin{definition}[Exhaustive
+events]\protect\hypertarget{def-exhaustive}{}\label{def-exhaustive}
+
+Two events \(A\) and \(B\) are \textbf{exhaustive} if at least one must
+occur: \[
+\Pr(A \cup B) = 1.
+\] (More generally, a collection of events is exhaustive if their union
+equals the whole sample space.)
+
+\end{definition}
+
+\begin{definition}[Independence]\protect\hypertarget{def-independence}{}\label{def-independence}
+
+Two events \(A\) and \(B\) are \textbf{independent} if knowing that one
+occurs does not change the probability of the other: \[
+\Pr(A \cap B) = \Pr(A)\Pr(B).
+\]
+
+\end{definition}
+
+\begin{definition}[Conditional
+probability]\protect\hypertarget{def-conditional}{}\label{def-conditional}
+
+If \(\Pr(B) > 0\), the probability of \(A\) given \(B\) is \[
+\Pr(A \mid B) = \frac{\Pr(A \cap B)}{\Pr(B)}.
+\]
+
+\end{definition}
+
+\begin{theorem}[Bayes'
+Theorem]\protect\hypertarget{thm-bayes}{}\label{thm-bayes}
+
+If \(\Pr(B) > 0\), then \[
+\Pr(A \mid B) = \frac{\Pr(B \mid A)\Pr(A)}{\Pr(B)}.
+\]
+
+\end{theorem}
+
+\begin{refproof}
+From the definition of {conditional
+probability~\ref{def-conditional}},\\
+\[
+\Pr(A \mid B) = \frac{\Pr(A \cap B)}{\Pr(B)}.
+\]
+
+But the intersection \(A \cap B\) can also be written the other way
+round: \[
+\Pr(A \cap B) = \Pr(B \cap A).
+\]
+
+Using the definition of conditional probability again, \[
+\Pr(B \cap A) = \Pr(B \mid A)\Pr(A).
+\]
+
+Substituting this into the first expression gives \[
+\Pr(A \mid B) = \frac{\Pr(B \mid A)\Pr(A)}{\Pr(B)}.
+\]
+
+This completes the proof.
+
+\label{prf-bayes}
+
+\end{refproof}
+
+\begin{theorem}[Law of Total
+Probability]\protect\hypertarget{thm-total-prob}{}\label{thm-total-prob}
+
+If \(B_1,\dots,B_n\) form a \textbf{partition} of the sample space
+(mutually exclusive and exhaustive events), then for any event \(A\): \[
+\Pr(A) = \sum_{i=1}^n \Pr(A \mid B_i)\Pr(B_i).
+\]
+
+\end{theorem}
 
 \begin{example}[A quick inclusion--exclusion
 check]\protect\hypertarget{exm-quick-inclusion-check}{}\label{exm-quick-inclusion-check}
@@ -541,8 +740,7 @@ Roll a fair six-sided die. Let \(A=\{\text{even}\}\) and
 
 \end{example}
 
-\begin{tcolorbox}[enhanced jigsaw, left=2mm, titlerule=0mm, bottomrule=.15mm, colframe=quarto-callout-tip-color-frame, arc=.35mm, colback=white, breakable, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution}, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, opacityback=0, toprule=.15mm, leftrule=.75mm, coltitle=black, toptitle=1mm, rightrule=.15mm, bottomtitle=1mm]
-
+\begin{refsolution}
 \(\Pr(A)=3/6=1/2\) (even outcomes \(2,4,6\)).\\
 \(\Pr(B)=3/6=1/2\) (outcomes \(4,5,6\)).\\
 \(\Pr(A\cap B)=2/6=1/3\) (outcomes \(4,6\)).\\
@@ -552,7 +750,9 @@ By inclusion--exclusion,
 \Pr(A\cup B)=\tfrac{1}{2}+\tfrac{1}{2}-\tfrac{1}{3}=\tfrac{2}{3}.
 \]
 
-\end{tcolorbox}
+\label{sol-quick-inclusion-check}
+
+\end{refsolution}
 
 \begin{example}[Student
 Example]\protect\hypertarget{exm-student-example}{}\label{exm-student-example}
@@ -575,8 +775,7 @@ course is \(0.1\).
 
 \end{example}
 
-\begin{tcolorbox}[enhanced jigsaw, left=2mm, titlerule=0mm, bottomrule=.15mm, colframe=quarto-callout-tip-color-frame, arc=.35mm, colback=white, breakable, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution}, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, opacityback=0, toprule=.15mm, leftrule=.75mm, coltitle=black, toptitle=1mm, rightrule=.15mm, bottomtitle=1mm]
-
+\begin{refsolution}
 Let
 
 \begin{itemize}
@@ -614,7 +813,9 @@ Let
 =\frac{0.8\times0.7}{0.59}=0.949\ \text{(3 s.f.)}.
 \]
 
-\end{tcolorbox}
+\label{sol-student}
+
+\end{refsolution}
 
 \section{Random Variables}\label{random-variables}
 
@@ -653,13 +854,14 @@ Let \(X\) be the outcome of a fair six-sided die. Find \(p(x)\) and
 
 \end{example}
 
-\begin{tcolorbox}[enhanced jigsaw, left=2mm, titlerule=0mm, bottomrule=.15mm, colframe=quarto-callout-tip-color-frame, arc=.35mm, colback=white, breakable, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution}, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, opacityback=0, toprule=.15mm, leftrule=.75mm, coltitle=black, toptitle=1mm, rightrule=.15mm, bottomtitle=1mm]
-
+\begin{refsolution}
 \(p(x)=\Pr(X=x)=1/6\) for \(x\in\{1,2,3,4,5,6\}\), and \(0\)
 otherwise.\\
 \(F(3)=\Pr(X\le 3)=\Pr(\{1,2,3\})=3\times(1/6)=1/2.\)
 
-\end{tcolorbox}
+\label{sol-discrete-cdf}
+
+\end{refsolution}
 
 \begin{example}[]\protect\hypertarget{exm-continuous-pdf}{}\label{exm-continuous-pdf}
 
@@ -667,36 +869,83 @@ Let \(X\sim \mathrm{Uniform}(0,1)\). Compute \(\Pr(0.2<X<0.5)\).
 
 \end{example}
 
-\begin{tcolorbox}[enhanced jigsaw, left=2mm, titlerule=0mm, bottomrule=.15mm, colframe=quarto-callout-tip-color-frame, arc=.35mm, colback=white, breakable, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution}, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, opacityback=0, toprule=.15mm, leftrule=.75mm, coltitle=black, toptitle=1mm, rightrule=.15mm, bottomtitle=1mm]
-
+\begin{refsolution}
 Here \(f(x)=1\) for \(0<x<1\) and \(0\) otherwise.
 
 \[
 \Pr(0.2<X<0.5)=\int_{0.2}^{0.5} 1\,dx = 0.3.
 \]
 
-\end{tcolorbox}
+\label{sol-continuous-pdf}
 
-\begin{tcolorbox}[enhanced jigsaw, left=2mm, titlerule=0mm, bottomrule=.15mm, colframe=quarto-callout-tip-color-frame, arc=.35mm, colback=white, breakable, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Notation Rule for Distributions}, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, opacityback=0, toprule=.15mm, leftrule=.75mm, coltitle=black, toptitle=1mm, rightrule=.15mm, bottomtitle=1mm]
+\end{refsolution}
+
+\subsection{Joint, Marginal, and Conditional
+Densities}\label{joint-marginal-and-conditional-densities}
+
+Suppose \(X\) and \(Y\) are random variables with joint PDF/PMF
+\(f_{XY}(x,y)\) (often written \(f(x,y)\)). From this joint distribution
+we can define:
 
 \begin{itemize}
 \tightlist
 \item
-  In \textbf{frequentist inference} we write \(f(x;\theta)\) for the
-  distribution of a random variable \(X\) that depends on a (fixed but
-  unknown) parameter \(\theta\).
+  \textbf{Marginal distributions:} the distribution of each variable on
+  its own.\\
 \item
-  In \textbf{Bayesian inference} we write \(f(x\mid \theta)\) for the
-  distribution of \(X\) \emph{conditional on} a parameter \(\theta\)
-  treated as random.
+  \textbf{Conditional distributions:} the distribution of one variable
+  given the other.\\
+\item
+  \textbf{Independence:} the case where the joint factorises.
 \end{itemize}
 
-\end{tcolorbox}
+\begin{definition}[Marginal
+Distributions]\protect\hypertarget{def-marginal-pdf}{}\label{def-marginal-pdf}
+
+If we only care about \(X\), regardless of \(Y\), we integrate/sum out
+\(Y\): \[
+f_X(x) = \int f(x,y)\,\mathrm{d}y.
+\] Similarly for \(f_Y(y)\).\\
+\emph{Note:} knowing the marginals does \textbf{not} determine the
+joint.
+
+\end{definition}
+
+\begin{definition}[Conditional
+Densities]\protect\hypertarget{def-conditional-pdf}{}\label{def-conditional-pdf}
+
+For \(y\) in the support of \(Y\) with \(f_Y(y) > 0\), we define: \[
+f_{X \mid Y}(x \mid y) = \frac{f(x,y)}{f_Y(y)}.
+\] This describes the distribution of \(X\) \emph{given} \(Y=y\).
+
+\end{definition}
+
+\begin{theorem}[Law of Total
+Probability]\protect\hypertarget{thm-total-probability-pdfs}{}\label{thm-total-probability-pdfs}
+
+We can recover the marginal by ``averaging'' the conditional over \(Y\):
+\[
+f_X(x) = \int f_{X \mid Y}(x \mid y) f_Y(y)\,\mathrm{d}y.
+\]
+
+\end{theorem}
+
+\begin{definition}[Independence]\protect\hypertarget{def-independence-rv}{}\label{def-independence-rv}
+
+\(X\) and \(Y\) are independent if and only if \[
+f(x,y) = f_X(x) f_Y(y).
+\] In this case, \(f_{X \mid Y}(x \mid y) = f_X(x)\): knowing \(Y\)
+tells us nothing about \(X\).
+
+\end{definition}
+
+\section{Expectations, Variances and
+Covariances}\label{expectations-variances-and-covariances}
 
 \chapter{What is Statistical
 Inference?}\label{what-is-statistical-inference-1}
 
-\begin{tcolorbox}[enhanced jigsaw, left=2mm, titlerule=0mm, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, arc=.35mm, colback=white, breakable, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Learning objectives}, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, opacityback=0, toprule=.15mm, leftrule=.75mm, coltitle=black, toptitle=1mm, rightrule=.15mm, bottomtitle=1mm]
+\begin{tcolorbox}[enhanced jigsaw, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, breakable, bottomrule=.15mm, rightrule=.15mm, colback=white, opacitybacktitle=0.6, toprule=.15mm, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, left=2mm, coltitle=black, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Learning objectives}, opacityback=0, arc=.35mm, leftrule=.75mm]
 
 \begin{itemize}
 \tightlist
@@ -737,7 +986,7 @@ clinical trials, and more. The overall aim is:
 Typical conclusions include estimating a proportion or mean, quantifying
 uncertainty, comparing groups, or predicting future outcomes.
 
-\begin{tcolorbox}[enhanced jigsaw, left=2mm, titlerule=0mm, bottomrule=.15mm, colframe=quarto-callout-tip-color-frame, arc=.35mm, colback=white, breakable, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Common misconceptions and how to avoid them}, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, opacityback=0, toprule=.15mm, leftrule=.75mm, coltitle=black, toptitle=1mm, rightrule=.15mm, bottomtitle=1mm]
+\begin{tcolorbox}[enhanced jigsaw, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, breakable, bottomrule=.15mm, rightrule=.15mm, colback=white, opacitybacktitle=0.6, toprule=.15mm, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, left=2mm, coltitle=black, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Common misconceptions and how to avoid them}, opacityback=0, arc=.35mm, leftrule=.75mm]
 
 \begin{itemize}
 \tightlist
@@ -752,7 +1001,7 @@ uncertainty, comparing groups, or predicting future outcomes.
   dependence can bias inference.
 \item
   \textbf{Models are approximations.} A model is a useful idealisation,
-  not the truth. Choose \(\mathcal{F}\) sensibly, then check fit later
+  not the truth. Choose \(\mathcal{P}\) sensibly, then check fit later
   and revise if needed.
 \end{itemize}
 
@@ -788,8 +1037,7 @@ about the population distribution) from the observed sample. In
 practice, always ask whether iid sampling is plausible for your study
 design.
 
-\subsection{Statistical Inference by
-Eye}\label{statistical-inference-by-eye}
+\subsection{Statistical Inference by Eye}\label{sec-inference-eye}
 
 As an informal starting point, suppose \(X_1,\ldots,X_n\) are sampled
 from a \(\mathcal{N}(\mu,\sigma^2)\) distribution, with \(\mu\) and
@@ -855,6 +1103,12 @@ from the data:
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\NormalTok{bodyFont = getComputedStyle(document.body).fontFamily}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \NormalTok{// reactive params}
 \NormalTok{mu = trueDist.mu}
 \NormalTok{sigma2 = trueDist.sigma2}
@@ -888,6 +1142,10 @@ from the data:
 \NormalTok{  return Plot.plot(\{}
 \NormalTok{    marginLeft: 48,}
 \NormalTok{    marginBottom: 40,}
+\NormalTok{    style: \{}
+\NormalTok{      fontSize: 14,}
+\NormalTok{      fontFamily: bodyFont,}
+\NormalTok{    \},}
 \NormalTok{    width: 700,}
 \NormalTok{    height: 420,}
 \NormalTok{    x: \{label: "x", domain\},}
@@ -904,7 +1162,7 @@ from the data:
 (This intuition will be formalised later when we develop estimators and
 uncertainty quantification.)
 
-\subsection{Statistical Models}\label{statistical-models}
+\section{Statistical Models}\label{statistical-models}
 
 Whenever we perform statistical inference, we must specify a
 \emph{statistical model}.
@@ -914,7 +1172,7 @@ Model]\protect\hypertarget{def-model}{}\label{def-model}
 
 A \textbf{statistical model} is a \emph{set} of candidate population
 distributions: \[
-\mathcal{F}=\{P_\theta \mid \theta\in\Theta\},
+\mathcal{P}=\{P_\theta \mid \theta\in\Theta\},
 \] where \(P_\theta\) is a probability distribution indexed by a
 \textbf{parameter} \(\theta\), and \(\Theta\) is the \textbf{parameter
 space} (the set of allowable parameter values).
@@ -926,25 +1184,127 @@ to the model/population; a \textbf{statistic} (e.g.~a sample mean) is
 computed from the data to learn about \(\theta\). Remember: models are
 working assumptions to be checked.
 
-\begin{example}[Normal
-model]\protect\hypertarget{exm-normal-model}{}\label{exm-normal-model}
-
-In \textbf{?@sec-stat-by-eye} we assumed \[
-\mathcal{F}=\big\{\mathcal{N}(\mu,\sigma^2)\ \big|\ \mu\in\mathbb{R},\ \sigma^2>0\big\}.
-\] Here the parameter is \(\theta=(\mu,\sigma^2)\) and
-\(\Theta=\mathbb{R}\times(0,\infty)\).
-
-\end{example}
-
 \begin{example}[Exponential
 model]\protect\hypertarget{exm-exponential-model}{}\label{exm-exponential-model}
 
-For waiting-time data you might assume \[
-\mathcal{F}=\big\{\mathrm{Exp}(\lambda)\ \big|\ \lambda>0\big\},
-\] with parameter \(\theta=\lambda\) and parameter space
-\(\Theta=(0,\infty)\).
+Suppose we are interested in modelling \textbf{waiting times} until some
+event occurs\\
+(e.g.~the time between customer arrivals at a service desk).
+
+A simple model is to assume the data are i.i.d. from an exponential
+distribution: \[
+X_i \mid \lambda \sim \mathrm{Exp}(\lambda).
+\] Write this formally as a \textbf{statistical model} and write down
+the \textbf{parameter space}.
 
 \end{example}
+
+\begin{refsolution}
+Each data follows the exponential distribution with parameter
+\(\lambda\). Since \(\lambda > 0\), we have the model: \[
+\mathcal{P}=\big\{\mathrm{Exp}(\lambda)\ \big|\ \lambda>0\big\},
+\] with parameter \(\theta=\lambda\) and parameter space\footnote{\textbf{Set
+  notation.} There are several equivalent ways to write sets:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Set-builder notation:} \(\{\lambda \mid \lambda > 0\}\)\\
+  \item
+    \textbf{Interval notation:} \((0,\infty)\)\\
+  \item
+    \textbf{Named set:} \(\mathbb{R}^+\)
+  \end{itemize}
+
+  All three describe the same set. In this course, we recommend using
+  \textbf{set-builder notation} when writing statistical models and
+  their parameter spaces.} \[
+\Theta = \{\lambda \mid \lambda > 0\} = (0,\infty) = \mathbb{R}^+.
+\]
+
+The exponential distribution is often used for modelling the time
+between events in a \textbf{Poisson process} --- situations where events
+occur continuously and independently at a constant average rate.
+
+For example:\\
+- the time between buses arriving at a stop if buses come at random,\\
+- the time until the next radioactive decay of an atom,\\
+- the waiting time until the next customer enters a shop.
+
+In each case, the exponential model is a natural first assumption.
+
+\label{sol-exponential-model}
+
+\end{refsolution}
+
+\begin{example}[Normal
+model]\protect\hypertarget{exm-normal-model}{}\label{exm-normal-model}
+
+Write down the \textbf{statistical model} and the corresponding
+\textbf{parameter space} used in Section~\ref{sec-inference-eye}.
+
+\end{example}
+
+\begin{refsolution}
+We assumed the data are i.i.d. Normally distributed with \emph{unknown
+mean} and \emph{unknown variance}: \[
+X_i \mid \mu, \sigma^2 \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2).
+\]
+
+The \textbf{statistical model} is \[
+\mathcal{P} = \{ \mathcal{N}(\mu,\sigma^2) \mid \mu \in \mathbb{R},\ \sigma^2 > 0 \}.
+\]
+
+Here there are two parameters, \(\mu\) and \(\sigma^2\), which we group
+into a parameter vector \(\underline{\theta} = (\mu, \sigma^2)\).\\
+The \textbf{parameter space} is\footnote{\textbf{Set notation (multiple
+  parameters).} When a model has several parameters, it is best to use
+  \textbf{set-builder notation} and collect the parameters into a vector
+  \[
+      \underline{\theta} = (\theta_1, \theta_2, \ldots, \theta_p).
+    \] The parameter space can then be written as \[
+      \Theta = \{(\theta_1,\ldots,\theta_p) \mid \theta_1 \in S_1,\ \ldots,\ \theta_p \in S_p\}.
+    \]
+
+  Here each \(S_j\) is the set of allowed values for parameter
+  \(\theta_j\). To construct \(\Theta\), simply \textbf{read off the
+  constraints} on each parameter from the definition of the distribution
+  (see the {\textbf{?@sec-formula-sheet}}).
+
+  For example, in the Normal model:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \(\mu \in \mathbb{R}\) (any real number),\\
+  \item
+    \(\sigma^2 \in (0,\infty)\) (variance must be positive),
+  \end{itemize}
+
+  so the parameter space is
+
+  \[
+      \Theta = \mathbb{R} \times (0,\infty).
+    \]
+
+  This is called a \textbf{Cartesian product}: we form the parameter
+  space by taking all possible pairs \((\mu, \sigma^2)\) where the first
+  component is from \(\mathbb{R}\) and the second from \((0,\infty)\).\\
+  Intuitively, it's just ``all combinations'' of the allowed values for
+  each parameter.}\\
+\[
+\Theta = \{ (\mu, \sigma^2) \mid \mu \in \mathbb{R},\ \sigma^2 > 0 \} 
+       = \mathbb{R} \times (0,\infty) 
+       = \mathbb{R} \times \mathbb{R}^+.
+\]
+
+The normal model is widely used in practice, for example when data are
+approximately symmetric and unimodal, such as measurement errors in
+physics or biological traits like human heights.
+
+\label{sol-normal-model}
+
+\end{refsolution}
 
 \begin{example}[From words to a model
 (one-dimensional)]\protect\hypertarget{exm-identify-model}{}\label{exm-identify-model}
@@ -955,8 +1315,7 @@ parameter.
 
 \end{example}
 
-\begin{tcolorbox}[enhanced jigsaw, left=2mm, titlerule=0mm, bottomrule=.15mm, colframe=quarto-callout-tip-color-frame, arc=.35mm, colback=white, breakable, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution}, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, opacityback=0, toprule=.15mm, leftrule=.75mm, coltitle=black, toptitle=1mm, rightrule=.15mm, bottomtitle=1mm]
-
+\begin{refsolution}
 Let \(X_i=1\) if respondent \(i\) says ``yes'', and \(0\) otherwise.\\
 Model
 \(X_1,\ldots,X_n \stackrel{\text{iid}}{\sim}\mathrm{Bernoulli}(p)\),
@@ -966,7 +1325,9 @@ Here \(\theta=p\) and \(\Theta=(0,1)\). The \textbf{population} is all
 (current/future) potential respondents of interest; the \textbf{sample}
 is the \(n\) surveyed respondents.
 
-\end{tcolorbox}
+\label{sol-identify-model}
+
+\end{refsolution}
 
 \begin{example}[A slightly richer example
 (multinomial)]\protect\hypertarget{exm-identify-model-multinomial}{}\label{exm-identify-model-multinomial}
@@ -978,8 +1339,7 @@ model and name the parameter(s).
 
 \end{example}
 
-\begin{tcolorbox}[enhanced jigsaw, left=2mm, titlerule=0mm, bottomrule=.15mm, colframe=quarto-callout-tip-color-frame, arc=.35mm, colback=white, breakable, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution}, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, opacityback=0, toprule=.15mm, leftrule=.75mm, coltitle=black, toptitle=1mm, rightrule=.15mm, bottomtitle=1mm]
-
+\begin{refsolution}
 Model
 \((R,B,G) \sim \mathrm{Multinomial}\!\left(n;\,p_R,p_B,p_G\right)\) with
 \(p_R,p_B,p_G\ge 0\) and \(p_R+p_B+p_G=1\).\\
@@ -988,7 +1348,9 @@ the 2-simplex \(\Theta=\{(p_R,p_B,p_G)\in[0,1]^3:\sum p_\cdot=1\}\). The
 \textbf{population} is the long-run distribution of colours produced by
 the bag; the \textbf{sample} is the observed draws.
 
-\end{tcolorbox}
+\label{sol-identify-model-multinomial}
+
+\end{refsolution}
 
 \begin{example}[Image Classification from Machine
 Learning]\protect\hypertarget{exm-ml-inference}{}\label{exm-ml-inference}
@@ -1002,7 +1364,8 @@ neural network). What are the sample, population, model, and parameter?
 
 \end{example}
 
-\begin{tcolorbox}[enhanced jigsaw, left=2mm, titlerule=0mm, bottomrule=.15mm, colframe=quarto-callout-tip-color-frame, arc=.35mm, colback=white, breakable, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution}, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, opacityback=0, toprule=.15mm, leftrule=.75mm, coltitle=black, toptitle=1mm, rightrule=.15mm, bottomtitle=1mm]
+\begin{refsolution}
+\leavevmode
 
 \begin{itemize}
 \tightlist
@@ -1016,6 +1379,29 @@ neural network). What are the sample, population, model, and parameter?
   \(\{ \Pr_\theta(Y=1\mid X=x)=g_\theta(x)\}\).\\
 \item
   \textbf{Parameter:} \(\theta\) (e.g.~regression co
+\end{itemize}
+
+\label{sol-ml-inference}
+
+\end{refsolution}
+
+\begin{tcolorbox}[enhanced jigsaw, colbacktitle=quarto-callout-warning-color!10!white, colframe=quarto-callout-warning-color-frame, breakable, bottomrule=.15mm, rightrule=.15mm, colback=white, opacitybacktitle=0.6, toprule=.15mm, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, left=2mm, coltitle=black, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Note on Statistical Models}, opacityback=0, arc=.35mm, leftrule=.75mm]
+
+In this course we focus on \textbf{how to perform statistical inference
+once a statistical model has been specified}.\\
+We will \textbf{assume the model is given}, and our task is to carry out
+inference by finding good parameter values using techniques such as:
+
+\begin{itemize}
+\tightlist
+\item
+  Parameter estimation\\
+\item
+  Bayesian inference\\
+\item
+  Interval estimation (e.g.~confidence intervals, HDIs)\\
+\item
+  Hypothesis testing
 \end{itemize}
 
 \end{tcolorbox}
@@ -1043,31 +1429,64 @@ neural network). What are the sample, population, model, and parameter?
   changed, and how would you describe that change informally?
 \end{enumerate}
 
-Here's your section with the three clarifications folded \emph{into} the
-flow (light-touch wording changes + a concise admonition). Paste-ready.
+\chapter{Types of Inference}\label{sec-types-of-inference}
 
-\chapter{Types of Inference}\label{types-of-inference}
+Statistical inference is about using a \textbf{sample} to learn about a
+\textbf{population}. There are two fundamentally different philosophies
+of inference, and several types of inferential tasks that appear in
+both.
 
-There are two fundamentally different approaches to statistical
-inference:
+\section{Philosophies of Inference}\label{philosophies-of-inference}
+
+\subsection{Frequentist Inference}\label{frequentist-inference}
+
+Frequentist inference is based on the idea of \textbf{long-run
+frequency}.
 
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Frequentist Inference:} Based on \emph{frequentist
-  probability}.
+  The \textbf{data} are considered random, as they represent one
+  possible outcome of repeated sampling from the population.
 \item
-  \textbf{Bayesian Inference:} Based on \emph{subjective probability}.
+  The \textbf{parameter} \(\theta\) is fixed but unknown.
+\item
+  Inference is about constructing procedures (estimators, tests,
+  intervals) that perform well under repeated sampling.
 \end{itemize}
 
-In practice, the distinction between frequentist and Bayesian inference
-comes down to what is treated as random and what is not. The table below
-summarises this key philosophical difference:
+\textbf{Preview examples (we will return to these later):} the sample
+mean \(\hat{\mu}\) as an estimator of \(\mu\), a \(t\)-test for
+comparing means, or a \(95\%\) confidence interval.
+
+\subsection{Bayesian Inference}\label{bayesian-inference}
+
+Bayesian inference is based on \textbf{subjective probability as degree
+of belief}.
+
+\begin{itemize}
+\tightlist
+\item
+  The \textbf{data} are fixed once observed.
+\item
+  The \textbf{parameter} \(\theta\) is treated as a random variable,
+  with uncertainty described by a \textbf{prior distribution}
+  \(\pi(\theta)\).
+\item
+  Inference updates this prior in light of the data, giving a
+  \textbf{posterior distribution} \(\pi(\theta \mid \text{data})\).
+\end{itemize}
+
+\textbf{Preview examples (we will return to these later):} a posterior
+mean as an estimator of \(\mu\), a 95\% credible interval, or comparing
+hypotheses via posterior probabilities.
+
+\subsection{Key Differences}\label{key-differences}
 
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2100}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4000}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3900}}@{}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.1776}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4299}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3925}}@{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Perspective
@@ -1086,19 +1505,81 @@ observed) \\
 \textbf{Probability} & Long-run frequency & Degree of belief \\
 \textbf{Goal} & Construct estimators, tests, CIs & Update beliefs via
 posterior \\
-\textbf{Prior Knowledge} & Ignored (or minimal, e.g.~non-informative) &
+\textbf{Prior Knowledge} & Ignored or minimal (e.g.~non-informative) &
 Explicitly modelled via prior distribution \\
-\textbf{Inference Output} & Point estimates and confidence intervals &
-Posterior distribution and credible intervals \\
+\textbf{Output} & Estimators, confidence intervals, \(p\)-values &
+Posterior distribution, credible intervals \\
 \end{longtable}
 
-\section{Frequentist Inference}\label{frequentist-inference}
+\section{Inference Tasks}\label{sec-inference-tasks}
 
-Frequentist inference
+Regardless of philosophy, the core tasks of inference are similar.
 
-\section{Bayesian Inference}\label{bayesian-inference}
+Suppose we want to infer a parameter \(\theta\) from data:
 
-Bayesian inference specifies a prior over \(\theta\).
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Point Estimation} Give a single ``best guess''
+  \(\hat{\theta}\) for the parameter.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Frequentist: choose an estimator with good properties
+    (e.g.~unbiasedness).
+  \item
+    Bayesian: often the posterior mean, median, or mode.
+  \end{itemize}
+\item
+  \textbf{Interval Estimation} Quantify uncertainty in \(\theta\) by
+  reporting a range.
+
+  \begin{itemize}
+  \item
+    Frequentist: \textbf{confidence interval}
+
+    \[
+    L \leq \theta \leq U
+    \]
+
+    with a given long-run coverage probability.
+  \item
+    Bayesian: \textbf{credible interval}, the posterior probability that
+    \(\theta\) lies in \([L,U]\) is, say, 95\%.
+  \end{itemize}
+\item
+  \textbf{Hypothesis Testing} \{\#sec-hypothesis-testing-intro\} Ask a
+  \textbf{yes/no question} about the parameter \(\theta\). This is done
+  by formalising a claim (the \emph{null hypothesis}) such as \[
+       H_0: \theta \in \Theta_0,
+   \] and then using the data to judge whether this claim is
+  \textbf{compatible with the evidence}.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Frequentist approach:} base the decision on a \textbf{test
+    statistic} and its distribution under \(H_0\), leading to a
+    \textbf{\(p\)-value} or a comparison with a \textbf{significance
+    level}.
+  \item
+    \textbf{Bayesian approach:} compare hypotheses using
+    \textbf{posterior probabilities} or \textbf{Bayes factors},
+    quantifying how much the data shift our beliefs.
+  \end{itemize}
+\item
+  \textbf{Prediction} Use data to predict future or unobserved outcomes.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Frequentist: predictive distributions based on sampling models.
+  \item
+    Bayesian: posterior predictive distribution, integrating over
+    parameter uncertainty.
+  \end{itemize}
+\end{enumerate}
 
 \part{Part II --- Parameter Estimation}
 
@@ -1122,7 +1603,7 @@ When we pick a statistic for the specific purpose of approximating a
 parameter \(\theta\), we call it an \textbf{estimator}. Its realised
 value is the \textbf{estimate}.
 
-\begin{tcolorbox}[enhanced jigsaw, left=2mm, titlerule=0mm, bottomrule=.15mm, colframe=quarto-callout-tip-color-frame, arc=.35mm, colback=white, breakable, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Notation rule}, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, opacityback=0, toprule=.15mm, leftrule=.75mm, coltitle=black, toptitle=1mm, rightrule=.15mm, bottomtitle=1mm]
+\begin{tcolorbox}[enhanced jigsaw, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, breakable, bottomrule=.15mm, rightrule=.15mm, colback=white, opacitybacktitle=0.6, toprule=.15mm, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, left=2mm, coltitle=black, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Notation rule}, opacityback=0, arc=.35mm, leftrule=.75mm]
 
 \begin{itemize}
 \tightlist
@@ -1831,127 +2312,31 @@ f(\underline{x} \mid \theta)
 the \textbf{likelihood function} is defined as
 
 \[
-L(\theta \mid \underline{x}) \coloneqq f(\,\underline{x} \mid \theta).
+L(\theta ; \underline{x}) \coloneqq f(\,\underline{x} \mid \theta).
 \]
 
-Here we treat \(\theta\) as the \textbf{variable}, and \$\underline{x}\$
-as fixed.
+Here we treat \(\theta\) as the \textbf{variable}, and the data
+\(\underline{x}\) as fixed.
 
 \end{definition}
 
-\textbf{Key contrast:}
+\begin{tcolorbox}[enhanced jigsaw, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, breakable, bottomrule=.15mm, rightrule=.15mm, colback=white, opacitybacktitle=0.6, toprule=.15mm, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, left=2mm, coltitle=black, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Likelihood vs.~Probability:}, opacityback=0, arc=.35mm, leftrule=.75mm]
 
 \begin{itemize}
 \tightlist
 \item
-  Probability/density: function of \(\underline{x}\) (data random,
+  \textbf{PDF/PMF}: function of \(\underline{x}\) (data random,
   parameter fixed).
 \item
-  Likelihood: function of \(\theta\) (data fixed, parameter variable).
+  \textbf{Likelihood}: function of \(\theta\) (data fixed, parameter
+  variable).
 \end{itemize}
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\begin{example}[Bernoulli
-Likelihood]\protect\hypertarget{exm-bernoulli}{}\label{exm-bernoulli}
-
-Suppose \(X_1, \dots, X_n \sim \text{Bernoulli}(p)\) with PMF \[
-f_X(x \mid p) = p^x (1-p)^{1-x}, \quad x \in \{0,1\}.
-\] The joint PMF is \[
-f(\underline{x} \mid p) 
-= \prod_{i=1}^n p^{x_i}(1-p)^{1-x_i}.
-\] Collecting terms: \[
-L(p \mid \underline{x}) 
-= p^{\sum_i x_i} (1-p)^{n-\sum_i x_i}.
-\]
-
-\end{example}
-
-\phantomsection\label{ex-bern-likelihood}
-\textbf{Worked example.} Suppose \$n=5\$ trials give data
-\$\underline{x} = (1,0,1,1,0)\$. Then \$\sum\_i x\_i = 3\$.
-
-\[
-L(p \mid \underline{x}) = p^3 (1-p)^2.
-\]
-
-\begin{itemize}
-\tightlist
-\item
-  If \$p=0.5\$, \$L(0.5) = 0.5\^{}3 \cdot 0.5\^{}2 = 0.03125\$.
-\item
-  If \$p=0.7\$, \$L(0.7) = 0.7\^{}3 \cdot 0.3\^{}2 \approx 0.0309\$.
-\item
-  If \$p=0.8\$, \$L(0.8) = 0.8\^{}3 \cdot 0.2\^{}2 = 0.0205\$.
-\end{itemize}
-
-So the data are slightly more likely under \$p=0.5\$ than \$p=0.8\$.
+\end{tcolorbox}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\section{Maximum Likelihood
-Estimation}\label{maximum-likelihood-estimation}
-
-\begin{definition}[]\protect\hypertarget{def-mle}{}\label{def-mle}
-
-\textbf{Maximum Likelihood Estimator (MLE).} The MLE is the parameter
-value \$\hat{\theta}\$ that maximises the likelihood function:
-
-\[
-\hat{\theta}_{\text{MLE}} = \arg \max_{\theta \in \Theta} L(\theta \mid \underline{x}).
-\]
-
-\end{definition}
-
-Because logs are monotone, it is usually easier to maximise the
-\textbf{log-likelihood}:
-
-\[
-\ell(\theta \mid \underline{x}) = \log L(\theta \mid \underline{x}).
-\]
-
-\phantomsection\label{ex-bern-mle}
-\textbf{Worked example (continued).} For the Bernoulli case:
-
-\[
-\ell(p \mid \underline{x}) 
-= \Big(\sum_i x_i \Big)\log p + \Big(n-\sum_i x_i\Big)\log(1-p).
-\]
-
-Differentiate and solve:
-
-\[
-\frac{\partial}{\partial p}\ell(p \mid \underline{x}) 
-= \frac{\sum_i x_i}{p} - \frac{n - \sum_i x_i}{1-p} = 0.
-\]
-
-This gives
-
-\[
-\hat{p}_{\text{MLE}} = \frac{1}{n}\sum_{i=1}^n x_i,
-\]
-
-the \textbf{sample proportion of successes}.
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\section{Big Picture}\label{big-picture}
-
-\begin{itemize}
-\tightlist
-\item
-  Likelihood tells us how \textbf{plausible} each parameter value is,
-  given the data.
-\item
-  The MLE chooses the parameter value that makes the observed data most
-  likely.
-\item
-  Later, in Bayesian inference, we will combine the likelihood with a
-  \textbf{prior distribution} on \$\theta\$ to obtain a
-  \textbf{posterior distribution}.
-\end{itemize}
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+\textbf{Visualisation:}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1968,20 +2353,6 @@ the \textbf{sample proportion of successes}.
 \NormalTok{font{-}size: 12px; /* tick labels (optional) */}
 \NormalTok{\}}
 \NormalTok{\textless{}/style\textgreater{}\textasciigrave{}}
-
-\NormalTok{// X = \{}
-\NormalTok{// resim;}
-\NormalTok{// const m = trueMu, s = trueSigma;}
-\NormalTok{// const out = new Array(n);}
-\NormalTok{// for (let i = 0; i \textless{} n; i += 2) \{}
-\NormalTok{// const u = Math.random(), v = Math.random();}
-\NormalTok{// const R = Math.sqrt({-}2 * Math.log(u)), T = 2 * Math.PI * v;}
-\NormalTok{// const z0 = R * Math.cos(T), z1 = R * Math.sin(T);}
-\NormalTok{// out[i] = m + s * z0;}
-\NormalTok{// if (i + 1 \textless{} n) out[i + 1] = m + s * z1;}
-\NormalTok{// \}}
-\NormalTok{// return out;}
-\NormalTok{// \};}
 
 \NormalTok{// Only resimulate when resim button is clicked or data parameters change}
 \NormalTok{X = \{}
@@ -2062,6 +2433,7 @@ the \textbf{sample proportion of successes}.
 \NormalTok{llRelClipped = Float64Array.from(llRel, v =\textgreater{} Math.max(q05, v))}
 \NormalTok{contourThresholds = d3.ticks(q05, 0, 10)}
 
+\NormalTok{bodyFont = getComputedStyle(document.body).fontFamily}
 
 \NormalTok{// {-}{-}{-}{-} Left panel: raster (clipped) + contour (same grid) {-}{-}{-}{-}}
 \NormalTok{viewof leftPanel = \{}
@@ -2078,7 +2450,9 @@ the \textbf{sample proportion of successes}.
 \NormalTok{    marginLeft, marginRight, marginTop, marginBottom,}
 \NormalTok{    style: \{}
 \NormalTok{      background: "var({-}{-}brand{-}bg)",}
-\NormalTok{      color: "var({-}{-}brand{-}fg)"}
+\NormalTok{      color: "var({-}{-}brand{-}fg)",}
+\NormalTok{      fontFamily: bodyFont, }
+\NormalTok{      fontSize: 14}
 \NormalTok{    \},}
 \NormalTok{    x: \{ label: "μ", domain: muDomain \},}
 \NormalTok{    y: \{ label: "σ²", domain: sig2Domain \},}
@@ -2244,6 +2618,10 @@ the \textbf{sample proportion of successes}.
 \NormalTok{  marginLeft, marginBottom,}
 \NormalTok{  x: \{ label: "Data", domain: [xMin, xMax] \},}
 \NormalTok{  y: \{ label: "Density" \},}
+\NormalTok{  style: \{}
+\NormalTok{      fontFamily: bodyFont, }
+\NormalTok{      fontSize: 14.}
+\NormalTok{  \}, }
 \NormalTok{  marks: [}
 \NormalTok{    Plot.rectY(}
 \NormalTok{      X,}
@@ -2470,20 +2848,247 @@ the \textbf{sample proportion of successes}.
 \end{Highlighting}
 \end{Shaded}
 
-\chapter{Bayesian Inference}\label{bayesian-inference-1}
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Computing Likelihood
+Functions}\label{computing-likelihood-functions}
+
+This is a \textbf{very important} part of the course.
+
+\begin{example}[Bernoulli
+Likelihood]\protect\hypertarget{exm-bern-likelihood}{}\label{exm-bern-likelihood}
+
+Suppose we have \(n\) i.i.d. data distributed according to the
+{\textbf{?@sec-bern}}:
+
+\[
+  Y_i \mid p \sim \textrm{Bernoulli}(p).
+\] Derive the \textbf{likelihood function}.
+
+\end{example}
+
+\begin{example}[Bernoulli
+Likelihood]\protect\hypertarget{exm-bern-likelihood-data}{}\label{exm-bern-likelihood-data}
+
+Suppose \(n=5\) trials give data \(\underline{x} = (1,0,1,1,0)\). Then
+\(\sum\_i x\_i = 3\). \[
+L(p ; \underline{x}) = p^3 (1-p)^2.
+\]
+
+\begin{itemize}
+\tightlist
+\item
+  If \(p=0.5\), \(L(0.5) = 0.5^3 \cdot 0.5^2 = 0.03125\).
+\item
+  If \(p=0.7\), \(L(0.7) = 0.7^3 \cdot 0.3^2 \approx 0.0309\).
+\item
+  If \(p=0.8\), \(L(0.8) = 0.8^3 \cdot 0.2^2 = 0.0205\).
+\end{itemize}
+
+So the data are slightly more likely under \(p=0.5\) than \(p=0.8\).
+
+\end{example}
+
+\section{Maximum Likelihood
+Estimation}\label{maximum-likelihood-estimation}
+
+\begin{definition}[Maximum Likelihood Estimator
+(MLE)]\protect\hypertarget{def-mle}{}\label{def-mle}
+
+The MLE is the parameter value \(\hat{\theta}\) that maximises the
+likelihood function: \[
+  \hat{\theta}_{\text{MLE}} = \arg \max_{\theta \in \Theta} L(\theta \mid \underline{x}).
+  \]
+
+\end{definition}
+
+Because logs are monotone, it is usually easier to maximise the
+\textbf{log-likelihood}:
+
+\[
+\ell(\theta ; \underline{x}) = \log L(\theta ; \underline{x}).
+\]
+
+\subsection{Computing MLEs}\label{computing-mles}
+
+\begin{example}[Bernoulli
+MLE]\protect\hypertarget{exm-bern-mle}{}\label{exm-bern-mle}
+
+From Example~\ref{exm-bern-likelihood}, we have
+
+\[ 
+ L(\theta ; x)
+\]
+
+Compute the MLE of \(p\).
+
+\end{example}
+
+\begin{refsolution}
+From the provided likelihood, we first compute the
+\textbf{log-likelihood}:
+
+\[
+\ell(p \mid \underline{x}) 
+= \Big(\sum_i x_i \Big)\log p + \Big(n-\sum_i x_i\Big)\log(1-p).
+\] Differentiate and solve: \[
+\frac{\partial}{\partial p}\ell(p \mid \underline{x}) 
+= \frac{\sum_i x_i}{p} - \frac{n - \sum_i x_i}{1-p} = 0.
+\] This gives \[
+\hat{p}_{\text{MLE}} = \frac{1}{n}\sum_{i=1}^n x_i,
+\]
+
+the \textbf{sample proportion of successes}.
+
+\label{sol-bern-mle}
+
+\end{refsolution}
+
+\begin{example}[Binomial
+MLE]\protect\hypertarget{exm-binom-mle-single}{}\label{exm-binom-mle-single}
+
+Suppose we have a \textbf{single} {\textbf{?@sec-binom}} observation \[
+X \mid \theta \sim \textrm{Bin}(n, \theta).
+\] Derive its \textbf{likelihood function}.
+
+\end{example}
+
+\begin{refsolution}
+Since we only have \textbf{one} observation, the likelihood function is
+just the distribution of the observation: \[
+L(\theta ; x) = f(x \mid \theta) = \binom{n}{x} \theta^x(1-\theta)^{n-x}.
+\] The log-likelihood is thus \[
+\ell(\theta; x) = \log f(x \mid \theta) = \log\left(\binom{n}{x}\right) + x\log\theta + (n-x)\log(1-\theta).
+\] Differentiating\footnote{\textbf{Differentiating the log.}}, we
+obtain \[
+\frac{\partial}{\partial \theta}
+\]
+
+\label{sol-binom-mle-single}
+
+\end{refsolution}
+
+\begin{example}[Binomial
+MLE]\protect\hypertarget{exm-binom-mle}{}\label{exm-binom-mle}
+
+Suppose we have \(n\) \textbf{independent} Binomial data: \[
+X_i \mid \theta \sim \textrm{Bin}(n_i, \theta).
+\] Note here that each Binomial data has a different number of Bernoulli
+trials \(n_i\), which are known.
+
+Derive its \textbf{likelihood function}.
+
+\end{example}
+
+\begin{refsolution}
+The likelihood function is the joint distribution of the \(n\)
+observations \[
+f(\underline{x} \mid \theta) = \prod_{i=1}^n \binom{n_i}{x_i} \theta^{x_i}(1-\theta)^{n_i - x_i}.
+\]
+
+\label{sol-binom-mle}
+
+\end{refsolution}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{tcolorbox}[enhanced jigsaw, colback=white, colframe=quarto-callout-important-color-frame, toprule=.15mm, breakable, bottomrule=.15mm, left=2mm, arc=.35mm, opacityback=0, rightrule=.15mm, leftrule=.75mm]
+
+\vspace{-3mm}\textbf{✨ Big picture:}\vspace{3mm}
+
+\begin{itemize}
+\tightlist
+\item
+  Likelihood tells us how \textbf{plausible} each parameter value is,
+  given the data.
+\item
+  The MLE chooses the parameter value that makes the observed data most
+  likely.
+\item
+  Later, in Bayesian inference, we will combine the likelihood with a
+  \textbf{prior distribution} on \(\theta\) to obtain a
+  \textbf{posterior distribution}.
+\end{itemize}
+
+\end{tcolorbox}
+
+\section{Summary}\label{summary}
+
+We can compute likelihood functions
+
+\chapter{Bayesian Inference}\label{sec-bayes-inference}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ matplotlib.pyplot }\ImportTok{as}\NormalTok{ plt}
+
+\NormalTok{plot\_bg }\OperatorTok{=} \StringTok{"\#f8f8f8"}
+
+\NormalTok{plt.rcParams[}\StringTok{"figure.facecolor"}\NormalTok{] }\OperatorTok{=}\NormalTok{ plot\_bg}
+\NormalTok{plt.rcParams[}\StringTok{"axes.facecolor"}\NormalTok{]   }\OperatorTok{=}\NormalTok{ plot\_bg}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Introduction to the Bayesian
+approach}\label{introduction-to-the-bayesian-approach}
 
 As discussed in the course introduction, \textbf{Bayesian inference}
-treats the parameter \(\theta\) of a probability as a \textbf{random
-variable}. The distribution of which \textbf{quantifies uncertainty}
-about the parameter.
+takes a different perspective from the frequentist approach:
 
-Formally, we write: \[
+\begin{itemize}
+\tightlist
+\item
+  In the frequentist view, the parameter \(\theta\) is \textbf{fixed but
+  unknown}.
+\item
+  In the Bayesian view, the parameter \(\theta\) is treated as a
+  \textbf{random variable}.
+\end{itemize}
+
+The randomness here does not mean that the parameter is \emph{physically
+fluctuating} --- instead, it reflects our \textbf{uncertainty} about its
+value.
+
+\subsection{Why is this useful?}\label{why-is-this-useful}
+
+A \textbf{key advantage} of Bayesian inference is that it allows us to
+\textbf{incorporate prior information}\footnote{\textbf{Prior
+  distribution.} In Bayesian inference, the \emph{prior} represents our
+  beliefs about the parameter \(\theta\) \textbf{before seeing any
+  data}. It is written as a probability distribution \(\pi(\theta)\),
+  which can be based on previous studies, expert knowledge, or simply
+  chosen to reflect uncertainty (e.g.~a flat prior).} about the
+parameter.
+
+\begin{definition}[Prior
+Distribution.]\protect\hypertarget{def-prior}{}\label{def-prior}
+
+Our uncertainty about \(\theta\) is represented by a probability
+distribution, called the \textbf{prior distribution}:
+
+\[
 \theta \sim \pi(\theta).
 \]
 
-A \textbf{key advantage} of Bayesian inference is that we can
-incorporate \textbf{prior} information about the value of the parameter
-into our inference.
+Here \(\pi(\theta)\) denotes the prior density (PDF or PMF).
+
+\end{definition}
+
+\begin{example}[]\protect\hypertarget{exm-prior}{}\label{exm-prior}
+
+Suppose \(\theta\) is the average exam score of students in a module.
+From past experience, the average score tends to be around 60, with most
+cohorts lying within about 10 marks of this.
+
+We could encode this information as a \textbf{Normal prior}:
+
+\[
+\theta \sim \mathcal{N}(\mu=60,\;\sigma^2=10^2).
+\]
+
+This prior expresses our belief \emph{before seeing the new data}.
+
+\end{example}
 
 \subsection{Python}
 
@@ -2504,17 +3109,18 @@ into our inference.
 \NormalTok{theta\_grid }\OperatorTok{=}\NormalTok{ np.linspace(mean }\OperatorTok{{-}} \DecValTok{3}\OperatorTok{*}\NormalTok{sd, mean }\OperatorTok{+} \DecValTok{3}\OperatorTok{*}\NormalTok{sd, }\DecValTok{200}\NormalTok{)}
 \NormalTok{pdf\_values }\OperatorTok{=}\NormalTok{ normal\_pdf(theta\_grid, mean}\OperatorTok{=}\NormalTok{mean, sd}\OperatorTok{=}\NormalTok{sd)}
 
-\NormalTok{plt.figure()}
+\NormalTok{plt.figure(figsize}\OperatorTok{=}\NormalTok{(}\DecValTok{7}\NormalTok{,}\DecValTok{4}\NormalTok{))}
 \NormalTok{plt.plot(theta\_grid, pdf\_values)}
 \NormalTok{plt.xlabel(}\VerbatimStringTok{r"}\DecValTok{$}\CharTok{\textbackslash{}t}\VerbatimStringTok{heta}\DecValTok{$}\VerbatimStringTok{"}\NormalTok{)}
 \NormalTok{plt.ylabel(}\StringTok{"Density"}\NormalTok{)}
 \NormalTok{plt.title(}\StringTok{"Normal PDF: mean = 100, sd = 10"}\NormalTok{)}
 \NormalTok{plt.tight\_layout()}
-\NormalTok{plt.show()  }\CommentTok{\# \textless{}{-} ensures only the figure is rendered}
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{lectures/part2/5_bayes_parameter_estimation_files/figure-pdf/unnamed-chunk-1-1.pdf}}
+\begin{center}
+\pandocbounded{\includegraphics[keepaspectratio]{lectures/part2/6-bayes-inference_files/figure-pdf/unnamed-chunk-2-1.pdf}}
+\end{center}
 
 \subsection{R}
 
@@ -2533,21 +3139,748 @@ into our inference.
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{lectures/part2/5_bayes_parameter_estimation_files/figure-pdf/unnamed-chunk-2-3.pdf}}
+\begin{center}
+\pandocbounded{\includegraphics[keepaspectratio]{lectures/part2/6-bayes-inference_files/figure-pdf/unnamed-chunk-3-3.pdf}}
+\end{center}
 
-\section{asdsss}\label{asdsss}
+\section{Bayes' Theorem}\label{bayes-theorem-1}
+
+Bayesian inference takes its name from \textbf{Bayes' theorem}, which
+tells us how to update our beliefs about \(\theta\) after seeing data.
+
+Recall from probability that for events \(A\) and \(B\):
+
+\[
+\mathrm{Pr}(A \mid B) = \frac{\mathrm{Pr}(B \mid A)\,\mathrm{Pr}(A)}{\mathrm{Pr}(B)}.
+\]
+
+To generalise this idea to \textbf{random variables and densities}, we
+use conditional densities:
+
+\[
+f_{X \mid Y}(x \mid y) = \frac{f_{XY}(x,y)}{f_Y(y)}.
+\]
+
+\begin{refremark}
+\textbf{Notation.} We will usually write \(f(x \mid y)\) rather than
+\(f_{X \mid Y}(x \mid y)\) to keep things simple. Both mean the same
+thing.
+
+\label{rem-notation}
+
+\end{refremark}
+
+Using this, we obtain Bayes' theorem for densities.
+
+\begin{theorem}[Bayes' Theorem for
+Densities.]\protect\hypertarget{thm-bayes}{}\label{thm-bayes}
+
+For random variables \(X\) and \(Y\):
+
+\[
+f(x \mid y) = \frac{f(y \mid x)\,f(x)}{f(y)}.
+\]
+
+\end{theorem}
+
+\begin{refproof}
+By the definition of conditional density:
+
+\[
+f(x \mid y) = \frac{f(x,y)}{f(y)}, 
+\qquad
+f(y \mid x) = \frac{f(x,y)}{f(x)}.
+\]
+
+Rearranging the second expression gives \(f(x,y) = f(y \mid x) f(x)\).
+Substituting this into the first gives
+
+\[
+f(x \mid y) = \frac{f(y \mid x) f(x)}{f(y)}.
+\]
+
+\label{prf-bayes}
+
+\end{refproof}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Bayes' Theorem in
+Statistics}\label{bayes-theorem-in-statistics}
+
+In Bayesian inference, we apply Bayes' theorem with:
+
+\begin{itemize}
+\tightlist
+\item
+  \(x = \theta\) (the parameter, treated as random),
+\item
+  \(y = \underline{x}\) (the observed data).
+\end{itemize}
+
+This gives:
+
+\[
+\pi(\theta \mid \underline{x}) 
+= \frac{f(\underline{x} \mid \theta)\,\pi(\theta)}{f(\underline{x})}.
+\]
+
+\begin{definition}[Posterior
+Distribution.]\protect\hypertarget{def-posterior}{}\label{def-posterior}
+
+\[
+\pi(\theta \mid \underline{x}) 
+= \frac{f(\underline{x} \mid \theta)\,\pi(\theta)}{f(\underline{x})}.
+\]
+
+The \textbf{posterior} combines two ingredients:
+
+\begin{itemize}
+\tightlist
+\item
+  The \textbf{likelihood} \(f(\underline{x} \mid \theta)\) (information
+  from the data).
+\item
+  The \textbf{prior} \(\pi(\theta)\) (information before seeing the
+  data).
+\end{itemize}
+
+The denominator \(f(\underline{x})\) is a normalising constant ensuring
+the posterior integrates to 1.
+
+\end{definition}
+
+\begin{tcolorbox}[enhanced jigsaw, colback=white, colframe=quarto-callout-important-color-frame, toprule=.15mm, breakable, bottomrule=.15mm, left=2mm, arc=.35mm, opacityback=0, rightrule=.15mm, leftrule=.75mm]
+
+\vspace{-3mm}\textbf{✨ Big picture:}\vspace{3mm}
+
+Bayesian inference updates prior beliefs about parameters using the
+likelihood from the data, producing the posterior distribution which
+represents \emph{updated uncertainty}.
+
+\end{tcolorbox}
+
+Let's start with a simple example to see how this works:
+
+\begin{example}[Biased
+Coin]\protect\hypertarget{exm-biased-coin}{}\label{exm-biased-coin}
+
+We consider a possibly biased coin with parameter
+\(\theta = \Pr(\text{Head})\). Before seeing data, we express \emph{no
+preference} over \(\theta\in(0,1)\) via a uniform prior: \[
+\theta \sim \mathrm{Uniform}(0,1) \equiv \mathrm{Beta}(1,1), \qquad \pi(\theta)=1 \ \text{for } 0<\theta<1.
+\] Hence \(\mathrm{E}[\theta]=0.5\).
+
+We toss the coin \(n=5\) times and observe \(x=1\) head. Find the
+\textbf{posterior} \(\pi(\theta\mid x)\).
+
+\end{example}
+
+\begin{refsolution}
+Let \(X\) be the number of heads in \(5\) tosses. Assuming that each
+coin throw is \emph{independent and identically distributed}, \(X\) is
+Binomial\footnote{\textbf{Binomial distribution.} If we assume each coin
+  throw \(C_i\) is an i.i.d. \(\textrm{Bernoulli}(\theta)\) trial with a
+  \(1\) representing a heads landing, and a \(0\) representing a tails,
+  the total number of heads out of \(5\) is
+  \(X = C_1 + C_2 + C_3 + C_4 + C_5\). Therefore: \[
+      X \mid \theta \sim \textrm{Bin}(5,\theta).
+  \]}: \[
+    X \mid \theta \sim \textrm{Bin}(5,\theta).
+\] Note that there is only a \textbf{single observation} here: one
+experiment is ``tossing the coin \(5\) times and seeing how many come up
+heads''. The probability of observing \(X=1\) is \[
+    f(x = 1 \mid \theta) = 5\theta(1-\theta)^4
+\] If we plot this:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ matplotlib.pyplot }\ImportTok{as}\NormalTok{ plt}
+\ImportTok{import}\NormalTok{ numpy }\ImportTok{as}\NormalTok{ np}
+\ImportTok{import}\NormalTok{ math}
+
+\KeywordTok{def}\NormalTok{ binom\_lik(theta):}
+    \ControlFlowTok{return} \DecValTok{5} \OperatorTok{*}\NormalTok{ theta }\OperatorTok{*}\NormalTok{ (}\DecValTok{1} \OperatorTok{{-}}\NormalTok{ theta) }\OperatorTok{**} \DecValTok{4}
+
+
+\NormalTok{theta\_grid }\OperatorTok{=}\NormalTok{ np.linspace(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{200}\NormalTok{)}
+\NormalTok{binom\_lik\_vals }\OperatorTok{=}\NormalTok{ binom\_lik(theta\_grid)}
+
+\NormalTok{plt.figure(figsize}\OperatorTok{=}\NormalTok{(}\DecValTok{5}\NormalTok{,}\DecValTok{3}\NormalTok{))}
+\NormalTok{plt.plot(theta\_grid, binom\_lik\_vals)}
+\NormalTok{plt.xlabel(}\VerbatimStringTok{r"}\DecValTok{$}\CharTok{\textbackslash{}t}\VerbatimStringTok{heta}\DecValTok{$}\VerbatimStringTok{"}\NormalTok{)}
+\NormalTok{plt.ylabel(}\StringTok{"Likelihood"}\NormalTok{)}
+\NormalTok{plt.title(}\StringTok{"Binomial Likelihood (with $n=5$ and $X=1$)"}\NormalTok{)}
+\NormalTok{plt.tight\_layout()}
+\NormalTok{plt.show()  }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}
+\pandocbounded{\includegraphics[keepaspectratio]{lectures/part2/6-bayes-inference_files/figure-pdf/unnamed-chunk-4-1.pdf}}
+\end{center}
+
+we see that this favours \(\theta\) around \(0.2\). In fact, in
+Example~\ref{exm-binom-mle-single}, we saw that the MLE is
+\(\hat{\theta} = 0.2\).
+
+Our prior for \(\theta\) was \(\pi(\theta) = 1\), for
+\(0 < \theta < 1\). To update our beliefs, by conditioning on the single
+observation \(x=2\), we use {Bayes Theorem~\ref{def-posterior}}: \[
+    \pi(\theta|x=1)=\frac{\pi(\theta)f(x=1|\theta)}{f(x=1)} = \frac{1 \times 5\theta(1-\theta)^4}{f(x=1)}, \quad 0 < \theta < 1.
+\] To compute the \emph{denominator}, \(f(x=1)\), we use the {law of
+total probability~\ref{thm-total-probability-pdfs}}: \[
+\begin{align*}
+f(x=1) &=\int_\Theta\pi(\theta)f(x=1\, |\,\theta)\,d\theta = \int_0^1 1\times 5\theta(1-\theta)^4\,d\theta \\
+&=\int_0^1 \theta\times 5(1-\theta)^4\,d\theta =\left[-(1-\theta)^5\,\theta\right]^1_0
++\int_0^1 (1-\theta)^5\,d\theta \\
+&=0 + \left[-\frac{(1-\theta)^6}{6}\right]^1_0 =\frac{1}{6}. 
+\end{align*}
+\]
+
+Therefore, the posterior density is (for \(0<\theta<1\)): \[
+\begin{align*}
+\pi(\theta|x=1)&=\frac{\pi(\theta)f(x=1|\theta)}{f(x=1)} =\frac{5\theta(1-\theta)^4}{1/6}\\
+&=30\,\theta(1-\theta)^4 =\frac{\theta(1-\theta)^4}{\mathrm{B}(2,5)},\quad\quad 0<\theta<1,
+\end{align*}
+\] and so the posterior distribution is
+\(\theta|x=1\sim \textrm{Beta}(2,5)\). This distribution has its mode at
+\(\theta=0.2\), and mean at \(\mathrm{E}[\theta|x=1]=2/7=0.286\).
+
+\label{sol-biased-coin}
+
+\end{refsolution}
+
+The main difficulty in calculating the posterior distribution was in
+obtaining the \(f(x)\) term. However, in many cases we can recognise the
+posterior distribution without the need to calculate this constant term
+(constant with respect to \(\theta\)). In this example, we can calculate
+the posterior distribution as \[
+\begin{align*}
+\pi(\theta|\underline{x})&\propto\pi(\theta)f(x=1|\theta) \\
+&\propto 1\times 5\theta(1-\theta)^4,\quad\quad 0<\theta<1  \\
+&=k\theta(1-\theta)^4,\quad\quad 0<\theta<1.
+\end{align*}
+\]
+
+As \(\theta\) is a continuous quantity, what we would like to know is
+what continuous distribution defined on \((0,1)\) has a probability
+density function which takes the form \(k\theta^{g-1}(1-\theta)^{h-1}\).
+The answer is the \(\textrm{Beta}(g,h)\) distribution. Therefore,
+choosing \(g\) and \(h\) appropriately, we can see that the posterior
+distribution is \(\theta|x=1\sim \textrm{Beta}(2,5)\).
+
+\textbf{Summary:}
+
+It is possible that we have a biased coin. If we suppose that all values
+of \(\theta=\text{Pr(Head)}\) are equally likely and then observe 1 head
+out of 5, then the most likely value of \(\theta\) is 0.2 --- the same
+as the most likely value from the data alone (not surprising!). However,
+on average, we would expect \(\theta\) to be around 0.286. Uncertainty
+about \(\theta\) has changed from a (prior) standard deviation of 0.289
+to a (posterior) standard deviation of 0.160. The changes in our beliefs
+about \(\theta\) are more fully described by the prior and posterior
+distributions shown in \textbf{?@fig-beta-posterior}.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\NormalTok{// Domain and grid}
+\NormalTok{mDomain = [0, 1]}
+\NormalTok{pdfXs = d3.scaleLinear().domain(mDomain).ticks(200)  // 201 points including 0 and 1}
+
+\NormalTok{// PDFs (closed{-}form)}
+\NormalTok{function priorPDF(x)     \{ return (x \textgreater{} 0 \&\& x \textless{} 1) ? 1 : 0; \}}
+\NormalTok{function posteriorPDF(x) \{ return (x \textgreater{} 0 \&\& x \textless{} 1) ? 30 * x * (1 {-} x) ** 4 : 0; \}}
+
+\NormalTok{// Data (use the scalar x from map!)}
+\NormalTok{prior = pdfXs.map(x =\textgreater{} (\{ x, y: priorPDF(x), which: "Prior  Beta(1,1)" \}))}
+\NormalTok{post  = pdfXs.map(x =\textgreater{} (\{ x, y: posteriorPDF(x), which: "Posterior  Beta(2,5)" \}))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{//| label: fig{-}beta{-}posterior}
+\NormalTok{//| fig{-}cap: Prior and posterior distributions for the coin bias parameter $\textbackslash{}theta=\textbackslash{}Pr(\textbackslash{}text\{Head\})$ after observing 1 head in 5 tosses. The posterior is more concentrated, reflecting reduced uncertainty about $\textbackslash{}theta$ compared to the uniform prior}
+\NormalTok{//| fig{-}align: center}
+
+\NormalTok{bodyFont = getComputedStyle(document.body).fontFamily}
+\NormalTok{// Figure}
+\NormalTok{viewof fig\_beta = Plot.plot(\{}
+\NormalTok{  width: 640,}
+\NormalTok{  height: 320,}
+\NormalTok{  marginLeft: 48,}
+\NormalTok{  marginBottom: 40,}
+\NormalTok{  x: \{ label: "θ", domain: [0, 1] \},}
+\NormalTok{  y: \{ label: "Density" \},}
+\NormalTok{  style: \{ background: "var({-}{-}plot{-}panel{-}bg)", }
+\NormalTok{           fontSize: 14,}
+\NormalTok{           fontFamily: bodyFont,  \},}
+\NormalTok{  marks: [}
+\NormalTok{    Plot.ruleY([0], \{ stroke: "var({-}{-}border)", strokeOpacity: 0.6 \}),}
+\NormalTok{    Plot.lineY(prior, \{ x: "x", y: "y", stroke: "var({-}{-}brand{-}red)",  strokeWidth: 2, strokeOpacity: 0.85 \}),}
+\NormalTok{    Plot.areaY(prior, \{ x: "x", y: "y", fill: "var({-}{-}brand{-}red)", fillOpacity: 0.05 \}),}
+\NormalTok{    Plot.lineY(post,  \{ x: "x", y: "y", stroke: "var({-}{-}brand{-}teal)", strokeWidth: 2 \}),}
+\NormalTok{    Plot.areaY(post,  \{ x: "x", y: "y", fill: "var({-}{-}brand{-}teal)", fillOpacity: 0.2 \}),}
+\NormalTok{    Plot.text(}
+\NormalTok{      [}
+\NormalTok{        \{ x: 0.8, y: priorPDF(0.8),     label: "Prior" \},}
+\NormalTok{        \{ x: 0.35, y: posteriorPDF(0.3), label: "Posterior" \}}
+\NormalTok{      ],}
+\NormalTok{      \{ x: "x", y: "y", text: "label", dy: {-}8 \}}
+\NormalTok{    )}
+\NormalTok{  ]}
+\NormalTok{\})}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{example}[]\protect\hypertarget{exm-music-expert}{}\label{exm-music-expert}
+
+Consider an experiment to determine how good a music expert is at
+distinguishing between pages from Haydn and Mozart scores. Let
+\(\theta=\mathrm{Pr}(\text{correct choice})\). Suppose that, before
+conducting the experiment, we have been told that the expert is very
+competent. In fact, it is suggested that we should have a prior
+distribution which has a mode around \(\theta=0.95\) and for which
+\(\mathrm{Pr}(\theta<0.8)\) is very small. We choose
+\(\theta\sim \textrm{Beta}(77,5)\), with probability density function \[
+\pi(\theta)=128107980\,\theta^{76}(1-\theta)^4,\quad\quad 0<\theta<1.
+\] A graph of this prior density is given as follows:
+
+\subsection{Python}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ numpy }\ImportTok{as}\NormalTok{ np}
+\ImportTok{import}\NormalTok{ math}
+\ImportTok{import}\NormalTok{ matplotlib.pyplot }\ImportTok{as}\NormalTok{ plt}
+
+\CommentTok{\# Beta(α, β) with α=77, β=5  →  π(θ) ∝ θ\^{}(76) (1{-}θ)\^{}(4)}
+\NormalTok{alpha, beta }\OperatorTok{=} \DecValTok{77}\NormalTok{, }\DecValTok{5}
+
+\CommentTok{\# B(α,β) = Γ(α)Γ(β)/Γ(α+β)  ⇒  1/B = exp(lgamma(α+β) {-} lgamma(α) {-} lgamma(β))}
+\CommentTok{\# Note the lgamma function computes the logarithm of the Gamma function.}
+\NormalTok{beta\_const\_inv }\OperatorTok{=}\NormalTok{ math.exp(math.lgamma(alpha }\OperatorTok{+}\NormalTok{ beta) }\OperatorTok{{-}}\NormalTok{ math.lgamma(alpha) }\OperatorTok{{-}}\NormalTok{ math.lgamma(beta))}
+
+\KeywordTok{def}\NormalTok{ beta\_pdf(theta):}
+    \ControlFlowTok{return}\NormalTok{ beta\_const\_inv }\OperatorTok{*}\NormalTok{ np.power(theta, alpha }\OperatorTok{{-}} \DecValTok{1}\NormalTok{) }\OperatorTok{*}\NormalTok{ np.power(}\DecValTok{1} \OperatorTok{{-}}\NormalTok{ theta, beta }\OperatorTok{{-}} \DecValTok{1}\NormalTok{)}
+
+\NormalTok{theta\_grid }\OperatorTok{=}\NormalTok{ np.linspace(}\FloatTok{0.0}\NormalTok{, }\FloatTok{1.0}\NormalTok{, }\DecValTok{500}\NormalTok{)}
+\NormalTok{pdf\_values }\OperatorTok{=}\NormalTok{ beta\_pdf(theta\_grid)}
+
+\NormalTok{plt.figure(figsize}\OperatorTok{=}\NormalTok{(}\DecValTok{7}\NormalTok{,}\DecValTok{4}\NormalTok{))}
+\NormalTok{plt.plot(theta\_grid, pdf\_values)}
+\NormalTok{plt.xlabel(}\VerbatimStringTok{r"}\DecValTok{$}\CharTok{\textbackslash{}t}\VerbatimStringTok{heta}\DecValTok{$}\VerbatimStringTok{"}\NormalTok{)}
+\NormalTok{plt.ylabel(}\StringTok{"Density"}\NormalTok{)}
+\NormalTok{plt.title(}\VerbatimStringTok{rf"Beta PDF: }\DecValTok{$}\CharTok{\textbackslash{}a}\VerbatimStringTok{lpha=}\SpecialCharTok{\{}\NormalTok{alpha}\SpecialCharTok{\}}\DecValTok{$}\VerbatimStringTok{, }\DecValTok{$\textbackslash{}b}\VerbatimStringTok{eta=}\SpecialCharTok{\{}\NormalTok{beta}\SpecialCharTok{\}}\DecValTok{$}\VerbatimStringTok{"}\NormalTok{)}
+\CommentTok{\# plt.xlim(0, 1)}
+\NormalTok{plt.tight\_layout()}
+\NormalTok{plt.show()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}
+\pandocbounded{\includegraphics[keepaspectratio]{lectures/part2/6-bayes-inference_files/figure-pdf/unnamed-chunk-6-3.pdf}}
+\end{center}
+
+\subsection{R}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{alpha }\OtherTok{\textless{}{-}} \DecValTok{77}
+\NormalTok{beta  }\OtherTok{\textless{}{-}} \DecValTok{5}
+
+\CommentTok{\# Normalising constant via log{-}gamma (works like Python\textquotesingle{}s lgamma)}
+\NormalTok{beta\_const\_inv }\OtherTok{\textless{}{-}} \FunctionTok{exp}\NormalTok{(}\FunctionTok{lgamma}\NormalTok{(alpha }\SpecialCharTok{+}\NormalTok{ beta) }\SpecialCharTok{{-}} \FunctionTok{lgamma}\NormalTok{(alpha) }\SpecialCharTok{{-}} \FunctionTok{lgamma}\NormalTok{(beta))}
+
+\NormalTok{beta\_pdf }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(theta) \{}
+\NormalTok{  beta\_const\_inv }\SpecialCharTok{*}\NormalTok{ theta}\SpecialCharTok{\^{}}\NormalTok{(alpha }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ theta)}\SpecialCharTok{\^{}}\NormalTok{(beta }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{)}
+\NormalTok{\}}
+
+\NormalTok{theta\_grid }\OtherTok{\textless{}{-}} \FunctionTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\AttributeTok{length.out =} \DecValTok{500}\NormalTok{)}
+\NormalTok{pdf\_values }\OtherTok{\textless{}{-}} \FunctionTok{beta\_pdf}\NormalTok{(theta\_grid)}
+
+\FunctionTok{plot}\NormalTok{(theta\_grid, pdf\_values, }\AttributeTok{type =} \StringTok{"l"}\NormalTok{,}
+     \AttributeTok{xlab =} \FunctionTok{expression}\NormalTok{(theta), }\AttributeTok{ylab =} \StringTok{"Density"}\NormalTok{,}
+     \AttributeTok{main =} \FunctionTok{bquote}\NormalTok{(}\StringTok{"Beta PDF: "} \SpecialCharTok{\textasciitilde{}}\NormalTok{ alpha }\SpecialCharTok{==}\NormalTok{ .(alpha) }\SpecialCharTok{\textasciitilde{}} \StringTok{","} \SpecialCharTok{\textasciitilde{}}\NormalTok{ beta }\SpecialCharTok{==}\NormalTok{ .(beta)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}
+\pandocbounded{\includegraphics[keepaspectratio]{lectures/part2/6-bayes-inference_files/figure-pdf/unnamed-chunk-7-5.pdf}}
+\end{center}
+
+\end{example}
+
+\section{Bayesian vs.~Frequentist
+(again)}\label{bayesian-vs.-frequentist-again}
 
 \part{Part III - Interval Estimation}
 
+\chapter{Frequentist Interval
+Estimation}\label{frequentist-interval-estimation}
+
+Recalling the {main inference tasks~\ref{sec-inference-tasks}}, we now
+move from \emph{point estimation} to \emph{interval estimation}.
+
+The key idea is that instead of giving a single ``best
+guess''\footnote{Recall from Chapter~\ref{sec-bayes-inference} that
+  Bayesians do not return a single ``best guess,'' but a full
+  \textbf{posterior distribution} over parameter values. From this
+  distribution we can compute \textbf{summaries} such as plausible
+  ranges of \(\theta\) (see Chapter~\ref{sec-bayesian-intervals}), which
+  play a role similar to confidence intervals but with a different
+  interpretation.} of a parameter, we want to provide a \textbf{range of
+plausible values}. In other words, an \textbf{interval}.
+
+\section{The Frequentist Perspective}\label{the-frequentist-perspective}
+
+Recall that, for frequentists, the parameter \(\theta\) is \textbf{fixed
+but unknown}.
+
+The randomness comes from the data: if we repeated the experiment many
+times, we would get different samples, different estimates, and hence
+different intervals.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Point Estimate:} a single statistic
+  \(\hat{\theta}(\underline{X})\).
+\item
+  \textbf{Interval estimate:} two statistics \(L(\underline{X})\) and
+  \(U(\underline{X})\) that form a \emph{random interval}.
+\end{itemize}
+
+\begin{definition}[Confidence
+Interval]\protect\hypertarget{def-confidence-interval}{}\label{def-confidence-interval}
+
+A \(100(1-\alpha)\%\) \textbf{confidence interval} for \(\theta\) is a
+\emph{random interval} \[
+\big[L(\underline{X}),\; U(\underline{X})\big]
+\] satisfying \[
+\mathrm{Pr}\!\big(L(\underline{X}) < \theta < U(\underline{X})\big) = 1 - \alpha.
+\]
+
+This property is called \textbf{coverage}: in the long run, a proportion
+\(1-\alpha\) of such intervals (constructed from repeated experiments)
+will contain the true \(\theta\).
+
+\end{definition}
+
+\section{One Observed Sample}\label{one-observed-sample}
+
+In practice, we only ever observe one dataset \(\underline{x}\). So we
+calculate the observed interval: \[
+[L_{\text{obs}}, U_{\text{obs}}] 
+= \big[L(\underline{x}), U(\underline{x})\big].
+\]
+
+\begin{tcolorbox}[enhanced jigsaw, colbacktitle=quarto-callout-important-color!10!white, colframe=quarto-callout-important-color-frame, breakable, bottomrule=.15mm, rightrule=.15mm, colback=white, opacitybacktitle=0.6, toprule=.15mm, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, left=2mm, coltitle=black, title=\textcolor{quarto-callout-important-color}{\faExclamation}\hspace{0.5em}{Confidence Interval Interpretation}, opacityback=0, arc=.35mm, leftrule=.75mm]
+
+Once the data are observed, this interval is \textbf{fixed, not random}.
+
+Therefore, a frequentist would \textbf{not} say \[
+\mathrm{Pr}(L_{\text{obs}} < \theta < U_{\text{obs}}) = 1 - \alpha.
+\] That statement is meaningless, because \(\theta\) is not random in
+the frequentist view.
+
+Instead, the correct interpretation is: \textbf{our method has long-run
+coverage \(1-\alpha\).}
+
+\end{tcolorbox}
+
+\section{Deriving Confidence
+Intervals}\label{deriving-confidence-intervals}
+
+Exact confidence intervals are not always available. When possible, we
+aim for \textbf{well-calibrated} (exact coverage) intervals; otherwise,
+we use \textbf{approximate intervals} (e.g.~via the Central Limit
+Theorem).
+
+However, there are a few cases where we can compute closed-form
+\textbf{well-calibrated} confidence intervals:
+
+\subsection{The Normal case (Known
+Variance)}\label{the-normal-case-known-variance}
+
+Suppose we observe \(n\) i.i.d. samples from a normal distribution with
+known variance:
+
+\[
+X_i \sim \mathcal{N}(\mu, \sigma^2), \quad i=1,\dots,n.
+\]
+
+\begin{itemize}
+\item
+  The sample mean \(\bar{X}\) has distribution:
+
+  \[
+  \bar{X} \sim \mathcal{N}\!\left(\mu, \tfrac{\sigma^2}{n}\right).
+  \]
+\item
+  Standardising:
+
+  \[
+  Z = \frac{\bar{X} - \mu}{\sigma / \sqrt{n}} \sim \mathcal{N}(0,1).
+  \]
+\item
+  From quantiles of the standard normal, we obtain the \((1-\alpha)\)
+  confidence interval:
+
+  \[
+  \bar{X} \;\pm\; z_{1-\alpha/2}\,\frac{\sigma}{\sqrt{n}}.
+  \]
+\end{itemize}
+
+\subsection{Normal Case (Unknown
+Variance)}\label{normal-case-unknown-variance}
+
+If \(\sigma^2\) is unknown, replace it by the sample variance \(S^2\).
+Then
+
+\[
+T = \frac{\bar{X} - \mu}{S / \sqrt{n}} \sim t_{n-1}.
+\]
+
+So the \((1-\alpha)\) confidence interval becomes:
+
+\[
+\bar{X} \;\pm\; t_{n-1,\,1-\alpha/2}\,\frac{S}{\sqrt{n}}.
+\]
+
+\subsection{Approximate Intervals via the
+CLT}\label{approximate-intervals-via-the-clt}
+
+For many distributions (not just normal), the \textbf{Central Limit
+Theorem (CLT)} tells us that
+
+\[
+\frac{\hat{\theta} - \theta}{\text{SE}(\hat{\theta})} \approx \mathcal{N}(0,1)
+\]
+
+for large \(n\), where \(\text{SE}(\hat{\theta})\) is the standard
+error.
+
+Thus, a general approximate confidence interval is:
+
+\[
+\hat{\theta} \;\pm\; z_{1-\alpha/2}\,\text{SE}(\hat{\theta}).
+\]
+
+\chapter{Bayesian Intervals}\label{sec-bayesian-intervals}
+
+\section{Bayesian Credible Intervals}\label{bayesian-credible-intervals}
+
 \part{Part IV --- Hypothesis Testing}
+
+\chapter{Frequentist Hypothesis
+Testing}\label{frequentist-hypothesis-testing}
+
+Recalling the {main inference tasks~\ref{sec-inference-tasks}}, we now
+move from \emph{interval estimation} to \emph{hypothesis testing}.
+
+The name \textbf{hypothesis testing} comes from the \textbf{scientific
+method}:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Propose a hypothesis about the world.
+\item
+  Collect data through experiment or observation.
+\item
+  Assess whether the data are consistent with the hypothesis.
+\end{enumerate}
+
+If the data are consistent, this provides \textbf{support} for the
+hypothesis (though never proof). If the data look very unlikely under
+the hypothesis, this is evidence \emph{against} it.
+
+\section{Formal Setup}\label{formal-setup}
+
+Unlike estimation (which gives a range of plausible values), hypothesis
+testing asks a \textbf{yes/no question} about the parameter \(\theta\).
+
+We formalise this by specifying a \textbf{null hypothesis} \(H_0\), a
+concrete \emph{mathematical statement} about \(\theta\):
+
+\[
+H_0 : \theta \in \Theta_0,
+\]
+
+where \(\Theta_0 \subseteq \Theta\) is part of the parameter space.
+
+We then use the observed data \(\underline{x}\) to evaluate whether
+\(H_0\) is plausible. The frequentist reasoning is:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Assume \(H_0\) is true.}
+\item
+  Use the statistical model to work out what kinds of data would be
+  typical under \(H_0\).
+\item
+  Compare the actual data with this prediction. If the data look very
+  unusual under \(H_0\), this counts against the hypothesis.
+\end{enumerate}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{Visualisation}
+
+Suppose our model is
+
+\[
+X_i \mid \gamma \sim \mathcal{N}(200, \gamma),
+\]
+
+where \(\gamma\) is the variance.
+
+We want to test whether \(\gamma = 10\). That is:
+
+\[
+H_0: \gamma = 10.
+\]
+
+The frequentist approach is: \emph{assume \(H_0\) is true} and then
+check whether the observed data are typical of a normal distribution
+with variance \(10\).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{// Parameters}
+\NormalTok{n = 30}
+\NormalTok{mu0 = 200       // null mean}
+\NormalTok{sigma = 10      // std deviation under null}
+\NormalTok{alpha = 0.05}
+
+\NormalTok{// Slider for observed sample mean}
+\NormalTok{viewof xbar\_obs = Inputs.range([mu0 {-} 3*sigma, mu0 + 3*sigma], }
+\NormalTok{  \{step: 0.5, value: mu0, label: md\textasciigrave{}Observed sample mean $\{tex\textasciigrave{}\textbackslash{}bar\{x\}\_\{obs\}\textasciigrave{}\}\textasciigrave{}\} )}
+
+\NormalTok{// Null sampling distribution}
+\NormalTok{xgrid = d3.range(mu0 {-} 4*sigma, mu0 + 4*sigma, 0.1)}
+\NormalTok{pdf = xgrid.map(x =\textgreater{} (\{x, y: d3.randomNormal(mu0, sigma/Math.sqrt(n))() \})) // or use normal pdf}
+
+\NormalTok{// Compute rejection region bounds}
+\NormalTok{zcrit = d3.quantile(d3.range({-}5,5,0.01), alpha/2) // could just hardcode 1.96}
+\NormalTok{lower = mu0 {-} 1.96 * sigma/Math.sqrt(n)}
+\NormalTok{upper = mu0 + 1.96 * sigma/Math.sqrt(n)}
+
+\NormalTok{// Plot}
+\NormalTok{Plot.plot(\{}
+\NormalTok{  width: 600, height: 300,}
+\NormalTok{  x: \{label: "Sample mean"\},}
+\NormalTok{  y: \{label: "Density"\},}
+\NormalTok{  marks: [}
+\NormalTok{    // Null distribution}
+\NormalTok{    Plot.line(xgrid.map(x =\textgreater{} (\{x, y: 1/(sigma/Math.sqrt(n)*Math.sqrt(2*Math.PI)) }
+\NormalTok{                                    * Math.exp({-}0.5*((x{-}mu0)/(sigma/Math.sqrt(n)))**2)\})), }
+\NormalTok{              \{x:"x", y:"y", stroke: "var({-}{-}brand{-}red)" \}),}
+
+\NormalTok{    // Shaded rejection regions}
+\NormalTok{    Plot.areaY(xgrid.map(x =\textgreater{} (\{x, y: (x\textless{}lower||x\textgreater{}upper) ? }
+\NormalTok{       1/(sigma/Math.sqrt(n)*Math.sqrt(2*Math.PI)) }
+\NormalTok{         * Math.exp({-}0.5*((x{-}mu0)/(sigma/Math.sqrt(n)))**2) : 0\})), }
+\NormalTok{       \{x:"x", y:"y", fill: "var({-}{-}brand{-}red)", fillOpacity:0.3\}),}
+    
+\NormalTok{    // Observed value}
+\NormalTok{    Plot.ruleX([xbar\_obs], \{stroke:"black", strokeWidth:2\}),}
+\NormalTok{  ]}
+\NormalTok{\})}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Test Statistics and the Testing
+Procedure}\label{test-statistics-and-the-testing-procedure}
+
+Working directly with the full data distribution can be complicated.
+Instead, we reduce the data to a \textbf{test statistic}
+\(T(\underline{X})\) that captures the evidence relevant to \(H_0\).
+
+The general frequentist procedure is:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Choose a test statistic} \(T(\underline{X})\) that is
+  sensitive to departures from \(H_0\).
+\item
+  \textbf{Derive its sampling distribution under \(H_0\).}
+\item
+  \textbf{Compute the observed test statistic} \(T_{\text{obs}}\) from
+  the data.
+\item
+  \textbf{Calculate a \(p\)-value:} the probability of observing
+  \(T(\underline{X})\) at least as extreme as \(T_{\text{obs}}\),
+  assuming \(H_0\) is true.
+\item
+  \textbf{Decision:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    If the \(p\)-value is below a chosen threshold \(\alpha\) (the
+    \textbf{significance level}), we \textbf{reject \(H_0\)}.
+  \item
+    Otherwise, we \textbf{fail to reject \(H_0\)}\footnote{It is common
+      to say ``reject \(H_0\)'' when the \(p\)-value is small, and
+      ``fail to reject \(H_0\)'' otherwise. Both phrases should be
+      interpreted with care: rejecting \(H_0\) does \textbf{not} prove
+      it is false, and failing to reject \(H_0\) does \textbf{not} prove
+      it is true. Instead, hypothesis testing provides a decision rule
+      about whether the data are sufficiently inconsistent with \(H_0\)
+      at a chosen significance level.}.
+  \end{itemize}
+\end{enumerate}
+
+\section{Types of Errors}\label{types-of-errors}
+
+Because decisions are based on data (which vary by chance), mistakes are
+inevitable:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Type I Error:} rejecting \(H_0\) when it is actually true.
+\item
+  \textbf{Type II Error:} failing to reject \(H_0\) when the alternative
+  is true.
+\end{itemize}
+
+We will return to these concepts later when discussing test performance
+and power.
+
+\chapter{Bayes Factors}\label{bayes-factors}
 
 \part{Additional Material}
 
-\chapter{Formula Sheet}\label{formula-sheet}
+\chapter*{Formula Sheet}\label{sec-formula-sheet}
+\addcontentsline{toc}{chapter}{Formula Sheet}
 
-\section{Discrete distributions}\label{discrete-distributions}
+\markboth{Formula Sheet}{Formula Sheet}
 
-\subsection{Bernoulli}\label{bern}
+\subparagraph*{}\label{sec-formula-sheet}
+\addcontentsline{toc}{subparagraph}{}
+
+\section*{Discrete distributions}\label{discrete-distributions}
+\addcontentsline{toc}{section}{Discrete distributions}
+
+\markright{Discrete distributions}
+
+\subsection*{Bernoulli}\label{sec-bern}
+\addcontentsline{toc}{subsection}{Bernoulli}
 
 \textbf{Model.} \(X \sim \operatorname{Bernoulli}(p)\) with \(0<p<1\).\\
 \textbf{Support.} \(x \in \{0,1\}\).\\
@@ -2556,7 +3889,8 @@ into our inference.
 \] \textbf{Mean/Var.}
 \(\mathbb{E}[X]=p,\quad \operatorname{Var}(X)=p(1-p).\)
 
-\subsection{Binomial}\label{binom}
+\subsection*{Binomial}\label{sec-binom}
+\addcontentsline{toc}{subsection}{Binomial}
 
 \textbf{Model.} \(X \sim \operatorname{Bin}(n,p)\), \(n\in\mathbb{N}\),
 \(0<p<1\).\\
@@ -2566,7 +3900,8 @@ into our inference.
 \] \textbf{Mean/Var.}
 \(\mathbb{E}[X]=np,\quad \operatorname{Var}(X)=np(1-p).\)
 
-\subsection{Poisson}\label{pois}
+\subsection*{Poisson}\label{sec-pois}
+\addcontentsline{toc}{subsection}{Poisson}
 
 \textbf{Model.} \(X \sim \operatorname{Po}(\lambda)\), \(\lambda>0\).\\
 \textbf{Support.} \(x=0,1,2,\ldots\).\\
@@ -2575,7 +3910,10 @@ into our inference.
 \] \textbf{Mean/Var.}
 \(\mathbb{E}[X]=\lambda,\quad \operatorname{Var}(X)=\lambda.\)
 
-\section{Geometric}\label{geom}
+\section*{Geometric}\label{sec-geom}
+\addcontentsline{toc}{section}{Geometric}
+
+\markright{Geometric}
 
 \textbf{Model.} \(X \sim \operatorname{Geom}(p)\) (trials \textbf{until
 first success}, counting the success), \(0<p<1\).\\
@@ -2585,14 +3923,15 @@ first success}, counting the success), \(0<p<1\).\\
 \] \textbf{Mean/Var.}
 \(\mathbb{E}[X]=\frac{1}{p},\quad \operatorname{Var}(X)=\frac{1-p}{p^2}.\)
 
-\begin{tcolorbox}[enhanced jigsaw, left=2mm, titlerule=0mm, bottomrule=.15mm, colframe=quarto-callout-tip-color-frame, arc=.35mm, colback=white, breakable, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Tip}, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, opacityback=0, toprule=.15mm, leftrule=.75mm, coltitle=black, toptitle=1mm, rightrule=.15mm, bottomtitle=1mm]
+\begin{tcolorbox}[enhanced jigsaw, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, breakable, bottomrule=.15mm, rightrule=.15mm, colback=white, opacitybacktitle=0.6, toprule=.15mm, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, left=2mm, coltitle=black, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Tip}, opacityback=0, arc=.35mm, leftrule=.75mm]
 
 \textbf{Alternative convention.} Some texts start at \(x=0\) (failures
 before the first success). Adjust mean/variance accordingly.
 
 \end{tcolorbox}
 
-\subsection{Negative Binomial}\label{negbin}
+\subsection*{Negative Binomial}\label{sec-negbin}
+\addcontentsline{toc}{subsection}{Negative Binomial}
 
 \textbf{Model.} \(X \sim \operatorname{NegBin}(r,p)\): number of trials
 to achieve the \(r\)-th success (counts the successes), \(r>0\) (often
@@ -2603,7 +3942,7 @@ integer), \(0<p<1\).\\
 \] \textbf{Mean/Var.}
 \(\mathbb{E}[X]=\frac{r}{p},\quad \operatorname{Var}(X)=\frac{r(1-p)}{p^2}.\)
 
-\begin{tcolorbox}[enhanced jigsaw, left=2mm, titlerule=0mm, bottomrule=.15mm, colframe=quarto-callout-warning-color-frame, arc=.35mm, colback=white, breakable, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, colbacktitle=quarto-callout-warning-color!10!white, opacitybacktitle=0.6, opacityback=0, toprule=.15mm, leftrule=.75mm, coltitle=black, toptitle=1mm, rightrule=.15mm, bottomtitle=1mm]
+\begin{tcolorbox}[enhanced jigsaw, colbacktitle=quarto-callout-warning-color!10!white, colframe=quarto-callout-warning-color-frame, breakable, bottomrule=.15mm, rightrule=.15mm, colback=white, opacitybacktitle=0.6, toprule=.15mm, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, left=2mm, coltitle=black, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, opacityback=0, arc=.35mm, leftrule=.75mm]
 
 \textbf{Parameterisation alert.} Another common version counts
 \textbf{failures} before the \(r\)-th success (\(x=0,1,\dots\)) with
@@ -2611,9 +3950,13 @@ different mean/variance. Always check which one is used.
 
 \end{tcolorbox}
 
-\section{Continuous distributions}\label{continuous-distributions}
+\section*{Continuous distributions}\label{continuous-distributions}
+\addcontentsline{toc}{section}{Continuous distributions}
 
-\subsection{Uniform (continuous)}\label{unif}
+\markright{Continuous distributions}
+
+\subsection*{Uniform (continuous)}\label{sec-unif}
+\addcontentsline{toc}{subsection}{Uniform (continuous)}
 
 \textbf{Model.} \(X \sim \operatorname{Unif}(a,b)\), \(a<b\).\\
 \textbf{Support.} \(a<x<b\).\\
@@ -2622,7 +3965,10 @@ f_X(x;a,b)=\frac{1}{b-a}.
 \] \textbf{Mean/Var.}
 \(\mathbb{E}[X]=\frac{a+b}{2},\quad \operatorname{Var}(X)=\frac{(b-a)^2}{12}.\)
 
-\section{Exponential}\label{exp}
+\section*{Exponential}\label{sec-exp}
+\addcontentsline{toc}{section}{Exponential}
+
+\markright{Exponential}
 
 \textbf{Model.} \(X \sim \operatorname{Exp}(\lambda)\) with
 \textbf{rate} \(\lambda>0\).\\
@@ -2632,7 +3978,8 @@ f_X(x;\lambda)=\lambda e^{-\lambda x}.
 \] \textbf{Mean/Var.}
 \(\mathbb{E}[X]=\frac{1}{\lambda},\quad \operatorname{Var}(X)=\frac{1}{\lambda^2}.\)
 
-\subsection{Gamma}\label{gamma}
+\subsection*{Gamma}\label{sec-gamma}
+\addcontentsline{toc}{subsection}{Gamma}
 
 \textbf{Model.} \(X \sim \operatorname{Gamma}(a,b)\) with \textbf{shape}
 \(a>0\) and \textbf{rate} \(b>0\).\\
@@ -2642,7 +3989,7 @@ f_X(x;a,b)=\frac{b^a}{\Gamma(a)} x^{a-1} e^{-bx}.
 \] \textbf{Mean/Var.}
 \(\mathbb{E}[X]=\frac{a}{b},\quad \operatorname{Var}(X)=\frac{a}{b^2}.\)
 
-\begin{tcolorbox}[enhanced jigsaw, left=2mm, titlerule=0mm, bottomrule=.15mm, colframe=quarto-callout-tip-color-frame, arc=.35mm, colback=white, breakable, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Tip}, colbacktitle=quarto-callout-tip-color!10!white, opacitybacktitle=0.6, opacityback=0, toprule=.15mm, leftrule=.75mm, coltitle=black, toptitle=1mm, rightrule=.15mm, bottomtitle=1mm]
+\begin{tcolorbox}[enhanced jigsaw, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, breakable, bottomrule=.15mm, rightrule=.15mm, colback=white, opacitybacktitle=0.6, toprule=.15mm, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, left=2mm, coltitle=black, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Tip}, opacityback=0, arc=.35mm, leftrule=.75mm]
 
 Many sources use \textbf{scale} \(\beta=1/b\): then
 \(f(x)=\frac{1}{\Gamma(a)\beta^a}x^{a-1}e^{-x/\beta}\) and
@@ -2650,7 +3997,8 @@ Many sources use \textbf{scale} \(\beta=1/b\): then
 
 \end{tcolorbox}
 
-\subsection{Normal}\label{normal}
+\subsection*{Normal}\label{sec-normal}
+\addcontentsline{toc}{subsection}{Normal}
 
 \textbf{Model.} \(X \sim \mathcal{N}(\mu,\sigma^2)\) with
 \(\sigma>0\).\\
@@ -2661,7 +4009,8 @@ f_X(x;\mu,\sigma^2)=\frac{1}{\sqrt{2\pi \sigma^2}}
 \] \textbf{Mean/Var.}
 \(\mathbb{E}[X]=\mu,\quad \operatorname{Var}(X)=\sigma^2.\)
 
-\subsection{Lognormal}\label{lognormal}
+\subsection*{Lognormal}\label{sec-lognormal}
+\addcontentsline{toc}{subsection}{Lognormal}
 
 \textbf{Model.} \(X \sim \operatorname{LogNormal}(\mu,\sigma^2)\)
 meaning \(\ln X \sim \mathcal{N}(\mu,\sigma^2)\).\\
@@ -2672,7 +4021,8 @@ f_X(x;\mu,\sigma^2)=\frac{1}{x\sqrt{2\pi\sigma^2}}
 \] \textbf{Mean/Var.}
 \(\mathbb{E}[X]=e^{\mu+\sigma^2/2},\quad \operatorname{Var}(X)=\big(e^{\sigma^2}-1\big)e^{2\mu+\sigma^2}.\)
 
-\subsection{Chi-squared}\label{chisq}
+\subsection*{Chi-squared}\label{sec-chisq}
+\addcontentsline{toc}{subsection}{Chi-squared}
 
 \textbf{Model.} \(X \sim \chi^2_\nu\) with \(\nu>0\) degrees of
 freedom.\\
@@ -2682,13 +4032,14 @@ f_X(x;\nu)=\frac{1}{2^{\nu/2}\Gamma(\nu/2)}x^{\nu/2-1}e^{-x/2}.
 \] \textbf{Mean/Var.}
 \(\mathbb{E}[X]=\nu,\quad \operatorname{Var}(X)=2\nu.\)
 
-\begin{tcolorbox}[enhanced jigsaw, left=2mm, titlerule=0mm, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, arc=.35mm, colback=white, breakable, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, colbacktitle=quarto-callout-note-color!10!white, opacitybacktitle=0.6, opacityback=0, toprule=.15mm, leftrule=.75mm, coltitle=black, toptitle=1mm, rightrule=.15mm, bottomtitle=1mm]
+\begin{tcolorbox}[enhanced jigsaw, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, breakable, bottomrule=.15mm, rightrule=.15mm, colback=white, opacitybacktitle=0.6, toprule=.15mm, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, left=2mm, coltitle=black, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, arc=.35mm, leftrule=.75mm]
 
 \(\chi^2_\nu\) is a special case of Gamma with \(a=\nu/2\), \(b=1/2\).
 
 \end{tcolorbox}
 
-\subsection{\texorpdfstring{Student-\(t\)}{Student-t}}\label{t}
+\subsection*{\texorpdfstring{Student-\(t\)}{Student-t}}\label{sec-t}
+\addcontentsline{toc}{subsection}{Student-\(t\)}
 
 \textbf{Model.} \(X \sim t_\nu\) with \(\nu>0\) degrees of freedom.\\
 \textbf{Support.} \(x\in\mathbb{R}\).\\
@@ -2700,8 +4051,9 @@ f_X(x;\nu)=\frac{\Gamma\!\left(\frac{\nu+1}{2}\right)}{\sqrt{\nu\pi}\,\Gamma\!\l
 \(\operatorname{Var}(X)=\frac{\nu}{\nu-2}\) for \(\nu>2\); infinite for
 \(1<\nu\le 2\); undefined for \(\nu\le 1\).
 
-\subsection{\texorpdfstring{\(F\)
-distribution}{F distribution}}\label{f}
+\subsection*{\texorpdfstring{\(F\)
+distribution}{F distribution}}\label{sec-f}
+\addcontentsline{toc}{subsection}{\(F\) distribution}
 
 \textbf{Model.} \(X \sim F_{d_1,d_2}\) with \(d_1,d_2>0\) degrees of
 freedom.\\
@@ -2714,7 +4066,10 @@ f_X(x;d_1,d_2)=\frac{\Gamma\!\left(\frac{d_1+d_2}{2}\right)}{\Gamma\!\left(\frac
 \(\operatorname{Var}(X)=\frac{2d_2^2(d_1+d_2-2)}{d_1(d_2-2)^2(d_2-4)}\)
 for \(d_2>4\).
 
-\section{Beta}\label{beta}
+\section*{Beta}\label{sec-beta}
+\addcontentsline{toc}{section}{Beta}
+
+\markright{Beta}
 
 \textbf{Model.} \(X \sim \operatorname{Beta}(a,b)\), \(a>0, b>0\).\\
 \textbf{Support.} \(0<x<1\).\\
@@ -2723,7 +4078,8 @@ f_X(x;a,b)=\frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}\,x^{a-1}(1-x)^{b-1}.
 \] \textbf{Mean/Var.}
 \(\mathbb{E}[X]=\frac{a}{a+b},\quad \operatorname{Var}(X)=\frac{ab}{(a+b)^2(a+b+1)}.\)
 
-\subsection{Multivariate Normal}\label{mvnorm}
+\subsection*{Multivariate Normal}\label{sec-mvnorm}
+\addcontentsline{toc}{subsection}{Multivariate Normal}
 
 \textbf{Model.}
 \(\mathbf{X} \sim \mathcal{N}_p(\boldsymbol{\mu},\Sigma)\) with
@@ -2737,13 +4093,16 @@ f_{\mathbf{X}}(\mathbf{x};\boldsymbol{\mu},\Sigma)=\frac{1}{(2\pi)^{p/2}(\det\Si
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\section{Integral reminder}\label{integral-reminder}
+\section*{Integral reminder}\label{integral-reminder}
+\addcontentsline{toc}{section}{Integral reminder}
+
+\markright{Integral reminder}
 
 The Gamma function: \[
 \Gamma(a)=\int_0^\infty x^{a-1}e^{-x}\,dx, \qquad a>0.
 \]
 
-\begin{tcolorbox}[enhanced jigsaw, left=2mm, titlerule=0mm, bottomrule=.15mm, colframe=quarto-callout-important-color-frame, arc=.35mm, colback=white, breakable, title=\textcolor{quarto-callout-important-color}{\faExclamation}\hspace{0.5em}{Important}, colbacktitle=quarto-callout-important-color!10!white, opacitybacktitle=0.6, opacityback=0, toprule=.15mm, leftrule=.75mm, coltitle=black, toptitle=1mm, rightrule=.15mm, bottomtitle=1mm]
+\begin{tcolorbox}[enhanced jigsaw, colbacktitle=quarto-callout-important-color!10!white, colframe=quarto-callout-important-color-frame, breakable, bottomrule=.15mm, rightrule=.15mm, colback=white, opacitybacktitle=0.6, toprule=.15mm, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, left=2mm, coltitle=black, title=\textcolor{quarto-callout-important-color}{\faExclamation}\hspace{0.5em}{Important}, opacityback=0, arc=.35mm, leftrule=.75mm]
 
 \textbf{Common pitfalls.} - \textbf{Rate vs scale} for
 Exponential/Gamma: check whether the parameter is \(\lambda\) (rate) or
@@ -2754,7 +4113,593 @@ mean/variance before using formulas. - In likelihood work, write
 
 \end{tcolorbox}
 
-\chapter{Revision Sheet}\label{revision-sheet}
+\chapter*{Revision Sheet}\label{revision-sheet}
+\addcontentsline{toc}{chapter}{Revision Sheet}
+
+\markboth{Revision Sheet}{Revision Sheet}
+
+Under Construction\ldots{}
+
+\chapter*{Distribution Explorer}\label{distribution-explorer}
+\addcontentsline{toc}{chapter}{Distribution Explorer}
+
+\markboth{Distribution Explorer}{Distribution Explorer}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{// Global helpers (no theme logic needed)}
+\NormalTok{ACCENT  = "var({-}{-}brand{-}teal)"}
+\NormalTok{ACCENT2 = "var({-}{-}brand{-}red)"}
+\NormalTok{GRID    = "var({-}{-}border)"}
+
+\NormalTok{// Numerical helpers}
+\NormalTok{linspace = (a, b, n=401) =\textgreater{} Array.from(\{length:n\}, (\_,i)=\textgreater{} a + (b{-}a)*(i/(n{-}1)))}
+
+\NormalTok{// Log{-}Gamma (Lanczos) and friends (for stable PMFs/PDFs)}
+\NormalTok{function logGamma(z)\{}
+\NormalTok{  const g = 7;}
+\NormalTok{  const p = [}
+\NormalTok{    0.99999999999980993, 676.5203681218851, {-}1259.1392167224028,}
+\NormalTok{    771.32342877765313, {-}176.61502916214059, 12.507343278686905,}
+\NormalTok{    {-}0.13857109526572012, 9.9843695780195716e{-}6, 1.5056327351493116e{-}7}
+\NormalTok{  ];}
+\NormalTok{  if(z \textless{} 0.5)\{}
+\NormalTok{    return Math.log(Math.PI) {-} Math.log(Math.sin(Math.PI*z)) {-} logGamma(1 {-} z);}
+\NormalTok{  \}}
+\NormalTok{  z {-}= 1;}
+\NormalTok{  let x = p[0];}
+\NormalTok{  for(let i=1; i\textless{}p.length; i++) x += p[i] / (z + i);}
+\NormalTok{  const t = z + g + 0.5;}
+\NormalTok{  return 0.5*Math.log(2*Math.PI) + (z+0.5)*Math.log(t) {-} t + Math.log(x);}
+\NormalTok{\}}
+
+\NormalTok{logChoose = (n,k) =\textgreater{} logGamma(n+1) {-} logGamma(k+1) {-} logGamma(n{-}k+1)}
+
+\NormalTok{// Discrete PMFs (stable in log{-}domain)}
+\NormalTok{binomPMF = (n,p,k) =\textgreater{} Math.exp(logChoose(n,k) + k*Math.log(p) + (n{-}k)*Math.log(1{-}p))}
+\NormalTok{poisPMF  = (lambda,k) =\textgreater{} Math.exp(k*Math.log(lambda) {-} lambda {-} logGamma(k+1))}
+\NormalTok{geomPMF1 = (p,k) =\textgreater{} p * Math.pow(1{-}p, k{-}1) // support \{1,2,...\}}
+\NormalTok{negbinPMF = (r,p,x) =\textgreater{} \{}
+\NormalTok{  if(x \textless{} r) return 0;}
+\NormalTok{  return Math.exp(logChoose(x{-}1, r{-}1) + r*Math.log(p) + (x{-}r)*Math.log(1{-}p));}
+\NormalTok{\}}
+
+\NormalTok{// Continuous PDFs}
+\NormalTok{normPDF = (x,mu,sig) =\textgreater{} Math.exp({-}0.5*((x{-}mu)/sig)**2)/(sig*Math.sqrt(2*Math.PI))}
+\NormalTok{lognormPDF = (x,mu,sig) =\textgreater{} x\textless{}=0 ? 0 : Math.exp({-}((Math.log(x){-}mu)**2)/(2*sig*sig)) / (x*sig*Math.sqrt(2*Math.PI))}
+\NormalTok{unifPDF = (x,a,b) =\textgreater{} (x\textgreater{}a \&\& x\textless{}b) ? 1/(b{-}a) : 0}
+\NormalTok{expPDF = (x,lambda) =\textgreater{} x\textgreater{}0 ? lambda*Math.exp({-}lambda*x) : 0}
+\NormalTok{gammaPDF = (x,a,b) =\textgreater{} \{ // shape a, rate b}
+\NormalTok{  if(x\textless{}=0) return 0;}
+\NormalTok{  return Math.exp(a*Math.log(b) {-} logGamma(a) + (a{-}1)*Math.log(x) {-} b*x)}
+\NormalTok{\}}
+\NormalTok{betaPDF = (x,a,b) =\textgreater{} \{}
+\NormalTok{  if(x\textless{}=0 || x\textgreater{}=1) return 0;}
+\NormalTok{  const logB = logGamma(a)+logGamma(b){-}logGamma(a+b);}
+\NormalTok{  return Math.exp((a{-}1)*Math.log(x) + (b{-}1)*Math.log(1{-}x) {-} logB)}
+\NormalTok{\}}
+\NormalTok{chisqPDF = (x,nu) =\textgreater{} gammaPDF(x, nu/2, 1/2)}
+\NormalTok{tPDF = (x,nu) =\textgreater{} \{}
+\NormalTok{  const logC = logGamma((nu+1)/2) {-} (0.5*Math.log(nu*Math.PI) + logGamma(nu/2));}
+\NormalTok{  return Math.exp(logC {-} ((nu+1)/2)*Math.log(1 + (x*x)/nu));}
+\NormalTok{\}}
+\NormalTok{fPDF = (x,d1,d2) =\textgreater{} \{}
+\NormalTok{  if(x\textless{}=0) return 0;}
+\NormalTok{  const logC = logGamma((d1+d2)/2) {-} (logGamma(d1/2)+logGamma(d2/2)) + (d1/2)*Math.log(d1/d2);}
+\NormalTok{  return Math.exp(logC + (d1/2 {-} 1)*Math.log(x) {-} ((d1+d2)/2)*Math.log(1 + (d1/d2)*x))}
+\NormalTok{\}}
+
+\NormalTok{// Convenient domain heuristics}
+\NormalTok{domainNormal = (mu,sig) =\textgreater{} [mu {-} 4*sig, mu + 4*sig]}
+\NormalTok{domainGamma  = (a,b) =\textgreater{} [0, Math.max(5, a/b + 6*Math.sqrt(a)/b)]}
+\NormalTok{domainExp    = (lambda) =\textgreater{} [0, Math.max(5, 6/lambda)]}
+\NormalTok{domainBeta   = [0,1]}
+\NormalTok{domainPos    = [0, 10]}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Bernoulli}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\NormalTok{\{}
+\NormalTok{  const p = bern\_p;}
+\NormalTok{  const data = [0, 1].map(x =\textgreater{} (\{ x, y: x ? p : 1 {-} p \}));}
+
+\NormalTok{  const stats = md\textasciigrave{}**Mean** $\{tex\textasciigrave{}= p\textasciigrave{}\} = $\{p.toFixed(2)\}; }
+\NormalTok{  **Var** $\{tex\textasciigrave{}= p(1{-}p)\textasciigrave{}\} = $\{(p * (1 {-} p)).toFixed(3)\}.\textasciigrave{};}
+
+\NormalTok{  const plot = Plot.plot(\{}
+\NormalTok{        width, height: 260,}
+\NormalTok{    style: \{}
+\NormalTok{    background: "var({-}{-}plot{-}panel{-}bg)",}
+\NormalTok{    color: "var({-}{-}brand{-}fg)"           // drives \textquotesingle{}currentColor\textquotesingle{}}
+\NormalTok{    \},}
+
+\NormalTok{    y: \{ label: "PMF", domain: [0, 1] \},}
+\NormalTok{    x: \{ label: "x", type: "band", domain: [0, 1] \},  // \textless{}{-}{-} band scale}
+\NormalTok{    marks: [}
+\NormalTok{      Plot.barY(data, \{ x: "x", y: "y", fill: ACCENT \}),}
+\NormalTok{      Plot.ruleY([0], \{ stroke: GRID, strokeOpacity: 0.6 \})}
+\NormalTok{    ]}
+\NormalTok{  \});}
+
+\NormalTok{  return html\textasciigrave{}\textless{}div class="dist{-}panel"\textgreater{}\textless{}div class="stats"\textgreater{}$\{stats\}\textless{}/div\textgreater{}$\{plot\}\textless{}/div\textgreater{}\textasciigrave{};}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{viewof bern\_p = Inputs.range([0.01, 0.99], \{}
+\NormalTok{  value: 0.6, step: 0.01, label: md\textasciigrave{}$\{tex\textasciigrave{}p\textasciigrave{}\}\textasciigrave{}}
+\NormalTok{\})}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Binomial}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\NormalTok{\{}
+\NormalTok{  const n = binom\_n, p = binom\_p;}
+\NormalTok{  const data = Array.from(\{ length: n + 1 \}, (\_, k) =\textgreater{} (\{ x: k, y: binomPMF(n, p, k) \}));}
+\NormalTok{  const xDomain = Array.from(\{ length: n + 1 \}, (\_, k) =\textgreater{} k);  // \textless{}{-}{-} 0..n categories}
+
+\NormalTok{  const stats = md\textasciigrave{}**Mean** $\{tex\textasciigrave{}= np\textasciigrave{}\} = $\{(n * p).toFixed(2)\}; }
+\NormalTok{  **Var** $\{tex\textasciigrave{}= np(1{-}p)\textasciigrave{}\} = $\{(n * p * (1 {-} p)).toFixed(2)\}.\textasciigrave{};}
+
+\NormalTok{  const plot = Plot.plot(\{}
+\NormalTok{        width, height: 260,}
+\NormalTok{    style: \{}
+\NormalTok{    background: "var({-}{-}plot{-}panel{-}bg)",}
+\NormalTok{    color: "var({-}{-}brand{-}fg)"           // drives \textquotesingle{}currentColor\textquotesingle{}}
+\NormalTok{    \},}
+\NormalTok{    y: \{ label: "PMF" \},}
+\NormalTok{    x: \{ label: "x", type: "band", domain: xDomain, padding: 0.05 \},  // \textless{}{-}{-} band scale}
+\NormalTok{    marks: [}
+\NormalTok{      Plot.barY(data, \{ x: "x", y: "y", fill: ACCENT \}),}
+\NormalTok{      Plot.ruleY([0], \{ stroke: GRID, strokeOpacity: 0.6 \})}
+\NormalTok{    ]}
+\NormalTok{  \});}
+
+\NormalTok{  return html\textasciigrave{}\textless{}div class="dist{-}panel"\textgreater{}\textless{}div class="stats"\textgreater{}$\{stats\}\textless{}/div\textgreater{}$\{plot\}\textless{}/div\textgreater{}\textasciigrave{};}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{viewof binom\_n = Inputs.range([1, 200], \{ value: 20, step: 1,  label: md\textasciigrave{}$\{tex\textasciigrave{}n\textasciigrave{}\}\textasciigrave{} \})}
+\NormalTok{viewof binom\_p = Inputs.range([0.01, 0.99], \{ value: 0.3, step: 0.01, label: md\textasciigrave{}$\{tex\textasciigrave{}p\textasciigrave{}\}\textasciigrave{} \})}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Poisson}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\NormalTok{\{}
+\NormalTok{  // compute locally (no exported names)}
+\NormalTok{  const L     = pois\_lambda;}
+\NormalTok{  const kmax  = Math.max(15, Math.ceil(L + 6*Math.sqrt(L)));}
+\NormalTok{  const pois\_data = Array.from(\{length: kmax + 1\}, (\_, k) =\textgreater{} (\{ x: k, y: poisPMF(L, k) \}));}
+
+\NormalTok{  // build the UI bits}
+\NormalTok{  const stats = md\textasciigrave{}**Mean** $\{tex\textasciigrave{}= \textbackslash{}lambda\textasciigrave{}\} = $\{L.toFixed(2)\}; }
+\NormalTok{  **Var** $\{tex\textasciigrave{}= \textbackslash{}lambda\textasciigrave{}\} = $\{L.toFixed(2)\}.\textasciigrave{};}
+
+\NormalTok{  const plot = Plot.plot(\{}
+\NormalTok{        width, height: 260,}
+\NormalTok{    style: \{}
+\NormalTok{    background: "var({-}{-}plot{-}panel{-}bg)",}
+\NormalTok{    color: "var({-}{-}brand{-}fg)"           // drives \textquotesingle{}currentColor\textquotesingle{}}
+\NormalTok{    \},}
+
+\NormalTok{    y: \{ label: "PMF" \},}
+\NormalTok{    x: \{ label: "x" \},}
+\NormalTok{    marks: [}
+\NormalTok{      Plot.barY(pois\_data, \{ x: "x", y: "y", fill: "var({-}{-}brand{-}teal)" \}),}
+\NormalTok{      Plot.ruleY([0], \{ stroke: "var({-}{-}border)", strokeOpacity: 0.6 \})}
+\NormalTok{    ]}
+\NormalTok{  \});}
+
+\NormalTok{  // return both in a single wrapper}
+\NormalTok{  return html\textasciigrave{}\textless{}div class="dist{-}panel"\textgreater{}}
+\NormalTok{    \textless{}div class="stats"\textgreater{}$\{stats\}\textless{}/div\textgreater{}}
+\NormalTok{    $\{plot\}}
+\NormalTok{  \textless{}/div\textgreater{}\textasciigrave{};}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{viewof pois\_lambda = Inputs.range([0.2, 30], \{}
+\NormalTok{  value: 6, step: 0.2, label: md\textasciigrave{}$\{tex\textasciigrave{}\textbackslash{}lambda\textasciigrave{}\}\textasciigrave{}}
+\NormalTok{\})}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Geometric}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\NormalTok{\{}
+\NormalTok{  // compute locally}
+\NormalTok{  const p = geom\_p;}
+\NormalTok{  const raw   = Math.log(1e{-}4) / Math.log(1 {-} p);            // tail cutoff}
+\NormalTok{  const kmax  = Math.max(5, Math.min(200, Math.ceil(raw)));  // clamp for stability}
+\NormalTok{  const geom\_data = Array.from(\{ length: kmax \}, (\_, i) =\textgreater{} \{}
+\NormalTok{    const k = i + 1; }
+\NormalTok{    return \{ x: k, y: geomPMF1(p, k) \}; // PMF = p(1{-}p)\^{}\{k{-}1\}}
+\NormalTok{  \});}
+
+\NormalTok{  // stats readout}
+\NormalTok{  const stats = md\textasciigrave{}**Mean** $\{tex\textasciigrave{}= 1/p\textasciigrave{}\} = $\{(1/p).toFixed(2)\}; }
+\NormalTok{  **Var** $\{tex\textasciigrave{}= (1{-}p)/p\^{}2\textasciigrave{}\} = $\{(((1{-}p)/(p*p))).toFixed(2)\}.\textasciigrave{};}
+
+\NormalTok{  // plot}
+\NormalTok{  const plot = Plot.plot(\{}
+\NormalTok{        width, height: 260,}
+\NormalTok{    style: \{}
+\NormalTok{    background: "var({-}{-}plot{-}panel{-}bg)",}
+\NormalTok{    color: "var({-}{-}brand{-}fg)"           // drives \textquotesingle{}currentColor\textquotesingle{}}
+\NormalTok{    \},}
+\NormalTok{ y: \{ label: "PMF" \},}
+\NormalTok{    x: \{ label: "x" \},}
+\NormalTok{    marks: [}
+\NormalTok{      Plot.barY(geom\_data, \{ x: "x", y: "y", fill: ACCENT \}),}
+\NormalTok{      Plot.ruleY([0], \{ stroke: GRID, strokeOpacity: 0.6 \})}
+\NormalTok{    ]}
+\NormalTok{  \});}
+
+\NormalTok{  // return one wrapper node}
+\NormalTok{  return html\textasciigrave{}\textless{}div class="dist{-}panel"\textgreater{}}
+\NormalTok{    \textless{}div class="stats"\textgreater{}$\{stats\}\textless{}/div\textgreater{}}
+\NormalTok{    $\{plot\}}
+\NormalTok{  \textless{}/div\textgreater{}\textasciigrave{};}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{viewof geom\_p = Inputs.range([0.02, 0.98], \{}
+\NormalTok{  value: 0.3, step: 0.02, label: md\textasciigrave{}$\{tex\textasciigrave{}p\textasciigrave{}\}\textasciigrave{}}
+\NormalTok{\})}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Negative Binomial}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\NormalTok{\{}
+\NormalTok{  const r = Math.round(negbin\_r), p = negbin\_p;}
+\NormalTok{  const mean = r / p, sd = Math.sqrt(r * (1 {-} p)) / p;}
+\NormalTok{  const xmax = Math.min(400, Math.ceil(mean + 6 * sd));}
+
+\NormalTok{  const data = Array.from(\{ length: Math.max(0, xmax {-} r + 1) \}, (\_, i) =\textgreater{} \{}
+\NormalTok{    const x = r + i;}
+\NormalTok{    return \{ x, y: negbinPMF(r, p, x) \};}
+\NormalTok{  \});}
+
+\NormalTok{  const stats = md\textasciigrave{}**Mean** $\{tex\textasciigrave{}= r/p\textasciigrave{}\} = $\{(r/p).toFixed(2)\}; }
+\NormalTok{  **Var** $\{tex\textasciigrave{}= r(1{-}p)/p\^{}2\textasciigrave{}\} = $\{((r*(1{-}p))/(p**2)).toFixed(2)\}.\textasciigrave{};}
+
+\NormalTok{  const plot = Plot.plot(\{}
+\NormalTok{        width, height: 260,}
+\NormalTok{    style: \{}
+\NormalTok{    background: "var({-}{-}plot{-}panel{-}bg)",}
+\NormalTok{    color: "var({-}{-}brand{-}fg)"           // drives \textquotesingle{}currentColor\textquotesingle{}}
+\NormalTok{    \},}
+\NormalTok{ y: \{ label: "PMF" \}, x: \{ label: "x" \},}
+\NormalTok{    marks: [}
+\NormalTok{      Plot.barY(data, \{ x: "x", y: "y", fill: ACCENT \}),}
+\NormalTok{      Plot.ruleY([0], \{ stroke: GRID, strokeOpacity: 0.6 \})}
+\NormalTok{    ]}
+\NormalTok{  \});}
+
+\NormalTok{  return html\textasciigrave{}\textless{}div class="dist{-}panel"\textgreater{}\textless{}div class="stats"\textgreater{}$\{stats\}\textless{}/div\textgreater{}$\{plot\}\textless{}/div\textgreater{}\textasciigrave{};}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{viewof negbin\_r = Inputs.range([1, 30], \{value: 5, step: 1, label: md\textasciigrave{}$\{tex\textasciigrave{}r\textasciigrave{}\}\textasciigrave{}\})}
+\NormalTok{viewof negbin\_p = Inputs.range([0.02, 0.98], \{value: 0.4, step: 0.02, label: md\textasciigrave{}$\{tex\textasciigrave{}p\textasciigrave{}\}\textasciigrave{}\})}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Uniform}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\NormalTok{\{}
+\NormalTok{  const a = unif\_a, b = unif\_b;}
+\NormalTok{  const data = linspace(a {-} 1, b + 1, 401).map(x =\textgreater{} (\{ x, y: unifPDF(x, a, b) \}));}
+
+\NormalTok{  const stats = md\textasciigrave{}**Mean** $\{tex\textasciigrave{}= (a+b)/2\textasciigrave{}\} = $\{(((a+b)/2)).toFixed(2)\}; }
+\NormalTok{  **Var** $\{tex\textasciigrave{}= (b{-}a)\^{}2/12\textasciigrave{}\} = $\{(((b{-}a)**2)/12).toFixed(3)\}.\textasciigrave{};}
+
+\NormalTok{  const plot = Plot.plot(\{}
+\NormalTok{        width, height: 260,}
+\NormalTok{    style: \{}
+\NormalTok{    background: "var({-}{-}plot{-}panel{-}bg)",}
+\NormalTok{    color: "var({-}{-}brand{-}fg)"           // drives \textquotesingle{}currentColor\textquotesingle{}}
+\NormalTok{    \},}
+\NormalTok{ y: \{ label: "PDF" \}, x: \{ label: "x" \},}
+\NormalTok{    marks: [}
+\NormalTok{      Plot.lineY(data, \{ x: "x", y: "y", stroke: ACCENT, strokeWidth: 2 \}),}
+\NormalTok{      Plot.areaY(data, \{ x: "x", y: "y", fill: ACCENT, fillOpacity: 0.18 \}),}
+\NormalTok{      Plot.ruleY([0], \{ stroke: GRID, strokeOpacity: 0.6 \})}
+\NormalTok{    ]}
+\NormalTok{  \});}
+
+\NormalTok{  return html\textasciigrave{}\textless{}div class="dist{-}panel"\textgreater{}\textless{}div class="stats"\textgreater{}$\{stats\}\textless{}/div\textgreater{}$\{plot\}\textless{}/div\textgreater{}\textasciigrave{};}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{viewof unif\_a = Inputs.range([{-}5, 5], \{value: {-}2, step: 0.1, label: md\textasciigrave{}$\{tex\textasciigrave{}a\textasciigrave{}\}\textasciigrave{}\})}
+\NormalTok{viewof unif\_b = Inputs.range([unif\_a + 0.2, unif\_a + 10], \{value: 3, step: 0.1, label: md\textasciigrave{}$\{tex\textasciigrave{}b\textasciigrave{}\}\textasciigrave{}\})}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Exponential}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\NormalTok{\{}
+\NormalTok{  const λ = exp\_lambda;}
+\NormalTok{  const [lo, hi] = domainExp(λ);}
+\NormalTok{  const data = linspace(lo, hi).map(x =\textgreater{} (\{ x, y: expPDF(x, λ) \}));}
+
+\NormalTok{  const stats = md\textasciigrave{}**Mean** $\{tex\textasciigrave{}= 1/\textbackslash{}lambda\textasciigrave{}\} = $\{(1/λ).toFixed(2)\}; }
+\NormalTok{  **Var** $\{tex\textasciigrave{}= 1/\textbackslash{}lambda\^{}2\textasciigrave{}\} = $\{((1/(λ**2))).toFixed(2)\}.\textasciigrave{};}
+
+\NormalTok{  const plot = Plot.plot(\{}
+\NormalTok{        width, height: 260,}
+\NormalTok{    style: \{}
+\NormalTok{    background: "var({-}{-}plot{-}panel{-}bg)",}
+\NormalTok{    color: "var({-}{-}brand{-}fg)"           // drives \textquotesingle{}currentColor\textquotesingle{}}
+\NormalTok{    \},}
+\NormalTok{ y: \{ label: "PDF" \}, x: \{ label: "x" \},}
+\NormalTok{    marks: [}
+\NormalTok{      Plot.lineY(data, \{ x: "x", y: "y", stroke: ACCENT, strokeWidth: 2 \}),}
+\NormalTok{      Plot.areaY(data, \{ x: "x", y: "y", fill: ACCENT, fillOpacity: 0.18 \}),}
+\NormalTok{      Plot.ruleY([0], \{ stroke: GRID, strokeOpacity: 0.6 \})}
+\NormalTok{    ]}
+\NormalTok{  \});}
+
+\NormalTok{  return html\textasciigrave{}\textless{}div class="dist{-}panel"\textgreater{}\textless{}div class="stats"\textgreater{}$\{stats\}\textless{}/div\textgreater{}$\{plot\}\textless{}/div\textgreater{}\textasciigrave{};}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{viewof exp\_lambda = Inputs.range([0.2, 5], \{value: 1, step: 0.1, label: md\textasciigrave{}$\{tex\textasciigrave{}\textbackslash{}lambda\textasciigrave{}\}\textasciigrave{}\})}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Gamma}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\NormalTok{\{}
+\NormalTok{  const a = gamma\_a, b = gamma\_b;}
+\NormalTok{  const [lo, hi] = domainGamma(a, b);}
+\NormalTok{  const data = linspace(lo, hi).map(x =\textgreater{} (\{ x, y: gammaPDF(x, a, b) \}));}
+
+\NormalTok{  const stats = md\textasciigrave{}**Mean** $\{tex\textasciigrave{}= a/b\textasciigrave{}\} = $\{(a/b).toFixed(2)\}; }
+\NormalTok{  **Var** $\{tex\textasciigrave{}= a/b\^{}2\textasciigrave{}\} = $\{(a/(b**2)).toFixed(2)\}.\textasciigrave{};}
+
+\NormalTok{  const plot = Plot.plot(\{}
+\NormalTok{        width, height: 260,}
+\NormalTok{    style: \{}
+\NormalTok{    background: "var({-}{-}plot{-}panel{-}bg)",}
+\NormalTok{    color: "var({-}{-}brand{-}fg)"           // drives \textquotesingle{}currentColor\textquotesingle{}}
+\NormalTok{    \},}
+\NormalTok{ y: \{ label: "PDF" \}, x: \{ label: "x" \},}
+\NormalTok{    marks: [}
+\NormalTok{      Plot.lineY(data, \{ x: "x", y: "y", stroke: ACCENT, strokeWidth: 2 \}),}
+\NormalTok{      Plot.areaY(data, \{ x: "x", y: "y", fill: ACCENT, fillOpacity: 0.18 \}),}
+\NormalTok{      Plot.ruleY([0], \{ stroke: GRID, strokeOpacity: 0.6 \})}
+\NormalTok{    ]}
+\NormalTok{  \});}
+
+\NormalTok{  return html\textasciigrave{}\textless{}div class="dist{-}panel"\textgreater{}\textless{}div class="stats"\textgreater{}$\{stats\}\textless{}/div\textgreater{}$\{plot\}\textless{}/div\textgreater{}\textasciigrave{};}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{viewof gamma\_a = Inputs.range([0.5, 10], \{value: 3, step: 0.1, label: md\textasciigrave{}$\{tex\textasciigrave{}a\textbackslash{} \textbackslash{}text\{(shape)\}\textasciigrave{}\}\textasciigrave{}\})}
+\NormalTok{viewof gamma\_b = Inputs.range([0.2, 5],  \{value: 1, step: 0.1, label: md\textasciigrave{}$\{tex\textasciigrave{}b\textbackslash{} \textbackslash{}text\{(rate)\}\textasciigrave{}\}\textasciigrave{}\})}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Normal}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{\{}
+\NormalTok{  const μ = norm\_mu, σ = norm\_sig;}
+\NormalTok{  const [lo, hi] = domainNormal(μ, σ);}
+\NormalTok{  const data = linspace(lo, hi).map(x =\textgreater{} (\{ x, y: normPDF(x, μ, σ) \}));}
+
+\NormalTok{  const stats = md\textasciigrave{}**Mean** $\{tex\textasciigrave{}= \textbackslash{}mu\textasciigrave{}\} = $\{μ.toFixed(2)\}; }
+\NormalTok{  **Var** $\{tex\textasciigrave{}= \textbackslash{}sigma\^{}2\textasciigrave{}\} = $\{(σ**2).toFixed(2)\}.\textasciigrave{};}
+
+\NormalTok{  const plot = Plot.plot(\{}
+\NormalTok{    width, height: 260,}
+\NormalTok{    style: \{ background: "var({-}{-}plot{-}panel{-}bg)", color: "var({-}{-}brand{-}fg)" \},}
+\NormalTok{    x: \{ label: "x" \}, y: \{ label: "PDF" \},}
+\NormalTok{    marks: [}
+\NormalTok{      // shaded area under the PDF:}
+\NormalTok{      Plot.areaY(data, \{ x: "x", y: "y", fill: ACCENT, fillOpacity: 0.18 \}),}
+
+\NormalTok{      // PDF outline:}
+\NormalTok{      Plot.lineY(data, \{ x: "x", y: "y", stroke: ACCENT, strokeWidth: 2 \}),}
+
+\NormalTok{      Plot.ruleY([0], \{ stroke: GRID, strokeOpacity: 0.6 \})}
+\NormalTok{    ]}
+\NormalTok{  \});}
+
+\NormalTok{  return html\textasciigrave{}\textless{}div class="dist{-}panel"\textgreater{}\textless{}div class="stats"\textgreater{}$\{stats\}\textless{}/div\textgreater{}$\{plot\}\textless{}/div\textgreater{}\textasciigrave{};}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{viewof norm\_mu  = Inputs.range([{-}3, 3], \{value: 0, step: 0.05, label: md\textasciigrave{}$\{tex\textasciigrave{}\textbackslash{}mu\textasciigrave{}\}\textasciigrave{}\})}
+\NormalTok{viewof norm\_sig = Inputs.range([0.05, 3], \{value: 1, step: 0.05, label: md\textasciigrave{}$\{tex\textasciigrave{}\textbackslash{}sigma\textasciigrave{}\}\textasciigrave{}\})}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Lognormal}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{\{}
+\NormalTok{  const μ = lnorm\_mu, σ = lnorm\_sig;}
+\NormalTok{  const hi = Math.exp(μ + 5 * σ);}
+\NormalTok{  const data = linspace(0, hi).map(x =\textgreater{} (\{ x, y: lognormPDF(x, μ, σ) \}));}
+
+\NormalTok{  const stats = md\textasciigrave{}**Mean** $\{tex\textasciigrave{}= e\^{}\{\textbackslash{}mu+\textbackslash{}sigma\^{}2/2\}\textasciigrave{}\} = $\{(Math.exp(μ + (σ**2)/2)).toFixed(2)\}; }
+\NormalTok{  **Var** $\{tex\textasciigrave{}= (e\^{}\{\textbackslash{}sigma\^{}2\}{-}1)e\^{}\{2\textbackslash{}mu+\textbackslash{}sigma\^{}2\}\textasciigrave{}\} = $\{(((Math.exp(σ**2){-}1)*Math.exp(2*μ + σ**2))).toFixed(2)\}.\textasciigrave{};}
+
+\NormalTok{  const plot = Plot.plot(\{}
+\NormalTok{        width, height: 260,}
+\NormalTok{    style: \{}
+\NormalTok{    background: "var({-}{-}plot{-}panel{-}bg)",}
+\NormalTok{    color: "var({-}{-}brand{-}fg)"           // drives \textquotesingle{}currentColor\textquotesingle{}}
+\NormalTok{    \},}
+\NormalTok{ y: \{ label: "PDF" \}, x: \{ label: "x" \},}
+\NormalTok{    marks: [}
+\NormalTok{      Plot.lineY(data, \{ x: "x", y: "y", stroke: ACCENT, strokeWidth: 2 \}),}
+\NormalTok{      Plot.areaY(data, \{ x: "x", y: "y", fill: ACCENT, fillOpacity: 0.18 \}),}
+\NormalTok{      Plot.ruleY([0], \{ stroke: GRID, strokeOpacity: 0.6 \})}
+\NormalTok{    ]}
+\NormalTok{  \});}
+
+\NormalTok{  return html\textasciigrave{}\textless{}div class="dist{-}panel"\textgreater{}\textless{}div class="stats"\textgreater{}$\{stats\}\textless{}/div\textgreater{}$\{plot\}\textless{}/div\textgreater{}\textasciigrave{};}
+  
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{viewof lnorm\_mu  = Inputs.range([{-}1.5, 2],  \{value: 0,   step: 0.1, label: md\textasciigrave{}$\{tex\textasciigrave{}\textbackslash{}mu (\textbackslash{}log X)\textasciigrave{}\}\textasciigrave{}\})}
+\NormalTok{viewof lnorm\_sig = Inputs.range([0.01, 1.5], \{value: 0.6, step: 0.01, label: md\textasciigrave{}$\{tex\textasciigrave{}\textbackslash{}sigma (\textbackslash{}log X)\textasciigrave{}\}\textasciigrave{}\})}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Chi-squared}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\NormalTok{\{}
+\NormalTok{  const ν = Math.round(chi\_nu);}
+\NormalTok{  const hi = Math.max(5, ν + 6 * Math.sqrt(2 * ν));}
+\NormalTok{  const data = linspace(0, hi).map(x =\textgreater{} (\{ x, y: chisqPDF(x, ν) \}));}
+
+\NormalTok{  const stats = md\textasciigrave{}**Mean** $\{tex\textasciigrave{}= \textbackslash{}nu\textasciigrave{}\} = $\{ν\}; }
+\NormalTok{  **Var** $\{tex\textasciigrave{}= 2\textbackslash{}nu\textasciigrave{}\} = $\{2*ν\}.\textasciigrave{};}
+
+\NormalTok{  const plot = Plot.plot(\{}
+\NormalTok{        width, height: 260,}
+\NormalTok{    style: \{}
+\NormalTok{    background: "var({-}{-}plot{-}panel{-}bg)",}
+\NormalTok{    color: "var({-}{-}brand{-}fg)"           // drives \textquotesingle{}currentColor\textquotesingle{}}
+\NormalTok{    \},}
+\NormalTok{ y: \{ label: "PDF" \}, x: \{ label: "x" \},}
+\NormalTok{    marks: [}
+\NormalTok{      Plot.lineY(data, \{ x: "x", y: "y", stroke: ACCENT, strokeWidth: 2 \}),}
+\NormalTok{      Plot.areaY(data, \{ x: "x", y: "y", fill: ACCENT, fillOpacity: 0.18 \}),}
+\NormalTok{      Plot.ruleY([0], \{ stroke: GRID, strokeOpacity: 0.6 \})}
+\NormalTok{    ]}
+\NormalTok{  \});}
+
+\NormalTok{  return html\textasciigrave{}\textless{}div class="dist{-}panel"\textgreater{}\textless{}div class="stats"\textgreater{}$\{stats\}\textless{}/div\textgreater{}$\{plot\}\textless{}/div\textgreater{}\textasciigrave{};}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{viewof chi\_nu = Inputs.range([1, 40], \{value: 8, step: 1, label: md\textasciigrave{}$\{tex\textasciigrave{}\textbackslash{}nu\textasciigrave{}\}\textasciigrave{}\})}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Student t}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\NormalTok{\{}
+\NormalTok{  const ν = Math.round(t\_nu);}
+\NormalTok{  const data = linspace({-}6, 6).map(x =\textgreater{} (\{ x, y: tPDF(x, ν) \}));}
+
+\NormalTok{  const stats = md\textasciigrave{}$\{tex\textasciigrave{}\textbackslash{}mathrm\{E\}[X]=0 (\textbackslash{}nu\textgreater{}1)\textasciigrave{}\}, }
+\NormalTok{  $\{tex\textasciigrave{}\textbackslash{}operatorname\{Var\}(X)=\textbackslash{}nu/(\textbackslash{}nu{-}2)\textbackslash{} (\textbackslash{}nu\textgreater{}2)\textasciigrave{}\}.  }
+\NormalTok{  Current: $\{ν\}.\textasciigrave{};}
+
+\NormalTok{  const plot = Plot.plot(\{}
+\NormalTok{        width, height: 260,}
+\NormalTok{    style: \{}
+\NormalTok{    background: "var({-}{-}plot{-}panel{-}bg)",}
+\NormalTok{    color: "var({-}{-}brand{-}fg)"           // drives \textquotesingle{}currentColor\textquotesingle{}}
+\NormalTok{    \},}
+\NormalTok{ y: \{ label: "PDF" \}, x: \{ label: "x" \},}
+\NormalTok{    marks: [}
+\NormalTok{      Plot.lineY(data, \{ x: "x", y: "y", stroke: ACCENT, strokeWidth: 2 \}),}
+\NormalTok{      Plot.areaY(data, \{ x: "x", y: "y", fill: ACCENT, fillOpacity: 0.18 \}),}
+\NormalTok{      Plot.ruleY([0], \{ stroke: GRID, strokeOpacity: 0.6 \})}
+\NormalTok{    ]}
+\NormalTok{  \});}
+
+\NormalTok{  return html\textasciigrave{}\textless{}div class="dist{-}panel"\textgreater{}\textless{}div class="stats"\textgreater{}$\{stats\}\textless{}/div\textgreater{}$\{plot\}\textless{}/div\textgreater{}\textasciigrave{};}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{viewof t\_nu = Inputs.range([1, 40], \{value: 5, step: 1, label: md\textasciigrave{}$\{tex\textasciigrave{}\textbackslash{}nu\textasciigrave{}\}\textasciigrave{}\})}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{tcolorbox}[enhanced jigsaw, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, breakable, bottomrule=.15mm, rightrule=.15mm, colback=white, opacitybacktitle=0.6, toprule=.15mm, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, left=2mm, coltitle=black, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, arc=.35mm, leftrule=.75mm]
+
+Use the tabs to switch distributions. Adjust the sliders to see how the
+PMF/PDF changes.
+
+\end{tcolorbox}
+
+\chapter*{Question Bank}\label{question-bank}
+\addcontentsline{toc}{chapter}{Question Bank}
+
+\markboth{Question Bank}{Question Bank}
+
+Under Construction\ldots{}
 
 
 
