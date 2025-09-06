@@ -70,6 +70,28 @@ format:
       - theming/no-xref-suffix.js
   pdf:
     documentclass: scrreprt
+    include-in-header:
+      text: |
+        \usepackage{newunicodechar}
+        \usepackage{emoji}
+        \newunicodechar{✨}{\emoji{sparkles}}
+        \usepackage{amsthm}
+        \usepackage{mathtools} 
+        \usepackage{hyperref}
+        \usepackage{cleveref}
+        \makeatletter
+        \newenvironment{refproof}[1][]%
+          {\if\relax\detokenize{#1}\relax
+             \begin{proof}
+           \else
+             % With cleveref:
+             %\begin{proof}[Proof of \cref{#1}]
+             % Without cleveref:
+             \begin{proof}[Proof of \ref{#1}]
+           \fi}%
+          {\end{proof}}
+        \makeatother
+
 
 callouty-theorem:
   thm:

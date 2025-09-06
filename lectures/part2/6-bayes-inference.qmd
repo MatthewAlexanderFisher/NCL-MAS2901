@@ -249,22 +249,21 @@ $$
     \pi(\theta|x=1)=\frac{\pi(\theta)f(x=1|\theta)}{f(x=1)} = \frac{1 \times 5\theta(1-\theta)^4}{f(x=1)}, \quad 0 < \theta < 1.
 $$
 To compute the *denominator*, $f(x=1)$, we use the <span class="xref-no-num">[law of total probability @thm-total-probability-pdfs]</span>:
-$$
+
 \begin{align*}
 f(x=1) &=\int_\Theta\pi(\theta)f(x=1\, |\,\theta)\,d\theta = \int_0^1 1\times 5\theta(1-\theta)^4\,d\theta \\
 &=\int_0^1 \theta\times 5(1-\theta)^4\,d\theta =\left[-(1-\theta)^5\,\theta\right]^1_0
 +\int_0^1 (1-\theta)^5\,d\theta \\
 &=0 + \left[-\frac{(1-\theta)^6}{6}\right]^1_0 =\frac{1}{6}. 
 \end{align*}
-$$
 
 Therefore, the posterior density is (for $0<\theta<1$):
-$$
+
 \begin{align*}
 \pi(\theta|x=1)&=\frac{\pi(\theta)f(x=1|\theta)}{f(x=1)} =\frac{5\theta(1-\theta)^4}{1/6}\\
 &=30\,\theta(1-\theta)^4 =\frac{\theta(1-\theta)^4}{\mathrm{B}(2,5)},\quad\quad 0<\theta<1,
 \end{align*}
-$$
+
 and so the posterior distribution is $\theta|x=1\sim \textrm{Beta}(2,5)$. This distribution has its mode at
 $\theta=0.2$, and mean at $\mathrm{E}[\theta|x=1]=2/7=0.286$.
 
@@ -272,13 +271,13 @@ $\theta=0.2$, and mean at $\mathrm{E}[\theta|x=1]=2/7=0.286$.
 
 
 The main difficulty in calculating the posterior distribution was in obtaining the $f(x)$ term. However, in many cases we can recognise the posterior distribution without the need to calculate this constant term (constant with respect to $\theta$). In this example, we can calculate the posterior distribution as
-$$
+
 \begin{align*}
 \pi(\theta|\underline{x})&\propto\pi(\theta)f(x=1|\theta) \\
 &\propto 1\times 5\theta(1-\theta)^4,\quad\quad 0<\theta<1  \\
 &=k\theta(1-\theta)^4,\quad\quad 0<\theta<1.
 \end{align*}
-$$
+
 
 As $\theta$ is a continuous quantity, what we would like to know is what continuous distribution defined on $(0,1)$ has a probability density function which takes the form $k\theta^{g-1}(1-\theta)^{h-1}$. The answer is the $\textrm{Beta}(g,h)$ distribution. Therefore, choosing $g$ and $h$ appropriately, we can see that the posterior distribution is $\theta|x=1\sim \textrm{Beta}(2,5)$.
 
