@@ -1,0 +1,416 @@
+# Probability Theory
+
+::: {.callout-note collapse="true" title="Learning objectives"}
+- Define and work with events (union, intersection, complement) and apply inclusion–exclusion.
+- Distinguish mutually exclusive, exhaustive, and independent events.
+- Compute conditional probabilities and apply Bayes’ theorem.
+- Use partitions and the law of total probability.
+- Define random variables and their distribution functions: cdf, pmf (discrete), and pdf (continuous).
+- Compute probabilities from pmfs/pdfs/cdfs (using sums or areas) and check normalisation.
+:::
+
+Before we delve into statistical inference, we briefly review key ideas from probability theory. 
+
+::: {.callout-warning}
+## Note on this section
+- This section is provided **for review and reference only**. 
+- It will not be examined in detail, but the ideas are useful background for later topics.  
+- Much of the content should already be familiar.
+:::
+
+## Probability and Events
+
+When working with probability we need three basic ingredients[^prob-space]
+
+1. The **sample space** $\Omega$. all possible outcomes of an experiment.  
+      *Example:* for a coin toss, $\Omega = \{\text{Heads}, \text{Tails}\}$.  
+2. **Events** subsets of the sample space. We use capital letters $A, B, \ldots$ to denote events.  
+   - The **complement** of $A$ is $A^c$, meaning $A$ does *not* occur.  
+   - The **intersection** $A \cap B$ means $A$ *and* $B$ occur.  
+   - The **union** $A \cup B$ means $A$ *or* $B$ (or both) occur.  
+3. A **probability distribution** $\mathrm{Pr}$. Assigns numbers between $0$ and $1$ to events, with $\mathrm{Pr}(\Omega)=1$.
+
+We can write the definitions of complement, intersection and union formally with sets:
+
+::: {.def #def-intersect-union}
+### Complement, Intersection and Union
+- **Complement:** $A^c = \{x \in \Omega \mid x \notin A \}$.
+- **Intersection:** $A\cap B = \{x \in \Omega \mid x \in A \text{ and } x \in B\}$.  
+- **Union:** $A\cup B = \{x \in \Omega \mid x \in A \text{ or } x \in B\}$.  
+:::
+
+---
+
+**Visualisation:**
+
+```{ojs}
+// Toggle: highlight selection (use explicit values for robust comparisons)
+viewof vennOp = Inputs.radio(
+  ["None", "A", "B", "Aᶜ", "Union", "Intersection"],
+  { value: "None", label: "Highlight:" }
+)
+
+
+```
+
+```{ojs}
+//| label: fig-venn
+//| fig-cap: "Venn diagram of two events A and B inside the sample space Ω."
+
+venn = {
+  const width = 380, height = 280;
+  const pad = 18;
+
+  const cxA = 145, cyA = 140, r = 90;   // circle A
+  const cxB = 235, cyB = 140;           // circle B
+
+  const svg = d3.create("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("viewBox", [0, 0, width, height]);
+
+  // Sample space Ω (bounding rectangle)
+  const omega = svg.append("rect")
+    .attr("x", pad).attr("y", pad)
+    .attr("width", width - 2*pad).attr("height", height - 2*pad)
+    .attr("rx", 10)
+    .attr("fill", "none")
+    .attr("stroke", "currentColor")
+    .attr("stroke-opacity", 0.5);
+
+  // Label Ω
+  svg.append("text")
+    .attr("x", pad + 8).attr("y", pad + 16)
+    .text("Ω")
+    .style("font-weight", 400)
+    .style("font-size", "14px");
+
+  // Colors (CSS vars with fallbacks)
+  const colA   = "var(--brand-teal, #14b8a6)";
+  const colB   = "var(--brand-red, #ef4444)";
+  const hilite = "var(--brand-orange, #F39C65)";
+  const grid   = "var(--plot-grid, #94a3b8)";
+
+  // --- Defs: clips & mask for A^c ---
+  const defs = svg.append("defs");
+
+  defs.append("clipPath").attr("id", "clipA")
+    .append("circle").attr("cx", cxA).attr("cy", cyA).attr("r", r);
+
+  defs.append("clipPath").attr("id", "clipB")
+    .append("circle").attr("cx", cxB).attr("cy", cyB).attr("r", r);
+
+  // Mask for A^c: white keeps, black removes (subtract circle A from Ω rect)
+  const m = defs.append("mask").attr("id", "maskAc");
+  m.append("rect")
+    .attr("x", pad).attr("y", pad)
+    .attr("width", width - 2*pad).attr("height", height - 2*pad)
+    .attr("rx", 10)
+    .attr("fill", "white");
+  m.append("circle")
+    .attr("cx", cxA).attr("cy", cyA).attr("r", r)
+    .attr("fill", "black");
+
+  // Base sets (always lightly transparent)
+  svg.append("circle")
+    .attr("cx", cxA).attr("cy", cyA).attr("r", r)
+    .attr("fill", colA).attr("fill-opacity", 0.18);
+
+  svg.append("circle")
+    .attr("cx", cxB).attr("cy", cyB).attr("r", r)
+    .attr("fill", colB).attr("fill-opacity", 0.18);
+
+  // Highlight layer
+  if (vennOp === "A") {
+    svg.append("circle")
+      .attr("cx", cxA).attr("cy", cyA).attr("r", r)
+      .attr("fill", hilite).attr("fill-opacity", 0.99);
+
+  } else if (vennOp === "B") {
+    svg.append("circle")
+      .attr("cx", cxB).attr("cy", cyB).attr("r", r)
+      .attr("fill", hilite).attr("fill-opacity", 0.99);
+
+  } else if (vennOp === "Aᶜ") {
+    // Draw Ω in orange, but masked to remove A
+    svg.append("rect")
+      .attr("x", pad).attr("y", pad)
+      .attr("width", width - 2*pad).attr("height", height - 2*pad)
+      .attr("rx", 10)
+      .attr("fill", hilite).attr("fill-opacity", 0.99)
+      .attr("mask", "url(#maskAc)");
+
+  } else if (vennOp === "Union") {
+    // A ∪ B: overlay both circles solid orange
+    svg.append("circle")
+      .attr("cx", cxA).attr("cy", cyA).attr("r", r)
+      .attr("fill", hilite).attr("fill-opacity", 0.99);
+    svg.append("circle")
+      .attr("cx", cxB).attr("cy", cyB).attr("r", r)
+      .attr("fill", hilite).attr("fill-opacity", 0.99);
+
+  } else if (vennOp === "Intersection") {
+    // A ∩ B: clip B by A (equivalently clip A by B)
+    svg.append("g").attr("clip-path", "url(#clipA)")
+      .append("circle")
+      .attr("cx", cxB).attr("cy", cyB).attr("r", r)
+      .attr("fill", hilite).attr("fill-opacity", 0.99);
+  }
+
+  // Labels A and B
+  svg.append("text")
+    .attr("x", cxA - 26).attr("y", cyA - 8)
+    .text("A")
+    .style("font-size", "14px")
+    .style("font-weight", 600);
+
+  svg.append("text")
+    .attr("x", cxB + 22).attr("y", cyB - 8)
+    .text("B")
+    .style("font-size", "14px")
+    .style("font-weight", 600);
+
+  // Subtle baseline
+  svg.append("line")
+    .attr("x1", pad).attr("x2", width - pad)
+    .attr("y1", height - pad - 0.5).attr("y2", height - pad - 0.5)
+    .attr("stroke", grid).attr("stroke-opacity", 0.2);
+
+  return svg.node();
+}
+
+```
+
+---
+
+::: {.def #def-inclusion-exclusion}
+### Addition rule (inclusion–exclusion)
+$$
+\Pr(A \cup B) = \Pr(A) + \Pr(B) - \Pr(A \cap B).
+$$
+:::
+
+
+::: {.def #def-exclusive}
+### Mutually exclusive events
+Two events $A$ and $B$ are **mutually exclusive** if they cannot both occur:
+$$
+\Pr(A \cap B) = 0.
+$$
+:::
+
+::: {.def #def-exhaustive}
+### Exhaustive events
+Two events $A$ and $B$ are **exhaustive** if at least one must occur:
+$$
+\Pr(A \cup B) = 1.
+$$
+(More generally, a collection of events is exhaustive if their union equals the whole sample space.)
+:::
+
+::: {.def #def-independence}
+### Independence
+Two events $A$ and $B$ are **independent** if knowing that one occurs does not change the probability of the other:
+$$
+\Pr(A \cap B) = \Pr(A)\Pr(B).
+$$
+:::
+
+::: {.def #def-conditional}
+### Conditional probability
+If $\Pr(B) > 0$, the probability of $A$ given $B$ is
+$$
+\Pr(A \mid B) = \frac{\Pr(A \cap B)}{\Pr(B)}.
+$$
+:::
+
+::: {.thm #thm-bayes}
+### Bayes’ Theorem
+If $\Pr(B) > 0$, then
+$$
+\Pr(A \mid B) = \frac{\Pr(B \mid A)\Pr(A)}{\Pr(B)}.
+$$
+:::
+
+::: {#prf-bayes}
+From the definition of <span class="xref-no-num">[conditional probability @def-conditional]</span>,  
+$$
+\Pr(A \mid B) = \frac{\Pr(A \cap B)}{\Pr(B)}.
+$$
+
+But the intersection $A \cap B$ can also be written the other way round:
+$$
+\Pr(A \cap B) = \Pr(B \cap A).
+$$
+
+Using the definition of conditional probability again,
+$$
+\Pr(B \cap A) = \Pr(B \mid A)\Pr(A).
+$$
+
+Substituting this into the first expression gives
+$$
+\Pr(A \mid B) = \frac{\Pr(B \mid A)\Pr(A)}{\Pr(B)}.
+$$
+
+This completes the proof.
+:::
+
+::: {.thm #thm-total-prob}
+### Law of Total Probability
+If $B_1,\dots,B_n$ form a **partition** of the sample space (mutually exclusive and exhaustive events), then for any event $A$:
+$$
+\Pr(A) = \sum_{i=1}^n \Pr(A \mid B_i)\Pr(B_i).
+$$
+:::
+
+
+::: {#exm-quick-inclusion-check}
+### A quick inclusion–exclusion check
+
+Roll a fair six-sided die. Let $A=\{\text{even}\}$ and $B=\{\text{number} \ge 4\}$. Compute $\Pr(A\cup B)$.
+:::
+
+::: {#sol-quick-inclusion-check}
+$\Pr(A)=3/6=1/2$ (even outcomes $2,4,6$).  
+$\Pr(B)=3/6=1/2$ (outcomes $4,5,6$).  
+$\Pr(A\cap B)=2/6=1/3$ (outcomes $4,6$).  
+By inclusion–exclusion,
+
+$$
+\Pr(A\cup B)=\tfrac{1}{2}+\tfrac{1}{2}-\tfrac{1}{3}=\tfrac{2}{3}.
+$$
+:::
+
+::: {#exm-student-example}
+### Student Example
+Seventy percent of students are attentive in lectures and thirty percent are not. If a student is attentive the probability of passing the course is $0.8$. If a student is not attentive the probability of passing the course is $0.1$.
+
+1. A student is selected at random. What is the probability that they pass the course?
+2. Given that the student passed the course, what is the probability that they were attentive?
+:::
+
+::: {#sol-student}
+Let
+
+- $P$ denote the event of a student passing the course.
+- $A$ denote the event of a student being attentive.
+- $A^c$ denote the event of a student not being attentive.
+
+1. Attentive and inattentive form a partition. By the law of total probability,
+
+$$
+\Pr(P)=\Pr(P\mid A)\Pr(A)+\Pr(P\mid A^c)\Pr(A^c)=0.8\times0.7+0.1\times0.3=0.59.
+$$
+
+2. Using Bayes’ theorem,
+
+$$
+\Pr(A\mid P)=\frac{\Pr(P\mid A)\Pr(A)}{\Pr(P)}
+=\frac{0.8\times0.7}{0.59}=0.949\ \text{(3 s.f.)}.
+$$
+:::
+
+## Random Variables
+
+We use upper-case letters for random variables, e.g. $X, Y, X_1, X_2,\dots$.
+
+* **Cumulative distribution function (cdf).**
+  For any random variable $X$,
+
+  $$
+  F(x)=\Pr(X\le x).
+  $$
+
+* **Discrete case (pmf).**
+  If $X$ is discrete, its *probability mass function* is
+
+  $$
+  p(x)=\Pr(X=x),\qquad \sum_x p(x)=1.
+  $$
+
+* **Continuous case (pdf).**
+  If $X$ is continuous, its *probability density function* satisfies
+
+  $$
+  f(x)=\frac{dF(x)}{dx},\qquad \Pr(a<X\le b)=\int_a^b f(x)\,dx,\qquad \int_{-\infty}^{\infty} f(x)\,dx=1.
+  $$
+
+
+::: {#exm-discrete-cdf}
+### Discrete CDF.
+
+Let $X$ be the outcome of a fair six-sided die. Find $p(x)$ and $F(3)$.
+:::
+
+::: {#sol-discrete-cdf}
+$p(x)=\Pr(X=x)=1/6$ for $x\in\{1,2,3,4,5,6\}$, and $0$ otherwise.  
+$F(3)=\Pr(X\le 3)=\Pr(\{1,2,3\})=3\times(1/6)=1/2.$
+:::
+
+::: {#exm-continuous-pdf}
+Let $X\sim \mathrm{Uniform}(0,1)$. Compute $\Pr(0.2<X<0.5)$.
+:::
+
+::: {#sol-continuous-pdf}
+Here $f(x)=1$ for $0<x<1$ and $0$ otherwise.  
+
+$$
+\Pr(0.2<X<0.5)=\int_{0.2}^{0.5} 1\,dx = 0.3.
+$$
+:::
+
+### Joint, Marginal, and Conditional Densities
+
+Suppose $X$ and $Y$ are random variables with joint PDF/PMF $f_{XY}(x,y)$ (often written $f(x,y)$). From this joint distribution we can define:
+
+- **Marginal distributions:** the distribution of each variable on its own.  
+- **Conditional distributions:**  the distribution of one variable given the other.  
+- **Independence:** the case where the joint factorises.
+
+
+::: {#def-marginal-pdf}
+#### Marginal Distributions  
+If we only care about $X$, regardless of $Y$, we integrate/sum out $Y$:
+$$
+f_X(x) = \int f(x,y)\,\mathrm{d}y.
+$$
+Similarly for $f_Y(y)$.  
+*Note:* knowing the marginals does **not** determine the joint.
+:::
+
+
+::: {#def-conditional-pdf}
+#### Conditional Densities  
+For $y$ in the support of $Y$ with $f_Y(y) > 0$, we define:
+$$
+f_{X \mid Y}(x \mid y) = \frac{f(x,y)}{f_Y(y)}.
+$$
+This describes the distribution of $X$ *given* $Y=y$.
+:::
+
+
+::: {#thm-total-probability-pdfs}
+#### Law of Total Probability  
+We can recover the marginal by “averaging” the conditional over $Y$:
+$$
+f_X(x) = \int f_{X \mid Y}(x \mid y) f_Y(y)\,\mathrm{d}y.
+$$
+:::
+
+
+::: {#def-independence-rv}
+#### Independence  
+$X$ and $Y$ are independent if and only if
+$$
+f(x,y) = f_X(x) f_Y(y).
+$$
+In this case, $f_{X \mid Y}(x \mid y) = f_X(x)$: knowing $Y$ tells us nothing about $X$.
+:::
+
+
+## Expectations, Variances and Covariances
+
+
+[^prob-space]:
+  **Note on Probability Theory.** Formally, a probability space is written as a triple $(\Omega,\Sigma,P)$, where $\Sigma$ is the collection of “measurable” events. This level of mathematical detail goes beyond what we need in this course and will **not be assessed**. (See the [Wikipedia article on probability spaces](https://en.wikipedia.org/wiki/Probability_space) if you are curious.)

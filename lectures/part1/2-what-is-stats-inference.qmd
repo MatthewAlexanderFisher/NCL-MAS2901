@@ -1,0 +1,330 @@
+# What is Statistical Inference?
+
+::: {.callout-note collapse="true" title="Learning objectives"}
+- Define *population* and *sample*, and identify each in simple scenarios.
+- State the *goal* of statistical inference: using a sample to learn about a population distribution.
+- Recognise the idea of a *random sample* $X_1,\dots,X_n$ and the iid assumption.
+- Define a *statistical model* as a set of distributions $\{P_\theta:\theta\in\Theta\}$.
+- Identify the *parameter(s)* $\theta$ and the *parameter space* $\Theta$ for a given model.
+- Write down a suitable statistical model for a short verbal problem.
+:::
+
+Statistical inference underpins experimental science, machine learning, clinical trials, and more. The overall aim is:
+
+* Given a **sample** (the data you have) from a **population** (the broader group you care about),
+* Draw a justified **conclusion about the population’s distribution**.
+
+Typical conclusions include estimating a proportion or mean, quantifying uncertainty, comparing groups, or predicting future outcomes.
+
+::: {.callout-tip}
+###  Common misconceptions and how to avoid them
+
+- **Parameter $\neq$ statistic.** A *parameter* $\theta$ is a property of the population/model (e.g. $p,\ \mu,\ \sigma^2$). A *statistic* (e.g. $\bar{X}$, a sample proportion) is computed from the sample to learn about $\theta$.
+- **“Random sample” $\neq$ “whatever data we found”.** The iid assumption is part of the design; convenience samples or dependence can bias inference.
+- **Models are approximations.** A model is a useful idealisation, not the truth. Choose $\mathcal{P}$ sensibly, then check fit later and revise if needed.
+:::
+
+Examples:
+1. Simple one-dimensional example 
+2. Slightly more convoluted two-dimensional example
+3. Machine learning (images of cats)
+
+## Statistical Inference as Inverse Probability Theory
+
+We assume the population can be represented by a probability distribution $f(x\mid \theta)$, where $\theta$ is an unknown parameter (or vector of parameters).
+Our data are usually modelled as an **independent and identically distributed (iid)** sample:
+
+$$
+X_1,\ldots,X_n \stackrel{\text{iid}}{\sim} f(x\mid \theta).
+$$
+
+* *Independent*: knowing one $X_i$ tells you nothing about another.
+* *Identically distributed*: each $X_i$ has the same distribution $f$.
+
+*Inference* is the process of learning about $\theta$ (and hence about the population distribution) from the observed sample. In practice, always ask whether iid sampling is plausible for your study design.
+
+### Statistical Inference by Eye {#sec-inference-eye}
+
+As an informal starting point, suppose $X_1,\ldots,X_n$ are sampled from a $\mathcal{N}(\mu,\sigma^2)$ distribution, with $\mu$ and $\sigma^2$ unknown. Try to “guess” $\mu$ and $\sigma$ by eye from the data:
+
+
+```{ojs}
+//| echo: false
+
+html`
+<style>
+.controls-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;   /* 3 columns */
+  gap: 0.8rem;
+  align-items: end;
+}
+@media (max-width: 800px){
+  .controls-grid { grid-template-columns: 1fr; }
+}
+</style>
+`
+
+viewof n = Inputs.range([50, 1000], { value: 200, step: 50, label: "n" })
+
+trueChoices = new Map([
+  ["N(0, 1²)",    {mu: 0,  sigma2: 1}],
+  ["N(0, 2²)",    {mu: 0,  sigma2: 4}],
+  ["N(1, 1²)",    {mu: 1,  sigma2: 1}],
+  ["N(-2, 0.5²)", {mu: -2, sigma2: 0.25}],
+  ["N(2, 1.5²)",  {mu: 2,  sigma2: 2.25}]
+])
+
+viewof trueDist = Inputs.select(trueChoices, {
+  label: "True Distribution",
+  value: trueChoices.get("N(0, 1²)")
+})
+
+viewof approxVar = Inputs.range([0.1, 9], { value: 1, step: 0.1, label: "Approx. variance (σ²)" })
+viewof approxMu  = Inputs.range([-5, 5], { value: 0, step: 0.1, label: "Approx. mean (μ)" })
+
+viewof resample = Inputs.button("Generate new sample")
+```
+
+```{ojs}
+//| panel: input
+{
+  const box = html`<div class="controls-grid"></div>`;
+  box.append(
+    viewof n,
+    viewof trueDist,
+    viewof approxMu,
+    viewof approxVar,
+    viewof resample
+  );
+  return box;
+}
+```
+
+```{ojs}
+bodyFont = getComputedStyle(document.body).fontFamily
+```
+
+```{ojs}
+// reactive params
+mu = trueDist.mu
+sigma2 = trueDist.sigma2
+
+
+
+// data
+data = {
+  resample;
+  const sigma = Math.sqrt(sigma2);
+  const rnd = d3.randomNormal(mu, sigma);
+  return Array.from({length: n}, () => rnd());
+}
+
+approxSigma = Math.sqrt(approxVar)
+
+// plot
+{
+  const xMin = d3.min(data), xMax = d3.max(data);
+  const pad = 0.1 * (xMax - xMin || 1);
+  const domain = [xMin - pad, xMax + pad];
+
+  const xs = d3.range(domain[0], domain[1], (domain[1]-domain[0]) / 200);
+  const normalPdf = (x, mu, sigma) => (1/(sigma*Math.sqrt(2*Math.PI))) * Math.exp(-0.5*((x-mu)/sigma)**2);
+  const curve = xs.map(x => ({x, y: normalPdf(x, approxMu, approxSigma)}));
+
+  const binCount = 30;
+  const binWidth = (domain[1] - domain[0]) / binCount;
+  const scaledCurve = curve.map(d => ({x: d.x, y: d.y * n * binWidth}));
+
+  return Plot.plot({
+    marginLeft: 48,
+    marginBottom: 40,
+    style: {
+      fontSize: 14,
+      fontFamily: bodyFont,
+    },
+    width: 700,
+    height: 420,
+    x: {label: "x", domain},
+    y: {label: "Count"},
+    marks: [
+      Plot.rectY(data, Plot.binX({y: "count"}, {thresholds: binCount})),
+      Plot.line(scaledCurve, {x: "x", y: "y", strokeWidth: 2})
+    ]
+  });
+}
+```
+
+
+(This intuition will be formalised later when we develop estimators and uncertainty quantification.) 
+
+
+## Statistical Models
+
+Whenever we perform statistical inference, we must specify a *statistical model*.
+
+::: {.definition #def-model}
+### Statistical Model
+A **statistical model** is a *set* of candidate population distributions:
+$$
+\mathcal{P}=\{P_\theta \mid \theta\in\Theta\},
+$$
+where $P_\theta$ is a probability distribution indexed by a **parameter** $\theta$, and $\Theta$ is the **parameter space** (the set of allowable parameter values).
+:::
+
+*Terminology checkpoint.* A **parameter** $\theta$ belongs to the model/population; a **statistic** (e.g. a sample mean) is computed from the data to learn about $\theta$. Remember: models are working assumptions to be checked.
+
+
+::: {.example #exm-exponential-model}
+### Exponential model
+Suppose we are interested in modelling **waiting times** until some event occurs  
+(e.g. the time between customer arrivals at a service desk).  
+
+A simple model is to assume the data are i.i.d. from an exponential distribution:
+$$
+X_i \mid \lambda \sim \mathrm{Exp}(\lambda).
+$$
+Write this formally as a **statistical model** and write down the **parameter space**.
+:::
+
+::: {#sol-exponential-model}
+Each data follows the exponential distribution with parameter $\lambda$. Since $\lambda > 0$, we have the model:
+$$
+\mathcal{P}=\big\{\mathrm{Exp}(\lambda)\ \big|\ \lambda>0\big\},
+$$
+with parameter $\theta=\lambda$ and parameter space[^sets]
+$$
+\Theta = \{\lambda \mid \lambda > 0\} = (0,\infty) = \mathbb{R}^+.
+$$
+
+The exponential distribution is often used for modelling the time between events in a **Poisson process** — situations where events occur continuously and independently at a constant average rate.  
+
+For example:  
+- the time between buses arriving at a stop if buses come at random,  
+- the time until the next radioactive decay of an atom,  
+- the waiting time until the next customer enters a shop.  
+
+In each case, the exponential model is a natural first assumption.
+:::
+
+::: {.example #exm-normal-model}
+### Normal model
+Write down the **statistical model** and the corresponding **parameter space** used in @sec-inference-eye.
+:::
+
+::: {#sol-normal-model}
+We assumed the data are i.i.d. Normally distributed with *unknown mean* and *unknown variance*:
+$$
+X_i \mid \mu, \sigma^2 \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2).
+$$
+
+The **statistical model** is
+$$
+\mathcal{P} = \{ \mathcal{N}(\mu,\sigma^2) \mid \mu \in \mathbb{R},\ \sigma^2 > 0 \}.
+$$
+
+Here there are two parameters, $\mu$ and $\sigma^2$, which we group into a parameter vector $\underline{\theta} = (\mu, \sigma^2)$.  
+The **parameter space** is[^sets2]  
+$$
+\Theta = \{ (\mu, \sigma^2) \mid \mu \in \mathbb{R},\ \sigma^2 > 0 \} 
+       = \mathbb{R} \times (0,\infty) 
+       = \mathbb{R} \times \mathbb{R}^+.
+$$
+
+The normal model is widely used in practice, for example when data are approximately symmetric and unimodal, such as measurement errors in physics or biological traits like human heights.
+:::
+
+
+
+::: {.example #exm-identify-model}
+### From words to a model (one-dimensional)
+A questionnaire records whether each respondent would recommend a service: “yes” or “no”. Write down a simple model and identify the parameter.
+:::
+
+::: {#sol-identify-model}
+Let $X_i=1$ if respondent $i$ says “yes”, and $0$ otherwise.  
+Model $X_1,\ldots,X_n \stackrel{\text{iid}}{\sim}\mathrm{Bernoulli}(p)$, where $p=\Pr(X_i=1)$ is the (unknown) long-run recommendation proportion.  
+Here $\theta=p$ and $\Theta=(0,1)$. The **population** is all (current/future) potential respondents of interest; the **sample** is the $n$ surveyed respondents.
+:::
+
+::: {.example #exm-identify-model-multinomial}
+### A slightly richer example (multinomial)
+A bag contains sweets of three colours $\{\text{red},\text{blue},\text{green}\}$. You draw $n$ sweets at random *with replacement* and record counts $(R,B,G)$. Propose a model and name the parameter(s).
+:::
+
+::: {#sol-identify-model-multinomial}
+Model $(R,B,G) \sim \mathrm{Multinomial}\!\left(n;\,p_R,p_B,p_G\right)$ with $p_R,p_B,p_G\ge 0$ and $p_R+p_B+p_G=1$.  
+The parameter is $\theta=(p_R,p_B,p_G)$, and the parameter space is the 2-simplex $\Theta=\{(p_R,p_B,p_G)\in[0,1]^3:\sum p_\cdot=1\}$. The **population** is the long-run distribution of colours produced by the bag; the **sample** is the observed draws.
+:::
+
+::: {.example #exm-ml-inference}
+### Image Classification from Machine Learning
+In image classification (cat vs not-cat), each training example is a pair $(X_i,Y_i)$ where $X_i$ is an image and $Y_i\in\{0,1\}$. A generic probabilistic model writes the conditional distribution
+$$
+\mathrm{Pr}_\theta(Y=1\mid X=x)=g_\theta(x),
+$$
+for some function family $g_\theta$ (e.g. logistic regression or a neural network). What are the sample, population, model, and parameter?
+:::
+
+::: {#sol-ml-inference}
+- **Sample:** the labelled training set $\{(X_i,Y_i)\}_{i=1}^n$.  
+- **Population:** all (future) images and labels of interest.  
+- **Model:** the family of conditional distributions $\{ \Pr_\theta(Y=1\mid X=x)=g_\theta(x)\}$.  
+- **Parameter:** $\theta$ (e.g. regression co
+:::
+
+::: {.callout-warning}
+### Note on Statistical Models
+In this course we focus on **how to perform statistical inference once a statistical model has been specified**.  
+We will **assume the model is given**, and our task is to carry out inference by finding good parameter values using techniques such as:
+
+- Parameter estimation  
+- Bayesian inference  
+- Interval estimation (e.g. confidence intervals, HDIs)  
+- Hypothesis testing  
+
+:::
+
+---
+
+## Exercises
+
+1. For a study recording daily counts of emails received by a helpdesk, propose a one-parameter model and state the parameter space.
+2. In a satisfaction survey with responses $\{\text{poor},\text{OK},\text{good}\}$, suggest a simple probabilistic model and identify the parameter(s).
+3. State what “iid” means in one sentence, and give one example of how it could fail in practice.
+4. Revisit {ref}`stat-by-eye`: if the spread of points increases, which parameter of $\mathcal{N}(\mu,\sigma^2)$ has changed, and how would you describe that change informally?
+
+[^sets]:
+  **Set notation.** There are several equivalent ways to write sets:
+  
+     - **Set-builder notation:** $\{\lambda \mid \lambda > 0\}$  
+     - **Interval notation:** $(0,\infty)$  
+     - **Named set:** $\mathbb{R}^+$  
+
+     All three describe the same set. In this course, we recommend using **set-builder notation** when writing statistical models and their parameter spaces.
+
+[^sets2]:
+  **Set notation (multiple parameters).**  When a model has several parameters, it is best to use **set-builder notation** and collect the parameters into a vector 
+      $$
+        \underline{\theta} = (\theta_1, \theta_2, \ldots, \theta_p).
+      $$ 
+      The parameter space can then be written as
+      $$
+        \Theta = \{(\theta_1,\ldots,\theta_p) \mid \theta_1 \in S_1,\ \ldots,\ \theta_p \in S_p\}.
+      $$
+      
+    Here each $S_j$ is the set of allowed values for parameter $\theta_j$. To construct $\Theta$, simply **read off the constraints** on each parameter from the definition of the distribution (see the <span class="xref-no-num">[Formula Sheet @sec-formula-sheet]</span>).
+
+      For example, in the Normal model:  
+
+      - $\mu \in \mathbb{R}$ (any real number),  
+      - $\sigma^2 \in (0,\infty)$ (variance must be positive), 
+ 
+      so the parameter space is  
+
+      $$
+        \Theta = \mathbb{R} \times (0,\infty).
+      $$
+
+      This is called a **Cartesian product**: we form the parameter space by taking all possible pairs $(\mu, \sigma^2)$ where the first component is from $\mathbb{R}$ and the second from $(0,\infty)$.  
+      Intuitively, it’s just “all combinations” of the allowed values for each parameter.

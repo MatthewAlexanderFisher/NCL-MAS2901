@@ -1,0 +1,123 @@
+# Frequentist Hypothesis Testing
+
+Recalling the <span class="xref-no-num">[main inference tasks @sec-inference-tasks]</span>, we now move from *interval estimation* to *hypothesis testing*.
+
+The name **hypothesis testing** comes from the **scientific method**:
+
+1. Propose a hypothesis about the world.
+2. Collect data through experiment or observation.
+3. Assess whether the data are consistent with the hypothesis.
+
+If the data are consistent, this provides **support** for the hypothesis (though never proof). If the data look very unlikely under the hypothesis, this is evidence *against* it.
+
+## Formal Setup
+
+Unlike estimation (which gives a range of plausible values), hypothesis testing asks a **yes/no question** about the parameter $\theta$.
+
+We formalise this by specifying a **null hypothesis** $H_0$, a concrete *mathematical statement* about $\theta$:
+
+$$
+H_0 : \theta \in \Theta_0,
+$$
+
+where $\Theta_0 \subseteq \Theta$ is part of the parameter space.
+
+We then use the observed data $\underline{x}$ to evaluate whether $H_0$ is plausible. The frequentist reasoning is:
+
+1. **Assume $H_0$ is true.**
+2. Use the statistical model to work out what kinds of data would be typical under $H_0$.
+3. Compare the actual data with this prediction. If the data look very unusual under $H_0$, this counts against the hypothesis.
+
+---
+
+**Visualisation**
+
+Suppose our model is
+
+$$
+X_i \mid \gamma \sim \mathcal{N}(200, \gamma),
+$$
+
+where $\gamma$ is the variance.
+
+We want to test whether $\gamma = 10$. That is:
+
+$$
+H_0: \gamma = 10.
+$$
+
+The frequentist approach is: *assume $H_0$ is true* and then check whether the observed data are typical of a normal distribution with variance $10$.
+
+```{ojs}
+// Parameters
+n = 30
+mu0 = 200       // null mean
+sigma = 10      // std deviation under null
+alpha = 0.05
+
+// Slider for observed sample mean
+viewof xbar_obs = Inputs.range([mu0 - 3*sigma, mu0 + 3*sigma], 
+  {step: 0.5, value: mu0, label: md`Observed sample mean ${tex`\bar{x}_{obs}`}`} )
+
+// Null sampling distribution
+xgrid = d3.range(mu0 - 4*sigma, mu0 + 4*sigma, 0.1)
+pdf = xgrid.map(x => ({x, y: d3.randomNormal(mu0, sigma/Math.sqrt(n))() })) // or use normal pdf
+
+// Compute rejection region bounds
+zcrit = d3.quantile(d3.range(-5,5,0.01), alpha/2) // could just hardcode 1.96
+lower = mu0 - 1.96 * sigma/Math.sqrt(n)
+upper = mu0 + 1.96 * sigma/Math.sqrt(n)
+
+// Plot
+Plot.plot({
+  width: 600, height: 300,
+  x: {label: "Sample mean"},
+  y: {label: "Density"},
+  marks: [
+    // Null distribution
+    Plot.line(xgrid.map(x => ({x, y: 1/(sigma/Math.sqrt(n)*Math.sqrt(2*Math.PI)) 
+                                    * Math.exp(-0.5*((x-mu0)/(sigma/Math.sqrt(n)))**2)})), 
+              {x:"x", y:"y", stroke: "var(--brand-red)" }),
+
+    // Shaded rejection regions
+    Plot.areaY(xgrid.map(x => ({x, y: (x<lower||x>upper) ? 
+       1/(sigma/Math.sqrt(n)*Math.sqrt(2*Math.PI)) 
+         * Math.exp(-0.5*((x-mu0)/(sigma/Math.sqrt(n)))**2) : 0})), 
+       {x:"x", y:"y", fill: "var(--brand-red)", fillOpacity:0.3}),
+    
+    // Observed value
+    Plot.ruleX([xbar_obs], {stroke:"black", strokeWidth:2}),
+  ]
+})
+
+```
+
+
+---
+
+## Test Statistics and the Testing Procedure
+
+Working directly with the full data distribution can be complicated. Instead, we reduce the data to a **test statistic** $T(\underline{X})$ that captures the evidence relevant to $H_0$.
+
+The general frequentist procedure is:
+
+1. **Choose a test statistic** $T(\underline{X})$ that is sensitive to departures from $H_0$.
+2. **Derive its sampling distribution under $H_0$.**
+3. **Compute the observed test statistic** $T_{\text{obs}}$ from the data.
+4. **Calculate a $p$-value:** the probability of observing $T(\underline{X})$ at least as extreme as $T_{\text{obs}}$, assuming $H_0$ is true.
+5. **Decision:**
+
+   * If the $p$-value is below a chosen threshold $\alpha$ (the **significance level**), we **reject $H_0$**.
+   * Otherwise, we **fail to reject $H_0$**[^accept-vs-fail-to-reject].
+
+
+## Types of Errors
+
+Because decisions are based on data (which vary by chance), mistakes are inevitable:
+
+* **Type I Error:** rejecting $H_0$ when it is actually true.
+* **Type II Error:** failing to reject $H_0$ when the alternative is true.
+
+We will return to these concepts later when discussing test performance and power.
+
+[^accept-vs-fail-to-reject]: It is common to say “reject $H_0$” when the $p$-value is small, and “fail to reject $H_0$” otherwise. Both phrases should be interpreted with care: rejecting $H_0$ does **not** prove it is false, and failing to reject $H_0$ does **not** prove it is true. Instead, hypothesis testing provides a decision rule about whether the data are sufficiently inconsistent with $H_0$ at a chosen significance level.

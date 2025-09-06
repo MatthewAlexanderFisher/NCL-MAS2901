@@ -1,0 +1,131 @@
+project:
+  type: book
+  
+execute:
+  engine: jupyter
+
+jupyter: mas2901
+
+book:
+  title: "MAS2901: Statistical Inference"
+  author: "Matthew Fisher"
+  date: ""
+  chapters:
+    - index.qmd
+    - part: "Part I — Foundations"
+      chapters:
+        - lectures/part1/1-prob-theory.qmd
+        - lectures/part1/2-what-is-stats-inference.qmd
+        - lectures/part1/3-types-of-inference.qmd
+    - part: "Part II — Parameter Estimation"
+      chapters:
+        - lectures/part2/4-freq-point-estimation.qmd
+        - lectures/part2/5-likelihood.qmd
+        - lectures/part2/6-bayes-inference.qmd
+    - part: "Part III - Interval Estimation"
+      chapters:
+        - lectures/part3/7-confidence-intervals.qmd
+        - lectures/part3/8-bayesian-hdis.qmd
+    - part: "Part IV — Hypothesis Testing"
+      chapters:
+        - lectures/part4/9-freq-hypothesis-testing.qmd
+        - lectures/part4/10-bayes-factors.qmd
+    - part: "Additional Material"
+      chapters:
+        - appendices/formula-sheet.qmd
+        - appendices/revision-sheet.qmd
+        - appendices/distribution-explorer.qmd
+        - appendices/question-bank.qmd
+  # navbar: 
+  #   search: true
+  sidebar:
+    logo: "images/ncl_logo.png"   # path to logo
+
+
+bibliography: references.bib
+
+# theorems: true   # auto-number + cross-refs for theorem-like blocks
+
+math: 
+  renderer: mathjax   # or "katex" if you prefer KaTeX
+
+brand: theming/_brand.yml
+format:
+  html:
+    echo: false
+    theme:
+      light: light_theme.scss
+      dark: dark_theme.scss
+
+    filters:
+      - callouty-theorem
+    css: 
+      - theming/math-scroll.css
+      - theming/colors.css
+      - theming/floating-code.css
+      - theming/font.css
+      - theming/no-xref-suffix.css
+    include-after-body:
+      - theming/no-xref-suffix.js
+  pdf:
+    documentclass: scrreprt
+
+callouty-theorem:
+  thm:
+    override-title: false # do not override the title of the callout (title won't show when `appearance` set to `simple` or `minimal`)
+    callout: # parameters of the wrapping callout. see Quarto documentation of callouts for more details
+      type: note
+      appearance: minimal
+  prp:
+    override-title: false
+    callout:
+      type: note
+      appearance: minimal
+  exr:
+    override-title: false
+    callout:
+      type: tip
+      appearance: minimal
+  proof: # also support wrapping proof-like environments
+    override-title: true # override the title of the callout by the name of the theorem
+    callout:
+      type: note
+      appearance: default
+      collapse: true
+      icon: true
+  solution:
+    override-title: true
+    callout:
+      type: tip
+      appearance: default
+      collapse: true
+      icon: true
+  remark:
+    override-title: true
+    callout:
+      type: tip
+      appearance: default
+      collapse: false
+      icon: true
+  exm:
+    override-title: false
+    callout:
+      type: caution
+      appearance: minimal
+      collapse: false
+      icon: false
+
+  # theorems types not specified in the metadata will be rendered as is
+  cor: default # calloutify corollaries with default style
+  def:
+    override-title: false
+    callout:  # also support default style here
+      appearance: minimal
+      type: note
+
+editor:
+  render-on-save: true
+
+
+params:
+  plot-bg: "#ff0000"

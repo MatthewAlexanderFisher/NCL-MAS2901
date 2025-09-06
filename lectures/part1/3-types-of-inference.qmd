@@ -1,0 +1,78 @@
+# Types of Inference {#sec-types-of-inference}
+
+Statistical inference is about using a **sample** to learn about a **population**. There are two fundamentally different philosophies of inference, and several types of inferential tasks that appear in both.
+
+
+## Philosophies of Inference
+
+### Frequentist Inference
+
+Frequentist inference is based on the idea of **long-run frequency**.
+
+* The **data** are considered random, as they represent one possible outcome of repeated sampling from the population.
+* The **parameter** $\theta$ is fixed but unknown.
+* Inference is about constructing procedures (estimators, tests, intervals) that perform well under repeated sampling.
+
+**Preview examples (we will return to these later):** the sample mean $\hat{\mu}$ as an estimator of $\mu$, a $t$-test for comparing means, or a $95\%$ confidence interval.
+
+### Bayesian Inference
+
+Bayesian inference is based on **subjective probability as degree of belief**.
+
+* The **data** are fixed once observed.
+* The **parameter** $\theta$ is treated as a random variable, with uncertainty described by a **prior distribution** $\pi(\theta)$.
+* Inference updates this prior in light of the data, giving a **posterior distribution** $\pi(\theta \mid \text{data})$.
+
+**Preview examples (we will return to these later):** a posterior mean as an estimator of $\mu$, a 95% credible interval, or comparing hypotheses via posterior probabilities.
+
+### Key Differences
+
+| Perspective         | Frequentist Inference                          | Bayesian Inference                         |
+| ------------------- | ---------------------------------------------- | ------------------------------------------ |
+| **Parameter**       | Fixed but unknown                              | Random variable with a prior               |
+| **Sample**          | Random (from repeated sampling)                | Fixed (once observed)                      |
+| **Probability**     | Long-run frequency                             | Degree of belief                           |
+| **Goal**            | Construct estimators, tests, CIs               | Update beliefs via posterior               |
+| **Prior Knowledge** | Ignored or minimal (e.g. non-informative)      | Explicitly modelled via prior distribution |
+| **Output**          | Estimators, confidence intervals, $p$-values | Posterior distribution, credible intervals |
+
+
+## Inference Tasks {#sec-inference-tasks}
+
+Regardless of philosophy, the core tasks of inference are similar.
+
+Suppose we want to infer a parameter $\theta$ from data:
+
+1. **Point Estimation**
+   Give a single “best guess” $\hat{\theta}$ for the parameter.
+
+   * Frequentist: choose an estimator with good properties (e.g. unbiasedness).
+   * Bayesian: often the posterior mean, median, or mode.
+
+2. **Interval Estimation**
+   Quantify uncertainty in $\theta$ by reporting a range.
+
+   * Frequentist: **confidence interval**
+
+     $$
+     L \leq \theta \leq U
+     $$
+
+     with a given long-run coverage probability.
+   * Bayesian: **credible interval**, the posterior probability that $\theta$ lies in $[L,U]$ is, say, 95%.
+
+3. **Hypothesis Testing** {#sec-hypothesis-testing-intro}
+    Ask a **yes/no question** about the parameter $\theta$. This is done by formalising a claim (the *null hypothesis*) such as
+    $$
+        H_0: \theta \in \Theta_0,
+    $$
+    and then using the data to judge whether this claim is **compatible with the evidence**.
+
+   * **Frequentist approach:** base the decision on a **test statistic** and its distribution under $H_0$, leading to a **$p$-value** or a comparison with a **significance level**.
+   * **Bayesian approach:** compare hypotheses using **posterior probabilities** or **Bayes factors**, quantifying how much the data shift our beliefs.
+
+4. **Prediction**
+   Use data to predict future or unobserved outcomes.
+
+   * Frequentist: predictive distributions based on sampling models.
+   * Bayesian: posterior predictive distribution, integrating over parameter uncertainty.

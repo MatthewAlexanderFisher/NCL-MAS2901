@@ -1,0 +1,75 @@
+# Preface {.unnumbered}
+
+Welcome to the online notes for **MAS2901 — Statistical Inference**.
+
+This 10-credit module at Newcastle University introduces the two main approaches to *statistical inference*:
+
+* **Frequentist inference**
+* **Bayesian inference**
+
+## What is Statistical Inference?
+
+Statistical inference is the process of using data from a *sample* to learn about a *population*. Sometimes the population is concrete (e.g. “all people in the country today”). In other situations we want to generalise beyond those we sampled to a broader *target population* (sometimes called a *superpopulation*), such as “future patients with similar characteristics”. Clear definitions and sensible assumptions are essential for valid conclusions.
+
+There are two main types of statistical inference:
+
+* **Frequentist inference.** Parameters are treated as **fixed but unknown**. Probability statements are about *data we might observe* under repeated sampling from the same model.
+* **Bayesian inference.** Parameters are treated as **random** with a *prior distribution*. Probability statements are about the *parameter given the data* via the posterior distribution.
+
+The examples below are only to build intuition about the core difference between frequentist and Bayesian inference. Don’t worry about the details—we’ll cover them carefully later in the course.
+
+::: {#exm-proportion-freq-bayes}
+### A comparison of Frequentist vs Bayesian inference
+
+A survey asks $n=20$ students if they prefer study space $A$ or $B$.  
+
+Suppose $x=12$ prefer $A$. Compare a frequentist and a Bayesian estimate of the long-run proportion $p$ who would choose $A$.
+:::
+
+::: {.callout-tip collapse="true"}
+### Solution
+
+**Frequentist.** The natural estimator is the sample proportion  
+
+$$
+\hat p=\frac{x}{n}=\frac{12}{20}=0.60.
+$$
+
+**Bayesian (with a uniform prior).** Take a $\mathrm{Beta}(1,1)$ prior for $p$. The posterior is  
+
+$$
+p \mid x \sim \mathrm{Beta}(1+x,\,1+n-x)=\mathrm{Beta}(13,9),
+$$
+
+whose mean is
+
+$$
+\mathbb{E}[p\mid x]=\frac{13}{13+9}=\frac{13}{22}\approx 0.591.
+$$
+
+**Interpretation.** The frequentist estimate $\hat p$ is a function of the data and treats $p$ as fixed.  
+The Bayesian estimate is an expectation *of $p$ itself* under the posterior distribution.
+:::
+
+---
+
+::: {#exm-interpretations title=""}
+### Interpreting probability statements
+
+Decide whether each statement is *frequentist* or *Bayesian* in spirit.
+
+1. “If we repeated the survey many times, the method we use would produce intervals that capture $p$ about 95% of the time.”  
+2. “Given the data from this survey and our prior, there is a 95% probability that $p$ lies between 0.45 and 0.75.”
+:::
+
+::: {.callout-tip collapse="true"}
+### Solution
+
+1. **Frequentist.** This describes *long-run coverage* of a procedure over repeated samples with $p$ fixed.  
+2. **Bayesian.** This is a probability statement *about $p$ given the observed data* (a credible interval).
+:::
+
+
+## Further Reading
+
+- asdasdasds
