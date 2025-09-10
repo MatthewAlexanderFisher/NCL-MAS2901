@@ -1,0 +1,154 @@
+# Bayesian Intervals {#sec-bayesian-intervals}
+
+## Bayesian Credible Intervals
+
+A more useful summary of the posterior distribution is one which also reflects its variation.  
+
+For example, a $100(1-\alpha)\%$ **Bayesian credible interval** for $\theta$ is any region $C_\alpha$ that
+satisfies
+
+$$
+\mathrm{Pr}(\theta \in C_\alpha \mid \underline{x}) = 1-\alpha.
+$$
+
+If $\theta$ is a continuous quantity with posterior probability density function
+$\pi(\theta \mid \underline{x})$ then
+
+$$
+\int_{C_\alpha} \pi(\theta \mid \underline{x})\,d\theta = 1-\alpha.
+$$
+
+The usual correction is made for discrete $\theta$, that is, we
+take the largest region $C_\alpha$ such that
+$\mathrm{Pr}(\theta \in C_\alpha \mid \underline{x}) \leq 1-\alpha$.  
+
+Clearly these intervals are not unique, since there will be many
+intervals with the correct probability coverage for a given posterior
+distribution.
+
+---
+
+A $100(1-\alpha)\%$ **highest density interval (HDI)** for
+$\theta$ is the region
+
+$$
+C_\alpha = \{\theta :~ \pi(\theta \mid \underline{x}) \geq \gamma \},
+$$
+
+where $\gamma$ is chosen so that $\mathrm{Pr}(\theta \in C_\alpha \mid \underline{x}) = 1-\alpha$.  
+
+This region is sometimes called a *most plausible Bayesian credible interval*.  
+
+If the posterior distribution has many modes,
+then it is possible that the HDI will be the union of several
+disjoint regions. For example,
+
+$$
+C_\alpha = (a,b)\cup(c,d)\cup(e,f), \quad a<b<c<d<e<f.
+$$
+
+---
+
+### Interpretation of confidence intervals
+
+Suppose $C_B$ is a 95% Bayesian credible interval for $\theta$
+and $C_F$ is a 95% frequentist confidence interval for
+$\theta$. These intervals do not have the same interpretation:
+
+- The probability that $C_B$ contains $\theta$ is 0.95.  
+- The probability that $C_F$ contains $\theta$ is either 0 or 1
+  (since $\theta$ does not have a non-degenerate probability distribution).  
+- The interval $C_F$ covers the true value $\theta$ on 95% of
+  occasions — in repeated applications of the formula.  
+
+---
+
+::: {.example #exm-hdi-beta}
+### Beta HDI
+
+Suppose that the posterior distribution for $\theta$ is a
+$\mathrm{Beta}(1,24)$ distribution, with probability density function
+
+$$
+\pi(\theta \mid \underline{x}) = 24(1-\theta)^{23}, \quad 0<\theta<1.
+$$
+
+
+**Task.** Determine the $100(1-\alpha)\%$ HDI for~$\theta$.
+
+:::
+
+::: {#sol-hdi-beta}
+The HDI must include those values of $\theta$ with highest
+posterior density and so must take the form $C_\alpha=(0,b)$. The
+end-point $b$ must satisfy
+
+$$
+\int_0^b 24(1-\theta)^{23}\,d\theta = 1-\alpha.
+$$
+
+Now,
+
+$$
+\int_0^b 24(1-\theta)^{23}\,d\theta 
+= \left[-(1-\theta)^{24}\right]^b_0 = 1-(1-b)^{24}.
+$$
+
+Hence,
+
+$$
+1-(1-b)^{24} = 1-\alpha
+\quad\Longrightarrow\quad
+1-b=\alpha^{1/24}
+\quad\Longrightarrow\quad
+b=1-\alpha^{1/24}.
+$$
+
+Therefore, a $100(1-\alpha)\%$ HDI for $\theta$ is
+
+$$
+(0,\, 1-\alpha^{1/24}).
+$$
+:::
+
+---
+
+::: {.example #exm-hdi-normal}
+### Normal HDI 
+
+Suppose we have a random sample $\underline{x}e$ from a $\mathcal{N}(\mu,1/\tau)$
+distribution (where $\tau$ is known).  
+
+We have seen that, assuming vague prior knowledge, the posterior distribution is
+
+$$
+\mu \mid \underline{x} \sim \mathcal{N}\!\left(\bar x,\; \tfrac{1}{n\tau}\right).
+$$
+
+**Task.** Determine the $100(1-\alpha)\%$ HDI for~$\mu$.
+:::
+
+::: {#sol-hdi-normal}
+This distribution has a symmetric bell shape and so the HDI takes the
+form $C_\alpha=(a,b)$ with end-points
+
+$$
+a=\bar x - \frac{z_{\alpha/2}}{\sqrt{n\tau}}, 
+\qquad
+b=\bar x + \frac{z_{\alpha/2}}{\sqrt{n\tau}},
+$$
+
+where $z_\alpha$ is the upper $\alpha$-quantile of the $\mathcal{N}(0,1)$
+distribution.  
+
+Therefore, the 95% HDI for~$\mu$ is 
+
+$$
+\left(\bar x - \frac{1.96}{\sqrt{n\tau}},\;
+\bar x + \frac{1.96}{\sqrt{n\tau}}\right).
+$$
+
+Note that this interval is numerically identical to the 95% frequentist confidence interval for the (population) mean of a normal random sample with known variance.  
+
+However, the interpretation is very different.
+:::

@@ -28,6 +28,7 @@ We then use the observed data $\underline{x}$ to evaluate whether $H_0$ is plaus
 2. Use the statistical model to work out what kinds of data would be typical under $H_0$.
 3. Compare the actual data with this prediction. If the data look very unusual under $H_0$, this counts against the hypothesis.
 
+
 ---
 
 **Visualisation**
@@ -95,7 +96,7 @@ Plot.plot({
 
 ---
 
-## Test Statistics and the Testing Procedure
+## The Testing Procedure
 
 Working directly with the full data distribution can be complicated. Instead, we reduce the data to a **test statistic** $T(\underline{X})$ that captures the evidence relevant to $H_0$.
 
@@ -111,7 +112,9 @@ The general frequentist procedure is:
    * Otherwise, we **fail to reject $H_0$**[^accept-vs-fail-to-reject].
 
 
-## Types of Errors
+
+
+### Types of Errors
 
 Because decisions are based on data (which vary by chance), mistakes are inevitable:
 
@@ -119,5 +122,18 @@ Because decisions are based on data (which vary by chance), mistakes are inevita
 * **Type II Error:** failing to reject $H_0$ when the alternative is true.
 
 We will return to these concepts later when discussing test performance and power.
+
+
+
+### Deriving Test Statistics
+
+Suppose that we want to test
+
+
+## Sensitivity, Specificity and Power
+
+### Neyman-Pearson Lemma
+
+
 
 [^accept-vs-fail-to-reject]: It is common to say “reject $H_0$” when the $p$-value is small, and “fail to reject $H_0$” otherwise. Both phrases should be interpreted with care: rejecting $H_0$ does **not** prove it is false, and failing to reject $H_0$ does **not** prove it is true. Instead, hypothesis testing provides a decision rule about whether the data are sufficiently inconsistent with $H_0$ at a chosen significance level.

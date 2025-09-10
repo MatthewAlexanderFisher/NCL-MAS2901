@@ -25,3 +25,17 @@
   text-align: center !important;
   margin: 1em 0;
 }
+
+/* Let the text column shrink */
+.callout .callout-body-container { 
+  flex: 1 1 auto;
+  min-width: 0;     /* <- the crucial fix for flex overflow */
+}
+
+/* For minimal + no-icon, drop the icon column & flex row */
+.callout.callout-style-minimal .callout-body.d-flex .callout-icon.no-icon { display: none; }
+.callout.callout-style-minimal .callout-body.d-flex { display: block; }
+
+/* Safety nets for maths/code */
+.callout .mjx-container { max-width: 100%; overflow-x: auto; }
+.callout pre { white-space: pre-wrap; overflow-x: auto; }

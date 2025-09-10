@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>10&nbsp; Bayesian Hypothesis Testing – MAS2901: Statistical Inference</title>
+<title>8&nbsp; Bayesian Intervals – MAS2901: Statistical Inference</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,8 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../appendices/formula-sheet.html" rel="next">
-<link href="../../lectures/part4/9-freq-hypothesis-testing.html" rel="prev">
+<link href="../../lectures/part4/9-freq-hypothesis-testing.html" rel="next">
+<link href="../../lectures/part3/7-freq-interval-estimation.html" rel="prev">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
@@ -302,7 +302,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../lectures/part4/9-freq-hypothesis-testing.html">Part IV — Hypothesis Testing</a></li><li class="breadcrumb-item"><a href="../../lectures/part4/10-bayes-factors.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian Hypothesis Testing</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../lectures/part3/7-freq-interval-estimation.html">Part III - Interval Estimation</a></li><li class="breadcrumb-item"><a href="../../lectures/part3/8-bayes-interval-estimation.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bayesian Intervals</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -397,13 +397,13 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../lectures/part3/7-confidence-intervals.html" class="sidebar-item-text sidebar-link">
+  <a href="../../lectures/part3/7-freq-interval-estimation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequentist Interval Estimation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../lectures/part3/8-bayesian-hdis.html" class="sidebar-item-text sidebar-link">
+  <a href="../../lectures/part3/8-bayes-interval-estimation.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bayesian Intervals</span></span></a>
   </div>
 </li>
@@ -426,7 +426,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../lectures/part4/10-bayes-factors.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../lectures/part4/10-bayes-hypothesis-testing.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian Hypothesis Testing</span></span></a>
   </div>
 </li>
@@ -477,7 +477,10 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#formal-setup" id="toc-formal-setup" class="nav-link active" data-scroll-target="#formal-setup"><span class="header-section-number">10.1</span> Formal Setup</a></li>
+  <li><a href="#bayesian-credible-intervals" id="toc-bayesian-credible-intervals" class="nav-link active" data-scroll-target="#bayesian-credible-intervals"><span class="header-section-number">8.1</span> Bayesian Credible Intervals</a>
+  <ul class="collapse">
+  <li><a href="#interpretation-of-confidence-intervals" id="toc-interpretation-of-confidence-intervals" class="nav-link" data-scroll-target="#interpretation-of-confidence-intervals"><span class="header-section-number">8.1.1</span> Interpretation of confidence intervals</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -485,9 +488,9 @@ window.Quarto = {
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../lectures/part4/9-freq-hypothesis-testing.html">Part IV — Hypothesis Testing</a></li><li class="breadcrumb-item"><a href="../../lectures/part4/10-bayes-factors.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian Hypothesis Testing</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../lectures/part3/7-freq-interval-estimation.html">Part III - Interval Estimation</a></li><li class="breadcrumb-item"><a href="../../lectures/part3/8-bayes-interval-estimation.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bayesian Intervals</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian Hypothesis Testing</span></h1>
+<h1 class="title"><span id="sec-bayesian-intervals" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bayesian Intervals</span></span></h1>
 </div>
 
 
@@ -504,74 +507,149 @@ window.Quarto = {
 </header>
 
 
-<p>Recalling the <span class="xref-no-num"><a href="../part1/3-types-of-inference.html#sec-inference-tasks" class="quarto-xref">main inference tasks&nbsp;<span>3.2</span></a></span>, we now move from <em>interval estimation</em> to <em>hypothesis testing</em> in the <strong>Bayesian</strong> framework.</p>
-<p>The name <strong>Bayes factor testing</strong> comes from the idea of <em>comparing models</em>:</p>
-<ol type="1">
-<li>Propose two competing hypotheses (models) about the world.
-<ul>
-<li><strong>Null hypothesis</strong> <span class="math inline">\(H_0\)</span>: parameter lies in <span class="math inline">\(\Theta_0\)</span>.<br>
-</li>
-<li><strong>Alternative hypothesis</strong> <span class="math inline">\(H_1\)</span>: parameter lies in <span class="math inline">\(\Theta_1\)</span>.<br>
-</li>
-</ul></li>
-<li>Collect data <span class="math inline">\(\underline{x}\)</span>.<br>
-</li>
-<li>Use Bayes’ theorem to update the probability of each hypothesis.</li>
-</ol>
-<p>The key Bayesian tool is the <strong>Bayes factor</strong>, which quantifies how much the data shift the odds between <span class="math inline">\(H_0\)</span> and <span class="math inline">\(H_1\)</span>.</p>
+<section id="bayesian-credible-intervals" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="bayesian-credible-intervals"><span class="header-section-number">8.1</span> Bayesian Credible Intervals</h2>
+<p>A more useful summary of the posterior distribution is one which also reflects its variation.</p>
+<p>For example, a <span class="math inline">\(100(1-\alpha)\%\)</span> <strong>Bayesian credible interval</strong> for <span class="math inline">\(\theta\)</span> is any region <span class="math inline">\(C_\alpha\)</span> that satisfies</p>
+<p><span class="math display">\[
+\mathrm{Pr}(\theta \in C_\alpha \mid \underline{x}) = 1-\alpha.
+\]</span></p>
+<p>If <span class="math inline">\(\theta\)</span> is a continuous quantity with posterior probability density function <span class="math inline">\(\pi(\theta \mid \underline{x})\)</span> then</p>
+<p><span class="math display">\[
+\int_{C_\alpha} \pi(\theta \mid \underline{x})\,d\theta = 1-\alpha.
+\]</span></p>
+<p>The usual correction is made for discrete <span class="math inline">\(\theta\)</span>, that is, we take the largest region <span class="math inline">\(C_\alpha\)</span> such that <span class="math inline">\(\mathrm{Pr}(\theta \in C_\alpha \mid \underline{x}) \leq 1-\alpha\)</span>.</p>
+<p>Clearly these intervals are not unique, since there will be many intervals with the correct probability coverage for a given posterior distribution.</p>
 <hr>
-<section id="formal-setup" class="level2" data-number="10.1">
-<h2 data-number="10.1" class="anchored" data-anchor-id="formal-setup"><span class="header-section-number">10.1</span> Formal Setup</h2>
-<p>In Bayesian testing we compare two hypotheses:</p>
+<p>A <span class="math inline">\(100(1-\alpha)\%\)</span> <strong>highest density interval (HDI)</strong> for <span class="math inline">\(\theta\)</span> is the region</p>
 <p><span class="math display">\[
-H_0 : \theta \in \Theta_0,
-\qquad
-H_1 : \theta \in \Theta_1,
+C_\alpha = \{\theta :~ \pi(\theta \mid \underline{x}) \geq \gamma \},
 \]</span></p>
-<p>with corresponding <strong>prior probabilities</strong> <span class="math inline">\(\Pr(H_0)\)</span> and <span class="math inline">\(\Pr(H_1)\)</span>.</p>
-<p>Each hypothesis defines a <strong>marginal likelihood</strong> (or evidence):</p>
+<p>where <span class="math inline">\(\gamma\)</span> is chosen so that <span class="math inline">\(\mathrm{Pr}(\theta \in C_\alpha \mid \underline{x}) = 1-\alpha\)</span>.</p>
+<p>This region is sometimes called a <em>most plausible Bayesian credible interval</em>.</p>
+<p>If the posterior distribution has many modes, then it is possible that the HDI will be the union of several disjoint regions. For example,</p>
 <p><span class="math display">\[
-m_0(\xvec) = \int_{\Theta_0} f(\xvec \mid \theta)\,\pi_0(\theta)\,d\theta,
-\qquad
-m_1(\xvec) = \int_{\Theta_1} f(\xvec \mid \theta)\,\pi_1(\theta)\,d\theta.
-\]</span></p>
-<p>The <strong>Bayes factor</strong> in favour of <span class="math inline">\(H_1\)</span> over <span class="math inline">\(H_0\)</span> is</p>
-<p><span class="math display">\[
-B_{10} = \frac{m_1(\xvec)}{m_0(\xvec)}.
-\]</span></p>
-<ul>
-<li><span class="math inline">\(B_{10} &gt; 1\)</span>: data favour <span class="math inline">\(H_1\)</span>.<br>
-</li>
-<li><span class="math inline">\(B_{10} &lt; 1\)</span>: data favour <span class="math inline">\(H_0\)</span>.</li>
-</ul>
-<p>Posterior odds are obtained by multiplying prior odds by the Bayes factor:</p>
-<p><span class="math display">\[
-\frac{\Pr(H_1 \mid \xvec)}{\Pr(H_0 \mid \xvec)}
-= B_{10} \times \frac{\Pr(H_1)}{\Pr(H_0)}.
+C_\alpha = (a,b)\cup(c,d)\cup(e,f), \quad a&lt;b&lt;c&lt;d&lt;e&lt;f.
 \]</span></p>
 <hr>
-<p><strong>Visualisation</strong></p>
-<p>Suppose our model is</p>
-<p><span class="math display">\[
-X_i \mid \mu \sim \mathcal{N}(\mu, 10),
-\]</span></p>
-<p>and we want to test whether <span class="math inline">\(\mu = 200\)</span>:</p>
+<section id="interpretation-of-confidence-intervals" class="level3" data-number="8.1.1">
+<h3 data-number="8.1.1" class="anchored" data-anchor-id="interpretation-of-confidence-intervals"><span class="header-section-number">8.1.1</span> Interpretation of confidence intervals</h3>
+<p>Suppose <span class="math inline">\(C_B\)</span> is a 95% Bayesian credible interval for <span class="math inline">\(\theta\)</span> and <span class="math inline">\(C_F\)</span> is a 95% frequentist confidence interval for <span class="math inline">\(\theta\)</span>. These intervals do not have the same interpretation:</p>
 <ul>
-<li><span class="math inline">\(H_0: \mu = 200\)</span><br>
+<li>The probability that <span class="math inline">\(C_B\)</span> contains <span class="math inline">\(\theta\)</span> is 0.95.<br>
 </li>
-<li><span class="math inline">\(H_1: \mu \sim \mathcal{N}(200, 25)\)</span> (a vague prior centred on 200)</li>
+<li>The probability that <span class="math inline">\(C_F\)</span> contains <span class="math inline">\(\theta\)</span> is either 0 or 1 (since <span class="math inline">\(\theta\)</span> does not have a non-degenerate probability distribution).<br>
+</li>
+<li>The interval <span class="math inline">\(C_F\)</span> covers the true value <span class="math inline">\(\theta\)</span> on 95% of occasions — in repeated applications of the formula.</li>
 </ul>
-<p>We compare the <em>likelihood of the observed sample mean</em> under each hypothesis.</p>
-<p>// Parameters n = 30 sigma = 10 mu0 = 200</p>
-<p>// Slider for observed sample mean viewof xbar_obs = Inputs.range([mu0 - 3<em>sigma, mu0 + 3</em>sigma], {step: 0.5, value: mu0, label: md<code>Observed sample mean ${tex</code>{x}_{obs}<code>}</code>} )</p>
-<p>// Likelihood under H0 (point null) m0 = 1/(sigma/Math.sqrt(n)<em>Math.sqrt(2</em>Math.PI)) <em> Math.exp(-0.5</em>((xbar_obs - mu0)/(sigma/Math.sqrt(n)))**2)</p>
-<p>// Marginal likelihood under H1 (normal prior on mu) tau = 25 // prior variance for H1 post_var = 1 / (1/tau + n/sigma**2) post_mean = post_var * (mu0/tau + n*xbar_obs/sigma**2)</p>
-<p>// Under H1, the marginal distribution of xbar is Normal(mu0, sigma^2/n + tau) m1 = 1/Math.sqrt(2<em>Math.PI</em>(sigma<strong>2/n + tau)) <em> Math.exp(-0.5</em>((xbar_obs - mu0)</strong>2)/(sigma**2/n + tau))</p>
-<p>// Bayes factor B10 = m1/m0</p>
-<p>md<code>**Bayes factor** ${tex</code>B_{10}<code>} = ${B10.toFixed(3)}</code></p>
+<hr>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exm-hdi-beta" class="example theorem">
+<p><span class="theorem-title"><strong>Example 8.1 (Beta HDI)</strong></span> Suppose that the posterior distribution for <span class="math inline">\(\theta\)</span> is a <span class="math inline">\(\mathrm{Beta}(1,24)\)</span> distribution, with probability density function</p>
+<p><span class="math display">\[
+\pi(\theta \mid \underline{x}) = 24(1-\theta)^{23}, \quad 0&lt;\theta&lt;1.
+\]</span></p>
+<p><strong>Task.</strong> Determine the <span class="math inline">\(100(1-\alpha)\%\)</span> HDI for~<span class="math inline">\(\theta\)</span>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="sol-hdi-beta" class="proof solution">
+<p><span class="proof-title"><em>Solution 8.1</em>. </span>The HDI must include those values of <span class="math inline">\(\theta\)</span> with highest posterior density and so must take the form <span class="math inline">\(C_\alpha=(0,b)\)</span>. The end-point <span class="math inline">\(b\)</span> must satisfy</p>
+<p><span class="math display">\[
+\int_0^b 24(1-\theta)^{23}\,d\theta = 1-\alpha.
+\]</span></p>
+<p>Now,</p>
+<p><span class="math display">\[
+\int_0^b 24(1-\theta)^{23}\,d\theta
+= \left[-(1-\theta)^{24}\right]^b_0 = 1-(1-b)^{24}.
+\]</span></p>
+<p>Hence,</p>
+<p><span class="math display">\[
+1-(1-b)^{24} = 1-\alpha
+\quad\Longrightarrow\quad
+1-b=\alpha^{1/24}
+\quad\Longrightarrow\quad
+b=1-\alpha^{1/24}.
+\]</span></p>
+<p>Therefore, a <span class="math inline">\(100(1-\alpha)\%\)</span> HDI for <span class="math inline">\(\theta\)</span> is</p>
+<p><span class="math display">\[
+(0,\, 1-\alpha^{1/24}).
+\]</span></p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exm-hdi-normal" class="example theorem">
+<p><span class="theorem-title"><strong>Example 8.2 (Normal HDI)</strong></span> Suppose we have a random sample <span class="math inline">\(\underline{x}e\)</span> from a <span class="math inline">\(\mathcal{N}(\mu,1/\tau)\)</span> distribution (where <span class="math inline">\(\tau\)</span> is known).</p>
+<p>We have seen that, assuming vague prior knowledge, the posterior distribution is</p>
+<p><span class="math display">\[
+\mu \mid \underline{x} \sim \mathcal{N}\!\left(\bar x,\; \tfrac{1}{n\tau}\right).
+\]</span></p>
+<p><strong>Task.</strong> Determine the <span class="math inline">\(100(1-\alpha)\%\)</span> HDI for~<span class="math inline">\(\mu\)</span>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="sol-hdi-normal" class="proof solution">
+<p><span class="proof-title"><em>Solution 8.2</em>. </span>This distribution has a symmetric bell shape and so the HDI takes the form <span class="math inline">\(C_\alpha=(a,b)\)</span> with end-points</p>
+<p><span class="math display">\[
+a=\bar x - \frac{z_{\alpha/2}}{\sqrt{n\tau}},
+\qquad
+b=\bar x + \frac{z_{\alpha/2}}{\sqrt{n\tau}},
+\]</span></p>
+<p>where <span class="math inline">\(z_\alpha\)</span> is the upper <span class="math inline">\(\alpha\)</span>-quantile of the <span class="math inline">\(\mathcal{N}(0,1)\)</span> distribution.</p>
+<p>Therefore, the 95% HDI for~<span class="math inline">\(\mu\)</span> is</p>
+<p><span class="math display">\[
+\left(\bar x - \frac{1.96}{\sqrt{n\tau}},\;
+\bar x + \frac{1.96}{\sqrt{n\tau}}\right).
+\]</span></p>
+<p>Note that this interval is numerically identical to the 95% frequentist confidence interval for the (population) mean of a normal random sample with known variance.</p>
+<p>However, the interpretation is very different.</p>
+</div>
+</div>
+</div>
+</div>
 
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -1063,13 +1141,13 @@ document.addEventListener('DOMContentLoaded', function () {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../lectures/part4/9-freq-hypothesis-testing.html" class="pagination-link" aria-label="Frequentist Hypothesis Testing">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Frequentist Hypothesis Testing</span></span>
+      <a href="../../lectures/part3/7-freq-interval-estimation.html" class="pagination-link" aria-label="Frequentist Interval Estimation">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequentist Interval Estimation</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../appendices/formula-sheet.html" class="pagination-link" aria-label="Formula Sheet">
-        <span class="nav-page-text">Formula Sheet</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../lectures/part4/9-freq-hypothesis-testing.html" class="pagination-link" aria-label="Frequentist Hypothesis Testing">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Frequentist Hypothesis Testing</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

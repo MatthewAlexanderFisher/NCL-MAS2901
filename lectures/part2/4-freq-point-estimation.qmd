@@ -95,6 +95,7 @@ mutable lastXbar = null  // Store the previous xbar
 //| echo: false
 
 // --- Buttons at the top ---
+bodyFont = getComputedStyle(document.body).fontFamily
 
 // Helper to make a styled Inputs.button
 function styledButton(label, cls, options = {}) {
@@ -147,8 +148,10 @@ leftPlot = Plot.plot({
   height: 320,
   style: {
     background: "var(--plot-panel-bg)",
-    color: "var(--brand-fg)"           // drives 'currentColor'
-  },
+    color: "var(--brand-fg)",          // drives 'currentColor'
+    fontFamily: bodyFont, 
+    fontSize: 14,
+  }, 
   x: { label: "Data", domain: xDomain },
   y: { label: "Density" },
   marks: [
@@ -212,7 +215,9 @@ rightPlot = Plot.plot({
   height: 320,
   style: {                     // make the figure match your theme
     background: "var(--plot-panel-bg)",
-    color: "var(--brand-fg)"   // this drives 'currentColor'
+    color: "var(--brand-fg)",   // this drives 'currentColor'
+    fontFamily: bodyFont, 
+    fontSize: 14,
   },
   x: { label: "x̄", domain: mDomain },
   y: { label: "Density" },
@@ -455,10 +460,12 @@ viewof controls = {
 
 ```
 
-## Bias, Variance, MSE and Consistency
+## Properties of Estimators
+
+### Bias and Variance
 
 ::: {.definition #def-bias}
-**Bias.**  
+## Bias  
 The bias of an estimator $\hat{\theta}$ for parameter $\theta$ is
 
 $$
@@ -475,31 +482,6 @@ $$
 \mathrm{Var}(\hat{\theta}) = \mathrm{E}\!\big[(\hat{\theta}-\mathrm{E}[\hat{\theta}])^2\big].
 $$
 :::
-
-::: {.definition #def-mse}
-**Mean Squared Error (MSE).**  
-The MSE of $\hat{\theta}$ is defined as
-
-$$
-\mathrm{MSE}(\hat{\theta}) 
-= \mathrm{E}\!\big[(\hat{\theta}-\theta)^2\big] 
-= \mathrm{Var}(\hat{\theta}) + \mathrm{Bias}(\hat{\theta})^2.
-$$
-:::
-
-::: {.definition #def-consistency}
-**Consistency.**  
-An estimator $\hat{\theta}_n$ (depending on sample size $n$) is **consistent** if
-
-$$
-\hat{\theta}_n \;\xrightarrow{p}\; \theta 
-\quad \text{as } n \to \infty,
-$$
-
-i.e. it converges in probability to the true parameter value.
-:::
-
-### Examples
 
 ::: {.example #exm-bias1}
 ### Bias of the Sample Mean
@@ -546,6 +528,18 @@ which underestimates $\sigma^2$.
 That is why we divide by $n-1$ instead of $n$.
 :::
 
+### Mean-Squared Error
+
+::: {.definition #def-mse}
+**Mean Squared Error (MSE).**  
+The MSE of $\hat{\theta}$ is defined as
+
+$$
+\mathrm{MSE}(\hat{\theta}) 
+= \mathrm{E}\!\big[(\hat{\theta}-\theta)^2\big] 
+= \mathrm{Var}(\hat{\theta}) + \mathrm{Bias}(\hat{\theta})^2.
+$$
+:::
 
 ::: {.example #exm-mse1}
 ### MSE of Sample Mean
@@ -571,6 +565,21 @@ $$
 This shows how a biased estimator can still have low MSE if variance is reduced.
 :::
 
+### Consistency
+
+::: {.definition #def-consistency}
+**Consistency.**  
+An estimator $\hat{\theta}_n$ (depending on sample size $n$) is **consistent** if
+
+$$
+\hat{\theta}_n \;\xrightarrow{p}\; \theta 
+\quad \text{as } n \to \infty,
+$$
+
+i.e. it converges in probability to the true parameter value.
+:::
+
+
 ::: {.example #exm-consistency-samplemean}
 ### Consistency of $\bar{X}$
 
@@ -584,6 +593,8 @@ so the sample mean is a **consistent** estimator of $\mu$.
 :::
 
 ## Central Limit Theorem (CLT)
+
+The **central limit theorem** is of utmost importance.
 
 ::: {.definition #def-clt}
 ### Central Limit Theorem

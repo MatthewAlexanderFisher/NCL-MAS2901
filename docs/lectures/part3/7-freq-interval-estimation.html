@@ -65,7 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../lectures/part3/8-bayesian-hdis.html" rel="next">
+<link href="../../lectures/part3/8-bayes-interval-estimation.html" rel="next">
 <link href="../../lectures/part2/6-bayes-inference.html" rel="prev">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -339,7 +339,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../lectures/part3/7-confidence-intervals.html">Part III - Interval Estimation</a></li><li class="breadcrumb-item"><a href="../../lectures/part3/7-confidence-intervals.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequentist Interval Estimation</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../lectures/part3/7-freq-interval-estimation.html">Part III - Interval Estimation</a></li><li class="breadcrumb-item"><a href="../../lectures/part3/7-freq-interval-estimation.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequentist Interval Estimation</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -434,13 +434,13 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../lectures/part3/7-confidence-intervals.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../lectures/part3/7-freq-interval-estimation.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequentist Interval Estimation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../lectures/part3/8-bayesian-hdis.html" class="sidebar-item-text sidebar-link">
+  <a href="../../lectures/part3/8-bayes-interval-estimation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bayesian Intervals</span></span></a>
   </div>
 </li>
@@ -463,8 +463,8 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../lectures/part4/10-bayes-factors.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayes Factors</span></span></a>
+  <a href="../../lectures/part4/10-bayes-hypothesis-testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian Hypothesis Testing</span></span></a>
   </div>
 </li>
       </ul>
@@ -529,7 +529,7 @@ window.Quarto = {
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../lectures/part3/7-confidence-intervals.html">Part III - Interval Estimation</a></li><li class="breadcrumb-item"><a href="../../lectures/part3/7-confidence-intervals.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequentist Interval Estimation</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../lectures/part3/7-freq-interval-estimation.html">Part III - Interval Estimation</a></li><li class="breadcrumb-item"><a href="../../lectures/part3/7-freq-interval-estimation.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequentist Interval Estimation</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequentist Interval Estimation</span></h1>
 </div>
@@ -1330,7 +1330,7 @@ T = \frac{Z}{\sqrt{U/\nu}}, \quad Z \sim N(0,1), \; U \sim \chi^2_\nu, \; \text{
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>Recall from <a href="../part2/6-bayes-inference.html" class="quarto-xref"><span>Chapter 6</span></a> that Bayesians do not return a single “best guess,” but a full <strong>posterior distribution</strong> over parameter values. From this distribution we can compute <strong>summaries</strong> such as plausible ranges of <span class="math inline">\(\theta\)</span> (see <a href="8-bayesian-hdis.html" class="quarto-xref"><span>Chapter 8</span></a>), which play a role similar to confidence intervals but with a different interpretation.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>Recall from <a href="../part2/6-bayes-inference.html" class="quarto-xref"><span>Chapter 6</span></a> that Bayesians do not return a single “best guess,” but a full <strong>posterior distribution</strong> over parameter values. From this distribution we can compute <strong>summaries</strong> such as plausible ranges of <span class="math inline">\(\theta\)</span> (see <a href="8-bayes-interval-estimation.html" class="quarto-xref"><span>Chapter 8</span></a>), which play a role similar to confidence intervals but with a different interpretation.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -1839,7 +1839,7 @@ window._ojs.runtime.interpretFromScriptTags();
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../lectures/part3/8-bayesian-hdis.html" class="pagination-link" aria-label="Bayesian Intervals">
+      <a href="../../lectures/part3/8-bayes-interval-estimation.html" class="pagination-link" aria-label="Bayesian Intervals">
         <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bayesian Intervals</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>

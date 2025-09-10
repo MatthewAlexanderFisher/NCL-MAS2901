@@ -25,23 +25,29 @@ book:
         - lectures/part2/6-bayes-inference.qmd
     - part: "Part III - Interval Estimation"
       chapters:
-        - lectures/part3/7-confidence-intervals.qmd
-        - lectures/part3/8-bayesian-hdis.qmd
+        - lectures/part3/7-freq-interval-estimation.qmd
+        - lectures/part3/8-bayes-interval-estimation.qmd
     - part: "Part IV — Hypothesis Testing"
       chapters:
         - lectures/part4/9-freq-hypothesis-testing.qmd
-        - lectures/part4/10-bayes-factors.qmd
+        - lectures/part4/10-bayes-hypothesis-testing.qmd
     - part: "Additional Material"
       chapters:
         - appendices/formula-sheet.qmd
         - appendices/revision-sheet.qmd
         - appendices/distribution-explorer.qmd
         - appendices/question-bank.qmd
-  # navbar: 
-  #   search: true
   sidebar:
-    logo: "images/ncl_logo.png"   # path to logo
-
+    style: floating
+    search: true
+  navbar: 
+    title: ""
+    logo: images/ncl_logo_light.png
+    search: false
+  search:
+    location: sidebar
+    type: textbox
+    keyboard-shortcut: "F"
 
 bibliography: references.bib
 
@@ -66,8 +72,12 @@ format:
       - theming/floating-code.css
       - theming/font.css
       - theming/no-xref-suffix.css
+      - theming/scrollbar.css
+      - theming/nav-tabs.css
+      - theming/header.css
     include-after-body:
       - theming/no-xref-suffix.js
+      - theming/header.html
     include-in-header: 
       - theming/favicons.html
 
@@ -139,7 +149,6 @@ callouty-theorem:
       type: caution
       appearance: minimal
       collapse: false
-      icon: false
 
   # theorems types not specified in the metadata will be rendered as is
   cor: default # calloutify corollaries with default style
@@ -148,10 +157,8 @@ callouty-theorem:
     callout:  # also support default style here
       appearance: minimal
       type: note
+      collapse: false
 
 editor:
   render-on-save: true
 
-
-params:
-  plot-bg: "#ff0000"

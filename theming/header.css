@@ -1,0 +1,160 @@
+/* ============================
+   Header layout + sizing
+   ============================ */
+
+/* Thicker top navbar */
+#quarto-header nav.navbar {
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+}
+
+/* Make the container a positioning context */
+#quarto-header .navbar-container {
+  position: relative;
+}
+
+/* Brand container spans full width; kill centring from mx-auto */
+#quarto-header .navbar-brand-container {
+  position: relative;
+  width: 100%;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  min-height: 42px; /* matches logo height */
+}
+
+/* === Logo: FAR LEFT === */
+#quarto-header .navbar-logo {
+  position: absolute;
+  left: 0.75rem;          /* push to the left edge */
+  top: 50%;
+  transform: translateY(-50%);
+  width: auto;
+  display: block;
+}
+
+.navbar-logo {
+  height: 40px;   /* adjust to taste */
+  width: auto;
+  max-height: 40px;
+}
+
+/* Optional: keep the <a> wrapper from affecting flow */
+#quarto-header .navbar-brand-logo {
+  display: contents;
+}
+
+/* === Title: TRUE CENTRE === */
+#quarto-header .navbar-title {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  margin: 0;
+  text-align: center;
+
+  /* Tone down weight/size */
+  font-weight: 500;
+  font-size: 1.02rem;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+/* === Tools (toggle/search): FAR RIGHT === */
+#quarto-header .quarto-navbar-tools {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* ============================
+   Dark/Light toggle icon
+   ============================
+
+   Quarto adds the class ".alternate" to the toggle <a> when
+   the alternate colour scheme is active (dark in the HTML).
+   Use that to swap the icon. No dependence on BI classes.
+*/
+
+/* Make the toggle bigger and hide the inner <i> */
+#quarto-header .quarto-color-scheme-toggle {
+  width: 2.2rem;
+  height: 2.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+}
+#quarto-header .quarto-color-scheme-toggle i {
+  display: none !important;
+}
+
+/* Default icon (light mode): show MOON to indicate "switch to dark" */
+#quarto-header .quarto-color-scheme-toggle::after {
+  content: "☾";
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+/* When dark mode is active, Quarto sets .alternate on the toggle:
+   show SUN to indicate "switch to light" */
+#quarto-header .quarto-color-scheme-toggle.alternate::after {
+  content: "☀";
+}
+
+/* Optional hover affordance */
+#quarto-header .quarto-color-scheme-toggle:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+/* Secondary nav slight thickness */
+#quarto-header .quarto-secondary-nav .container-fluid {
+  min-height: 44px;
+}
+
+/* ============================
+   Colour tweaks for logo
+   ============================ */
+/* Default (light mode): dark ink
+#quarto-header .navbar-logo { color: #173e6f; }
+
+/* Dark mode: white ink */
+/* #quarto-header nav[data-bs-theme="dark"] .navbar-logo { color: var(--brand-fg); } */ 
+
+
+@media (max-width: 720px) {
+  /* Hide only the image; the anchor is already display: contents */
+  #quarto-header .navbar-logo {
+    display: none !important;
+  }
+
+  /* Let the title flow normally and centre it */
+  #quarto-header .navbar-title {
+    position: static;
+    transform: none;
+    display: block;
+    margin: 0.2rem auto;
+    text-align: center;
+    padding: 0 0rem;        /* keep clear of tools on the right */
+    font-size: 0.95rem;
+    line-height: 1.2;
+    word-break: break-word;
+  }
+
+  /* Keep tools at the far right */
+  #quarto-header .quarto-navbar-tools {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+/* Optional: slightly thicker navbar padding (keeps your preference) */
+#quarto-header nav.navbar {
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+}
