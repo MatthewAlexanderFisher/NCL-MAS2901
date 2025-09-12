@@ -1,4 +1,4 @@
-# Frequentist Point Estimation
+# Frequentist Point Estimation {#sec-freq-point-estimate}
 
 A **statistic** is any function of the sample
 
@@ -26,29 +26,111 @@ When we pick a statistic for the specific purpose of approximating a parameter $
 
 An estimator is a random variable; an estimate is its realised value.
 
+
 ### Sample Mean and Variance
 
+Two of the most important estimators are the sample mean and sample variance.
+
 ::: {.definition #def-sample-mean}
-**Sample Mean.**  
+#### Sample Mean
 The sample mean of a **random sample** $X_1,\ldots,X_n$ is 
 
 $$
 \bar{X} = \frac{1}{n}\sum_{i=1}^n X_i.
 $$
+
 :::
 
-::: {.definition #def-sample-variance}
-**Sample Variance.**  
-For a **random sample** $X_1,\ldots,X_n$, the sample variance is
+For observed data $x_1,\ldots,x_n$, the corresponding **estimate** is
 
 $$
-s^2 = \frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X})^2.
+\bar x \;=\; \frac{1}{n}\sum_{i=1}^n x_i,
 $$
+
+and we will frequently use the shorthand
+
+$$
+\sum_{i=1}^n x_i \;=\; n\,\bar x.
+$$
+
+::: {.definition #def-sample-variance}
+#### Sample Variance
+
+For a **random sample** $X_1,\ldots,X_n$, the (unbiased) sample variance is
+
+$$
+S^2 \;=\; \frac{1}{n-1}\sum_{i=1}^n (X_i-\bar X)^2.
+$$
+
+:::
+
+For observed data $x_1,\ldots,x_n$, the corresponding estimate is
+
+$$
+s^2 \;=\; \frac{1}{n-1}\sum_{i=1}^n (x_i-\bar x)^2.
+$$
+
+::: {.remark #rem-sample-variance}
+#### Why $n-1$?
+The factor $\tfrac{1}{n-1}$ in the definition of $S^2$ is called **Bessel’s correction**. 
+
+It accounts for the fact that the deviations $(X_i-\bar X)$ satisfy the constraint $\sum_{i=1}^n (X_i-\bar X)=0$, leaving only $n-1$ degrees of freedom. 
+
+Under an i.i.d. model with finite variance $\sigma^2$, this choice makes $S^2$ *unbiased*:
+$$
+\mathrm{E}[S^2]=\sigma^2.
+$$
+
+See @exm-bias-sv for more details.
+:::
+
+The following representation of the **sample variance** is convenient in *theoretical derivations* (e.g. the unbiasedness of $S^2$) and in *practice*, where precomputed totals $\sum_i X_i$ and $\sum_i X_i^2$ allow immediate evaluation of $S^2$.
+
+::: {.proposition #prp-sv-rewrite}
+
+#### Alternative Form of the Sample Variance
+
+For a **random sample** $X_1,\ldots,X_n$ with sample mean $\bar X$, the <span class="xref-no-num">[sample variance @def-sample-variance]</span> admits the *computational identity*
+$$
+S^2 \;=\; \frac{1}{n-1}\left(\sum_{i=1}^n X_i^{2}\;-\; n\,\bar X^{\,2}\right).
+$$
+This is often convenient in deriving properties of the sample variance and, in practice, when sums of squares are already available.
+:::
+
+::: {#prf-sv-rewrite}
+
+Starting from @def-sample-variance and expanding the quadratic, we have
+$$
+S^2=\frac{1}{n-1}\sum_{i=1}^n (X_i-\bar X)^2,
+$$
+expand the square and sum term-by-term:
+$$
+\sum_{i=1}^n (X_i-\bar X)^2
+= \sum_{i=1}^n \bigl(X_i^2 - 2\bar X\,X_i + \bar X^{\,2}\bigr)
+= \sum_{i=1}^n X_i^2 \;-\; 2\bar X \sum_{i=1}^n X_i \;+\; \sum_{i=1}^n \bar X^{\,2}.
+$$
+Since $\sum_{i=1}^n X_i = n\bar X$ and $\sum_{i=1}^n \bar X^{\,2}= n\bar X^{\,2}$, this becomes
+$$
+\sum_{i=1}^n (X_i-\bar X)^2
+= \sum_{i=1}^n X_i^2 \;-\; 2n\bar X^{\,2} \;+\; n\bar X^{\,2}
+= \sum_{i=1}^n X_i^2 \;-\; n\bar X^{\,2}.
+$$
+Dividing by $n-1$ yields the stated identity.
 :::
 
 ### The Randomness of Estimators
 
-The **randomness** of an estimator $\hat{\theta}$ is due to randomness of the sample being plugged into the function.
+An **estimator** is a rule that turns a random sample into a number:
+
+$$
+\hat\theta \;=\; \hat{\theta}(X_1,\ldots,X_n).
+$$
+
+Since $X_1,\ldots,X_n$ are random variables, the output $\hat\theta$ is **also a random variable**. Its value changes from sample to sample; only after we observe data $(x_1,\ldots,x_n)$ do we get the **estimate** $\hat\theta_{\text{obs}}=\hat{\theta}(x_1,\ldots,x_n)$, a fixed number.
+
+---
+
+**Visualisation.** The left panel shows one random sample of size $n$ and its sample mean $\bar x$. The right panel approximates the **sampling distribution of $\bar X$** by repeatedly drawing fresh samples of size $n$ from the same model (parameters held fixed) and plotting the resulting means - only the data vary from run to run.
 
 ```{ojs}
 //| echo: false
@@ -247,17 +329,6 @@ rightPlot = Plot.plot({
 // ========= Display =========
 
 
-// html`<div style="
-//   display:flex;
-//   align-items:center;
-//   gap:10px;
-//   margin-bottom:6px;
-//   width:100%;
-// ">
-//   <span style="display:inline-flex;">${viewof resample}</span>
-//   <span style="flex:1 1 auto; min-width:100px;"></span>  <!-- flexible spacer that can shrink -->
-//   <span style="display:inline-flex;">${viewof reset}</span>
-// </div>`
 {
   // Make the forms behave nicely in the grid
   for (const f of [viewof resample, viewof reset]) {
@@ -460,32 +531,97 @@ viewof controls = {
 
 ```
 
-## Properties of Estimators
+---
 
-### Bias and Variance
+::: {#def-sampling-distribution}
+#### Sampling Distribution
+
+The **sampling distribution** of an estimator $\hat\theta=\hat{\theta}(X_1,\ldots,X_n)$ is the probability distribution of $\hat\theta$ induced by the joint distribution of $(X_1,\ldots,X_n)$.
+:::
+
+The <span class="xref-no-num">[properties @sec-estimator-properties]</span> of an estimator, such as *bias* and *standard error*, are defined via this distribution.
+
+In general, however, deriving an exact sampling distribution is **hard**, because:
+
+1. It depends on the chosen **statistical model** for the data (the distribution of $X_i$).  
+2. The estimator $\hat\theta$ may be a **complicated/nonlinear function** of the sample.
+
+In a few special cases, however, we can derive the full sampling distribution of the estimator.
+
+::: {.example #exm-normal-sample-mean}
+#### Normal Random Sample: Sampling Distribution of $\bar{X}$
+
+If
+$$
+X_1,\dots,X_n \mid \mu,\sigma^2 \overset{\text{iid}}{\sim} \mathcal{N}(\mu,\sigma^2),
+$$
+then
+$$
+\bar{X} \mid \mu,\sigma^2 \;\sim\; \mathcal{N}\!\left(\mu,\ \frac{\sigma^2}{n}\right).
+$$
+:::
+
+::: {.solution #sol-normal-sample-mean}
+Averages are linear combinations: $\bar X=\tfrac1n\sum_{i=1}^n X_i$. By the <span class="xref-no-num">[properties of the normal distribution @sec-normal-properties]</span>, a linear combination of independent Normal variables is Normal. Moreover,
+$$
+\mathrm{E}[\bar X]=\tfrac1n\sum \mathrm{E}[X_i]=\mu,\qquad
+\mathrm{Var}(\bar X)=\tfrac{1}{n^2}\sum \mathrm{Var}(X_i)=\frac{\sigma^2}{n}.
+$$
+So $\bar X\sim \mathcal N\!\left(\mu,\sigma^2/n\right)$.
+:::
+
+
+::: {.example #exm-normal-sample-mean}
+#### Normal Random Sample: Sampling Distribution of $S^2$
+
+If
+$$
+X_1,\dots,X_n \mid \mu,\sigma^2 \overset{\text{iid}}{\sim} \mathcal{N}(\mu,\sigma^2),
+$$
+then
+$$
+\bar{X} \mid \mu,\sigma^2 \;\sim\; \mathcal{N}\!\left(\mu,\ \frac{\sigma^2}{n}\right).
+$$
+:::
+
+::: {.solution #sol-normal-sample-mean}
+Averages are linear combinations: $\bar X=\tfrac1n\sum_{i=1}^n X_i$. By the <span class="xref-no-num">[properties of the normal distribution @sec-normal-properties]</span>, a linear combination of independent Normal variables is Normal. Moreover,
+$$
+\mathrm{E}[\bar X]=\tfrac1n\sum \mathrm{E}[X_i]=\mu,\qquad
+\mathrm{Var}(\bar X)=\tfrac{1}{n^2}\sum \mathrm{Var}(X_i)=\frac{\sigma^2}{n}.
+$$
+So $\bar X\sim \mathcal N\!\left(\mu,\sigma^2/n\right)$.
+:::
+
+
+## Properties of Estimators {#sec-estimator-properties}
+
+When we use a statistic to estimate a parameter, we want to know how *good* it is. Three core ideas are **bias**, **variance**, and **standard error**.
+
+::: {.remark #rem-estimators}
+These properties can often be studied without the full sampling distribution: it is enough to work with **moments** (expectations/variances) of $\hat\theta$.  
+:::
+
+### Bias, Variance, and Standard Error
 
 ::: {.definition #def-bias}
-## Bias  
-The bias of an estimator $\hat{\theta}$ for parameter $\theta$ is
+
+### Bias of an Estimator
+
+The **bias** of an estimator $\hat{\theta}$ for a parameter $\theta$ is the difference between its expected value and the true parameter value:
 
 $$
 \mathrm{Bias}(\hat{\theta}) = \mathrm{E}[\hat{\theta}] - \theta.
 $$
-If $\mathrm{Bias}(\hat{\theta}) = 0$, the estimator is **unbiased**.
-:::
 
-::: {.definition #def-variance}
-**Variance.**  
-The variance of an estimator $\hat{\theta}$ is simply
-
-$$
-\mathrm{Var}(\hat{\theta}) = \mathrm{E}\!\big[(\hat{\theta}-\mathrm{E}[\hat{\theta}])^2\big].
-$$
+* If $\mathrm{Bias}(\hat{\theta}) = 0$, the estimator is called **unbiased**.
+* Otherwise, it is **biased**: it systematically over- or under-estimates $\theta$.
 :::
 
 ::: {.example #exm-bias1}
-### Bias of the Sample Mean
-For $X_1,\dots,X_n \overset{iid}{\sim}$ distribution with mean $\mu$:
+#### Sample Mean
+
+If $X_1,\dots,X_n \overset{\text{iid}}{\sim} \mathrm{Distribution}(\mu,\sigma^2)$ with mean $\mu$, then
 
 $$
 \mathrm{E}[\bar{X}] = \mu
@@ -493,13 +629,27 @@ $$
 \mathrm{Bias}(\bar{X}) = 0.
 $$
 
-So the sample mean is **unbiased** for $\mu$.
+So the sample mean $\bar{X}$ is an **unbiased** estimator of $\mu$.
 :::
 
+::: {.definition #def-variance}
+
+### Variance of an Estimator
+
+The variance measures how much the estimator fluctuates around its expectation:
+
+$$
+\mathrm{Var}(\hat{\theta}) = \mathrm{E}\!\big[(\hat{\theta}-\mathrm{E}[\hat{\theta}])^2\big].
+$$
+
+A smaller variance means the estimator is more **concentrated** and less “noisy.”
+:::
 
 ::: {.example #exm-variance-sm}
-### Variance of the Sample Mean  
-If $\mathrm{Var}(X_i) = \sigma^2$:
+
+#### Variance of the Sample Mean
+
+If $\mathrm{Var}(X_i) = \sigma^2$, then
 
 $$
 \mathrm{Var}(\bar{X}) 
@@ -507,44 +657,147 @@ $$
 = \frac{\sigma^2}{n}.
 $$
 
-So as $n$ grows, the estimator becomes more concentrated around $\mu$.
+So as $n$ increases, $\bar{X}$ becomes more tightly clustered around $\mu$.
 :::
 
 ::: {.example #exm-bias-sv}
-### Bias of the Sample Variance
-If we instead used the “naïve” variance
+#### Bias of the Sample Variance
 
+Let $X_1,\ldots,X_n$ be i.i.d. with 
+$$ 
+\mathrm{E}[X_i]=\mu \quad \text{and} \quad \mathrm{Var}(X_i)=\sigma^2<\infty.
 $$
-s^2_{naive} = \frac{1}{n}\sum_{i=1}^n (X_i - \bar{X})^2,
+Consider the class of estimators
 $$
-
-then
-
+S_c^{2} \;=\; c \sum_{i=1}^n (X_i-\bar X)^2.
 $$
-\mathrm{E}[s^2_{naive}] = \frac{n-1}{n}\sigma^2,
-$$
-
-which underestimates $\sigma^2$.  
-That is why we divide by $n-1$ instead of $n$.
+Find $c$ such that $S_c^{2}$ is **unbiased** for $\sigma^2$.
 :::
 
-### Mean-Squared Error
+::: {.sol #sol-bias-sv}
+
+---
+
+**Note:**
+In the following, we use the fact that, for any random variable $Y$, 
+$$
+\mathrm{Var}(Y) = \mathrm{E}[Y^2] - \mathrm{E}[Y]^2 \Rightarrow \mathrm{E}[Y^2] = \mathrm{Var}(Y) + \mathrm{E}[Y]^2. 
+$$
+
+--- 
+
+We seek $c$ such that $\mathrm{E}[S_c^{2}] = \sigma^2$.
+
+Using <span class="xref-no-num">[the computational identity @prp-sv-rewrite]</span>,
+$$
+\sum_{i=1}^n (X_i-\bar X)^2 \;=\; \sum_{i=1}^n X_i^2 \;-\; n\,\bar X^{\,2}.
+$$
+
+Hence, taking expectations termwise,
+$$
+\mathrm{E}[X_i^2]=\sigma^2+\mu^2,\qquad
+\mathrm{E}[\bar X^{\,2}]=\mathrm{Var}(\bar X)+\{\mathrm{E}[\bar X]\}^2=\frac{\sigma^2}{n}+\mu^2.
+$$
+Therefore
+$$
+\mathrm{E}\!\left[\sum_{i=1}^n (X_i-\bar X)^2\right]
+= n(\sigma^2+\mu^2) - n\!\left(\frac{\sigma^2}{n}+\mu^2\right)
+= (n-1)\sigma^2.
+$$
+It follows that
+$$
+\mathrm{E}[S_c^{2}] = c\,(n-1)\sigma^2.
+$$
+Unbiasedness $\mathrm{E}[S_c^{2}]=\sigma^2$ gives $c=\dfrac{1}{n-1}$.
+
+**Conclusion.** The unbiased estimator is
+$$
+S^{2} \;=\; \frac{1}{n-1}\sum_{i=1}^n (X_i-\bar X)^2.
+$$
+:::
+
+::: {.remark #rem-bias-sv-notes}
+#### Notes on Example @exm-bias-sv
+
+- **Distributional assumptions.** No Normality is required: the conclusion holds for i.i.d. observations with finite variance, $\mathrm{Var}(X_i)=\sigma^2<\infty$.
+- **MLE under Normality.** If the data are Normal, the maximum-likelihood estimator is
+  $$
+  \hat\sigma^2_{\text{MLE}}=\frac{1}{n}\sum_{i=1}^n (X_i-\bar X)^2,
+  $$
+  which is **biased downward**:
+  $$
+  \mathrm{E}\!\left[\hat\sigma^2_{\text{MLE}}\right]=\frac{n-1}{n}\,\sigma^2
+  \quad\big(\text{bias}=-\sigma^2/n\big).
+  $$
+  See @exm-normal-mu-mle for full details.
+:::
+
+::: {.definition #def-se}
+
+### Standard Error
+
+The **standard error** of an estimator $\hat{\theta}$ of $\theta$, is just the *standard deviation* of the estimator:
+
+$$
+\mathrm{S.E.}(\hat{\theta}) = \sqrt{\mathrm{Var}(\hat{\theta})}.
+$$
+
+It gives a scale for how much we expect the estimator to vary from sample to sample.
+:::
+
+
+
+### Mean Squared Error (MSE)
+
+Bias and variance both matter. The **mean squared error (MSE)** combines them into a single measure of accuracy.
+
+::: {.definition #def-error}
+
+### Error
+
+The **error** of an estimator is the difference between the estimate and the true parameter:
+
+$$
+\mathrm{Error}(\hat{\theta}) = \hat{\theta} - \theta.
+$$
+:::
+
+However, 
+
+1. The error is random (depends on the sample).
+2. It can be positive or negative (so errors may “cancel out”).
+
+To overcome this, we square the error and take its expectation.
 
 ::: {.definition #def-mse}
-**Mean Squared Error (MSE).**  
-The MSE of $\hat{\theta}$ is defined as
+
+### Mean Squared Error (MSE)
+
+The **MSE** of an estimator $\hat{\theta}$ is
 
 $$
 \mathrm{MSE}(\hat{\theta}) 
-= \mathrm{E}\!\big[(\hat{\theta}-\theta)^2\big] 
-= \mathrm{Var}(\hat{\theta}) + \mathrm{Bias}(\hat{\theta})^2.
+= \mathrm{E}\!\big[(\hat{\theta}-\theta)^2\big].
 $$
-:::
 
+This measures the *average squared distance* between the estimator and the truth.
+:::
 ::: {.example #exm-mse1}
 ### MSE of Sample Mean
 
-Suppose we estimate $\mu$ with $\hat{\mu} = c\bar{X}$, where $c$ is a constant.
+Suppose we have a random sample
+
+$$
+X_1,\dots,X_n \mid \underline{\theta} \overset{iid}{\sim} \mathrm{Distribution}(\underline{\theta})
+$$
+
+and we wish to estimate its *population mean* $\mu$ with $\hat{\mu} = c\bar{X}$, where $c$ is a constant.
+
+Compute the MSE of this estimator.
+:::
+
+::: {#sol-mse1}
+
 
 - Bias:  
 $$
@@ -563,7 +816,52 @@ $$
 $$
 
 This shows how a biased estimator can still have low MSE if variance is reduced.
+
 :::
+
+## Central Limit Theorem (CLT)
+
+::: {.thm #thm-clt}
+### Central Limit Theorem (CLT)
+Let $X_1, X_2, \ldots$ be an infinite sequence of **independent and identically distributed** random variables with finite mean $\mu=\mathrm{E}[X_1]$ and finite variance $\sigma^2=\mathrm{Var}(X_1)<\infty$.  
+Define the sample mean
+$$
+\bar X_n \;=\; \frac{1}{n}\sum_{i=1}^n X_i.
+$$
+Then, **regardless of the original distribution of the $X_i$**,
+$$
+\frac{\bar X_n - \mu}{\sigma/\sqrt{n}} \;\xrightarrow{\,d\,}\; \mathcal N(0,1)\quad\text{as } n\to\infty.
+$$
+:::
+
+::: {#prf-clt}
+We do not give a proof here. An outline is provided in separate practice exercises (not examinable).
+
+*Note.* The notation $\xrightarrow{d}$ means **convergence in distribution**: the distribution of the random variable on the left approaches the distribution on the right as $n$ grows.
+:::
+
+The CLT is remarkable: it tells us that **whatever the original distribution** of the data, the **sample mean** is approximately Normal for sufficiently large $n$, and the approximation **improves** as $n$ increases.
+
+In practice, for a *reasonable* sample size we may write
+$$
+\bar X_n \;\approx\; \mathcal N\!\left(\mu,\ \frac{\sigma^2}{n}\right),
+$$
+not only for Normal samples but for many non-Normal populations as well. What counts as “reasonable” depends on how skewed/heavy-tailed the original distribution is; often $n>20$ suffices, and in many settings even smaller $n$ will do.
+
+Because $\bar X_n = \tfrac{1}{n}\sum_{i=1}^n X_i$, the CLT also yields an approximation for **sums**:
+$$
+\sum_{i=1}^n X_i \;\approx\; \mathcal N\!\left(n\mu,\ n\sigma^2\right).
+$$
+
+::: {.callout-warning}
+### Common misconception
+ The CLT does **not** say the *data* become Normal; it says the **distribution of the sample mean** becomes approximately Normal as $n$ grows.
+:::
+
+
+## Asymptotic Properties of Estimators
+
+An **asymptotic** property of an estimator is a characterisation that holds in the limit as the number of data points $n\rightarrow \infty$.
 
 ### Consistency
 
@@ -592,18 +890,3 @@ $$
 so the sample mean is a **consistent** estimator of $\mu$.
 :::
 
-## Central Limit Theorem (CLT)
-
-The **central limit theorem** is of utmost importance.
-
-::: {.definition #def-clt}
-### Central Limit Theorem
-
-If $X_1,\dots,X_n \overset{iid}{\sim}$ distribution with mean $\mu$ and variance $\sigma^2 < \infty$, then
-
-$$
-\frac{\bar{X}-\mu}{\sigma/\sqrt{n}} \;\xrightarrow{d}\; N(0,1).
-$$
-:::
-
-The CLT explains why many estimators (like $\bar{X}$) are approximately normal in large samples, which is crucial for constructing confidence intervals and hypothesis tests.

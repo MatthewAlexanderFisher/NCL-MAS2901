@@ -2,10 +2,10 @@ project:
   type: book
   output-dir: docs
 
-execute:
-  engine: jupyter
+# execute:
+#   engine: jupyter
 
-jupyter: mas2901
+# jupyter: mas2901
 
 book:
   title: "MAS2901: Statistical Inference"
@@ -68,7 +68,7 @@ format:
       - callouty-theorem
     css: 
       - theming/math-scroll.css
-      - theming/colors.css
+      - theming/callout-style.css
       - theming/floating-code.css
       - theming/font.css
       - theming/no-xref-suffix.css
@@ -77,7 +77,8 @@ format:
       - theming/header.css
       - theming/question-bank.css
     include-after-body:
-      - theming/no-xref-suffix.js
+      - theming/no-xref-suffix.html
+      - theming/close-codefold.html
       - theming/header.html
     include-in-header: 
       - theming/favicons.html

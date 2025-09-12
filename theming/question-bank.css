@@ -1,8 +1,18 @@
 .question.callout { margin: 0.85rem 0; }
 .tagbar { margin-top: .5rem; }
-.tag { display: inline-block; padding: .2rem .55rem; border-radius: 999px; 
-       font-size: .8rem; margin: 0 .35rem .35rem 0; 
-       background: var(--brand-mint, #eefbf1); border: 1px solid #d7efe0; }
+
+.tag {
+  display: inline-block;
+  padding: .2rem .55rem;
+  border-radius: 999px;
+  font-size: .8rem;
+  margin: 0 .35rem .35rem 0;
+
+  background: var(--brand-mint, #183126);
+  border: 1px solid #d7efe0;
+  color: var(--brand-fg, #333333);   /* <- force correct font color */
+}
+
 .filterbox { margin-bottom: 1rem; }
 
 .difficulty { font-size: .9rem; margin-bottom: .35rem; opacity: .9; }
@@ -29,7 +39,13 @@
 
 .token-label { display:block; margin-bottom:.35rem; }
 .token-autocomplete { position: relative; }
-.token-input { width: 100%; }
+.token-input {
+  width: 100%;
+  color: var(--brand-fg, #333333);     /* text colour */
+  border: 1px solid var(--border, #ddd);
+  border-radius: .35rem;
+  padding: .35rem .5rem;
+}
 
 .token-suggestions {
   position: absolute; left: 0; right: 0; z-index: 20;
@@ -44,5 +60,12 @@
   padding: .45rem .6rem; cursor: pointer;
 }
 .token-suggestion:hover, .token-suggestion.active {
-  background: var(--plot-panel-bg, #f7f9fb);
+  background: var(--brand-teal-hover, #f7f9fb);
 }
+
+/* ensure text isn’t inheriting a weird color */
+.token-suggestions { color: inherit; }
+/* if any ancestor has overflow hidden, the list can be clipped; avoid that on the wrapper */
+.token-autocomplete { position: relative; overflow: visible; }
+/* make sure hidden actually hides (Bootstrap sometimes meddles) */
+.token-suggestions[hidden] { display: none !important; }

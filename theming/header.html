@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const img = brandContainer && brandContainer.querySelector('img.navbar-logo');
   if (!brandContainer || !img) return;
 
-  // 2) Build an <a> like Quarto's, and inject your inline SVG inside it
+  // 2) Build an <a> like Quarto's, and inject inline SVG inside it
   const a = document.createElement('a');
   a.className = 'navbar-brand navbar-brand-logo';
   a.href = (img.closest('a') && img.closest('a').getAttribute('href')) || '/';

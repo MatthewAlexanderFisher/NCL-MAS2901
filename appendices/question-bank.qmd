@@ -1,6 +1,10 @@
 # Question Bank {.unnumbered}
 
 ```{ojs}
+bodyFont = getComputedStyle(document.body).fontFamily
+```
+
+```{ojs}
 // reactive vars (visible to later cells)
 allQuestions = Array.from(document.querySelectorAll('.question'))
 
@@ -43,41 +47,74 @@ allTags = Array.from(new Set(
 
 ```{ojs}
 viewof typed = {
+  // --- DOM
   const wrapper = html`<div class="token-autocomplete"></div>`;
   const labelEl = html`<label class="token-label">Filter by tags (type, space-separated):</label>`;
   const input   = html`<input class="token-input" type="text" placeholder="e.g. bayes probability">`;
-  const list    = html`<div class="token-suggestions" role="listbox" hidden></div>`;
-  wrapper.append(labelEl, input, list);
+  wrapper.append(labelEl, input);
 
+  // --- PORTAL: suggestions list lives at document.body so it can overlay everything
+  const list = html`<div class="token-suggestions" role="listbox" hidden></div>`;
+  document.body.appendChild(list);
+
+  // Make sure it floats above all content
+  list.style.position = "fixed";
+  list.style.zIndex = "9999"; // high z-index to overlay everything
+
+  // --- value plumbing
   Object.defineProperty(wrapper, "value", {
-    get(){ return input.value; },
-    set(v){ input.value = v ?? ""; }
+    get() { return input.value; },
+    set(v) { input.value = v ?? ""; }
   });
 
+  // --- helpers
+  const TAGS = () => (typeof allTags !== "undefined" ? allTags : []);
   const tokens = () => input.value.split(/\s+/).filter(Boolean);
   const lastToken = () => (input.value.match(/(?:^|\s)(\S*)$/)?.[1]) ?? "";
   const pretty = t => t.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase());
 
+  // Position portal directly below the input, matching its width
+  const alignList = () => {
+    const r = input.getBoundingClientRect();
+    list.style.left = `${r.left}px`;
+    list.style.top  = `${r.bottom + 4}px`;
+    list.style.width = `${r.width}px`;
+  };
+
+  // --- render suggestions
+  let selectedIndex = -1;
+  const applyActiveStyles = () => {
+    const items = Array.from(list.children);
+    items.forEach((el, i) => el.classList.toggle("active", i === selectedIndex));
+  };
+
   function renderSuggestions() {
     const q = lastToken().toLowerCase();
     const already = new Set(tokens().map(s => s.toLowerCase()));
-    const candidates = q ? allTags.filter(t => t.toLowerCase().startsWith(q) && !already.has(t.toLowerCase())) : [];
+    const tags = TAGS();
+
+    const candidates = q
+      ? tags.filter(t => t.toLowerCase().startsWith(q) && !already.has(t.toLowerCase()))
+      : [];
+
     list.innerHTML = "";
     if (candidates.length === 0) { list.hidden = true; return; }
+
     for (const t of candidates.slice(0, 8)) {
       const item = html`<div class="token-suggestion" role="option" data-token="${t}">${pretty(t)}</div>`;
       item.addEventListener("mousedown", (e) => { e.preventDefault(); acceptSuggestion(t); });
       list.appendChild(item);
     }
-    list.hidden = false;
     selectedIndex = -1;
+    applyActiveStyles();
+    list.hidden = false;
+    alignList(); // ensure correct position when shown
   }
 
   function commit() {
-    // normalise: collapse spaces and ensure trailing space if non-empty
     const parts = tokens();
     input.value = parts.join(" ") + (parts.length ? " " : "");
-    wrapper.dispatchEvent(new Event("input", {bubbles:true})); // <-- COMMIT
+    wrapper.dispatchEvent(new Event("input", { bubbles: true }));
   }
 
   function acceptSuggestion(tag) {
@@ -87,22 +124,22 @@ viewof typed = {
     if (!set.has(tag.toLowerCase())) parts.push(tag);
     input.value = parts.filter(Boolean).join(" ") + " ";
     list.hidden = true;
-    commit();              // <-- commit on pick
+    commit();
     input.focus();
   }
 
-  let selectedIndex = -1;
   function moveSelection(delta) {
     const items = Array.from(list.children);
     if (items.length === 0) return;
     selectedIndex = (selectedIndex + delta + items.length) % items.length;
-    items.forEach((el, i) => el.classList.toggle("active", i === selectedIndex));
+    applyActiveStyles();
+    if (selectedIndex >= 0) items[selectedIndex].scrollIntoView({ block: "nearest" });
   }
 
-  // TYPE: render suggestions only (no commit)
+  // --- events
   input.addEventListener("input", renderSuggestions);
+  input.addEventListener("focus", () => { alignList(); }); // realign on focus
 
-  // ENTER/ARROWS: navigate or commit
   input.addEventListener("keydown", (e) => {
     if (!list.hidden && (e.key === "ArrowDown" || e.key === "ArrowUp")) {
       e.preventDefault(); moveSelection(e.key === "ArrowDown" ? +1 : -1); return;
@@ -113,7 +150,6 @@ viewof typed = {
         const choice = list.children[selectedIndex]?.dataset.token;
         if (choice) acceptSuggestion(choice);
       } else {
-        // commit the current tokens
         commit();
       }
     } else if (e.key === "Escape") {
@@ -121,13 +157,36 @@ viewof typed = {
     }
   });
 
-  // BLUR: commit whatever is typed
-  input.addEventListener("blur", () => { list.hidden = true; commit(); });
+  // Delay blur to allow mousedown on suggestion to fire first
+  input.addEventListener("blur", () => {
+    setTimeout(() => { list.hidden = true; commit(); }, 200);
+  });
 
-  // click away hides menu
-  document.addEventListener("click", (e) => { if (!wrapper.contains(e.target)) list.hidden = true; });
+  // Close when clicking outside (remember list is outside wrapper now)
+  const onDocClick = (e) => {
+    if (e.target !== input && !list.contains(e.target)) list.hidden = true;
+  };
+  document.addEventListener("click", onDocClick, true);
 
+  // Reposition on any scroll/resize (capture scrolls from nested containers)
+  const onViewportChange = () => { if (!list.hidden) alignList(); };
+  window.addEventListener("resize", onViewportChange, { passive: true });
+  window.addEventListener("scroll", onViewportChange, true);
+
+  // Initial alignment
+  queueMicrotask(alignList);
+
+  // Cleanup when the cell re-runs
+  wrapper.dispose = () => {
+    document.removeEventListener("click", onDocClick, true);
+    window.removeEventListener("resize", onViewportChange, { passive: true });
+    window.removeEventListener("scroll", onViewportChange, true);
+    list.remove();
+  };
+
+  // Initial render
   renderSuggestions();
+
   return wrapper;
 }
 
@@ -257,7 +316,7 @@ Let $X_1,\dots,X_n \stackrel{iid}{\sim} \mathcal{N}(\mu,1)$. Find the MLE of $\m
 The likelihood is
 
 $$
-L(\mu ; \underline{x}) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi}} 
+L(\mu ; \underline{x}) = \mathrm{Pr}od_{i=1}^n \frac{1}{\sqrt{2\pi}} 
   \exp\!\left(-\tfrac{1}{2}(x_i - \mu)^2\right) = (2\pi)^{-n/2} \exp\left( -\frac{1}{2}\sum_{i=1}^n (x_i - \mu)^2 \right) .
 $$
 
@@ -330,7 +389,7 @@ where $k$ is a constant.
 
 1. Find the value of $k$.  
 2. Roughly sketch $f(x)$. State, without calculation, the value of $\mathrm{E}[X]$.  
-3. Find and roughly sketch the cdf $F(x) = \Pr(X \leq x)$.
+3. Find and roughly sketch the cdf $F(x) = \mathrm{Pr}(X \leq x)$.
 
 <details class="solution">
   <summary>Solution</summary>
@@ -608,16 +667,16 @@ where $I(\cdot)$ is the indicator function.
 So,
 $$
 \frac{\partial}{\partial c}\,\mathrm{E}[|X-c|]
-= \Pr(X \leq c) - \Pr(X > c).
+= \mathrm{Pr}(X \leq c) - \mathrm{Pr}(X > c).
 $$
 
-Since $\Pr(X > c) = 1 - \Pr(X \leq c)$, this simplifies to
+Since $\mathrm{Pr}(X > c) = 1 - \mathrm{Pr}(X \leq c)$, this simplifies to
 $$
 \frac{\partial}{\partial c}\,\mathrm{E}[|X-c|] 
-= 2\Pr(X \leq c) - 1.
+= 2\mathrm{Pr}(X \leq c) - 1.
 $$
 
-This derivative is zero when $\Pr(X \leq c) = \tfrac{1}{2}$, i.e. when $c$ is the **median** of the distribution of $X$.
+This derivative is zero when $\mathrm{Pr}(X \leq c) = \tfrac{1}{2}$, i.e. when $c$ is the **median** of the distribution of $X$.
 
 *(Aside: this argument ignores the non-differentiability of $|X-c|$ at $x=c$ — a more careful treatment requires subgradients.)*
 
@@ -626,7 +685,7 @@ This derivative is zero when $\Pr(X \leq c) = \tfrac{1}{2}$, i.e. when $c$ is th
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="bayes exam" data-difficulty="1"}
+::: {.callout-important .question appearance="minimal" data-tags="bayes exam-style" data-difficulty="1"}
 ## Beta Conjugacy
 With a Beta prior $p\sim \mathrm{Beta}(\alpha,\beta)$ and $X \mid p \sim\mathrm{Bin}(n,p)$, show the posterior is $p \mid x\sim \mathrm{Beta}(\alpha+x,\beta+n-x)$.
 
@@ -645,13 +704,13 @@ $$
 
 Likelihood (for $x$ successes in $n$ trials):
 $$
-L(p; x)\propto p^{x}(1-p)^{\,n-x}.
+L(p; x)\mathrm{Pr}opto p^{x}(1-p)^{\,n-x}.
 $$
 
 Posterior (up to proportionality):
 $$
-\pi(p\mid x)\ \propto\ \pi(p)\,L(p\mid x)
-\ \propto\ p^{\alpha-1+x}\,(1-p)^{\beta-1+(n-x)}.
+\pi(p\mid x)\ \mathrm{Pr}opto\ \pi(p)\,L(p\mid x)
+\ \mathrm{Pr}opto\ p^{\alpha-1+x}\,(1-p)^{\beta-1+(n-x)}.
 $$
 
 This is in the form of the Beta distribution with updated parameters:
@@ -663,4 +722,377 @@ $$
 
 :::
 
+::: {.callout-important .question appearance="minimal" data-tags="binomial probability week-2" data-difficulty="0"}
+## Binomial Probabilities
 
+Suppose $X \sim \mathrm{Bin}(n,p)$.
+
+a. When $n=6$ and $p=0.3$, find, either by hand or using R or Python, each of:  
+
+    i. $\mathrm{Pr}(X < 2)$  
+    ii. $\mathrm{Pr}(1 < X \leq 2)$  
+    iii. $\mathrm{Pr}(X > 1)$  
+
+b. When $n=10$ and $p=0.75$, find the probability that $X$ is within one of its population mean.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**a.**  
+As $X$ is binomial, it can only take the values $0,1,2,\ldots,6$.
+
+**i.**
+$$
+\mathrm{Pr}(X<2) = \mathrm{Pr}(X=0) + \mathrm{Pr}(X=1).
+$$
+
+$$
+\mathrm{Pr}(X=0) = \binom{6}{0} (0.3)^0 (0.7)^6 = 0.7^6.
+$$
+
+$$
+\mathrm{Pr}(X=1) = \binom{6}{1} (0.3)^1 (0.7)^5 = 6 \times 0.3 \times 0.7^5.
+$$
+
+So,
+$$
+\mathrm{Pr}(X<2) = 0.7^6 + 6 \times 0.3 \times 0.7^5 \approx 0.4202.
+$$
+
+**ii.**  
+$$
+\mathrm{Pr}(1 < X \leq 2) = \mathrm{Pr}(X=2) 
+= \binom{6}{2} (0.3)^2 (0.7)^4
+= 15 \times 0.09 \times 0.2401
+\approx 0.3241.
+$$
+
+**iii.**  
+$$
+\mathrm{Pr}(X > 1) = 1 - \mathrm{Pr}(X \leq 1) = 1 - \mathrm{Pr}(X<2).
+$$
+
+So,
+$$
+\mathrm{Pr}(X>1) = 1 - 0.4202 = 0.5798.
+$$
+
+---
+
+**b.**  
+For $X \sim \mathrm{Bin}(10,0.75)$:
+
+- The mean is $\mathrm{E}[X] = np = 10 \times 0.75 = 7.5$.
+- “Within one of the mean” means $6.5 \leq X \leq 8.5$.  
+Since $X$ is integer-valued, this corresponds to $X \in \{7,8\}$.
+
+$$
+\mathrm{Pr}(6.5 \leq X \leq 8.5) = \mathrm{Pr}(X=7) + \mathrm{Pr}(X=8).
+$$
+
+$$
+\mathrm{Pr}(X=7) = \binom{10}{7}(0.75)^7(0.25)^3,
+$$
+
+$$
+\mathrm{Pr}(X=8) = \binom{10}{8}(0.75)^8(0.25)^2.
+$$
+
+Numerically,
+$$
+\mathrm{Pr}(X=7) \approx 0.2503, \quad \mathrm{Pr}(X=8) \approx 0.2816.
+$$
+
+So,
+$$
+\mathrm{Pr}(6.5 \leq X \leq 8.5) \approx 0.2503 + 0.2816 = 0.5319.
+$$
+
+---
+
+**In R or Python:**
+
+::: {.panel-tabset}
+
+### Python
+
+```python
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show code"
+
+from math import comb
+from scipy.stats import binom
+
+# Part (a): n=6, p=0.3
+n, p = 6, 0.3
+
+pr_less_2 = binom.cdf(1, n, p)             # P(X < 2)
+pr_eq_2   = binom.pmf(2, n, p)             # P(X = 2)
+pr_greater_1 = 1 - pr_less_2               # P(X > 1)
+
+# Part (b): n=10, p=0.75
+n, p = 10, 0.75
+
+pr_within_mean = binom.pmf(7, n, p) + binom.pmf(8, n, p)
+
+print(
+    f"Pr(X < 2) = {pr_less_2:.4f}\n"
+    f"Pr(1 < X <= 2) = {pr_eq_2:.4f}\n"
+    f"Pr(X > 1) = {pr_greater_1:.4f}\n"
+    f"Pr(X within 1 of mean) = {pr_within_mean:.4f}"
+)
+```
+
+### R
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show code"
+
+# Part (a): n=6, p=0.3
+n <- 6; p <- 0.3
+
+pr_less_2 <- pbinom(1, n, p)     # P(X < 2)
+pr_eq_2   <- dbinom(2, n, p)     # P(X = 2)
+pr_greater_1 <- 1 - pr_less_2    # P(X > 1)
+
+# Part (b): n=10, p=0.75
+n <- 10; p <- 0.75
+
+pr_within_mean <- dbinom(7, n, p) + dbinom(8, n, p)
+
+cat(
+  "Pr(X < 2) =", round(pr_less_2,4), "\n",
+  "Pr(1 < X <= 2) =", round(pr_eq_2,4), "\n",
+  "Pr(X > 1) =", round(pr_greater_1,4), "\n",
+  "Pr(X within 1 of mean) =", round(pr_within_mean,4), "\n"
+)
+```
+
+:::
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="normal expectation variance probability week-2" data-difficulty="0"}
+## Mean and Standard Deviation of Linear Combinations
+
+Suppose $X \sim \mathcal{N}(3,2)$ and, independently, $Y \sim \mathcal{N}(-2,7)$.  
+Find the population mean and standard deviation of:
+
+(a) $3X + 2$  
+(b) $5 - Y$  
+(c) $3X + 7 - Y$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**a.**
+
+$$
+\mathrm{E}[3X+2] = 3\mathrm{E}[X] + 2 = 3 \times 3 + 2 = 11.
+$$
+
+$$
+\mathrm{Var}(3X+2) = 3^2 \mathrm{Var}(X) = 9 \times 2 = 18.
+$$
+
+So the standard deviation is
+$$
+\sqrt{18} \approx 4.2426.
+$$
+
+---
+
+**b.**
+
+$$
+\mathrm{E}[5-Y] = 5 - \mathrm{E}[Y] = 5 - (-2) = 7.
+$$
+
+$$
+\mathrm{Var}(5-Y) = (-1)^2 \mathrm{Var}(Y) = 1 \times 7 = 7.
+$$
+
+So the standard deviation is
+$$
+\sqrt{7} \approx 2.6458.
+$$
+
+---
+
+**(c)**
+
+$$
+\mathrm{E}[3X+7-Y] = 3\mathrm{E}[X] + 7 - \mathrm{E}[Y] = 3 \times 3 + 7 - (-2) = 18.
+$$
+
+Since $X$ and $Y$ are independent,
+$$
+\mathrm{Var}(3X+7-Y) = 3^2\mathrm{Var}(X) + (-1)^2 \mathrm{Var}(Y)
+= 9 \times 2 + 1 \times 7 = 25.
+$$
+
+So the standard deviation is
+$$
+\sqrt{25} = 5.
+$$
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="poisson expectation variance week-2" data-difficulty="1"}
+## Expectation with a Poisson Distribution
+
+The number of breakdowns per week in a computer cluster is a random variable $Y$ having a **Poisson distribution** with population mean $\mu$.  
+The weekly cost of repairing breakdowns is
+
+$$
+C = 3Y + Y^2.
+$$
+
+Find $\mathrm{E}[C]$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+We have
+$$
+\mathrm{E}[C] = \mathrm{E}[3Y + Y^2] = 3\mathrm{E}[Y] + \mathrm{E}[Y^2].
+$$
+
+Since $Y \sim \mathrm{Poisson}(\mu)$:
+
+- $\mathrm{E}[Y] = \mu$  
+- $\mathrm{Var}(Y) = \mu$  
+- Recall that $\mathrm{Var}(Y) = \mathrm{E}[Y^2] - (\mathrm{E}[Y])^2$, so
+  $$
+  \mathrm{E}[Y^2] = \mu + \mu^2.
+  $$
+
+Therefore,
+$$
+\mathrm{E}[C] = 3\mu + (\mu + \mu^2) = 4\mu + \mu^2.
+$$
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="normal transformation chi-squared week-2" data-difficulty="3"}
+## Distribution of a Squared Normal Variable
+
+Suppose $Z \sim \mathcal{N}(0,1)$. 
+
+Find the pdf of $Y = Z^2$.  
+
+*Hint:* start by finding a formula for the cdf $F_Y(y) = \mathrm{Pr}(Y \leq y)$ for any $y > 0$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+For $y > 0$:
+$$
+F_Y(y) = \mathrm{Pr}(Y \leq y) = \mathrm{Pr}(Z^2 \leq y).
+$$
+
+This is equivalent to
+$$
+F_Y(y) = \mathrm{Pr}(-\sqrt{y} \leq Z \leq \sqrt{y}) 
+= \mathrm{Pr}(Z \leq \sqrt{y}) - \mathrm{Pr}(Z \leq -\sqrt{y}).
+$$
+
+Using the standard normal cdf $\Phi$,
+$$
+F_Y(y) = \Phi(\sqrt{y}) - \Phi(-\sqrt{y}).
+$$
+
+**Differentiate to find the pdf:**
+
+$$
+f_Y(y) = \frac{\partial}{\partial y} \Big[ \Phi(\sqrt{y}) - \Phi(-\sqrt{y}) \Big].
+$$
+
+By the chain rule:
+$$
+f_Y(y) = \phi(\sqrt{y}) \cdot \frac{1}{2\sqrt{y}} + \phi(-\sqrt{y}) \cdot \frac{1}{2\sqrt{y}}.
+$$
+
+Since $\phi$ (the standard normal pdf) is symmetric,
+$$
+f_Y(y) = \frac{1}{\sqrt{y}} \, \phi(\sqrt{y}).
+$$
+
+Substitute $\phi(z) = \tfrac{1}{\sqrt{2\pi}} e^{-z^2/2}$:
+$$
+f_Y(y) = \frac{1}{\sqrt{2\pi y}} e^{-y/2}, \quad y > 0.
+$$
+
+For $y \leq 0$, $f_Y(y)=0$.
+
+---
+
+**Aside.**  
+This is exactly the pdf of a $\chi^2_1$ distribution.
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="gamma distribution probability week-2" data-difficulty="2"}
+## Customer Waiting Times
+
+Customer waiting times at a call centre can be assumed to be <span class="xref-no-num">[Gamma @sec-gamma]</span> random variables with mean $3$ minutes and standard deviation $2$ minutes.  
+
+What proportion of customers are expected to wait more than $5$ minutes?  
+
+*Hint:* you will need R or Python for this.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+Let the waiting time be $X \sim \mathrm{Gamma}(\alpha, \lambda)$, with shape $\alpha$ and rate $\lambda$.  
+
+From the formulas:  
+$$
+\mathrm{E}[X] = \frac{\alpha}{\lambda}, 
+\qquad \mathrm{Var}(X) = \frac{\alpha}{\lambda^2}.
+$$
+
+We are told:
+$$
+\mathrm{E}[X] = 3, \qquad \mathrm{SD}[X] = 2 \ \Rightarrow \ \mathrm{Var}(X) = 4.
+$$
+
+So:
+$$
+\frac{\alpha}{\lambda} = 3, \qquad \frac{\alpha}{\lambda^2} = 4.
+$$
+
+Divide the second equation by the first:
+$$
+\frac{\alpha/\lambda^2}{\alpha/\lambda} = \frac{4}{3} \quad \Rightarrow \quad \frac{1}{\lambda} = \frac{4}{3}.
+$$
+
+Hence:
+$$
+\lambda = 0.75, \quad \alpha = 3\lambda = 2.25.
+$$
+
+---
+
+We want:
+$$
+\mathrm{Pr}(X > 5) = 1 - F_X(5).
+$$
+
+</details>
+
+:::

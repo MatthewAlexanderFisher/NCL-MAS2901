@@ -1,40 +1,143 @@
 # Likelihood
 
-The likelihood function is the **joint density (or probability mass) function** of the data:
+The **likelihood function** is simply the **joint density (or probability mass function)** of the observed data:
 
 $$
-f(\underline{x} \mid \theta), \quad \underline{x} = (x_1, \dots, x_n).
+f(\underline{x} \mid \theta),
+\quad \underline{x} = (x_1, \dots, x_n).
 $$
 
-## From Joint Density to Likelihood
+It plays a central role in both **frequentist** and **Bayesian** statistics.
 
-Suppose we observe $n$ independent and identically distributed (i.i.d.) samples,
+::: {.remark #rem-notation}
+
+### Notation Reminder
+
+In the following, we use $\mathrm{Distribution}(\theta)$ as a **placeholder** to indicate “a distribution depending on parameter $\theta$.”
+
+For example:
+
+* $\mathrm{Distribution}(\mu,\sigma^2) = \mathcal{N}(\mu,\sigma^2)$
+* $\mathrm{Distribution}(p) = \mathrm{Bernoulli}(p)$
+
+This allows us to keep definitions *general*! 
+:::
+
+## Likelihoods Under Independence and Dependence
+
+The form of the likelihood depends crucially on whether our observations are independent and identically distributed (i.i.d.), merely independent, or dependent. These three cases look similar but lead to different joint densities.
+
+::: {.panel-tabset}
+
+### i.i.d. data
+
+**This is the default case in most of this course.**
+
+Suppose $X_1, \ldots, X_n$ are **independent and identically distributed (i.i.d.)** random variables:
 
 $$
-X_1, \dots, X_n \overset{\text{iid}}{\sim} f_X(x \mid \theta).
+X_i \mid \theta \overset{\text{iid}}{\sim} \mathrm{Distribution}(\theta),
+\quad i = 1, \ldots, n.
 $$
 
-Then the **joint density** is given by multiplying the individual densities:
+Each $X_i$ has density (or PMF)
 
 $$
-f(\underline{x} \mid \theta) 
-= \prod_{i=1}^n f_X(x_i \mid \theta).
+f(x \mid \theta).
 $$
 
-::: {.remark #rem-products}
-### Why products?
+Then the **joint density** of the full sample is
 
-* Independence means that joint probabilities factorise into products:
+$$
+f(x_1, \ldots, x_n \mid \theta)
+= \prod_{i=1}^n f(x_i \mid \theta).
+$$
 
-  $$
-  P(A \cap B) = P(A)\,P(B).
-  $$
-* By the same rule, the joint density of independent random variables is the product of their individual densities.
-* This is often the first place where students forget the independence assumption! Without it, you **cannot** just multiply.
+### Independent (not identical) data
+
+
+If instead the samples are **independent but not identically distributed**:
+
+$$
+X_i \mid \theta \sim \mathrm{Distribution}_i(\theta),
+$$
+
+with individual densities $f_{X_i}(x_i \mid \theta)$, then the joint density becomes
+
+$$
+f(x_1, \ldots, x_n \mid \theta)
+= \prod_{i=1}^n f_{X_i}(x_i \mid \theta).
+$$
+
+
+### Dependent data
+
+In many real-world situations, data are **dependent**.
+
+**Example:** Suppose our data are daily temperatures in Newcastle upon Tyne. Yesterday's temperature will influence today's temperature, and today's temperature will influence tomorrow's.
+
+In such cases, we must model the dependencies explicitly. For instance,
+
+$$
+X_{t+1} \mid X_t = x_t, \, \sigma^2 \sim \mathcal{N}(x_t, \sigma^2).
+$$
+
+The likelihood is still the **joint distribution**, but expressed as a product of **conditional densities**:
+
+$$
+f(x_1,\ldots,x_n \mid \sigma^2) 
+= \prod_{t=1}^n f(x_t \mid x_{t-1}, \sigma^2).
+$$
+
+The example above assumed a Markov property (each observation only depends on the previous one). In general, observations may depend on the entire history, in which case the joint density factorises via the chain rule:
+$$
+f(x_1,\ldots,x_n \mid \theta) = f(x_1\mid\theta)\prod_{t=2}^n f(x_t \mid x_1,\ldots,x_{t-1},\theta)
+$$
+
+
+::: {.callout-warning}
+#### Non-Examinable Content
+This course focuses on the **independent case**.  
+Dependent data will be covered in later modules and is **not examinable**.
+:::
+
 :::
 
 
+
+| Case                          | Assumption                                                | Factorisation of Joint Density |
+|-------------------------------|-----------------------------------------------------------|--------------------------------|
+| **i.i.d. data**               | Independent and identically distributed; each with density $f(x\mid\theta)$ | $f(\underline{x}\mid\theta) = \prod_{i=1}^n f(x_i\mid\theta)$ |
+| **Independent (not identical) data** | Independent; each $X_i$ may have its own density $f_i(x_i\mid\theta)$ | $f(\underline{x}\mid\theta) = \prod_{i=1}^n f_i(x_i\mid\theta)$ |
+| **Dependent data (general)**  | Dependent; factorise using the chain rule                  | $f(\underline{x}\mid\theta) = f(x_1\mid\theta)\prod_{t=2}^n f(x_t \mid x_1,\ldots,x_{t-1},\theta)$ |
+
+
+::: {.callout-warning}
+#### Reminder: Non-Examinable Content
+
+The **dependent case** in the above table is shown for completeness.
+
+This course focuses on the independent case, and the dependent case is **not examinable**.
+:::
+
+::: {.remark #rem-products}
+
+### Why products?
+
+* Independence means joint probabilities factorise:
+  $$
+  \mathrm{Pr}(A \cap B) = \mathrm{Pr}(A) \mathrm{Pr}(B).
+  $$
+* By the same <span class="xref-no-num">[rule @def-independence-rv]</span>, the joint density of independent random variables is the product of their individual densities.
+* This is a common **misconception**: without independence, you **cannot** just multiply.
+
+:::
+
 ## Likelihood Function
+
+So far we have described the likelihood informally as “the joint density of the data given the parameter.”
+
+We now give a **formal definition** and introduce the notation we will use in the **frequentist parts** of the course.
 
 ::: {.definition #def-likelihood}
 **Likelihood Function.**
@@ -48,14 +151,34 @@ Here we treat $\theta$ as the **variable**, and the data $\underline{x}$ as fixe
 :::
 
 
-::: {.callout-tip}
+::: {.remark #rem-lik-vs-prob}
+### Likelihood vs. Probability
 
-### Likelihood vs. Probability:
+It is important to distinguish between the **joint density** of the data and the **likelihood function**:
 
-* **PDF/PMF**: function of $\underline{x}$ (data random, parameter fixed).
-* **Likelihood**: function of $\theta$ (data fixed, parameter variable).
+* **Joint density (PDF/PMF).**
+  $f(\underline{x}\mid \theta)$ is viewed as a function of the *data* $\underline{x}$, with the parameter $\theta$ fixed.
+  This describes the probability distribution of the sample under $\theta$.
+
+* **Likelihood function.**
+  The same expression, written as
+
+  $$
+  L(\theta;\underline{x}) = f(\underline{x}\mid\theta),
+  $$
+
+  is instead viewed as a function of the *parameter* $\theta$, with the observed data $\underline{x}$ held fixed.
+  This is the function we use to make inferences about $\theta$.
+
+---
+
+In short:
+
+* **Joint density**: given $\theta$, how likely are different data values $\underline{x}$?
+* **Likelihood**: given observed $\underline{x}$, how plausible are different values of $\theta$?
 
 :::
+
 
 ---
 
@@ -391,118 +514,125 @@ html`<div style="max-width:100%;">
 
 // --- Styles: compact, 2-column, collapsible, custom button ---
 html`<style>
-/* ---------- Collapsible container ---------- */
-details.controls-root > summary {
-  list-style: none; cursor: pointer; user-select: none;
-  background: var(--surface, #f1f5f9);
-  border: 1px solid var(--border, #e5e7eb);
-  border-radius: 10px;
-  padding: 8px 10px;
-  font-weight: 600; font-size: 13px;
-  color: var(--fg-strong, #334155);
-  display: flex; align-items: center; gap: 8px;
-}
-details.controls-root > summary::-webkit-details-marker { display: none; }
-details.controls-root[open] > summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+  /* ---------- Scope all styles to this controls box ---------- */
+  details.controls-root { 
+    --ctrl-font: 12px;
+    font-size: var(--ctrl-font);
+  }
 
-/* ---------- Two-column grid ---------- */
-.controls-grid {
-  display: grid;
-  grid-template-columns: minmax(260px, 1fr) minmax(260px, 1fr);
-  gap: 12px;
-  border: 1px solid var(--border, #e5e7eb); border-top: none;
-  border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;
-  padding: 10px;
-  background: var(--surface-weak, #fafafa);
-  overflow-x: auto; /* prefer scroll over wrapping on narrow screens */
-}
+  /* Dropdown header */
+  details.controls-root > summary {
+    list-style: none; cursor: pointer; user-select: none;
+    background: var(--surface, #f1f5f9);
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 10px;
+    padding: 8px 10px;
+    font-weight: 600; font-size: calc(var(--ctrl-font) + 1px);
+    color: var(--fg-strong, #334155);
+    display: flex; align-items: center; gap: 8px;
+  }
+  details.controls-root > summary::-webkit-details-marker { display: none; }
+  details.controls-root[open] > summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
 
-.controls-col { min-width: 260px; }
-.controls-col h4 {
-  margin: 0 0 6px 0;
-  font-size: 12px; font-weight: 700;
-  color: var(--fg-muted, #475569);
-}
+  /* Two-column grid (side-by-side) */
+  details.controls-root .controls-grid {
+    display: grid;
+    grid-template-columns: minmax(260px, 1fr) minmax(260px, 1fr);
+    gap: 12px;
+    border: 1px solid var(--border, #e5e7eb); border-top: none;
+    border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;
+    padding: 10px;
+    background: var(--surface-weak, #fafafa);
+    overflow-x: auto;
+  }
+  details.controls-root .controls-col { min-width: 260px; }
+  details.controls-root .controls-col h4 {
+    margin: 0 0 6px 0;
+    font-size: var(--ctrl-font); font-weight: 700;
+    color: var(--fg-muted, #475569);
+  }
 
-/* ---------- Compact Inputs (fixed slider alignment) ---------- */
-.controls-col label { font-size: 12px !important; }
+  /* ---- Align label & slider (form-level grid) ---- */
+  details.controls-root .controls-col form {
+    display: grid !important;
+    grid-template-columns: minmax(150px, auto) 1fr; /* label | inputs */
+    align-items: center;         /* vertical centring */
+    column-gap: 10px;
+    font-size: var(--ctrl-font) !important;
+    line-height: 1.25;
+    margin: 6px 0;
+  }
 
-.controls-col input[type="range"] {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 18px;                     /* overall control box height */
-  background: transparent;
-  vertical-align: middle;
-  accent-color: var(--brand-teal, #55C3CB);
-}
+  /* Label: kill default <p> margin; align KaTeX + text */
+  details.controls-root .controls-col form > label {
+    margin: 0 !important;
+    display: flex; align-items: center; gap: 8px;
+    font-size: var(--ctrl-font) !important;
+    color: var(--fg-muted, #475569);
+    font-weight: 600;
+  }
+  details.controls-root .controls-col form > label p { margin: 0 !important; }
 
-/* WebKit track */
-.controls-col input[type="range"]::-webkit-slider-runnable-track {
-  height: 4px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--brand-teal, #55C3CB) 35%, transparent);
-}
+  /* Inputs wrapper (auto-generated, e.g. .oi-*-input): align number + slider */
+  details.controls-root .controls-col form > [class$="-input"],
+  details.controls-root .controls-col form > [class*="-input"] {
+    display: flex; align-items: center; gap: 8px;
+    min-height: 22px;
+  }
 
-/* WebKit thumb */
-.controls-col input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 12px; height: 12px; border-radius: 50%;
-  background: var(--brand-teal, #55C3CB);
-  border: 0;
-  /* Center the 12px thumb over the 4px track: (4 - 12)/2 = -4px */
-  margin-top: -4px;
-}
+  /* Number input normalisation */
+  details.controls-root .controls-col input[type="number"] {
+    height: 24px; padding: 2px 6px;
+    font-size: var(--ctrl-font);
+    border: 1px solid var(--border, #e5e7eb); border-radius: 6px;
+    background: var(--surface, #f1f5f9); color: var(--fg-strong, #334155);
+  }
 
-/* Firefox track */
-.controls-col input[type="range"]::-moz-range-track {
-  height: 4px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--brand-teal, #55C3CB) 35%, transparent);
-}
+  /* Slider styling */
+  details.controls-root .controls-col input[type="range"] {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 18px; background: transparent;
+    vertical-align: middle;
+    accent-color: var(--brand-teal, #55C3CB);
+  }
+  details.controls-root .controls-col input[type="range"]::-webkit-slider-runnable-track {
+    height: 4px; border-radius: 999px;
+    background: color-mix(in srgb, var(--brand-teal, #55C3CB) 35%, transparent);
+  }
+  details.controls-root .controls-col input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--brand-teal, #55C3CB); border: 0; margin-top: -4px; /* centre thumb over 4px track */
+  }
+  details.controls-root .controls-col input[type="range"]::-moz-range-track {
+    height: 4px; border-radius: 999px;
+    background: color-mix(in srgb, var(--brand-teal, #55C3CB) 35%, transparent);
+  }
+  details.controls-root .controls-col input[type="range"]::-moz-range-thumb {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--brand-teal, #55C3CB); border: 0;
+  }
 
-/* Firefox thumb (auto-centred; no negative margin needed) */
-.controls-col input[type="range"]::-moz-range-thumb {
-  width: 12px; height: 12px; border-radius: 50%;
-  background: var(--brand-teal, #55C3CB);
-  border: 0;
-}
+  /* Button */
+  details.controls-root .btn-resim button {
+    background: var(--brand-teal, #55C3CB); color: #fff;
+    border: none; border-radius: 6px; padding: 6px 12px;
+    font-weight: 600; font-size: var(--ctrl-font); cursor: pointer;
+    transition: filter 120ms ease, background-color 120ms ease;
+  }
+  details.controls-root .btn-resim button:hover {
+    background: color-mix(in srgb, var(--brand-teal, #55C3CB) 88%, black);
+  }
 
-/* Optional: hide the default filled "progress" colour in Firefox */
-.controls-col input[type="range"]::-moz-range-progress {
-  height: 4px; border-radius: 999px;
-  background: color-mix(in srgb, var(--brand-teal, #55C3CB) 35%, transparent);
-}
-
-
-/* ---------- Button ---------- */
-.btn-resim button {
-  background: var(--brand-teal, #55C3CB);
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 6px 12px;
-  font-weight: 600;
-  font-size: 12px;
-  cursor: pointer;
-  transition: filter 120ms ease, background-color 120ms ease;
-}
-
-/* hover effect */
-.btn-resim button:hover {
-  background: color-mix(in srgb, var(--brand-teal, #55C3CB) 88%, black);
-}
-
-/* chevron */
-details.controls-root > summary::before {
-  content: ""; display: inline-block; margin-right: 8px; width: 0; height: 0;
-  border-style: solid; border-width: 3px 0 3px 6px;
-  border-color: transparent transparent transparent var(--fg-strong);
-  transform: rotate(0deg); transform-origin: 3px 50%; transition: transform 50ms ease;
-}
-details.controls-root[open] > summary::before { transform: rotate(90deg); }
-</style>`
+  /* Chevron */
+  details.controls-root > summary::before {
+    content: ""; display: inline-block; margin-right: 8px; width: 0; height: 0;
+    border-style: solid; border-width: 3px 0 3px 6px;
+    border-color: transparent transparent transparent var(--fg-strong);
+    transform: rotate(0deg); transform-origin: 3px 50%; transition: transform 50ms ease;
+  }
+  details.controls-root[open] > summary::before { transform: rotate(90deg); }
+`
 
 // --- Build one merged, collapsible control "input" ---
 viewof controls = {
@@ -573,7 +703,108 @@ resim = controls.resim
 
 ### Computing Likelihood Functions
 
-This is a **very important** part of the course. 
+This is a **very important skill** in the course: you will use it often in the *frequentist* parts, and it is **essential** for the *Bayesian* part.
+
+The general strategy is:
+
+1. **Check the model carefully.** Look for:
+
+   * Are the data **i.i.d.** or just **independent**?
+   * How many **data points** are observed?
+   * What notation is used for the data ($X_i$, $Y_i$, $Z_i$, …)?
+   * What notation is used for the parameters ($\mu$, $\alpha$, $\gamma$, $\theta$, …)?
+
+   *(In the examples below we assume $n$ independent data points $X_1,\dots,X_n$ with parameter $\theta$. If there is only one data point, the likelihood is just its PDF/PMF.)*
+
+2. **Write down the PDF/PMF of one observation.**
+
+   $$
+   f_{X_i}(x_i \mid \theta)
+   $$
+
+3. **Multiply to form the joint density**, i.e. the likelihood:
+
+   $$
+   L(\theta ; \underline{x}) 
+   = f(\underline{x} \mid \theta) 
+   = \prod_{i=1}^n f_{X_i}(x_i \mid \theta).
+   $$
+
+
+#### Common Mistakes {.unnumbered}
+
+It is **very easy** to slip up when multiplying terms. Watch out for:
+
+1. **Forgetting the index.**
+   Always use $x_i$ inside the product.
+
+   Example (Exponential model):
+   If $X_i \sim \mathrm{Exponential}(\theta)$ with density
+
+   $$
+   f(x_i \mid \theta) = \theta e^{-\theta x_i}, \quad x_i > 0,
+   $$
+
+   then the likelihood is
+
+   $$
+   f(\underline{x} \mid \theta) 
+   = \prod_{i=1}^n \theta e^{-\theta x_i} 
+   = \theta^n \exp\!\left(-\theta \sum_{i=1}^n x_i\right).
+   $$
+
+   A common mistake is to write
+
+   $$
+   \prod_{i=1}^n \theta e^{-\theta x} = \theta^n e^{-\theta n x} \quad \text{(wrong!)}
+   $$
+
+   which ignores the index on $x_i$.
+
+2. **Oversimplifying.**
+   Many likelihoods look messy — that is normal!
+
+   Example (Gamma model):
+   If $X_i \sim \mathrm{Gamma}(\alpha, \theta)$ with density
+
+   $$
+   f(x_i \mid \alpha, \theta) 
+   = \frac{1}{\Gamma(\alpha)\theta^\alpha}\, x_i^{\alpha - 1} e^{-x_i/\theta}, 
+   \quad x_i > 0,
+   $$
+
+   then the likelihood is
+
+   $$
+   f(\underline{x} \mid \alpha, \theta) 
+   = \left(\frac{1}{\Gamma(\alpha)\theta^\alpha}\right)^n 
+     \left(\prod_{i=1}^n x_i^{\alpha - 1}\right)
+     \exp\!\left(-\frac{1}{\theta}\sum_{i=1}^n x_i\right).
+   $$
+
+   Notice how the product
+
+   $$
+   \prod_{i=1}^n x_i^{\alpha - 1}
+   $$
+
+   cannot be simplified further (unless you introduce the geometric mean[^geometric-mean]).
+
+#### A Safe Strategy {.unnumbered}
+
+When starting out, it is helpful to **expand the product term by term**:
+
+$$
+f(\underline{x} \mid \theta) 
+= f(x_1 \mid \theta) 
+\times f(x_2 \mid \theta) 
+\times \cdots 
+\times f(x_n \mid \theta).
+$$
+
+Then simplify step by step.
+
+This is slower, but it reduces errors. With practice, you’ll be able to simplify likelihoods much more quickly.
 
 
 ::: {.example #exm-bern-likelihood}
@@ -590,7 +821,7 @@ Derive the **likelihood function**.
 
 ::: {#exm-bern-likelihood-data}
 ### Bernoulli Likelihood
-Suppose $n=5$ trials give data $\underline{x} = (1,0,1,1,0)$. Then $\sum\_i x\_i = 3$.
+Suppose $n=5$ trials give data $\underline{x} = (1,0,1,1,0)$. Then $\sum_i x_i = 3$.
 $$
 L(p ; \underline{x}) = p^3 (1-p)^2.
 $$
@@ -610,7 +841,7 @@ So the data are slightly more likely under $p=0.5$ than $p=0.8$.
 ### Maximum Likelihood Estimator (MLE)
   The MLE is the parameter value $\hat{\theta}$ that maximises the likelihood function:
   $$
-  \hat{\theta}_{\text{MLE}} = \arg \max_{\theta \in \Theta} L(\theta \mid \underline{x}).
+  \hat{\theta}_{\text{MLE}} = \arg \max_{\theta \in \Theta} L(\theta ; \underline{x}).
   $$
 :::
 
@@ -699,6 +930,18 @@ f(\underline{x} \mid \theta) = \prod_{i=1}^n \binom{n_i}{x_i} \theta^{x_i}(1-\th
 $$
 :::
 
+::: {.example #exm-normal-mu-mle}
+### Normal MLE for $\mu$
+
+Under 
+$$ 
+ L(\theta ; x)
+$$
+
+Compute the MLE of $p$.
+:::
+
+
 ---
 
 ::: {.callout-important appearance="minimal"}
@@ -713,3 +956,5 @@ $$
 ### 
 
 [^difflog]: **Differentiating the log.** 
+
+[^geometric-mean]: **Geometric mean.** One can write $\prod_{i=1}^n x_i = \bar{x}_g^n$ where $\bar{x}_g = \left(\prod_{i=1}^n x_i \right)^{1/n}$ is the *geometric mean*. This reformulation is rarely useful in practice, so it’s usually best to leave the product as it is.
