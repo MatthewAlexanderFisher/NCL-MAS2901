@@ -1,0 +1,726 @@
+# Frequentist Interval Estimation {#sec-freq-interval-estimate}
+
+Recalling the <span class="xref-no-num">[main inference tasks @sec-inference-tasks]</span>, we now move from *point estimation* to *interval estimation*. 
+
+The key idea is that instead of giving a single “best guess”[^bayes-exc] of a parameter, we want to provide a **range of plausible values**. In other words, an **interval**.
+
+## The Frequentist Perspective
+
+Recall that, for frequentists, the parameter $\theta$ is **fixed but unknown**.
+
+The randomness comes from the data: if we repeated the experiment many times, we would get different samples, different estimates, and hence different intervals.
+
+* **Point Estimate:** a single statistic $\hat{\theta}(\underline{X})$.
+* **Interval estimate:** two statistics $L(\underline{X})$ and $U(\underline{X})$ that form a *random interval*.
+
+
+::: {#def-confidence-interval}
+## Confidence Interval
+A $100(1-\alpha)\%$ **confidence interval** for $\theta$ is a *random interval* 
+$$
+\big[L(\underline{X}),\; U(\underline{X})\big]
+$$
+satisfying
+$$
+\mathrm{Pr} \big(L(\underline{X}) < \theta < U(\underline{X})\big) = 1 - \alpha.
+$$
+
+This property is called **coverage**: in the long run, a proportion $1-\alpha$ of such intervals (constructed from repeated experiments) will contain the true $\theta$.
+:::
+
+---
+
+**Visualisation:** We 
+
+```{ojs}
+//| echo: false
+
+/* -----------------------------------------------------------
+   Confidence Intervals for μ (Normal data) — z-interval only
+   Left: current sample + z-CI
+   Right: true μ line + vertical z-CIs added on each resample
+   ----------------------------------------------------------- */
+bodyFont = getComputedStyle(document.body).fontFamily
+
+// ---------- Mutable state ----------
+mutable rngSeed = 1
+mutable resampleClicks = 0
+mutable resetClicks = 0
+
+// history of z-intervals: array of {L, U, covered}
+mutable ciZHistory = []
+
+// last interval (to archive on next click)
+mutable lastZ = null
+
+
+// ---------- Buttons ----------
+function styledButton(label, cls, options = {}) {
+  const el = Inputs.button(label, options);
+  const btn = el.querySelector('button');
+  if (btn) btn.classList.add(cls);
+  return el;
+}
+viewof resample = styledButton("Resample", "btn-resample", { reduce: c => (c ?? 0) + 1 })
+viewof reset    = styledButton("Reset",    "btn-reset",    { reduce: c => (c ?? 0) + 1 })
+
+// ---------- Edge triggers ----------
+{
+  if (reset > resetClicks) {
+    mutable ciZHistory = [];
+    mutable lastZ = null;
+    mutable resetClicks = reset;
+  }
+  return html``;
+}
+{
+  if (resample > resampleClicks) {
+    if (lastZ) {
+      mutable ciZHistory = [...ciZHistory, lastZ];
+    }
+    mutable rngSeed = rngSeed + 1;
+    mutable resampleClicks = resample;
+  }
+  return html``;
+}
+
+// ---------- Quantiles (z only) ----------
+qnorm = (p) => {
+  if (p <= 0 || p >= 1) return NaN;
+  const a = [-3.969683028665376e+01,2.209460984245205e+02,-2.759285104469687e+02,1.383577518672690e+02,-3.066479806614716e+01,2.506628277459239e+00];
+  const b = [-5.447609879822406e+01,1.615858368580409e+02,-1.556989798598866e+02,6.680131188771972e+01,-1.328068155288572e+01];
+  const c = [-7.784894002430293e-03,-3.223964580411365e-01,-2.400758277161838e+00,-2.549732539343734e+00,4.374664141464968e+00,2.938163982698783e+00];
+  const d = [ 7.784695709041462e-03, 3.224671290700398e-01, 2.445134137142996e+00, 3.754408661907416e+00];
+  const plow = 0.02425, phigh = 1 - plow;
+  let q, r, x;
+  if (p < plow) { q = Math.sqrt(-2*Math.log(p));
+    x = (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) / ((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);
+  } else if (phigh < p) { q = Math.sqrt(-2*Math.log(1-p));
+    x = -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) / ((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);
+  } else { q = p - 0.5; r = q*q;
+    x = (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q / (((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);
+  }
+  const erf = x => { const s=Math.sign(x); x=Math.abs(x); const t=1/(1+0.5*x);
+    const tau=t*Math.exp(-x*x-1.26551223+1.00002368*t+0.37409196*t**2+0.09678418*t**3-0.18628806*t**4+0.27886807*t**5-1.13520398*t**6+1.48851587*t**7-0.82215223*t**8+0.17087277*t**9);
+    return s*(1-tau);
+  };
+  const SQRT2 = Math.SQRT2, SQRT2PI = Math.sqrt(2*Math.PI);
+  const e = 0.5 * (1 + erf(x / SQRT2)) - p;
+  const u = e * SQRT2PI * Math.exp(0.5 * x * x);
+  return x - u / (1 + x * u);
+}
+
+// ---------- Sample + statistics ----------
+X = {
+  const r = d3.randomNormal.source(d3.randomLcg(rngSeed))(controls.trueMu, controls.trueSigma);
+  return d3.range(controls.n).map(r);
+}
+xbar = d3.mean(X)
+
+alpha = controls.alpha
+zcrit = qnorm(1 - alpha/2)
+
+// z–CI for μ (known σ)
+ciZ = ({
+  L: xbar - zcrit * (controls.trueSigma / Math.sqrt(controls.n)),
+  U: xbar + zcrit * (controls.trueSigma / Math.sqrt(controls.n))
+})
+
+covers = (ci, theta) => (ci.L <= theta && theta <= ci.U);
+currentCoveredZ = covers(ciZ, controls.trueMu);
+
+// save current z so *next* resample archives it
+{
+  mutable lastZ = { ...ciZ, covered: currentCoveredZ };
+  return html``; // suppresses any output
+}
+
+
+// ---------- Toolbar (above plots) ----------
+
+// ---------- Left panel: data + current z-CI ----------
+makeDensityReducer = (total) => (values, extent) =>
+  values.length / Math.max(1, total) / Math.max(1e-9, extent.x2 - extent.x1);
+
+xExtent = d3.extent(X)
+xPad    = 3 * controls.trueSigma
+xDomain = [xExtent[0] - 0.1*(xPad||1), xExtent[1] + 0.1*(xPad||1)]
+
+bins = d3.bin().domain(xDomain).thresholds(controls.bins)(X);
+densities = bins.map(b => (b.length / Math.max(1, controls.n)) / Math.max(1e-9, (b.x1 - b.x0)));
+yMax = Math.max(0.05, d3.max(densities) ?? 0.05);
+yCI  = yMax * 0.75
+
+leftPlot = Plot.plot({
+  width: Math.min(680, Math.max(360, width/2 - 20)),
+  height: 340,
+  style: { background: "var(--plot-panel-bg)",
+           color: "var(--brand-fg)",
+           fontFamily: bodyFont, 
+           fontSize: 14.
+  }, 
+  x: { label: "Data", domain: xDomain },
+  y: { label: "Density" },
+  marks: [
+    Plot.rectY(X, Plot.binX({ y: makeDensityReducer(controls.n) }, { x: d=>d, thresholds: controls.bins, inset: 0, fillOpacity: 0.4, fill: "var(--brand-teal)" })),
+    Plot.ruleX(X, { y1: 0, y2: yMax*0.05, stroke: "var(--brand-teal)", strokeWidth: 3, strokeOpacity: 1 }),
+    Plot.ruleX([controls.trueMu], { stroke: "var(--brand-purple)", strokeDasharray: "4,3", strokeWidth: 2 }),
+    Plot.ruleX([xbar], { stroke: "currentColor", strokeDasharray: "2,2" }),
+    Plot.dot([{x:xbar,y:0}], {x:"x",y:"y", r:3, fill:"currentColor"}),
+
+    // current z–CI (horizontal link)
+    Plot.link([{x1:ciZ.L, x2:ciZ.U, y1:yCI, y2:yCI}],
+      { x1:"x1", x2:"x2", y1:"y1", y2:"y2", stroke:"var(--brand-orange)", strokeWidth:4 }),
+    Plot.dot([{x:xbar,y:yCI}], {x:"x", y:"y", r:3, fill:"var(--brand-orange)"}),
+    Plot.text([{x:(ciZ.L+ciZ.U)/2, y:yCI + 0.05*yMax, label:`CI (${((1-alpha)*100)|0}%)`}],
+      {x:"x",y:"y",text:"label", dy:-4, fontSize:10, fill:"var(--brand-orange)"}),
+
+    Plot.ruleY([0])
+  ]
+})
+
+// ---------- Right panel: history as vertical z-CI segments ----------
+zHistory   = ciZHistory
+indices    = d3.range(1, zHistory.length + 1)
+coverageZ  = zHistory.length ? d3.mean(zHistory, d => d.covered) : NaN
+
+rightYDomain = (() => {
+  const vals = [
+    controls.trueMu,
+    ...zHistory.flatMap(d => [d.L, d.U]),
+    ciZ.L, ciZ.U
+  ];
+  const lo = d3.min(vals), hi = d3.max(vals);
+  const pad = 0.08 * (hi - lo || 1);
+  return [lo - pad, hi + pad];
+})()
+
+rightPlot = Plot.plot({
+  width: Math.min(680, Math.max(360, width/2 - 20)),
+  height: 340,
+  style: { background: "var(--plot-panel-bg)",
+           color: "var(--brand-fg)",
+           fontFamily: bodyFont, 
+           fontSize: 14.
+  }, 
+  x: { label: "Number of samples taken", domain: [0.5, Math.max(1.5, indices.length + 1.5)] },
+  y: { label: "μ", domain: rightYDomain },
+  marks: [
+    Plot.ruleY([controls.trueMu], { stroke: "var(--brand-purple)", strokeDasharray: "4,3", strokeWidth: 2 }),
+
+    // archived z-CIs
+    Plot.ruleX(zHistory.map((d,i)=>({x:i+1, y1:d.L, y2:d.U, covered:d.covered})),
+               { x:"x", y1:"y1", y2:"y2", stroke:(d)=> d.covered ? "var(--brand-orange)" : "#999", strokeWidth: 3, opacity: 0.9 }),
+
+    // current interval (ghosted) at the next x-position
+    Plot.ruleX([{x:indices.length+1, y1:ciZ.L, y2:ciZ.U}],
+               { x:"x", y1:"y1", y2:"y2", stroke:"var(--brand-orange)", strokeWidth: 3, strokeOpacity:0.4 }),
+
+    // coverage text
+    Plot.text(
+      [{x: 0.7, y: rightYDomain[1], label: `z-CI coverage: ${isNaN(coverageZ) ? "—" : `${(100*coverageZ).toFixed(0)}%`} (${zHistory.length})`}],
+      {x:"x", y:"y", text:"label", dx: 4, dy: 4, textAnchor: "start", fontSize: 11}
+    )
+  ]
+})
+
+{
+  // Make the forms behave nicely in the grid
+  for (const f of [viewof resample, viewof reset]) {
+    f.style.margin = "0";
+    f.style.width = "100%";
+    f.style.maxWidth = "none";
+    f.style.display = "flex";
+  }
+  viewof resample.style.justifyContent = "flex-start";
+  viewof reset.style.justifyContent    = "flex-end";
+
+  return html`<div class="ojs-toolbar-grid">
+    <div class="left">${viewof resample}</div>
+      <div class="center">
+        ${md`${tex`\big[L(\underline{X}),\, U(\underline{X})\big] = \big[${ciZ.L.toFixed(2)},\; ${ciZ.U.toFixed(2)}\big]`}`}
+      </div>
+    <div class="right">${viewof reset}</div>
+  </div>
+
+  <style>
+    .ojs-toolbar-grid{
+      display:grid;
+      grid-template-columns:1fr auto 1fr; /* left, middle, right */
+      align-items:center;
+      width:100%;
+      box-sizing:border-box;
+      margin:0; padding:0;
+    }
+    .ojs-toolbar-grid form{
+      margin:0 !important;
+      width:100% !important;
+      max-width:none !important;
+      display:flex !important;
+    }
+    .ojs-toolbar-grid .left  form{ justify-content:flex-start !important; }
+    .ojs-toolbar-grid .right form{ justify-content:flex-end   !important; }
+
+    .btn.btn-resample{ background: var(--brand-teal); color:#fff; border:none; }
+    .btn.btn-resample:hover{ background: var(--brand-teal-hover); }
+    .btn.btn-reset{ background: var(--brand-red); color:#fff; border:none; }
+    .btn.btn-reset:hover{ background: var(--brand-red-hover); }
+    .btn.btn-resample:focus-visible,
+    .btn.btn-reset:focus-visible{
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+
+    .ojs-toolbar-grid .center{
+      text-align:center;
+      font-size:0.9rem;
+      color: var(--brand-fg);
+    }
+  </style>`;
+}
+
+html`<div style="max-width:100%; display:flex; gap:14px; align-items:flex-start; flex-wrap:nowrap;">
+  <div>${leftPlot}</div>
+  <div>${rightPlot}</div>
+</div>`
+
+
+```
+
+
+```{ojs}
+// ---------- Controls (to be rendered *below* the plots) ----------
+html`<style>
+details.controls-root > summary {
+  list-style: none; cursor: pointer; user-select: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-weight: 600; font-size: 13px;
+  color: var(--fg-strong);
+  display: flex; align-items: center; gap: 8px;
+}
+/* ---------- Compact Inputs (fixed slider alignment) ---------- */
+.controls-col label { font-size: 12px !important; }
+
+details.controls-root > summary::-webkit-details-marker { display: none; }
+details.controls-root[open] > summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+details.controls-root > summary::before {
+  content: ""; display: inline-block; margin-right: 8px; width: 0; height: 0;
+  border-style: solid; border-width: 3px 0 3px 6px;
+  border-color: transparent transparent transparent var(--fg-strong);
+  transform: rotate(0deg); transform-origin: 3px 50%; transition: transform 60ms ease;
+}
+details.controls-root[open] > summary::before { transform: rotate(90deg); }
+.controls-grid {
+  display: grid;
+  grid-template-columns: minmax(260px,1fr) minmax(260px,1fr);
+  gap: 12px;
+  border: 1px solid var(--border); border-top: none;
+  border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;
+  padding: 10px;
+  background: var(--surface-weak);
+}
+.controls-col { min-width: 260px; }
+.controls-col h4 {
+  margin: 0 0 6px 0; font-size: 12px; font-weight: 700;
+  color: var(--fg-muted);
+}
+.controls-col input[type="range"]{ width:100%; accent-color: var(--brand-teal,#55C3CB); }
+
+/* Toolbar + buttons */
+.btn.btn-resample{ background: var(--brand-teal); color:#fff; border:none; padding:6px 10px; border-radius:8px;}
+.btn.btn-resample:hover{ background: var(--brand-teal-hover,#4da2a8); }
+.btn.btn-reset{ background: var(--brand-red,#e65660); color:#fff; border:none; padding:6px 10px; border-radius:8px;}
+.btn.btn-reset:hover{ background: var(--brand-red-hover,#bd4a52); }
+.toolbar{ display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:8px; margin: 6px 0 10px; }
+.toolbar .left form{ display:flex; justify-content:flex-start; margin:0 }
+.toolbar .right form{ display:flex; justify-content:flex-end;   margin:0 }
+.toolbar .center{ text-align:center; font-size:0.9rem; color:var(--brand-fg) }
+
+/* Plots container: force side-by-side; scroll if too narrow */
+.ci-row {
+  display: flex; gap: 14px; align-items: flex-start;
+  flex-wrap: nowrap; overflow-x: auto; max-width: 100%;
+}
+.ci-panel { flex: 0 0 50%; min-width: 460px; }
+</style>`
+
+viewof controls = {
+  const left = Inputs.form({
+    n: Inputs.range([2, 400], { value: 20, step: 1, label: md`${tex`n`}` }),
+    trueMu: Inputs.range([-2, 2], { value: 0, step: 0.1, label: md`${tex`\mu_{\text{true}}`}` }),
+    trueSigma: Inputs.range([0.3, 3], { value: 1, step: 0.1, label: md`${tex`\sigma\ \text{(known)}`}` })
+  }, { submit: false });
+
+  const right = Inputs.form({
+    alpha: Inputs.range([0.01, 0.2], { value: 0.05, step: 0.01, label: md`${tex`\alpha\ \text{(1−}\alpha\text{ confidence)}`}` }),
+    bins: Inputs.range([10, 60], { value: 24, step: 1, label: "Histogram bins" })});
+
+  const root = html`<details class="controls-root" open>
+    <summary>Simulation controls</summary>
+    <div class="controls-grid">
+      <div class="controls-col"><h4>Data & truth</h4></div>
+      <div class="controls-col"><h4>Confidence level & display</h4></div>
+    </div>
+  </details>`;
+  root.querySelector(".controls-grid").children[0].append(left);
+  root.querySelector(".controls-grid").children[1].append(right);
+
+  const getValue = () => ({ ...left.value, ...right.value });
+  const update = () => { root.value = getValue(); root.dispatchEvent(new CustomEvent("input", { bubbles: true })); };
+  left.addEventListener("input", update);
+  right.addEventListener("input", update);
+  queueMicrotask(update);
+  return root;
+}
+
+```
+
+---
+
+::: {#imp-term-exact-vs-approx-ci .callout-important appearance="simple"}
+### Terminology: Exact vs. Approximate Confidence Intervals
+A **confidence interval (CI)** is a random interval, constructed from the data, that aims to contain the true parameter value with a specified probability (the *coverage probability*).
+
+* **Exact CI.** The coverage probability is *exactly* equal to the nominal level (e.g. $95\%$). Such intervals are sometimes called *well-calibrated*. These are rare, but they can be derived in some classical settings (e.g. certain normal models).
+
+* **Approximate CI.** The coverage probability is only guaranteed *asymptotically* (typically as $n \to \infty$). In practice, most commonly used intervals are of this type.
+:::
+
+## Interpreting Confidence Intervals
+
+In practice, we only ever **observe one dataset** $\underline{x}$. So we calculate the observed interval:
+$$
+[L_{\text{obs}}, U_{\text{obs}}] 
+= \big[L(\underline{x}), U(\underline{x})\big].
+$$
+
+Once the data are observed, this interval is **fixed, not random**.
+
+Therefore, a frequentist would **not** say
+$$
+\mathrm{Pr}(L_{\text{obs}} < \theta < U_{\text{obs}}) = 1 - \alpha.
+$$
+That statement is meaningless, because $\theta$ is not random in the frequentist view.
+
+Instead, the correct interpretation is: **our method has long-run coverage $1-\alpha$.**
+
+## Exact Confidence Intervals {#sec-exact-ci}
+
+Before turning to specific examples, it is useful to outline the *general strategy* for constructing an <span class="xref-no-num">[exact confidence intervals @imp-term-exact-vs-approx-ci
+]</span>.
+
+### General Strategy {#sec-general-ci-strategy}
+
+1. **Choose an estimator.**
+   Start with an estimator $\hat{\theta}=\hat{\theta}(X_1,\ldots,X_n)$ for the parameter of interest $\theta$.
+
+2. **Identify its sampling distribution.**
+   For exact intervals, the *exact* distribution of $\hat{\theta}$ under the model must be known.
+
+3. **Form a pivotal quantity.**
+   Construct a function $Z=Z(\underline{X},\theta)$ whose distribution does not depend on any unknown parameters.
+   Such a $Z$ is called a **pivot**.
+
+4. **Use quantiles of the pivot.**
+   From the known distribution of $Z$, find constants $a,b$ such that
+
+   $$
+   \operatorname{Pr}\!\big(a \leq Z \leq b\big) = 1-\alpha.
+   $$
+
+5. **Invert the inequalities.**
+   Solve $a \leq Z(\underline{X},\theta) \leq b$ for $\theta$.
+   The result is an exact $(1-\alpha)$ confidence interval for $\theta$.
+
+
+::: {.callout-warning}
+### Non-Examinable Content
+
+This *general strategy* for constructing exact confidence intervals is **not examinable**.
+In particular, you do **not** need to remember the term *pivot*.
+
+:::
+
+### The Normal Case (Known Variance)
+
+Let’s apply the <span class="xref-no-num">[general strategy @sec-general-ci-strategy]</span> to construct an exact confidence interval for the mean of a normal distribution with known variance.
+
+Suppose we observe a normal random sample:
+
+$$
+X_i \sim \mathcal{N}(\mu, \sigma^2), \quad i=1,\dots,n.
+$$
+
+
+1. **Choose an estimator.**
+   Use the sample mean:
+
+   $$
+   \bar{X} = \frac{1}{n}\sum_{i=1}^n X_i.
+   $$
+
+2. **Identify its sampling distribution.** Since the $X_i$ are normal,
+   $$
+   \bar{X} \sim \mathcal{N}\!\left(\mu, \tfrac{\sigma^2}{n}\right).
+   $$
+
+3. **Form a pivotal quantity.**
+   Standardise to remove dependence on $\mu$:
+
+   $$
+   Z = \frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \sim \mathcal{N}(0,1).
+   $$
+
+4. **Use quantiles of the pivot.**
+   For the standard normal,
+
+   $$
+   \Pr\!\left(-z_{1-\alpha/2} \leq Z \leq z_{1-\alpha/2}\right) = 1-\alpha,
+   $$
+
+   where $z_{1-\alpha/2}$ is the $(1-\alpha/2)$ quantile.
+
+5. **Invert the inequalities.**
+   Substituting $Z$ and rearranging gives
+
+   $$
+   \Pr\!\left(\bar{X} - z_{1-\alpha/2}\,\tfrac{\sigma}{\sqrt{n}} \;\leq\; \mu \;\leq\; \bar{X} + z_{1-\alpha/2}\,\tfrac{\sigma}{\sqrt{n}}\right) = 1-\alpha.
+   $$
+
+Therefore, an *exact* $(1-\alpha)$ confidence interval for $\mu$ is
+
+$$
+\mu \in \Bigl[\bar{X} - z_{1-\alpha/2}\,\tfrac{\sigma}{\sqrt{n}}, \;\; \bar{X} + z_{1-\alpha/2}\,\tfrac{\sigma}{\sqrt{n}}\Bigr],
+$$
+
+or equivalently,
+
+$$
+\bar{X} \;\pm\; z_{1-\alpha/2}\,\frac{\sigma}{\sqrt{n}}.
+$$
+
+::: {.remark #rem-normal-ci}
+
+#### Quantiles of the pivot
+
+When constructing a confidence interval from a pivot, the choice of quantiles is not unique.
+
+* In the **symmetric case**, we use
+
+  $$
+  \Pr\!\left(-z_{1-\alpha/2} \leq Z \leq z_{1-\alpha/2}\right) = 1-\alpha,
+  $$
+
+  which gives the familiar two-sided interval.
+
+* But we could instead use **any** pair of quantiles $z_{\alpha_1}, z_{1-\alpha_2}$ with $\alpha_1+\alpha_2=\alpha$:
+
+  $$
+  \Pr\!\left(z_{\alpha_1} \leq Z \leq z_{1-\alpha_2}\right) = 1-\alpha.
+  $$
+
+* As a special case, a **one-sided interval** arises from
+
+  $$
+  \Pr\!\left(Z \leq z_{1-\alpha}\right) = 1-\alpha.
+  $$
+
+The symmetric interval is usually preferred because it places equal probability mass in both tails, making it “balanced” around the estimator. This choice minimises the interval length for symmetric distributions (like the normal), which is why it is *standard*.
+:::
+
+::: {.example #exm-normal-ci-known-var}
+### Confidence Intervals with Known Variance
+
+An archaeologist found preserved in a peat bog the skeletons of 30 adult males from an unknown
+human population. She is interested in skeleton lengths.  
+
+The sample mean is $\bar{x} = 161.72$ cm. Assume that the skeleton lengths come from a $\mathcal{N}(\mu, \sigma^2)$ distribution.  
+Further, measurements from other human populations at the time suggest that it is reasonable to assume the population variance is $\sigma^2 = 100 \ \text{cm}^2$.  
+
+1. Construct **95%** and **99%** confidence intervals for $\mu$.  
+2. How many skeletons would be needed to ensure that the width of a 95% confidence interval for $\mu$ is no greater than 4 cm?
+
+:::
+
+::: {.sol #sol-normal-ci-known-var}
+
+**Step 1. Confidence intervals for $\mu$.**
+
+We have $\bar{x} = 161.72$, $n=30$, $\sigma = 10$.  
+
+For a confidence interval, the formula is
+$$
+\bar{x} \;\pm\; z_{\alpha/2} \cdot \frac{\sigma}{\sqrt{n}}.
+$$
+
+- For $95\%$ confidence, $z_{0.05/2} = 1.96$:  
+$$
+161.72 \pm 1.96 \cdot \frac{10}{\sqrt{30}} 
+= 161.72 \pm 3.578 
+= (158.14, \ 165.30).
+$$
+
+- For 99% confidence, $z_{0.01/2} = 2.576$:  
+$$
+161.72 \pm 2.576 \cdot \frac{10}{\sqrt{30}} 
+= 161.72 \pm 4.703 
+= (157.02, \ 166.42).
+$$
+
+---
+
+**Step 2. Required sample size for desired width.**
+
+The width of a 95% CI is
+$$
+\text{Width} = 2 \cdot z_{0.05/2} \cdot \frac{\sigma}{\sqrt{n}}
+= 2 \cdot 1.96 \cdot \frac{10}{\sqrt{n}}.
+$$
+
+We want this $\leq 4$:
+$$
+2 \cdot 1.96 \cdot \frac{10}{\sqrt{n}} \leq 4
+\quad \Rightarrow \quad
+\sqrt{n} \geq \frac{2 \cdot 1.96 \cdot 10}{4} = 9.8.
+$$
+
+So
+$$
+n \geq (9.8)^2 = 96.04.
+$$
+
+Therefore, at least **97 skeletons** are needed.
+
+</details>
+
+:::
+
+
+### The Normal Case (Unknown Variance)
+
+Let’s apply the <span class="xref-no-num">[general strategy @sec-general-ci-strategy]</span> to construct an exact confidence interval for the mean of a normal distribution when the variance is **unknown**.
+
+Suppose we observe a normal random sample with unknown mean *and* variance:
+
+$$
+X_i \sim \mathcal{N}(\mu, \sigma^2), \quad i=1,\dots,n.
+$$
+
+Since $\sigma^2$ is unknown, we estimate it using the <span class="xref-no-num">[sample variance @def-sample-variance]</span>:
+
+$$
+S^2 = \frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X})^2.
+$$
+
+---
+
+#### Aside: The Student’s $t$ Distribution {.unnumbered}
+
+* Discovered by William Sealy Gosset in 1908, under the pseudonym *“Student”*.
+* Defined as
+
+  $$
+  T = \frac{Z}{\sqrt{U/\nu}}, \quad Z \sim \mathcal{N}(0,1), \;\; U \sim \chi^2_\nu, \;\; Z \perp U.
+  $$
+* Shape is similar to $\mathcal{N}(0,1)$ but with **heavier tails**, reflecting the extra uncertainty from estimating $\sigma^2$.
+* As $\nu \to \infty$, $t_\nu \overset{d}{\to} \mathcal{N}(0,1)$.
+
+---
+
+1. **Choose an estimator.**
+   Use the sample mean:
+
+   $$
+   \bar{X} = \frac{1}{n}\sum_{i=1}^n X_i.
+   $$
+
+2. **Identify its sampling distribution.**
+   As before,
+
+   $$
+   \bar{X} \sim \mathcal{N}\!\left(\mu, \tfrac{\sigma^2}{n}\right).
+   $$
+
+   But now $\sigma^2$ is unknown and must be estimated by $S^2$.
+
+3. **Form a pivotal quantity.**
+   Standardise using $S$:
+
+   $$
+   T = \frac{\bar{X} - \mu}{S/\sqrt{n}}.
+   $$
+
+   It can be shown (using $\chi^2$ theory and independence between $\bar{X}$ and $S^2$) that
+
+   $$
+   T \sim t_{n-1}.
+   $$
+
+4. **Use quantiles of the pivot.**
+   For the $t$ distribution with $n-1$ degrees of freedom,
+
+   $$
+   \Pr\!\left(-t_{n-1,\,1-\alpha/2} \leq T \leq t_{n-1,\,1-\alpha/2}\right) = 1-\alpha,
+   $$
+
+   where $t_{n-1,\,1-\alpha/2}$ is the $(1-\alpha/2)$ quantile.
+
+5. **Invert the inequalities.**
+   Substituting $T$ and rearranging gives
+
+   $$
+   \Pr\!\left(\bar{X} - t_{n-1,\,1-\alpha/2}\,\frac{S}{\sqrt{n}} \;\leq\; \mu \;\leq\; \bar{X} + t_{n-1,\,1-\alpha/2}\,\frac{S}{\sqrt{n}}\right) = 1-\alpha.
+   $$
+
+Therefore, an *exact* $(1-\alpha)$ confidence interval for $\mu$ is
+
+$$
+\mu \in \Bigl[\bar{X} - t_{n-1,\,1-\alpha/2}\,\tfrac{S}{\sqrt{n}}, \;\; \bar{X} + t_{n-1,\,1-\alpha/2}\,\tfrac{S}{\sqrt{n}}\Bigr],
+$$
+
+or equivalently,
+
+$$
+\bar{X} \;\pm\; t_{n-1,\,1-\alpha/2}\,\frac{S}{\sqrt{n}}.
+$$
+
+## Approximate Confidence Intervals {#sec-approx-ci}
+
+For more general distributions (not necessarily normal), exact CIs are not available. In such cases we rely on *asymptotics*. For example:
+
+1. The *asymptotic* distribution of the *maximum likelihood estimator*
+2. The *central limit theorem*.
+
+### Large Sample Confidence Intervals
+
+#### Step 1: CLT
+
+If $\hat{\theta}$ is an estimator of a parameter $\theta$ with finite variance, then for large $n$:
+
+$$
+\frac{\hat{\theta} - \theta}{\text{SE}(\hat{\theta})} \;\approx\; \mathcal{N}(0,1),
+$$
+
+where $\text{SE}(\hat{\theta})$ is the standard error (the standard deviation of $\hat{\theta}$).
+
+#### Step 2: Approximate interval
+
+Therefore, the same logic as in the normal case gives:
+
+$$
+\theta \in \biggl[\,\hat{\theta} - z_{1-\alpha/2}\,\text{SE}(\hat{\theta}), \;\; \hat{\theta} + z_{1-\alpha/2}\,\text{SE}(\hat{\theta}) \,\biggr].
+$$
+
+Or equivalently:
+
+$$
+\hat{\theta} \;\pm\; z_{1-\alpha/2}\,\text{SE}(\hat{\theta}).
+$$
+
+This is an **approximate $(1-\alpha)$ confidence interval**, valid asymptotically as $n \to \infty$.
+
+
+[^bayes-exc]: Recall from @sec-bayes-inference that Bayesians do not return a single “best guess,” but a full **posterior distribution** over parameter values. From this distribution we can compute **summaries** such as plausible ranges of $\theta$ (see @sec-bayesian-intervals), which play a role similar to confidence intervals but with a different interpretation.

@@ -46,7 +46,7 @@
 /* === Title: TRUE CENTRE === */
 #quarto-header .navbar-title {
   position: absolute;
-  left: 50%;
+  left: 56%;
   top: 50%;
   transform: translate(-50%,-50%);
   margin: 0;
@@ -157,4 +157,43 @@
 #quarto-header nav.navbar {
   padding-top: 0.8rem;
   padding-bottom: 0.8rem;
+}
+
+
+/* Button next to dark/light toggle */
+#quarto-header .btn-zoom-toggle {
+  width: 2.2rem;
+  height: 2.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  border: 1px solid var(--navbar-bg, #ddd);
+  background: var(--navbar-bg, white);
+  color: var(--brand-fg, currentColor);
+  cursor: pointer;
+  padding: 0;
+}
+
+/* Icon: ⤢ to enter zoom, ⤡ to exit (auto-swaps when body.lecture-zoom is on) */
+/* #quarto-header .btn-zoom-toggle::after {
+  content: "⛶";
+  font-size: 1.15rem;
+  line-height: 1;
+} */
+/* body.lecture-zoom #quarto-header .btn-zoom-toggle::after { content: "✕"; }  exit zoom */
+
+
+#quarto-header .btn-zoom-toggle svg {
+  width: 1.15rem; height: 1.15rem; display: inline-block;
+}
+#quarto-header .btn-zoom-toggle .icon-exit { display: none; }
+body.lecture-zoom #quarto-header .btn-zoom-toggle .icon-enter { display: none; }
+body.lecture-zoom #quarto-header .btn-zoom-toggle .icon-exit  { display: inline-block; }
+
+
+/* Hover affordance (match your scheme toggle) */
+#quarto-header .btn-zoom-toggle:hover {
+  color: var(--brand-teal);
+  background: rgba(255,255,255,0.08);
 }

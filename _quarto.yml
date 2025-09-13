@@ -1,6 +1,12 @@
 project:
   type: book
   output-dir: docs
+  resources:
+    - service-worker.js
+    - pwa/manifest.webmanifest
+    - pwa/offline.html
+    - pwa/icons/*
+    # - theming/favicons/*
 
 # execute:
 #   engine: jupyter
@@ -15,28 +21,28 @@ book:
     - index.qmd
     - part: "Part I — Foundations"
       chapters:
-        - lectures/part1/1-prob-theory.qmd
-        - lectures/part1/2-what-is-stats-inference.qmd
-        - lectures/part1/3-types-of-inference.qmd
+        - content/lectures/part1/1-prob-theory.qmd
+        - content/lectures/part1/2-what-is-stats-inference.qmd
+        - content/lectures/part1/3-types-of-inference.qmd
     - part: "Part II — Parameter Estimation"
       chapters:
-        - lectures/part2/4-freq-point-estimation.qmd
-        - lectures/part2/5-likelihood.qmd
-        - lectures/part2/6-bayes-inference.qmd
+        - content/lectures/part2/4-freq-point-estimation.qmd
+        - content/lectures/part2/5-likelihood.qmd
+        - content/lectures/part2/6-bayes-inference.qmd
     - part: "Part III - Interval Estimation"
       chapters:
-        - lectures/part3/7-freq-interval-estimation.qmd
-        - lectures/part3/8-bayes-interval-estimation.qmd
+        - content/lectures/part3/7-freq-interval-estimation.qmd
+        - content/lectures/part3/8-bayes-interval-estimation.qmd
     - part: "Part IV — Hypothesis Testing"
       chapters:
-        - lectures/part4/9-freq-hypothesis-testing.qmd
-        - lectures/part4/10-bayes-hypothesis-testing.qmd
+        - content/lectures/part4/9-freq-hypothesis-testing.qmd
+        - content/lectures/part4/10-bayes-hypothesis-testing.qmd
     - part: "Additional Material"
       chapters:
-        - appendices/formula-sheet.qmd
-        - appendices/revision-sheet.qmd
-        - appendices/distribution-explorer.qmd
-        - appendices/question-bank.qmd
+        - content/appendices/formula-sheet.qmd
+        - content/appendices/revision-sheet.qmd
+        - content/appendices/distribution-explorer.qmd
+        - content/appendices/question-bank.qmd
   sidebar:
     style: floating
     search: true
@@ -49,12 +55,10 @@ book:
     type: textbox
     keyboard-shortcut: "F"
 
-bibliography: references.bib
-
-# theorems: true   # auto-number + cross-refs for theorem-like blocks
+# bibliography: references.bib
 
 math: 
-  renderer: mathjax   # or "katex" if you prefer KaTeX
+  renderer: mathjax   # should try "katex" for faster rendering if all features work
 
 brand: theming/_brand.yml
 format:
@@ -76,36 +80,42 @@ format:
       - theming/nav-tabs.css
       - theming/header.css
       - theming/question-bank.css
+      - theming/sidebar.css
+      - theming/lecture-zoom.css
     include-after-body:
       - theming/no-xref-suffix.html
       - theming/close-codefold.html
       - theming/header.html
+      - theming/callout-prefix-removal.html
+      - theming/zoom-button.html
     include-in-header: 
-      - theming/favicons.html
+      # - theming/favicons.html
+      - pwa/pwa-head.html
 
-  pdf:
-    documentclass: scrreprt
-    include-in-header:
-      text: |
-        \usepackage{newunicodechar}
-        \usepackage{emoji}
-        \newunicodechar{✨}{\emoji{sparkles}}
-        \usepackage{amsthm}
-        \usepackage{mathtools} 
-        \usepackage{hyperref}
-        \usepackage{cleveref}
-        \makeatletter
-        \newenvironment{refproof}[1][]%
-          {\if\relax\detokenize{#1}\relax
-             \begin{proof}
-           \else
-             % With cleveref:
-             %\begin{proof}[Proof of \cref{#1}]
-             % Without cleveref:
-             \begin{proof}[Proof of \ref{#1}]
-           \fi}%
-          {\end{proof}}
-        \makeatother
+
+  # pdf:
+  #   documentclass: scrreprt
+  #   include-in-header:
+  #     text: |
+  #       \usepackage{newunicodechar}
+  #       \usepackage{emoji}
+  #       \newunicodechar{✨}{\emoji{sparkles}}
+  #       \usepackage{amsthm}
+  #       \usepackage{mathtools} 
+  #       \usepackage{hyperref}
+  #       \usepackage{cleveref}
+  #       \makeatletter
+  #       \newenvironment{refproof}[1][]%
+  #         {\if\relax\detokenize{#1}\relax
+  #            \begin{proof}
+  #          \else
+  #            % With cleveref:
+  #            %\begin{proof}[Proof of \cref{#1}]
+  #            % Without cleveref:
+  #            \begin{proof}[Proof of \ref{#1}]
+  #          \fi}%
+  #         {\end{proof}}
+  #       \makeatother
 
 
 callouty-theorem:
@@ -143,7 +153,7 @@ callouty-theorem:
     callout:
       type: tip
       appearance: default
-      collapse: false
+      collapse: true
       icon: true
   exm:
     override-title: false

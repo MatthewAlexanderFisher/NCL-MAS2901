@@ -1,0 +1,669 @@
+# What is Statistical Inference?
+
+::: {.callout-note collapse="true" title="Learning objectives"}
+- Define *population* and *sample*, and identify each in simple scenarios.
+- State the *goal* of statistical inference: using a sample to learn about a population distribution.
+- Recognise the idea of a *random sample* $X_1,\dots,X_n$ and the iid assumption.
+- Define a *statistical model* as a set of distributions $\{P_\theta:\theta\in\Theta\}$.
+- Identify the *parameter(s)* $\theta$ and the *parameter space* $\Theta$ for a given model.
+- Write down a suitable statistical model for a short verbal problem.
+:::
+
+
+```{ojs}
+bodyFont = getComputedStyle(document.body).fontFamily
+```
+
+Statistical inference underpins experimental science, machine learning, clinical trials, and more. The overall aim is:
+
+* Given a **sample** (the data you have) from a **population** (the broader group you care about),
+* Draw a justified **conclusion about the population’s distribution**.
+
+Typical conclusions include estimating a proportion or mean, quantifying uncertainty, comparing groups, or predicting future outcomes.
+
+::: {#imp-notation-dist .callout-important collapse="true" appearance="simple"}
+### Notation: $\mathrm{Distribution}(\theta)$
+
+In the following, we use $\mathrm{Distribution}(\theta)$ as a **placeholder** to mean:
+
+> “a distribution depending on parameter $\theta$.”
+
+For example:
+
+* $\mathrm{Distribution}(\mu,\sigma^2) = \mathcal{N}(\mu,\sigma^2)$
+* $\mathrm{Distribution}(p) = \mathrm{Bernoulli}(p)$
+
+This allows us to keep the definitions *general*! 
+:::
+
+## Statistical Inference as "Inverse Probability"
+
+In **probability theory**, the usual direction is:
+
+* Start with a distribution $f(x \mid \theta)$ (the model, with known parameter $\theta$).
+* Use it to generate random samples, or calculate probabilities of events involving the data.
+
+In **statistical inference**, we reverse the problem:
+
+* We observe data $\underline{x} = (x_1,\ldots,x_n)$.
+* The distribution $f(x \mid \theta)$ is only partially known, through the unknown parameter $\theta$.
+* Our task is to use the sample to learn about $\theta$, and hence about the population distribution.
+
+Formally, we (*usually*) assume our data are an **i.i.d. sample**:
+
+$$
+X_1,\ldots,X_n \stackrel{\text{iid}}{\sim} \mathrm{Distribution}(\theta).
+$$
+
+- *Independent*: knowing the value of one $X_i$ gives no information about any other.  
+- *Identically distributed*: each $X_i$ comes from the same population distribution $f(x \mid \theta)$.  
+
+The goal of *statistical inference* is to use the observed sample to learn about $\theta$, and hence about the underlying population.  
+
+::: {#imp-term-random-sample .callout-important collapse="true" appearance="simple"}
+### Terminology: Random Sample
+A **random sample** means $n$ i.i.d. observations from some distribution.  
+
+This is the standard framework in which most inference procedures are developed.
+:::
+
+
+### Statistical Inference by Eye {#sec-inference-eye}
+
+As an informal starting point, suppose $X_1,\ldots,X_n$ are sampled from a $\mathcal{N}(\mu,\sigma^2)$ distribution, with $\mu$ and $\sigma^2$ unknown. 
+
+Try to “guess” $\mu$ and $\sigma^2$ by eye from the data:
+
+---
+
+**Visualisation:**
+
+```{ojs}
+// helper for curve scale
+approxSigma = Math.sqrt(approxVar)
+
+// density histogram + normal pdf (returns an SVG node)
+histVis = {
+  const colHist  = "var(--brand-teal, #55C3CB)";
+  const colCurve = "var(--brand-red, #e65660)";
+  const gridCol  = "var(--plot-grid, #94a3b8)";
+
+  // --- x-domain based on data (with padding) ---
+  const xMin = d3.min(data), xMax = d3.max(data);
+  const pad = 0.4 * (xMax - xMin || 1);
+  const domain = [xMin - pad, xMax + pad];
+
+  const binCount = bins ?? 30;
+
+  // --- compute density bins manually: density = count / (n * binWidth) ---
+  const bin = d3.bin().domain(domain).thresholds(binCount);
+  const B = bin(data);
+  const n = data.length;
+  for (const b of B) b.density = b.length / (n * (b.x1 - b.x0));
+
+  // --- normal pdf on same domain ---
+  const xs = d3.range(domain[0], domain[1], (domain[1] - domain[0]) / 400);
+  const normalPdf = (x, mu, sigma) => (1/(sigma*Math.sqrt(2*Math.PI))) * Math.exp(-0.5*((x-mu)/sigma)**2);
+  const curve = xs.map(x => ({ x, y: normalPdf(x, approxMu, approxSigma) }));
+
+  // --- shared y-domain (max of both) ---
+  const ymax = 1.1 * Math.max(
+    d3.max(B, d => d.density) ?? 0,
+    d3.max(curve, d => d.y) ?? 0
+  );
+
+  return Plot.plot({
+    height: 360,
+    marginLeft: 50,
+    marginBottom: 50,
+    x: { label: "x", domain },
+    y: { label: "Density", grid: true, domain: [0, ymax], tickSize: 6 },
+    style: {
+      background: "var(--brand-bg)",
+      fontSize: 14,
+      fontFamily: bodyFont,
+      width: "100%",
+      display: "block",
+      margin: "0 auto",
+      maxWidth: "1200px",
+      color: "var(--fg-strong, currentColor)"
+    },
+    marks: [
+      // density histogram (teal)
+      Plot.rectY(
+        B,
+        { x1: d => d.x0, x2: d => d.x1, y: d => d.density,
+          fill: colHist, fillOpacity: 0.35, stroke: colHist, strokeOpacity: 0.7 }
+      ),
+      // normal pdf (orange)
+      Plot.line(curve, { x: "x", y: "y", stroke: colCurve, strokeWidth: 2.5 }),
+      // baseline
+      Plot.ruleY([0], { stroke: gridCol, strokeOpacity: 0.4 })
+    ]
+  });
+}
+```
+
+```{ojs}
+// Ranges sourced from your controls
+mu_min = mu_true - muHalfWidth
+mu_max = mu_true + muHalfWidth
+var_min = 0
+var_max = sig2Max
+
+// Responsive 2D slider (scales with its container)
+viewof muVar2D = {
+  // Logical drawing size (not CSS pixels)
+  const width = 220, height = 220;
+  const margin = {top: 20, right: 5, bottom: 5, left: 5};
+  const W = width - margin.left - margin.right;
+  const H = height - margin.top - margin.bottom;
+
+  // --- helper: clamp number to [lo, hi] ---
+  const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+
+  // Scales (y increases upward in data space)
+  const x = d3.scaleLinear().domain([mu_min, mu_max]).range([0, W]).clamp(true);
+  const y = d3.scaleLinear().domain([var_min, var_max]).range([H, 0]).nice().clamp(true);
+
+  // Initial value
+  let state = {
+    approxMu: clamp(mu_true, mu_min, mu_max),
+    approxVar: clamp((var_max - var_min) * 0.4, var_min, var_max)
+  };
+
+  const bg = "var(--plot-panel-bg)";
+  const grid = "var(--plot-grid, #94a3b8)";
+  const colHandle = "var(--brand-red, #e65660)";
+  const colAccent = "var(--brand-teal, #55C3CB)";
+
+  // Wrapper that controls responsive size
+  const wrap = html`<div style="
+    width: 100%;
+    max-width: 320px;      /* cap size; tweak as you like */
+    aspect-ratio: 1 / 1;   /* keep it square */
+    display: block;
+  "></div>`;
+
+  // SVG uses logical coords; CSS scales it
+  const svg = d3.create("svg")
+    .attr("viewBox", `0 0 ${width} ${height}`)
+    .attr("preserveAspectRatio", "xMidYMid meet")
+    .style("width", "100%")
+    .style("height", "100%")
+    .style("background", "transparent")
+    .attr("stroke-opacity", 0.)
+    .style("font-family", bodyFont)
+    .style("font-size", "14px");
+
+  const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+  // Background panel
+  g.append("rect")
+    .attr("x", 0).attr("y", 0).attr("width", W).attr("height", H)
+    .attr("rx", 10)
+    .attr("fill", bg)
+    .attr("stroke", grid).attr("stroke-opacity", 0.5);
+
+  // Crosshairs
+  const crossX = g.append("line")
+    .attr("stroke", colAccent)
+    .attr("stroke-opacity", 0.7)
+    .attr("stroke-width", 1.5);
+
+  const crossY = g.append("line")
+    .attr("stroke", colAccent)
+    .attr("stroke-opacity", 0.7)
+    .attr("stroke-width", 1.5);
+
+  // Handle
+  const handle = g.append("circle")
+    .attr("r", 5)
+    .attr("fill", colHandle)
+    .attr("stroke", "white")
+    .attr("stroke-width", 1.5)
+    .style("cursor", "grab");
+
+  // Readout
+  const readout = svg.append("text")
+    .attr("x", width / 2)        // center horizontally
+    .attr("y", margin.top / 1.5) // just above the chart area
+    .attr("text-anchor", "middle")
+    .attr("fill", "var(--fg-strong, currentColor)")
+    .style("font-weight", 400);
+
+  function updateVisual() {
+    const cx = x(state.approxMu), cy = y(state.approxVar);
+    crossX.attr("x1", 0).attr("x2", W).attr("y1", cy).attr("y2", cy);
+    crossY.attr("x1", cx).attr("x2", cx).attr("y1", 0).attr("y2", H);
+    handle.attr("cx", cx).attr("cy", cy);
+    readout.text(`μ≈ ${state.approxMu.toFixed(2)},        σ²≈ ${state.approxVar.toFixed(2)}`);
+  }
+
+  function setFromPointer(evt) {
+    const [px, py] = d3.pointer(evt, g.node()); // in SVG user units (matches viewBox)
+    const mu = clamp(x.invert(px), mu_min, mu_max);
+    const vv = clamp(y.invert(py), var_min, var_max);
+    state = { approxMu: mu, approxVar: vv };
+    root.value = { approxMu: state.approxMu, approxVar: state.approxVar };
+    root.dispatchEvent(new CustomEvent("input", {bubbles: true}));
+    updateVisual();
+  }
+
+  // Interaction overlay
+  g.append("rect")
+    .attr("x", 0).attr("y", 0).attr("width", W).attr("height", H)
+    .attr("fill", "transparent")
+    .style("cursor", "crosshair")
+    .on("pointerdown", function(evt) {
+      this.setPointerCapture?.(evt.pointerId);
+      handle.style("cursor", "grabbing");
+      setFromPointer(evt);
+    })
+    .on("pointermove", function(evt) {
+      if (evt.pressure > 0 || evt.buttons) setFromPointer(evt);
+    })
+    .on("pointerup", function(evt) {
+      this.releasePointerCapture?.(evt.pointerId);
+      handle.style("cursor", "grab");
+    });
+
+  // Root element with .value is the wrapper (so CSS controls size)
+  const root = wrap;
+  root.append(svg.node());
+  root.value = { approxMu: state.approxMu, approxVar: state.approxVar };
+
+  updateVisual();
+  return root;
+}
+
+// Reactive outputs
+approxMu = muVar2D.approxMu
+approxVar = muVar2D.approxVar
+```
+
+```{ojs}
+// Layout container placing the histogram (left, 2fr) and slider (right, 1fr)
+{
+  const wrap = html`<div style="
+    display: grid;
+    grid-template-columns: 3fr 1fr;  /* change to 3fr 1fr for ~3:1 */
+    gap: 0.5rem;
+    align-items: start; /* left plot stays top-aligned */
+  "></div>`;
+
+  // Histogram (left)
+  wrap.append(histVis);
+
+  // Slider (right, vertically centered)
+  const sliderBox = html`<div style="display:flex; align-items:center; height:100%"></div>`;
+  sliderBox.append(viewof muVar2D);
+  wrap.append(sliderBox);
+
+  return wrap;
+}
+```
+
+```{ojs}
+// data
+data = {
+  resample; // reacts to the "Resimulate data" button
+  const rnd = d3.randomNormal(mu_true, sigma_true);
+  return Array.from({ length: n }, () => rnd());
+}
+```
+
+```{ojs}
+//| echo: false
+
+// --- Styles: compact, 2-column, collapsible, custom button ---
+html`<style>
+  /* ---------- Scope all styles to this controls box ---------- */
+  details.controls-root { 
+    --ctrl-font: 12px;
+    font-size: var(--ctrl-font);
+  }
+
+  /* Dropdown header */
+  details.controls-root > summary {
+    list-style: none; cursor: pointer; user-select: none;
+    background: var(--surface, #f1f5f9);
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 10px;
+    padding: 8px 10px;
+    font-weight: 600; font-size: calc(var(--ctrl-font) + 1px);
+    color: var(--fg-strong, #334155);
+    display: flex; align-items: center; gap: 8px;
+  }
+  details.controls-root > summary::-webkit-details-marker { display: none; }
+  details.controls-root[open] > summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+
+  /* Two-column grid (side-by-side) */
+  details.controls-root .controls-grid {
+    display: grid;
+    grid-template-columns: minmax(260px, 1fr) minmax(260px, 1fr);
+    gap: 12px;
+    border: 1px solid var(--border, #e5e7eb); border-top: none;
+    border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;
+    padding: 10px;
+    background: var(--surface-weak, #fafafa);
+    overflow-x: auto;
+  }
+  details.controls-root .controls-col { min-width: 260px; }
+  details.controls-root .controls-col h4 {
+    margin: 0 0 6px 0;
+    font-size: var(--ctrl-font); font-weight: 700;
+    color: var(--fg-muted, #475569);
+  }
+
+  /* ---- Align label & slider (form-level grid) ---- */
+  details.controls-root .controls-col form {
+    display: grid !important;
+    grid-template-columns: minmax(150px, auto) 1fr; /* label | inputs */
+    align-items: center;         /* vertical centring */
+    column-gap: 10px;
+    font-size: var(--ctrl-font) !important;
+    line-height: 1.25;
+    margin: 6px 0;
+  }
+
+  /* Label: kill default <p> margin; align KaTeX + text */
+  details.controls-root .controls-col form > label {
+    margin: 0 !important;
+    display: flex; align-items: center; gap: 8px;
+    font-size: var(--ctrl-font) !important;
+    color: var(--fg-muted, #475569);
+    font-weight: 600;
+  }
+  details.controls-root .controls-col form > label p { margin: 0 !important; }
+
+  /* Inputs wrapper (auto-generated, e.g. .oi-*-input): align number + slider */
+  details.controls-root .controls-col form > [class$="-input"],
+  details.controls-root .controls-col form > [class*="-input"] {
+    display: flex; align-items: center; gap: 8px;
+    min-height: 22px;
+  }
+
+  /* Number input normalisation */
+  details.controls-root .controls-col input[type="number"] {
+    height: 24px; padding: 2px 6px;
+    font-size: var(--ctrl-font);
+    border: 1px solid var(--border, #e5e7eb); border-radius: 6px;
+    background: var(--surface, #f1f5f9); color: var(--fg-strong, #334155);
+  }
+
+  /* Slider styling */
+  details.controls-root .controls-col input[type="range"] {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 18px; background: transparent;
+    vertical-align: middle;
+    accent-color: var(--brand-teal, #55C3CB);
+  }
+  details.controls-root .controls-col input[type="range"]::-webkit-slider-runnable-track {
+    height: 4px; border-radius: 999px;
+    background: color-mix(in srgb, var(--brand-teal, #55C3CB) 35%, transparent);
+  }
+  details.controls-root .controls-col input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--brand-teal, #55C3CB); border: 0; margin-top: -4px; /* centre thumb over 4px track */
+  }
+  details.controls-root .controls-col input[type="range"]::-moz-range-track {
+    height: 4px; border-radius: 999px;
+    background: color-mix(in srgb, var(--brand-teal, #55C3CB) 35%, transparent);
+  }
+  details.controls-root .controls-col input[type="range"]::-moz-range-thumb {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--brand-teal, #55C3CB); border: 0;
+  }
+
+  /* Button */
+  details.controls-root .btn-resim button {
+    background: var(--brand-teal, #55C3CB); color: #fff;
+    border: none; border-radius: 6px; padding: 6px 12px;
+    font-weight: 600; font-size: var(--ctrl-font); cursor: pointer;
+    transition: filter 120ms ease, background-color 120ms ease;
+  }
+  details.controls-root .btn-resim button:hover {
+    background: color-mix(in srgb, var(--brand-teal, #55C3CB) 88%, black);
+  }
+
+  /* Chevron */
+  details.controls-root > summary::before {
+    content: ""; display: inline-block; margin-right: 8px; width: 0; height: 0;
+    border-style: solid; border-width: 3px 0 3px 6px;
+    border-color: transparent transparent transparent var(--fg-strong);
+    transform: rotate(0deg); transform-origin: 3px 50%; transition: transform 50ms ease;
+  }
+  details.controls-root[open] > summary::before { transform: rotate(90deg); }
+`
+
+// --- Build one merged, collapsible control "input" ---
+viewof controls = {
+  const resimBtn = Inputs.button("Resimulate data");
+  resimBtn.classList.add("btn-resim");
+
+  const leftForm = Inputs.form({
+    n: Inputs.range([1, 400], { value: 50, step: 1, label: md`${tex`n`}` }),
+    mu_true: Inputs.range([-5, 5], { value: 0.5, step: 0.05, label: md`${tex`\mu_{\text{true}}`}` }),
+    sigma_true: Inputs.range([0.3, 4], { value: 1.2, step: 0.05, label: md`${tex`\sigma_{\text{true}}`}` })
+  }, { submit: false });
+
+  const rightForm = Inputs.form({
+    muHalfWidth: Inputs.range([1, 10], { value: 5, step: 0.05, label: md`${tex`\mu\text{-range}`}` }),
+    sig2Max: Inputs.range([0.2, 10], { value: 5, step: 0.05, label: md`${tex`\sigma^2\text{ max}`}` }),
+    bins: Inputs.range([10, 60], { value: 12, step: 1, label: "Histogram bins" })
+  }, { submit: false });
+
+  const root = html`<details class="controls-root" open>
+    <summary>Simulation controls</summary>
+    <div class="controls-grid">
+      <div class="controls-col"><h4>Data & truth</h4></div>
+      <div class="controls-col"><h4>Grid & display</h4></div>
+    </div>
+  </details>`;
+
+  const grid = root.querySelector(".controls-grid");
+  grid.children[0].append(leftForm);
+  grid.children[1].append(rightForm);
+
+  const btnWrap = html`<div style="display:flex; justify-content:flex-start; margin-top:6px;"></div>`;
+  btnWrap.append(resimBtn);
+  grid.children[1].append(btnWrap);
+
+  const getValue = () => ({ ...leftForm.value, ...rightForm.value, resim: resimBtn.value });
+  const update = () => { root.value = getValue(); root.dispatchEvent(new CustomEvent("input", { bubbles: true })); };
+
+  grid.addEventListener("input", update);
+  queueMicrotask(update);
+  return root;
+}
+
+// --- Expose reactive vars
+n = controls.n
+mu_true = controls.mu_true
+sigma_true = controls.sigma_true
+muHalfWidth = controls.muHalfWidth
+sig2Max = controls.sig2Max
+bins = controls.bins
+resample = controls.resim
+
+```
+
+---
+
+## Statistical Models
+
+Whenever we perform statistical inference, we must specify a *statistical model*.
+
+::: {.definition #def-model}
+### Statistical Model
+A **statistical model** is a *set* of candidate population distributions:
+$$
+\mathcal{P}=\{P_\theta \mid \theta\in\Theta\},
+$$
+where $P_\theta$ is a probability distribution indexed by a **parameter** $\theta$, and $\Theta$ is the **parameter space** (the set of allowable parameter values).
+:::
+
+A statistical model is a working assumption that needs to be checked and verified!
+
+::: {.example #exm-exponential-model}
+### Exponential model
+Suppose we are interested in modelling **waiting times** until some event occurs  
+(e.g. the time between customer arrivals at a service desk).  
+
+A simple model is to assume the data are i.i.d. from an exponential distribution:
+$$
+X_i \mid \lambda \sim \mathrm{Exp}(\lambda).
+$$
+Write this formally as a **statistical model** and write down the **parameter space**.
+:::
+
+::: {#sol-exponential-model}
+Each data follows the exponential distribution with parameter $\lambda$. Since $\lambda > 0$, we have the model:
+$$
+\mathcal{P}=\big\{\mathrm{Exp}(\lambda)\ \big|\ \lambda>0\big\},
+$$
+with parameter $\theta=\lambda$ and parameter space[^sets]
+$$
+\Theta = \{\lambda \mid \lambda > 0\} = (0,\infty) = \mathbb{R}^+.
+$$
+
+The exponential distribution is often used for modelling the time between events in a **Poisson process** — situations where events occur continuously and independently at a constant average rate.  
+
+For example:  
+- the time between buses arriving at a stop if buses come at random,  
+- the time until the next radioactive decay of an atom,  
+- the waiting time until the next customer enters a shop.  
+
+In each case, the exponential model is a natural first assumption.
+:::
+
+::: {.example #exm-normal-model}
+### Normal model
+Write down the **statistical model** and the corresponding **parameter space** used in @sec-inference-eye.
+:::
+
+::: {#sol-normal-model}
+We assumed the data are i.i.d. Normally distributed with *unknown mean* and *unknown variance*:
+$$
+X_i \mid \mu, \sigma^2 \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2).
+$$
+
+The **statistical model** is
+$$
+\mathcal{P} = \{ \mathcal{N}(\mu,\sigma^2) \mid \mu \in \mathbb{R},\ \sigma^2 > 0 \}.
+$$
+
+Here there are two parameters, $\mu$ and $\sigma^2$, which we group into a parameter vector $\underline{\theta} = (\mu, \sigma^2)$.  
+The **parameter space** is[^sets2]  
+$$
+\Theta = \{ (\mu, \sigma^2) \mid \mu \in \mathbb{R},\ \sigma^2 > 0 \} 
+       = \mathbb{R} \times (0,\infty) 
+       = \mathbb{R} \times \mathbb{R}^+.
+$$
+
+The normal model is widely used in practice, for example when data are approximately symmetric and unimodal, such as measurement errors in physics or biological traits like human heights.
+:::
+
+
+
+::: {.example #exm-identify-model}
+### From words to a model (one-dimensional)
+A questionnaire records whether each respondent would recommend a service: “yes” or “no”. Write down a simple model and identify the parameter.
+:::
+
+::: {#sol-identify-model}
+Let $X_i=1$ if respondent $i$ says “yes”, and $0$ otherwise.  
+Model $X_1,\ldots,X_n \stackrel{\text{iid}}{\sim}\mathrm{Bernoulli}(p)$, where $p=\Pr(X_i=1)$ is the (unknown) long-run recommendation proportion.  
+Here $\theta=p$ and $\Theta=(0,1)$. The **population** is all (current/future) potential respondents of interest; the **sample** is the $n$ surveyed respondents.
+:::
+
+::: {.example #exm-identify-model-multinomial}
+### A slightly richer example (multinomial)
+A bag contains sweets of three colours $\{\text{red},\text{blue},\text{green}\}$. You draw $n$ sweets at random *with replacement* and record counts $(R,B,G)$. Propose a model and name the parameter(s).
+:::
+
+::: {#sol-identify-model-multinomial}
+Model $(R,B,G) \sim \mathrm{Multinomial}\!\left(n;\,p_R,p_B,p_G\right)$ with $p_R,p_B,p_G\ge 0$ and $p_R+p_B+p_G=1$.  
+The parameter is $\theta=(p_R,p_B,p_G)$, and the parameter space is the 2-simplex $\Theta=\{(p_R,p_B,p_G)\in[0,1]^3:\sum p_\cdot=1\}$. The **population** is the long-run distribution of colours produced by the bag; the **sample** is the observed draws.
+:::
+
+::: {.example #exm-ml-inference}
+### Image Classification from Machine Learning
+In image classification (cat vs not-cat), each training example is a pair $(X_i,Y_i)$ where $X_i$ is an image and $Y_i\in\{0,1\}$. A generic probabilistic model writes the conditional distribution
+$$
+\mathrm{Pr}_\theta(Y=1\mid X=x)=g_\theta(x),
+$$
+for some function family $g_\theta$ (e.g. logistic regression or a neural network). What are the sample, population, model, and parameter?
+:::
+
+::: {#sol-ml-inference}
+- **Sample:** the labelled training set $\{(X_i,Y_i)\}_{i=1}^n$.  
+- **Population:** all (future) images and labels of interest.  
+- **Model:** the family of conditional distributions $\{ \Pr_\theta(Y=1\mid X=x)=g_\theta(x)\}$.  
+- **Parameter:** $\theta$ (e.g. regression co
+:::
+
+::: {.callout-warning}
+### Non-Examinable Content: Specifying Statistical Models
+In this course we focus on **how to perform statistical inference once a statistical model has been specified**.  
+We will **assume the model is given**, and our task is to carry out inference by finding good parameter values using techniques such as:
+
+- <span class="xref-no-num">[Parameter Estimation @sec-freq-point-estimate]</span>
+- <span class="xref-no-num">[Interval Estimation @sec-freq-interval-estimate]</span>
+- <span class="xref-no-num">[Hypothesis Testing @sec-freq-hypothesis-test]</span>
+
+:::
+
+::: {.callout-tip}
+###  Common misconceptions and how to avoid them
+
+- **Parameter $\neq$ statistic.** A *parameter* $\theta$ is a property of the population/model (e.g. $p,\ \mu,\ \sigma^2$). A *statistic* (e.g. $\bar{X}$, a sample proportion) is computed from the sample to learn about $\theta$.
+- **“Random sample” $\neq$ “whatever data we found”.** The iid assumption is part of the design; convenience samples or dependence can bias inference.
+- **Models are approximations.** A model is a useful idealisation, not the truth. Choose $\mathcal{P}$ sensibly, then check fit later and revise if needed.
+:::
+
+---
+
+## Exercises
+
+1. For a study recording daily counts of emails received by a helpdesk, propose a one-parameter model and state the parameter space.
+2. In a satisfaction survey with responses $\{\text{poor},\text{OK},\text{good}\}$, suggest a simple probabilistic model and identify the parameter(s).
+3. State what “iid” means in one sentence, and give one example of how it could fail in practice.
+4. Revisit @sec-inference-eye: if the spread of points increases, which parameter of $\mathcal{N}(\mu,\sigma^2)$ has changed, and how would you describe that change informally?
+
+[^sets]:
+  **Set notation.** There are several equivalent ways to write sets:
+  
+     - **Set-builder notation:** $\{\lambda \mid \lambda > 0\}$  
+     - **Interval notation:** $(0,\infty)$  
+     - **Named set:** $\mathbb{R}^+$  
+
+     All three describe the same set. In this course, we recommend using **set-builder notation** when writing statistical models and their parameter spaces.
+
+[^sets2]:
+  **Set notation (multiple parameters).**  When a model has several parameters, it is best to use **set-builder notation** and collect the parameters into a vector 
+      $$
+        \underline{\theta} = (\theta_1, \theta_2, \ldots, \theta_p).
+      $$ 
+      The parameter space can then be written as
+      $$
+        \Theta = \{(\theta_1,\ldots,\theta_p) \mid \theta_1 \in S_1,\ \ldots,\ \theta_p \in S_p\}.
+      $$
+      
+    Here each $S_j$ is the set of allowed values for parameter $\theta_j$. To construct $\Theta$, simply **read off the constraints** on each parameter from the definition of the distribution (see the <span class="xref-no-num">[Formula Sheet @sec-formula-sheet]</span>).
+
+      For example, in the Normal model:  
+
+      - $\mu \in \mathbb{R}$ (any real number),  
+      - $\sigma^2 \in (0,\infty)$ (variance must be positive), 
+ 
+      so the parameter space is  
+
+      $$
+        \Theta = \mathbb{R} \times (0,\infty).
+      $$
+
+      This is called a **Cartesian product**: we form the parameter space by taking all possible pairs $(\mu, \sigma^2)$ where the first component is from $\mathbb{R}$ and the second from $(0,\infty)$.  
+      Intuitively, it’s just “all combinations” of the allowed values for each parameter.

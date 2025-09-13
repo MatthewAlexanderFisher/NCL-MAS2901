@@ -1,0 +1,1173 @@
+# Frequentist Point Estimation {#sec-freq-point-estimate}
+
+A **statistic** is any function of the sample
+
+$$
+T \;=\; T(X_1,\dots,X_n).
+$$
+
+Because it is built from the random variables $X_1,\dots,X_n$, the statistic $T$ itself is a **random quantity**: its value varies from sample to sample.
+Once the data have been observed $(x_1,\dots,x_n)$, plugging them into the same formula produces a single **non-random number**, which we denote by $t_{\mathrm{obs}}$ (or simply $t$).
+
+When we pick a statistic for the specific purpose of approximating a parameter $\theta$, we call it an **estimator**. Its realised value is the **estimate**.
+
+::: {.callout-tip}
+## Notation rule
+- **Upper-case** letters $(T, \bar X, S^2)$ denote random statistics.  
+- **Lower-case** letters with a subscript “obs” $(t_{\mathrm{obs}}, \bar x, s^2)$ denote the observed values of those statistics.
+:::
+
+## Estimators vs. Estimates
+
+| Concept       | Notation                                                    | Description                                                   |
+| ------------- | ----------------------------------------------------------- | ------------------------------------------------------------- |
+| **Estimator** | $\hat{\theta} = \hat{\theta}(X_1, \dots, X_n)$              | A **function** of the data. A rule for producing an estimate. |
+| **Estimate**  | $\hat{\theta}_{\text{obs}} = \hat{\theta}(x_1, \dots, x_n)$ | The **numerical value** you get after plugging in your data.  |
+
+An estimator is a random variable; an estimate is its realised value.
+
+
+### Sample Mean and Variance
+
+Two of the most important estimators are the sample mean and sample variance.
+
+::: {.definition #def-sample-mean}
+#### Sample Mean
+The sample mean of a **random sample** $X_1,\ldots,X_n$ is 
+
+$$
+\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i.
+$$
+
+:::
+
+For observed data $x_1,\ldots,x_n$, the corresponding **estimate** is
+
+$$
+\bar x \;=\; \frac{1}{n}\sum_{i=1}^n x_i,
+$$
+
+and we will frequently use the shorthand
+
+$$
+\sum_{i=1}^n x_i \;=\; n\,\bar x.
+$$
+
+::: {.definition #def-sample-variance}
+#### Sample Variance
+
+For a **random sample** $X_1,\ldots,X_n$, the (unbiased) sample variance is
+
+$$
+S^2 \;=\; \frac{1}{n-1}\sum_{i=1}^n (X_i-\bar X)^2.
+$$
+
+:::
+
+For observed data $x_1,\ldots,x_n$, the corresponding estimate is
+
+$$
+s^2 \;=\; \frac{1}{n-1}\sum_{i=1}^n (x_i-\bar x)^2.
+$$
+
+::: {.remark #rem-sample-variance}
+#### Why $n-1$?
+The factor $\tfrac{1}{n-1}$ in the definition of $S^2$ is called **Bessel’s correction**. 
+
+It accounts for the fact that the deviations $(X_i-\bar X)$ satisfy the constraint $\sum_{i=1}^n (X_i-\bar X)=0$, leaving only $n-1$ degrees of freedom. 
+
+Under an i.i.d. model with finite variance $\sigma^2$, this choice makes $S^2$ *unbiased*:
+$$
+\mathrm{E}[S^2]=\sigma^2.
+$$
+
+See @exm-bias-sv for more details.
+:::
+
+The following representation of the **sample variance** is convenient in *theoretical derivations* (e.g. the unbiasedness of $S^2$) and in *practice*, where precomputed totals $\sum_i X_i$ and $\sum_i X_i^2$ allow immediate evaluation of $S^2$.
+
+::: {.proposition #prp-sv-rewrite}
+
+#### Alternative Form of the Sample Variance
+
+For a **random sample** $X_1,\ldots,X_n$ with sample mean $\bar X$, the <span class="xref-no-num">[sample variance @def-sample-variance]</span> admits the *computational identity*
+$$
+S^2 \;=\; \frac{1}{n-1}\left(\sum_{i=1}^n X_i^{2}\;-\; n\,\bar X^{\,2}\right).
+$$
+This is often convenient in deriving properties of the sample variance and, in practice, when sums of squares are already available.
+:::
+
+::: {#prf-sv-rewrite}
+
+Starting from @def-sample-variance and expanding the quadratic, we have
+$$
+S^2=\frac{1}{n-1}\sum_{i=1}^n (X_i-\bar X)^2,
+$$
+expand the square and sum term-by-term:
+$$
+\sum_{i=1}^n (X_i-\bar X)^2
+= \sum_{i=1}^n \bigl(X_i^2 - 2\bar X\,X_i + \bar X^{\,2}\bigr)
+= \sum_{i=1}^n X_i^2 \;-\; 2\bar X \sum_{i=1}^n X_i \;+\; \sum_{i=1}^n \bar X^{\,2}.
+$$
+Since $\sum_{i=1}^n X_i = n\bar X$ and $\sum_{i=1}^n \bar X^{\,2}= n\bar X^{\,2}$, this becomes
+$$
+\sum_{i=1}^n (X_i-\bar X)^2
+= \sum_{i=1}^n X_i^2 \;-\; 2n\bar X^{\,2} \;+\; n\bar X^{\,2}
+= \sum_{i=1}^n X_i^2 \;-\; n\bar X^{\,2}.
+$$
+Dividing by $n-1$ yields the stated identity.
+:::
+
+### The Randomness of Estimators
+
+An **estimator** is a rule that turns a random sample into a number:
+
+$$
+\hat\theta \;=\; \hat{\theta}(X_1,\ldots,X_n).
+$$
+
+Since $X_1,\ldots,X_n$ are random variables, the output $\hat\theta$ is **also a random variable**. Its value changes from sample to sample; only after we observe data $(x_1,\ldots,x_n)$ do we get the **estimate** $\hat\theta_{\text{obs}}=\hat{\theta}(x_1,\ldots,x_n)$, a fixed number.
+
+---
+
+**Visualisation.** The left panel shows one random sample of size $n$ and its sample mean $\bar x$. The right panel approximates the **sampling distribution of $\bar X$** by repeatedly drawing fresh samples of size $n$ from the same model (parameters held fixed) and plotting the resulting means - only the data vary from run to run.
+
+```{ojs}
+//| echo: false
+
+mutable rngSeed = 1
+mutable meanHistory = []
+mutable resampleClicks = 0
+mutable resetClicks = 0
+mutable lastXbar = null  // Store the previous xbar
+```
+
+```{ojs}
+//| echo: false
+
+// Edge-trigger the Reset
+{
+  if (reset > resetClicks) {
+    mutable meanHistory = [];
+    mutable resetClicks = reset;
+    mutable lastXbar = null;  // Also reset the stored xbar
+  }
+  return html``; // <- prevents "undefined" from being shown
+}
+
+// Edge-trigger the Resample: save the PREVIOUS mean before generating new sample
+{
+  if (resample > resampleClicks) {
+    // If we have a previous mean stored, add it to history
+    if (lastXbar !== null) {
+      mutable meanHistory = [...meanHistory, lastXbar];
+    }
+    // Store current mean for next time
+    mutable lastXbar = xbar;
+    // Then bump seed for new sample
+    mutable rngSeed = rngSeed + 1;
+    mutable resampleClicks = resample;
+  }
+  return html``; // <- prevents "undefined" from being shown
+}
+```
+
+
+```{ojs}
+//| echo: false
+
+// --- Buttons at the top ---
+bodyFont = getComputedStyle(document.body).fontFamily
+
+// Helper to make a styled Inputs.button
+function styledButton(label, cls, options = {}) {
+  const el = Inputs.button(label, options);              // <form>…<button>…</button></form>
+  const btn = el.querySelector('button');
+  if (btn) btn.classList.add(cls);                       // add your custom class
+  return el;
+}
+
+// Define themed buttons
+viewof resample = styledButton("Resample", "btn-resample", {
+  reduce: c => (c ?? 0) + 1
+});
+
+viewof reset = styledButton("Reset", "btn-reset", {
+  reduce: c => (c ?? 0) + 1
+});
+
+
+// viewof resample = Inputs.button("Resample", { reduce: c => (c ?? 0) + 1 }) 
+// viewof reset = Inputs.button("Reset", { reduce: c => (c ?? 0) + 1 })
+
+// --- Current sample depends on rngSeed + controls ---
+X = {
+  const rand = d3.randomNormal.source(d3.randomLcg(rngSeed))(controls.trueMu, controls.trueSigma);
+  return d3.range(controls.n).map(rand);
+}
+xbar = d3.mean(X)
+
+// ========= Helpers =========
+makeDensityReducer = (total) => (values, extent) =>
+  values.length / Math.max(1, total) / Math.max(1e-9, extent.x2 - extent.x1);
+
+// ========= Left panel: current sample (histogram + dots at y=0) =========
+leftDensity = makeDensityReducer(controls.n)
+xExtent = d3.extent(X)
+xPad = 3 * controls.trueSigma
+xDomain = [xExtent[0] - 0.1 * (xPad || 1), xExtent[1] + 0.1 * (xPad || 1)]
+
+// === Compute yMax from actual binned densities ===
+bins = d3.bin().domain(xDomain).thresholds(controls.bins)(X);
+densities = bins.map(b =>
+  (b.length / Math.max(1, controls.n)) / Math.max(1e-9, (b.x1 - b.x0))
+);
+yMax = d3.max(densities);
+stickHeight = 0.1 * yMax; // 10% of the current y-range used by the histogram
+
+leftPlot = Plot.plot({
+  width: Math.min(600, Math.max(320, width/2 - 20)),
+  height: 320,
+  style: {
+    background: "var(--plot-panel-bg)",
+    color: "var(--brand-fg)",          // drives 'currentColor'
+    fontFamily: bodyFont, 
+    fontSize: 14,
+  }, 
+  x: { label: "Data", domain: xDomain },
+  y: { label: "Density" },
+  marks: [
+    // histogram
+    Plot.rectY(
+      X,
+      Plot.binX(
+        { y: leftDensity },
+        {
+          x: d => d,
+          thresholds: controls.bins,
+          inset: 0,
+          fillOpacity: 0.4,
+          fill: "var(--brand-teal)"
+        }
+      )
+    ),
+    // raw points
+    // Plot.dot(
+    //   X.map(x => ({ x, y: 0 })),
+    //   {
+    //     x: "x",
+    //     y: "y",
+    //     r: 2,
+    //     fillOpacity: 0.9,
+    //     fill: "var(--brand-teal)",
+    //     symbol: "cross"
+    //   }
+    // ),
+    Plot.ruleX(
+    X,
+    { y1: 0, y2: yMax * 0.05, stroke: "var(--brand-teal)", strokeWidth: 3, strokeOpacity: 1.}
+    ),
+    // xbar reference
+    Plot.ruleX([xbar], { stroke: "currentColor", strokeDasharray: "4,3" }),
+    Plot.dot([{ x: xbar, y: 0 }], { x: "x", y: "y", r: 3, fill: "currentColor" }),
+    Plot.ruleY([0])
+  ]
+})
+
+// ========= Right panel: saved sample means (strip + hist + optional true curve) =========
+means = meanHistory
+rightDensity = makeDensityReducer(means.length)
+
+mPad = 3 * controls.trueSigma / Math.sqrt(controls.n)
+meansDomain = means.length ? d3.extent(means) : [controls.trueMu - mPad, controls.trueMu + mPad]
+mDomain = [
+  Math.min(meansDomain[0], controls.trueMu - mPad),
+  Math.max(meansDomain[1], controls.trueMu + mPad)
+]
+
+sampleMeanPdf = (x) =>
+  (1 / Math.sqrt(2 * Math.PI * (controls.trueSigma**2 / controls.n))) *
+  Math.exp(-((x - controls.trueMu)**2) / (2 * (controls.trueSigma**2 / controls.n)))
+
+pdfXs = d3.scaleLinear().domain(mDomain).ticks(200)
+pdfData = pdfXs.map(x => ({ x, y: sampleMeanPdf(x) }))
+
+rightPlot = Plot.plot({
+  width: Math.min(600, Math.max(320, width/2 - 20)),
+  height: 320,
+  style: {                     // make the figure match your theme
+    background: "var(--plot-panel-bg)",
+    color: "var(--brand-fg)",   // this drives 'currentColor'
+    fontFamily: bodyFont, 
+    fontSize: 14,
+  },
+  x: { label: "x̄", domain: mDomain },
+  y: { label: "Density" },
+  marks: [
+    Plot.rectY(
+      means,
+      Plot.binX(
+        { y: rightDensity },
+        { x: d => d, thresholds: controls.bins, inset: 0, fillOpacity: 0.3,
+          fill: "var(--brand-red)" }
+      )
+    ),
+    Plot.dot(means.map(m => ({ x: m, y: 0 })), {
+      x: "x", y: "y", r: 2, fillOpacity: 0.7, fill: "var(--brand-red)"
+    }),
+    Plot.dot([{ x: xbar, y: 0 }], {
+      x: "x", y: "y", r: 4, fill: "currentColor"     // uses style.color above
+    }),
+    ...(controls.showTrue
+      ? [Plot.line(pdfData, { x: "x", y: "y", strokeWidth: 2, stroke: "var(--brand-red)" })]
+      : []
+    ),
+    Plot.ruleY([0])
+  ]
+})
+
+// ========= Display =========
+
+
+{
+  // Make the forms behave nicely in the grid
+  for (const f of [viewof resample, viewof reset]) {
+    f.style.margin = "0";
+    f.style.width = "100%";      // inline style beats the library rule
+    f.style.maxWidth = "none";
+    f.style.display = "flex";    // so we can push the button left/right
+  }
+  // Left button to the left, right button to the right
+  viewof resample.style.justifyContent = "flex-start";
+  viewof reset.style.justifyContent    = "flex-end";
+
+  return html`<div class="ojs-toolbar-grid">
+    <div class="left">${viewof resample}</div>
+    <div class="center">
+      ${md`${tex`\bar{x} = ${xbar.toFixed(2)}`}`}
+    </div>
+    <div class="right">${viewof reset}</div>
+  </div>
+
+  <style>
+    .ojs-toolbar-grid{
+      display:grid;
+      grid-template-columns:1fr auto 1fr; /* left, middle, right */
+      align-items:center;
+      width:100%;
+      box-sizing:border-box;
+      margin:0; padding:0;
+    }
+    .ojs-toolbar-grid form{
+      margin:0 !important;
+      width:100% !important;
+      max-width:none !important;
+      display:flex !important;
+    }
+    .ojs-toolbar-grid .left  form{ justify-content:flex-start !important; }
+    .ojs-toolbar-grid .right form{ justify-content:flex-end   !important; }
+
+    .btn.btn-resample{ background: var(--brand-teal); color:#fff; border:none; }
+    .btn.btn-resample:hover{ background: var(--brand-teal-hover); }
+    .btn.btn-reset{ background: var(--brand-red); color:#fff; border:none; }
+    .btn.btn-reset:hover{ background: var(--brand-red-hover); }
+    .btn.btn-resample:focus-visible,
+    .btn.btn-reset:focus-visible{
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+
+    .ojs-toolbar-grid .center{
+      text-align:center;
+      font-size:0.9rem;
+      color: var(--brand-fg);
+    }
+  </style>`;
+}
+
+
+
+
+html`<div style="max-width:100%; display:flex; gap:14px; align-items:flex-start; flex-wrap:nowrap;">
+  <div>${leftPlot}</div>
+  <div>${rightPlot}</div>
+</div>`
+```
+
+```{ojs}
+html`<style>
+details.controls-root > summary {
+  list-style: none; cursor: pointer; user-select: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-weight: 600; font-size: 13px;
+  color: var(--fg-strong);
+  display: flex; align-items: center; gap: 8px;
+}
+details.controls-root > summary::-webkit-details-marker { display: none; }
+details.controls-root[open] > summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+
+/* ---------- Compact Inputs (fixed slider alignment) ---------- */
+.controls-col label { font-size: 12px !important; }
+
+.controls-col input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 18px;                     /* overall control box height */
+  background: transparent;
+  vertical-align: middle;
+  accent-color: var(--brand-teal, #55C3CB);
+}
+
+/* WebKit track */
+.controls-col input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brand-teal, #55C3CB) 35%, transparent);
+}
+
+/* WebKit thumb */
+.controls-col input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--brand-teal, #55C3CB);
+  border: 0;
+  /* Center the 12px thumb over the 4px track: (4 - 12)/2 = -4px */
+  margin-top: -4px;
+}
+
+/* Firefox track */
+.controls-col input[type="range"]::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brand-teal, #55C3CB) 35%, transparent);
+}
+
+/* Firefox thumb (auto-centred; no negative margin needed) */
+.controls-col input[type="range"]::-moz-range-thumb {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--brand-teal, #55C3CB);
+  border: 0;
+}
+
+/* Optional: hide the default filled "progress" colour in Firefox */
+.controls-col input[type="range"]::-moz-range-progress {
+  height: 4px; border-radius: 999px;
+  background: color-mix(in srgb, var(--brand-teal, #55C3CB) 35%, transparent);
+}
+
+.controls-grid {
+  display: grid;
+  grid-template-columns: minmax(260px,1fr) minmax(260px,1fr);
+  gap: 12px;
+  border: 1px solid var(--border); border-top: none;
+  border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;
+  padding: 10px;
+  background: var(--surface-weak);
+  overflow-x: auto;
+}
+.controls-col { min-width: 260px; }
+.controls-col h4 {
+  margin: 0 0 6px 0; font-size: 12px; font-weight: 700;
+  color: var(--fg-muted);
+}
+
+/* chevron */
+details.controls-root > summary::before {
+  content: ""; display: inline-block; margin-right: 8px; width: 0; height: 0;
+  border-style: solid; border-width: 3px 0 3px 6px;
+  border-color: transparent transparent transparent var(--fg-strong);
+  transform: rotate(0deg); transform-origin: 3px 50%; transition: transform 50ms ease;
+}
+details.controls-root[open] > summary::before { transform: rotate(90deg); }
+</style>`
+
+/* ---------- One merged, collapsible control ---------- */
+viewof controls = {
+
+  // Left column: data & truth
+  const leftForm = Inputs.form({
+    n: Inputs.range([1, 400], { value: 10, step: 1, label: md`${tex`n`}` }),
+    trueMu: Inputs.range([-2, 2], { value: 0, step: 0.1, label: md`${tex`\mu_{\text{true}}`}` }),
+    trueSigma: Inputs.range([0.3, 3], { value: 1, step: 0.1, label: md`${tex`\sigma_{\text{true}}`}` })
+  }, { submit: false });
+
+  // Right column: display & actions
+  const rightForm = Inputs.form({
+    bins: Inputs.range([10, 60], { value: 24, step: 1, label: "Histogram bins" }),
+    showTrue: Inputs.toggle({ label: md`Show ${tex`\bar{X}`} distribution`, value: false }),
+    // include the buttons as inputs so their *click counts* become part of form.value
+  }, { submit: false });
+
+  // Collapsible wrapper
+  const root = html`<details class="controls-root" open>
+    <summary>Simulation controls</summary>
+    <div class="controls-grid">
+      <div class="controls-col"><h4>Data & truth</h4></div>
+      <div class="controls-col"><h4>Display & actions</h4></div>
+    </div>
+  </details>`;
+  root.querySelector(".controls-grid").children[0].append(leftForm);
+  root.querySelector(".controls-grid").children[1].append(rightForm);
+
+  // Merge both forms into a single value object
+  const getValue = () => ({ ...leftForm.value, ...rightForm.value });
+  const update = () => {
+    root.value = getValue();
+    root.dispatchEvent(new CustomEvent("input", { bubbles: true }));
+  };
+
+  leftForm.addEventListener("input", update);
+  rightForm.addEventListener("input", update);
+  // make sure button clicks trigger updates even if no 'input' is fired
+
+  queueMicrotask(update);
+  return root;
+}
+
+```
+
+---
+
+::: {#def-sampling-distribution}
+#### Sampling Distribution
+
+The **sampling distribution** of an estimator $\hat\theta=\hat{\theta}(X_1,\ldots,X_n)$ is the probability distribution of $\hat\theta$ induced by the joint distribution of $(X_1,\ldots,X_n)$.
+:::
+
+The <span class="xref-no-num">[properties @sec-estimator-properties]</span> of an estimator, such as *bias* and *standard error*, are defined via this distribution.
+
+In general, however, deriving an exact sampling distribution is **hard**, because:
+
+1. It depends on the chosen **statistical model** for the data (the distribution of $X_i$).  
+2. The estimator $\hat\theta$ may be a **complicated/nonlinear function** of the sample.
+
+In a few special cases, however, we can derive the full sampling distribution of the estimator.
+
+::: {.example #exm-normal-sample-mean}
+#### Normal Random Sample: Sampling Distribution of $\bar{X}$
+
+If
+$$
+X_1,\dots,X_n \overset{\text{iid}}{\sim} \mathcal{N}(\mu,\sigma^2),
+$$
+then
+$$
+\bar{X} \;\sim\; \mathcal{N}\!\left(\mu,\ \frac{\sigma^2}{n}\right).
+$$
+:::
+
+::: {.solution #sol-normal-sample-mean}
+Averages are linear combinations: $\bar X=\tfrac1n\sum_{i=1}^n X_i$. By the <span class="xref-no-num">[properties of the normal distribution @sec-normal-properties]</span>, a linear combination of independent Normal variables is Normal. Moreover,
+$$
+\mathrm{E}[\bar X]=\tfrac1n\sum \mathrm{E}[X_i]=\mu,\qquad
+\mathrm{Var}(\bar X)=\tfrac{1}{n^2}\sum \mathrm{Var}(X_i)=\frac{\sigma^2}{n}.
+$$
+So $\bar X\sim \mathcal N\!\left(\mu,\sigma^2/n\right)$.
+:::
+
+
+::: {.example #exm-normal-sample-mean}
+#### Normal Random Sample: Sampling Distribution of $S^2$
+
+If
+$$
+X_1,\dots,X_n \overset{\text{iid}}{\sim} \mathcal{N}(\mu,\sigma^2),
+$$
+then
+$$
+S^2 \;\sim\; \chi^2_{n-1}
+$$
+:::
+
+::: {.solution #sol-normal-sample-mean}
+Averages are linear combinations: $\bar X=\tfrac1n\sum_{i=1}^n X_i$. By the <span class="xref-no-num">[properties of the normal distribution @sec-normal-properties]</span>, a linear combination of independent Normal variables is Normal. Moreover,
+$$
+\mathrm{E}[\bar X]=\tfrac1n\sum \mathrm{E}[X_i]=\mu,\qquad
+\mathrm{Var}(\bar X)=\tfrac{1}{n^2}\sum \mathrm{Var}(X_i)=\frac{\sigma^2}{n}.
+$$
+So $\bar X\sim \mathcal N\!\left(\mu,\sigma^2/n\right)$.
+:::
+
+
+## Properties of Estimators {#sec-estimator-properties}
+
+When we use a statistic to estimate a parameter, we want to know how *good* it is. Three core ideas are **bias**, **variance**, and **standard error**.
+
+::: {.remark #rem-estimators}
+These properties can often be studied without the full sampling distribution: it is enough to work with **moments** (expectations/variances) of $\hat\theta$.  
+:::
+
+### Bias, Variance, and Standard Error
+
+::: {.definition #def-bias}
+
+### Bias of an Estimator
+
+The **bias** of an estimator $\hat{\theta}$ for a parameter $\theta$ is the difference between its expected value and the true parameter value:
+
+$$
+\mathrm{Bias}(\hat{\theta}) = \mathrm{E}[\hat{\theta}] - \theta.
+$$
+
+* If $\mathrm{Bias}(\hat{\theta}) = 0$, the estimator is called **unbiased**.
+* Otherwise, it is **biased**: it systematically over- or under-estimates $\theta$.
+:::
+
+::: {.example #exm-bias1}
+### Bias of the Sample Mean
+
+Suppose $X_1,\dots,X_n \overset{iid}{\sim} \mathrm{Distribution}(\mu,\sigma^2)$ with mean $\mu$.  
+Show that the sample mean
+
+$$
+\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i
+$$
+
+is an **unbiased estimator** of $\mu$.
+:::
+
+::: {#sol-bias1}
+We compute the expectation of $\bar{X}$:
+
+$$
+\mathrm{E}[\bar{X}] 
+= \mathrm{E}\!\left[\frac{1}{n}\sum_{i=1}^n X_i\right] 
+= \frac{1}{n}\sum_{i=1}^n \mathrm{E}[X_i].
+$$
+
+Since each $X_i$ has mean $\mu$,
+
+$$
+\mathrm{E}[\bar{X}] = \frac{1}{n}(n\mu) = \mu.
+$$
+
+Therefore,
+
+$$
+\mathrm{Bias}(\bar{X}) 
+= \mathrm{E}[\bar{X}] - \mu 
+= \mu - \mu = 0.
+$$
+
+So the sample mean $\bar{X}$ is an **unbiased** estimator of $\mu$.
+:::
+
+
+::: {.definition #def-variance}
+
+### Variance of an Estimator
+
+The variance measures how much the estimator fluctuates around its expectation:
+
+$$
+\mathrm{Var}(\hat{\theta}) = \mathrm{E}\!\big[(\hat{\theta}-\mathrm{E}[\hat{\theta}])^2\big].
+$$
+
+A smaller variance means the estimator is more **concentrated** and less “noisy.”
+:::
+
+::: {.example #exm-variance-sm}
+
+#### Variance of the Sample Mean
+
+Suppose $X_1,\ldots,X_n$ is a *random sample* such that $\mathrm{Var}(X_i) = \sigma^2$.
+
+Show that
+$$
+\mathrm{Var}(\bar{X}) = \frac{\sigma^2}{n}.
+$$
+:::
+
+::: {#sol-variance-sm}
+
+Since the data $X_i$ are *independent* and have common variance $\sigma^2$, we have
+
+$$
+\mathrm{Var}(\bar{X}) 
+= \frac{1}{n^2} \mathrm{Var}\left[\sum_{i=1}^n X_i\right] = \frac{1}{n^2} \sum_{i=1}^n \mathrm{Var}(X_i) 
+= \frac{\sigma^2}{n}.
+$$
+
+So as $n$ increases, $\bar{X}$ becomes more tightly clustered around $\mu$.
+:::
+
+::: {.example #exm-bias-sv}
+#### Bias of the Sample Variance
+
+Suppose $X_1,\ldots,X_n$ is a *random sample* such that
+$$ 
+\mathrm{E}[X_i]=\mu \quad \text{and} \quad \mathrm{Var}(X_i)=\sigma^2<\infty.
+$$
+Consider the class of estimators
+$$
+S_c^{2} \;=\; c \sum_{i=1}^n (X_i-\bar X)^2.
+$$
+Find $c$ such that $S_c^{2}$ is **unbiased** for $\sigma^2$.
+:::
+
+::: {.sol #sol-bias-sv}
+
+---
+
+**Note:**
+In the following, we use the fact that, for any random variable $Y$, 
+$$
+\mathrm{Var}(Y) = \mathrm{E}[Y^2] - \mathrm{E}[Y]^2 \Rightarrow \mathrm{E}[Y^2] = \mathrm{Var}(Y) + \mathrm{E}[Y]^2. 
+$$
+
+--- 
+
+We seek $c$ such that $\mathrm{E}[S_c^{2}] = \sigma^2$.
+
+Using <span class="xref-no-num">[the computational identity @prp-sv-rewrite]</span>,
+$$
+\sum_{i=1}^n (X_i-\bar X)^2 \;=\; \sum_{i=1}^n X_i^2 \;-\; n\,\bar X^{\,2}.
+$$
+
+Hence, taking expectations termwise,
+$$
+\mathrm{E}[X_i^2]=\sigma^2+\mu^2,\qquad
+\mathrm{E}[\bar X^{\,2}]=\mathrm{Var}(\bar X)+\{\mathrm{E}[\bar X]\}^2=\frac{\sigma^2}{n}+\mu^2.
+$$
+Therefore
+$$
+\mathrm{E}\!\left[\sum_{i=1}^n (X_i-\bar X)^2\right]
+= n(\sigma^2+\mu^2) - n\!\left(\frac{\sigma^2}{n}+\mu^2\right)
+= (n-1)\sigma^2.
+$$
+It follows that
+$$
+\mathrm{E}[S_c^{2}] = c\,(n-1)\sigma^2.
+$$
+Unbiasedness $\mathrm{E}[S_c^{2}]=\sigma^2$ gives $c=\dfrac{1}{n-1}$.
+
+**Conclusion.** The unbiased estimator is
+$$
+S^{2} \;=\; \frac{1}{n-1}\sum_{i=1}^n (X_i-\bar X)^2.
+$$
+:::
+
+::: {.remark #rem-bias-sv-notes}
+#### Notes on @exm-bias-sv
+
+- **Distributional assumptions.** No Normality is required: the conclusion holds for i.i.d. observations with finite variance, $\mathrm{Var}(X_i)=\sigma^2<\infty$.
+- **MLE under Normality.** If the data are Normal, the maximum-likelihood estimator is
+  $$
+  \hat\sigma^2_{\text{MLE}}=\frac{1}{n}\sum_{i=1}^n (X_i-\bar X)^2,
+  $$
+  which is **biased downward**:
+  $$
+  \mathrm{E}\!\left[\hat\sigma^2_{\text{MLE}}\right]=\frac{n-1}{n}\,\sigma^2
+  \quad\big(\text{bias}=-\sigma^2/n\big).
+  $$
+  See @exm-normal-mu-mle for full details.
+:::
+
+::: {.definition #def-se}
+
+### Standard Error
+
+The **standard error** of an estimator $\hat{\theta}$ of $\theta$, is just the *standard deviation* of the estimator:
+
+$$
+\mathrm{S.E.}(\hat{\theta}) = \sqrt{\mathrm{Var}(\hat{\theta})}.
+$$
+
+It gives a scale for how much we expect the estimator to vary from sample to sample.
+:::
+
+
+
+### Mean Squared Error (MSE)
+
+Bias and variance both matter. The **mean squared error (MSE)** combines them into a single measure of accuracy.
+
+::: {.definition #def-error}
+
+### Error
+
+The **error** of an estimator is the difference between the estimate and the true parameter:
+
+$$
+\mathrm{Error}(\hat{\theta}) = \hat{\theta} - \theta.
+$$
+:::
+
+However, 
+
+1. The error is random (depends on the sample).
+2. It can be positive or negative (so errors may “cancel out”).
+
+To overcome this, we square the error and take its expectation.
+
+::: {.definition #def-mse}
+
+### Mean Squared Error (MSE)
+
+The **MSE** of an estimator $\hat{\theta}$ of $\theta$ is
+
+$$
+\mathrm{MSE}(\hat{\theta})=\mathrm{E}\!\big[(\hat{\theta}-\theta)^2\big].
+$$
+
+This measures the *average squared distance* between the estimator and the truth.
+:::
+
+Directly using <span class="xref-no-num">[this @def-mse]</span> can be awkward. A more useful identity decomposes MSE into **bias** and **variance**:
+
+::: {#prp-mse-bias-variance}
+
+### MSE: Bias–Variance Decomposition
+
+For any estimator $\hat{\theta}$,
+
+$$
+\mathrm{MSE}(\hat{\theta})
+= \mathrm{Bias}(\hat{\theta})^2+\mathrm{Var}(\hat{\theta}).
+$$
+
+:::
+
+::: {#prf-mse-bias-variance}
+Start from the definition:
+
+$$
+\mathrm{MSE}(\hat{\theta})=\mathrm{E}\!\big[(\hat{\theta}-\theta)^2\big].
+$$
+
+**Step 1 (add–and–subtract the mean).** Let $m=\mathrm{E}[\hat{\theta}]$. Then
+
+$$
+\hat{\theta}-\theta
+=\big(\hat{\theta}-m\big)+\big(m-\theta\big).
+$$
+
+**Step 2 (expand the square).**
+
+$$
+(\hat{\theta}-\theta)^2
+=\big(\hat{\theta}-m\big)^2
++2\big(\hat{\theta}-m\big)\big(m-\theta\big)
++\big(m-\theta\big)^2.
+$$
+
+**Step 3 (take expectations; use linearity).**
+
+$$
+\mathrm{E}\!\big[(\hat{\theta}-\theta)^2\big]
+=\underbrace{\mathrm{E}\!\big[(\hat{\theta}-m)\!^2\big]}_{\mathrm{Var}(\hat{\theta})}
++2\,(m-\theta)\,\underbrace{\mathrm{E}\!\big[\hat{\theta}-m\big]}_{=\,0}
++\underbrace{(m-\theta)^2}_{\mathrm{Bias}(\hat{\theta})^2}.
+$$
+
+The middle term vanishes because $\mathrm{E}[\hat{\theta}-m]=\mathrm{E}[\hat{\theta}]-m=0$. Hence
+
+$$
+\mathrm{MSE}(\hat{\theta})
+=\mathrm{Var}(\hat{\theta})+\big(\mathrm{E}[\hat{\theta}]-\theta\big)^2
+=\mathrm{Var}(\hat{\theta})+\mathrm{Bias}(\hat{\theta})^2.
+$$
+:::
+
+::: {.remark #rem-mse}
+### Why this helps
+
+* If $\hat{\theta}$ is **unbiased**, then $\mathrm{MSE}(\hat{\theta})=\mathrm{Var}(\hat{\theta})$.
+* In general there is a **bias–variance trade-off**: a small intentional bias can reduce variance enough to lower MSE (common in shrinkage/regularised estimators).
+:::
+
+
+::: {.example #exm-mse1}
+### MSE of Sample Mean
+
+Suppose we have a random sample
+
+$$
+X_1,\dots,X_n  \overset{iid}{\sim} \mathrm{Distribution}(\underline{\theta})
+$$
+
+and we wish to estimate its *population mean* $\mu$ with $\hat{\mu} = c\bar{X}$, where $c$ is a constant.
+
+Compute the MSE of this estimator.
+:::
+
+::: {#sol-mse1}
+
+
+- Bias:  
+$$
+\mathrm{Bias}(\hat{\mu}) = (c-1)\mu.
+$$
+
+- Variance:  
+$$
+\mathrm{Var}(\hat{\mu}) = c^2 \frac{\sigma^2}{n}.
+$$
+
+- MSE:  
+$$
+\mathrm{MSE}(\hat{\mu}) 
+= \frac{c^2\sigma^2}{n} + (c-1)^2 \mu^2.
+$$
+
+This shows how a biased estimator can still have low MSE if variance is reduced.
+
+:::
+
+::: {.example #exm-mse2}
+### MSE of Three Estimators
+
+Suppose that a random variable $X$ has expected value $\mathrm{E}[X] = 2\theta$ and variance $\mathrm{Var}(X) = \theta^2$, where $\theta > 0$ is an unknown parameter.  
+
+Another random variable $Y$, independent of $X$, has $\mathrm{E}[Y] = 3\theta$ and $\mathrm{Var}(Y) = 2\theta^2$.  
+
+Consider the following three estimators of $\theta$:
+
+1. $\hat{\theta}_1 = X/2$,  
+2. $\hat{\theta}_2 = Y/3$,  
+3. $\hat{\theta}_3 = (3X + 2Y)/12$.  
+
+Compute the **MSE** of each estimator, and recommend the best one.
+:::
+
+::: {#sol-mse2}
+We use the rules of expectation and variance for linear functions of random variables (independence of $X$ and $Y$ is needed for the variance of $\hat{\theta}_3$).  
+
+---
+
+**Estimator (i):** $\hat{\theta}_1 = X/2$  
+
+- Mean:  
+  $$
+  \mathrm{E}[\hat{\theta}_1] = \frac{\mathrm{E}[X]}{2} = \frac{2\theta}{2} = \theta.
+  $$
+- Variance:  
+  $$
+  \mathrm{Var}(\hat{\theta}_1) = \frac{\mathrm{Var}(X)}{4} = \frac{\theta^2}{4}.
+  $$
+- Since unbiased, $\mathrm{MSE}(\hat{\theta}_1) = \tfrac{\theta^2}{4}$.
+
+---
+
+**Estimator (ii):** $\hat{\theta}_2 = Y/3$  
+
+- Mean:  
+  $$
+  \mathrm{E}[\hat{\theta}_2] = \frac{\mathrm{E}[Y]}{3} = \frac{3\theta}{3} = \theta.
+  $$
+- Variance:  
+  $$
+  \mathrm{Var}(\hat{\theta}_2) = \frac{\mathrm{Var}(Y)}{9} = \frac{2\theta^2}{9}.
+  $$
+- Since unbiased, $\mathrm{MSE}(\hat{\theta}_2) = \tfrac{2\theta^2}{9}$.
+
+---
+
+**Estimator (iii):** $\hat{\theta}_3 = (3X + 2Y)/12$  
+
+- Mean:  
+  $$
+  \mathrm{E}[\hat{\theta}_3] = \frac{3\,\mathrm{E}[X] + 2\,\mathrm{E}[Y]}{12} 
+  = \frac{3(2\theta) + 2(3\theta)}{12} = \theta.
+  $$
+- Variance (using independence):  
+  $$
+  \mathrm{Var}(\hat{\theta}_3) 
+  = \frac{1}{144}\Big(9\,\mathrm{Var}(X) + 4\,\mathrm{Var}(Y)\Big) 
+  = \frac{1}{144}(9\theta^2 + 8\theta^2) 
+  = \frac{17}{144}\theta^2.
+  $$
+- Since unbiased, $\mathrm{MSE}(\hat{\theta}_3) = \tfrac{17}{144}\theta^2$.
+
+---
+
+**Comparison:**  
+- $\mathrm{MSE}(\hat{\theta}_1) = 0.25\theta^2$  
+- $\mathrm{MSE}(\hat{\theta}_2) \approx 0.222\theta^2$  
+- $\mathrm{MSE}(\hat{\theta}_3) \approx 0.118\theta^2$
+
+Thus, $\hat{\theta}_3$ has the smallest MSE and is the best choice.
+:::
+
+
+## Central Limit Theorem (CLT)
+
+::: {.thm #thm-clt}
+### Central Limit Theorem (CLT)
+Let $X_1, X_2, \ldots$ be an infinite sequence of **independent and identically distributed** random variables with finite mean $\mu=\mathrm{E}[X_1]$ and finite variance $\sigma^2=\mathrm{Var}(X_1)<\infty$.  
+Define the sample mean
+$$
+\bar X_n \;=\; \frac{1}{n}\sum_{i=1}^n X_i.
+$$
+Then, **regardless of the original distribution of the $X_i$**,
+$$
+\frac{\bar X_n - \mu}{\sigma/\sqrt{n}} \;\xrightarrow{\,d\,}\; \mathcal N(0,1)\quad\text{as } n\to\infty.
+$$
+:::
+
+::: {#prf-clt}
+### Not Examinable
+We do not give a proof here. An outline is provided in separate practice exercises (not examinable).
+
+*Note.* The notation $\xrightarrow{d}$ means **convergence in distribution**: the distribution of the random variable on the left approaches the distribution on the right as $n$ grows.
+:::
+
+The CLT is remarkable: it tells us that **whatever the original distribution** of the data, the **sample mean** is approximately Normal for sufficiently large $n$, and the approximation **improves** as $n$ increases.
+
+In practice, for a *reasonable* sample size we may write
+$$
+\bar X_n \;\overset{approx}{\sim}\; \mathcal N\!\left(\mu,\ \frac{\sigma^2}{n}\right),
+$$
+not only for Normal samples but for many non-Normal populations as well. What counts as “reasonable” depends on how skewed/heavy-tailed the original distribution is; often $n>20$ suffices, and in many settings even smaller $n$ will do.
+
+Because $\bar X_n = \tfrac{1}{n}\sum_{i=1}^n X_i$, the CLT also yields an approximation for **sums**:
+$$
+\sum_{i=1}^n X_i \;\overset{approx}{\sim}\; \mathcal N\!\left(n\mu,\ n\sigma^2\right).
+$$
+
+::: {.callout-warning}
+### Common misconception
+ The CLT does **not** say the *data* become Normal; it says the **distribution of the sample mean** becomes approximately Normal as $n$ grows.
+:::
+
+
+## Asymptotic Properties of Estimators
+
+::: {#imp-term-asymptotic .callout-important collapse="true" appearance="simple"}
+### Terminology: *Asymptotic* in Statistics
+An **asymptotic property** of an estimator is a property that emerges in the limit as the number of observations $n \to \infty$.  
+
+In other words, it describes the *large-sample behaviour* of an estimator.
+:::
+
+So far, we have judged estimators by properties that hold for a *fixed* sample size $n$, such as <span class="xref-no-num">[bias @def-bias]</span>, <span class="xref-no-num">[variance @def-variance]</span>, and <span class="xref-no-num">[MSE @def-mse]</span>.  
+
+It is also useful to consider how estimators behave when the sample size grows very large.  
+These are known as the **asymptotic (large-sample) properties** of estimators.
+
+Formally, suppose we have a random sample  
+
+$$
+X_1, X_2, \ldots, X_n \;\overset{iid}{\sim}\; \mathrm{Distribution}(\theta),
+$$
+
+and a *sequence* of estimators of $\theta$ given by  
+
+$$
+\hat{\theta}_n = g(X_1, X_2, \ldots, X_n).
+$$
+
+We are interested in the properties of $\hat{\theta}_n$ as $n \to \infty$. Two fundamental criteria are *asymptotic unbiasedness* and *consistency*.
+
+::: {#def-asymptotic-unbiasedness}
+### Asymptotic Unbiasedness
+We say that $\hat{\theta}_n$ is **asymptotically unbiased** for $\theta$ if
+
+$$
+\lim_{n \to \infty} \mathrm{E}[\hat{\theta}_n] = \theta.
+$$
+:::
+
+If an estimator is unbiased for every $n$, then it is automatically asymptotically unbiased.  
+However, some biased estimators may still “correct themselves” in the limit and become asymptotically unbiased.
+
+::: {.definition #def-consistency}
+### Consistency
+
+An estimator $\hat{\theta}_n$ is a **consistent** estimator of $\theta$ if
+
+$$
+\hat{\theta}_n \;\xrightarrow{p}\; \theta 
+\quad \text{as } n \to \infty,
+$$
+
+that is, it <span class="xref-no-num">[converges in probability @def-convergence-in-probability]</span> to the true parameter value.
+:::
+
+Intuitively, a consistent estimator will “home in” on the true parameter as the sample size grows.
+
+Using @def-consistency directly can be tricky. The following gives a **sufficient condition** that is easier to verify in practice.
+
+::: {#prp-sufficient-consistency}
+### Sufficient Condition for Consistency
+
+An estimator $\hat{\theta}_n$ of $\theta$ is consistent **if** both the following hold:
+
+1. $\hat{\theta}_n$ is *asymptotically unbiased*, i.e.  
+   $$
+   \mathrm{Bias}(\hat{\theta}_n) \;\to\; 0 \quad \text{as } n\to\infty,
+   $$
+2. Its variance shrinks to zero:  
+   $$
+   \mathrm{Var}(\hat{\theta}_n) \;\to\; 0 \quad \text{as } n\to\infty.
+   $$
+:::
+
+::: {#prf-sufficient-consistency}
+### Not Examinable
+
+Suppose $\hat{\theta}_n$ satisfies conditions (1) and (2).  
+For any $\varepsilon > 0$, by <span class="xref-no-num">[Chebyshev’s inequality @prp-chebyshev]</span>:
+
+$$
+\Pr\big(|\hat{\theta}_n - \mathrm{E}[\hat{\theta}_n]| \geq \varepsilon \big)
+\;\leq\; \frac{\mathrm{Var}(\hat{\theta}_n)}{\varepsilon^2}.
+$$
+
+As $n \to \infty$, the variance term tends to $0$, so
+
+$$
+\hat{\theta}_n - \mathrm{E}[\hat{\theta}_n] \;\xrightarrow{p}\; 0.
+$$
+
+Meanwhile, $\mathrm{E}[\hat{\theta}_n] \to \theta$ by assumption of asymptotic unbiasedness.  
+Hence,
+
+$$
+\hat{\theta}_n \;\xrightarrow{p}\; \theta,
+$$
+
+which proves consistency.
+:::
+
+::: {.example #exm-consistency-samplemean}
+### Consistency of the Sample Mean
+
+Suppose $X_1,\dots,X_n$ are i.i.d. with mean $\mu$ and variance $\sigma^2 < \infty$.  
+Show that $\bar{X}_n$ is a **consistent estimator** of $\mu$.
+:::
+
+::: {#sol-consistency-samplemean}
+Recall that
+$$
+\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i.
+$$
+
+- **Bias:**  
+  $$
+  \mathrm{E}[\bar{X}_n] = \frac{1}{n}\sum_{i=1}^n \mathrm{E}[X_i] = \mu.
+  $$
+  Thus $\bar{X}_n$ is unbiased for all $n$, hence asymptotically unbiased.
+
+- **Variance:**  
+  Since the $X_i$ are independent,
+  $$
+  \mathrm{Var}(\bar{X}_n) = \frac{1}{n^2}\sum_{i=1}^n \mathrm{Var}(X_i)
+  = \frac{\sigma^2}{n}.
+  $$
+  As $n \to \infty$, this variance tends to $0$.
+
+Therefore, $\bar{X}_n$ is both unbiased and has variance vanishing as $n$ grows.  
+By @prp-sufficient-consistency, it is a **consistent** estimator of $\mu$.
+:::
+
+::: {#rem-consistency}
+### Consistency
+- Consistency requires <span class="xref-no-num">[convergence in probability @def-convergence-in-probability]</span>, not necessarily unbiasedness at every finite $n$.  
+- In this course, you can always use the sufficient condition (@prp-sufficient-consistency) to prove consistency.
+:::

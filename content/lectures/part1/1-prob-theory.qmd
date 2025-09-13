@@ -1,0 +1,1239 @@
+# Probability Theory
+
+::: {.callout-note collapse="true" title="Learning objectives"}
+- Define and work with events (union, intersection, complement) and apply inclusion–exclusion.
+- Distinguish mutually exclusive, exhaustive, and independent events.
+- Compute conditional probabilities and apply Bayes’ theorem.
+- Use partitions and the law of total probability.
+- Define random variables and their distribution functions: cdf, pmf (discrete), and pdf (continuous).
+- Compute probabilities from pmfs/pdfs/cdfs (using sums or areas) and check normalisation.
+:::
+
+```{ojs}
+bodyFont = getComputedStyle(document.body).fontFamily
+```
+
+Before we delve into statistical inference, we briefly review key ideas from probability theory. 
+
+::: {.callout-warning}
+## Note on this chapter
+- This chapter is provided **for review and reference only**. 
+- It will not be examined in detail, but the ideas are useful background for later topics.  
+- Much of the content should already be familiar.
+:::
+
+## Probability and Events
+
+When working with probability we need three basic ingredients[^prob-space]
+
+1. The **sample space** $\Omega$. all possible outcomes of an experiment.  
+      *Example:* for a coin toss, $\Omega = \{\text{Heads}, \text{Tails}\}$.  
+2. **Events** subsets of the sample space. We use capital letters $A, B, \ldots$ to denote events.  
+   - The **complement** of $A$ is $A^c$, meaning $A$ does *not* occur.  
+   - The **intersection** $A \cap B$ means $A$ *and* $B$ occur.  
+   - The **union** $A \cup B$ means $A$ *or* $B$ (or both) occur.  
+3. A **probability distribution** $\mathrm{Pr}$. Assigns numbers between $0$ and $1$ to events, with $\mathrm{Pr}(\Omega)=1$.
+
+We can write the definitions of complement, intersection and union formally with sets:
+
+::: {.def #def-intersect-union}
+### Complement, Intersection and Union
+- **Complement:** $A^c = \{x \in \Omega \mid x \notin A \}$.
+- **Intersection:** $A\cap B = \{x \in \Omega \mid x \in A \text{ and } x \in B\}$.  
+- **Union:** $A\cup B = \{x \in \Omega \mid x \in A \text{ or } x \in B\}$.  
+:::
+
+---
+
+**Visualisation:**
+
+```{ojs}
+// Toggle: highlight selection (use explicit values for robust comparisons)
+viewof vennOp = Inputs.radio(
+  ["None", "A", "B", "Aᶜ", "Union", "Intersection"],
+  { value: "None", label: "Highlight:" }
+)
+
+
+```
+
+```{ojs}
+//| label: fig-venn
+//| fig-cap: Venn diagram of two events $A$ and $B$ inside the sample space $\Omega$.
+
+venn = {
+  const width = 480, height = 280;
+  const pad = 18;
+
+  const cxA = 190, cyA = 140, r = 90;   // circle A
+  const cxB = 290, cyB = 140;           // circle B
+
+  const svg = d3.create("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("viewBox", [0, 0, width, height]);
+
+  // Sample space Ω (bounding rectangle)
+  const omega = svg.append("rect")
+    .attr("x", pad).attr("y", pad)
+    .attr("width", width - 2*pad).attr("height", height - 2*pad)
+    .attr("rx", 10)
+    .attr("fill", "none")
+    .attr("stroke", "currentColor")
+    .attr("stroke-opacity", 0.5);
+
+  // Label Ω
+  svg.append("text")
+    .attr("x", pad + 8).attr("y", pad + 16)
+    .text("Ω")
+    .style("font-weight", 400)
+    .style("font-size", "18px")
+    .style("fill", "var(--fg-muted)");
+
+  // Colors (CSS vars with fallbacks)
+  const colA   = "var(--brand-teal, #14b8a6)";
+  const colB   = "var(--brand-red, #ef4444)";
+  const hilite = "var(--brand-orange, #F39C65)";
+  const grid   = "var(--plot-grid, #94a3b8)";
+
+  // --- Defs: clips & mask for A^c ---
+  const defs = svg.append("defs");
+
+  defs.append("clipPath").attr("id", "clipA")
+    .append("circle").attr("cx", cxA).attr("cy", cyA).attr("r", r);
+
+  defs.append("clipPath").attr("id", "clipB")
+    .append("circle").attr("cx", cxB).attr("cy", cyB).attr("r", r);
+
+  // Mask for A^c: white keeps, black removes (subtract circle A from Ω rect)
+  const m = defs.append("mask").attr("id", "maskAc");
+  m.append("rect")
+    .attr("x", pad).attr("y", pad)
+    .attr("width", width - 2*pad).attr("height", height - 2*pad)
+    .attr("rx", 10)
+    .attr("fill", "white");
+  m.append("circle")
+    .attr("cx", cxA).attr("cy", cyA).attr("r", r)
+    .attr("fill", "black");
+
+  // Base sets (always lightly transparent)
+  svg.append("circle")
+    .attr("cx", cxA).attr("cy", cyA).attr("r", r)
+    .attr("fill", colA).attr("fill-opacity", 0.4);
+
+  svg.append("circle")
+    .attr("cx", cxB).attr("cy", cyB).attr("r", r)
+    .attr("fill", colB).attr("fill-opacity", 0.4);
+
+  // Highlight layer
+  if (vennOp === "A") {
+    svg.append("circle")
+      .attr("cx", cxA).attr("cy", cyA).attr("r", r)
+      .attr("fill", hilite).attr("fill-opacity", 0.99);
+
+  } else if (vennOp === "B") {
+    svg.append("circle")
+      .attr("cx", cxB).attr("cy", cyB).attr("r", r)
+      .attr("fill", hilite).attr("fill-opacity", 0.99);
+
+  } else if (vennOp === "Aᶜ") {
+    // Draw Ω in orange, but masked to remove A
+    svg.append("rect")
+      .attr("x", pad).attr("y", pad)
+      .attr("width", width - 2*pad).attr("height", height - 2*pad)
+      .attr("rx", 10)
+      .attr("fill", hilite).attr("fill-opacity", 0.99)
+      .attr("mask", "url(#maskAc)");
+
+  } else if (vennOp === "Union") {
+    // A ∪ B: overlay both circles solid orange
+    svg.append("circle")
+      .attr("cx", cxA).attr("cy", cyA).attr("r", r)
+      .attr("fill", hilite).attr("fill-opacity", 0.99);
+    svg.append("circle")
+      .attr("cx", cxB).attr("cy", cyB).attr("r", r)
+      .attr("fill", hilite).attr("fill-opacity", 0.99);
+
+  } else if (vennOp === "Intersection") {
+    // A ∩ B: clip B by A (equivalently clip A by B)
+    svg.append("g").attr("clip-path", "url(#clipA)")
+      .append("circle")
+      .attr("cx", cxB).attr("cy", cyB).attr("r", r)
+      .attr("fill", hilite).attr("fill-opacity", 0.99);
+  }
+
+  // Labels A and B
+  svg.append("text")
+    .attr("x", cxA - 26).attr("y", cyA - 8)
+    .text("A")
+    .style("font-size", "14px")
+    .style("font-weight", 600)
+    .style("fill", "var(--fg-muted)");
+
+  svg.append("text")
+    .attr("x", cxB + 22).attr("y", cyB - 8)
+    .text("B")
+    .style("font-size", "14px")
+    .style("font-weight", 600)
+    .style("fill", "var(--fg-muted)");
+
+  // Subtle baseline
+  svg.append("line")
+    .attr("x1", pad).attr("x2", width - pad)
+    .attr("y1", height - pad - 0.5).attr("y2", height - pad - 0.5)
+    .attr("stroke", grid).attr("stroke-opacity", 0.2);
+
+  return svg.node();
+}
+
+```
+
+---
+
+::: {.def #def-inclusion-exclusion}
+### Addition rule (inclusion–exclusion)
+For any two events $A, B\subseteq \Omega$, we have
+$$
+\mathrm{Pr}(A \cup B) = \mathrm{Pr}(A) + \mathrm{Pr}(B) - \mathrm{Pr}(A \cap B).
+$$
+:::
+
+::: {#exm-quick-inclusion-check}
+### A quick inclusion–exclusion check
+
+Roll a fair six-sided die. Let $A=\{\text{even}\}$ and $B=\{\text{number} \ge 4\}$. Compute $\mathrm{Pr}(A\cup B)$.
+:::
+
+::: {#sol-quick-inclusion-check} 
+We have
+
+- $\mathrm{Pr}(A)=3/6=1/2$ (even outcomes $2,4,6$).  
+- $\mathrm{Pr}(B)=3/6=1/2$ (outcomes $4,5,6$).  
+- $\mathrm{Pr}(A\cap B)=2/6=1/3$ (outcomes $4,6$).  
+
+By <span class="xref-no-num">[inclusion–exclusion @def-inclusion-exclusion]</span>,
+$$
+\mathrm{Pr}(A\cup B)=\tfrac{1}{2}+\tfrac{1}{2}-\tfrac{1}{3}=\tfrac{2}{3}.
+$$
+:::
+
+
+::: {.def #def-excl-exh-part}
+### Mutually Exclusive, Exhaustive Events, and Partitions
+
+- Two events $A$ and $B$ are **mutually exclusive** (or *disjoint*) if they cannot occur together:
+$$
+\mathrm{Pr}(A \cap B) = 0.
+$$
+
+- Two events $A$ and $B$ are **exhaustive** if at least one of them must occur:
+$$
+\mathrm{Pr}(A \cup B) = 1.
+$$  
+More generally, a collection of events $\{B_1,\ldots,B_k\}$ is exhaustive if $\bigcup_{i=1}^k B_i = \Omega$,
+where $\Omega$ is the sample space.
+
+- A collection of events $\{B_1,\ldots,B_k\}$ forms a **partition** of $\Omega$ if they are both mutually exclusive and exhaustive. Equivalently,  
+  - $B_i \cap B_j = \varnothing$ for all $i \neq j$ (non-overlapping), and  
+  - $\bigcup_{i=1}^k B_i = \Omega$ (their union is the whole sample space).
+:::
+
+---
+
+**Visualisation:**
+
+```{ojs}
+//| label: fig-partition-voronoi
+//| fig-cap: A decomposition of the sample space $\Omega$ into a partition $B_1,\ldots,B_k$. Subsets $B_i$ are mutually exclusive and exhaustive; every point in $\Omega$ lies in exactly one $B_i$.
+//| fig-align: center
+
+{
+  const width = 720, height = 360;
+  const pad = 20;
+
+  // colour cycle from theme accents
+  const brand = [
+    "var(--brand-teal, #55C3CB)",
+    "var(--brand-orange, #F39C65)",
+    "var(--brand-purple, #A180DA)",
+    "var(--brand-mint, #DDFFEB)",
+    "var(--brand-red, #e65660)"
+  ];
+  const col = i => brand[i % brand.length];
+
+  // seeded RNG so "Reseed" changes layout deterministically per click
+  const rng = d3.randomLcg(reseed || 1);
+
+  // generate n sites inside Ω (inset by padding)
+  const sites = d3.range(n).map(i => ({
+    name: `B${i+1}`,
+    x: pad + rng() * (width - 2*pad),
+    y: pad + rng() * (height - 2*pad)
+  }));
+
+  const delaunay = d3.Delaunay.from(sites, d => d.x, d => d.y);
+  const vor = delaunay.voronoi([pad, pad, width - pad, height - pad]);
+
+  const svg = d3.create("svg")
+    .attr("viewBox", [0, 0, width, height])
+    .attr("width", width)
+    .attr("height", height)
+    .style("background", "var(--brand-bg)")
+    .style("font-family", bodyFont)
+    .style("font-size", "14px");
+
+  // --- defs: rounded-rect clip for Ω ---
+  const defs = svg.append("defs");
+  defs.append("clipPath")
+    .attr("id", "clipOmega")
+    .append("rect")
+      .attr("x", pad).attr("y", pad)
+      .attr("width", width - 2*pad).attr("height", height - 2*pad)
+      .attr("rx", 10);
+
+  // cells (clipped to rounded Ω so no sharp outer box)
+  const g = svg.append("g").attr("clip-path", "url(#clipOmega)");
+  const polys = [];  // store polygons for centroid labelling
+
+  for (let i = 0; i < sites.length; i++) {
+    const poly = vor.cellPolygon(i);
+    if (!poly) continue;
+    polys.push({ i, poly, name: sites[i].name });
+    g.append("path")
+      .attr("d", d3.line()(poly))
+      .attr("fill", col(i))
+      .attr("fill-opacity", 0.2)
+      .attr("stroke", "currentColor")
+      .attr("stroke-opacity", 0.28);
+  }
+
+  // label font size adapts to n (clamped between 10px and 14px)
+  const fz = Math.max(10, Math.min(14, 16 - 0.5 * (n - 3)));
+
+  // labels at polygon centroids (true centre for convex Voronoi cells)
+  svg.append("g")
+    .selectAll("text")
+    .data(polys.map(d => {
+      const [cx, cy] = d3.polygonCentroid(d.poly);
+      return { x: cx, y: cy, name: d.name };
+    }))
+    .join("text")
+      .attr("x", d => d.x)
+      .attr("y", d => d.y)
+      .text(d => d.name)
+      .attr("font-weight", 700)
+      .attr("fill", "currentColor")
+      .attr("font-size", `${fz}px`)
+      .attr("text-anchor", "middle")
+      .attr("dominant-baseline", "middle");
+
+  // Ω frame (single rounded rectangle, drawn last)
+  svg.append("rect")
+    .attr("x", pad).attr("y", pad)
+    .attr("width", width - 2*pad).attr("height", height - 2*pad)
+    .attr("rx", 10)
+    .attr("fill", "none")
+    .attr("stroke", "currentColor")
+    .attr("stroke-opacity", 0.55);
+
+  // Ω label
+  svg.append("text")
+    .attr("x", pad + 8).attr("y", pad + 16)
+    .text("Ω")
+    .style("font-weight", 400)
+    .style("font-size", "18px")
+    .attr("fill", "currentColor");
+
+  return svg.node();
+}
+```
+
+```{ojs}
+// Compact, styled controls BELOW the plot (two inputs only) — fixed grid + fonts
+
+html`<style>
+/* ---------- Scope all styles to this controls box ---------- */
+details.controls-root { 
+  --ctrl-font: 12px;
+  font-size: var(--ctrl-font);
+}
+
+/* Dropdown header */
+details.controls-root > summary {
+  list-style: none; cursor: pointer; user-select: none;
+  background: var(--surface, #f1f5f9);
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-weight: 600; font-size: calc(var(--ctrl-font) + 1px);
+  color: var(--fg-strong, #334155);
+  display: flex; align-items: center; gap: 8px;
+}
+details.controls-root > summary::-webkit-details-marker { display: none; }
+details.controls-root[open] > summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+
+/* Two-column grid (side-by-side) */
+details.controls-root .controls-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(260px, 1fr);
+  gap: 12px;
+  border: 1px solid var(--border, #e5e7eb); border-top: none;
+  border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;
+  padding: 10px;
+  background: var(--surface-weak, #fafafa);
+  overflow-x: auto;
+}
+details.controls-root .controls-col { min-width: 260px; }
+details.controls-root .controls-col h4 {
+  margin: 0 0 6px 0;
+  font-size: var(--ctrl-font); font-weight: 700;
+  color: var(--fg-muted, #475569);
+}
+
+/* ---- Align label & slider (form-level grid) ---- */
+details.controls-root .controls-col form {
+  display: grid !important;
+  grid-template-columns: minmax(150px, auto) 1fr; /* label | inputs */
+  align-items: center;         /* vertical centring */
+  column-gap: 10px;
+  font-size: var(--ctrl-font) !important;
+  line-height: 1.25;
+  margin: 6px 0;
+}
+
+/* Label: kill default <p> margin; align KaTeX + text */
+details.controls-root .controls-col form > label {
+  margin: 0 !important;
+  display: flex; align-items: center; gap: 8px;
+  font-size: var(--ctrl-font) !important;
+  color: var(--fg-muted, #475569);
+  font-weight: 600;
+}
+details.controls-root .controls-col form > label p { margin: 0 !important; }
+
+/* Inputs wrapper (auto-generated, e.g. .oi-*-input): align number + slider */
+details.controls-root .controls-col form > [class$="-input"],
+details.controls-root .controls-col form > [class*="-input"] {
+  display: flex; align-items: center; gap: 8px;
+  min-height: 22px;
+}
+
+/* Number input normalisation */
+details.controls-root .controls-col input[type="number"] {
+  height: 24px; padding: 2px 6px;
+  font-size: var(--ctrl-font);
+  border: 1px solid var(--border, #e5e7eb); border-radius: 6px;
+  background: var(--surface, #f1f5f9); color: var(--fg-strong, #334155);
+}
+
+/* Slider styling */
+details.controls-root .controls-col input[type="range"] {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 18px; background: transparent;
+  vertical-align: middle;
+  accent-color: var(--brand-teal, #55C3CB);
+}
+details.controls-root .controls-col input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px; border-radius: 999px;
+  background: color-mix(in srgb, var(--brand-teal, #55C3CB) 35%, transparent);
+}
+details.controls-root .controls-col input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--brand-teal, #55C3CB); border: 0; margin-top: -4px; /* centre thumb over 4px track */
+}
+details.controls-root .controls-col input[type="range"]::-moz-range-track {
+  height: 4px; border-radius: 999px;
+  background: color-mix(in srgb, var(--brand-teal, #55C3CB) 35%, transparent);
+}
+details.controls-root .controls-col input[type="range"]::-moz-range-thumb {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--brand-teal, #55C3CB); border: 0;
+}
+
+/* Button */
+details.controls-root .btn-resim button {
+  background: var(--brand-teal, #55C3CB); color: #fff;
+  border: none; border-radius: 6px; padding: 6px 12px;
+  font-weight: 600; font-size: var(--ctrl-font); cursor: pointer;
+  transition: filter 120ms ease, background-color 120ms ease;
+}
+details.controls-root .btn-resim button:hover {
+  background: color-mix(in srgb, var(--brand-teal, #55C3CB) 88%, black);
+}
+
+/* Chevron */
+details.controls-root > summary::before {
+  content: ""; display: inline-block; margin-right: 8px; width: 0; height: 0;
+  border-style: solid; border-width: 3px 0 3px 6px;
+  border-color: transparent transparent transparent var(--fg-strong);
+  transform: rotate(0deg); transform-origin: 3px 50%; transition: transform 50ms ease;
+}
+details.controls-root[open] > summary::before { transform: rotate(90deg); }
+
+/* Optional: match plot width and center the controls block */
+.controls-wrap { max-width: 720px; margin: 8px auto 0; }
+</style>`
+
+// Build the two inputs only, in a side-by-side grid
+viewof controls = {
+  const resBtn = Inputs.button("Reseed points");
+  resBtn.classList.add("btn-resim");
+
+  const leftForm = Inputs.form(
+    { n: Inputs.range([3, 50], { value: 10, step: 1, label: md`${tex`k`}: number of sets` }) },
+    { submit: false }
+  );
+  const rightForm = Inputs.form({ reseed: resBtn }, { submit: false });
+
+  const root = html`<div class="controls-wrap">
+    <details class="controls-root" open>
+      <summary>Partition controls</summary>
+      <div class="controls-grid">
+        <div class="controls-col"><h4>Number of regions</h4></div>
+        <div class="controls-col"><h4>Randomisation</h4></div>
+      </div>
+    </details>
+  </div>`;
+
+  const grid = root.querySelector(".controls-grid");
+  const leftCol = grid.children[0];
+  const rightCol = grid.children[1];
+  leftCol.append(leftForm);
+  rightCol.append(rightForm);
+
+  const getValue = () => ({ ...leftForm.value, ...rightForm.value });
+  const update = () => {
+    root.value = getValue();
+    root.dispatchEvent(new CustomEvent("input", { bubbles: true }));
+  };
+  grid.addEventListener("input", update);
+  queueMicrotask(update);
+  return root;
+}
+
+// reactive bindings for the plot
+n = controls.n
+reseed = controls.reseed
+```
+
+---
+
+::: {.def #def-conditional}
+### Conditional probability
+If $\mathrm{Pr}(B) > 0$, the probability of $A$ given $B$ is
+$$
+\mathrm{Pr}(A \mid B) = \frac{\mathrm{Pr}(A \cap B)}{\mathrm{Pr}(B)}.
+$$
+:::
+
+::: {.def #def-independence}
+### Independence
+Two events $A$ and $B$ are **independent** if knowing that one occurs does not change the probability of the other:
+$$
+\mathrm{Pr}(A \cap B) = \mathrm{Pr}(A)\mathrm{Pr}(B).
+$$
+Equivalently,
+$$
+\mathrm{Pr}(A\mid B) = \mathrm{Pr}(A) \quad \text{and} \quad \mathrm{Pr}(B\mid A) = \mathrm{Pr}(B)
+$$
+:::
+
+
+
+::: {.thm #thm-total-prob}
+### Law of Total Probability
+If $B_1,\dots,B_k$ form a <span class="xref-no-num">[partition @def-excl-exh-part]</span> of the sample space (mutually exclusive and exhaustive events), then for any event $A$:
+$$
+\mathrm{Pr}(A) = \sum_{i=1}^k \mathrm{Pr}(A \mid B_i)\mathrm{Pr}(B_i).
+$$
+:::
+
+::: {#prf-total-prob}
+Since $B_1\ldots, B_n$ form a partition of $\Omega$, we can decompose any event $A$ in a *disjoint* union of intersections:
+$$
+A = \bigcup_{i=1}^n (A\cap B_i).
+$$
+By induction on the <span class="xref-no-num">[addition rule @def-inclusion-exclusion]</span>, we thus have
+$$
+\mathrm{Pr}(A) = \sum_{i=1}^n \mathrm{Pr}(A\cap B_i).
+$$
+By the definition of <span class="xref-no-num">[conditional probability @def-conditional]</span>, we have $\mathrm{Pr}(A\cap B_i) = \mathrm{Pr}(A\mid B_i) \mathrm{Pr}(B_i)$. Therefore,
+
+$$
+\mathrm{Pr}(A) =  \sum_{i=1}^n \mathrm{Pr}(A \mid B_i)\mathrm{Pr}(B_i).
+$$
+:::
+
+---
+
+**Visualisation:**
+
+```{ojs}
+//| label: fig-lotp-voronoi
+//| fig-cap: Law of Total Probability visualised. An event $A$ (orange) overlaps a partition $B_1,\ldots,B_{k}$ of $\Omega$. The shaded pieces $A\cap B_i$ decompose $\operatorname{Pr}(A)$ as $\operatorname{Pr}(A)= \sum_i \operatorname{Pr}(A \cap B_i)$.
+//| fig-align: center
+{
+  const width = 720, height = 360;
+  const pad = 20;
+
+  // colours
+  const brand = [
+    "var(--brand-teal, #55C3CB)",
+    "var(--brand-purple, #A180DA)",
+    "var(--brand-mint, #DDFFEB)",
+    "var(--brand-red, #e65660)"
+  ];
+  const col = i => brand[i % brand.length];
+  const orange = "var(--brand-orange, #F39C65)";
+
+  // deterministic RNG
+  const rng = d3.randomLcg(2);
+
+  // Voronoi sites
+  const sites = d3.range(n2).map(i => ({
+    name: `B${i+1}`,
+    x: pad + rng() * (width - 2*pad),
+    y: pad + rng() * (height - 2*pad)
+  }));
+
+  const delaunay = d3.Delaunay.from(sites, d => d.x, d => d.y);
+  const vor = delaunay.voronoi([pad, pad, width - pad, height - pad]);
+
+  const svg = d3.create("svg")
+    .attr("viewBox", [0, 0, width, height])
+    .attr("width", width)
+    .attr("height", height)
+    .style("background", "var(--brand-bg)")
+    .style("font-family", bodyFont)
+    .style("font-size", "14px");
+
+  // --- defs: rounded-rect clip for Ω + per-cell clipPaths + ellipse for A ---
+  const defs = svg.append("defs");
+
+  defs.append("clipPath")
+    .attr("id", "clipOmega-lotp2")
+    .append("rect")
+      .attr("x", pad).attr("y", pad)
+      .attr("width", width - 2*pad).attr("height", height - 2*pad)
+      .attr("rx", 10);
+
+  // Per-cell clipPaths (so we can draw A∩B_i by clipping the ellipse to each cell)
+  for (let i = 0; i < sites.length; i++) {
+    const poly = vor.cellPolygon(i);
+    if (!poly) continue;
+    defs.append("clipPath")
+      .attr("id", `clipCell-lotp2-${i}`)
+      .append("path")
+      .attr("d", d3.line()(poly));
+  }
+
+  // A: ellipse geometry
+  const Ax = width * 0.50, Ay = height * 0.52;  // centre
+  const Arx = width * 0.42, Ary = height * 0.4;
+
+  // Draw A outline (thin) so learners see the target set even before fills
+  svg.append("ellipse")
+    .attr("cx", Ax).attr("cy", Ay)
+    .attr("rx", Arx).attr("ry", Ary)
+    .attr("fill", "none")
+    .attr("stroke", orange)
+    .attr("stroke-width", 2)
+    .attr("clip-path", "url(#clipOmega-lotp2)");
+
+  // --- Voronoi cells: visible strokes on TOP of orange pieces ---
+  const strokes = svg.append("g").attr("clip-path", "url(#clipOmega-lotp2)");
+  const polys = [];
+  for (let i = 0; i < sites.length; i++) {
+    const poly = vor.cellPolygon(i);
+    if (!poly) continue;
+    polys.push({ i, poly, name: sites[i].name });
+    strokes.append("path")
+      .attr("d", d3.line()(poly))
+      .attr("stroke", "currentColor")
+      .attr("fill", col(i))
+      .attr("fill-opacity", 0.2)
+      .attr("stroke-opacity", 0.55);
+  }
+
+  // Labels at polygon centroids; adaptive font size
+  const fz2 = Math.max(10, Math.min(14, 16 - 0.3 * (n2 - 3)));
+  svg.append("g")
+    .selectAll("text")
+    .data(polys.map(d => {
+      const [cx, cy] = d3.polygonCentroid(d.poly);
+      return { x: cx, y: cy, name: d.name };
+    }))
+    .join("text")
+      .attr("x", d => d.x)
+      .attr("y", d => d.y)
+      .text(d => d.name)
+      .attr("font-weight", 700)
+      .attr("fill", "var(--fg-muted)")
+      .attr("font-size", `${fz2}px`)
+      .attr("text-anchor", "middle")
+      .attr("dominant-baseline", "middle");
+
+  // --- A∩B_i pieces (orange), revealed up to 'frame2' ---
+  const overlaps = svg.append("g").attr("clip-path", "url(#clipOmega-lotp2)");
+  for (let i = 0; i < sites.length; i++) {
+    overlaps.append("ellipse")
+      .attr("cx", Ax).attr("cy", Ay)
+      .attr("rx", Arx).attr("ry", Ary)
+      .attr("fill", orange)
+      .attr("fill-opacity", i < frame2 ? 1. : 0)  // reveal progressively
+      .attr("clip-path", `url(#clipCell-lotp2-${i})`);
+  }
+
+
+  // Ω frame
+  svg.append("rect")
+    .attr("x", pad).attr("y", pad)
+    .attr("width", width - 2*pad).attr("height", height - 2*pad)
+    .attr("rx", 10)
+    .attr("fill", "none")
+    .attr("stroke", "currentColor")
+    .attr("stroke-opacity", 0.55);
+
+  // Ω label
+  svg.append("text")
+    .attr("x", pad + 8).attr("y", pad + 16)
+    .text("Ω")
+    .style("font-weight", 400)
+    .style("font-size", "18px")
+    .attr("fill", "currentColor");
+
+  // A label
+  svg.append("text")
+    .attr("x", Ax).attr("y", Ay)
+    .text("A")
+    .attr("fill", "currentColor")
+    .attr("font-size", 18)
+    .attr("font-weight", 700)
+    .attr("text-anchor", "middle");
+
+  return svg.node();
+}
+
+```
+
+```{ojs}
+// Animation driver: each button click restarts the reveal
+frame2 = {
+  if (!click2) return 0;
+  const delay = 600;
+  let i = 0;
+  while (i <= n2) {
+    yield i;
+    await Promises.delay(delay);
+    i++;
+  }
+  return i;
+}
+
+```
+
+```{ojs}
+// Compact controls BELOW the plot (two inputs): k and Play animation
+
+html`<style>
+details.controls-root { --ctrl-font: 12px; font-size: var(--ctrl-font); }
+details.controls-root > summary {
+  list-style:none; cursor:pointer; user-select:none;
+  background:var(--surface,#f1f5f9); border:1px solid var(--border,#e5e7eb);
+  border-radius:10px; padding:8px 10px; font-weight:600;
+  font-size:calc(var(--ctrl-font) + 1px); color:var(--fg-strong,#334155);
+  display:flex; align-items:center; gap:8px;
+}
+details.controls-root > summary::-webkit-details-marker { display:none; }
+details.controls-root[open] > summary { border-bottom-left-radius:0; border-bottom-right-radius:0; }
+.controls-grid {
+  display:grid; grid-template-columns:minmax(260px,1fr) minmax(260px,1fr);
+  gap:12px; border:1px solid var(--border,#e5e7eb); border-top:none;
+  border-bottom-left-radius:10px; border-bottom-right-radius:10px;
+  padding:10px; background:var(--surface-weak,#fafafa); overflow-x:auto;
+}
+.controls-col { min-width:260px; }
+.controls-col h4 { margin:0 0 6px; font-size:var(--ctrl-font); font-weight:700; color:var(--fg-muted,#475569); }
+
+/* Form-level grid: label | inputs, centred vertically */
+.controls-col form {
+  display:grid !important; grid-template-columns:minmax(150px,auto) 1fr;
+  align-items:center; column-gap:10px; font-size:var(--ctrl-font) !important; line-height:1.25; margin:6px 0;
+}
+/* Label, no <p> margins */
+.controls-col form > label { margin:0 !important; display:flex; align-items:center; gap:8px; font-size:var(--ctrl-font) !important; color:var(--fg-muted,#475569); font-weight:600; }
+.controls-col form > label p { margin:0 !important; }
+/* Inputs wrapper (auto-generated) */
+.controls-col form > [class$="-input"], .controls-col form > [class*="-input"] { display:flex; align-items:center; gap:8px; min-height:22px; }
+
+/* Number input */
+.controls-col input[type="number"] {
+  height:24px; padding:2px 6px; font-size:var(--ctrl-font);
+  border:1px solid var(--border,#e5e7eb); border-radius:6px;
+  background:var(--surface,#f1f5f9); color:var(--fg-strong,#334155);
+}
+
+/* Slider */
+.controls-col input[type="range"] {
+  -webkit-appearance:none; appearance:none; width:100%; height:18px; background:transparent; vertical-align:middle; accent-color:var(--brand-teal,#55C3CB);
+}
+.controls-col input[type="range"]::-webkit-slider-runnable-track { height:4px; border-radius:999px; background: color-mix(in srgb, var(--brand-teal,#55C3CB) 35%, transparent); }
+.controls-col input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:12px; height:12px; border-radius:50%; background:var(--brand-teal,#55C3CB); border:0; margin-top:-4px; }
+.controls-col input[type="range"]::-moz-range-track { height:4px; border-radius:999px; background: color-mix(in srgb, var(--brand-teal,#55C3CB) 35%, transparent); }
+.controls-col input[type="range"]::-moz-range-thumb { width:12px; height:12px; border-radius:50%; background:var(--brand-teal,#55C3CB); border:0; }
+
+/* Button (if you later add one) */
+.btn-resim button {
+  background: var(--brand-teal,#55C3CB); color:#fff; border:none; border-radius:6px; padding:6px 12px;
+  font-weight:600; font-size:var(--ctrl-font); cursor:pointer; transition: filter 120ms ease, background-color 120ms ease;
+}
+.btn-resim button:hover { background: color-mix(in srgb, var(--brand-teal,#55C3CB) 88%, black); }
+
+/* Chevron */
+details.controls-root > summary::before {
+  content:""; display:inline-block; margin-right:8px; width:0; height:0;
+  border-style:solid; border-width:3px 0 3px 6px; border-color:transparent transparent transparent var(--fg-strong);
+  transform:rotate(0deg); transform-origin:3px 50%; transition:transform 50ms ease;
+}
+details.controls-root[open] > summary::before { transform:rotate(90deg); }
+
+/* Wrap width */
+.controls-wrap { max-width: 720px; margin: 8px auto 0; }
+</style>`
+
+// Two controls: k (slider) and Play animation (button)
+viewof controls2 = {
+  const leftForm  = Inputs.form(
+    { n: Inputs.range([3, 50], { value: 10, step: 1, label: md`${tex`k`}: number of sets` }) },
+    { submit:false }
+  );
+
+  const playBtn = Inputs.button("▶ Play");
+  playBtn.classList.add("btn-resim");  // reuse your teal button style
+
+  const rightForm = Inputs.form({ click2: playBtn }, { submit:false });
+
+  const root = html`<div class="controls-wrap">
+    <details class="controls-root" open>
+      <summary>Law of Total Probability controls</summary>
+      <div class="controls-grid">
+        <div class="controls-col"><h4>Partition size</h4></div>
+        <div class="controls-col"><h4>Animation</h4></div>
+      </div>
+    </details>
+  </div>`;
+
+  const grid = root.querySelector(".controls-grid");
+  grid.children[0].append(leftForm);
+  grid.children[1].append(rightForm);
+
+  const getValue = () => ({ ...leftForm.value, ...rightForm.value });
+  const update = () => { root.value = getValue(); root.dispatchEvent(new CustomEvent("input", { bubbles:true })); };
+  grid.addEventListener("input", update);
+  queueMicrotask(update);
+  return root;
+}
+
+// reactive
+n2     = controls2.n
+click2 = controls2.click2
+```
+
+---
+
+::: {.thm #thm-bayes}
+### Bayes’ Theorem
+If $\mathrm{Pr}(B) > 0$, then
+$$
+\mathrm{Pr}(A \mid B) = \frac{\mathrm{Pr}(B \mid A)\mathrm{Pr}(A)}{\mathrm{Pr}(B)}.
+$$
+:::
+
+::: {#prf-bayes}
+From the definition of <span class="xref-no-num">[conditional probability @def-conditional]</span>,  
+$$
+\mathrm{Pr}(A \mid B) = \frac{\mathrm{Pr}(A \cap B)}{\mathrm{Pr}(B)}.
+$$
+
+But the intersection $A \cap B$ can also be written the other way round:
+$$
+\mathrm{Pr}(A \cap B) = \mathrm{Pr}(B \cap A).
+$$
+
+Using the definition of conditional probability again,
+$$
+\mathrm{Pr}(B \cap A) = \mathrm{Pr}(B \mid A)\mathrm{Pr}(A).
+$$
+
+Substituting this into the first expression gives
+$$
+\mathrm{Pr}(A \mid B) = \frac{\mathrm{Pr}(B \mid A)\mathrm{Pr}(A)}{\mathrm{Pr}(B)}.
+$$
+
+This completes the proof.
+:::
+
+::: {#exm-student-example}
+### Student Example
+Seventy percent of students are attentive in lectures and thirty percent are not. If a student is *attentive* the probability of passing the course is $0.8$. If a student is *not attentive* the probability of passing the course is $0.1$.
+
+1. A student is selected at random. What is the probability that they pass the course?
+2. Given that the student passed the course, what is the probability that they were attentive?
+:::
+
+::: {#sol-student}
+Let
+
+- $P$ denote the event of a student passing the course.
+- $A$ denote the event of a student being attentive.
+- $A^c$ denote the event of a student not being attentive.
+
+1. Attentive and inattentive form a partition. By the law of total probability,
+
+$$
+\mathrm{Pr}(P)=\mathrm{Pr}(P\mid A)\mathrm{Pr}(A)+\mathrm{Pr}(P\mid A^c)\mathrm{Pr}(A^c)=0.8\times0.7+0.1\times0.3=0.59.
+$$
+
+2. Using Bayes’ theorem,
+
+$$
+\mathrm{Pr}(A\mid P)=\frac{\mathrm{Pr}(P\mid A)\mathrm{Pr}(A)}{\mathrm{Pr}(P)}
+=\frac{0.8\times0.7}{0.59}=0.949\ \text{(3 s.f.)}.
+$$
+:::
+
+## Random Variables
+
+We use upper-case letters for random variables, e.g. $X, Y, X_1, X_2,\dots$.
+
+* **Cumulative distribution function (cdf).**
+  For any (real-valued) random variable $X$,
+
+  $$
+  F(x)=\mathrm{Pr}(X\le x).
+  $$
+
+* **Discrete case (pmf).**
+  If $X$ is discrete, its *probability mass function* is
+
+  $$
+  p(x)=\mathrm{Pr}(X=x),\qquad \sum_x p(x)=1.
+  $$
+
+* **Continuous case (pdf).**
+  If $X$ is continuous, its *probability density function* satisfies
+
+  $$
+  f(x)=\frac{\partial F(x)}{\partial x},\qquad \mathrm{Pr}(a<X\le b)=\int_a^b f(x)\,\mathrm{d}x,\qquad \int_{-\infty}^{\infty} f(x)\,\mathrm{d}x=1.
+  $$
+
+
+::: {#exm-discrete-cdf}
+### Discrete CDF.
+
+Let $X$ be the outcome of a fair six-sided die. Find $p(x)$ and $F(3)$.
+:::
+
+::: {#sol-discrete-cdf}
+$p(x)=\mathrm{Pr}(X=x)=1/6$ for $x\in\{1,2,3,4,5,6\}$, and $0$ otherwise.  
+$F(3)=\mathrm{Pr}(X\le 3)=\mathrm{Pr}(\{1,2,3\})=3\times(1/6)=1/2.$
+:::
+
+::: {#exm-continuous-pdf}
+Let $X\sim \mathrm{Uniform}(0,1)$. Compute $\mathrm{Pr}(0.2<X<0.5)$.
+:::
+
+::: {#sol-continuous-pdf}
+Here $f(x)=1$ for $0<x<1$ and $0$ otherwise.  
+
+$$
+\mathrm{Pr}(0.2<X<0.5)=\int_{0.2}^{0.5} 1\,dx = 0.3.
+$$
+:::
+
+### Joint, Marginal, and Conditional Densities
+
+Suppose $X$ and $Y$ are random variables with joint PDF/PMF $f_{XY}(x,y)$ (often written $f(x,y)$). From this joint distribution we can define:
+
+- **Marginal distributions:** the distribution of each variable on its own.  
+- **Conditional distributions:**  the distribution of one variable given the other.  
+- **Independence:** the case where the joint factorises.
+
+
+::: {#def-marginal-pdf}
+#### Marginal Distributions  
+If we only care about $X$, regardless of $Y$, we integrate/sum out $Y$:
+$$
+f_X(x) = \int f(x,y)\,\mathrm{d}y.
+$$
+Similarly for $f_Y(y)$.  
+*Note:* knowing the marginals does **not** determine the joint.
+:::
+
+
+::: {#def-conditional-pdf}
+#### Conditional Densities  
+For $y$ in the support of $Y$ with $f_Y(y) > 0$, we define:
+$$
+f_{X \mid Y}(x \mid y) = \frac{f(x,y)}{f_Y(y)}.
+$$
+This describes the distribution of $X$ *given* $Y=y$.
+:::
+
+
+::: {#thm-total-probability-pdfs}
+#### Law of Total Probability  
+We can recover the marginal by “averaging” the conditional over $Y$:
+$$
+f_X(x) = \int f_{X \mid Y}(x \mid y) f_Y(y)\,\mathrm{d}y.
+$$
+:::
+
+
+::: {#def-independence-rv}
+#### Independence  
+$X$ and $Y$ are independent if and only if
+$$
+f(x,y) = f_X(x) f_Y(y).
+$$
+In this case, $f_{X \mid Y}(x \mid y) = f_X(x)$: knowing $Y$ tells us nothing about $X$.
+:::
+
+
+## Expectations, Variances and Covariances
+
+
+::: {#def-mean}
+#### Expected Value  
+The **expected value** (or **population mean**) of $X$ is
+$$
+\mathrm{E}[X] =
+\begin{cases}
+\displaystyle \sum_{\text{all } x} x\,p_X(x), & \text{if $X$ is discrete}, \\
+\displaystyle \int_{-\infty}^{\infty} x\,f_X(x)\,\mathrm{d}x, & \text{if $X$ is continuous}.
+\end{cases}
+$$
+
+We often write $\mu = \mathrm{E}[X]$. This is a measure of **location**.
+:::
+
+::: {#def-expectation}
+#### Expectation of $g(X)$
+Let $g(\cdot)$ be any function and $X$ a random variable with PMF $p_X$ (discrete) or PDF $f_X$ (continuous). The **expected value** of $g(X)$ is
+$$
+\mathrm{E}[g(X)] =
+\begin{cases}
+\displaystyle \sum_{\text{all } x} g(x)\,p_X(x), & \text{if $X$ is discrete},\\
+\displaystyle \int_{-\infty}^{\infty} g(x)\,f_X(x)\,\mathrm{d}x, & \text{if $X$ is continuous}.
+\end{cases}
+$$
+:::
+
+::: {#def-expectation-bivariate}
+#### Expectation (Bivariate)  
+If $(X,Y)$ is a pair of random variables with joint PMF $p_{X,Y}$ (discrete) or joint PDF $f_{X,Y}$ (continuous), then for any function $g(x,y)$
+$$
+\mathrm{E}[g(X,Y)] =
+\begin{cases}
+\displaystyle \sum_{\text{all } x}\sum_{\text{all } y} g(x,y)\,p_{X,Y}(x,y), & \text{if $(X,Y)$ are discrete},\\
+\displaystyle \int\!\!\!\int g(x,y)\,f_{X,Y}(x,y)\,\mathrm{d}x\,\mathrm{d}y, & \text{if $(X,Y)$ are continuous}.
+\end{cases}
+$$
+:::
+
+
+::: {#def-moments}
+#### Moments  
+The quantities $\mathrm{E}[X], \mathrm{E}[X^2], \mathrm{E}[X^3], \ldots$ are the (raw) **moments** of $X$.
+:::
+
+::: {#def-variance}
+#### Variance  
+The **population variance** of $X$ is
+$$
+\mathrm{Var}(X) = \mathrm{E}\!\left[(X-\mathrm{E}[X])^2\right]
+= \mathrm{E}[X^2] - \big(\mathrm{E}[X]\big)^2.
+$$
+We often write $\sigma^2 = \mathrm{Var}(X)$. This is a measure of **spread**.
+:::
+
+::: {#def-sd}
+#### Standard Deviation  
+The **population standard deviation** is the positive square root of the variance:
+$$
+\mathrm{SD}(X) = \sqrt{\mathrm{Var}(X)}.
+$$
+We often write $\sigma = \mathrm{SD}(X)$. It shares the **same units** as $X$ and measures spread.
+:::
+
+::: {#def-covariance}
+#### Covariance  
+For two random variables $X$ and $Y$, the **covariance** is
+$$
+\mathrm{Cov}(X,Y)
+= \mathrm{E}\!\left[(X-\mathrm{E}[X])(Y-\mathrm{E}[Y])\right]
+= \mathrm{E}[XY] - \mathrm{E}[X]\mathrm{E}[Y].
+$$
+It measures **linear association**: positive if $Y$ tends to increase with $X$; negative if $Y$ tends to decrease as $X$ increases.
+:::
+
+::: {#def-correlation}
+#### Correlation  
+The **correlation** (often denoted $\rho$) is the scaled covariance
+$$
+\rho = \mathrm{Corr}(X,Y) = \frac{\mathrm{Cov}(X,Y)}{\mathrm{SD}(X)\,\mathrm{SD}(Y)}.
+$$
+Correlation always satisfies $\rho \in [-1,1]$.
+:::
+
+::: {#thm-independence-zero-cov}
+#### Independence $\Rightarrow$ Zero Covariance  
+If $X$ and $Y$ are **independent**, then $\mathrm{Cov}(X,Y)=0$.
+
+*Note.* The converse need not hold: it is possible to have $\mathrm{Cov}(X,Y)=0$ while $X$ and $Y$ are **not** independent.
+:::
+
+::: {.example #exm-bern-var}
+### Variance of a Bernoulli Random Variable
+
+A <span class="xref-no-num">[Bernoulli random variable @sec-bern]</span> $X$ takes only the values $0$ and $1$, with probabilities
+$$
+\operatorname{Pr}(X=1) = p, \qquad \operatorname{Pr}(X=0) = 1-p, \qquad 0 \leq p \leq 1.
+$$
+
+For what value of $p$ is the variance maximised?
+:::
+
+::: {.solution #sol-bern-var}
+
+We compute the mean and variance of $X$.  
+
+$$
+\mathrm{E}[X] = 1 \cdot p + 0 \cdot (1-p) = p,
+$$
+
+$$
+\mathrm{E}[X^2] = 1^2 \cdot p + 0^2 \cdot (1-p) = p.
+$$
+
+Therefore,
+$$
+\mathrm{Var}(X) = \mathrm{E}[X^2] - \big(\mathrm{E}[X]\big)^2 = p - p^2 = p(1-p).
+$$
+
+---
+
+To find the value of $p$ that maximises this variance, consider the function
+$$
+f(p) = p(1-p), \quad 0 \leq p \leq 1.
+$$
+
+Differentiate:
+$$
+f'(p) = 1 - 2p.
+$$
+
+Setting $f'(p) = 0$ gives $p = \tfrac{1}{2}$.
+
+Second derivative:
+$$
+f''(p) = -2 < 0,
+$$
+so this is indeed a maximum.  
+
+Finally, check the boundary values:
+$$
+f(0) = 0, \qquad f(1) = 0, \qquad f\!\left(\tfrac{1}{2}\right) = \tfrac{1}{4}.
+$$
+
+---
+
+**Conclusion.**  
+The variance of a Bernoulli random variable is maximised at  
+$$
+p = \tfrac{1}{2}, \quad \mathrm{Var}(X) = \tfrac{1}{4}.
+$$
+
+:::
+
+
+## Non-Examinable Material
+
+::: {.callout-warning}
+## Non-Examinable Content
+This section provides definitions and results that are used in **non-examinable proofs and remarks** elsewhere in the notes.  
+None of the material in this section is examinable.
+:::
+
+---
+
+### Convergence of Random Variables
+
+::: {#def-convergence-in-probability}
+#### Convergence in Probability
+
+A sequence of random variables $X_n$ is said to **converge in probability** to a random variable $X$ if, for every $\varepsilon > 0$,
+
+$$
+\Pr\big(|X_n - X| > \varepsilon\big) \;\longrightarrow\; 0 
+\quad \text{as } n \to \infty.
+$$
+
+We write this as
+$$
+X_n \xrightarrow{p} X.
+$$
+
+Intuitively: as $n$ grows, the probability that $X_n$ is far from $X$ becomes negligible.
+:::
+
+::: {#def-convergence-in-distribution}
+#### Convergence in Distribution
+
+A sequence of random variables $X_n$ is said to **converge in distribution** to a random variable $X$ if, for all continuity points $x$ of $F_X$,
+
+$$
+F_{X_n}(x) \;\longrightarrow\; F_X(x)
+\quad \text{as } n \to \infty,
+$$
+
+where $F_{X_n}$ and $F_X$ are the cumulative distribution functions.  
+
+We write this as
+$$
+X_n \xrightarrow{d} X.
+$$
+
+Intuitively: the distribution of $X_n$ “settles down” and approaches that of $X$.
+:::
+
+::: {.callout-note}
+### Relationship
+Convergence in probability is **stronger** than convergence in distribution:  
+$$
+X_n \xrightarrow{p} X \;\;\;\implies\;\;\; X_n \xrightarrow{d} X.
+$$
+But not the other way around.
+:::
+
+---
+
+### Probability Inequalities
+
+::: {#prp-chebyshev}
+#### Chebyshev’s Inequality
+
+If a random variable $X$ has mean $\mu$ and variance $\sigma^2 < \infty$, then for any $\varepsilon > 0$,
+
+$$
+\Pr\big(|X - \mu| \geq \varepsilon\big) 
+\;\leq\; \frac{\sigma^2}{\varepsilon^2}.
+$$
+
+This provides a bound on the probability of large deviations from the mean.
+:::
+
+
+[^prob-space]:
+  **Note on Probability Theory.** Formally, a probability space is written as a triple $(\Omega,\Sigma,P)$, where $\Sigma$ is the collection of “measurable” events. This level of mathematical detail goes beyond what we need in this course and will **not be assessed**. (See the [Wikipedia article on probability spaces](https://en.wikipedia.org/wiki/Probability_space) if you are curious.)

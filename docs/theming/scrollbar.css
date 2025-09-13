@@ -1,42 +1,43 @@
-/* Sidebar scrollbar — Chrome / Edge / Safari */
-#quarto-sidebar::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-#quarto-sidebar::-webkit-scrollbar-track {
-  background: var(--border);
-}
-#quarto-sidebar::-webkit-scrollbar-thumb {
-  background-color: var(--border);
-  border-radius: 6px;
-  border: 2px solid var(--border);
-}
-#quarto-sidebar::-webkit-scrollbar-thumb:hover {
-  background-color: var(--border);
+/* --------------------------------------------------
+   Scrollbars: consistent for page + sidebar
+   -------------------------------------------------- */
+
+/* Design tokens */
+:root {
+  --scroll-size: 9px;
+  --scroll-track: var(--brand-bg);
+  --scroll-thumb: var(--thumb-scrollbar-bg);
 }
 
-/* Chrome, Edge, Safari (WebKit/Blink) */
-::-webkit-scrollbar {
-  width: 10px;              /* thickness of vertical scrollbar */
-  height: 2px;             /* thickness of horizontal scrollbar */
+
+/* Firefox (and any browser that supports it) */
+html, body, #quarto-sidebar, .quarto-margin-sidebar, .page-columns {
+  scrollbar-width: thin; /* thin | auto */
+  scrollbar-color: var(--scroll-thumb) var(--scroll-track);
 }
 
-::-webkit-scrollbar-track {
-  background: var(--brand-bg);   /* track (background) */
+/* WebKit/Blink (Chrome/Edge/Safari) — apply to all scrollable elements */
+*::-webkit-scrollbar {
+  width: var(--scroll-size);
+  height: var(--scroll-size);
 }
 
-::-webkit-scrollbar-thumb {
-  background-color: var(--border); /* main thumb */
-  border-radius: 10px;
-  border: 2px solid var(--border);   /* adds spacing between thumb and track */
+*::-webkit-scrollbar-track {
+  background: var(--scroll-track);
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background-color: var(--border); /* hover colour */
+*::-webkit-scrollbar-thumb {
+  background-color: var(--scroll-thumb);              /* visible thumb color */
+  border-radius: 9px;
+  border: 1px solid var(--scroll-track);              /* gap around thumb */
 }
 
-/* Firefox (and newer Chrome that supports it) */
-body {
-  scrollbar-width: thin;   /* thin | auto */
-  scrollbar-color: var(--border) var(--brand-bg);
+
+#quarto-sidebar::-webkit-scrollbar { width: 9px; }
+#quarto-sidebar { scrollbar-width: thin; }
+
+/* Firefox */
+html, body, #quarto-sidebar, .quarto-margin-sidebar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-thumb) var(--scroll-track); /* no hover support in FF */
 }

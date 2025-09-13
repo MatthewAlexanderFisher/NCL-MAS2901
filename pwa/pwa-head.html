@@ -1,0 +1,80 @@
+<meta name="theme-color" content="#0f172a">
+
+<!-- iOS installable PWA bits -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+<script>
+  (function () {
+    // Compute the book root using Quarto's basePath (works at any nesting depth)
+    function bookRootPath() {
+      const basePath = (window.quartoConfig && window.quartoConfig.basePath) ? window.quartoConfig.basePath : './';
+      const root = new URL(basePath, window.location.href);
+      const p = root.pathname;
+      return p.endsWith('/') ? p : p + '/';
+    }
+
+    function appendOnce(selector, create) {
+      if (!document.querySelector(selector)) {
+        document.head.appendChild(create());
+      }
+    }
+
+    window.addEventListener('load', async () => {
+      const root = bookRootPath();
+
+      // 1) Manifest (PWA)
+      // Remove any pre-existing manifest tags to avoid wrong relative fetches
+      document.querySelectorAll('link[rel="manifest"]').forEach(el => el.remove());
+      appendOnce('link[rel="manifest"]', () => {
+        const l = document.createElement('link');
+        l.rel = 'manifest';
+        l.href = root + 'pwa/manifest.webmanifest';
+        return l;
+      });
+
+      // 2) Favicons (tabs) — PNGs are widely supported
+      appendOnce('link[rel="icon"][sizes="16x16"]', () => {
+        const l = document.createElement('link');
+        l.rel = 'icon';
+        l.type = 'image/png';
+        l.sizes = '16x16';
+        l.href = root + 'pwa/icons/icon-16.png';
+        return l;
+      });
+      appendOnce('link[rel="icon"][sizes="32x32"]', () => {
+        const l = document.createElement('link');
+        l.rel = 'icon';
+        l.type = 'image/png';
+        l.sizes = '32x32';
+        l.href = root + 'pwa/icons/icon-32.png';
+        return l;
+      });
+      // Optional .ico for legacy (will be ignored if missing)
+      appendOnce('link[rel="icon"][type="image/x-icon"]', () => {
+        const l = document.createElement('link');
+        l.rel = 'icon';
+        l.type = 'image/x-icon';
+        l.href = root + 'pwa/icons/favicon.ico';
+        return l;
+      });
+
+      // 3) Apple touch icon (iOS Home Screen)
+      appendOnce('link[rel="apple-touch-icon"]', () => {
+        const l = document.createElement('link');
+        l.rel = 'apple-touch-icon';
+        l.href = root + 'pwa/icons/icon-180.png';
+        return l;
+      });
+
+      // 4) Register the Service Worker from the book root
+      if ('serviceWorker' in navigator) {
+        try {
+          await navigator.serviceWorker.register(root + 'service-worker.js', { scope: root });
+        } catch (err) {
+          console.error('SW registration failed:', err);
+        }
+      }
+    });
+  })();
+</script>
