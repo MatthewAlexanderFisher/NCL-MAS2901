@@ -58,30 +58,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./3-types-of-inference.html" rel="next">
-<link href="./content/main/part1/1-prob-theory.html" rel="prev">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b651517ce65839d647a86e2780455cfb.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e6f5ed28d36f8b593345e7d74d3e46a7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-77308fb2119bbff784a5f274b4bd1ff9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-e6f5ed28d36f8b593345e7d74d3e46a7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../content/main/part1/3-types-of-inference.html" rel="next">
+<link href="../../../content/main/part1/1-prob-theory.html" rel="prev">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-b651517ce65839d647a86e2780455cfb.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-e6f5ed28d36f8b593345e7d74d3e46a7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-77308fb2119bbff784a5f274b4bd1ff9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-e6f5ed28d36f8b593345e7d74d3e46a7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -113,20 +113,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <script>
   (function () {
+    // Compute book root for both environments
     function computeRoots() {
       const onPages = /github\.io$/i.test(location.hostname);
-      const repoBase = '/NCL-MAS2901/'; 
+      // >>>> CHANGE THIS to your repo name <<
+      const repoBase = '/NCL-MAS2901/';
 
       if (onPages) {
-        const rootPath = repoBase.endsWith('/') ? repoBase : repoBase + '/';
-        const abs = location.origin + rootPath;
-        return { rootPath, abs };
+        // GitHub Pages: use fixed base path
+        return { 
+          rootPath: repoBase,
+          abs: location.origin + repoBase
+        };
       } else {
-        // LOCAL PREVIEW: derive book root from Quarto's basePath
-        const basePath = (window.quartoConfig && window.quartoConfig.basePath) ? window.quartoConfig.basePath : './';
-        const u = new URL(basePath, window.location.href);
-        const rootPath = u.pathname.endsWith('/') ? u.pathname : u.pathname + '/';
+        // Local preview: find the book root by looking for index.html
+        // This works by going up the directory tree until we find the root
+        let pathSegments = location.pathname.split('/').filter(s => s);
+        
+        // Remove the current file if it exists
+        if (pathSegments.length > 0 && pathSegments[pathSegments.length - 1].includes('.')) {
+          pathSegments.pop();
+        }
+        
+        // For local development, we need to find the actual root
+        // Quarto typically serves from the root, so we can use '/'
+        // If your local setup is different, adjust accordingly
+        const rootPath = '/';
         const abs = location.origin + rootPath;
+        
         return { rootPath, abs };
       }
     }
@@ -138,9 +152,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
 
     const roots = computeRoots();
-    const buildUrl = (path) => (roots.abs.replace(/\/+$/, '/') + path.replace(/^\/+/, ''));
 
-    // Manifest
+    // Helper function to build absolute URLs
+    function buildUrl(path) {
+      // Ensure path doesn't start with /
+      const cleanPath = path.replace(/^\//, '');
+      // Ensure roots.abs ends with /
+      const base = roots.abs.endsWith('/') ? roots.abs : roots.abs + '/';
+      return base + cleanPath;
+    }
+
+    // Inject links ASAP (don't wait for load)
     appendOrReplace('link[rel="manifest"]', () => {
       const l = document.createElement('link');
       l.rel = 'manifest';
@@ -148,22 +170,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       return l;
     });
 
-    // Favicons
+    // Favicons (tab icons)
     appendOrReplace('link[rel="icon"][sizes="16x16"]', () => {
       const l = document.createElement('link');
-      l.rel = 'icon'; l.type = 'image/png'; l.sizes = '16x16';
+      l.rel = 'icon'; 
+      l.type = 'image/png'; 
+      l.sizes = '16x16';
       l.href = buildUrl('pwa/icons/icon-16.png');
       return l;
     });
+    
     appendOrReplace('link[rel="icon"][sizes="32x32"]', () => {
       const l = document.createElement('link');
-      l.rel = 'icon'; l.type = 'image/png'; l.sizes = '32x32';
+      l.rel = 'icon'; 
+      l.type = 'image/png'; 
+      l.sizes = '32x32';
       l.href = buildUrl('pwa/icons/icon-32.png');
       return l;
     });
+    
+    // Legacy ICO (optional)
     appendOrReplace('link[rel="icon"][type="image/x-icon"]', () => {
       const l = document.createElement('link');
-      l.rel = 'icon'; l.type = 'image/x-icon';
+      l.rel = 'icon'; 
+      l.type = 'image/x-icon';
       l.href = buildUrl('pwa/icons/favicon.ico');
       return l;
     });
@@ -176,17 +206,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       return l;
     });
 
-    // Service worker
+    // Register SW (use absolute URL)
     if ('serviceWorker' in navigator) {
       const swUrl = buildUrl('service-worker.js');
       const scope = roots.rootPath.endsWith('/') ? roots.rootPath : roots.rootPath + '/';
-      navigator.serviceWorker.register(swUrl, { scope })
+      
+      navigator.serviceWorker.register(swUrl, { scope: scope })
+        .then(reg => console.log('SW registered for scope:', scope))
         .catch(err => console.error('SW registration failed:', err));
     }
   })();
 </script>
-<script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
-<link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+<script type="module" src="../../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -218,17 +250,17 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="theming/math-scroll.css">
-<link rel="stylesheet" href="theming/callout-style.css">
-<link rel="stylesheet" href="theming/floating-code.css">
-<link rel="stylesheet" href="theming/font.css">
-<link rel="stylesheet" href="theming/no-xref-suffix.css">
-<link rel="stylesheet" href="theming/scrollbar.css">
-<link rel="stylesheet" href="theming/nav-tabs.css">
-<link rel="stylesheet" href="theming/header.css">
-<link rel="stylesheet" href="theming/question-bank.css">
-<link rel="stylesheet" href="theming/sidebar.css">
-<link rel="stylesheet" href="theming/lecture-zoom.css">
+<link rel="stylesheet" href="../../../theming/math-scroll.css">
+<link rel="stylesheet" href="../../../theming/callout-style.css">
+<link rel="stylesheet" href="../../../theming/floating-code.css">
+<link rel="stylesheet" href="../../../theming/font.css">
+<link rel="stylesheet" href="../../../theming/no-xref-suffix.css">
+<link rel="stylesheet" href="../../../theming/scrollbar.css">
+<link rel="stylesheet" href="../../../theming/nav-tabs.css">
+<link rel="stylesheet" href="../../../theming/header.css">
+<link rel="stylesheet" href="../../../theming/question-bank.css">
+<link rel="stylesheet" href="../../../theming/sidebar.css">
+<link rel="stylesheet" href="../../../theming/lecture-zoom.css">
 </head>
 
 <body class="nav-sidebar floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -400,11 +432,11 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="./images/ncl_logo_light.png" alt="" class="navbar-logo light-content">
-    <img src="./images/ncl_logo_light.png" alt="" class="navbar-logo dark-content">
+    <a href="../../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../../images/ncl_logo_light.png" alt="" class="navbar-logo light-content">
+    <img src="../../../images/ncl_logo_light.png" alt="" class="navbar-logo dark-content">
     </a>
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">MAS2901: Statistical Inference</span>
     </a>
   </div>
@@ -418,7 +450,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./content/main/part1/1-prob-theory.html">Part I — Foundations</a></li><li class="breadcrumb-item"><a href="./2-what-is-stats-inference.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">What is Statistical Inference?</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../content/main/part1/1-prob-theory.html">Part I — Foundations</a></li><li class="breadcrumb-item"><a href="../../../content/main/part1/2-what-is-stats-inference.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">What is Statistical Inference?</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -432,7 +464,7 @@ window.Quarto = {
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
-      <a href="./index.html" class="sidebar-logo-link">
+      <a href="../../../index.html" class="sidebar-logo-link">
       </a>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -444,7 +476,7 @@ window.Quarto = {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Preface</span></a>
   </div>
 </li>
@@ -459,19 +491,19 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/main/part1/1-prob-theory.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/main/part1/1-prob-theory.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Probability Theory</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2-what-is-stats-inference.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../../content/main/part1/2-what-is-stats-inference.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">What is Statistical Inference?</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./3-types-of-inference.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/main/part1/3-types-of-inference.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Types of Inference</span></span></a>
   </div>
 </li>
@@ -488,19 +520,19 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./4-freq-point-estimation.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/main/part2/4-freq-point-estimation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Frequentist Point Estimation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./5-likelihood.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/main/part2/5-likelihood.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Likelihood</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./6-bayes-inference.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/main/part2/6-bayes-inference.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></span></a>
   </div>
 </li>
@@ -517,13 +549,13 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./7-freq-interval-estimation.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/main/part3/7-freq-interval-estimation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequentist Interval Estimation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./8-bayes-interval-estimation.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/main/part3/8-bayes-interval-estimation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bayesian Intervals</span></span></a>
   </div>
 </li>
@@ -540,13 +572,13 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./9-freq-hypothesis-testing.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/main/part4/9-freq-hypothesis-testing.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Frequentist Hypothesis Testing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./10-bayes-hypothesis-testing.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/main/part4/10-bayes-hypothesis-testing.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian Hypothesis Testing</span></span></a>
   </div>
 </li>
@@ -563,25 +595,25 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./app-formula-sheet.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/appendix/formula-sheet.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Formula Sheet</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./app-revision-sheet.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/appendix/revision-sheet.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Revision Sheet</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./app-distribution-explorer.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/appendix/distribution-explorer.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Distribution Explorer</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./app-question-bank.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/appendix/question-bank.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Question Bank</span></a>
   </div>
 </li>
@@ -610,7 +642,7 @@ window.Quarto = {
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./content/main/part1/1-prob-theory.html">Part I — Foundations</a></li><li class="breadcrumb-item"><a href="./2-what-is-stats-inference.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">What is Statistical Inference?</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../content/main/part1/1-prob-theory.html">Part I — Foundations</a></li><li class="breadcrumb-item"><a href="../../../content/main/part1/2-what-is-stats-inference.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">What is Statistical Inference?</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">What is Statistical Inference?</span></h1>
 </div>
@@ -1497,9 +1529,9 @@ The parameter is <span class="math inline">\(\theta=(p_R,p_B,p_G)\)</span>, and 
 <p>In this course we focus on <strong>how to perform statistical inference once a statistical model has been specified</strong>.<br>
 We will <strong>assume the model is given</strong>, and our task is to carry out inference by finding good parameter values using techniques such as:</p>
 <ul>
-<li><span class="xref-no-num"><a href="4-freq-point-estimation.html" class="quarto-xref">Parameter Estimation&nbsp;<span>4</span></a></span></li>
-<li><span class="xref-no-num"><a href="7-freq-interval-estimation.html" class="quarto-xref">Interval Estimation&nbsp;<span>7</span></a></span></li>
-<li><span class="xref-no-num"><a href="9-freq-hypothesis-testing.html" class="quarto-xref">Hypothesis Testing&nbsp;<span>9</span></a></span></li>
+<li><span class="xref-no-num"><a href="../part2/4-freq-point-estimation.html" class="quarto-xref">Parameter Estimation&nbsp;<span>4</span></a></span></li>
+<li><span class="xref-no-num"><a href="../part3/7-freq-interval-estimation.html" class="quarto-xref">Interval Estimation&nbsp;<span>7</span></a></span></li>
+<li><span class="xref-no-num"><a href="../part4/9-freq-hypothesis-testing.html" class="quarto-xref">Hypothesis Testing&nbsp;<span>9</span></a></span></li>
 </ul>
 </div>
 </div>
@@ -1551,7 +1583,7 @@ We will <strong>assume the model is given</strong>, and our task is to carry out
   \]</span> The parameter space can then be written as <span class="math display">\[
     \Theta = \{(\theta_1,\ldots,\theta_p) \mid \theta_1 \in S_1,\ \ldots,\ \theta_p \in S_p\}.
   \]</span></p>
-<p>Here each <span class="math inline">\(S_j\)</span> is the set of allowed values for parameter <span class="math inline">\(\theta_j\)</span>. To construct <span class="math inline">\(\Theta\)</span>, simply <strong>read off the constraints</strong> on each parameter from the definition of the distribution (see the <span class="xref-no-num"><a href="app-formula-sheet.html#sec-formula-sheet" class="quarto-xref">Formula Sheet&nbsp;<span>0.0.0.0.1</span></a></span>).</p>
+<p>Here each <span class="math inline">\(S_j\)</span> is the set of allowed values for parameter <span class="math inline">\(\theta_j\)</span>. To construct <span class="math inline">\(\Theta\)</span>, simply <strong>read off the constraints</strong> on each parameter from the definition of the distribution (see the <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-formula-sheet" class="quarto-xref">Formula Sheet&nbsp;<span>0.0.0.0.1</span></a></span>).</p>
 <p>For example, in the Normal model:</p>
 <ul>
 <li><span class="math inline">\(\mu \in \mathbb{R}\)</span> (any real number),<br>
@@ -1910,9 +1942,9 @@ eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwt
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
-window._ojs.paths.runtimeToDoc = "../..";
+window._ojs.paths.runtimeToDoc = "../../content/main/part1";
 window._ojs.paths.runtimeToRoot = "../..";
-window._ojs.paths.docToRoot = "";
+window._ojs.paths.docToRoot = "../../..";
 window._ojs.selfContained = false;
 window._ojs.runtime.interpretFromScriptTags();
 </script>
@@ -2331,12 +2363,12 @@ window._ojs.runtime.interpretFromScriptTags();
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./content/main/part1/1-prob-theory.html" class="pagination-link" aria-label="Probability Theory">
+      <a href="../../../content/main/part1/1-prob-theory.html" class="pagination-link" aria-label="Probability Theory">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Probability Theory</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./3-types-of-inference.html" class="pagination-link" aria-label="Types of Inference">
+      <a href="../../../content/main/part1/3-types-of-inference.html" class="pagination-link" aria-label="Types of Inference">
         <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Types of Inference</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>

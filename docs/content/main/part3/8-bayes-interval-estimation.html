@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Matthew Fisher">
 
-<title>MAS2901: Statistical Inference</title>
+<title>8&nbsp; Bayesian Intervals – MAS2901: Statistical Inference</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -24,29 +23,30 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./content/main/part1/1-prob-theory.html" rel="next">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b651517ce65839d647a86e2780455cfb.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e6f5ed28d36f8b593345e7d74d3e46a7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-77308fb2119bbff784a5f274b4bd1ff9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-e6f5ed28d36f8b593345e7d74d3e46a7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../content/main/part4/9-freq-hypothesis-testing.html" rel="next">
+<link href="../../../content/main/part3/7-freq-interval-estimation.html" rel="prev">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-b651517ce65839d647a86e2780455cfb.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-e6f5ed28d36f8b593345e7d74d3e46a7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-77308fb2119bbff784a5f274b4bd1ff9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-e6f5ed28d36f8b593345e7d74d3e46a7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -213,17 +213,17 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="theming/math-scroll.css">
-<link rel="stylesheet" href="theming/callout-style.css">
-<link rel="stylesheet" href="theming/floating-code.css">
-<link rel="stylesheet" href="theming/font.css">
-<link rel="stylesheet" href="theming/no-xref-suffix.css">
-<link rel="stylesheet" href="theming/scrollbar.css">
-<link rel="stylesheet" href="theming/nav-tabs.css">
-<link rel="stylesheet" href="theming/header.css">
-<link rel="stylesheet" href="theming/question-bank.css">
-<link rel="stylesheet" href="theming/sidebar.css">
-<link rel="stylesheet" href="theming/lecture-zoom.css">
+<link rel="stylesheet" href="../../../theming/math-scroll.css">
+<link rel="stylesheet" href="../../../theming/callout-style.css">
+<link rel="stylesheet" href="../../../theming/floating-code.css">
+<link rel="stylesheet" href="../../../theming/font.css">
+<link rel="stylesheet" href="../../../theming/no-xref-suffix.css">
+<link rel="stylesheet" href="../../../theming/scrollbar.css">
+<link rel="stylesheet" href="../../../theming/nav-tabs.css">
+<link rel="stylesheet" href="../../../theming/header.css">
+<link rel="stylesheet" href="../../../theming/question-bank.css">
+<link rel="stylesheet" href="../../../theming/sidebar.css">
+<link rel="stylesheet" href="../../../theming/lecture-zoom.css">
 </head>
 
 <body class="nav-sidebar floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -395,11 +395,11 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="./images/ncl_logo_light.png" alt="" class="navbar-logo light-content">
-    <img src="./images/ncl_logo_light.png" alt="" class="navbar-logo dark-content">
+    <a href="../../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../../images/ncl_logo_light.png" alt="" class="navbar-logo light-content">
+    <img src="../../../images/ncl_logo_light.png" alt="" class="navbar-logo dark-content">
     </a>
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">MAS2901: Statistical Inference</span>
     </a>
   </div>
@@ -413,7 +413,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Preface</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../content/main/part3/7-freq-interval-estimation.html">Part III - Interval Estimation</a></li><li class="breadcrumb-item"><a href="../../../content/main/part3/8-bayes-interval-estimation.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bayesian Intervals</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -427,7 +427,7 @@ window.Quarto = {
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
-      <a href="./index.html" class="sidebar-logo-link">
+      <a href="../../../index.html" class="sidebar-logo-link">
       </a>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -439,7 +439,7 @@ window.Quarto = {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Preface</span></a>
   </div>
 </li>
@@ -454,19 +454,19 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/main/part1/1-prob-theory.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/main/part1/1-prob-theory.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Probability Theory</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/main/part1/2-what-is-stats-inference.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/main/part1/2-what-is-stats-inference.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">What is Statistical Inference?</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/main/part1/3-types-of-inference.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/main/part1/3-types-of-inference.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Types of Inference</span></span></a>
   </div>
 </li>
@@ -483,19 +483,19 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/main/part2/4-freq-point-estimation.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/main/part2/4-freq-point-estimation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Frequentist Point Estimation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/main/part2/5-likelihood.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/main/part2/5-likelihood.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Likelihood</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/main/part2/6-bayes-inference.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/main/part2/6-bayes-inference.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></span></a>
   </div>
 </li>
@@ -512,13 +512,13 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/main/part3/7-freq-interval-estimation.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/main/part3/7-freq-interval-estimation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequentist Interval Estimation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/main/part3/8-bayes-interval-estimation.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/main/part3/8-bayes-interval-estimation.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bayesian Intervals</span></span></a>
   </div>
 </li>
@@ -535,13 +535,13 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/main/part4/9-freq-hypothesis-testing.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/main/part4/9-freq-hypothesis-testing.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Frequentist Hypothesis Testing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/main/part4/10-bayes-hypothesis-testing.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/main/part4/10-bayes-hypothesis-testing.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian Hypothesis Testing</span></span></a>
   </div>
 </li>
@@ -558,25 +558,25 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/appendix/formula-sheet.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/appendix/formula-sheet.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Formula Sheet</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/appendix/revision-sheet.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/appendix/revision-sheet.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Revision Sheet</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/appendix/distribution-explorer.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/appendix/distribution-explorer.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Distribution Explorer</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/appendix/question-bank.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../content/appendix/question-bank.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Question Bank</span></a>
   </div>
 </li>
@@ -592,10 +592,9 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#preface" id="toc-preface" class="nav-link active" data-scroll-target="#preface">Preface</a>
+  <li><a href="#bayesian-credible-intervals" id="toc-bayesian-credible-intervals" class="nav-link active" data-scroll-target="#bayesian-credible-intervals"><span class="header-section-number">8.1</span> Bayesian Credible Intervals</a>
   <ul class="collapse">
-  <li><a href="#what-is-statistical-inference" id="toc-what-is-statistical-inference" class="nav-link" data-scroll-target="#what-is-statistical-inference">What is Statistical Inference?</a></li>
-  <li><a href="#sec-schedule" id="toc-sec-schedule" class="nav-link" data-scroll-target="#sec-schedule">Schedule</a></li>
+  <li><a href="#interpretation-of-confidence-intervals" id="toc-interpretation-of-confidence-intervals" class="nav-link" data-scroll-target="#interpretation-of-confidence-intervals"><span class="header-section-number">8.1.1</span> Interpretation of confidence intervals</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -604,21 +603,15 @@ window.Quarto = {
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../content/main/part3/7-freq-interval-estimation.html">Part III - Interval Estimation</a></li><li class="breadcrumb-item"><a href="../../../content/main/part3/8-bayes-interval-estimation.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bayesian Intervals</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">MAS2901: Statistical Inference</h1>
+<h1 class="title"><span id="sec-bayesian-intervals" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bayesian Intervals</span></span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Matthew Fisher </p>
-          </div>
-  </div>
     
   
     
@@ -629,32 +622,54 @@ window.Quarto = {
 </header>
 
 
-<section id="preface" class="level1 unnumbered">
-<h1 class="unnumbered">Preface</h1>
-<p>Welcome to the online notes for <strong>MAS2901 — Statistical Inference</strong>.</p>
-<p>This 10-credit module at Newcastle University introduces the two main approaches to <em>statistical inference</em>:</p>
+<section id="bayesian-credible-intervals" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="bayesian-credible-intervals"><span class="header-section-number">8.1</span> Bayesian Credible Intervals</h2>
+<p>A more useful summary of the posterior distribution is one which also reflects its variation.</p>
+<p>For example, a <span class="math inline">\(100(1-\alpha)\%\)</span> <strong>Bayesian credible interval</strong> for <span class="math inline">\(\theta\)</span> is any region <span class="math inline">\(C_\alpha\)</span> that satisfies</p>
+<p><span class="math display">\[
+\mathrm{Pr}(\theta \in C_\alpha \mid \underline{x}) = 1-\alpha.
+\]</span></p>
+<p>If <span class="math inline">\(\theta\)</span> is a continuous quantity with posterior probability density function <span class="math inline">\(\pi(\theta \mid \underline{x})\)</span> then</p>
+<p><span class="math display">\[
+\int_{C_\alpha} \pi(\theta \mid \underline{x})\,d\theta = 1-\alpha.
+\]</span></p>
+<p>The usual correction is made for discrete <span class="math inline">\(\theta\)</span>, that is, we take the largest region <span class="math inline">\(C_\alpha\)</span> such that <span class="math inline">\(\mathrm{Pr}(\theta \in C_\alpha \mid \underline{x}) \leq 1-\alpha\)</span>.</p>
+<p>Clearly these intervals are not unique, since there will be many intervals with the correct probability coverage for a given posterior distribution.</p>
+<hr>
+<p>A <span class="math inline">\(100(1-\alpha)\%\)</span> <strong>highest density interval (HDI)</strong> for <span class="math inline">\(\theta\)</span> is the region</p>
+<p><span class="math display">\[
+C_\alpha = \{\theta :~ \pi(\theta \mid \underline{x}) \geq \gamma \},
+\]</span></p>
+<p>where <span class="math inline">\(\gamma\)</span> is chosen so that <span class="math inline">\(\mathrm{Pr}(\theta \in C_\alpha \mid \underline{x}) = 1-\alpha\)</span>.</p>
+<p>This region is sometimes called a <em>most plausible Bayesian credible interval</em>.</p>
+<p>If the posterior distribution has many modes, then it is possible that the HDI will be the union of several disjoint regions. For example,</p>
+<p><span class="math display">\[
+C_\alpha = (a,b)\cup(c,d)\cup(e,f), \quad a&lt;b&lt;c&lt;d&lt;e&lt;f.
+\]</span></p>
+<hr>
+<section id="interpretation-of-confidence-intervals" class="level3" data-number="8.1.1">
+<h3 data-number="8.1.1" class="anchored" data-anchor-id="interpretation-of-confidence-intervals"><span class="header-section-number">8.1.1</span> Interpretation of confidence intervals</h3>
+<p>Suppose <span class="math inline">\(C_B\)</span> is a 95% Bayesian credible interval for <span class="math inline">\(\theta\)</span> and <span class="math inline">\(C_F\)</span> is a 95% frequentist confidence interval for <span class="math inline">\(\theta\)</span>. These intervals do not have the same interpretation:</p>
 <ul>
-<li><strong>Frequentist inference</strong></li>
-<li><strong>Bayesian inference</strong></li>
+<li>The probability that <span class="math inline">\(C_B\)</span> contains <span class="math inline">\(\theta\)</span> is 0.95.<br>
+</li>
+<li>The probability that <span class="math inline">\(C_F\)</span> contains <span class="math inline">\(\theta\)</span> is either 0 or 1 (since <span class="math inline">\(\theta\)</span> does not have a non-degenerate probability distribution).<br>
+</li>
+<li>The interval <span class="math inline">\(C_F\)</span> covers the true value <span class="math inline">\(\theta\)</span> on 95% of occasions — in repeated applications of the formula.</li>
 </ul>
-<section id="what-is-statistical-inference" class="level2">
-<h2 class="anchored" data-anchor-id="what-is-statistical-inference">What is Statistical Inference?</h2>
-<p>Statistical inference is the process of using data from a <em>sample</em> to learn about a <em>population</em>. Sometimes the population is concrete (e.g.&nbsp;“all people in the country today”). In other situations we want to generalise beyond those we sampled to a broader <em>target population</em> (sometimes called a <em>superpopulation</em>), such as “future patients with similar characteristics”. Clear definitions and sensible assumptions are essential for valid conclusions.</p>
-<p>There are two main types of statistical inference:</p>
-<ul>
-<li><strong>Frequentist inference.</strong> Parameters are treated as <strong>fixed but unknown</strong>. Probability statements are about <em>data we might observe</em> under repeated sampling from the same model.</li>
-<li><strong>Bayesian inference.</strong> Parameters are treated as <strong>random</strong> with a <em>prior distribution</em>. Probability statements are about the <em>parameter given the data</em> via the posterior distribution.</li>
-</ul>
-<p>The examples below are only to build intuition about the core difference between frequentist and Bayesian inference. Don’t worry about the details—we’ll cover them carefully later in the course.</p>
+<hr>
 <div class="callout callout-style-simple callout-caution no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-body-container">
-<div id="exm-proportion-freq-bayes" class="theorem example">
-<p><span class="theorem-title"><strong>Example 1 (A comparison of Frequentist vs Bayesian inference)</strong></span> A survey asks <span class="math inline">\(n=20\)</span> students if they prefer study space <span class="math inline">\(A\)</span> or <span class="math inline">\(B\)</span>.</p>
-<p>Suppose <span class="math inline">\(x=12\)</span> prefer <span class="math inline">\(A\)</span>. Compare a frequentist and a Bayesian estimate of the long-run proportion <span class="math inline">\(p\)</span> who would choose <span class="math inline">\(A\)</span>.</p>
+<div id="exm-hdi-beta" class="example theorem">
+<p><span class="theorem-title"><strong>Example 8.1 (Beta HDI)</strong></span> Suppose that the posterior distribution for <span class="math inline">\(\theta\)</span> is a <span class="math inline">\(\mathrm{Beta}(1,24)\)</span> distribution, with probability density function</p>
+<p><span class="math display">\[
+\pi(\theta \mid \underline{x}) = 24(1-\theta)^{23}, \quad 0&lt;\theta&lt;1.
+\]</span></p>
+<p><strong>Task.</strong> Determine the <span class="math inline">\(100(1-\alpha)\%\)</span> HDI for~<span class="math inline">\(\theta\)</span>.</p>
 </div>
 </div>
 </div>
@@ -671,20 +686,29 @@ window.Quarto = {
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p><strong>Frequentist.</strong> The natural estimator is the sample proportion</p>
+<div id="sol-hdi-beta" class="proof solution">
+<p><span class="proof-title"><em>Solution 8.1</em>. </span>The HDI must include those values of <span class="math inline">\(\theta\)</span> with highest posterior density and so must take the form <span class="math inline">\(C_\alpha=(0,b)\)</span>. The end-point <span class="math inline">\(b\)</span> must satisfy</p>
 <p><span class="math display">\[
-\hat p=\frac{x}{n}=\frac{12}{20}=0.60.
+\int_0^b 24(1-\theta)^{23}\,d\theta = 1-\alpha.
 \]</span></p>
-<p><strong>Bayesian (with a uniform prior).</strong> Take a <span class="math inline">\(\mathrm{Beta}(1,1)\)</span> prior for <span class="math inline">\(p\)</span>. The posterior is</p>
+<p>Now,</p>
 <p><span class="math display">\[
-p \mid x \sim \mathrm{Beta}(1+x,\,1+n-x)=\mathrm{Beta}(13,9),
+\int_0^b 24(1-\theta)^{23}\,d\theta
+= \left[-(1-\theta)^{24}\right]^b_0 = 1-(1-b)^{24}.
 \]</span></p>
-<p>whose mean is</p>
+<p>Hence,</p>
 <p><span class="math display">\[
-\mathbb{E}[p\mid x]=\frac{13}{13+9}=\frac{13}{22}\approx 0.591.
+1-(1-b)^{24} = 1-\alpha
+\quad\Longrightarrow\quad
+1-b=\alpha^{1/24}
+\quad\Longrightarrow\quad
+b=1-\alpha^{1/24}.
 \]</span></p>
-<p><strong>Interpretation.</strong> The frequentist estimate <span class="math inline">\(\hat p\)</span> is a function of the data and treats <span class="math inline">\(p\)</span> as fixed.<br>
-The Bayesian estimate is an expectation <em>of <span class="math inline">\(p\)</span> itself</em> under the posterior distribution.</p>
+<p>Therefore, a <span class="math inline">\(100(1-\alpha)\%\)</span> HDI for <span class="math inline">\(\theta\)</span> is</p>
+<p><span class="math display">\[
+(0,\, 1-\alpha^{1/24}).
+\]</span></p>
+</div>
 </div>
 </div>
 </div>
@@ -695,13 +719,13 @@ The Bayesian estimate is an expectation <em>of <span class="math inline">\(p\)</
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-body-container">
-<div id="exm-interpretations" class="theorem example" title="">
-<p><span class="theorem-title"><strong>Example 2 (Interpreting probability statements)</strong></span> Decide whether each statement is <em>frequentist</em> or <em>Bayesian</em> in spirit.</p>
-<ol type="1">
-<li>“If we repeated the survey many times, the method we use would produce intervals that capture <span class="math inline">\(p\)</span> about <span class="math inline">\(95\%\)</span> of the time.”<br>
-</li>
-<li>“Given the data from this survey and our prior, there is a <span class="math inline">\(95\%\)</span> probability that <span class="math inline">\(p\)</span> lies between <span class="math inline">\(0.45\)</span> and <span class="math inline">\(0.75\)</span>.”</li>
-</ol>
+<div id="exm-hdi-normal" class="example theorem">
+<p><span class="theorem-title"><strong>Example 8.2 (Normal HDI)</strong></span> Suppose we have a random sample <span class="math inline">\(\underline{x}e\)</span> from a <span class="math inline">\(\mathcal{N}(\mu,1/\tau)\)</span> distribution (where <span class="math inline">\(\tau\)</span> is known).</p>
+<p>We have seen that, assuming vague prior knowledge, the posterior distribution is</p>
+<p><span class="math display">\[
+\mu \mid \underline{x} \sim \mathcal{N}\!\left(\bar x,\; \tfrac{1}{n\tau}\right).
+\]</span></p>
+<p><strong>Task.</strong> Determine the <span class="math inline">\(100(1-\alpha)\%\)</span> HDI for~<span class="math inline">\(\mu\)</span>.</p>
 </div>
 </div>
 </div>
@@ -718,17 +742,25 @@ The Bayesian estimate is an expectation <em>of <span class="math inline">\(p\)</
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<ol type="1">
-<li><strong>Frequentist.</strong> This describes <em>long-run coverage</em> of a procedure over repeated samples with <span class="math inline">\(p\)</span> fixed.<br>
-</li>
-<li><strong>Bayesian.</strong> This is a probability statement <em>about <span class="math inline">\(p\)</span> given the observed data</em> (a credible interval).</li>
-</ol>
+<div id="sol-hdi-normal" class="proof solution">
+<p><span class="proof-title"><em>Solution 8.2</em>. </span>This distribution has a symmetric bell shape and so the HDI takes the form <span class="math inline">\(C_\alpha=(a,b)\)</span> with end-points</p>
+<p><span class="math display">\[
+a=\bar x - \frac{z_{\alpha/2}}{\sqrt{n\tau}},
+\qquad
+b=\bar x + \frac{z_{\alpha/2}}{\sqrt{n\tau}},
+\]</span></p>
+<p>where <span class="math inline">\(z_\alpha\)</span> is the upper <span class="math inline">\(\alpha\)</span>-quantile of the <span class="math inline">\(\mathcal{N}(0,1)\)</span> distribution.</p>
+<p>Therefore, the 95% HDI for~<span class="math inline">\(\mu\)</span> is</p>
+<p><span class="math display">\[
+\left(\bar x - \frac{1.96}{\sqrt{n\tau}},\;
+\bar x + \frac{1.96}{\sqrt{n\tau}}\right).
+\]</span></p>
+<p>Note that this interval is numerically identical to the 95% frequentist confidence interval for the (population) mean of a normal random sample with known variance.</p>
+<p>However, the interpretation is very different.</p>
 </div>
 </div>
 </div>
-</section>
-<section id="sec-schedule" class="level2">
-<h2 class="anchored" data-anchor-id="sec-schedule">Schedule</h2>
+</div>
 
 
 
@@ -1488,10 +1520,13 @@ document.addEventListener('DOMContentLoaded', () => {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="../../../content/main/part3/7-freq-interval-estimation.html" class="pagination-link" aria-label="Frequentist Interval Estimation">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequentist Interval Estimation</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./content/main/part1/1-prob-theory.html" class="pagination-link" aria-label="Probability Theory">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Probability Theory</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../../content/main/part4/9-freq-hypothesis-testing.html" class="pagination-link" aria-label="Frequentist Hypothesis Testing">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Frequentist Hypothesis Testing</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
