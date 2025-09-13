@@ -31,7 +31,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./content/lectures/part1/1-prob-theory.html" rel="next">
+<link href="./1-prob-theory.html" rel="next">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -72,83 +72,84 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <meta name="theme-color" content="#0f172a">
-
-<!-- iOS installable PWA bits -->
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
 <script>
   (function () {
-    // Compute the book root using Quarto's basePath (works at any nesting depth)
-    function bookRootPath() {
-      const basePath = (window.quartoConfig && window.quartoConfig.basePath) ? window.quartoConfig.basePath : './';
-      const root = new URL(basePath, window.location.href);
-      const p = root.pathname;
-      return p.endsWith('/') ? p : p + '/';
-    }
+    // Compute book root for both environments
+    function computeRoots() {
+      const onPages = /github\.io$/i.test(location.hostname);
+      // >>>> CHANGE THIS to your repo name <<<<
+      const repoBase = '/NCL-MAS2901/';
 
-    function appendOnce(selector, create) {
-      if (!document.querySelector(selector)) {
-        document.head.appendChild(create());
+      if (onPages) {
+        // Absolute path from origin for GitHub Pages (works on any deep page)
+        const rootPath = repoBase.endsWith('/') ? repoBase : repoBase + '/';
+        const abs = location.origin + rootPath;
+        return { rootPath, abs };
+      } else {
+        // Local preview: use Quarto's basePath
+        const basePath = (window.quartoConfig && window.quartoConfig.basePath) ? window.quartoConfig.basePath : './';
+        const u = new URL(basePath, window.location.href);
+        const rootPath = u.pathname.endsWith('/') ? u.pathname : u.pathname + '/';
+        const abs = location.origin + rootPath;
+        return { rootPath, abs };
       }
     }
 
-    window.addEventListener('load', async () => {
-      const root = bookRootPath();
+    function appendOrReplace(selector, makeEl) {
+      const existing = document.querySelector(selector);
+      if (existing) existing.remove();
+      document.head.appendChild(makeEl());
+    }
 
-      // 1) Manifest (PWA)
-      // Remove any pre-existing manifest tags to avoid wrong relative fetches
-      document.querySelectorAll('link[rel="manifest"]').forEach(el => el.remove());
-      appendOnce('link[rel="manifest"]', () => {
-        const l = document.createElement('link');
-        l.rel = 'manifest';
-        l.href = root + 'pwa/manifest.webmanifest';
-        return l;
-      });
+    const roots = computeRoots();
 
-      // 2) Favicons (tabs) — PNGs are widely supported
-      appendOnce('link[rel="icon"][sizes="16x16"]', () => {
-        const l = document.createElement('link');
-        l.rel = 'icon';
-        l.type = 'image/png';
-        l.sizes = '16x16';
-        l.href = root + 'pwa/icons/icon-16.png';
-        return l;
-      });
-      appendOnce('link[rel="icon"][sizes="32x32"]', () => {
-        const l = document.createElement('link');
-        l.rel = 'icon';
-        l.type = 'image/png';
-        l.sizes = '32x32';
-        l.href = root + 'pwa/icons/icon-32.png';
-        return l;
-      });
-      // Optional .ico for legacy (will be ignored if missing)
-      appendOnce('link[rel="icon"][type="image/x-icon"]', () => {
-        const l = document.createElement('link');
-        l.rel = 'icon';
-        l.type = 'image/x-icon';
-        l.href = root + 'pwa/icons/favicon.ico';
-        return l;
-      });
-
-      // 3) Apple touch icon (iOS Home Screen)
-      appendOnce('link[rel="apple-touch-icon"]', () => {
-        const l = document.createElement('link');
-        l.rel = 'apple-touch-icon';
-        l.href = root + 'pwa/icons/icon-180.png';
-        return l;
-      });
-
-      // 4) Register the Service Worker from the book root
-      if ('serviceWorker' in navigator) {
-        try {
-          await navigator.serviceWorker.register(root + 'service-worker.js', { scope: root });
-        } catch (err) {
-          console.error('SW registration failed:', err);
-        }
-      }
+    // Inject links ASAP (don’t wait for load)
+    appendOrReplace('link[rel="manifest"]', () => {
+      const l = document.createElement('link');
+      l.rel = 'manifest';
+      l.href = roots.abs + 'pwa/manifest.webmanifest';
+      return l;
     });
+
+    // Favicons (tab icons)
+    appendOrReplace('link[rel="icon"][sizes="16x16"]', () => {
+      const l = document.createElement('link');
+      l.rel = 'icon'; l.type = 'image/png'; l.sizes = '16x16';
+      l.href = roots.abs + 'pwa/icons/icon-16.png';
+      return l;
+    });
+    appendOrReplace('link[rel="icon"][sizes="32x32"]', () => {
+      const l = document.createElement('link');
+      l.rel = 'icon'; l.type = 'image/png'; l.sizes = '32x32';
+      l.href = roots.abs + 'pwa/icons/icon-32.png';
+      return l;
+    });
+    // Legacy ICO (optional)
+    appendOrReplace('link[rel="icon"][type="image/x-icon"]', () => {
+      const l = document.createElement('link');
+      l.rel = 'icon'; l.type = 'image/x-icon';
+      l.href = roots.abs + 'pwa/icons/favicon.ico';
+      return l;
+    });
+
+    // Apple touch icon
+    appendOrReplace('link[rel="apple-touch-icon"]', () => {
+      const l = document.createElement('link');
+      l.rel = 'apple-touch-icon';
+      l.href = roots.abs + 'pwa/icons/icon-180.png';
+      return l;
+    });
+
+    // Register SW (use absolute URL on Pages)
+    if ('serviceWorker' in navigator) {
+      const swUrl = roots.abs + 'service-worker.js';
+      navigator.serviceWorker.register(swUrl, { scope: roots.rootPath })
+        .catch(err => console.error('SW registration failed:', err));
+    }
   })();
 </script>
 
@@ -423,19 +424,19 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/lectures/part1/1-prob-theory.html" class="sidebar-item-text sidebar-link">
+  <a href="./1-prob-theory.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Probability Theory</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/lectures/part1/2-what-is-stats-inference.html" class="sidebar-item-text sidebar-link">
+  <a href="./2-what-is-stats-inference.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">What is Statistical Inference?</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/lectures/part1/3-types-of-inference.html" class="sidebar-item-text sidebar-link">
+  <a href="./3-types-of-inference.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Types of Inference</span></span></a>
   </div>
 </li>
@@ -452,19 +453,19 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/lectures/part2/4-freq-point-estimation.html" class="sidebar-item-text sidebar-link">
+  <a href="./4-freq-point-estimation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Frequentist Point Estimation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/lectures/part2/5-likelihood.html" class="sidebar-item-text sidebar-link">
+  <a href="./5-likelihood.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Likelihood</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/lectures/part2/6-bayes-inference.html" class="sidebar-item-text sidebar-link">
+  <a href="./6-bayes-inference.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></span></a>
   </div>
 </li>
@@ -481,13 +482,13 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/lectures/part3/7-freq-interval-estimation.html" class="sidebar-item-text sidebar-link">
+  <a href="./7-freq-interval-estimation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequentist Interval Estimation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/lectures/part3/8-bayes-interval-estimation.html" class="sidebar-item-text sidebar-link">
+  <a href="./8-bayes-interval-estimation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bayesian Intervals</span></span></a>
   </div>
 </li>
@@ -504,13 +505,13 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/lectures/part4/9-freq-hypothesis-testing.html" class="sidebar-item-text sidebar-link">
+  <a href="./9-freq-hypothesis-testing.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Frequentist Hypothesis Testing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/lectures/part4/10-bayes-hypothesis-testing.html" class="sidebar-item-text sidebar-link">
+  <a href="./10-bayes-hypothesis-testing.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian Hypothesis Testing</span></span></a>
   </div>
 </li>
@@ -527,25 +528,25 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/appendices/formula-sheet.html" class="sidebar-item-text sidebar-link">
+  <a href="./app-formula-sheet.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Formula Sheet</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/appendices/revision-sheet.html" class="sidebar-item-text sidebar-link">
+  <a href="./app-revision-sheet.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Revision Sheet</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/appendices/distribution-explorer.html" class="sidebar-item-text sidebar-link">
+  <a href="./app-distribution-explorer.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Distribution Explorer</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./content/appendices/question-bank.html" class="sidebar-item-text sidebar-link">
+  <a href="./app-question-bank.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Question Bank</span></a>
   </div>
 </li>
@@ -1459,7 +1460,7 @@ document.addEventListener('DOMContentLoaded', () => {
   <div class="nav-page nav-page-previous">
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./content/lectures/part1/1-prob-theory.html" class="pagination-link" aria-label="Probability Theory">
+      <a href="./1-prob-theory.html" class="pagination-link" aria-label="Probability Theory">
         <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Probability Theory</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>

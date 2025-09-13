@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>3&nbsp; Types of Inference – MAS2901: Statistical Inference</title>
+<title>9&nbsp; Frequentist Hypothesis Testing – MAS2901: Statistical Inference</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,33 +20,68 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../../">
-<link href="../../../content/lectures/part2/4-freq-point-estimation.html" rel="next">
-<link href="../../../content/lectures/part1/2-what-is-stats-inference.html" rel="prev">
-<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="../../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-b651517ce65839d647a86e2780455cfb.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
-<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-e6f5ed28d36f8b593345e7d74d3e46a7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark-77308fb2119bbff784a5f274b4bd1ff9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../../site_libs/bootstrap/bootstrap-e6f5ed28d36f8b593345e7d74d3e46a7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./10-bayes-hypothesis-testing.html" rel="next">
+<link href="./8-bayes-interval-estimation.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b651517ce65839d647a86e2780455cfb.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e6f5ed28d36f8b593345e7d74d3e46a7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-77308fb2119bbff784a5f274b4bd1ff9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-e6f5ed28d36f8b593345e7d74d3e46a7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -72,85 +107,88 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <meta name="theme-color" content="#0f172a">
-
-<!-- iOS installable PWA bits -->
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
 <script>
   (function () {
-    // Compute the book root using Quarto's basePath (works at any nesting depth)
-    function bookRootPath() {
-      const basePath = (window.quartoConfig && window.quartoConfig.basePath) ? window.quartoConfig.basePath : './';
-      const root = new URL(basePath, window.location.href);
-      const p = root.pathname;
-      return p.endsWith('/') ? p : p + '/';
-    }
+    // Compute book root for both environments
+    function computeRoots() {
+      const onPages = /github\.io$/i.test(location.hostname);
+      // >>>> CHANGE THIS to your repo name <<<<
+      const repoBase = '/NCL-MAS2901/';
 
-    function appendOnce(selector, create) {
-      if (!document.querySelector(selector)) {
-        document.head.appendChild(create());
+      if (onPages) {
+        // Absolute path from origin for GitHub Pages (works on any deep page)
+        const rootPath = repoBase.endsWith('/') ? repoBase : repoBase + '/';
+        const abs = location.origin + rootPath;
+        return { rootPath, abs };
+      } else {
+        // Local preview: use Quarto's basePath
+        const basePath = (window.quartoConfig && window.quartoConfig.basePath) ? window.quartoConfig.basePath : './';
+        const u = new URL(basePath, window.location.href);
+        const rootPath = u.pathname.endsWith('/') ? u.pathname : u.pathname + '/';
+        const abs = location.origin + rootPath;
+        return { rootPath, abs };
       }
     }
 
-    window.addEventListener('load', async () => {
-      const root = bookRootPath();
+    function appendOrReplace(selector, makeEl) {
+      const existing = document.querySelector(selector);
+      if (existing) existing.remove();
+      document.head.appendChild(makeEl());
+    }
 
-      // 1) Manifest (PWA)
-      // Remove any pre-existing manifest tags to avoid wrong relative fetches
-      document.querySelectorAll('link[rel="manifest"]').forEach(el => el.remove());
-      appendOnce('link[rel="manifest"]', () => {
-        const l = document.createElement('link');
-        l.rel = 'manifest';
-        l.href = root + 'pwa/manifest.webmanifest';
-        return l;
-      });
+    const roots = computeRoots();
 
-      // 2) Favicons (tabs) — PNGs are widely supported
-      appendOnce('link[rel="icon"][sizes="16x16"]', () => {
-        const l = document.createElement('link');
-        l.rel = 'icon';
-        l.type = 'image/png';
-        l.sizes = '16x16';
-        l.href = root + 'pwa/icons/icon-16.png';
-        return l;
-      });
-      appendOnce('link[rel="icon"][sizes="32x32"]', () => {
-        const l = document.createElement('link');
-        l.rel = 'icon';
-        l.type = 'image/png';
-        l.sizes = '32x32';
-        l.href = root + 'pwa/icons/icon-32.png';
-        return l;
-      });
-      // Optional .ico for legacy (will be ignored if missing)
-      appendOnce('link[rel="icon"][type="image/x-icon"]', () => {
-        const l = document.createElement('link');
-        l.rel = 'icon';
-        l.type = 'image/x-icon';
-        l.href = root + 'pwa/icons/favicon.ico';
-        return l;
-      });
-
-      // 3) Apple touch icon (iOS Home Screen)
-      appendOnce('link[rel="apple-touch-icon"]', () => {
-        const l = document.createElement('link');
-        l.rel = 'apple-touch-icon';
-        l.href = root + 'pwa/icons/icon-180.png';
-        return l;
-      });
-
-      // 4) Register the Service Worker from the book root
-      if ('serviceWorker' in navigator) {
-        try {
-          await navigator.serviceWorker.register(root + 'service-worker.js', { scope: root });
-        } catch (err) {
-          console.error('SW registration failed:', err);
-        }
-      }
+    // Inject links ASAP (don’t wait for load)
+    appendOrReplace('link[rel="manifest"]', () => {
+      const l = document.createElement('link');
+      l.rel = 'manifest';
+      l.href = roots.abs + 'pwa/manifest.webmanifest';
+      return l;
     });
+
+    // Favicons (tab icons)
+    appendOrReplace('link[rel="icon"][sizes="16x16"]', () => {
+      const l = document.createElement('link');
+      l.rel = 'icon'; l.type = 'image/png'; l.sizes = '16x16';
+      l.href = roots.abs + 'pwa/icons/icon-16.png';
+      return l;
+    });
+    appendOrReplace('link[rel="icon"][sizes="32x32"]', () => {
+      const l = document.createElement('link');
+      l.rel = 'icon'; l.type = 'image/png'; l.sizes = '32x32';
+      l.href = roots.abs + 'pwa/icons/icon-32.png';
+      return l;
+    });
+    // Legacy ICO (optional)
+    appendOrReplace('link[rel="icon"][type="image/x-icon"]', () => {
+      const l = document.createElement('link');
+      l.rel = 'icon'; l.type = 'image/x-icon';
+      l.href = roots.abs + 'pwa/icons/favicon.ico';
+      return l;
+    });
+
+    // Apple touch icon
+    appendOrReplace('link[rel="apple-touch-icon"]', () => {
+      const l = document.createElement('link');
+      l.rel = 'apple-touch-icon';
+      l.href = roots.abs + 'pwa/icons/icon-180.png';
+      return l;
+    });
+
+    // Register SW (use absolute URL on Pages)
+    if ('serviceWorker' in navigator) {
+      const swUrl = roots.abs + 'service-worker.js';
+      navigator.serviceWorker.register(swUrl, { scope: roots.rootPath })
+        .catch(err => console.error('SW registration failed:', err));
+    }
   })();
 </script>
+<script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -182,17 +220,17 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="../../../theming/math-scroll.css">
-<link rel="stylesheet" href="../../../theming/callout-style.css">
-<link rel="stylesheet" href="../../../theming/floating-code.css">
-<link rel="stylesheet" href="../../../theming/font.css">
-<link rel="stylesheet" href="../../../theming/no-xref-suffix.css">
-<link rel="stylesheet" href="../../../theming/scrollbar.css">
-<link rel="stylesheet" href="../../../theming/nav-tabs.css">
-<link rel="stylesheet" href="../../../theming/header.css">
-<link rel="stylesheet" href="../../../theming/question-bank.css">
-<link rel="stylesheet" href="../../../theming/sidebar.css">
-<link rel="stylesheet" href="../../../theming/lecture-zoom.css">
+<link rel="stylesheet" href="theming/math-scroll.css">
+<link rel="stylesheet" href="theming/callout-style.css">
+<link rel="stylesheet" href="theming/floating-code.css">
+<link rel="stylesheet" href="theming/font.css">
+<link rel="stylesheet" href="theming/no-xref-suffix.css">
+<link rel="stylesheet" href="theming/scrollbar.css">
+<link rel="stylesheet" href="theming/nav-tabs.css">
+<link rel="stylesheet" href="theming/header.css">
+<link rel="stylesheet" href="theming/question-bank.css">
+<link rel="stylesheet" href="theming/sidebar.css">
+<link rel="stylesheet" href="theming/lecture-zoom.css">
 </head>
 
 <body class="nav-sidebar floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -364,11 +402,11 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../../images/ncl_logo_light.png" alt="" class="navbar-logo light-content">
-    <img src="../../../images/ncl_logo_light.png" alt="" class="navbar-logo dark-content">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <img src="./images/ncl_logo_light.png" alt="" class="navbar-logo light-content">
+    <img src="./images/ncl_logo_light.png" alt="" class="navbar-logo dark-content">
     </a>
-    <a class="navbar-brand" href="../../../index.html">
+    <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">MAS2901: Statistical Inference</span>
     </a>
   </div>
@@ -382,7 +420,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../content/lectures/part1/1-prob-theory.html">Part I — Foundations</a></li><li class="breadcrumb-item"><a href="../../../content/lectures/part1/3-types-of-inference.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Types of Inference</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./9-freq-hypothesis-testing.html">Part IV — Hypothesis Testing</a></li><li class="breadcrumb-item"><a href="./9-freq-hypothesis-testing.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Frequentist Hypothesis Testing</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -396,7 +434,7 @@ window.Quarto = {
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
-      <a href="../../../index.html" class="sidebar-logo-link">
+      <a href="./index.html" class="sidebar-logo-link">
       </a>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -408,7 +446,7 @@ window.Quarto = {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../index.html" class="sidebar-item-text sidebar-link">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Preface</span></a>
   </div>
 </li>
@@ -423,19 +461,19 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../content/lectures/part1/1-prob-theory.html" class="sidebar-item-text sidebar-link">
+  <a href="./1-prob-theory.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Probability Theory</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../content/lectures/part1/2-what-is-stats-inference.html" class="sidebar-item-text sidebar-link">
+  <a href="./2-what-is-stats-inference.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">What is Statistical Inference?</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../content/lectures/part1/3-types-of-inference.html" class="sidebar-item-text sidebar-link active">
+  <a href="./3-types-of-inference.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Types of Inference</span></span></a>
   </div>
 </li>
@@ -452,19 +490,19 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../content/lectures/part2/4-freq-point-estimation.html" class="sidebar-item-text sidebar-link">
+  <a href="./4-freq-point-estimation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Frequentist Point Estimation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../content/lectures/part2/5-likelihood.html" class="sidebar-item-text sidebar-link">
+  <a href="./5-likelihood.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Likelihood</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../content/lectures/part2/6-bayes-inference.html" class="sidebar-item-text sidebar-link">
+  <a href="./6-bayes-inference.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></span></a>
   </div>
 </li>
@@ -481,13 +519,13 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../content/lectures/part3/7-freq-interval-estimation.html" class="sidebar-item-text sidebar-link">
+  <a href="./7-freq-interval-estimation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequentist Interval Estimation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../content/lectures/part3/8-bayes-interval-estimation.html" class="sidebar-item-text sidebar-link">
+  <a href="./8-bayes-interval-estimation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bayesian Intervals</span></span></a>
   </div>
 </li>
@@ -504,13 +542,13 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../content/lectures/part4/9-freq-hypothesis-testing.html" class="sidebar-item-text sidebar-link">
+  <a href="./9-freq-hypothesis-testing.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Frequentist Hypothesis Testing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../content/lectures/part4/10-bayes-hypothesis-testing.html" class="sidebar-item-text sidebar-link">
+  <a href="./10-bayes-hypothesis-testing.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian Hypothesis Testing</span></span></a>
   </div>
 </li>
@@ -527,25 +565,25 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../content/appendices/formula-sheet.html" class="sidebar-item-text sidebar-link">
+  <a href="./app-formula-sheet.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Formula Sheet</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../content/appendices/revision-sheet.html" class="sidebar-item-text sidebar-link">
+  <a href="./app-revision-sheet.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Revision Sheet</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../content/appendices/distribution-explorer.html" class="sidebar-item-text sidebar-link">
+  <a href="./app-distribution-explorer.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Distribution Explorer</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../content/appendices/question-bank.html" class="sidebar-item-text sidebar-link">
+  <a href="./app-question-bank.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Question Bank</span></a>
   </div>
 </li>
@@ -561,13 +599,16 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#philosophies-of-inference" id="toc-philosophies-of-inference" class="nav-link active" data-scroll-target="#philosophies-of-inference"><span class="header-section-number">3.1</span> Philosophies of Inference</a>
+  <li><a href="#formal-setup" id="toc-formal-setup" class="nav-link active" data-scroll-target="#formal-setup"><span class="header-section-number">9.1</span> Formal Setup</a></li>
+  <li><a href="#the-testing-procedure" id="toc-the-testing-procedure" class="nav-link" data-scroll-target="#the-testing-procedure"><span class="header-section-number">9.2</span> The Testing Procedure</a>
   <ul class="collapse">
-  <li><a href="#frequentist-inference" id="toc-frequentist-inference" class="nav-link" data-scroll-target="#frequentist-inference"><span class="header-section-number">3.1.1</span> Frequentist Inference</a></li>
-  <li><a href="#bayesian-inference" id="toc-bayesian-inference" class="nav-link" data-scroll-target="#bayesian-inference"><span class="header-section-number">3.1.2</span> Bayesian Inference</a></li>
-  <li><a href="#key-differences" id="toc-key-differences" class="nav-link" data-scroll-target="#key-differences"><span class="header-section-number">3.1.3</span> Key Differences</a></li>
+  <li><a href="#types-of-errors" id="toc-types-of-errors" class="nav-link" data-scroll-target="#types-of-errors"><span class="header-section-number">9.2.1</span> Types of Errors</a></li>
+  <li><a href="#deriving-test-statistics" id="toc-deriving-test-statistics" class="nav-link" data-scroll-target="#deriving-test-statistics"><span class="header-section-number">9.2.2</span> Deriving Test Statistics</a></li>
   </ul></li>
-  <li><a href="#sec-inference-tasks" id="toc-sec-inference-tasks" class="nav-link" data-scroll-target="#sec-inference-tasks"><span class="header-section-number">3.2</span> Inference Tasks</a></li>
+  <li><a href="#sensitivity-specificity-and-power" id="toc-sensitivity-specificity-and-power" class="nav-link" data-scroll-target="#sensitivity-specificity-and-power"><span class="header-section-number">9.3</span> Sensitivity, Specificity and Power</a>
+  <ul class="collapse">
+  <li><a href="#neyman-pearson-lemma" id="toc-neyman-pearson-lemma" class="nav-link" data-scroll-target="#neyman-pearson-lemma"><span class="header-section-number">9.3.1</span> Neyman-Pearson Lemma</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -575,9 +616,9 @@ window.Quarto = {
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../content/lectures/part1/1-prob-theory.html">Part I — Foundations</a></li><li class="breadcrumb-item"><a href="../../../content/lectures/part1/3-types-of-inference.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Types of Inference</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./9-freq-hypothesis-testing.html">Part IV — Hypothesis Testing</a></li><li class="breadcrumb-item"><a href="./9-freq-hypothesis-testing.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Frequentist Hypothesis Testing</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-types-of-inference" class="quarto-section-identifier"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Types of Inference</span></span></h1>
+<h1 class="title"><span id="sec-freq-hypothesis-test" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Frequentist Hypothesis Testing</span></span></h1>
 </div>
 
 
@@ -594,113 +635,203 @@ window.Quarto = {
 </header>
 
 
-<p>Statistical inference is about using a <strong>sample</strong> to learn about a <strong>population</strong>. There are two fundamentally different philosophies of inference, and several types of inferential tasks that appear in both.</p>
-<section id="philosophies-of-inference" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="philosophies-of-inference"><span class="header-section-number">3.1</span> Philosophies of Inference</h2>
-<section id="frequentist-inference" class="level3" data-number="3.1.1">
-<h3 data-number="3.1.1" class="anchored" data-anchor-id="frequentist-inference"><span class="header-section-number">3.1.1</span> Frequentist Inference</h3>
-<p>Frequentist inference is based on the idea of <strong>long-run frequency</strong>.</p>
-<ul>
-<li>The <strong>data</strong> are considered random, as they represent one possible outcome of repeated sampling from the population.</li>
-<li>The <strong>parameter</strong> <span class="math inline">\(\theta\)</span> is fixed but unknown.</li>
-<li>Inference is about constructing procedures (estimators, tests, intervals) that perform well under repeated sampling.</li>
-</ul>
-<p><strong>Preview examples (we will return to these later):</strong> the sample mean <span class="math inline">\(\hat{\mu}\)</span> as an estimator of <span class="math inline">\(\mu\)</span>, a <span class="math inline">\(t\)</span>-test for comparing means, or a <span class="math inline">\(95\%\)</span> confidence interval.</p>
-</section>
-<section id="bayesian-inference" class="level3" data-number="3.1.2">
-<h3 data-number="3.1.2" class="anchored" data-anchor-id="bayesian-inference"><span class="header-section-number">3.1.2</span> Bayesian Inference</h3>
-<p>Bayesian inference is based on <strong>subjective probability as degree of belief</strong>.</p>
-<ul>
-<li>The <strong>data</strong> are fixed once observed.</li>
-<li>The <strong>parameter</strong> <span class="math inline">\(\theta\)</span> is treated as a random variable, with uncertainty described by a <strong>prior distribution</strong> <span class="math inline">\(\pi(\theta)\)</span>.</li>
-<li>Inference updates this prior in light of the data, giving a <strong>posterior distribution</strong> <span class="math inline">\(\pi(\theta \mid \text{data})\)</span>.</li>
-</ul>
-<p><strong>Preview examples (we will return to these later):</strong> a posterior mean as an estimator of <span class="math inline">\(\mu\)</span>, a <span class="math inline">\(95\%\)</span> credible interval, or comparing hypotheses via posterior probabilities.</p>
-</section>
-<section id="key-differences" class="level3" data-number="3.1.3">
-<h3 data-number="3.1.3" class="anchored" data-anchor-id="key-differences"><span class="header-section-number">3.1.3</span> Key Differences</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 17%">
-<col style="width: 42%">
-<col style="width: 39%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Perspective</th>
-<th>Frequentist Inference</th>
-<th>Bayesian Inference</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Parameter</strong></td>
-<td>Fixed but unknown</td>
-<td>Random variable with a prior</td>
-</tr>
-<tr class="even">
-<td><strong>Sample</strong></td>
-<td>Random (from repeated sampling)</td>
-<td>Fixed (once observed)</td>
-</tr>
-<tr class="odd">
-<td><strong>Probability</strong></td>
-<td>Long-run frequency</td>
-<td>Degree of belief</td>
-</tr>
-<tr class="even">
-<td><strong>Goal</strong></td>
-<td>Construct estimators, tests, CIs</td>
-<td>Update beliefs via posterior</td>
-</tr>
-<tr class="odd">
-<td><strong>Prior Knowledge</strong></td>
-<td>Ignored or minimal (e.g.&nbsp;non-informative)</td>
-<td>Explicitly modelled via prior distribution</td>
-</tr>
-<tr class="even">
-<td><strong>Output</strong></td>
-<td>Estimators, confidence intervals, <span class="math inline">\(p\)</span>-values</td>
-<td>Posterior distribution, credible intervals</td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="sec-inference-tasks" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="sec-inference-tasks"><span class="header-section-number">3.2</span> Inference Tasks</h2>
-<p>Regardless of philosophy, the core tasks of inference are similar. Suppose we want to infer a parameter <span class="math inline">\(\theta\)</span> from data:</p>
+<p>Recalling the <span class="xref-no-num"><a href="3-types-of-inference.html#sec-inference-tasks" class="quarto-xref">main inference tasks&nbsp;<span>3.2</span></a></span>, we now move from <em>interval estimation</em> to <em>hypothesis testing</em>.</p>
+<p>The name <strong>hypothesis testing</strong> comes from the <strong>scientific method</strong>:</p>
 <ol type="1">
-<li><p><strong>Point Estimation</strong> Give a single “best guess” <span class="math inline">\(\hat{\theta}\)</span> for the parameter.</p>
-<ul>
-<li>Frequentist: choose an estimator with good properties (e.g.&nbsp;unbiasedness).</li>
-<li>Bayesian: often the posterior mean, median, or mode.</li>
-</ul></li>
-<li><p><strong>Interval Estimation</strong> Quantify uncertainty in <span class="math inline">\(\theta\)</span> by reporting a range.</p>
-<ul>
-<li><p>Frequentist: <strong>confidence interval</strong></p>
+<li>Propose a hypothesis about the world.</li>
+<li>Collect data through experiment or observation.</li>
+<li>Assess whether the data are consistent with the hypothesis.</li>
+</ol>
+<p>If the data are consistent, this provides <strong>support</strong> for the hypothesis (though never proof). If the data look very unlikely under the hypothesis, this is evidence <em>against</em> it.</p>
+<section id="formal-setup" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="formal-setup"><span class="header-section-number">9.1</span> Formal Setup</h2>
+<p>Unlike estimation (which gives a range of plausible values), hypothesis testing asks a <strong>yes/no question</strong> about the parameter <span class="math inline">\(\theta\)</span>.</p>
+<p>We formalise this by specifying a <strong>null hypothesis</strong> <span class="math inline">\(H_0\)</span>, a concrete <em>mathematical statement</em> about <span class="math inline">\(\theta\)</span>:</p>
 <p><span class="math display">\[
-L \leq \theta \leq U
+H_0 : \theta \in \Theta_0,
 \]</span></p>
-<p>with a given long-run coverage probability.</p></li>
-<li><p>Bayesian: <strong>credible interval</strong>, the posterior probability that <span class="math inline">\(\theta\)</span> lies in <span class="math inline">\([L,U]\)</span> is, say, 95%.</p></li>
-</ul></li>
-<li><p><strong>Hypothesis Testing</strong> {#sec-hypothesis-testing-intro} Ask a <strong>yes/no question</strong> about the parameter <span class="math inline">\(\theta\)</span>. This is done by formalising a claim (the <em>null hypothesis</em>) such as <span class="math display">\[
-     H_0: \theta \in \Theta_0,
-\]</span> and then using the data to judge whether this claim is <strong>compatible with the evidence</strong>.</p>
+<p>where <span class="math inline">\(\Theta_0 \subseteq \Theta\)</span> is part of the parameter space.</p>
+<p>We then use the observed data <span class="math inline">\(\underline{x}\)</span> to evaluate whether <span class="math inline">\(H_0\)</span> is plausible. The frequentist reasoning is:</p>
+<ol type="1">
+<li><strong>Assume <span class="math inline">\(H_0\)</span> is true.</strong></li>
+<li>Use the statistical model to work out what kinds of data would be typical under <span class="math inline">\(H_0\)</span>.</li>
+<li>Compare the actual data with this prediction. If the data look very unusual under <span class="math inline">\(H_0\)</span>, this counts against the hypothesis.</li>
+</ol>
+<hr>
+<p><strong>Visualisation</strong></p>
+<p>Suppose our model is</p>
+<p><span class="math display">\[
+X_i \mid \gamma \sim \mathcal{N}(200, \gamma),
+\]</span></p>
+<p>where <span class="math inline">\(\gamma\)</span> is the variance.</p>
+<p>We want to test whether <span class="math inline">\(\gamma = 10\)</span>. That is:</p>
+<p><span class="math display">\[
+H_0: \gamma = 10.
+\]</span></p>
+<p>The frequentist approach is: <em>assume <span class="math inline">\(H_0\)</span> is true</em> and then check whether the observed data are typical of a normal distribution with variance <span class="math inline">\(10\)</span>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="54" data-source-offset="-14"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 53;"><span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">30</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>mu0 <span class="op">=</span> <span class="dv">200</span>       <span class="co">// null mean</span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>sigma <span class="op">=</span> <span class="dv">10</span>      <span class="co">// std deviation under null</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>alpha <span class="op">=</span> <span class="fl">0.05</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="co">// Slider for observed sample mean</span></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>viewof xbar_obs <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([mu0 <span class="op">-</span> <span class="dv">3</span><span class="op">*</span>sigma<span class="op">,</span> mu0 <span class="op">+</span> <span class="dv">3</span><span class="op">*</span>sigma]<span class="op">,</span> </span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> mu0<span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="fu">md</span><span class="vs">`Observed sample mean </span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`</span><span class="sc">\b</span><span class="vs">ar{x}_{obs}`</span><span class="sc">}</span><span class="vs">`</span>} )</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="co">// Null sampling distribution</span></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>xgrid <span class="op">=</span> d3<span class="op">.</span><span class="fu">range</span>(mu0 <span class="op">-</span> <span class="dv">4</span><span class="op">*</span>sigma<span class="op">,</span> mu0 <span class="op">+</span> <span class="dv">4</span><span class="op">*</span>sigma<span class="op">,</span> <span class="fl">0.1</span>)</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>pdf <span class="op">=</span> xgrid<span class="op">.</span><span class="fu">map</span>(x <span class="kw">=&gt;</span> ({x<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> d3<span class="op">.</span><span class="fu">randomNormal</span>(mu0<span class="op">,</span> sigma<span class="op">/</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(n))() })) <span class="co">// or use normal pdf</span></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="co">// Compute rejection region bounds</span></span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>zcrit <span class="op">=</span> d3<span class="op">.</span><span class="fu">quantile</span>(d3<span class="op">.</span><span class="fu">range</span>(<span class="op">-</span><span class="dv">5</span><span class="op">,</span><span class="dv">5</span><span class="op">,</span><span class="fl">0.01</span>)<span class="op">,</span> alpha<span class="op">/</span><span class="dv">2</span>) <span class="co">// could just hardcode 1.96</span></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>lower <span class="op">=</span> mu0 <span class="op">-</span> <span class="fl">1.96</span> <span class="op">*</span> sigma<span class="op">/</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(n)</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>upper <span class="op">=</span> mu0 <span class="op">+</span> <span class="fl">1.96</span> <span class="op">*</span> sigma<span class="op">/</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(n)</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="co">// Plot</span></span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> <span class="dv">600</span><span class="op">,</span> <span class="dt">height</span><span class="op">:</span> <span class="dv">300</span><span class="op">,</span></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Sample mean"</span>}<span class="op">,</span></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Density"</span>}<span class="op">,</span></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Null distribution</span></span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">line</span>(xgrid<span class="op">.</span><span class="fu">map</span>(x <span class="kw">=&gt;</span> ({x<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="dv">1</span><span class="op">/</span>(sigma<span class="op">/</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(n)<span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="dv">2</span><span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span>)) </span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>                                    <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(<span class="op">-</span><span class="fl">0.5</span><span class="op">*</span>((x<span class="op">-</span>mu0)<span class="op">/</span>(sigma<span class="op">/</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(n)))<span class="op">**</span><span class="dv">2</span>)}))<span class="op">,</span> </span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>              {<span class="dt">x</span><span class="op">:</span><span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span><span class="st">"y"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--brand-red)"</span> })<span class="op">,</span></span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Shaded rejection regions</span></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">areaY</span>(xgrid<span class="op">.</span><span class="fu">map</span>(x <span class="kw">=&gt;</span> ({x<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> (x<span class="op">&lt;</span>lower<span class="op">||</span>x<span class="op">&gt;</span>upper) <span class="op">?</span> </span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>       <span class="dv">1</span><span class="op">/</span>(sigma<span class="op">/</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(n)<span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="dv">2</span><span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span>)) </span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>         <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(<span class="op">-</span><span class="fl">0.5</span><span class="op">*</span>((x<span class="op">-</span>mu0)<span class="op">/</span>(sigma<span class="op">/</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(n)))<span class="op">**</span><span class="dv">2</span>) <span class="op">:</span> <span class="dv">0</span>}))<span class="op">,</span> </span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>       {<span class="dt">x</span><span class="op">:</span><span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span><span class="st">"y"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"var(--brand-red)"</span><span class="op">,</span> <span class="dt">fillOpacity</span><span class="op">:</span><span class="fl">0.3</span>})<span class="op">,</span></span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Observed value</span></span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleX</span>([xbar_obs]<span class="op">,</span> {<span class="dt">stroke</span><span class="op">:</span><span class="st">"black"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span><span class="dv">2</span>})<span class="op">,</span></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-7" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-8" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-9" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-10" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-11" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="the-testing-procedure" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="the-testing-procedure"><span class="header-section-number">9.2</span> The Testing Procedure</h2>
+<p>Working directly with the full data distribution can be complicated. Instead, we reduce the data to a <strong>test statistic</strong> <span class="math inline">\(T(\underline{X})\)</span> that captures the evidence relevant to <span class="math inline">\(H_0\)</span>.</p>
+<p>The general frequentist procedure is:</p>
+<ol type="1">
+<li><p><strong>Choose a test statistic</strong> <span class="math inline">\(T(\underline{X})\)</span> that is sensitive to departures from <span class="math inline">\(H_0\)</span>.</p></li>
+<li><p><strong>Derive its sampling distribution under <span class="math inline">\(H_0\)</span>.</strong></p></li>
+<li><p><strong>Compute the observed test statistic</strong> <span class="math inline">\(T_{\text{obs}}\)</span> from the data.</p></li>
+<li><p><strong>Calculate a <span class="math inline">\(p\)</span>-value:</strong> the probability of observing <span class="math inline">\(T(\underline{X})\)</span> at least as extreme as <span class="math inline">\(T_{\text{obs}}\)</span>, assuming <span class="math inline">\(H_0\)</span> is true.</p></li>
+<li><p><strong>Decision:</strong></p>
 <ul>
-<li><strong>Frequentist approach:</strong> base the decision on a <strong>test statistic</strong> and its distribution under <span class="math inline">\(H_0\)</span>, leading to a <strong><span class="math inline">\(p\)</span>-value</strong> or a comparison with a <strong>significance level</strong>.</li>
-<li><strong>Bayesian approach:</strong> compare hypotheses using <strong>posterior probabilities</strong> or <strong>Bayes factors</strong>, quantifying how much the data shift our beliefs.</li>
-</ul></li>
-<li><p><strong>Prediction</strong> Use data to predict future or unobserved outcomes.</p>
-<ul>
-<li>Frequentist: predictive distributions based on sampling models.</li>
-<li>Bayesian: posterior predictive distribution, integrating over parameter uncertainty.</li>
+<li>If the <span class="math inline">\(p\)</span>-value is below a chosen threshold <span class="math inline">\(\alpha\)</span> (the <strong>significance level</strong>), we <strong>reject <span class="math inline">\(H_0\)</span></strong>.</li>
+<li>Otherwise, we <strong>fail to reject <span class="math inline">\(H_0\)</span></strong><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</li>
 </ul></li>
 </ol>
+<section id="types-of-errors" class="level3" data-number="9.2.1">
+<h3 data-number="9.2.1" class="anchored" data-anchor-id="types-of-errors"><span class="header-section-number">9.2.1</span> Types of Errors</h3>
+<p>Because decisions are based on data (which vary by chance), mistakes are inevitable:</p>
+<ul>
+<li><strong>Type I Error:</strong> rejecting <span class="math inline">\(H_0\)</span> when it is actually true.</li>
+<li><strong>Type II Error:</strong> failing to reject <span class="math inline">\(H_0\)</span> when the alternative is true.</li>
+</ul>
+<p>We will return to these concepts later when discussing test performance and power.</p>
+</section>
+<section id="deriving-test-statistics" class="level3" data-number="9.2.2">
+<h3 data-number="9.2.2" class="anchored" data-anchor-id="deriving-test-statistics"><span class="header-section-number">9.2.2</span> Deriving Test Statistics</h3>
+<p>Suppose that we want to test</p>
+</section>
+</section>
+<section id="sensitivity-specificity-and-power" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="sensitivity-specificity-and-power"><span class="header-section-number">9.3</span> Sensitivity, Specificity and Power</h2>
+<section id="neyman-pearson-lemma" class="level3" data-number="9.3.1">
+<h3 data-number="9.3.1" class="anchored" data-anchor-id="neyman-pearson-lemma"><span class="header-section-number">9.3.1</span> Neyman-Pearson Lemma</h3>
 
 
 
+</section>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>It is common to say “reject <span class="math inline">\(H_0\)</span>” when the <span class="math inline">\(p\)</span>-value is small, and “fail to reject <span class="math inline">\(H_0\)</span>” otherwise. Both phrases should be interpreted with care: rejecting <span class="math inline">\(H_0\)</span> does <strong>not</strong> prove it is false, and failing to reject <span class="math inline">\(H_0\)</span> does <strong>not</strong> prove it is true. Instead, hypothesis testing provides a decision rule about whether the data are sufficiently inconsistent with <span class="math inline">\(H_0\)</span> at a chosen significance level.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </main> <!-- /main -->
@@ -1040,6 +1171,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!on) closeLectureSearch();
   };
 });
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Ii8vIFBhcmFtZXRlcnNcbm4gPSAzMFxubXUwID0gMjAwICAgICAgIC8vIG51bGwgbWVhblxuc2lnbWEgPSAxMCAgICAgIC8vIHN0ZCBkZXZpYXRpb24gdW5kZXIgbnVsbFxuYWxwaGEgPSAwLjA1XG5cbi8vIFNsaWRlciBmb3Igb2JzZXJ2ZWQgc2FtcGxlIG1lYW5cbnZpZXdvZiB4YmFyX29icyA9IElucHV0cy5yYW5nZShbbXUwIC0gMypzaWdtYSwgbXUwICsgMypzaWdtYV0sIFxuICB7c3RlcDogMC41LCB2YWx1ZTogbXUwLCBsYWJlbDogbWRgT2JzZXJ2ZWQgc2FtcGxlIG1lYW4gJHt0ZXhgXFxiYXJ7eH1fe29ic31gfWB9IClcblxuLy8gTnVsbCBzYW1wbGluZyBkaXN0cmlidXRpb25cbnhncmlkID0gZDMucmFuZ2UobXUwIC0gNCpzaWdtYSwgbXUwICsgNCpzaWdtYSwgMC4xKVxucGRmID0geGdyaWQubWFwKHggPT4gKHt4LCB5OiBkMy5yYW5kb21Ob3JtYWwobXUwLCBzaWdtYS9NYXRoLnNxcnQobikpKCkgfSkpIC8vIG9yIHVzZSBub3JtYWwgcGRmXG5cbi8vIENvbXB1dGUgcmVqZWN0aW9uIHJlZ2lvbiBib3VuZHNcbnpjcml0ID0gZDMucXVhbnRpbGUoZDMucmFuZ2UoLTUsNSwwLjAxKSwgYWxwaGEvMikgLy8gY291bGQganVzdCBoYXJkY29kZSAxLjk2XG5sb3dlciA9IG11MCAtIDEuOTYgKiBzaWdtYS9NYXRoLnNxcnQobilcbnVwcGVyID0gbXUwICsgMS45NiAqIHNpZ21hL01hdGguc3FydChuKVxuXG4vLyBQbG90XG5QbG90LnBsb3Qoe1xuICB3aWR0aDogNjAwLCBoZWlnaHQ6IDMwMCxcbiAgeDoge2xhYmVsOiBcIlNhbXBsZSBtZWFuXCJ9LFxuICB5OiB7bGFiZWw6IFwiRGVuc2l0eVwifSxcbiAgbWFya3M6IFtcbiAgICAvLyBOdWxsIGRpc3RyaWJ1dGlvblxuICAgIFBsb3QubGluZSh4Z3JpZC5tYXAoeCA9PiAoe3gsIHk6IDEvKHNpZ21hL01hdGguc3FydChuKSpNYXRoLnNxcnQoMipNYXRoLlBJKSkgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAqIE1hdGguZXhwKC0wLjUqKCh4LW11MCkvKHNpZ21hL01hdGguc3FydChuKSkpKioyKX0pKSwgXG4gICAgICAgICAgICAgIHt4OlwieFwiLCB5OlwieVwiLCBzdHJva2U6IFwidmFyKC0tYnJhbmQtcmVkKVwiIH0pLFxuXG4gICAgLy8gU2hhZGVkIHJlamVjdGlvbiByZWdpb25zXG4gICAgUGxvdC5hcmVhWSh4Z3JpZC5tYXAoeCA9PiAoe3gsIHk6ICh4PGxvd2VyfHx4PnVwcGVyKSA/IFxuICAgICAgIDEvKHNpZ21hL01hdGguc3FydChuKSpNYXRoLnNxcnQoMipNYXRoLlBJKSkgXG4gICAgICAgICAqIE1hdGguZXhwKC0wLjUqKCh4LW11MCkvKHNpZ21hL01hdGguc3FydChuKSkpKioyKSA6IDB9KSksIFxuICAgICAgIHt4OlwieFwiLCB5OlwieVwiLCBmaWxsOiBcInZhcigtLWJyYW5kLXJlZClcIiwgZmlsbE9wYWNpdHk6MC4zfSksXG4gICAgXG4gICAgLy8gT2JzZXJ2ZWQgdmFsdWVcbiAgICBQbG90LnJ1bGVYKFt4YmFyX29ic10sIHtzdHJva2U6XCJibGFja1wiLCBzdHJva2VXaWR0aDoyfSksXG4gIF1cbn0pXG5cbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgneGJhcl9vYnMnKSJ9XX0=
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../..";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
 </script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -1456,13 +1598,13 @@ document.addEventListener('DOMContentLoaded', () => {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../../content/lectures/part1/2-what-is-stats-inference.html" class="pagination-link" aria-label="What is Statistical Inference?">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">What is Statistical Inference?</span></span>
+      <a href="./8-bayes-interval-estimation.html" class="pagination-link" aria-label="Bayesian Intervals">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bayesian Intervals</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../../content/lectures/part2/4-freq-point-estimation.html" class="pagination-link" aria-label="Frequentist Point Estimation">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Frequentist Point Estimation</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./10-bayes-hypothesis-testing.html" class="pagination-link" aria-label="Bayesian Hypothesis Testing">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian Hypothesis Testing</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
