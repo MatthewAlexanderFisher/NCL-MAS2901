@@ -220,8 +220,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script type="module" src="../../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
 <link href="../../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -676,9 +690,9 @@ window.Quarto = {
 <ul>
 <li>Define <em>population</em> and <em>sample</em>, and identify each in simple scenarios.</li>
 <li>State the <em>goal</em> of statistical inference: using a sample to learn about a population distribution.</li>
-<li>Recognise the idea of a <em>random sample</em> <span class="math inline">\(X_1,\dots,X_n\)</span> and the iid assumption.</li>
-<li>Define a <em>statistical model</em> as a set of distributions <span class="math inline">\(\{P_\theta:\theta\in\Theta\}\)</span>.</li>
-<li>Identify the <em>parameter(s)</em> <span class="math inline">\(\theta\)</span> and the <em>parameter space</em> <span class="math inline">\(\Theta\)</span> for a given model.</li>
+<li>Recognise the idea of a <em>random sample</em> <span class="math inline">X_1,\dots,X_n</span> and the iid assumption.</li>
+<li>Define a <em>statistical model</em> as a set of distributions <span class="math inline">\{P_\theta:\theta\in\Theta\}</span>.</li>
+<li>Identify the <em>parameter(s)</em> <span class="math inline">\theta</span> and the <em>parameter space</em> <span class="math inline">\Theta</span> for a given model.</li>
 <li>Write down a suitable statistical model for a short verbal problem.</li>
 </ul>
 </div>
@@ -704,20 +718,20 @@ window.Quarto = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;2.1: Notation: <span class="math inline">\(\mathrm{Distribution}(\theta)\)</span>
+Important&nbsp;2.1: Notation: <span class="math inline">\mathrm{Distribution}(\theta)</span>
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>In the following, we use <span class="math inline">\(\mathrm{Distribution}(\theta)\)</span> as a <strong>placeholder</strong> to mean:</p>
+<p>In the following, we use <span class="math inline">\mathrm{Distribution}(\theta)</span> as a <strong>placeholder</strong> to mean:</p>
 <blockquote class="blockquote">
-<p>“a distribution depending on parameter <span class="math inline">\(\theta\)</span>.”</p>
+<p>“a distribution depending on parameter <span class="math inline">\theta</span>.”</p>
 </blockquote>
 <p>For example:</p>
 <ul>
-<li><span class="math inline">\(\mathrm{Distribution}(\mu,\sigma^2) = \mathcal{N}(\mu,\sigma^2)\)</span></li>
-<li><span class="math inline">\(\mathrm{Distribution}(p) = \mathrm{Bernoulli}(p)\)</span></li>
+<li><span class="math inline">\mathrm{Distribution}(\mu,\sigma^2) = \mathcal{N}(\mu,\sigma^2)</span></li>
+<li><span class="math inline">\mathrm{Distribution}(p) = \mathrm{Bernoulli}(p)</span></li>
 </ul>
 <p>This allows us to keep the definitions <em>general</em>!</p>
 </div>
@@ -727,25 +741,25 @@ Important&nbsp;2.1: Notation: <span class="math inline">\(\mathrm{Distribution}(
 <h2 data-number="2.1" class="anchored" data-anchor-id="statistical-inference-as-inverse-probability"><span class="header-section-number">2.1</span> Statistical Inference as “Inverse Probability”</h2>
 <p>In <strong>probability theory</strong>, the usual direction is:</p>
 <ul>
-<li>Start with a distribution <span class="math inline">\(f(x \mid \theta)\)</span> (the model, with known parameter <span class="math inline">\(\theta\)</span>).</li>
+<li>Start with a distribution <span class="math inline">f(x \mid \theta)</span> (the model, with known parameter <span class="math inline">\theta</span>).</li>
 <li>Use it to generate random samples, or calculate probabilities of events involving the data.</li>
 </ul>
 <p>In <strong>statistical inference</strong>, we reverse the problem:</p>
 <ul>
-<li>We observe data <span class="math inline">\(\underline{x} = (x_1,\ldots,x_n)\)</span>.</li>
-<li>The distribution <span class="math inline">\(f(x \mid \theta)\)</span> is only partially known, through the unknown parameter <span class="math inline">\(\theta\)</span>.</li>
-<li>Our task is to use the sample to learn about <span class="math inline">\(\theta\)</span>, and hence about the population distribution.</li>
+<li>We observe data <span class="math inline">\underline{x} = (x_1,\ldots,x_n)</span>.</li>
+<li>The distribution <span class="math inline">f(x \mid \theta)</span> is only partially known, through the unknown parameter <span class="math inline">\theta</span>.</li>
+<li>Our task is to use the sample to learn about <span class="math inline">\theta</span>, and hence about the population distribution.</li>
 </ul>
 <p>Formally, we (<em>usually</em>) assume our data are an <strong>i.i.d. sample</strong>:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 X_1,\ldots,X_n \stackrel{\text{iid}}{\sim} \mathrm{Distribution}(\theta).
-\]</span></p>
+</span></p>
 <ul>
-<li><em>Independent</em>: knowing the value of one <span class="math inline">\(X_i\)</span> gives no information about any other.<br>
+<li><em>Independent</em>: knowing the value of one <span class="math inline">X_i</span> gives no information about any other.<br>
 </li>
-<li><em>Identically distributed</em>: each <span class="math inline">\(X_i\)</span> comes from the same population distribution <span class="math inline">\(f(x \mid \theta)\)</span>.</li>
+<li><em>Identically distributed</em>: each <span class="math inline">X_i</span> comes from the same population distribution <span class="math inline">f(x \mid \theta)</span>.</li>
 </ul>
-<p>The goal of <em>statistical inference</em> is to use the observed sample to learn about <span class="math inline">\(\theta\)</span>, and hence about the underlying population.</p>
+<p>The goal of <em>statistical inference</em> is to use the observed sample to learn about <span class="math inline">\theta</span>, and hence about the underlying population.</p>
 <div id="imp-term-random-sample" class="callout callout-style-simple callout-important callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -758,15 +772,15 @@ Important&nbsp;2.2: Terminology: Random Sample
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>A <strong>random sample</strong> means <span class="math inline">\(n\)</span> i.i.d. observations from some distribution.</p>
+<p>A <strong>random sample</strong> means <span class="math inline">n</span> i.i.d. observations from some distribution.</p>
 <p>This is the standard framework in which most inference procedures are developed.</p>
 </div>
 </div>
 </div>
 <section id="sec-inference-eye" class="level3" data-number="2.1.1">
 <h3 data-number="2.1.1" class="anchored" data-anchor-id="sec-inference-eye"><span class="header-section-number">2.1.1</span> Statistical Inference by Eye</h3>
-<p>As an informal starting point, suppose <span class="math inline">\(X_1,\ldots,X_n\)</span> are sampled from a <span class="math inline">\(\mathcal{N}(\mu,\sigma^2)\)</span> distribution, with <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^2\)</span> unknown.</p>
-<p>Try to “guess” <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^2\)</span> by eye from the data:</p>
+<p>As an informal starting point, suppose <span class="math inline">X_1,\ldots,X_n</span> are sampled from a <span class="math inline">\mathcal{N}(\mu,\sigma^2)</span> distribution, with <span class="math inline">\mu</span> and <span class="math inline">\sigma^2</span> unknown.</p>
+<p>Try to “guess” <span class="math inline">\mu</span> and <span class="math inline">\sigma^2</span> by eye from the data:</p>
 <hr>
 <p><strong>Visualisation:</strong></p>
 <div class="cell">
@@ -1317,9 +1331,9 @@ Important&nbsp;2.2: Terminology: Random Sample
 </div>
 <div class="callout-body-container">
 <div id="def-model" class="definition theorem">
-<p><span class="theorem-title"><strong>Definition 2.1 (Statistical Model)</strong></span> A <strong>statistical model</strong> is a <em>set</em> of candidate population distributions: <span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 2.1 (Statistical Model)</strong></span> A <strong>statistical model</strong> is a <em>set</em> of candidate population distributions: <span class="math display">
 \mathcal{P}=\{P_\theta \mid \theta\in\Theta\},
-\]</span> where <span class="math inline">\(P_\theta\)</span> is a probability distribution indexed by a <strong>parameter</strong> <span class="math inline">\(\theta\)</span>, and <span class="math inline">\(\Theta\)</span> is the <strong>parameter space</strong> (the set of allowable parameter values).</p>
+</span> where <span class="math inline">P_\theta</span> is a probability distribution indexed by a <strong>parameter</strong> <span class="math inline">\theta</span>, and <span class="math inline">\Theta</span> is the <strong>parameter space</strong> (the set of allowable parameter values).</p>
 </div>
 </div>
 </div>
@@ -1334,9 +1348,9 @@ Important&nbsp;2.2: Terminology: Random Sample
 <div id="exm-exponential-model" class="example theorem">
 <p><span class="theorem-title"><strong>Example 2.1 (Exponential model)</strong></span> Suppose we are interested in modelling <strong>waiting times</strong> until some event occurs<br>
 (e.g.&nbsp;the time between customer arrivals at a service desk).</p>
-<p>A simple model is to assume the data are i.i.d. from an exponential distribution: <span class="math display">\[
+<p>A simple model is to assume the data are i.i.d. from an exponential distribution: <span class="math display">
 X_i \mid \lambda \sim \mathrm{Exp}(\lambda).
-\]</span> Write this formally as a <strong>statistical model</strong> and write down the <strong>parameter space</strong>.</p>
+</span> Write this formally as a <strong>statistical model</strong> and write down the <strong>parameter space</strong>.</p>
 </div>
 </div>
 </div>
@@ -1354,11 +1368,11 @@ X_i \mid \lambda \sim \mathrm{Exp}(\lambda).
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="sol-exponential-model" class="proof solution">
-<p><span class="proof-title"><em>Solution 2.1</em>. </span>Each data follows the exponential distribution with parameter <span class="math inline">\(\lambda\)</span>. Since <span class="math inline">\(\lambda &gt; 0\)</span>, we have the model: <span class="math display">\[
+<p><span class="proof-title"><em>Solution 2.1</em>. </span>Each data follows the exponential distribution with parameter <span class="math inline">\lambda</span>. Since <span class="math inline">\lambda &gt; 0</span>, we have the model: <span class="math display">
 \mathcal{P}=\big\{\mathrm{Exp}(\lambda)\ \big|\ \lambda&gt;0\big\},
-\]</span> with parameter <span class="math inline">\(\theta=\lambda\)</span> and parameter space<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <span class="math display">\[
+</span> with parameter <span class="math inline">\theta=\lambda</span> and parameter space<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <span class="math display">
 \Theta = \{\lambda \mid \lambda &gt; 0\} = (0,\infty) = \mathbb{R}^+.
-\]</span></p>
+</span></p>
 <p>The exponential distribution is often used for modelling the time between events in a <strong>Poisson process</strong> — situations where events occur continuously and independently at a constant average rate.</p>
 <p>For example:<br>
 - the time between buses arriving at a stop if buses come at random,<br>
@@ -1394,19 +1408,19 @@ X_i \mid \lambda \sim \mathrm{Exp}(\lambda).
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="sol-normal-model" class="proof solution">
-<p><span class="proof-title"><em>Solution 2.2</em>. </span>We assumed the data are i.i.d. Normally distributed with <em>unknown mean</em> and <em>unknown variance</em>: <span class="math display">\[
+<p><span class="proof-title"><em>Solution 2.2</em>. </span>We assumed the data are i.i.d. Normally distributed with <em>unknown mean</em> and <em>unknown variance</em>: <span class="math display">
 X_i \mid \mu, \sigma^2 \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2).
-\]</span></p>
-<p>The <strong>statistical model</strong> is <span class="math display">\[
+</span></p>
+<p>The <strong>statistical model</strong> is <span class="math display">
 \mathcal{P} = \{ \mathcal{N}(\mu,\sigma^2) \mid \mu \in \mathbb{R},\ \sigma^2 &gt; 0 \}.
-\]</span></p>
-<p>Here there are two parameters, <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^2\)</span>, which we group into a parameter vector <span class="math inline">\(\underline{\theta} = (\mu, \sigma^2)\)</span>.<br>
+</span></p>
+<p>Here there are two parameters, <span class="math inline">\mu</span> and <span class="math inline">\sigma^2</span>, which we group into a parameter vector <span class="math inline">\underline{\theta} = (\mu, \sigma^2)</span>.<br>
 The <strong>parameter space</strong> is<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a><br>
-<span class="math display">\[
+<span class="math display">
 \Theta = \{ (\mu, \sigma^2) \mid \mu \in \mathbb{R},\ \sigma^2 &gt; 0 \}
        = \mathbb{R} \times (0,\infty)
        = \mathbb{R} \times \mathbb{R}^+.
-\]</span></p>
+</span></p>
 <p>The normal model is widely used in practice, for example when data are approximately symmetric and unimodal, such as measurement errors in physics or biological traits like human heights.</p>
 </div>
 </div>
@@ -1437,9 +1451,9 @@ The <strong>parameter space</strong> is<a href="#fn2" class="footnote-ref" id="f
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="sol-identify-model" class="proof solution">
-<p><span class="proof-title"><em>Solution 2.3</em>. </span>Let <span class="math inline">\(X_i=1\)</span> if respondent <span class="math inline">\(i\)</span> says “yes”, and <span class="math inline">\(0\)</span> otherwise.<br>
-Model <span class="math inline">\(X_1,\ldots,X_n \stackrel{\text{iid}}{\sim}\mathrm{Bernoulli}(p)\)</span>, where <span class="math inline">\(p=\Pr(X_i=1)\)</span> is the (unknown) long-run recommendation proportion.<br>
-Here <span class="math inline">\(\theta=p\)</span> and <span class="math inline">\(\Theta=(0,1)\)</span>. The <strong>population</strong> is all (current/future) potential respondents of interest; the <strong>sample</strong> is the <span class="math inline">\(n\)</span> surveyed respondents.</p>
+<p><span class="proof-title"><em>Solution 2.3</em>. </span>Let <span class="math inline">X_i=1</span> if respondent <span class="math inline">i</span> says “yes”, and <span class="math inline">0</span> otherwise.<br>
+Model <span class="math inline">X_1,\ldots,X_n \stackrel{\text{iid}}{\sim}\mathrm{Bernoulli}(p)</span>, where <span class="math inline">p=\Pr(X_i=1)</span> is the (unknown) long-run recommendation proportion.<br>
+Here <span class="math inline">\theta=p</span> and <span class="math inline">\Theta=(0,1)</span>. The <strong>population</strong> is all (current/future) potential respondents of interest; the <strong>sample</strong> is the <span class="math inline">n</span> surveyed respondents.</p>
 </div>
 </div>
 </div>
@@ -1451,7 +1465,7 @@ Here <span class="math inline">\(\theta=p\)</span> and <span class="math inline"
 </div>
 <div class="callout-body-container">
 <div id="exm-identify-model-multinomial" class="example theorem">
-<p><span class="theorem-title"><strong>Example 2.4 (A slightly richer example (multinomial))</strong></span> A bag contains sweets of three colours <span class="math inline">\(\{\text{red},\text{blue},\text{green}\}\)</span>. You draw <span class="math inline">\(n\)</span> sweets at random <em>with replacement</em> and record counts <span class="math inline">\((R,B,G)\)</span>. Propose a model and name the parameter(s).</p>
+<p><span class="theorem-title"><strong>Example 2.4 (A slightly richer example (multinomial))</strong></span> A bag contains sweets of three colours <span class="math inline">\{\text{red},\text{blue},\text{green}\}</span>. You draw <span class="math inline">n</span> sweets at random <em>with replacement</em> and record counts <span class="math inline">(R,B,G)</span>. Propose a model and name the parameter(s).</p>
 </div>
 </div>
 </div>
@@ -1469,8 +1483,8 @@ Here <span class="math inline">\(\theta=p\)</span> and <span class="math inline"
 <div id="callout-7" class="callout-7-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="sol-identify-model-multinomial" class="proof solution">
-<p><span class="proof-title"><em>Solution 2.4</em>. </span>Model <span class="math inline">\((R,B,G) \sim \mathrm{Multinomial}\!\left(n;\,p_R,p_B,p_G\right)\)</span> with <span class="math inline">\(p_R,p_B,p_G\ge 0\)</span> and <span class="math inline">\(p_R+p_B+p_G=1\)</span>.<br>
-The parameter is <span class="math inline">\(\theta=(p_R,p_B,p_G)\)</span>, and the parameter space is the 2-simplex <span class="math inline">\(\Theta=\{(p_R,p_B,p_G)\in[0,1]^3:\sum p_\cdot=1\}\)</span>. The <strong>population</strong> is the long-run distribution of colours produced by the bag; the <strong>sample</strong> is the observed draws.</p>
+<p><span class="proof-title"><em>Solution 2.4</em>. </span>Model <span class="math inline">(R,B,G) \sim \mathrm{Multinomial}\!\left(n;\,p_R,p_B,p_G\right)</span> with <span class="math inline">p_R,p_B,p_G\ge 0</span> and <span class="math inline">p_R+p_B+p_G=1</span>.<br>
+The parameter is <span class="math inline">\theta=(p_R,p_B,p_G)</span>, and the parameter space is the 2-simplex <span class="math inline">\Theta=\{(p_R,p_B,p_G)\in[0,1]^3:\sum p_\cdot=1\}</span>. The <strong>population</strong> is the long-run distribution of colours produced by the bag; the <strong>sample</strong> is the observed draws.</p>
 </div>
 </div>
 </div>
@@ -1482,9 +1496,9 @@ The parameter is <span class="math inline">\(\theta=(p_R,p_B,p_G)\)</span>, and 
 </div>
 <div class="callout-body-container">
 <div id="exm-ml-inference" class="example theorem">
-<p><span class="theorem-title"><strong>Example 2.5 (Image Classification from Machine Learning)</strong></span> In image classification (cat vs not-cat), each training example is a pair <span class="math inline">\((X_i,Y_i)\)</span> where <span class="math inline">\(X_i\)</span> is an image and <span class="math inline">\(Y_i\in\{0,1\}\)</span>. A generic probabilistic model writes the conditional distribution <span class="math display">\[
+<p><span class="theorem-title"><strong>Example 2.5 (Image Classification from Machine Learning)</strong></span> In image classification (cat vs not-cat), each training example is a pair <span class="math inline">(X_i,Y_i)</span> where <span class="math inline">X_i</span> is an image and <span class="math inline">Y_i\in\{0,1\}</span>. A generic probabilistic model writes the conditional distribution <span class="math display">
 \mathrm{Pr}_\theta(Y=1\mid X=x)=g_\theta(x),
-\]</span> for some function family <span class="math inline">\(g_\theta\)</span> (e.g.&nbsp;logistic regression or a neural network). What are the sample, population, model, and parameter?</p>
+</span> for some function family <span class="math inline">g_\theta</span> (e.g.&nbsp;logistic regression or a neural network). What are the sample, population, model, and parameter?</p>
 </div>
 </div>
 </div>
@@ -1504,13 +1518,13 @@ The parameter is <span class="math inline">\(\theta=(p_R,p_B,p_G)\)</span>, and 
 <div id="sol-ml-inference" class="proof solution">
 <p><span class="proof-title"><em>Solution 2.5</em>. </span></p>
 <ul>
-<li><strong>Sample:</strong> the labelled training set <span class="math inline">\(\{(X_i,Y_i)\}_{i=1}^n\)</span>.<br>
+<li><strong>Sample:</strong> the labelled training set <span class="math inline">\{(X_i,Y_i)\}_{i=1}^n</span>.<br>
 </li>
 <li><strong>Population:</strong> all (future) images and labels of interest.<br>
 </li>
-<li><strong>Model:</strong> the family of conditional distributions <span class="math inline">\(\{ \Pr_\theta(Y=1\mid X=x)=g_\theta(x)\}\)</span>.<br>
+<li><strong>Model:</strong> the family of conditional distributions <span class="math inline">\{ \Pr_\theta(Y=1\mid X=x)=g_\theta(x)\}</span>.<br>
 </li>
-<li><strong>Parameter:</strong> <span class="math inline">\(\theta\)</span> (e.g.&nbsp;regression co</li>
+<li><strong>Parameter:</strong> <span class="math inline">\theta</span> (e.g.&nbsp;regression co</li>
 </ul>
 </div>
 </div>
@@ -1546,9 +1560,9 @@ We will <strong>assume the model is given</strong>, and our task is to carry out
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li><strong>Parameter <span class="math inline">\(\neq\)</span> statistic.</strong> A <em>parameter</em> <span class="math inline">\(\theta\)</span> is a property of the population/model (e.g.&nbsp;<span class="math inline">\(p,\ \mu,\ \sigma^2\)</span>). A <em>statistic</em> (e.g.&nbsp;<span class="math inline">\(\bar{X}\)</span>, a sample proportion) is computed from the sample to learn about <span class="math inline">\(\theta\)</span>.</li>
-<li><strong>“Random sample” <span class="math inline">\(\neq\)</span> “whatever data we found”.</strong> The iid assumption is part of the design; convenience samples or dependence can bias inference.</li>
-<li><strong>Models are approximations.</strong> A model is a useful idealisation, not the truth. Choose <span class="math inline">\(\mathcal{P}\)</span> sensibly, then check fit later and revise if needed.</li>
+<li><strong>Parameter <span class="math inline">\neq</span> statistic.</strong> A <em>parameter</em> <span class="math inline">\theta</span> is a property of the population/model (e.g.&nbsp;<span class="math inline">p,\ \mu,\ \sigma^2</span>). A <em>statistic</em> (e.g.&nbsp;<span class="math inline">\bar{X}</span>, a sample proportion) is computed from the sample to learn about <span class="math inline">\theta</span>.</li>
+<li><strong>“Random sample” <span class="math inline">\neq</span> “whatever data we found”.</strong> The iid assumption is part of the design; convenience samples or dependence can bias inference.</li>
+<li><strong>Models are approximations.</strong> A model is a useful idealisation, not the truth. Choose <span class="math inline">\mathcal{P}</span> sensibly, then check fit later and revise if needed.</li>
 </ul>
 </div>
 </div>
@@ -1558,11 +1572,10 @@ We will <strong>assume the model is given</strong>, and our task is to carry out
 <h2 data-number="2.3" class="anchored" data-anchor-id="exercises"><span class="header-section-number">2.3</span> Exercises</h2>
 <ol type="1">
 <li>For a study recording daily counts of emails received by a helpdesk, propose a one-parameter model and state the parameter space.</li>
-<li>In a satisfaction survey with responses <span class="math inline">\(\{\text{poor},\text{OK},\text{good}\}\)</span>, suggest a simple probabilistic model and identify the parameter(s).</li>
+<li>In a satisfaction survey with responses <span class="math inline">\{\text{poor},\text{OK},\text{good}\}</span>, suggest a simple probabilistic model and identify the parameter(s).</li>
 <li>State what “iid” means in one sentence, and give one example of how it could fail in practice.</li>
-<li>Revisit <a href="#sec-inference-eye" class="quarto-xref"><span>Section 2.1.1</span></a>: if the spread of points increases, which parameter of <span class="math inline">\(\mathcal{N}(\mu,\sigma^2)\)</span> has changed, and how would you describe that change informally?</li>
+<li>Revisit <a href="#sec-inference-eye" class="quarto-xref"><span>Section 2.1.1</span></a>: if the spread of points increases, which parameter of <span class="math inline">\mathcal{N}(\mu,\sigma^2)</span> has changed, and how would you describe that change informally?</li>
 </ol>
-
 
 
 </section>
@@ -1571,30 +1584,30 @@ We will <strong>assume the model is given</strong>, and our task is to carry out
 <ol>
 <li id="fn1"><p><strong>Set notation.</strong> There are several equivalent ways to write sets:</p>
 <ul>
-<li><strong>Set-builder notation:</strong> <span class="math inline">\(\{\lambda \mid \lambda &gt; 0\}\)</span><br>
+<li><strong>Set-builder notation:</strong> <span class="math inline">\{\lambda \mid \lambda &gt; 0\}</span><br>
 </li>
-<li><strong>Interval notation:</strong> <span class="math inline">\((0,\infty)\)</span><br>
+<li><strong>Interval notation:</strong> <span class="math inline">(0,\infty)</span><br>
 </li>
-<li><strong>Named set:</strong> <span class="math inline">\(\mathbb{R}^+\)</span></li>
+<li><strong>Named set:</strong> <span class="math inline">\mathbb{R}^+</span></li>
 </ul>
 <p>All three describe the same set. In this course, we recommend using <strong>set-builder notation</strong> when writing statistical models and their parameter spaces.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p><strong>Set notation (multiple parameters).</strong> When a model has several parameters, it is best to use <strong>set-builder notation</strong> and collect the parameters into a vector <span class="math display">\[
+<li id="fn2"><p><strong>Set notation (multiple parameters).</strong> When a model has several parameters, it is best to use <strong>set-builder notation</strong> and collect the parameters into a vector <span class="math display">
     \underline{\theta} = (\theta_1, \theta_2, \ldots, \theta_p).
-  \]</span> The parameter space can then be written as <span class="math display">\[
+  </span> The parameter space can then be written as <span class="math display">
     \Theta = \{(\theta_1,\ldots,\theta_p) \mid \theta_1 \in S_1,\ \ldots,\ \theta_p \in S_p\}.
-  \]</span></p>
-<p>Here each <span class="math inline">\(S_j\)</span> is the set of allowed values for parameter <span class="math inline">\(\theta_j\)</span>. To construct <span class="math inline">\(\Theta\)</span>, simply <strong>read off the constraints</strong> on each parameter from the definition of the distribution (see the <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-formula-sheet" class="quarto-xref">Formula Sheet&nbsp;<span>0.0.0.0.1</span></a></span>).</p>
+  </span></p>
+<p>Here each <span class="math inline">S_j</span> is the set of allowed values for parameter <span class="math inline">\theta_j</span>. To construct <span class="math inline">\Theta</span>, simply <strong>read off the constraints</strong> on each parameter from the definition of the distribution (see the <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-formula-sheet" class="quarto-xref">Formula Sheet&nbsp;<span>0.0.0.0.1</span></a></span>).</p>
 <p>For example, in the Normal model:</p>
 <ul>
-<li><span class="math inline">\(\mu \in \mathbb{R}\)</span> (any real number),<br>
+<li><span class="math inline">\mu \in \mathbb{R}</span> (any real number),<br>
 </li>
-<li><span class="math inline">\(\sigma^2 \in (0,\infty)\)</span> (variance must be positive),</li>
+<li><span class="math inline">\sigma^2 \in (0,\infty)</span> (variance must be positive),</li>
 </ul>
 <p>so the parameter space is</p>
-<p><span class="math display">\[
+<p><span class="math display">
     \Theta = \mathbb{R} \times (0,\infty).
-  \]</span></p>
-<p>This is called a <strong>Cartesian product</strong>: we form the parameter space by taking all possible pairs <span class="math inline">\((\mu, \sigma^2)\)</span> where the first component is from <span class="math inline">\(\mathbb{R}\)</span> and the second from <span class="math inline">\((0,\infty)\)</span>.<br>
+  </span></p>
+<p>This is called a <strong>Cartesian product</strong>: we form the parameter space by taking all possible pairs <span class="math inline">(\mu, \sigma^2)</span> where the first component is from <span class="math inline">\mathbb{R}</span> and the second from <span class="math inline">(0,\infty)</span>.<br>
 Intuitively, it’s just “all combinations” of the allowed values for each parameter.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>

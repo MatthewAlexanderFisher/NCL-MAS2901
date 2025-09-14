@@ -220,8 +220,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script type="module" src="../../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
 <link href="../../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -720,19 +734,19 @@ window.Quarto = {
 <h2 data-number="1.1" class="anchored" data-anchor-id="probability-and-events"><span class="header-section-number">1.1</span> Probability and Events</h2>
 <p>When working with probability we need three basic ingredients<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <ol type="1">
-<li>The <strong>sample space</strong> <span class="math inline">\(\Omega\)</span>. all possible outcomes of an experiment.<br>
-<em>Example:</em> for a coin toss, <span class="math inline">\(\Omega = \{\text{Heads}, \text{Tails}\}\)</span>.<br>
+<li>The <strong>sample space</strong> <span class="math inline">\Omega</span>. all possible outcomes of an experiment.<br>
+<em>Example:</em> for a coin toss, <span class="math inline">\Omega = \{\text{Heads}, \text{Tails}\}</span>.<br>
 </li>
-<li><strong>Events</strong> subsets of the sample space. We use capital letters <span class="math inline">\(A, B, \ldots\)</span> to denote events.
+<li><strong>Events</strong> subsets of the sample space. We use capital letters <span class="math inline">A, B, \ldots</span> to denote events.
 <ul>
-<li>The <strong>complement</strong> of <span class="math inline">\(A\)</span> is <span class="math inline">\(A^c\)</span>, meaning <span class="math inline">\(A\)</span> does <em>not</em> occur.<br>
+<li>The <strong>complement</strong> of <span class="math inline">A</span> is <span class="math inline">A^c</span>, meaning <span class="math inline">A</span> does <em>not</em> occur.<br>
 </li>
-<li>The <strong>intersection</strong> <span class="math inline">\(A \cap B\)</span> means <span class="math inline">\(A\)</span> <em>and</em> <span class="math inline">\(B\)</span> occur.<br>
+<li>The <strong>intersection</strong> <span class="math inline">A \cap B</span> means <span class="math inline">A</span> <em>and</em> <span class="math inline">B</span> occur.<br>
 </li>
-<li>The <strong>union</strong> <span class="math inline">\(A \cup B\)</span> means <span class="math inline">\(A\)</span> <em>or</em> <span class="math inline">\(B\)</span> (or both) occur.<br>
+<li>The <strong>union</strong> <span class="math inline">A \cup B</span> means <span class="math inline">A</span> <em>or</em> <span class="math inline">B</span> (or both) occur.<br>
 </li>
 </ul></li>
-<li>A <strong>probability distribution</strong> <span class="math inline">\(\mathrm{Pr}\)</span>. Assigns numbers between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span> to events, with <span class="math inline">\(\mathrm{Pr}(\Omega)=1\)</span>.</li>
+<li>A <strong>probability distribution</strong> <span class="math inline">\mathrm{Pr}</span>. Assigns numbers between <span class="math inline">0</span> and <span class="math inline">1</span> to events, with <span class="math inline">\mathrm{Pr}(\Omega)=1</span>.</li>
 </ol>
 <p>We can write the definitions of complement, intersection and union formally with sets:</p>
 <div class="callout callout-style-simple callout-note no-icon">
@@ -744,10 +758,10 @@ window.Quarto = {
 <div id="def-intersect-union" class="def theorem definition">
 <p><span class="theorem-title"><strong>Definition 1.1 (Complement, Intersection and Union)</strong></span> &nbsp;</p>
 <ul>
-<li><strong>Complement:</strong> <span class="math inline">\(A^c = \{x \in \Omega \mid x \notin A \}\)</span>.</li>
-<li><strong>Intersection:</strong> <span class="math inline">\(A\cap B = \{x \in \Omega \mid x \in A \text{ and } x \in B\}\)</span>.<br>
+<li><strong>Complement:</strong> <span class="math inline">A^c = \{x \in \Omega \mid x \notin A \}</span>.</li>
+<li><strong>Intersection:</strong> <span class="math inline">A\cap B = \{x \in \Omega \mid x \in A \text{ and } x \in B\}</span>.<br>
 </li>
-<li><strong>Union:</strong> <span class="math inline">\(A\cup B = \{x \in \Omega \mid x \in A \text{ or } x \in B\}\)</span>.<br>
+<li><strong>Union:</strong> <span class="math inline">A\cup B = \{x \in \Omega \mid x \in A \text{ or } x \in B\}</span>.<br>
 </li>
 </ul>
 </div>
@@ -901,7 +915,7 @@ window.Quarto = {
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-venn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1.1: Venn diagram of two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> inside the sample space <span class="math inline">\(\Omega\)</span>.
+Figure&nbsp;1.1: Venn diagram of two events <span class="math inline">A</span> and <span class="math inline">B</span> inside the sample space <span class="math inline">\Omega</span>.
 </figcaption>
 </figure>
 </div>
@@ -914,9 +928,9 @@ Figure&nbsp;1.1: Venn diagram of two events <span class="math inline">\(A\)</spa
 </div>
 <div class="callout-body-container">
 <div id="def-inclusion-exclusion" class="def theorem definition">
-<p><span class="theorem-title"><strong>Definition 1.2 (Addition rule (inclusion–exclusion))</strong></span> For any two events <span class="math inline">\(A, B\subseteq \Omega\)</span>, we have <span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 1.2 (Addition rule (inclusion–exclusion))</strong></span> For any two events <span class="math inline">A, B\subseteq \Omega</span>, we have <span class="math display">
 \mathrm{Pr}(A \cup B) = \mathrm{Pr}(A) + \mathrm{Pr}(B) - \mathrm{Pr}(A \cap B).
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
@@ -928,7 +942,7 @@ Figure&nbsp;1.1: Venn diagram of two events <span class="math inline">\(A\)</spa
 </div>
 <div class="callout-body-container">
 <div id="exm-quick-inclusion-check" class="theorem example">
-<p><span class="theorem-title"><strong>Example 1.1 (A quick inclusion–exclusion check)</strong></span> Roll a fair six-sided die. Let <span class="math inline">\(A=\{\text{even}\}\)</span> and <span class="math inline">\(B=\{\text{number} \ge 4\}\)</span>. Compute <span class="math inline">\(\mathrm{Pr}(A\cup B)\)</span>.</p>
+<p><span class="theorem-title"><strong>Example 1.1 (A quick inclusion–exclusion check)</strong></span> Roll a fair six-sided die. Let <span class="math inline">A=\{\text{even}\}</span> and <span class="math inline">B=\{\text{number} \ge 4\}</span>. Compute <span class="math inline">\mathrm{Pr}(A\cup B)</span>.</p>
 </div>
 </div>
 </div>
@@ -948,15 +962,15 @@ Figure&nbsp;1.1: Venn diagram of two events <span class="math inline">\(A\)</spa
 <div id="sol-quick-inclusion-check" class="proof solution">
 <p><span class="proof-title"><em>Solution 1.1</em>. </span>We have</p>
 <ul>
-<li><span class="math inline">\(\mathrm{Pr}(A)=3/6=1/2\)</span> (even outcomes <span class="math inline">\(2,4,6\)</span>).<br>
+<li><span class="math inline">\mathrm{Pr}(A)=3/6=1/2</span> (even outcomes <span class="math inline">2,4,6</span>).<br>
 </li>
-<li><span class="math inline">\(\mathrm{Pr}(B)=3/6=1/2\)</span> (outcomes <span class="math inline">\(4,5,6\)</span>).<br>
+<li><span class="math inline">\mathrm{Pr}(B)=3/6=1/2</span> (outcomes <span class="math inline">4,5,6</span>).<br>
 </li>
-<li><span class="math inline">\(\mathrm{Pr}(A\cap B)=2/6=1/3\)</span> (outcomes <span class="math inline">\(4,6\)</span>).</li>
+<li><span class="math inline">\mathrm{Pr}(A\cap B)=2/6=1/3</span> (outcomes <span class="math inline">4,6</span>).</li>
 </ul>
-<p>By <span class="xref-no-num"><a href="#def-inclusion-exclusion" class="quarto-xref">inclusion–exclusion&nbsp;<span>1.2</span></a></span>, <span class="math display">\[
+<p>By <span class="xref-no-num"><a href="#def-inclusion-exclusion" class="quarto-xref">inclusion–exclusion&nbsp;<span>1.2</span></a></span>, <span class="math display">
 \mathrm{Pr}(A\cup B)=\tfrac{1}{2}+\tfrac{1}{2}-\tfrac{1}{3}=\tfrac{2}{3}.
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
@@ -970,18 +984,18 @@ Figure&nbsp;1.1: Venn diagram of two events <span class="math inline">\(A\)</spa
 <div id="def-excl-exh-part" class="def theorem definition">
 <p><span class="theorem-title"><strong>Definition 1.3 (Mutually Exclusive, Exhaustive Events, and Partitions)</strong></span> &nbsp;</p>
 <ul>
-<li><p>Two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are <strong>mutually exclusive</strong> (or <em>disjoint</em>) if they cannot occur together: <span class="math display">\[
+<li><p>Two events <span class="math inline">A</span> and <span class="math inline">B</span> are <strong>mutually exclusive</strong> (or <em>disjoint</em>) if they cannot occur together: <span class="math display">
 \mathrm{Pr}(A \cap B) = 0.
-\]</span></p></li>
-<li><p>Two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are <strong>exhaustive</strong> if at least one of them must occur: <span class="math display">\[
+</span></p></li>
+<li><p>Two events <span class="math inline">A</span> and <span class="math inline">B</span> are <strong>exhaustive</strong> if at least one of them must occur: <span class="math display">
 \mathrm{Pr}(A \cup B) = 1.
-\]</span><br>
-More generally, a collection of events <span class="math inline">\(\{B_1,\ldots,B_k\}\)</span> is exhaustive if <span class="math inline">\(\bigcup_{i=1}^k B_i = \Omega\)</span>, where <span class="math inline">\(\Omega\)</span> is the sample space.</p></li>
-<li><p>A collection of events <span class="math inline">\(\{B_1,\ldots,B_k\}\)</span> forms a <strong>partition</strong> of <span class="math inline">\(\Omega\)</span> if they are both mutually exclusive and exhaustive. Equivalently,</p>
+</span><br>
+More generally, a collection of events <span class="math inline">\{B_1,\ldots,B_k\}</span> is exhaustive if <span class="math inline">\bigcup_{i=1}^k B_i = \Omega</span>, where <span class="math inline">\Omega</span> is the sample space.</p></li>
+<li><p>A collection of events <span class="math inline">\{B_1,\ldots,B_k\}</span> forms a <strong>partition</strong> of <span class="math inline">\Omega</span> if they are both mutually exclusive and exhaustive. Equivalently,</p>
 <ul>
-<li><span class="math inline">\(B_i \cap B_j = \varnothing\)</span> for all <span class="math inline">\(i \neq j\)</span> (non-overlapping), and<br>
+<li><span class="math inline">B_i \cap B_j = \varnothing</span> for all <span class="math inline">i \neq j</span> (non-overlapping), and<br>
 </li>
-<li><span class="math inline">\(\bigcup_{i=1}^k B_i = \Omega\)</span> (their union is the whole sample space).</li>
+<li><span class="math inline">\bigcup_{i=1}^k B_i = \Omega</span> (their union is the whole sample space).</li>
 </ul></li>
 </ul>
 </div>
@@ -1098,7 +1112,7 @@ More generally, a collection of events <span class="math inline">\(\{B_1,\ldots,
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-partition-voronoi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1.2: A decomposition of the sample space <span class="math inline">\(\Omega\)</span> into a partition <span class="math inline">\(B_1,\ldots,B_k\)</span>. Subsets <span class="math inline">\(B_i\)</span> are mutually exclusive and exhaustive; every point in <span class="math inline">\(\Omega\)</span> lies in exactly one <span class="math inline">\(B_i\)</span>.
+Figure&nbsp;1.2: A decomposition of the sample space <span class="math inline">\Omega</span> into a partition <span class="math inline">B_1,\ldots,B_k</span>. Subsets <span class="math inline">B_i</span> are mutually exclusive and exhaustive; every point in <span class="math inline">\Omega</span> lies in exactly one <span class="math inline">B_i</span>.
 </figcaption>
 </figure>
 </div>
@@ -1303,9 +1317,9 @@ Figure&nbsp;1.2: A decomposition of the sample space <span class="math inline">\
 </div>
 <div class="callout-body-container">
 <div id="def-conditional" class="def theorem definition">
-<p><span class="theorem-title"><strong>Definition 1.4 (Conditional probability)</strong></span> If <span class="math inline">\(\mathrm{Pr}(B) &gt; 0\)</span>, the probability of <span class="math inline">\(A\)</span> given <span class="math inline">\(B\)</span> is <span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 1.4 (Conditional probability)</strong></span> If <span class="math inline">\mathrm{Pr}(B) &gt; 0</span>, the probability of <span class="math inline">A</span> given <span class="math inline">B</span> is <span class="math display">
 \mathrm{Pr}(A \mid B) = \frac{\mathrm{Pr}(A \cap B)}{\mathrm{Pr}(B)}.
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
@@ -1317,11 +1331,11 @@ Figure&nbsp;1.2: A decomposition of the sample space <span class="math inline">\
 </div>
 <div class="callout-body-container">
 <div id="def-independence" class="def theorem definition">
-<p><span class="theorem-title"><strong>Definition 1.5 (Independence)</strong></span> Two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are <strong>independent</strong> if knowing that one occurs does not change the probability of the other: <span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 1.5 (Independence)</strong></span> Two events <span class="math inline">A</span> and <span class="math inline">B</span> are <strong>independent</strong> if knowing that one occurs does not change the probability of the other: <span class="math display">
 \mathrm{Pr}(A \cap B) = \mathrm{Pr}(A)\mathrm{Pr}(B).
-\]</span> Equivalently, <span class="math display">\[
+</span> Equivalently, <span class="math display">
 \mathrm{Pr}(A\mid B) = \mathrm{Pr}(A) \quad \text{and} \quad \mathrm{Pr}(B\mid A) = \mathrm{Pr}(B)
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
@@ -1333,9 +1347,9 @@ Figure&nbsp;1.2: A decomposition of the sample space <span class="math inline">\
 </div>
 <div class="callout-body-container">
 <div id="thm-total-prob" class="thm theorem">
-<p><span class="theorem-title"><strong>Theorem 1.1 (Law of Total Probability)</strong></span> If <span class="math inline">\(B_1,\dots,B_k\)</span> form a <span class="xref-no-num"><a href="#def-excl-exh-part" class="quarto-xref">partition&nbsp;<span>1.3</span></a></span> of the sample space (mutually exclusive and exhaustive events), then for any event <span class="math inline">\(A\)</span>: <span class="math display">\[
+<p><span class="theorem-title"><strong>Theorem 1.1 (Law of Total Probability)</strong></span> If <span class="math inline">B_1,\dots,B_k</span> form a <span class="xref-no-num"><a href="#def-excl-exh-part" class="quarto-xref">partition&nbsp;<span>1.3</span></a></span> of the sample space (mutually exclusive and exhaustive events), then for any event <span class="math inline">A</span>: <span class="math display">
 \mathrm{Pr}(A) = \sum_{i=1}^k \mathrm{Pr}(A \mid B_i)\mathrm{Pr}(B_i).
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
@@ -1353,14 +1367,14 @@ Figure&nbsp;1.2: A decomposition of the sample space <span class="math inline">\
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="prf-total-prob" class="proof">
-<p><span class="proof-title"><em>Proof 1.1</em>. </span>Since <span class="math inline">\(B_1\ldots, B_n\)</span> form a partition of <span class="math inline">\(\Omega\)</span>, we can decompose any event <span class="math inline">\(A\)</span> in a <em>disjoint</em> union of intersections: <span class="math display">\[
+<p><span class="proof-title"><em>Proof 1.1</em>. </span>Since <span class="math inline">B_1\ldots, B_n</span> form a partition of <span class="math inline">\Omega</span>, we can decompose any event <span class="math inline">A</span> in a <em>disjoint</em> union of intersections: <span class="math display">
 A = \bigcup_{i=1}^n (A\cap B_i).
-\]</span> By induction on the <span class="xref-no-num"><a href="#def-inclusion-exclusion" class="quarto-xref">addition rule&nbsp;<span>1.2</span></a></span>, we thus have <span class="math display">\[
+</span> By induction on the <span class="xref-no-num"><a href="#def-inclusion-exclusion" class="quarto-xref">addition rule&nbsp;<span>1.2</span></a></span>, we thus have <span class="math display">
 \mathrm{Pr}(A) = \sum_{i=1}^n \mathrm{Pr}(A\cap B_i).
-\]</span> By the definition of <span class="xref-no-num"><a href="#def-conditional" class="quarto-xref">conditional probability&nbsp;<span>1.4</span></a></span>, we have <span class="math inline">\(\mathrm{Pr}(A\cap B_i) = \mathrm{Pr}(A\mid B_i) \mathrm{Pr}(B_i)\)</span>. Therefore,</p>
-<p><span class="math display">\[
+</span> By the definition of <span class="xref-no-num"><a href="#def-conditional" class="quarto-xref">conditional probability&nbsp;<span>1.4</span></a></span>, we have <span class="math inline">\mathrm{Pr}(A\cap B_i) = \mathrm{Pr}(A\mid B_i) \mathrm{Pr}(B_i)</span>. Therefore,</p>
+<p><span class="math display">
 \mathrm{Pr}(A) =  \sum_{i=1}^n \mathrm{Pr}(A \mid B_i)\mathrm{Pr}(B_i).
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
@@ -1517,7 +1531,7 @@ A = \bigcup_{i=1}^n (A\cap B_i).
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lotp-voronoi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1.3: Law of Total Probability visualised. An event <span class="math inline">\(A\)</span> (orange) overlaps a partition <span class="math inline">\(B_1,\ldots,B_{k}\)</span> of <span class="math inline">\(\Omega\)</span>. The shaded pieces <span class="math inline">\(A\cap B_i\)</span> decompose <span class="math inline">\(\operatorname{Pr}(A)\)</span> as <span class="math inline">\(\operatorname{Pr}(A)= \sum_i \operatorname{Pr}(A \cap B_i)\)</span>.
+Figure&nbsp;1.3: Law of Total Probability visualised. An event <span class="math inline">A</span> (orange) overlaps a partition <span class="math inline">B_1,\ldots,B_{k}</span> of <span class="math inline">\Omega</span>. The shaded pieces <span class="math inline">A\cap B_i</span> decompose <span class="math inline">\operatorname{Pr}(A)</span> as <span class="math inline">\operatorname{Pr}(A)= \sum_i \operatorname{Pr}(A \cap B_i)</span>.
 </figcaption>
 </figure>
 </div>
@@ -1679,9 +1693,9 @@ Figure&nbsp;1.3: Law of Total Probability visualised. An event <span class="math
 </div>
 <div class="callout-body-container">
 <div id="thm-bayes" class="thm theorem">
-<p><span class="theorem-title"><strong>Theorem 1.2 (Bayes’ Theorem)</strong></span> If <span class="math inline">\(\mathrm{Pr}(B) &gt; 0\)</span>, then <span class="math display">\[
+<p><span class="theorem-title"><strong>Theorem 1.2 (Bayes’ Theorem)</strong></span> If <span class="math inline">\mathrm{Pr}(B) &gt; 0</span>, then <span class="math display">
 \mathrm{Pr}(A \mid B) = \frac{\mathrm{Pr}(B \mid A)\mathrm{Pr}(A)}{\mathrm{Pr}(B)}.
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
@@ -1700,18 +1714,18 @@ Figure&nbsp;1.3: Law of Total Probability visualised. An event <span class="math
 <div class="callout-body-container callout-body">
 <div id="prf-bayes" class="proof">
 <p><span class="proof-title"><em>Proof 1.2</em>. </span>From the definition of <span class="xref-no-num"><a href="#def-conditional" class="quarto-xref">conditional probability&nbsp;<span>1.4</span></a></span>,<br>
-<span class="math display">\[
+<span class="math display">
 \mathrm{Pr}(A \mid B) = \frac{\mathrm{Pr}(A \cap B)}{\mathrm{Pr}(B)}.
-\]</span></p>
-<p>But the intersection <span class="math inline">\(A \cap B\)</span> can also be written the other way round: <span class="math display">\[
+</span></p>
+<p>But the intersection <span class="math inline">A \cap B</span> can also be written the other way round: <span class="math display">
 \mathrm{Pr}(A \cap B) = \mathrm{Pr}(B \cap A).
-\]</span></p>
-<p>Using the definition of conditional probability again, <span class="math display">\[
+</span></p>
+<p>Using the definition of conditional probability again, <span class="math display">
 \mathrm{Pr}(B \cap A) = \mathrm{Pr}(B \mid A)\mathrm{Pr}(A).
-\]</span></p>
-<p>Substituting this into the first expression gives <span class="math display">\[
+</span></p>
+<p>Substituting this into the first expression gives <span class="math display">
 \mathrm{Pr}(A \mid B) = \frac{\mathrm{Pr}(B \mid A)\mathrm{Pr}(A)}{\mathrm{Pr}(B)}.
-\]</span></p>
+</span></p>
 <p>This completes the proof.</p>
 </div>
 </div>
@@ -1724,7 +1738,7 @@ Figure&nbsp;1.3: Law of Total Probability visualised. An event <span class="math
 </div>
 <div class="callout-body-container">
 <div id="exm-student-example" class="theorem example">
-<p><span class="theorem-title"><strong>Example 1.2 (Student Example)</strong></span> Seventy percent of students are attentive in lectures and thirty percent are not. If a student is <em>attentive</em> the probability of passing the course is <span class="math inline">\(0.8\)</span>. If a student is <em>not attentive</em> the probability of passing the course is <span class="math inline">\(0.1\)</span>.</p>
+<p><span class="theorem-title"><strong>Example 1.2 (Student Example)</strong></span> Seventy percent of students are attentive in lectures and thirty percent are not. If a student is <em>attentive</em> the probability of passing the course is <span class="math inline">0.8</span>. If a student is <em>not attentive</em> the probability of passing the course is <span class="math inline">0.1</span>.</p>
 <ol type="1">
 <li>A student is selected at random. What is the probability that they pass the course?</li>
 <li>Given that the student passed the course, what is the probability that they were attentive?</li>
@@ -1748,23 +1762,23 @@ Figure&nbsp;1.3: Law of Total Probability visualised. An event <span class="math
 <div id="sol-student" class="proof solution">
 <p><span class="proof-title"><em>Solution 1.2</em>. </span>Let</p>
 <ul>
-<li><span class="math inline">\(P\)</span> denote the event of a student passing the course.</li>
-<li><span class="math inline">\(A\)</span> denote the event of a student being attentive.</li>
-<li><span class="math inline">\(A^c\)</span> denote the event of a student not being attentive.</li>
+<li><span class="math inline">P</span> denote the event of a student passing the course.</li>
+<li><span class="math inline">A</span> denote the event of a student being attentive.</li>
+<li><span class="math inline">A^c</span> denote the event of a student not being attentive.</li>
 </ul>
 <ol type="1">
 <li>Attentive and inattentive form a partition. By the law of total probability,</li>
 </ol>
-<p><span class="math display">\[
+<p><span class="math display">
 \mathrm{Pr}(P)=\mathrm{Pr}(P\mid A)\mathrm{Pr}(A)+\mathrm{Pr}(P\mid A^c)\mathrm{Pr}(A^c)=0.8\times0.7+0.1\times0.3=0.59.
-\]</span></p>
+</span></p>
 <ol start="2" type="1">
 <li>Using Bayes’ theorem,</li>
 </ol>
-<p><span class="math display">\[
+<p><span class="math display">
 \mathrm{Pr}(A\mid P)=\frac{\mathrm{Pr}(P\mid A)\mathrm{Pr}(A)}{\mathrm{Pr}(P)}
 =\frac{0.8\times0.7}{0.59}=0.949\ \text{(3 s.f.)}.
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
@@ -1772,20 +1786,20 @@ Figure&nbsp;1.3: Law of Total Probability visualised. An event <span class="math
 </section>
 <section id="random-variables" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="random-variables"><span class="header-section-number">1.2</span> Random Variables</h2>
-<p>We use upper-case letters for random variables, e.g.&nbsp;<span class="math inline">\(X, Y, X_1, X_2,\dots\)</span>.</p>
+<p>We use upper-case letters for random variables, e.g.&nbsp;<span class="math inline">X, Y, X_1, X_2,\dots</span>.</p>
 <ul>
-<li><p><strong>Cumulative distribution function (cdf).</strong> For any (real-valued) random variable <span class="math inline">\(X\)</span>,</p>
-<p><span class="math display">\[
+<li><p><strong>Cumulative distribution function (cdf).</strong> For any (real-valued) random variable <span class="math inline">X</span>,</p>
+<p><span class="math display">
 F(x)=\mathrm{Pr}(X\le x).
-\]</span></p></li>
-<li><p><strong>Discrete case (pmf).</strong> If <span class="math inline">\(X\)</span> is discrete, its <em>probability mass function</em> is</p>
-<p><span class="math display">\[
+</span></p></li>
+<li><p><strong>Discrete case (pmf).</strong> If <span class="math inline">X</span> is discrete, its <em>probability mass function</em> is</p>
+<p><span class="math display">
 p(x)=\mathrm{Pr}(X=x),\qquad \sum_x p(x)=1.
-\]</span></p></li>
-<li><p><strong>Continuous case (pdf).</strong> If <span class="math inline">\(X\)</span> is continuous, its <em>probability density function</em> satisfies</p>
-<p><span class="math display">\[
+</span></p></li>
+<li><p><strong>Continuous case (pdf).</strong> If <span class="math inline">X</span> is continuous, its <em>probability density function</em> satisfies</p>
+<p><span class="math display">
 f(x)=\frac{\partial F(x)}{\partial x},\qquad \mathrm{Pr}(a&lt;X\le b)=\int_a^b f(x)\,\mathrm{d}x,\qquad \int_{-\infty}^{\infty} f(x)\,\mathrm{d}x=1.
-\]</span></p></li>
+</span></p></li>
 </ul>
 <div class="callout callout-style-simple callout-caution no-icon">
 <div class="callout-body d-flex">
@@ -1794,7 +1808,7 @@ f(x)=\frac{\partial F(x)}{\partial x},\qquad \mathrm{Pr}(a&lt;X\le b)=\int_a^b f
 </div>
 <div class="callout-body-container">
 <div id="exm-discrete-cdf" class="theorem example">
-<p><span class="theorem-title"><strong>Example 1.3 (Discrete CDF.)</strong></span> Let <span class="math inline">\(X\)</span> be the outcome of a fair six-sided die. Find <span class="math inline">\(p(x)\)</span> and <span class="math inline">\(F(3)\)</span>.</p>
+<p><span class="theorem-title"><strong>Example 1.3 (Discrete CDF.)</strong></span> Let <span class="math inline">X</span> be the outcome of a fair six-sided die. Find <span class="math inline">p(x)</span> and <span class="math inline">F(3)</span>.</p>
 </div>
 </div>
 </div>
@@ -1812,8 +1826,8 @@ f(x)=\frac{\partial F(x)}{\partial x},\qquad \mathrm{Pr}(a&lt;X\le b)=\int_a^b f
 <div id="callout-7" class="callout-7-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="sol-discrete-cdf" class="proof solution">
-<p><span class="proof-title"><em>Solution 1.3</em>. </span><span class="math inline">\(p(x)=\mathrm{Pr}(X=x)=1/6\)</span> for <span class="math inline">\(x\in\{1,2,3,4,5,6\}\)</span>, and <span class="math inline">\(0\)</span> otherwise.<br>
-<span class="math inline">\(F(3)=\mathrm{Pr}(X\le 3)=\mathrm{Pr}(\{1,2,3\})=3\times(1/6)=1/2.\)</span></p>
+<p><span class="proof-title"><em>Solution 1.3</em>. </span><span class="math inline">p(x)=\mathrm{Pr}(X=x)=1/6</span> for <span class="math inline">x\in\{1,2,3,4,5,6\}</span>, and <span class="math inline">0</span> otherwise.<br>
+<span class="math inline">F(3)=\mathrm{Pr}(X\le 3)=\mathrm{Pr}(\{1,2,3\})=3\times(1/6)=1/2.</span></p>
 </div>
 </div>
 </div>
@@ -1825,7 +1839,7 @@ f(x)=\frac{\partial F(x)}{\partial x},\qquad \mathrm{Pr}(a&lt;X\le b)=\int_a^b f
 </div>
 <div class="callout-body-container">
 <div id="exm-continuous-pdf" class="theorem example">
-<p><span class="theorem-title"><strong>Example 1.4</strong></span> Let <span class="math inline">\(X\sim \mathrm{Uniform}(0,1)\)</span>. Compute <span class="math inline">\(\mathrm{Pr}(0.2&lt;X&lt;0.5)\)</span>.</p>
+<p><span class="theorem-title"><strong>Example 1.4</strong></span> Let <span class="math inline">X\sim \mathrm{Uniform}(0,1)</span>. Compute <span class="math inline">\mathrm{Pr}(0.2&lt;X&lt;0.5)</span>.</p>
 </div>
 </div>
 </div>
@@ -1843,17 +1857,17 @@ f(x)=\frac{\partial F(x)}{\partial x},\qquad \mathrm{Pr}(a&lt;X\le b)=\int_a^b f
 <div id="callout-8" class="callout-8-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="sol-continuous-pdf" class="proof solution">
-<p><span class="proof-title"><em>Solution 1.4</em>. </span>Here <span class="math inline">\(f(x)=1\)</span> for <span class="math inline">\(0&lt;x&lt;1\)</span> and <span class="math inline">\(0\)</span> otherwise.</p>
-<p><span class="math display">\[
+<p><span class="proof-title"><em>Solution 1.4</em>. </span>Here <span class="math inline">f(x)=1</span> for <span class="math inline">0&lt;x&lt;1</span> and <span class="math inline">0</span> otherwise.</p>
+<p><span class="math display">
 \mathrm{Pr}(0.2&lt;X&lt;0.5)=\int_{0.2}^{0.5} 1\,dx = 0.3.
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
 </div>
 <section id="joint-marginal-and-conditional-densities" class="level3" data-number="1.2.1">
 <h3 data-number="1.2.1" class="anchored" data-anchor-id="joint-marginal-and-conditional-densities"><span class="header-section-number">1.2.1</span> Joint, Marginal, and Conditional Densities</h3>
-<p>Suppose <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are random variables with joint PDF/PMF <span class="math inline">\(f_{XY}(x,y)\)</span> (often written <span class="math inline">\(f(x,y)\)</span>). From this joint distribution we can define:</p>
+<p>Suppose <span class="math inline">X</span> and <span class="math inline">Y</span> are random variables with joint PDF/PMF <span class="math inline">f_{XY}(x,y)</span> (often written <span class="math inline">f(x,y)</span>). From this joint distribution we can define:</p>
 <ul>
 <li><strong>Marginal distributions:</strong> the distribution of each variable on its own.<br>
 </li>
@@ -1868,9 +1882,9 @@ f(x)=\frac{\partial F(x)}{\partial x},\qquad \mathrm{Pr}(a&lt;X\le b)=\int_a^b f
 </div>
 <div class="callout-body-container">
 <div id="def-marginal-pdf" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 1.6 (Marginal Distributions)</strong></span> If we only care about <span class="math inline">\(X\)</span>, regardless of <span class="math inline">\(Y\)</span>, we integrate/sum out <span class="math inline">\(Y\)</span>: <span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 1.6 (Marginal Distributions)</strong></span> If we only care about <span class="math inline">X</span>, regardless of <span class="math inline">Y</span>, we integrate/sum out <span class="math inline">Y</span>: <span class="math display">
 f_X(x) = \int f(x,y)\,\mathrm{d}y.
-\]</span> Similarly for <span class="math inline">\(f_Y(y)\)</span>.<br>
+</span> Similarly for <span class="math inline">f_Y(y)</span>.<br>
 <em>Note:</em> knowing the marginals does <strong>not</strong> determine the joint.</p>
 </div>
 </div>
@@ -1883,9 +1897,9 @@ f_X(x) = \int f(x,y)\,\mathrm{d}y.
 </div>
 <div class="callout-body-container">
 <div id="def-conditional-pdf" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 1.7 (Conditional Densities)</strong></span> For <span class="math inline">\(y\)</span> in the support of <span class="math inline">\(Y\)</span> with <span class="math inline">\(f_Y(y) &gt; 0\)</span>, we define: <span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 1.7 (Conditional Densities)</strong></span> For <span class="math inline">y</span> in the support of <span class="math inline">Y</span> with <span class="math inline">f_Y(y) &gt; 0</span>, we define: <span class="math display">
 f_{X \mid Y}(x \mid y) = \frac{f(x,y)}{f_Y(y)}.
-\]</span> This describes the distribution of <span class="math inline">\(X\)</span> <em>given</em> <span class="math inline">\(Y=y\)</span>.</p>
+</span> This describes the distribution of <span class="math inline">X</span> <em>given</em> <span class="math inline">Y=y</span>.</p>
 </div>
 </div>
 </div>
@@ -1897,9 +1911,9 @@ f_{X \mid Y}(x \mid y) = \frac{f(x,y)}{f_Y(y)}.
 </div>
 <div class="callout-body-container">
 <div id="thm-total-probability-pdfs" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 1.3 (Law of Total Probability)</strong></span> We can recover the marginal by “averaging” the conditional over <span class="math inline">\(Y\)</span>: <span class="math display">\[
+<p><span class="theorem-title"><strong>Theorem 1.3 (Law of Total Probability)</strong></span> We can recover the marginal by “averaging” the conditional over <span class="math inline">Y</span>: <span class="math display">
 f_X(x) = \int f_{X \mid Y}(x \mid y) f_Y(y)\,\mathrm{d}y.
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
@@ -1911,9 +1925,9 @@ f_X(x) = \int f_{X \mid Y}(x \mid y) f_Y(y)\,\mathrm{d}y.
 </div>
 <div class="callout-body-container">
 <div id="def-independence-rv" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 1.8 (Independence)</strong></span> <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent if and only if <span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 1.8 (Independence)</strong></span> <span class="math inline">X</span> and <span class="math inline">Y</span> are independent if and only if <span class="math display">
 f(x,y) = f_X(x) f_Y(y).
-\]</span> In this case, <span class="math inline">\(f_{X \mid Y}(x \mid y) = f_X(x)\)</span>: knowing <span class="math inline">\(Y\)</span> tells us nothing about <span class="math inline">\(X\)</span>.</p>
+</span> In this case, <span class="math inline">f_{X \mid Y}(x \mid y) = f_X(x)</span>: knowing <span class="math inline">Y</span> tells us nothing about <span class="math inline">X</span>.</p>
 </div>
 </div>
 </div>
@@ -1929,14 +1943,14 @@ f(x,y) = f_X(x) f_Y(y).
 </div>
 <div class="callout-body-container">
 <div id="def-mean" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 1.9 (Expected Value)</strong></span> The <strong>expected value</strong> (or <strong>population mean</strong>) of <span class="math inline">\(X\)</span> is <span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 1.9 (Expected Value)</strong></span> The <strong>expected value</strong> (or <strong>population mean</strong>) of <span class="math inline">X</span> is <span class="math display">
 \mathrm{E}[X] =
 \begin{cases}
 \displaystyle \sum_{\text{all } x} x\,p_X(x), &amp; \text{if $X$ is discrete}, \\
 \displaystyle \int_{-\infty}^{\infty} x\,f_X(x)\,\mathrm{d}x, &amp; \text{if $X$ is continuous}.
 \end{cases}
-\]</span></p>
-<p>We often write <span class="math inline">\(\mu = \mathrm{E}[X]\)</span>. This is a measure of <strong>location</strong>.</p>
+</span></p>
+<p>We often write <span class="math inline">\mu = \mathrm{E}[X]</span>. This is a measure of <strong>location</strong>.</p>
 </div>
 </div>
 </div>
@@ -1948,13 +1962,13 @@ f(x,y) = f_X(x) f_Y(y).
 </div>
 <div class="callout-body-container">
 <div id="def-expectation" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 1.10 (Expectation of <span class="math inline">\(g(X)\)</span>)</strong></span> Let <span class="math inline">\(g(\cdot)\)</span> be any function and <span class="math inline">\(X\)</span> a random variable with PMF <span class="math inline">\(p_X\)</span> (discrete) or PDF <span class="math inline">\(f_X\)</span> (continuous). The <strong>expected value</strong> of <span class="math inline">\(g(X)\)</span> is <span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 1.10 (Expectation of <span class="math inline">g(X)</span>)</strong></span> Let <span class="math inline">g(\cdot)</span> be any function and <span class="math inline">X</span> a random variable with PMF <span class="math inline">p_X</span> (discrete) or PDF <span class="math inline">f_X</span> (continuous). The <strong>expected value</strong> of <span class="math inline">g(X)</span> is <span class="math display">
 \mathrm{E}[g(X)] =
 \begin{cases}
 \displaystyle \sum_{\text{all } x} g(x)\,p_X(x), &amp; \text{if $X$ is discrete},\\
 \displaystyle \int_{-\infty}^{\infty} g(x)\,f_X(x)\,\mathrm{d}x, &amp; \text{if $X$ is continuous}.
 \end{cases}
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
@@ -1966,13 +1980,13 @@ f(x,y) = f_X(x) f_Y(y).
 </div>
 <div class="callout-body-container">
 <div id="def-expectation-bivariate" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 1.11 (Expectation (Bivariate))</strong></span> If <span class="math inline">\((X,Y)\)</span> is a pair of random variables with joint PMF <span class="math inline">\(p_{X,Y}\)</span> (discrete) or joint PDF <span class="math inline">\(f_{X,Y}\)</span> (continuous), then for any function <span class="math inline">\(g(x,y)\)</span> <span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 1.11 (Expectation (Bivariate))</strong></span> If <span class="math inline">(X,Y)</span> is a pair of random variables with joint PMF <span class="math inline">p_{X,Y}</span> (discrete) or joint PDF <span class="math inline">f_{X,Y}</span> (continuous), then for any function <span class="math inline">g(x,y)</span> <span class="math display">
 \mathrm{E}[g(X,Y)] =
 \begin{cases}
 \displaystyle \sum_{\text{all } x}\sum_{\text{all } y} g(x,y)\,p_{X,Y}(x,y), &amp; \text{if $(X,Y)$ are discrete},\\
 \displaystyle \int\!\!\!\int g(x,y)\,f_{X,Y}(x,y)\,\mathrm{d}x\,\mathrm{d}y, &amp; \text{if $(X,Y)$ are continuous}.
 \end{cases}
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
@@ -1984,7 +1998,7 @@ f(x,y) = f_X(x) f_Y(y).
 </div>
 <div class="callout-body-container">
 <div id="def-moments" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 1.12 (Moments)</strong></span> The quantities <span class="math inline">\(\mathrm{E}[X], \mathrm{E}[X^2], \mathrm{E}[X^3], \ldots\)</span> are the (raw) <strong>moments</strong> of <span class="math inline">\(X\)</span>.</p>
+<p><span class="theorem-title"><strong>Definition 1.12 (Moments)</strong></span> The quantities <span class="math inline">\mathrm{E}[X], \mathrm{E}[X^2], \mathrm{E}[X^3], \ldots</span> are the (raw) <strong>moments</strong> of <span class="math inline">X</span>.</p>
 </div>
 </div>
 </div>
@@ -1996,10 +2010,10 @@ f(x,y) = f_X(x) f_Y(y).
 </div>
 <div class="callout-body-container">
 <div id="def-variance" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 1.13 (Variance)</strong></span> The <strong>population variance</strong> of <span class="math inline">\(X\)</span> is <span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 1.13 (Variance)</strong></span> The <strong>population variance</strong> of <span class="math inline">X</span> is <span class="math display">
 \mathrm{Var}(X) = \mathrm{E}\!\left[(X-\mathrm{E}[X])^2\right]
 = \mathrm{E}[X^2] - \big(\mathrm{E}[X]\big)^2.
-\]</span> We often write <span class="math inline">\(\sigma^2 = \mathrm{Var}(X)\)</span>. This is a measure of <strong>spread</strong>.</p>
+</span> We often write <span class="math inline">\sigma^2 = \mathrm{Var}(X)</span>. This is a measure of <strong>spread</strong>.</p>
 </div>
 </div>
 </div>
@@ -2011,9 +2025,9 @@ f(x,y) = f_X(x) f_Y(y).
 </div>
 <div class="callout-body-container">
 <div id="def-sd" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 1.14 (Standard Deviation)</strong></span> The <strong>population standard deviation</strong> is the positive square root of the variance: <span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 1.14 (Standard Deviation)</strong></span> The <strong>population standard deviation</strong> is the positive square root of the variance: <span class="math display">
 \mathrm{SD}(X) = \sqrt{\mathrm{Var}(X)}.
-\]</span> We often write <span class="math inline">\(\sigma = \mathrm{SD}(X)\)</span>. It shares the <strong>same units</strong> as <span class="math inline">\(X\)</span> and measures spread.</p>
+</span> We often write <span class="math inline">\sigma = \mathrm{SD}(X)</span>. It shares the <strong>same units</strong> as <span class="math inline">X</span> and measures spread.</p>
 </div>
 </div>
 </div>
@@ -2025,11 +2039,11 @@ f(x,y) = f_X(x) f_Y(y).
 </div>
 <div class="callout-body-container">
 <div id="def-covariance" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 1.15 (Covariance)</strong></span> For two random variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, the <strong>covariance</strong> is <span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 1.15 (Covariance)</strong></span> For two random variables <span class="math inline">X</span> and <span class="math inline">Y</span>, the <strong>covariance</strong> is <span class="math display">
 \mathrm{Cov}(X,Y)
 = \mathrm{E}\!\left[(X-\mathrm{E}[X])(Y-\mathrm{E}[Y])\right]
 = \mathrm{E}[XY] - \mathrm{E}[X]\mathrm{E}[Y].
-\]</span> It measures <strong>linear association</strong>: positive if <span class="math inline">\(Y\)</span> tends to increase with <span class="math inline">\(X\)</span>; negative if <span class="math inline">\(Y\)</span> tends to decrease as <span class="math inline">\(X\)</span> increases.</p>
+</span> It measures <strong>linear association</strong>: positive if <span class="math inline">Y</span> tends to increase with <span class="math inline">X</span>; negative if <span class="math inline">Y</span> tends to decrease as <span class="math inline">X</span> increases.</p>
 </div>
 </div>
 </div>
@@ -2041,9 +2055,9 @@ f(x,y) = f_X(x) f_Y(y).
 </div>
 <div class="callout-body-container">
 <div id="def-correlation" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 1.16 (Correlation)</strong></span> The <strong>correlation</strong> (often denoted <span class="math inline">\(\rho\)</span>) is the scaled covariance <span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 1.16 (Correlation)</strong></span> The <strong>correlation</strong> (often denoted <span class="math inline">\rho</span>) is the scaled covariance <span class="math display">
 \rho = \mathrm{Corr}(X,Y) = \frac{\mathrm{Cov}(X,Y)}{\mathrm{SD}(X)\,\mathrm{SD}(Y)}.
-\]</span> Correlation always satisfies <span class="math inline">\(\rho \in [-1,1]\)</span>.</p>
+</span> Correlation always satisfies <span class="math inline">\rho \in [-1,1]</span>.</p>
 </div>
 </div>
 </div>
@@ -2055,8 +2069,8 @@ f(x,y) = f_X(x) f_Y(y).
 </div>
 <div class="callout-body-container">
 <div id="thm-independence-zero-cov" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 1.4 (Independence <span class="math inline">\(\Rightarrow\)</span> Zero Covariance)</strong></span> If <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are <strong>independent</strong>, then <span class="math inline">\(\mathrm{Cov}(X,Y)=0\)</span>.</p>
-<p><em>Note.</em> The converse need not hold: it is possible to have <span class="math inline">\(\mathrm{Cov}(X,Y)=0\)</span> while <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are <strong>not</strong> independent.</p>
+<p><span class="theorem-title"><strong>Theorem 1.4 (Independence <span class="math inline">\Rightarrow</span> Zero Covariance)</strong></span> If <span class="math inline">X</span> and <span class="math inline">Y</span> are <strong>independent</strong>, then <span class="math inline">\mathrm{Cov}(X,Y)=0</span>.</p>
+<p><em>Note.</em> The converse need not hold: it is possible to have <span class="math inline">\mathrm{Cov}(X,Y)=0</span> while <span class="math inline">X</span> and <span class="math inline">Y</span> are <strong>not</strong> independent.</p>
 </div>
 </div>
 </div>
@@ -2068,10 +2082,10 @@ f(x,y) = f_X(x) f_Y(y).
 </div>
 <div class="callout-body-container">
 <div id="exm-bern-var" class="example theorem">
-<p><span class="theorem-title"><strong>Example 1.5 (Variance of a Bernoulli Random Variable)</strong></span> A <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-bern" class="quarto-xref">Bernoulli random variable&nbsp;<span>1.1</span></a></span> <span class="math inline">\(X\)</span> takes only the values <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>, with probabilities <span class="math display">\[
+<p><span class="theorem-title"><strong>Example 1.5 (Variance of a Bernoulli Random Variable)</strong></span> A <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-bern" class="quarto-xref">Bernoulli random variable&nbsp;<span>1.1</span></a></span> <span class="math inline">X</span> takes only the values <span class="math inline">0</span> and <span class="math inline">1</span>, with probabilities <span class="math display">
 \operatorname{Pr}(X=1) = p, \qquad \operatorname{Pr}(X=0) = 1-p, \qquad 0 \leq p \leq 1.
-\]</span></p>
-<p>For what value of <span class="math inline">\(p\)</span> is the variance maximised?</p>
+</span></p>
+<p>For what value of <span class="math inline">p</span> is the variance maximised?</p>
 </div>
 </div>
 </div>
@@ -2089,36 +2103,36 @@ f(x,y) = f_X(x) f_Y(y).
 <div id="callout-9" class="callout-9-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="sol-bern-var" class="proof solution">
-<p><span class="proof-title"><em>Solution 1.5</em>. </span>We compute the mean and variance of <span class="math inline">\(X\)</span>.</p>
-<p><span class="math display">\[
+<p><span class="proof-title"><em>Solution 1.5</em>. </span>We compute the mean and variance of <span class="math inline">X</span>.</p>
+<p><span class="math display">
 \mathrm{E}[X] = 1 \cdot p + 0 \cdot (1-p) = p,
-\]</span></p>
-<p><span class="math display">\[
+</span></p>
+<p><span class="math display">
 \mathrm{E}[X^2] = 1^2 \cdot p + 0^2 \cdot (1-p) = p.
-\]</span></p>
-<p>Therefore, <span class="math display">\[
+</span></p>
+<p>Therefore, <span class="math display">
 \mathrm{Var}(X) = \mathrm{E}[X^2] - \big(\mathrm{E}[X]\big)^2 = p - p^2 = p(1-p).
-\]</span></p>
+</span></p>
 <hr>
-<p>To find the value of <span class="math inline">\(p\)</span> that maximises this variance, consider the function <span class="math display">\[
+<p>To find the value of <span class="math inline">p</span> that maximises this variance, consider the function <span class="math display">
 f(p) = p(1-p), \quad 0 \leq p \leq 1.
-\]</span></p>
-<p>Differentiate: <span class="math display">\[
+</span></p>
+<p>Differentiate: <span class="math display">
 f'(p) = 1 - 2p.
-\]</span></p>
-<p>Setting <span class="math inline">\(f'(p) = 0\)</span> gives <span class="math inline">\(p = \tfrac{1}{2}\)</span>.</p>
-<p>Second derivative: <span class="math display">\[
+</span></p>
+<p>Setting <span class="math inline">f'(p) = 0</span> gives <span class="math inline">p = \tfrac{1}{2}</span>.</p>
+<p>Second derivative: <span class="math display">
 f''(p) = -2 &lt; 0,
-\]</span> so this is indeed a maximum.</p>
-<p>Finally, check the boundary values: <span class="math display">\[
+</span> so this is indeed a maximum.</p>
+<p>Finally, check the boundary values: <span class="math display">
 f(0) = 0, \qquad f(1) = 0, \qquad f\!\left(\tfrac{1}{2}\right) = \tfrac{1}{4}.
-\]</span></p>
+</span></p>
 <hr>
 <p><strong>Conclusion.</strong><br>
 The variance of a Bernoulli random variable is maximised at<br>
-<span class="math display">\[
+<span class="math display">
 p = \tfrac{1}{2}, \quad \mathrm{Var}(X) = \tfrac{1}{4}.
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
@@ -2150,15 +2164,15 @@ None of the material in this section is examinable.</p>
 </div>
 <div class="callout-body-container">
 <div id="def-convergence-in-probability" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 1.17 (Convergence in Probability)</strong></span> A sequence of random variables <span class="math inline">\(X_n\)</span> is said to <strong>converge in probability</strong> to a random variable <span class="math inline">\(X\)</span> if, for every <span class="math inline">\(\varepsilon &gt; 0\)</span>,</p>
-<p><span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 1.17 (Convergence in Probability)</strong></span> A sequence of random variables <span class="math inline">X_n</span> is said to <strong>converge in probability</strong> to a random variable <span class="math inline">X</span> if, for every <span class="math inline">\varepsilon &gt; 0</span>,</p>
+<p><span class="math display">
 \Pr\big(|X_n - X| &gt; \varepsilon\big) \;\longrightarrow\; 0
 \quad \text{as } n \to \infty.
-\]</span></p>
-<p>We write this as <span class="math display">\[
+</span></p>
+<p>We write this as <span class="math display">
 X_n \xrightarrow{p} X.
-\]</span></p>
-<p>Intuitively: as <span class="math inline">\(n\)</span> grows, the probability that <span class="math inline">\(X_n\)</span> is far from <span class="math inline">\(X\)</span> becomes negligible.</p>
+</span></p>
+<p>Intuitively: as <span class="math inline">n</span> grows, the probability that <span class="math inline">X_n</span> is far from <span class="math inline">X</span> becomes negligible.</p>
 </div>
 </div>
 </div>
@@ -2170,16 +2184,16 @@ X_n \xrightarrow{p} X.
 </div>
 <div class="callout-body-container">
 <div id="def-convergence-in-distribution" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 1.18 (Convergence in Distribution)</strong></span> A sequence of random variables <span class="math inline">\(X_n\)</span> is said to <strong>converge in distribution</strong> to a random variable <span class="math inline">\(X\)</span> if, for all continuity points <span class="math inline">\(x\)</span> of <span class="math inline">\(F_X\)</span>,</p>
-<p><span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 1.18 (Convergence in Distribution)</strong></span> A sequence of random variables <span class="math inline">X_n</span> is said to <strong>converge in distribution</strong> to a random variable <span class="math inline">X</span> if, for all continuity points <span class="math inline">x</span> of <span class="math inline">F_X</span>,</p>
+<p><span class="math display">
 F_{X_n}(x) \;\longrightarrow\; F_X(x)
 \quad \text{as } n \to \infty,
-\]</span></p>
-<p>where <span class="math inline">\(F_{X_n}\)</span> and <span class="math inline">\(F_X\)</span> are the cumulative distribution functions.</p>
-<p>We write this as <span class="math display">\[
+</span></p>
+<p>where <span class="math inline">F_{X_n}</span> and <span class="math inline">F_X</span> are the cumulative distribution functions.</p>
+<p>We write this as <span class="math display">
 X_n \xrightarrow{d} X.
-\]</span></p>
-<p>Intuitively: the distribution of <span class="math inline">\(X_n\)</span> “settles down” and approaches that of <span class="math inline">\(X\)</span>.</p>
+</span></p>
+<p>Intuitively: the distribution of <span class="math inline">X_n</span> “settles down” and approaches that of <span class="math inline">X</span>.</p>
 </div>
 </div>
 </div>
@@ -2195,9 +2209,9 @@ X_n \xrightarrow{d} X.
 </div>
 <div class="callout-body-container callout-body">
 <p>Convergence in probability is <strong>stronger</strong> than convergence in distribution:<br>
-<span class="math display">\[
+<span class="math display">
 X_n \xrightarrow{p} X \;\;\;\implies\;\;\; X_n \xrightarrow{d} X.
-\]</span> But not the other way around.</p>
+</span> But not the other way around.</p>
 </div>
 </div>
 <hr>
@@ -2211,11 +2225,11 @@ X_n \xrightarrow{p} X \;\;\;\implies\;\;\; X_n \xrightarrow{d} X.
 </div>
 <div class="callout-body-container">
 <div id="prp-chebyshev" class="theorem proposition">
-<p><span class="theorem-title"><strong>Proposition 1.1 (Chebyshev’s Inequality)</strong></span> If a random variable <span class="math inline">\(X\)</span> has mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2 &lt; \infty\)</span>, then for any <span class="math inline">\(\varepsilon &gt; 0\)</span>,</p>
-<p><span class="math display">\[
+<p><span class="theorem-title"><strong>Proposition 1.1 (Chebyshev’s Inequality)</strong></span> If a random variable <span class="math inline">X</span> has mean <span class="math inline">\mu</span> and variance <span class="math inline">\sigma^2 &lt; \infty</span>, then for any <span class="math inline">\varepsilon &gt; 0</span>,</p>
+<p><span class="math display">
 \Pr\big(|X - \mu| \geq \varepsilon\big)
 \;\leq\; \frac{\sigma^2}{\varepsilon^2}.
-\]</span></p>
+</span></p>
 <p>This provides a bound on the probability of large deviations from the mean.</p>
 </div>
 </div>
@@ -2223,13 +2237,12 @@ X_n \xrightarrow{p} X \;\;\;\implies\;\;\; X_n \xrightarrow{d} X.
 </div>
 
 
-
 </section>
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p><strong>Note on Probability Theory.</strong> Formally, a probability space is written as a triple <span class="math inline">\((\Omega,\Sigma,P)\)</span>, where <span class="math inline">\(\Sigma\)</span> is the collection of “measurable” events. This level of mathematical detail goes beyond what we need in this course and will <strong>not be assessed</strong>. (See the <a href="https://en.wikipedia.org/wiki/Probability_space">Wikipedia article on probability spaces</a> if you are curious.)<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p><strong>Note on Probability Theory.</strong> Formally, a probability space is written as a triple <span class="math inline">(\Omega,\Sigma,P)</span>, where <span class="math inline">\Sigma</span> is the collection of “measurable” events. This level of mathematical detail goes beyond what we need in this course and will <strong>not be assessed</strong>. (See the <a href="https://en.wikipedia.org/wiki/Probability_space">Wikipedia article on probability spaces</a> if you are curious.)<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 

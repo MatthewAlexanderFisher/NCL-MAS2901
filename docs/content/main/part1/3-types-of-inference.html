@@ -183,8 +183,22 @@ ul.task-list li input[type="checkbox"] {
   })();
 </script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -633,20 +647,20 @@ window.Quarto = {
 <p>Frequentist inference is based on the idea of <strong>long-run frequency</strong>.</p>
 <ul>
 <li>The <strong>data</strong> are considered random, as they represent one possible outcome of repeated sampling from the population.</li>
-<li>The <strong>parameter</strong> <span class="math inline">\(\theta\)</span> is fixed but unknown.</li>
+<li>The <strong>parameter</strong> <span class="math inline">\theta</span> is fixed but unknown.</li>
 <li>Inference is about constructing procedures (estimators, tests, intervals) that perform well under repeated sampling.</li>
 </ul>
-<p><strong>Preview examples (we will return to these later):</strong> the sample mean <span class="math inline">\(\hat{\mu}\)</span> as an estimator of <span class="math inline">\(\mu\)</span>, a <span class="math inline">\(t\)</span>-test for comparing means, or a <span class="math inline">\(95\%\)</span> confidence interval.</p>
+<p><strong>Preview examples (we will return to these later):</strong> the sample mean <span class="math inline">\hat{\mu}</span> as an estimator of <span class="math inline">\mu</span>, a <span class="math inline">t</span>-test for comparing means, or a <span class="math inline">95\%</span> confidence interval.</p>
 </section>
 <section id="bayesian-inference" class="level3" data-number="3.1.2">
 <h3 data-number="3.1.2" class="anchored" data-anchor-id="bayesian-inference"><span class="header-section-number">3.1.2</span> Bayesian Inference</h3>
 <p>Bayesian inference is based on <strong>subjective probability as degree of belief</strong>.</p>
 <ul>
 <li>The <strong>data</strong> are fixed once observed.</li>
-<li>The <strong>parameter</strong> <span class="math inline">\(\theta\)</span> is treated as a random variable, with uncertainty described by a <strong>prior distribution</strong> <span class="math inline">\(\pi(\theta)\)</span>.</li>
-<li>Inference updates this prior in light of the data, giving a <strong>posterior distribution</strong> <span class="math inline">\(\pi(\theta \mid \text{data})\)</span>.</li>
+<li>The <strong>parameter</strong> <span class="math inline">\theta</span> is treated as a random variable, with uncertainty described by a <strong>prior distribution</strong> <span class="math inline">\pi(\theta)</span>.</li>
+<li>Inference updates this prior in light of the data, giving a <strong>posterior distribution</strong> <span class="math inline">\pi(\theta \mid \text{data})</span>.</li>
 </ul>
-<p><strong>Preview examples (we will return to these later):</strong> a posterior mean as an estimator of <span class="math inline">\(\mu\)</span>, a <span class="math inline">\(95\%\)</span> credible interval, or comparing hypotheses via posterior probabilities.</p>
+<p><strong>Preview examples (we will return to these later):</strong> a posterior mean as an estimator of <span class="math inline">\mu</span>, a <span class="math inline">95\%</span> credible interval, or comparing hypotheses via posterior probabilities.</p>
 </section>
 <section id="key-differences" class="level3" data-number="3.1.3">
 <h3 data-number="3.1.3" class="anchored" data-anchor-id="key-differences"><span class="header-section-number">3.1.3</span> Key Differences</h3>
@@ -691,7 +705,7 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td><strong>Output</strong></td>
-<td>Estimators, confidence intervals, <span class="math inline">\(p\)</span>-values</td>
+<td>Estimators, confidence intervals, <span class="math inline">p</span>-values</td>
 <td>Posterior distribution, credible intervals</td>
 </tr>
 </tbody>
@@ -700,27 +714,27 @@ window.Quarto = {
 </section>
 <section id="sec-inference-tasks" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="sec-inference-tasks"><span class="header-section-number">3.2</span> Inference Tasks</h2>
-<p>Regardless of philosophy, the core tasks of inference are similar. Suppose we want to infer a parameter <span class="math inline">\(\theta\)</span> from data:</p>
+<p>Regardless of philosophy, the core tasks of inference are similar. Suppose we want to infer a parameter <span class="math inline">\theta</span> from data:</p>
 <ol type="1">
-<li><p><strong>Point Estimation</strong> Give a single “best guess” <span class="math inline">\(\hat{\theta}\)</span> for the parameter.</p>
+<li><p><strong>Point Estimation</strong> Give a single “best guess” <span class="math inline">\hat{\theta}</span> for the parameter.</p>
 <ul>
 <li>Frequentist: choose an estimator with good properties (e.g.&nbsp;unbiasedness).</li>
 <li>Bayesian: often the posterior mean, median, or mode.</li>
 </ul></li>
-<li><p><strong>Interval Estimation</strong> Quantify uncertainty in <span class="math inline">\(\theta\)</span> by reporting a range.</p>
+<li><p><strong>Interval Estimation</strong> Quantify uncertainty in <span class="math inline">\theta</span> by reporting a range.</p>
 <ul>
 <li><p>Frequentist: <strong>confidence interval</strong></p>
-<p><span class="math display">\[
+<p><span class="math display">
 L \leq \theta \leq U
-\]</span></p>
+</span></p>
 <p>with a given long-run coverage probability.</p></li>
-<li><p>Bayesian: <strong>credible interval</strong>, the posterior probability that <span class="math inline">\(\theta\)</span> lies in <span class="math inline">\([L,U]\)</span> is, say, 95%.</p></li>
+<li><p>Bayesian: <strong>credible interval</strong>, the posterior probability that <span class="math inline">\theta</span> lies in <span class="math inline">[L,U]</span> is, say, 95%.</p></li>
 </ul></li>
-<li><p><strong>Hypothesis Testing</strong> {#sec-hypothesis-testing-intro} Ask a <strong>yes/no question</strong> about the parameter <span class="math inline">\(\theta\)</span>. This is done by formalising a claim (the <em>null hypothesis</em>) such as <span class="math display">\[
+<li><p><strong>Hypothesis Testing</strong> {#sec-hypothesis-testing-intro} Ask a <strong>yes/no question</strong> about the parameter <span class="math inline">\theta</span>. This is done by formalising a claim (the <em>null hypothesis</em>) such as <span class="math display">
      H_0: \theta \in \Theta_0,
-\]</span> and then using the data to judge whether this claim is <strong>compatible with the evidence</strong>.</p>
+</span> and then using the data to judge whether this claim is <strong>compatible with the evidence</strong>.</p>
 <ul>
-<li><strong>Frequentist approach:</strong> base the decision on a <strong>test statistic</strong> and its distribution under <span class="math inline">\(H_0\)</span>, leading to a <strong><span class="math inline">\(p\)</span>-value</strong> or a comparison with a <strong>significance level</strong>.</li>
+<li><strong>Frequentist approach:</strong> base the decision on a <strong>test statistic</strong> and its distribution under <span class="math inline">H_0</span>, leading to a <strong><span class="math inline">p</span>-value</strong> or a comparison with a <strong>significance level</strong>.</li>
 <li><strong>Bayesian approach:</strong> compare hypotheses using <strong>posterior probabilities</strong> or <strong>Bayes factors</strong>, quantifying how much the data shift our beliefs.</li>
 </ul></li>
 <li><p><strong>Prediction</strong> Use data to predict future or unobserved outcomes.</p>
@@ -729,7 +743,6 @@ L \leq \theta \leq U
 <li>Bayesian: posterior predictive distribution, integrating over parameter uncertainty.</li>
 </ul></li>
 </ol>
-
 
 
 </section>

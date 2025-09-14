@@ -220,8 +220,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script type="module" src="../../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
 <link href="../../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -672,10 +686,10 @@ window.Quarto = {
 
 
 <p>The <strong>likelihood function</strong> is simply the <strong>joint density (or probability mass function)</strong> of the observed data:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 f(\underline{x} \mid \theta),
 \quad \underline{x} = (x_1, \dots, x_n).
-\]</span></p>
+</span></p>
 <p>It plays a central role in both <strong>frequentist</strong> and <strong>Bayesian</strong> statistics.</p>
 <div id="imp-notation-freq-vs-bayes" class="callout callout-style-simple callout-important callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
@@ -691,23 +705,23 @@ Important&nbsp;5.1: Notation Convention
 <div class="callout-body-container callout-body">
 <ul>
 <li><p>When <strong>specifying the distribution of the data</strong> in the frequentist setting, we write</p>
-<p><span class="math display">\[
+<p><span class="math display">
 X_i \sim \mathrm{Distribution}(\theta),
-\]</span></p>
-<p>to emphasise that <span class="math inline">\(\theta\)</span> is fixed (but unknown).</p></li>
+</span></p>
+<p>to emphasise that <span class="math inline">\theta</span> is fixed (but unknown).</p></li>
 <li><p>When writing <strong>densities</strong>, we will always use</p>
-<p><span class="math display">\[
+<p><span class="math display">
 f(\underline{x}\mid\theta).
-\]</span></p>
+</span></p>
 <ul>
-<li>In the <strong>frequentist</strong> context: read this as <em>“the <strong><em>joint density</em></strong> of the data when the parameter takes the value <span class="math inline">\(\theta\)</span>.”</em></li>
-<li>In the <strong>Bayesian</strong> context: it is literally the <strong>conditional density</strong> of the data given the <strong>random</strong> parameter <span class="math inline">\(\theta\)</span>.</li>
+<li>In the <strong>frequentist</strong> context: read this as <em>“the <strong><em>joint density</em></strong> of the data when the parameter takes the value <span class="math inline">\theta</span>.”</em></li>
+<li>In the <strong>Bayesian</strong> context: it is literally the <strong>conditional density</strong> of the data given the <strong>random</strong> parameter <span class="math inline">\theta</span>.</li>
 </ul></li>
 <li><p>Later, in the <strong>Bayesian</strong> parts of the course, we will also use</p>
-<p><span class="math display">\[
+<p><span class="math display">
 X_i \mid \theta \sim \mathrm{Distribution}(\theta),
-\]</span></p>
-<p>where the bar <span class="math inline">\(\mid \theta\)</span> reflects its probabilistic meaning: <em>conditioning on random parameters</em>.</p></li>
+</span></p>
+<p>where the bar <span class="math inline">\mid \theta</span> reflects its probabilistic meaning: <em>conditioning on random parameters</em>.</p></li>
 </ul>
 </div>
 </div>
@@ -720,47 +734,47 @@ X_i \mid \theta \sim \mathrm{Distribution}(\theta),
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <p><strong>This is the default case in most of this course.</strong></p>
-<p>Suppose <span class="math inline">\(X_1, \ldots, X_n\)</span> are <strong>independent and identically distributed (i.i.d.)</strong> random variables:</p>
-<p><span class="math display">\[
+<p>Suppose <span class="math inline">X_1, \ldots, X_n</span> are <strong>independent and identically distributed (i.i.d.)</strong> random variables:</p>
+<p><span class="math display">
 X_i \overset{\text{iid}}{\sim} \mathrm{Distribution}(\theta),
 \quad i = 1, \ldots, n.
-\]</span></p>
-<p>Each <span class="math inline">\(X_i\)</span> has density (or PMF)</p>
-<p><span class="math display">\[
+</span></p>
+<p>Each <span class="math inline">X_i</span> has density (or PMF)</p>
+<p><span class="math display">
 f(x \mid \theta).
-\]</span></p>
+</span></p>
 <p>Then the <strong>joint density</strong> of the full sample is</p>
-<p><span class="math display">\[
+<p><span class="math display">
 f(x_1, \ldots, x_n \mid \theta)
 = \prod_{i=1}^n f(x_i \mid \theta).
-\]</span></p>
+</span></p>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <p>If instead the samples are <strong>independent but not identically distributed</strong>:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 X_i \sim \mathrm{Distribution}_i(\theta),
-\]</span></p>
-<p>with individual densities <span class="math inline">\(f_{X_i}(x_i \mid \theta)\)</span>, then the joint density becomes</p>
-<p><span class="math display">\[
+</span></p>
+<p>with individual densities <span class="math inline">f_{X_i}(x_i \mid \theta)</span>, then the joint density becomes</p>
+<p><span class="math display">
 f(x_1, \ldots, x_n \mid \theta)
 = \prod_{i=1}^n f_{X_i}(x_i \mid \theta).
-\]</span></p>
+</span></p>
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
 <p>In many real-world situations, data are <strong>dependent</strong>.</p>
 <p><strong>Example:</strong> Suppose our data are daily temperatures in Newcastle upon Tyne. Yesterday’s temperature will influence today’s temperature, and today’s temperature will influence tomorrow’s.</p>
 <p>In such cases, we must model the dependencies explicitly. For instance,</p>
-<p><span class="math display">\[
+<p><span class="math display">
 X_{t+1} \mid X_t = x_t  \sim \mathcal{N}(x_t, \sigma^2).
-\]</span></p>
+</span></p>
 <p>The likelihood is still the <strong>joint distribution</strong>, but expressed as a product of <strong>conditional densities</strong>:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 f(x_1,\ldots,x_n \mid \sigma^2)
 = \prod_{t=1}^n f(x_t \mid x_{t-1}, \sigma^2).
-\]</span></p>
-<p>The example above assumed a Markov property (each observation only depends on the previous one). In general, observations may depend on the entire history, in which case the joint density factorises via the chain rule: <span class="math display">\[
+</span></p>
+<p>The example above assumed a Markov property (each observation only depends on the previous one). In general, observations may depend on the entire history, in which case the joint density factorises via the chain rule: <span class="math display">
 f(x_1,\ldots,x_n \mid \theta) = f(x_1\mid\theta)\prod_{t=2}^n f(x_t \mid x_1,\ldots,x_{t-1},\theta)
-\]</span></p>
+</span></p>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -794,18 +808,18 @@ Dependent data will be covered in later modules and is <strong>not examinable</s
 <tbody>
 <tr class="odd">
 <td><strong>i.i.d. data</strong></td>
-<td>Independent and identically distributed; each with density <span class="math inline">\(f(x\mid\theta)\)</span></td>
-<td><span class="math inline">\(f(\underline{x}\mid\theta) = \prod_{i=1}^n f(x_i\mid\theta)\)</span></td>
+<td>Independent and identically distributed; each with density <span class="math inline">f(x\mid\theta)</span></td>
+<td><span class="math inline">f(\underline{x}\mid\theta) = \prod_{i=1}^n f(x_i\mid\theta)</span></td>
 </tr>
 <tr class="even">
 <td><strong>Independent (not identical) data</strong></td>
-<td>Independent; each <span class="math inline">\(X_i\)</span> may have its own density <span class="math inline">\(f_{X_i}(x_i\mid\theta)\)</span></td>
-<td><span class="math inline">\(f(\underline{x}\mid\theta) = \prod_{i=1}^n f_{X_i}(x_i\mid\theta)\)</span></td>
+<td>Independent; each <span class="math inline">X_i</span> may have its own density <span class="math inline">f_{X_i}(x_i\mid\theta)</span></td>
+<td><span class="math inline">f(\underline{x}\mid\theta) = \prod_{i=1}^n f_{X_i}(x_i\mid\theta)</span></td>
 </tr>
 <tr class="odd">
 <td><strong>Dependent data (general)</strong></td>
 <td>Dependent; factorise using the chain rule</td>
-<td><span class="math inline">\(f(\underline{x}\mid\theta) = f(x_1\mid\theta)\prod_{t=2}^n f(x_t \mid x_1,\ldots,x_{t-1},\theta)\)</span></td>
+<td><span class="math inline">f(\underline{x}\mid\theta) = f(x_1\mid\theta)\prod_{t=2}^n f(x_t \mid x_1,\ldots,x_{t-1},\theta)</span></td>
 </tr>
 </tbody>
 </table>
@@ -838,9 +852,9 @@ Dependent data will be covered in later modules and is <strong>not examinable</s
 <div id="rem-products" class="proof remark">
 <p><span class="proof-title"><em>Remark 5.1</em> (Why products?). </span></p>
 <ul>
-<li>Independence means joint probabilities factorise: <span class="math display">\[
+<li>Independence means joint probabilities factorise: <span class="math display">
 \mathrm{Pr}(A \cap B) = \mathrm{Pr}(A) \mathrm{Pr}(B).
-\]</span></li>
+</span></li>
 <li>By the same <span class="xref-no-num"><a href="../part1/1-prob-theory.html#def-independence-rv" class="quarto-xref">rule&nbsp;<span>1.8</span></a></span>, the joint density of independent random variables is the product of their individual densities.</li>
 <li>This is a common <strong>misconception</strong>: without independence, you <strong>cannot</strong> just multiply.</li>
 </ul>
@@ -860,11 +874,11 @@ Dependent data will be covered in later modules and is <strong>not examinable</s
 </div>
 <div class="callout-body-container">
 <div id="def-likelihood" class="definition theorem">
-<p><span class="theorem-title"><strong>Definition 5.1</strong></span> <strong>Likelihood Function.</strong> For fixed observed data <span class="math inline">\(\underline{x}\)</span>, the <strong>likelihood function</strong> is defined as</p>
-<p><span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 5.1</strong></span> <strong>Likelihood Function.</strong> For fixed observed data <span class="math inline">\underline{x}</span>, the <strong>likelihood function</strong> is defined as</p>
+<p><span class="math display">
 L(\theta ; \underline{x}) \coloneqq f(\,\underline{x} \mid \theta).
-\]</span></p>
-<p>Here we treat <span class="math inline">\(\theta\)</span> as the <strong>variable</strong>, and the data <span class="math inline">\(\underline{x}\)</span> as fixed.</p>
+</span></p>
+<p>Here we treat <span class="math inline">\theta</span> as the <strong>variable</strong>, and the data <span class="math inline">\underline{x}</span> as fixed.</p>
 </div>
 </div>
 </div>
@@ -884,18 +898,18 @@ L(\theta ; \underline{x}) \coloneqq f(\,\underline{x} \mid \theta).
 <div id="rem-lik-vs-prob" class="proof remark">
 <p><span class="proof-title"><em>Remark 5.2</em> (Likelihood vs.&nbsp;Probability). </span>It is important to distinguish between the <strong>joint density</strong> of the data and the <strong>likelihood function</strong>:</p>
 <ul>
-<li><p><strong>Joint density (PDF/PMF).</strong> <span class="math inline">\(f(\underline{x}\mid \theta)\)</span> is viewed as a function of the <em>data</em> <span class="math inline">\(\underline{x}\)</span>, with the parameter <span class="math inline">\(\theta\)</span> fixed. This describes the probability distribution of the sample under <span class="math inline">\(\theta\)</span>.</p></li>
+<li><p><strong>Joint density (PDF/PMF).</strong> <span class="math inline">f(\underline{x}\mid \theta)</span> is viewed as a function of the <em>data</em> <span class="math inline">\underline{x}</span>, with the parameter <span class="math inline">\theta</span> fixed. This describes the probability distribution of the sample under <span class="math inline">\theta</span>.</p></li>
 <li><p><strong>Likelihood function.</strong> The same expression, written as</p>
-<p><span class="math display">\[
+<p><span class="math display">
 L(\theta;\underline{x}) = f(\underline{x}\mid\theta),
-\]</span></p>
-<p>is instead viewed as a function of the <em>parameter</em> <span class="math inline">\(\theta\)</span>, with the observed data <span class="math inline">\(\underline{x}\)</span> held fixed. This is the function we use to make inferences about <span class="math inline">\(\theta\)</span>.</p></li>
+</span></p>
+<p>is instead viewed as a function of the <em>parameter</em> <span class="math inline">\theta</span>, with the observed data <span class="math inline">\underline{x}</span> held fixed. This is the function we use to make inferences about <span class="math inline">\theta</span>.</p></li>
 </ul>
 <hr>
 <p>In short:</p>
 <ul>
-<li><strong>Joint density</strong>: given <span class="math inline">\(\theta\)</span>, how likely are different data values <span class="math inline">\(\underline{x}\)</span>?</li>
-<li><strong>Likelihood</strong>: given observed <span class="math inline">\(\underline{x}\)</span>, how plausible are different values of <span class="math inline">\(\theta\)</span>?</li>
+<li><strong>Joint density</strong>: given <span class="math inline">\theta</span>, how likely are different data values <span class="math inline">\underline{x}</span>?</li>
+<li><strong>Likelihood</strong>: given observed <span class="math inline">\underline{x}</span>, how plausible are different values of <span class="math inline">\theta</span>?</li>
 </ul>
 </div>
 </div>
@@ -1861,72 +1875,72 @@ L(\theta;\underline{x}) = f(\underline{x}\mid\theta),
 <ul>
 <li>Are the data <strong>i.i.d.</strong> or just <strong>independent</strong>?</li>
 <li>How many <strong>data points</strong> are observed?</li>
-<li>What notation is used for the data (<span class="math inline">\(X_i\)</span>, <span class="math inline">\(Y_i\)</span>, <span class="math inline">\(Z_i\)</span>, …)?</li>
-<li>What notation is used for the parameters (<span class="math inline">\(\mu\)</span>, <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\gamma\)</span>, <span class="math inline">\(\theta\)</span>, …)?</li>
+<li>What notation is used for the data (<span class="math inline">X_i</span>, <span class="math inline">Y_i</span>, <span class="math inline">Z_i</span>, …)?</li>
+<li>What notation is used for the parameters (<span class="math inline">\mu</span>, <span class="math inline">\alpha</span>, <span class="math inline">\gamma</span>, <span class="math inline">\theta</span>, …)?</li>
 </ul>
-<p><em>(In the examples below we assume <span class="math inline">\(n\)</span> independent data points <span class="math inline">\(X_1,\dots,X_n\)</span> with parameter <span class="math inline">\(\theta\)</span>. If there is only one data point, the likelihood is just its PDF/PMF.)</em></p></li>
+<p><em>(In the examples below we assume <span class="math inline">n</span> independent data points <span class="math inline">X_1,\dots,X_n</span> with parameter <span class="math inline">\theta</span>. If there is only one data point, the likelihood is just its PDF/PMF.)</em></p></li>
 <li><p><strong>Write down the PDF/PMF of one observation.</strong></p>
-<p><span class="math display">\[
+<p><span class="math display">
 f_{X_i}(x_i \mid \theta)
-\]</span></p></li>
+</span></p></li>
 <li><p><strong>Multiply to form the joint density</strong>, i.e.&nbsp;the likelihood:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 L(\theta ; \underline{x})
 = f(\underline{x} \mid \theta)
 = \prod_{i=1}^n f_{X_i}(x_i \mid \theta).
-\]</span></p></li>
+</span></p></li>
 </ol>
 <section id="common-mistakes" class="level4 unnumbered">
 <h4 class="unnumbered anchored" data-anchor-id="common-mistakes">Common Mistakes</h4>
 <p>It is <strong>very easy</strong> to slip up when multiplying terms. Watch out for:</p>
 <ol type="1">
-<li><p><strong>Forgetting the index.</strong> Always use <span class="math inline">\(x_i\)</span> inside the product.</p>
-<p>Example (Exponential model): If <span class="math inline">\(X_i \sim \mathrm{Exponential}(\theta)\)</span> with density</p>
-<p><span class="math display">\[
+<li><p><strong>Forgetting the index.</strong> Always use <span class="math inline">x_i</span> inside the product.</p>
+<p>Example (Exponential model): If <span class="math inline">X_i \sim \mathrm{Exponential}(\theta)</span> with density</p>
+<p><span class="math display">
 f(x_i \mid \theta) = \theta e^{-\theta x_i}, \quad x_i &gt; 0,
-\]</span></p>
+</span></p>
 <p>then the likelihood is</p>
-<p><span class="math display">\[
+<p><span class="math display">
 f(\underline{x} \mid \theta)
 = \prod_{i=1}^n \theta e^{-\theta x_i}
 = \theta^n \exp\!\left(-\theta \sum_{i=1}^n x_i\right).
-\]</span></p>
+</span></p>
 <p>A common mistake is to write</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \prod_{i=1}^n \theta e^{-\theta x} = \theta^n e^{-\theta n x} \quad \text{(wrong!)}
-\]</span></p>
-<p>which ignores the index on <span class="math inline">\(x_i\)</span>.</p></li>
+</span></p>
+<p>which ignores the index on <span class="math inline">x_i</span>.</p></li>
 <li><p><strong>Oversimplifying.</strong> Many likelihoods look messy — that is normal!</p>
-<p>Example (Gamma model): If <span class="math inline">\(X_i \sim \mathrm{Gamma}(\alpha, \theta)\)</span> with density</p>
-<p><span class="math display">\[
+<p>Example (Gamma model): If <span class="math inline">X_i \sim \mathrm{Gamma}(\alpha, \theta)</span> with density</p>
+<p><span class="math display">
 f(x_i \mid \alpha, \theta)
 = \frac{1}{\Gamma(\alpha)\theta^\alpha}\, x_i^{\alpha - 1} e^{-x_i/\theta},
 \quad x_i &gt; 0,
-\]</span></p>
+</span></p>
 <p>then the likelihood is</p>
-<p><span class="math display">\[
+<p><span class="math display">
 f(\underline{x} \mid \alpha, \theta)
 = \left(\frac{1}{\Gamma(\alpha)\theta^\alpha}\right)^n
   \left(\prod_{i=1}^n x_i^{\alpha - 1}\right)
   \exp\!\left(-\frac{1}{\theta}\sum_{i=1}^n x_i\right).
-\]</span></p>
+</span></p>
 <p>Notice how the product</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \prod_{i=1}^n x_i^{\alpha - 1}
-\]</span></p>
+</span></p>
 <p>cannot be simplified further (unless you introduce the geometric mean<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>).</p></li>
 </ol>
 </section>
 <section id="a-safe-strategy" class="level4 unnumbered">
 <h4 class="unnumbered anchored" data-anchor-id="a-safe-strategy">A Safe Strategy</h4>
 <p>When starting out, it is helpful to <strong>expand the product term by term</strong>:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 f(\underline{x} \mid \theta)
 = f(x_1 \mid \theta)
 \times f(x_2 \mid \theta)
 \times \cdots
 \times f(x_n \mid \theta).
-\]</span></p>
+</span></p>
 <p>Then simplify step by step.</p>
 <p>This is slower, but it reduces errors. With practice, you’ll be able to simplify likelihoods much more quickly.</p>
 <div class="callout callout-style-simple callout-caution no-icon">
@@ -1936,10 +1950,10 @@ f(\underline{x} \mid \theta)
 </div>
 <div class="callout-body-container">
 <div id="exm-bern-likelihood" class="example theorem">
-<p><span class="theorem-title"><strong>Example 5.1 (Bernoulli Likelihood)</strong></span> Suppose we have <span class="math inline">\(n\)</span> i.i.d. data distributed according to the <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-bern" class="quarto-xref">Bernoulli distribution&nbsp;<span>1.1</span></a></span>:</p>
-<p><span class="math display">\[
+<p><span class="theorem-title"><strong>Example 5.1 (Bernoulli Likelihood)</strong></span> Suppose we have <span class="math inline">n</span> i.i.d. data distributed according to the <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-bern" class="quarto-xref">Bernoulli distribution&nbsp;<span>1.1</span></a></span>:</p>
+<p><span class="math display">
   Y_i \sim \textrm{Bernoulli}(p).
-\]</span> Derive the <strong>likelihood function</strong>.</p>
+</span> Derive the <strong>likelihood function</strong>.</p>
 </div>
 </div>
 </div>
@@ -1951,15 +1965,15 @@ f(\underline{x} \mid \theta)
 </div>
 <div class="callout-body-container">
 <div id="exm-bern-likelihood-data" class="theorem example">
-<p><span class="theorem-title"><strong>Example 5.2 (Bernoulli Likelihood)</strong></span> Suppose <span class="math inline">\(n=5\)</span> trials give data <span class="math inline">\(\underline{x} = (1,0,1,1,0)\)</span>. Then <span class="math inline">\(\sum_i x_i = 3\)</span>. <span class="math display">\[
+<p><span class="theorem-title"><strong>Example 5.2 (Bernoulli Likelihood)</strong></span> Suppose <span class="math inline">n=5</span> trials give data <span class="math inline">\underline{x} = (1,0,1,1,0)</span>. Then <span class="math inline">\sum_i x_i = 3</span>. <span class="math display">
 L(p ; \underline{x}) = p^3 (1-p)^2.
-\]</span></p>
+</span></p>
 <ul>
-<li>If <span class="math inline">\(p=0.5\)</span>, <span class="math inline">\(L(0.5) = 0.5^3 \cdot 0.5^2 = 0.03125\)</span>.</li>
-<li>If <span class="math inline">\(p=0.7\)</span>, <span class="math inline">\(L(0.7) = 0.7^3 \cdot 0.3^2 \approx 0.0309\)</span>.</li>
-<li>If <span class="math inline">\(p=0.8\)</span>, <span class="math inline">\(L(0.8) = 0.8^3 \cdot 0.2^2 = 0.0205\)</span>.</li>
+<li>If <span class="math inline">p=0.5</span>, <span class="math inline">L(0.5) = 0.5^3 \cdot 0.5^2 = 0.03125</span>.</li>
+<li>If <span class="math inline">p=0.7</span>, <span class="math inline">L(0.7) = 0.7^3 \cdot 0.3^2 \approx 0.0309</span>.</li>
+<li>If <span class="math inline">p=0.8</span>, <span class="math inline">L(0.8) = 0.8^3 \cdot 0.2^2 = 0.0205</span>.</li>
 </ul>
-<p>So the data are slightly more likely under <span class="math inline">\(p=0.5\)</span> than <span class="math inline">\(p=0.8\)</span>.</p>
+<p>So the data are slightly more likely under <span class="math inline">p=0.5</span> than <span class="math inline">p=0.8</span>.</p>
 </div>
 </div>
 </div>
@@ -1976,17 +1990,17 @@ L(p ; \underline{x}) = p^3 (1-p)^2.
 </div>
 <div class="callout-body-container">
 <div id="def-mle" class="definition theorem">
-<p><span class="theorem-title"><strong>Definition 5.2 (Maximum Likelihood Estimator (MLE))</strong></span> The MLE is the parameter value <span class="math inline">\(\hat{\theta}\)</span> that maximises the likelihood function: <span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 5.2 (Maximum Likelihood Estimator (MLE))</strong></span> The MLE is the parameter value <span class="math inline">\hat{\theta}</span> that maximises the likelihood function: <span class="math display">
   \hat{\theta}_{\text{MLE}} = \arg \max_{\theta \in \Theta} L(\theta ; \underline{x}).
-  \]</span></p>
+  </span></p>
 </div>
 </div>
 </div>
 </div>
 <p>Because logs are monotone, it is usually easier to maximise the <strong>log-likelihood</strong>:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \ell(\theta ; \underline{x}) = \log L(\theta ; \underline{x}).
-\]</span></p>
+</span></p>
 <section id="computing-mles" class="level3" data-number="5.3.1">
 <h3 data-number="5.3.1" class="anchored" data-anchor-id="computing-mles"><span class="header-section-number">5.3.1</span> Computing MLEs</h3>
 <div class="callout callout-style-simple callout-caution no-icon">
@@ -1997,10 +2011,10 @@ L(p ; \underline{x}) = p^3 (1-p)^2.
 <div class="callout-body-container">
 <div id="exm-bern-mle" class="example theorem">
 <p><span class="theorem-title"><strong>Example 5.3 (Bernoulli MLE)</strong></span> From <a href="#exm-bern-likelihood" class="quarto-xref">Example&nbsp;<span>5.1</span></a>, we have</p>
-<p><span class="math display">\[
+<p><span class="math display">
 L(\theta ; x)
-\]</span></p>
-<p>Compute the MLE of <span class="math inline">\(p\)</span>.</p>
+</span></p>
+<p>Compute the MLE of <span class="math inline">p</span>.</p>
 </div>
 </div>
 </div>
@@ -2019,15 +2033,15 @@ L(\theta ; x)
 <div class="callout-body-container callout-body">
 <div id="sol-bern-mle" class="proof solution">
 <p><span class="proof-title"><em>Solution 5.1</em>. </span>From the provided likelihood, we first compute the <strong>log-likelihood</strong>:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \ell(p \mid \underline{x})
 = \Big(\sum_i x_i \Big)\log p + \Big(n-\sum_i x_i\Big)\log(1-p).
-\]</span> Differentiate and solve: <span class="math display">\[
+</span> Differentiate and solve: <span class="math display">
 \frac{\partial}{\partial p}\ell(p \mid \underline{x})
 = \frac{\sum_i x_i}{p} - \frac{n - \sum_i x_i}{1-p} = 0.
-\]</span> This gives <span class="math display">\[
+</span> This gives <span class="math display">
 \hat{p}_{\text{MLE}} = \frac{1}{n}\sum_{i=1}^n x_i,
-\]</span></p>
+</span></p>
 <p>the <strong>sample proportion of successes</strong>.</p>
 </div>
 </div>
@@ -2040,9 +2054,9 @@ L(\theta ; x)
 </div>
 <div class="callout-body-container">
 <div id="exm-binom-mle-single" class="example theorem">
-<p><span class="theorem-title"><strong>Example 5.4 (Binomial MLE)</strong></span> Suppose we have a <strong>single</strong> <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-binom" class="quarto-xref">Binomial&nbsp;<span>1.2</span></a></span> observation <span class="math display">\[
+<p><span class="theorem-title"><strong>Example 5.4 (Binomial MLE)</strong></span> Suppose we have a <strong>single</strong> <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-binom" class="quarto-xref">Binomial&nbsp;<span>1.2</span></a></span> observation <span class="math display">
 X \sim \textrm{Bin}(n, \theta).
-\]</span> Derive its <strong>likelihood function</strong>.</p>
+</span> Derive its <strong>likelihood function</strong>.</p>
 </div>
 </div>
 </div>
@@ -2060,13 +2074,13 @@ X \sim \textrm{Bin}(n, \theta).
 <div id="callout-7" class="callout-7-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="sol-binom-mle-single" class="proof solution">
-<p><span class="proof-title"><em>Solution 5.2</em>. </span>Since we only have <strong>one</strong> observation, the likelihood function is just the distribution of the observation: <span class="math display">\[
+<p><span class="proof-title"><em>Solution 5.2</em>. </span>Since we only have <strong>one</strong> observation, the likelihood function is just the distribution of the observation: <span class="math display">
 L(\theta ; x) = f(x \mid \theta) = \binom{n}{x} \theta^x(1-\theta)^{n-x}.
-\]</span> The log-likelihood is thus <span class="math display">\[
+</span> The log-likelihood is thus <span class="math display">
 \ell(\theta; x) = \log f(x \mid \theta) = \log\left(\binom{n}{x}\right) + x\log\theta + (n-x)\log(1-\theta).
-\]</span> Differentiating<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, we obtain <span class="math display">\[
+</span> Differentiating<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, we obtain <span class="math display">
 \frac{\partial}{\partial \theta}
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
@@ -2078,9 +2092,9 @@ L(\theta ; x) = f(x \mid \theta) = \binom{n}{x} \theta^x(1-\theta)^{n-x}.
 </div>
 <div class="callout-body-container">
 <div id="exm-binom-mle" class="example theorem">
-<p><span class="theorem-title"><strong>Example 5.5 (Binomial MLE)</strong></span> Suppose we have <span class="math inline">\(n\)</span> <strong>independent</strong> Binomial data: <span class="math display">\[
+<p><span class="theorem-title"><strong>Example 5.5 (Binomial MLE)</strong></span> Suppose we have <span class="math inline">n</span> <strong>independent</strong> Binomial data: <span class="math display">
 X_i \sim \textrm{Bin}(n_i, \theta).
-\]</span> Note here that each Binomial data has a different number of Bernoulli trials <span class="math inline">\(n_i\)</span>, which are known.</p>
+</span> Note here that each Binomial data has a different number of Bernoulli trials <span class="math inline">n_i</span>, which are known.</p>
 <p>Derive its <strong>likelihood function</strong>.</p>
 </div>
 </div>
@@ -2099,9 +2113,9 @@ X_i \sim \textrm{Bin}(n_i, \theta).
 <div id="callout-8" class="callout-8-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="sol-binom-mle" class="proof solution">
-<p><span class="proof-title"><em>Solution 5.3</em>. </span>The likelihood function is the joint distribution of the <span class="math inline">\(n\)</span> observations <span class="math display">\[
+<p><span class="proof-title"><em>Solution 5.3</em>. </span>The likelihood function is the joint distribution of the <span class="math inline">n</span> observations <span class="math display">
 f(\underline{x} \mid \theta) = \prod_{i=1}^n \binom{n_i}{x_i} \theta^{x_i}(1-\theta)^{n_i - x_i}.
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
@@ -2113,10 +2127,10 @@ f(\underline{x} \mid \theta) = \prod_{i=1}^n \binom{n_i}{x_i} \theta^{x_i}(1-\th
 </div>
 <div class="callout-body-container">
 <div id="exm-normal-mu-mle" class="example theorem">
-<p><span class="theorem-title"><strong>Example 5.6 (Normal MLE for <span class="math inline">\(\mu\)</span>)</strong></span> Under <span class="math display">\[
+<p><span class="theorem-title"><strong>Example 5.6 (Normal MLE for <span class="math inline">\mu</span>)</strong></span> Under <span class="math display">
 L(\theta ; x)
-\]</span></p>
-<p>Compute the MLE of <span class="math inline">\(p\)</span>.</p>
+</span></p>
+<p>Compute the MLE of <span class="math inline">p</span>.</p>
 </div>
 </div>
 </div>
@@ -2135,7 +2149,7 @@ L(\theta ; x)
 <ul>
 <li>Likelihood tells us how <strong>plausible</strong> each parameter value is, given the data.</li>
 <li>The MLE chooses the parameter value that makes the observed data most likely.</li>
-<li>Later, in Bayesian inference, we will combine the likelihood with a <strong>prior distribution</strong> on <span class="math inline">\(\theta\)</span> to obtain a <strong>posterior distribution</strong>.</li>
+<li>Later, in Bayesian inference, we will combine the likelihood with a <strong>prior distribution</strong> on <span class="math inline">\theta</span> to obtain a <strong>posterior distribution</strong>.</li>
 </ul>
 </div>
 </div>
@@ -2156,13 +2170,12 @@ L(\theta ; x)
 <h3 data-number="5.4.4" class="anchored" data-anchor-id="asymptotics-of-the-mle"><span class="header-section-number">5.4.4</span> Asymptotics of the MLE</h3>
 
 
-
 </section>
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p><strong>Geometric mean.</strong> One can write <span class="math inline">\(\prod_{i=1}^n x_i = \bar{x}_g^n\)</span> where <span class="math inline">\(\bar{x}_g = \left(\prod_{i=1}^n x_i \right)^{1/n}\)</span> is the <em>geometric mean</em>. This reformulation is rarely useful in practice, so it’s usually best to leave the product as it is.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p><strong>Geometric mean.</strong> One can write <span class="math inline">\prod_{i=1}^n x_i = \bar{x}_g^n</span> where <span class="math inline">\bar{x}_g = \left(\prod_{i=1}^n x_i \right)^{1/n}</span> is the <em>geometric mean</em>. This reformulation is rarely useful in practice, so it’s usually best to leave the product as it is.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p><strong>Differentiating the log.</strong><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>

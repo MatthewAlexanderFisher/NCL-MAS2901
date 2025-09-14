@@ -183,8 +183,22 @@ ul.task-list li input[type="checkbox"] {
   })();
 </script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -653,8 +667,8 @@ window.Quarto = {
 </div>
 <div class="callout-body-container">
 <div id="exm-proportion-freq-bayes" class="theorem example">
-<p><span class="theorem-title"><strong>Example 1 (A comparison of Frequentist vs Bayesian inference)</strong></span> A survey asks <span class="math inline">\(n=20\)</span> students if they prefer study space <span class="math inline">\(A\)</span> or <span class="math inline">\(B\)</span>.</p>
-<p>Suppose <span class="math inline">\(x=12\)</span> prefer <span class="math inline">\(A\)</span>. Compare a frequentist and a Bayesian estimate of the long-run proportion <span class="math inline">\(p\)</span> who would choose <span class="math inline">\(A\)</span>.</p>
+<p><span class="theorem-title"><strong>Example 1 (A comparison of Frequentist vs Bayesian inference)</strong></span> A survey asks <span class="math inline">n=20</span> students if they prefer study space <span class="math inline">A</span> or <span class="math inline">B</span>.</p>
+<p>Suppose <span class="math inline">x=12</span> prefer <span class="math inline">A</span>. Compare a frequentist and a Bayesian estimate of the long-run proportion <span class="math inline">p</span> who would choose <span class="math inline">A</span>.</p>
 </div>
 </div>
 </div>
@@ -672,19 +686,19 @@ window.Quarto = {
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>Frequentist.</strong> The natural estimator is the sample proportion</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \hat p=\frac{x}{n}=\frac{12}{20}=0.60.
-\]</span></p>
-<p><strong>Bayesian (with a uniform prior).</strong> Take a <span class="math inline">\(\mathrm{Beta}(1,1)\)</span> prior for <span class="math inline">\(p\)</span>. The posterior is</p>
-<p><span class="math display">\[
+</span></p>
+<p><strong>Bayesian (with a uniform prior).</strong> Take a <span class="math inline">\mathrm{Beta}(1,1)</span> prior for <span class="math inline">p</span>. The posterior is</p>
+<p><span class="math display">
 p \mid x \sim \mathrm{Beta}(1+x,\,1+n-x)=\mathrm{Beta}(13,9),
-\]</span></p>
+</span></p>
 <p>whose mean is</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \mathbb{E}[p\mid x]=\frac{13}{13+9}=\frac{13}{22}\approx 0.591.
-\]</span></p>
-<p><strong>Interpretation.</strong> The frequentist estimate <span class="math inline">\(\hat p\)</span> is a function of the data and treats <span class="math inline">\(p\)</span> as fixed.<br>
-The Bayesian estimate is an expectation <em>of <span class="math inline">\(p\)</span> itself</em> under the posterior distribution.</p>
+</span></p>
+<p><strong>Interpretation.</strong> The frequentist estimate <span class="math inline">\hat p</span> is a function of the data and treats <span class="math inline">p</span> as fixed.<br>
+The Bayesian estimate is an expectation <em>of <span class="math inline">p</span> itself</em> under the posterior distribution.</p>
 </div>
 </div>
 </div>
@@ -698,9 +712,9 @@ The Bayesian estimate is an expectation <em>of <span class="math inline">\(p\)</
 <div id="exm-interpretations" class="theorem example" title="">
 <p><span class="theorem-title"><strong>Example 2 (Interpreting probability statements)</strong></span> Decide whether each statement is <em>frequentist</em> or <em>Bayesian</em> in spirit.</p>
 <ol type="1">
-<li>“If we repeated the survey many times, the method we use would produce intervals that capture <span class="math inline">\(p\)</span> about <span class="math inline">\(95\%\)</span> of the time.”<br>
+<li>“If we repeated the survey many times, the method we use would produce intervals that capture <span class="math inline">p</span> about <span class="math inline">95\%</span> of the time.”<br>
 </li>
-<li>“Given the data from this survey and our prior, there is a <span class="math inline">\(95\%\)</span> probability that <span class="math inline">\(p\)</span> lies between <span class="math inline">\(0.45\)</span> and <span class="math inline">\(0.75\)</span>.”</li>
+<li>“Given the data from this survey and our prior, there is a <span class="math inline">95\%</span> probability that <span class="math inline">p</span> lies between <span class="math inline">0.45</span> and <span class="math inline">0.75</span>.”</li>
 </ol>
 </div>
 </div>
@@ -719,9 +733,9 @@ The Bayesian estimate is an expectation <em>of <span class="math inline">\(p\)</
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ol type="1">
-<li><strong>Frequentist.</strong> This describes <em>long-run coverage</em> of a procedure over repeated samples with <span class="math inline">\(p\)</span> fixed.<br>
+<li><strong>Frequentist.</strong> This describes <em>long-run coverage</em> of a procedure over repeated samples with <span class="math inline">p</span> fixed.<br>
 </li>
-<li><strong>Bayesian.</strong> This is a probability statement <em>about <span class="math inline">\(p\)</span> given the observed data</em> (a credible interval).</li>
+<li><strong>Bayesian.</strong> This is a probability statement <em>about <span class="math inline">p</span> given the observed data</em> (a credible interval).</li>
 </ol>
 </div>
 </div>
@@ -729,7 +743,6 @@ The Bayesian estimate is an expectation <em>of <span class="math inline">\(p\)</
 </section>
 <section id="sec-schedule" class="level2">
 <h2 class="anchored" data-anchor-id="sec-schedule">Schedule</h2>
-
 
 
 </section>

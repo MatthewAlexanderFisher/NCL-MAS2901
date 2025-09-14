@@ -219,8 +219,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script type="module" src="../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
 <link href="../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -958,14 +972,14 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>A fair coin is tossed <span class="math inline">\(10\)</span> times. What is the probability of exactly <span class="math inline">\(6\)</span> heads?</p>
+<p>A fair coin is tossed <span class="math inline">10</span> times. What is the probability of exactly <span class="math inline">6</span> heads?</p>
 <details class="solution">
 <summary>
 Solution
 </summary>
-<p>Work it via the Binomial: <span class="math display">\[
+<p>Work it via the Binomial: <span class="math display">
 \mathrm{Pr}(X=6)=\binom{10}{6} (1/2)^{10}.
-\]</span></p>
+</span></p>
 </details>
 </div>
 </div>
@@ -979,22 +993,22 @@ Solution
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>In a certain city, <span class="math inline">\(50\%\)</span> of families subscribe to the morning newspaper, <span class="math inline">\(65\%\)</span> subscribe to the afternoon newspaper, and <span class="math inline">\(30\%\)</span> subscribe to both.</p>
+<p>In a certain city, <span class="math inline">50\%</span> of families subscribe to the morning newspaper, <span class="math inline">65\%</span> subscribe to the afternoon newspaper, and <span class="math inline">30\%</span> subscribe to both.</p>
 <p>What proportion of families subscribe to <strong>at least one</strong> newspaper?</p>
 <details class="solution">
 <summary>
 Solution
 </summary>
-<p>Let <span class="math inline">\(M\)</span> = “morning” and <span class="math inline">\(A\)</span> = “afternoon”.</p>
+<p>Let <span class="math inline">M</span> = “morning” and <span class="math inline">A</span> = “afternoon”.</p>
 <p>By the addition rule of probability:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \mathrm{Pr}(M \cup A) \;=\; \mathrm{Pr}(M) + \mathrm{Pr}(A) - \mathrm{Pr}(M \cap A).
-\]</span></p>
+</span></p>
 <p>Substituting:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 0.5 + 0.65 - 0.3 \;=\; 0.85.
-\]</span></p>
-<p>So, <span class="math inline">\(85\%\)</span> of families subscribe to at least one newspaper.</p>
+</span></p>
+<p>So, <span class="math inline">85\%</span> of families subscribe to at least one newspaper.</p>
 </details>
 </div>
 </div>
@@ -1008,31 +1022,31 @@ Solution
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Let <span class="math inline">\(X_1,\dots,X_n \stackrel{iid}{\sim} \mathcal{N}(\mu,1)\)</span>. Find the MLE of <span class="math inline">\(\mu\)</span>.</p>
+<p>Let <span class="math inline">X_1,\dots,X_n \stackrel{iid}{\sim} \mathcal{N}(\mu,1)</span>. Find the MLE of <span class="math inline">\mu</span>.</p>
 <details class="solution">
 <summary>
 Solution
 </summary>
 <p>The likelihood is</p>
-<p><span class="math display">\[
+<p><span class="math display">
 L(\mu ; \underline{x}) = \mathrm{Pr}od_{i=1}^n \frac{1}{\sqrt{2\pi}}
   \exp\!\left(-\tfrac{1}{2}(x_i - \mu)^2\right) = (2\pi)^{-n/2} \exp\left( -\frac{1}{2}\sum_{i=1}^n (x_i - \mu)^2 \right) .
-\]</span></p>
+</span></p>
 <p>Taking logs:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \ell(\mu) = -\tfrac{n}{2}\log(2\pi) - \tfrac{1}{2}\sum_{i=1}^n (x_i - \mu)^2.
-\]</span></p>
-<p>Differentiate with respect to <span class="math inline">\(\mu\)</span>:</p>
-<p><span class="math display">\[
+</span></p>
+<p>Differentiate with respect to <span class="math inline">\mu</span>:</p>
+<p><span class="math display">
 \frac{\partial \ell}{\partial \mu} = \sum_{i=1}^n (x_i - \mu).
-\]</span></p>
-<p>Setting equal to <span class="math inline">\(0\)</span>:</p>
-<p><span class="math display">\[
+</span></p>
+<p>Setting equal to <span class="math inline">0</span>:</p>
+<p><span class="math display">
 \sum_{i=1}^n (x_i - \mu) = 0
 \quad\Longrightarrow\quad
 \hat\mu = \frac{1}{n}\sum_{i=1}^n x_i = \bar X.
-\]</span></p>
-<p>So the MLE of <span class="math inline">\(\mu\)</span> is the <strong>sample mean</strong> <span class="math inline">\(\bar X\)</span>.</p>
+</span></p>
+<p>So the MLE of <span class="math inline">\mu</span> is the <strong>sample mean</strong> <span class="math inline">\bar X</span>.</p>
 </details>
 </div>
 </div>
@@ -1046,21 +1060,21 @@ L(\mu ; \underline{x}) = \mathrm{Pr}od_{i=1}^n \frac{1}{\sqrt{2\pi}}
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>October temperatures in Newcastle (daily maximum) have population mean <span class="math inline">\(13^\circ\)</span>C and population standard deviation <span class="math inline">\(3^\circ\)</span>C.</p>
-<p>What would the population mean and standard deviation be if temperature was measured in <span class="math inline">\(^\circ\)</span>F?</p>
-<p><em>Note:</em> If <span class="math inline">\(X\)</span> is in <span class="math inline">\(^\circ\)</span>C then <span class="math inline">\(Y = 1.8X + 32\)</span> is in <span class="math inline">\(^\circ\)</span>F.</p>
+<p>October temperatures in Newcastle (daily maximum) have population mean <span class="math inline">13^\circ</span>C and population standard deviation <span class="math inline">3^\circ</span>C.</p>
+<p>What would the population mean and standard deviation be if temperature was measured in <span class="math inline">^\circ</span>F?</p>
+<p><em>Note:</em> If <span class="math inline">X</span> is in <span class="math inline">^\circ</span>C then <span class="math inline">Y = 1.8X + 32</span> is in <span class="math inline">^\circ</span>F.</p>
 <details class="solution">
 <summary>
 Solution
 </summary>
 <p>Using linearity of expectation:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \mathrm{E}[Y] \;=\; 1.8\,\mathrm{E}[X] + 32 \;=\; 1.8 \times 13 + 32 \;=\; 55.4^\circ \text{F}.
-\]</span></p>
+</span></p>
 <p>For the standard deviation, the shift does not matter and the scale multiplies:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \mathrm{SD}(Y) \;=\; 1.8 \, \mathrm{SD}(X) \;=\; 1.8 \times 3 \;=\; 5.4^\circ \text{F}.
-\]</span></p>
+</span></p>
 </details>
 </div>
 </div>
@@ -1074,48 +1088,48 @@ Solution
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The random variable <span class="math inline">\(X\)</span> has PDF <span class="math display">\[
+<p>The random variable <span class="math inline">X</span> has PDF <span class="math display">
 f(x) =
 \begin{cases}
 kx(1-x), &amp; 0 \leq x \leq 1, \\
 0, &amp; \text{otherwise},
 \end{cases}
-\]</span> where <span class="math inline">\(k\)</span> is a constant.</p>
+</span> where <span class="math inline">k</span> is a constant.</p>
 <ol type="1">
-<li>Find the value of <span class="math inline">\(k\)</span>.<br>
+<li>Find the value of <span class="math inline">k</span>.<br>
 </li>
-<li>Roughly sketch <span class="math inline">\(f(x)\)</span>. State, without calculation, the value of <span class="math inline">\(\mathrm{E}[X]\)</span>.<br>
+<li>Roughly sketch <span class="math inline">f(x)</span>. State, without calculation, the value of <span class="math inline">\mathrm{E}[X]</span>.<br>
 </li>
-<li>Find and roughly sketch the CDF <span class="math inline">\(F(x) = \mathrm{Pr}(X \leq x)\)</span>.</li>
+<li>Find and roughly sketch the CDF <span class="math inline">F(x) = \mathrm{Pr}(X \leq x)</span>.</li>
 </ol>
 <details class="solution">
 <summary>
 Solution
 </summary>
-<p><strong>a.</strong> Since the area under a PDF is <span class="math inline">\(1\)</span>: <span class="math display">\[
+<p><strong>a.</strong> Since the area under a PDF is <span class="math inline">1</span>: <span class="math display">
 1 = \int_{-\infty}^\infty f(x)\,dx
 = \int_0^1 k(x - x^2)\,dx
 = k \left[ \tfrac{x^2}{2} - \tfrac{x^3}{3} \right]_0^1
 = \tfrac{k}{6}.
-\]</span></p>
-<p>So <span class="math inline">\(k=6\)</span>.</p>
+</span></p>
+<p>So <span class="math inline">k=6</span>.</p>
 <hr>
-<p><strong>b.</strong> The PDF is symmetric about <span class="math inline">\(x = \tfrac{1}{2}\)</span>, so <span class="math display">\[
+<p><strong>b.</strong> The PDF is symmetric about <span class="math inline">x = \tfrac{1}{2}</span>, so <span class="math display">
 \mathrm{E}[X] = \tfrac{1}{2}.
-\]</span></p>
-<p><strong>c.</strong> For <span class="math inline">\(0 \leq x \leq 1\)</span>: <span class="math display">\[
+</span></p>
+<p><strong>c.</strong> For <span class="math inline">0 \leq x \leq 1</span>: <span class="math display">
 F(x) = \int_0^x 6(t - t^2)\,dt
 = 6\left[\tfrac{t^2}{2} - \tfrac{t^3}{3}\right]_0^x
 = x^2(3 - 2x).
-\]</span></p>
-<p>So the full CDF is: <span class="math display">\[
+</span></p>
+<p>So the full CDF is: <span class="math display">
 F(x) =
 \begin{cases}
 0, &amp; x &lt; 0, \\
 x^2(3 - 2x), &amp; 0 \leq x \leq 1, \\
 1, &amp; x &gt; 1.
 \end{cases}
-\]</span></p>
+</span></p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb8" data-startfrom="439" data-source-offset="-11"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 438;"><span id="cb8-439"><a href="#cb8-439" aria-hidden="true" tabindex="-1"></a>xs <span class="op">=</span> d3<span class="op">.</span><span class="fu">range</span>(<span class="op">-</span><span class="fl">0.1</span><span class="op">,</span> <span class="fl">1.1</span><span class="op">,</span> <span class="fl">0.01</span>)</span>
 <span id="cb8-440"><a href="#cb8-440" aria-hidden="true" tabindex="-1"></a></span>
@@ -1210,7 +1224,7 @@ x^2(3 - 2x), &amp; 0 \leq x \leq 1, \\
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pdf-cdf-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Probability density function <span class="math inline">\(f(x)\)</span> and cumulative distribution function <span class="math inline">\(F(x)\)</span> for the random variable with PDF <span class="math inline">\(f(x)=6x(1-x)\)</span> on <span class="math inline">\([0,1]\)</span>. The PDF is symmetric about <span class="math inline">\(x=0.5\)</span>, and the CDF increases smoothly from 0 to 1.
+Figure&nbsp;1: Probability density function <span class="math inline">f(x)</span> and cumulative distribution function <span class="math inline">F(x)</span> for the random variable with PDF <span class="math inline">f(x)=6x(1-x)</span> on <span class="math inline">[0,1]</span>. The PDF is symmetric about <span class="math inline">x=0.5</span>, and the CDF increases smoothly from 0 to 1.
 </figcaption>
 </figure>
 </div>
@@ -1228,54 +1242,54 @@ Figure&nbsp;1: Probability density function <span class="math inline">\(f(x)\)</
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Suppose that <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> are <strong>independent</strong> random variables with<br>
-<span class="math display">\[
+<p>Suppose that <span class="math inline">X_1</span> and <span class="math inline">X_2</span> are <strong>independent</strong> random variables with<br>
+<span class="math display">
 \mathrm{E}[X_1] = 4, \mathrm{Var}(X_1) = 5, \mathrm{E}[X_2] = 3, \mathrm{Var}(X_2) = 1.
-\]</span> Let <span class="math display">\[
+</span> Let <span class="math display">
 Y_1 = 2X_1 + X_2, \qquad Y_2 = X_1 - 2X_2.
-\]</span></p>
+</span></p>
 <p>Find:</p>
 <ol type="a">
-<li><span class="math inline">\(\mathrm{E}[Y_1], \ \mathrm{Var}(Y_1)\)</span><br>
+<li><span class="math inline">\mathrm{E}[Y_1], \ \mathrm{Var}(Y_1)</span><br>
 </li>
-<li><span class="math inline">\(\mathrm{E}[Y_2], \ \mathrm{Var}(Y_2)\)</span><br>
+<li><span class="math inline">\mathrm{E}[Y_2], \ \mathrm{Var}(Y_2)</span><br>
 </li>
-<li><span class="math inline">\(\mathrm{Cov}(Y_1,Y_2)\)</span> and the correlation between <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span>.</li>
+<li><span class="math inline">\mathrm{Cov}(Y_1,Y_2)</span> and the correlation between <span class="math inline">Y_1</span> and <span class="math inline">Y_2</span>.</li>
 </ol>
 <details class="solution">
 <summary>
 Solution
 </summary>
 <p><strong>a.</strong><br>
-<span class="math display">\[
+<span class="math display">
 \mathrm{E}[Y_1] = 2\mathrm{E}[X_1] + \mathrm{E}[X_2] = 2 \times 4 + 3 = 11.
-\]</span> <span class="math display">\[
+</span> <span class="math display">
 \mathrm{Var}(Y_1) = 4\mathrm{Var}(X_1) + \mathrm{Var}(X_2)
 = 4 \times 5 + 1 = 21.
-\]</span></p>
+</span></p>
 <hr>
 <p><strong>b.</strong><br>
-<span class="math display">\[
+<span class="math display">
 \mathrm{E}[Y_2] = \mathrm{E}[X_1] - 2\mathrm{E}[X_2] = 4 - 6 = -2.
-\]</span> <span class="math display">\[
+</span> <span class="math display">
 \mathrm{Var}(Y_2) = \mathrm{Var}(X_1) + 4\mathrm{Var}(X_2)
 = 5 + 4 \times 1 = 9.
-\]</span></p>
+</span></p>
 <hr>
 <p><strong>c.</strong></p>
-<p><span class="math display">\[\begin{align*}
+<p><span class="math display">\begin{align*}
 \mathrm{Cov}(Y_1,Y_2)
 &amp;= \mathrm{Cov}(2X_1+X_2, \, X_1-2X_2) \\
 &amp;= 2\mathrm{Var}(X_1) - 2\mathrm{Var}(X_2) + (-4+1)\mathrm{Cov}(X_1,X_2).
-\end{align*}\]</span></p>
-<p>Since <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> are independent, <span class="math inline">\(\mathrm{Cov}(X_1,X_2)=0\)</span>. So <span class="math display">\[
+\end{align*}</span></p>
+<p>Since <span class="math inline">X_1</span> and <span class="math inline">X_2</span> are independent, <span class="math inline">\mathrm{Cov}(X_1,X_2)=0</span>. So <span class="math display">
 \mathrm{Cov}(Y_1,Y_2) = 2 \times 5 - 2 \times 1 = 8.
-\]</span></p>
-<p>Finally, the correlation is <span class="math display">\[
+</span></p>
+<p>Finally, the correlation is <span class="math display">
 \mathrm{Corr}(Y_1,Y_2)
 = \frac{\mathrm{Cov}(Y_1,Y_2)}{\sqrt{\mathrm{Var}(Y_1)\mathrm{Var}(Y_2)}}
 = \frac{8}{\sqrt{21 \times 9}} \approx 0.582.
-\]</span></p>
+</span></p>
 </details>
 </div>
 </div>
@@ -1289,56 +1303,56 @@ Solution
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Suppose that <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> are <strong>dependent</strong> random variables with<br>
-<span class="math display">\[
+<p>Suppose that <span class="math inline">X_1</span> and <span class="math inline">X_2</span> are <strong>dependent</strong> random variables with<br>
+<span class="math display">
 \mathrm{E}[X_1] = 4, \mathrm{Var}(X_1) = 5, \mathrm{E}[X_2] = 3, \mathrm{Var}(X_2) = 1
-\]</span> and <span class="math display">\[
+</span> and <span class="math display">
 \mathrm{Cov}(X_1, X_2) = 2.
-\]</span> Let <span class="math display">\[
+</span> Let <span class="math display">
 Y_1 = 2X_1 + X_2, \qquad Y_2 = X_1 - 2X_2.
-\]</span> Find:</p>
+</span> Find:</p>
 <ol type="a">
-<li><span class="math inline">\(\mathrm{E}[Y_1], \ \mathrm{Var}(Y_1)\)</span><br>
+<li><span class="math inline">\mathrm{E}[Y_1], \ \mathrm{Var}(Y_1)</span><br>
 </li>
-<li><span class="math inline">\(\mathrm{E}[Y_2], \ \mathrm{Var}(Y_2)\)</span><br>
+<li><span class="math inline">\mathrm{E}[Y_2], \ \mathrm{Var}(Y_2)</span><br>
 </li>
-<li><span class="math inline">\(\mathrm{Cov}(Y_1,Y_2)\)</span> and the correlation between <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span>.</li>
+<li><span class="math inline">\mathrm{Cov}(Y_1,Y_2)</span> and the correlation between <span class="math inline">Y_1</span> and <span class="math inline">Y_2</span>.</li>
 </ol>
 <details class="solution">
 <summary>
 Solution
 </summary>
 <p><strong>a.</strong><br>
-<span class="math display">\[
+<span class="math display">
 \mathrm{E}[Y_1] = 2\mathrm{E}[X_1] + \mathrm{E}[X_2] = 11.
-\]</span></p>
-<p><span class="math display">\[\begin{align*}
+</span></p>
+<p><span class="math display">\begin{align*}
 \mathrm{Var}(Y_1) &amp;= \mathrm{Var}(2X_1) + \mathrm{Var}(X_2) + 2\mathrm{Cov}(2X_1,X_2) \\
 &amp;= 4\mathrm{Var}(X_1) + \mathrm{Var}(X_2) + 4\mathrm{Cov}(X_1,X_2) \\
 &amp;= 4\times 5 + 1 + 4\times 2 = 29.
-\end{align*}\]</span></p>
+\end{align*}</span></p>
 <hr>
 <p><strong>b.</strong><br>
-<span class="math display">\[
+<span class="math display">
 \mathrm{E}[Y_2] = \mathrm{E}[X_1] - 2\mathrm{E}[X_2] = -2.
-\]</span></p>
-<p><span class="math display">\[\begin{align*}
+</span></p>
+<p><span class="math display">\begin{align*}
 \mathrm{Var}(Y_2) &amp;= \mathrm{Var}(X_1) + \mathrm{Var}(2X_2) - 2\mathrm{Cov}(X_1,2X_2) \\
 &amp;= \mathrm{Var}(X_1) + 4\mathrm{Var}(X_2) - 4\mathrm{Cov}(X_1,X_2) \\
 &amp;= 5 + 4 - 8 = 1.
-\end{align*}\]</span></p>
+\end{align*}</span></p>
 <hr>
 <p><strong>c.</strong></p>
-<p><span class="math display">\[\begin{align*}
+<p><span class="math display">\begin{align*}
 \mathrm{Cov}(Y_1,Y_2)
 &amp;= \mathrm{Cov}(2X_1+X_2, \, X_1-2X_2) \\
 &amp;= 2\mathrm{Var}(X_1) - 2\mathrm{Var}(X_2) + (-4+1)\mathrm{Cov}(X_1,X_2) \\
 &amp;= 10 - 2 - 6 = 2.
-\end{align*}\]</span></p>
-<p>So the correlation is <span class="math display">\[
+\end{align*}</span></p>
+<p>So the correlation is <span class="math display">
 \mathrm{Corr}(Y_1,Y_2) = \frac{\mathrm{Cov}(Y_1,Y_2)}{\sqrt{\mathrm{Var}(Y_1)\mathrm{Var}(Y_2)}}
 = \frac{2}{\sqrt{29 \times 1}} \approx 0.371.
-\]</span></p>
+</span></p>
 </details>
 </div>
 </div>
@@ -1348,29 +1362,29 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Minimiser of <span class="math inline">\(\mathrm{E}[(X-c)^2]\)</span>
+<span class="screen-reader-only">Important</span>Minimiser of <span class="math inline">\mathrm{E}[(X-c)^2]</span>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Suppose that <span class="math inline">\(X\)</span> is a continuous random variable. Show that <span class="math inline">\(\mathrm{E}[(X-c)^2]\)</span> is minimised when <span class="math inline">\(c\)</span> is the population <strong>mean</strong>. State any assumptions.</p>
+<p>Suppose that <span class="math inline">X</span> is a continuous random variable. Show that <span class="math inline">\mathrm{E}[(X-c)^2]</span> is minimised when <span class="math inline">c</span> is the population <strong>mean</strong>. State any assumptions.</p>
 <details class="solution">
 <summary>
 Solution
 </summary>
-<p>As <span class="math inline">\(X\)</span> is continuous, <span class="math display">\[
+<p>As <span class="math inline">X</span> is continuous, <span class="math display">
 \mathrm{E}[(X-c)^2] = \int_{-\infty}^\infty (x-c)^2 f(x)\,dx.
-\]</span></p>
-<p>We assume we can interchange differentiation with respect to <span class="math inline">\(c\)</span> and integration with respect to <span class="math inline">\(x\)</span>. Then <span class="math display">\[
+</span></p>
+<p>We assume we can interchange differentiation with respect to <span class="math inline">c</span> and integration with respect to <span class="math inline">x</span>. Then <span class="math display">
 \frac{\partial}{\partial c}\,\mathrm{E}[(X-c)^2]
 = \mathrm{E}\!\left[\frac{\partial}{\partial c}(X-c)^2\right]
 = \int_{-\infty}^\infty \frac{\partial}{\partial c}(x-c)^2 f(x)\,dx.
-\]</span></p>
-<p>Differentiating: <span class="math display">\[
+</span></p>
+<p>Differentiating: <span class="math display">
 \frac{\partial}{\partial c}\,\mathrm{E}[(X-c)^2]
 = -2\int_{-\infty}^\infty (x-c) f(x)\,dx
 = -2\{\mathrm{E}[X] - c\}.
-\]</span></p>
-<p>This derivative is zero when <span class="math inline">\(c = \mathrm{E}[X]\)</span>.</p>
+</span></p>
+<p>This derivative is zero when <span class="math inline">c = \mathrm{E}[X]</span>.</p>
 <p>The second derivative is positive, so this is indeed a minimum.</p>
 </details>
 </div>
@@ -1381,32 +1395,32 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Minimiser of <span class="math inline">\(\mathrm{E}[|X-c|]\)</span>
+<span class="screen-reader-only">Important</span>Minimiser of <span class="math inline">\mathrm{E}[|X-c|]</span>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Suppose that <span class="math inline">\(X\)</span> is a continuous random variable. Show that <span class="math inline">\(\mathrm{E}[|X-c|]\)</span> is minimised when <span class="math inline">\(c\)</span> is the population <strong>median</strong>. State any assumptions.</p>
-<p><em>Hint:</em> The derivative of <span class="math inline">\(|X-c|\)</span> with respect to <span class="math inline">\(c\)</span> is <span class="math inline">\(-1\)</span> when <span class="math inline">\(x&gt;c\)</span> and <span class="math inline">\(+1\)</span> when <span class="math inline">\(x&lt;c\)</span>.</p>
+<p>Suppose that <span class="math inline">X</span> is a continuous random variable. Show that <span class="math inline">\mathrm{E}[|X-c|]</span> is minimised when <span class="math inline">c</span> is the population <strong>median</strong>. State any assumptions.</p>
+<p><em>Hint:</em> The derivative of <span class="math inline">|X-c|</span> with respect to <span class="math inline">c</span> is <span class="math inline">-1</span> when <span class="math inline">x&gt;c</span> and <span class="math inline">+1</span> when <span class="math inline">x&lt;c</span>.</p>
 <details class="solution">
 <summary>
 Solution
 </summary>
-<p>We assume the technical conditions allowing us to interchange differentiation with respect to <span class="math inline">\(c\)</span> and integration with respect to <span class="math inline">\(x\)</span>.</p>
-<p>Using the hint: <span class="math display">\[
+<p>We assume the technical conditions allowing us to interchange differentiation with respect to <span class="math inline">c</span> and integration with respect to <span class="math inline">x</span>.</p>
+<p>Using the hint: <span class="math display">
 \frac{\partial}{\partial c}\,\mathrm{E}[|X-c|]
 = \mathrm{E}\!\left[\frac{\partial}{\partial c}|X-c|\right]
 = \mathrm{E}[I(X \leq c) - I(X &gt; c)],
-\]</span> where <span class="math inline">\(I(\cdot)\)</span> is the indicator function.</p>
-<p>So, <span class="math display">\[
+</span> where <span class="math inline">I(\cdot)</span> is the indicator function.</p>
+<p>So, <span class="math display">
 \frac{\partial}{\partial c}\,\mathrm{E}[|X-c|]
 = \mathrm{Pr}(X \leq c) - \mathrm{Pr}(X &gt; c).
-\]</span></p>
-<p>Since <span class="math inline">\(\mathrm{Pr}(X &gt; c) = 1 - \mathrm{Pr}(X \leq c)\)</span>, this simplifies to <span class="math display">\[
+</span></p>
+<p>Since <span class="math inline">\mathrm{Pr}(X &gt; c) = 1 - \mathrm{Pr}(X \leq c)</span>, this simplifies to <span class="math display">
 \frac{\partial}{\partial c}\,\mathrm{E}[|X-c|]
 = 2\mathrm{Pr}(X \leq c) - 1.
-\]</span></p>
-<p>This derivative is zero when <span class="math inline">\(\mathrm{Pr}(X \leq c) = \tfrac{1}{2}\)</span>, i.e.&nbsp;when <span class="math inline">\(c\)</span> is the <strong>median</strong> of the distribution of <span class="math inline">\(X\)</span>.</p>
-<p><em>(Aside: this argument ignores the non-differentiability of <span class="math inline">\(|X-c|\)</span> at <span class="math inline">\(x=c\)</span> — a more careful treatment requires subgradients.)</em></p>
+</span></p>
+<p>This derivative is zero when <span class="math inline">\mathrm{Pr}(X \leq c) = \tfrac{1}{2}</span>, i.e.&nbsp;when <span class="math inline">c</span> is the <strong>median</strong> of the distribution of <span class="math inline">X</span>.</p>
+<p><em>(Aside: this argument ignores the non-differentiability of <span class="math inline">|X-c|</span> at <span class="math inline">x=c</span> — a more careful treatment requires subgradients.)</em></p>
 </details>
 </div>
 </div>
@@ -1420,28 +1434,28 @@ Solution
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>With a Beta prior <span class="math inline">\(p\sim \mathrm{Beta}(\alpha,\beta)\)</span> and <span class="math inline">\(X \mid p \sim\mathrm{Bin}(n,p)\)</span>, show the posterior is <span class="math inline">\(p \mid x\sim \mathrm{Beta}(\alpha+x,\beta+n-x)\)</span>.</p>
+<p>With a Beta prior <span class="math inline">p\sim \mathrm{Beta}(\alpha,\beta)</span> and <span class="math inline">X \mid p \sim\mathrm{Bin}(n,p)</span>, show the posterior is <span class="math inline">p \mid x\sim \mathrm{Beta}(\alpha+x,\beta+n-x)</span>.</p>
 <details class="solution">
 <summary>
 Solution
 </summary>
 <p><strong>Intuition.</strong><br>
-The Beta prior has the same algebraic form as the Binomial likelihood in <span class="math inline">\(p\)</span>: powers of <span class="math inline">\(p\)</span> and <span class="math inline">\((1-p)\)</span>. Multiplying them keeps the form, so the posterior is also Beta (this is <em>conjugacy</em>).</p>
+The Beta prior has the same algebraic form as the Binomial likelihood in <span class="math inline">p</span>: powers of <span class="math inline">p</span> and <span class="math inline">(1-p)</span>. Multiplying them keeps the form, so the posterior is also Beta (this is <em>conjugacy</em>).</p>
 <p><strong>Formal derivation.</strong><br>
-Prior: <span class="math display">\[
+Prior: <span class="math display">
 \pi(p)=\mathrm{Beta}(p\mid \alpha,\beta)
 =\frac{1}{B(\alpha,\beta)}\,p^{\alpha-1}(1-p)^{\beta-1},\qquad 0&lt;p&lt;1.
-\]</span></p>
-<p>Likelihood (for <span class="math inline">\(x\)</span> successes in <span class="math inline">\(n\)</span> trials): <span class="math display">\[
+</span></p>
+<p>Likelihood (for <span class="math inline">x</span> successes in <span class="math inline">n</span> trials): <span class="math display">
 L(p; x)\mathrm{Pr}opto p^{x}(1-p)^{\,n-x}.
-\]</span></p>
-<p>Posterior (up to proportionality): <span class="math display">\[
+</span></p>
+<p>Posterior (up to proportionality): <span class="math display">
 \pi(p\mid x)\ \mathrm{Pr}opto\ \pi(p)\,L(p\mid x)
 \ \mathrm{Pr}opto\ p^{\alpha-1+x}\,(1-p)^{\beta-1+(n-x)}.
-\]</span></p>
-<p>This is in the form of the Beta distribution with updated parameters: <span class="math display">\[
+</span></p>
+<p>This is in the form of the Beta distribution with updated parameters: <span class="math display">
 p\mid x \sim \mathrm{Beta}\big(\alpha+x,\ \beta+n-x\big).
-\]</span></p>
+</span></p>
 </details>
 </div>
 </div>
@@ -1455,73 +1469,73 @@ p\mid x \sim \mathrm{Beta}\big(\alpha+x,\ \beta+n-x\big).
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Suppose <span class="math inline">\(X \sim \mathrm{Bin}(n,p)\)</span>.</p>
+<p>Suppose <span class="math inline">X \sim \mathrm{Bin}(n,p)</span>.</p>
 <ol type="a">
-<li><p>When <span class="math inline">\(n=6\)</span> and <span class="math inline">\(p=0.3\)</span>, find, either by hand or using R or Python, each of:</p>
+<li><p>When <span class="math inline">n=6</span> and <span class="math inline">p=0.3</span>, find, either by hand or using R or Python, each of:</p>
 <ol type="i">
-<li><span class="math inline">\(\mathrm{Pr}(X &lt; 2)\)</span><br>
+<li><span class="math inline">\mathrm{Pr}(X &lt; 2)</span><br>
 </li>
-<li><span class="math inline">\(\mathrm{Pr}(1 &lt; X \leq 2)\)</span><br>
+<li><span class="math inline">\mathrm{Pr}(1 &lt; X \leq 2)</span><br>
 </li>
-<li><span class="math inline">\(\mathrm{Pr}(X &gt; 1)\)</span></li>
+<li><span class="math inline">\mathrm{Pr}(X &gt; 1)</span></li>
 </ol></li>
-<li><p>When <span class="math inline">\(n=10\)</span> and <span class="math inline">\(p=0.75\)</span>, find the probability that <span class="math inline">\(X\)</span> is within one of its population mean.</p></li>
+<li><p>When <span class="math inline">n=10</span> and <span class="math inline">p=0.75</span>, find the probability that <span class="math inline">X</span> is within one of its population mean.</p></li>
 </ol>
 <details class="solution">
 <summary>
 Solution
 </summary>
 <p><strong>a.</strong><br>
-As <span class="math inline">\(X\)</span> is binomial, it can only take the values <span class="math inline">\(0,1,2,\ldots,6\)</span>.</p>
-<p><strong>i.</strong> <span class="math display">\[
+As <span class="math inline">X</span> is binomial, it can only take the values <span class="math inline">0,1,2,\ldots,6</span>.</p>
+<p><strong>i.</strong> <span class="math display">
 \mathrm{Pr}(X&lt;2) = \mathrm{Pr}(X=0) + \mathrm{Pr}(X=1).
-\]</span></p>
-<p><span class="math display">\[
+</span></p>
+<p><span class="math display">
 \mathrm{Pr}(X=0) = \binom{6}{0} (0.3)^0 (0.7)^6 = 0.7^6.
-\]</span></p>
-<p><span class="math display">\[
+</span></p>
+<p><span class="math display">
 \mathrm{Pr}(X=1) = \binom{6}{1} (0.3)^1 (0.7)^5 = 6 \times 0.3 \times 0.7^5.
-\]</span></p>
-<p>So, <span class="math display">\[
+</span></p>
+<p>So, <span class="math display">
 \mathrm{Pr}(X&lt;2) = 0.7^6 + 6 \times 0.3 \times 0.7^5 \approx 0.4202.
-\]</span></p>
+</span></p>
 <p><strong>ii.</strong><br>
-<span class="math display">\[
+<span class="math display">
 \mathrm{Pr}(1 &lt; X \leq 2) = \mathrm{Pr}(X=2)
 = \binom{6}{2} (0.3)^2 (0.7)^4
 = 15 \times 0.09 \times 0.2401
 \approx 0.3241.
-\]</span></p>
+</span></p>
 <p><strong>iii.</strong><br>
-<span class="math display">\[
+<span class="math display">
 \mathrm{Pr}(X &gt; 1) = 1 - \mathrm{Pr}(X \leq 1) = 1 - \mathrm{Pr}(X&lt;2).
-\]</span></p>
-<p>So, <span class="math display">\[
+</span></p>
+<p>So, <span class="math display">
 \mathrm{Pr}(X&gt;1) = 1 - 0.4202 = 0.5798.
-\]</span></p>
+</span></p>
 <hr>
 <p><strong>b.</strong><br>
-For <span class="math inline">\(X \sim \mathrm{Bin}(10,0.75)\)</span>:</p>
+For <span class="math inline">X \sim \mathrm{Bin}(10,0.75)</span>:</p>
 <ul>
-<li>The mean is <span class="math inline">\(\mathrm{E}[X] = np = 10 \times 0.75 = 7.5\)</span>.</li>
-<li>“Within one of the mean” means <span class="math inline">\(6.5 \leq X \leq 8.5\)</span>.<br>
-Since <span class="math inline">\(X\)</span> is integer-valued, this corresponds to <span class="math inline">\(X \in \{7,8\}\)</span>.</li>
+<li>The mean is <span class="math inline">\mathrm{E}[X] = np = 10 \times 0.75 = 7.5</span>.</li>
+<li>“Within one of the mean” means <span class="math inline">6.5 \leq X \leq 8.5</span>.<br>
+Since <span class="math inline">X</span> is integer-valued, this corresponds to <span class="math inline">X \in \{7,8\}</span>.</li>
 </ul>
-<p><span class="math display">\[
+<p><span class="math display">
 \mathrm{Pr}(6.5 \leq X \leq 8.5) = \mathrm{Pr}(X=7) + \mathrm{Pr}(X=8).
-\]</span></p>
-<p><span class="math display">\[
+</span></p>
+<p><span class="math display">
 \mathrm{Pr}(X=7) = \binom{10}{7}(0.75)^7(0.25)^3,
-\]</span></p>
-<p><span class="math display">\[
+</span></p>
+<p><span class="math display">
 \mathrm{Pr}(X=8) = \binom{10}{8}(0.75)^8(0.25)^2.
-\]</span></p>
-<p>Numerically, <span class="math display">\[
+</span></p>
+<p>Numerically, <span class="math display">
 \mathrm{Pr}(X=7) \approx 0.2503, \quad \mathrm{Pr}(X=8) \approx 0.2816.
-\]</span></p>
-<p>So, <span class="math display">\[
+</span></p>
+<p>So, <span class="math display">
 \mathrm{Pr}(6.5 \leq X \leq 8.5) \approx 0.2503 + 0.2816 = 0.5319.
-\]</span></p>
+</span></p>
 <hr>
 <p><strong>In R or Python:</strong></p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
@@ -1600,52 +1614,52 @@ Since <span class="math inline">\(X\)</span> is integer-valued, this corresponds
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Suppose <span class="math inline">\(X \sim \mathcal{N}(3,2)\)</span> and, independently, <span class="math inline">\(Y \sim \mathcal{N}(-2,7)\)</span>.<br>
+<p>Suppose <span class="math inline">X \sim \mathcal{N}(3,2)</span> and, independently, <span class="math inline">Y \sim \mathcal{N}(-2,7)</span>.<br>
 Find the population mean and standard deviation of:</p>
 <ol type="a">
-<li><span class="math inline">\(3X + 2\)</span><br>
+<li><span class="math inline">3X + 2</span><br>
 </li>
-<li><span class="math inline">\(5 - Y\)</span><br>
+<li><span class="math inline">5 - Y</span><br>
 </li>
-<li><span class="math inline">\(3X + 7 - Y\)</span></li>
+<li><span class="math inline">3X + 7 - Y</span></li>
 </ol>
 <details class="solution">
 <summary>
 Solution
 </summary>
 <p><strong>a.</strong></p>
-<p><span class="math display">\[
+<p><span class="math display">
 \mathrm{E}[3X+2] = 3\mathrm{E}[X] + 2 = 3 \times 3 + 2 = 11.
-\]</span></p>
-<p><span class="math display">\[
+</span></p>
+<p><span class="math display">
 \mathrm{Var}(3X+2) = 3^2 \mathrm{Var}(X) = 9 \times 2 = 18.
-\]</span></p>
-<p>So the standard deviation is <span class="math display">\[
+</span></p>
+<p>So the standard deviation is <span class="math display">
 \sqrt{18} \approx 4.2426.
-\]</span></p>
+</span></p>
 <hr>
 <p><strong>b.</strong></p>
-<p><span class="math display">\[
+<p><span class="math display">
 \mathrm{E}[5-Y] = 5 - \mathrm{E}[Y] = 5 - (-2) = 7.
-\]</span></p>
-<p><span class="math display">\[
+</span></p>
+<p><span class="math display">
 \mathrm{Var}(5-Y) = (-1)^2 \mathrm{Var}(Y) = 1 \times 7 = 7.
-\]</span></p>
-<p>So the standard deviation is <span class="math display">\[
+</span></p>
+<p>So the standard deviation is <span class="math display">
 \sqrt{7} \approx 2.6458.
-\]</span></p>
+</span></p>
 <hr>
 <p><strong>(c)</strong></p>
-<p><span class="math display">\[
+<p><span class="math display">
 \mathrm{E}[3X+7-Y] = 3\mathrm{E}[X] + 7 - \mathrm{E}[Y] = 3 \times 3 + 7 - (-2) = 18.
-\]</span></p>
-<p>Since <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent, <span class="math display">\[
+</span></p>
+<p>Since <span class="math inline">X</span> and <span class="math inline">Y</span> are independent, <span class="math display">
 \mathrm{Var}(3X+7-Y) = 3^2\mathrm{Var}(X) + (-1)^2 \mathrm{Var}(Y)
 = 9 \times 2 + 1 \times 7 = 25.
-\]</span></p>
-<p>So the standard deviation is <span class="math display">\[
+</span></p>
+<p>So the standard deviation is <span class="math display">
 \sqrt{25} = 5.
-\]</span></p>
+</span></p>
 </details>
 </div>
 </div>
@@ -1659,32 +1673,32 @@ Solution
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The number of breakdowns per week in a computer cluster is a random variable <span class="math inline">\(Y\)</span> having a <strong>Poisson distribution</strong> with population mean <span class="math inline">\(\mu\)</span>.<br>
+<p>The number of breakdowns per week in a computer cluster is a random variable <span class="math inline">Y</span> having a <strong>Poisson distribution</strong> with population mean <span class="math inline">\mu</span>.<br>
 The weekly cost of repairing breakdowns is</p>
-<p><span class="math display">\[
+<p><span class="math display">
 C = 3Y + Y^2.
-\]</span></p>
-<p>Find <span class="math inline">\(\mathrm{E}[C]\)</span>.</p>
+</span></p>
+<p>Find <span class="math inline">\mathrm{E}[C]</span>.</p>
 <details class="solution">
 <summary>
 Solution
 </summary>
-<p>We have <span class="math display">\[
+<p>We have <span class="math display">
 \mathrm{E}[C] = \mathrm{E}[3Y + Y^2] = 3\mathrm{E}[Y] + \mathrm{E}[Y^2].
-\]</span></p>
-<p>Since <span class="math inline">\(Y \sim \mathrm{Poisson}(\mu)\)</span>:</p>
+</span></p>
+<p>Since <span class="math inline">Y \sim \mathrm{Poisson}(\mu)</span>:</p>
 <ul>
-<li><span class="math inline">\(\mathrm{E}[Y] = \mu\)</span><br>
+<li><span class="math inline">\mathrm{E}[Y] = \mu</span><br>
 </li>
-<li><span class="math inline">\(\mathrm{Var}(Y) = \mu\)</span><br>
+<li><span class="math inline">\mathrm{Var}(Y) = \mu</span><br>
 </li>
-<li>Recall that <span class="math inline">\(\mathrm{Var}(Y) = \mathrm{E}[Y^2] - (\mathrm{E}[Y])^2\)</span>, so <span class="math display">\[
+<li>Recall that <span class="math inline">\mathrm{Var}(Y) = \mathrm{E}[Y^2] - (\mathrm{E}[Y])^2</span>, so <span class="math display">
 \mathrm{E}[Y^2] = \mu + \mu^2.
-\]</span></li>
+</span></li>
 </ul>
-<p>Therefore, <span class="math display">\[
+<p>Therefore, <span class="math display">
 \mathrm{E}[C] = 3\mu + (\mu + \mu^2) = 4\mu + \mu^2.
-\]</span></p>
+</span></p>
 </details>
 </div>
 </div>
@@ -1698,40 +1712,40 @@ Solution
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Suppose <span class="math inline">\(Z \sim \mathcal{N}(0,1)\)</span>.</p>
-<p>Find the PDF of <span class="math inline">\(Y = Z^2\)</span>.</p>
-<p><em>Hint:</em> start by finding a formula for the CDF <span class="math inline">\(F_Y(y) = \mathrm{Pr}(Y \leq y)\)</span> for any <span class="math inline">\(y &gt; 0\)</span>.</p>
+<p>Suppose <span class="math inline">Z \sim \mathcal{N}(0,1)</span>.</p>
+<p>Find the PDF of <span class="math inline">Y = Z^2</span>.</p>
+<p><em>Hint:</em> start by finding a formula for the CDF <span class="math inline">F_Y(y) = \mathrm{Pr}(Y \leq y)</span> for any <span class="math inline">y &gt; 0</span>.</p>
 <details class="solution">
 <summary>
 Solution
 </summary>
-<p>For <span class="math inline">\(y &gt; 0\)</span>: <span class="math display">\[
+<p>For <span class="math inline">y &gt; 0</span>: <span class="math display">
 F_Y(y) = \mathrm{Pr}(Y \leq y) = \mathrm{Pr}(Z^2 \leq y).
-\]</span></p>
-<p>This is equivalent to <span class="math display">\[
+</span></p>
+<p>This is equivalent to <span class="math display">
 F_Y(y) = \mathrm{Pr}(-\sqrt{y} \leq Z \leq \sqrt{y})
 = \mathrm{Pr}(Z \leq \sqrt{y}) - \mathrm{Pr}(Z \leq -\sqrt{y}).
-\]</span></p>
-<p>Using the standard normal CDF <span class="math inline">\(\Phi\)</span>, <span class="math display">\[
+</span></p>
+<p>Using the standard normal CDF <span class="math inline">\Phi</span>, <span class="math display">
 F_Y(y) = \Phi(\sqrt{y}) - \Phi(-\sqrt{y}).
-\]</span></p>
+</span></p>
 <p><strong>Differentiate to find the PDF:</strong></p>
-<p><span class="math display">\[
+<p><span class="math display">
 f_Y(y) = \frac{\partial}{\partial y} \Big[ \Phi(\sqrt{y}) - \Phi(-\sqrt{y}) \Big].
-\]</span></p>
-<p>By the chain rule: <span class="math display">\[
+</span></p>
+<p>By the chain rule: <span class="math display">
 f_Y(y) = \phi(\sqrt{y}) \cdot \frac{1}{2\sqrt{y}} + \phi(-\sqrt{y}) \cdot \frac{1}{2\sqrt{y}}.
-\]</span></p>
-<p>Since <span class="math inline">\(\phi\)</span> (the standard normal PDF) is symmetric, <span class="math display">\[
+</span></p>
+<p>Since <span class="math inline">\phi</span> (the standard normal PDF) is symmetric, <span class="math display">
 f_Y(y) = \frac{1}{\sqrt{y}} \, \phi(\sqrt{y}).
-\]</span></p>
-<p>Substitute <span class="math inline">\(\phi(z) = \tfrac{1}{\sqrt{2\pi}} e^{-z^2/2}\)</span>: <span class="math display">\[
+</span></p>
+<p>Substitute <span class="math inline">\phi(z) = \tfrac{1}{\sqrt{2\pi}} e^{-z^2/2}</span>: <span class="math display">
 f_Y(y) = \frac{1}{\sqrt{2\pi y}} e^{-y/2}, \quad y &gt; 0.
-\]</span></p>
-<p>For <span class="math inline">\(y \leq 0\)</span>, <span class="math inline">\(f_Y(y)=0\)</span>.</p>
+</span></p>
+<p>For <span class="math inline">y \leq 0</span>, <span class="math inline">f_Y(y)=0</span>.</p>
 <hr>
 <p><strong>Aside.</strong><br>
-This is exactly the PDF of a <span class="math inline">\(\chi^2_1\)</span> distribution.</p>
+This is exactly the PDF of a <span class="math inline">\chi^2_1</span> distribution.</p>
 </details>
 </div>
 </div>
@@ -1745,35 +1759,35 @@ This is exactly the PDF of a <span class="math inline">\(\chi^2_1\)</span> distr
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Customer waiting times at a call centre can be assumed to be <span class="xref-no-num"><a href="formula-sheet.html#sec-gamma" class="quarto-xref">Gamma&nbsp;<span>Gamma</span></a></span> random variables with mean <span class="math inline">\(3\)</span> minutes and standard deviation <span class="math inline">\(2\)</span> minutes.</p>
-<p>What proportion of customers are expected to wait more than <span class="math inline">\(5\)</span> minutes?</p>
+<p>Customer waiting times at a call centre can be assumed to be <span class="xref-no-num"><a href="formula-sheet.html#sec-gamma" class="quarto-xref">Gamma&nbsp;<span>Gamma</span></a></span> random variables with mean <span class="math inline">3</span> minutes and standard deviation <span class="math inline">2</span> minutes.</p>
+<p>What proportion of customers are expected to wait more than <span class="math inline">5</span> minutes?</p>
 <p><em>Hint:</em> you will need R or Python for this.</p>
 <details class="solution">
 <summary>
 Solution
 </summary>
-<p>Let the waiting time be <span class="math inline">\(X \sim \mathrm{Gamma}(\alpha, \lambda)\)</span>, with shape <span class="math inline">\(\alpha\)</span> and rate <span class="math inline">\(\lambda\)</span>.</p>
+<p>Let the waiting time be <span class="math inline">X \sim \mathrm{Gamma}(\alpha, \lambda)</span>, with shape <span class="math inline">\alpha</span> and rate <span class="math inline">\lambda</span>.</p>
 <p>From the formulas:<br>
-<span class="math display">\[
+<span class="math display">
 \mathrm{E}[X] = \frac{\alpha}{\lambda},
 \qquad \mathrm{Var}(X) = \frac{\alpha}{\lambda^2}.
-\]</span></p>
-<p>We are told: <span class="math display">\[
+</span></p>
+<p>We are told: <span class="math display">
 \mathrm{E}[X] = 3, \qquad \mathrm{SD}[X] = 2 \ \Rightarrow \ \mathrm{Var}(X) = 4.
-\]</span></p>
-<p>So: <span class="math display">\[
+</span></p>
+<p>So: <span class="math display">
 \frac{\alpha}{\lambda} = 3, \qquad \frac{\alpha}{\lambda^2} = 4.
-\]</span></p>
-<p>Divide the second equation by the first: <span class="math display">\[
+</span></p>
+<p>Divide the second equation by the first: <span class="math display">
 \frac{\alpha/\lambda^2}{\alpha/\lambda} = \frac{4}{3} \quad \Rightarrow \quad \frac{1}{\lambda} = \frac{4}{3}.
-\]</span></p>
-<p>Hence: <span class="math display">\[
+</span></p>
+<p>Hence: <span class="math display">
 \lambda = 0.75, \quad \alpha = 3\lambda = 2.25.
-\]</span></p>
+</span></p>
 <hr>
-<p>We want: <span class="math display">\[
+<p>We want: <span class="math display">
 \mathrm{Pr}(X &gt; 5) = 1 - F_X(5).
-\]</span></p>
+</span></p>
 </details>
 </div>
 </div>
@@ -1788,37 +1802,37 @@ Solution
 </div>
 <div class="callout-body-container callout-body">
 <p>Suppose we have a single <span class="xref-no-num"><a href="formula-sheet.html#sec-binom" class="quarto-xref">Binomial&nbsp;<span>Binomial</span></a></span> observation</p>
-<p><span class="math display">\[
+<p><span class="math display">
 X \mid p \sim \mathrm{Binomial}(n,p).
-\]</span></p>
-<p>Following the <span class="xref-no-num"><a href="../main/part3/7-freq-interval-estimation.html#sec-general-ci-strategy" class="quarto-xref">general strategy&nbsp;<span>General Strategy</span></a></span>, construct an <em>exact</em> two-sided <span class="math inline">\((1-\alpha)\)</span> confidence interval for <span class="math inline">\(p\)</span>.</p>
-<p><strong>Note on exact (discrete) coverage.</strong> In the discrete case, an “exact” interval <span class="math inline">\([L(X), U(X)]\)</span> means, for every <span class="math inline">\(0\leq p \leq 1\)</span>,</p>
-<p><span class="math display">\[
+</span></p>
+<p>Following the <span class="xref-no-num"><a href="../main/part3/7-freq-interval-estimation.html#sec-general-ci-strategy" class="quarto-xref">general strategy&nbsp;<span>General Strategy</span></a></span>, construct an <em>exact</em> two-sided <span class="math inline">(1-\alpha)</span> confidence interval for <span class="math inline">p</span>.</p>
+<p><strong>Note on exact (discrete) coverage.</strong> In the discrete case, an “exact” interval <span class="math inline">[L(X), U(X)]</span> means, for every <span class="math inline">0\leq p \leq 1</span>,</p>
+<p><span class="math display">
 \operatorname{Pr}\!\big(L(X) \leq p \leq U(X)\big) \ge 1-\alpha, \quad\text{where }X \sim \text{Binomial}(n,p).
-\]</span></p>
-<p>Because of discreteness, equality for all <span class="math inline">\(p\)</span> is impossible; the interval is conservative.</p>
+</span></p>
+<p>Because of discreteness, equality for all <span class="math inline">p</span> is impossible; the interval is conservative.</p>
 <details class="solution">
 <summary>
 Solution
 </summary>
-<p><strong>1. Choose a statistic.</strong> Take <span class="math inline">\(T=X\)</span>. Its sampling distribution is</p>
-<p><span class="math display">\[
+<p><strong>1. Choose a statistic.</strong> Take <span class="math inline">T=X</span>. Its sampling distribution is</p>
+<p><span class="math display">
 X \mid p \sim \mathrm{Binomial}(n,p),\qquad f(x\mid p)=\binom{n}{x}p^x(1-p)^{n-x}.
-\]</span></p>
-<p><strong>2–3. Form a pivot via tail probabilities and fix central mass.</strong> Denote <span class="math inline">\(F_p(y) = \mathrm{Pr}(Y \leq y)\)</span> where <span class="math inline">\(Y\sim \mathrm{Binomial}(n,p)\)</span> and denote <span class="math inline">\(\mathrm{Pr}_{p}(X\le x) = F_p(x)\)</span>. For a given observed <span class="math inline">\(x\)</span>, define endpoints by equating the two tails to <span class="math inline">\(\alpha/2\)</span>:</p>
-<p><span class="math display">\[
+</span></p>
+<p><strong>2–3. Form a pivot via tail probabilities and fix central mass.</strong> Denote <span class="math inline">F_p(y) = \mathrm{Pr}(Y \leq y)</span> where <span class="math inline">Y\sim \mathrm{Binomial}(n,p)</span> and denote <span class="math inline">\mathrm{Pr}_{p}(X\le x) = F_p(x)</span>. For a given observed <span class="math inline">x</span>, define endpoints by equating the two tails to <span class="math inline">\alpha/2</span>:</p>
+<p><span class="math display">
 \mathrm{Pr}_{p_L}(X\le x-1)=\frac{\alpha}{2},\qquad
 \mathrm{Pr}_{p_U}(X\ge x+1)=\frac{\alpha}{2}.
-\]</span></p>
-<p>(Edge cases: if <span class="math inline">\(x=0\)</span> set <span class="math inline">\(p_L=0\)</span>; if <span class="math inline">\(x=n\)</span> set <span class="math inline">\(p_U=1\)</span>.)</p>
+</span></p>
+<p>(Edge cases: if <span class="math inline">x=0</span> set <span class="math inline">p_L=0</span>; if <span class="math inline">x=n</span> set <span class="math inline">p_U=1</span>.)</p>
 <p><strong>4. Invert (Clopper–Pearson).</strong> These tail equalities are exactly equivalent to <strong>Beta quantiles</strong>, giving closed-form endpoints:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \boxed{\;
 p_L = B^{-1}\!\left(\tfrac{\alpha}{2};\, x,\; n-x+1\right),\qquad
 p_U = B^{-1}\!\left(1-\tfrac{\alpha}{2};\, x+1,\; n-x\right)\; }
-\]</span></p>
-<p>where <span class="math inline">\(B^{-1}(q;a,b)\)</span> is the <span class="math inline">\(q\)</span>-quantile of <span class="math inline">\(\mathrm{Beta}(a,b)\)</span>. With the edge-case conventions above:</p>
-<p><span class="math display">\[
+</span></p>
+<p>where <span class="math inline">B^{-1}(q;a,b)</span> is the <span class="math inline">q</span>-quantile of <span class="math inline">\mathrm{Beta}(a,b)</span>. With the edge-case conventions above:</p>
+<p><span class="math display">
 p_L=
 \begin{cases}
 0, &amp; x=0,\\
@@ -1830,8 +1844,8 @@ p_U=
 B^{-1}\!\left(1-\tfrac{\alpha}{2};\, x+1,\; n-x\right), &amp; x\le n-1,\\
 1, &amp; x=n.
 \end{cases}
-\]</span></p>
-<p>We obtain the <strong>Clopper–Pearson interval</strong> <span class="math inline">\([p_L,\,p_U]\)</span>, which is an exact (conservative) two-sided <span class="math inline">\((1-\alpha)\)</span> CI for <span class="math inline">\(p\)</span>.</p>
+</span></p>
+<p>We obtain the <strong>Clopper–Pearson interval</strong> <span class="math inline">[p_L,\,p_U]</span>, which is an exact (conservative) two-sided <span class="math inline">(1-\alpha)</span> CI for <span class="math inline">p</span>.</p>
 </details>
 </div>
 </div>
@@ -1845,46 +1859,46 @@ B^{-1}\!\left(1-\tfrac{\alpha}{2};\, x+1,\; n-x\right), &amp; x\le n-1,\\
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Suppose <span class="math inline">\(X\)</span> is a continuous random variable with CDF <span class="math inline">\(F(x)\)</span>.<br>
-Define the random variable <span class="math display">\[
+<p>Suppose <span class="math inline">X</span> is a continuous random variable with CDF <span class="math inline">F(x)</span>.<br>
+Define the random variable <span class="math display">
 U = F(X),
-\]</span> that is, the CDF evaluated at a random argument.</p>
-<p>Show that <span class="math inline">\(U \sim U(0,1)\)</span>.</p>
-<p><em>Aside.</em> This result is fundamental in simulation: if we can generate uniform random variables <span class="math inline">\(U \sim U(0,1)\)</span>, then we can simulate <span class="math inline">\(X\)</span> by setting <span class="math inline">\(X = F^{-1}(U)\)</span>.</p>
+</span> that is, the CDF evaluated at a random argument.</p>
+<p>Show that <span class="math inline">U \sim U(0,1)</span>.</p>
+<p><em>Aside.</em> This result is fundamental in simulation: if we can generate uniform random variables <span class="math inline">U \sim U(0,1)</span>, then we can simulate <span class="math inline">X</span> by setting <span class="math inline">X = F^{-1}(U)</span>.</p>
 <details class="solution">
 <summary>
 Solution
 </summary>
-<p>Because <span class="math inline">\(F(\cdot)\)</span> is continuous and strictly increasing, its inverse <span class="math inline">\(F^{-1}(\cdot)\)</span> exists and is also strictly increasing.</p>
-<p>Define the CDF of <span class="math inline">\(U\)</span> as <span class="math display">\[
+<p>Because <span class="math inline">F(\cdot)</span> is continuous and strictly increasing, its inverse <span class="math inline">F^{-1}(\cdot)</span> exists and is also strictly increasing.</p>
+<p>Define the CDF of <span class="math inline">U</span> as <span class="math display">
 G(u) = \operatorname{Pr}(U \leq u).
-\]</span></p>
-<p>Since <span class="math inline">\(U = F(X)\)</span> always lies in <span class="math inline">\([0,1]\)</span>, we have: <span class="math display">\[
+</span></p>
+<p>Since <span class="math inline">U = F(X)</span> always lies in <span class="math inline">[0,1]</span>, we have: <span class="math display">
 G(u) = 0 \quad \text{for } u \leq 0, \qquad
 G(u) = 1 \quad \text{for } u \geq 1.
-\]</span></p>
-<p>Now consider <span class="math inline">\(u \in (0,1)\)</span>: <span class="math display">\[
+</span></p>
+<p>Now consider <span class="math inline">u \in (0,1)</span>: <span class="math display">
 G(u) = \operatorname{Pr}(U \leq u)
 = \operatorname{Pr}(F(X) \leq u).
-\]</span></p>
-<p>Because <span class="math inline">\(F\)</span> is increasing, <span class="math display">\[
+</span></p>
+<p>Because <span class="math inline">F</span> is increasing, <span class="math display">
 \operatorname{Pr}(F(X) \leq u) = \operatorname{Pr}(X \leq F^{-1}(u)).
-\]</span></p>
-<p>By definition of the CDF <span class="math inline">\(F\)</span>, <span class="math display">\[
+</span></p>
+<p>By definition of the CDF <span class="math inline">F</span>, <span class="math display">
 \operatorname{Pr}(X \leq F^{-1}(u)) = F(F^{-1}(u)) = u.
-\]</span></p>
-<p>Thus the CDF of <span class="math inline">\(U\)</span> is <span class="math display">\[
+</span></p>
+<p>Thus the CDF of <span class="math inline">U</span> is <span class="math display">
 G(u) =
 \begin{cases}
 0, &amp; u \leq 0, \\
 u, &amp; 0 &lt; u \leq 1, \\
 1, &amp; u &gt; 1.
 \end{cases}
-\]</span></p>
-<p>This is exactly the CDF of the <span class="math inline">\(\mathrm{Uniform}(0,1)\)</span> distribution.<br>
-Therefore, <span class="math display">\[
+</span></p>
+<p>This is exactly the CDF of the <span class="math inline">\mathrm{Uniform}(0,1)</span> distribution.<br>
+Therefore, <span class="math display">
 U \sim U(0,1).
-\]</span></p>
+</span></p>
 </details>
 </div>
 </div>
@@ -1898,36 +1912,36 @@ U \sim U(0,1).
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>We have seen that properties of a random variable <span class="math inline">\(X\)</span> can be described by the CDF, PMF, or PDF.<br>
-Another way is through the <strong>moment generating function (MGF)</strong> <span class="math inline">\(M(t)\)</span>, defined by <span class="math display">\[
+<p>We have seen that properties of a random variable <span class="math inline">X</span> can be described by the CDF, PMF, or PDF.<br>
+Another way is through the <strong>moment generating function (MGF)</strong> <span class="math inline">M(t)</span>, defined by <span class="math display">
 M(t) = \mathrm{E}[e^{tX}],
-\]</span> provided the expectation is finite (which is not always the case).</p>
+</span> provided the expectation is finite (which is not always the case).</p>
 <p>If the MGF exists, it is <strong>unique</strong>: two random variables have the same MGF if and only if they have the same distribution.</p>
 <hr>
-<p>Suppose <span class="math inline">\(X \sim \mathrm{Exp}(\lambda)\)</span>, with PDF <span class="math display">\[
+<p>Suppose <span class="math inline">X \sim \mathrm{Exp}(\lambda)</span>, with PDF <span class="math display">
 f(x) = \lambda e^{-\lambda x}, \quad x \geq 0.
-\]</span></p>
-<p>Show that the MGF of <span class="math inline">\(X\)</span> is <span class="math display">\[
+</span></p>
+<p>Show that the MGF of <span class="math inline">X</span> is <span class="math display">
 M(t) = \frac{\lambda}{\lambda - t}, \qquad 0 \leq t &lt; \lambda.
-\]</span></p>
+</span></p>
 <details class="solution">
 <summary>
 Solution
 </summary>
-<p>Choose <span class="math inline">\(t\)</span> with <span class="math inline">\(0 \leq t &lt; \lambda\)</span> to ensure convergence. Then <span class="math display">\[
+<p>Choose <span class="math inline">t</span> with <span class="math inline">0 \leq t &lt; \lambda</span> to ensure convergence. Then <span class="math display">
 M(t) = \mathrm{E}[e^{tX}]
 = \int_0^\infty e^{tx} \lambda e^{-\lambda x} \, dx.
-\]</span></p>
-<p>Combine exponents: <span class="math display">\[
+</span></p>
+<p>Combine exponents: <span class="math display">
 M(t) = \int_0^\infty \lambda e^{-(\lambda - t)x} \, dx.
-\]</span></p>
-<p>Factor out <span class="math inline">\((\lambda - t)\)</span>: <span class="math display">\[
+</span></p>
+<p>Factor out <span class="math inline">(\lambda - t)</span>: <span class="math display">
 M(t) = \frac{\lambda}{\lambda - t} \int_0^\infty (\lambda - t) e^{-(\lambda - t)x} \, dx.
-\]</span></p>
-<p>But the integrand is the PDF of <span class="math inline">\(\mathrm{Exp}(\lambda - t)\)</span>, so the integral equals 1.</p>
-<p>Therefore: <span class="math display">\[
+</span></p>
+<p>But the integrand is the PDF of <span class="math inline">\mathrm{Exp}(\lambda - t)</span>, so the integral equals 1.</p>
+<p>Therefore: <span class="math display">
 M(t) = \frac{\lambda}{\lambda - t}, \qquad 0 \leq t &lt; \lambda.
-\]</span></p>
+</span></p>
 </details>
 </div>
 </div>
@@ -1937,29 +1951,29 @@ M(t) = \frac{\lambda}{\lambda - t}, \qquad 0 \leq t &lt; \lambda.
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Estimating <span class="math inline">\(\lambda\)</span> from Independent Poisson Samples
+<span class="screen-reader-only">Important</span>Estimating <span class="math inline">\lambda</span> from Independent Poisson Samples
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Suppose <span class="math inline">\(X \sim \mathrm{Poisson}(\lambda)\)</span> and, independently, <span class="math inline">\(Y \sim \mathrm{Poisson}(2\lambda)\)</span>.</p>
+<p>Suppose <span class="math inline">X \sim \mathrm{Poisson}(\lambda)</span> and, independently, <span class="math inline">Y \sim \mathrm{Poisson}(2\lambda)</span>.</p>
 <ol type="a">
 <li><p>Classify the following as <em>parameters</em>, <em>statistics</em>, or <em>neither</em>:</p>
 <ol type="i">
-<li><span class="math inline">\(X + 2Y\)</span><br>
+<li><span class="math inline">X + 2Y</span><br>
 </li>
-<li><span class="math inline">\(\hat{\lambda} = (X+Y)/3\)</span><br>
+<li><span class="math inline">\hat{\lambda} = (X+Y)/3</span><br>
 </li>
-<li><span class="math inline">\(\lambda / \hat{\lambda}\)</span></li>
-<li><span class="math inline">\(\operatorname{Pr}(\lambda &gt; \hat{\lambda})\)</span></li>
+<li><span class="math inline">\lambda / \hat{\lambda}</span></li>
+<li><span class="math inline">\operatorname{Pr}(\lambda &gt; \hat{\lambda})</span></li>
 </ol></li>
-<li><p>Find the <strong>bias</strong> and <strong>MSE</strong> of each of the following estimators of <span class="math inline">\(\lambda\)</span>. Which would you recommend?</p>
+<li><p>Find the <strong>bias</strong> and <strong>MSE</strong> of each of the following estimators of <span class="math inline">\lambda</span>. Which would you recommend?</p>
 <ol type="i">
-<li><span class="math inline">\(X\)</span><br>
+<li><span class="math inline">X</span><br>
 </li>
-<li><span class="math inline">\(Y-X\)</span></li>
-<li><span class="math inline">\((X+Y)/3\)</span></li>
+<li><span class="math inline">Y-X</span></li>
+<li><span class="math inline">(X+Y)/3</span></li>
 </ol></li>
-<li><p>Consider a general estimator <span class="math inline">\(w_1 X + w_2 Y\)</span>. What values of <span class="math inline">\(w_1\)</span> and <span class="math inline">\(w_2\)</span> would you recommend?</p></li>
+<li><p>Consider a general estimator <span class="math inline">w_1 X + w_2 Y</span>. What values of <span class="math inline">w_1</span> and <span class="math inline">w_2</span> would you recommend?</p></li>
 </ol>
 <details class="solution">
 <summary>
@@ -1974,57 +1988,57 @@ Solution
 <li><em>Neither</em> means it involves both.</li>
 </ul>
 <ol type="i">
-<li><span class="math inline">\(X+2Y\)</span>: <strong>Statistic</strong><br>
+<li><span class="math inline">X+2Y</span>: <strong>Statistic</strong><br>
 </li>
-<li><span class="math inline">\((X+Y)/3\)</span>: <strong>Statistic</strong><br>
+<li><span class="math inline">(X+Y)/3</span>: <strong>Statistic</strong><br>
 </li>
-<li><span class="math inline">\(\lambda/\hat{\lambda}\)</span>: <strong>Neither</strong><br>
+<li><span class="math inline">\lambda/\hat{\lambda}</span>: <strong>Neither</strong><br>
 </li>
-<li><span class="math inline">\(\operatorname{Pr}(\lambda &gt; \hat{\lambda})\)</span>: <strong>Parameter</strong> (depends on the distribution, not directly observable)</li>
+<li><span class="math inline">\operatorname{Pr}(\lambda &gt; \hat{\lambda})</span>: <strong>Parameter</strong> (depends on the distribution, not directly observable)</li>
 </ol>
 <hr>
 <p><strong>b. Bias and MSE.</strong></p>
-<p>Recall: for Poisson<span class="math inline">\((\mu)\)</span>, <span class="math inline">\(\mathrm{E}[X]=\mathrm{Var}(X)=\mu\)</span>.</p>
+<p>Recall: for Poisson<span class="math inline">(\mu)</span>, <span class="math inline">\mathrm{E}[X]=\mathrm{Var}(X)=\mu</span>.</p>
 <ul>
-<li><span class="math inline">\(X \sim \mathrm{Poisson}(\lambda)\)</span>, so <span class="math inline">\(\mathrm{E}[X]=\lambda\)</span>, <span class="math inline">\(\mathrm{Var}(X)=\lambda\)</span>.<br>
+<li><span class="math inline">X \sim \mathrm{Poisson}(\lambda)</span>, so <span class="math inline">\mathrm{E}[X]=\lambda</span>, <span class="math inline">\mathrm{Var}(X)=\lambda</span>.<br>
 </li>
-<li><span class="math inline">\(Y \sim \mathrm{Poisson}(2\lambda)\)</span>, so <span class="math inline">\(\mathrm{E}[Y]=2\lambda\)</span>, <span class="math inline">\(\mathrm{Var}(Y)=2\lambda\)</span>.<br>
+<li><span class="math inline">Y \sim \mathrm{Poisson}(2\lambda)</span>, so <span class="math inline">\mathrm{E}[Y]=2\lambda</span>, <span class="math inline">\mathrm{Var}(Y)=2\lambda</span>.<br>
 </li>
-<li>Independence: <span class="math inline">\(\mathrm{Var}(aX+bY) = a^2\mathrm{Var}(X) + b^2\mathrm{Var}(Y)\)</span>.</li>
+<li>Independence: <span class="math inline">\mathrm{Var}(aX+bY) = a^2\mathrm{Var}(X) + b^2\mathrm{Var}(Y)</span>.</li>
 </ul>
-<p><span class="math display">\[
+<p><span class="math display">
 \text{Bias}(\hat{\theta}) = \mathrm{E}[\hat{\theta}] - \lambda,
 \qquad \mathrm{MSE}(\hat{\theta}) = \mathrm{Var}(\hat{\theta}) + \text{Bias}(\hat{\theta})^2.
-\]</span></p>
+</span></p>
 <ol type="i">
-<li><p><span class="math inline">\(X\)</span>:<br>
-<span class="math inline">\(\mathrm{E}[X] = \lambda \;\Rightarrow\; \text{Bias}=0\)</span>.<br>
-<span class="math inline">\(\mathrm{MSE} = \mathrm{Var}(X) = \lambda\)</span>.</p></li>
-<li><p><span class="math inline">\(Y-X\)</span>:<br>
-<span class="math inline">\(\mathrm{E}[Y-X] = 2\lambda - \lambda = \lambda \;\Rightarrow\; \text{Bias}=0\)</span>.<br>
-<span class="math inline">\(\mathrm{Var}(Y-X) = \mathrm{Var}(Y)+\mathrm{Var}(X) = 2\lambda + \lambda = 3\lambda\)</span>.<br>
-<span class="math inline">\(\mathrm{MSE}=3\lambda\)</span>.</p></li>
-<li><p><span class="math inline">\((X+Y)/3\)</span>:<br>
-<span class="math inline">\(\mathrm{E}[(X+Y)/3] = (\lambda+2\lambda)/3 = \lambda \;\Rightarrow\; \text{Bias}=0\)</span>.<br>
-<span class="math inline">\(\mathrm{Var}[(X+Y)/3] = \tfrac{1}{9}(\lambda+2\lambda) = \tfrac{\lambda}{3}\)</span>.<br>
-<span class="math inline">\(\mathrm{MSE} = \tfrac{\lambda}{3}\)</span>.</p></li>
+<li><p><span class="math inline">X</span>:<br>
+<span class="math inline">\mathrm{E}[X] = \lambda \;\Rightarrow\; \text{Bias}=0</span>.<br>
+<span class="math inline">\mathrm{MSE} = \mathrm{Var}(X) = \lambda</span>.</p></li>
+<li><p><span class="math inline">Y-X</span>:<br>
+<span class="math inline">\mathrm{E}[Y-X] = 2\lambda - \lambda = \lambda \;\Rightarrow\; \text{Bias}=0</span>.<br>
+<span class="math inline">\mathrm{Var}(Y-X) = \mathrm{Var}(Y)+\mathrm{Var}(X) = 2\lambda + \lambda = 3\lambda</span>.<br>
+<span class="math inline">\mathrm{MSE}=3\lambda</span>.</p></li>
+<li><p><span class="math inline">(X+Y)/3</span>:<br>
+<span class="math inline">\mathrm{E}[(X+Y)/3] = (\lambda+2\lambda)/3 = \lambda \;\Rightarrow\; \text{Bias}=0</span>.<br>
+<span class="math inline">\mathrm{Var}[(X+Y)/3] = \tfrac{1}{9}(\lambda+2\lambda) = \tfrac{\lambda}{3}</span>.<br>
+<span class="math inline">\mathrm{MSE} = \tfrac{\lambda}{3}</span>.</p></li>
 </ol>
-<p><strong>Recommendation:</strong> <span class="math inline">\((X+Y)/3\)</span> has the smallest MSE.</p>
+<p><strong>Recommendation:</strong> <span class="math inline">(X+Y)/3</span> has the smallest MSE.</p>
 <hr>
-<p><strong>c.&nbsp;General estimator <span class="math inline">\(w_1X + w_2Y\)</span>.</strong></p>
-<p><em>Expectation:</em> <span class="math display">\[
+<p><strong>c.&nbsp;General estimator <span class="math inline">w_1X + w_2Y</span>.</strong></p>
+<p><em>Expectation:</em> <span class="math display">
 \mathrm{E}[w_1X+w_2Y] = (w_1 + 2w_2)\lambda.
-\]</span></p>
-<p>For unbiasedness, require <span class="math inline">\(w_1+2w_2=1\)</span>, i.e.&nbsp;<span class="math inline">\(w_1=1-2w_2\)</span>.</p>
+</span></p>
+<p>For unbiasedness, require <span class="math inline">w_1+2w_2=1</span>, i.e.&nbsp;<span class="math inline">w_1=1-2w_2</span>.</p>
 <p><em>Variance:</em></p>
-<p><span class="math display">\[\begin{align*}
+<p><span class="math display">\begin{align*}
 \mathrm{Var}((1-2w_2)X + w_2Y) &amp;= (1-2w_2)^2\lambda + 2w_2^2\lambda \\
 &amp;= (6w_2^2 - 4w_2 + 1)\lambda.
-\end{align*}\]</span></p>
-<p>This quadratic in <span class="math inline">\(w_2\)</span> is minimised at <span class="math inline">\(w_2=\tfrac{1}{3}\)</span>, giving <span class="math inline">\(w_1=\tfrac{1}{3}\)</span>.</p>
-<p>Thus the optimal unbiased estimator is: <span class="math display">\[
+\end{align*}</span></p>
+<p>This quadratic in <span class="math inline">w_2</span> is minimised at <span class="math inline">w_2=\tfrac{1}{3}</span>, giving <span class="math inline">w_1=\tfrac{1}{3}</span>.</p>
+<p>Thus the optimal unbiased estimator is: <span class="math display">
 \hat{\lambda} = \tfrac{1}{3}(X+Y),
-\]</span> matching part (b).</p>
+</span> matching part (b).</p>
 </details>
 </div>
 </div>
@@ -2038,83 +2052,83 @@ Solution
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>A random variable <span class="math inline">\(X\)</span> has expected value <span class="math inline">\(\mathrm{E}[X] = 2\theta + 6\)</span> and variance <span class="math inline">\(\mathrm{Var}(X) = 2\theta^2\)</span>.<br>
-A random variable <span class="math inline">\(Y\)</span> has expected value <span class="math inline">\(\mathrm{E}[Y] = 3\theta - 12\)</span> and variance <span class="math inline">\(\mathrm{Var}(Y) = 6\theta^2 + 1\)</span>.<br>
-Assume <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are <strong>independent</strong>.</p>
+<p>A random variable <span class="math inline">X</span> has expected value <span class="math inline">\mathrm{E}[X] = 2\theta + 6</span> and variance <span class="math inline">\mathrm{Var}(X) = 2\theta^2</span>.<br>
+A random variable <span class="math inline">Y</span> has expected value <span class="math inline">\mathrm{E}[Y] = 3\theta - 12</span> and variance <span class="math inline">\mathrm{Var}(Y) = 6\theta^2 + 1</span>.<br>
+Assume <span class="math inline">X</span> and <span class="math inline">Y</span> are <strong>independent</strong>.</p>
 <ol type="a">
-<li><p>Compute the <strong>bias</strong>, <strong>variance</strong>, and <strong>MSE</strong> of the following estimators of <span class="math inline">\(\theta\)</span>:</p>
+<li><p>Compute the <strong>bias</strong>, <strong>variance</strong>, and <strong>MSE</strong> of the following estimators of <span class="math inline">\theta</span>:</p>
 <ol type="i">
-<li><span class="math inline">\(\hat{\theta}_1 = 5X - 3Y - 65\)</span><br>
+<li><span class="math inline">\hat{\theta}_1 = 5X - 3Y - 65</span><br>
 </li>
-<li><span class="math inline">\(\hat{\theta}_2 = (X+Y)/5\)</span><br>
+<li><span class="math inline">\hat{\theta}_2 = (X+Y)/5</span><br>
 </li>
-<li><span class="math inline">\(\hat{\theta}_3 = Y/6 + X/4 + 1/2\)</span></li>
+<li><span class="math inline">\hat{\theta}_3 = Y/6 + X/4 + 1/2</span></li>
 </ol></li>
-<li><p>Let <span class="math inline">\(\hat{\theta} = aX + bY + c\)</span> be an estimator of <span class="math inline">\(\theta\)</span>. Derive a system of linear equations involving <span class="math inline">\(a, b, c\)</span> that ensures <span class="math inline">\(\hat{\theta}\)</span> is <strong>unbiased</strong> for any value of <span class="math inline">\(\theta\)</span>.</p></li>
-<li><p>Suppose <span class="math inline">\(\hat{\theta} = aX + bY + c\)</span> is an <strong>unbiased</strong> estimator of <span class="math inline">\(\theta\)</span>. Find the values of <span class="math inline">\(a, b, c\)</span> that minimise the <strong>mean squared error</strong> of <span class="math inline">\(\hat{\theta}\)</span> when the true value of <span class="math inline">\(\theta = 1\)</span>.</p></li>
+<li><p>Let <span class="math inline">\hat{\theta} = aX + bY + c</span> be an estimator of <span class="math inline">\theta</span>. Derive a system of linear equations involving <span class="math inline">a, b, c</span> that ensures <span class="math inline">\hat{\theta}</span> is <strong>unbiased</strong> for any value of <span class="math inline">\theta</span>.</p></li>
+<li><p>Suppose <span class="math inline">\hat{\theta} = aX + bY + c</span> is an <strong>unbiased</strong> estimator of <span class="math inline">\theta</span>. Find the values of <span class="math inline">a, b, c</span> that minimise the <strong>mean squared error</strong> of <span class="math inline">\hat{\theta}</span> when the true value of <span class="math inline">\theta = 1</span>.</p></li>
 </ol>
 <details class="solution">
 <summary>
 Solution
 </summary>
 <p><strong>a. Bias, variance, and MSE.</strong></p>
-<p><span class="math display">\[
+<p><span class="math display">
 \text{Bias}(\hat{\theta}) = \mathrm{E}[\hat{\theta}] - \theta,
 \qquad
 \text{MSE}(\hat{\theta}) = \mathrm{Var}(\hat{\theta}) + \text{Bias}(\hat{\theta})^2.
-\]</span></p>
-<p>Using independence of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>:</p>
-<p><span class="math display">\[
+</span></p>
+<p>Using independence of <span class="math inline">X</span> and <span class="math inline">Y</span>:</p>
+<p><span class="math display">
 \mathrm{Var}(aX+bY+c) = a^2\mathrm{Var}(X) + b^2\mathrm{Var}(Y).
-\]</span></p>
-<p><span class="math display">\[
+</span></p>
+<p><span class="math display">
 \begin{array}{c|c|c|c|c}
 \text{Estimator } \hat{\theta} &amp; \mathrm{E}[\hat{\theta}] &amp; \mathrm{Var}[\hat{\theta}] &amp; \text{Bias} &amp; \text{MSE} \\ \hline
 5X - 3Y - 65 &amp; \theta+1 &amp; 104\theta^2+9 &amp; 1 &amp; 104\theta^2+10 \\
 (X+Y)/5 &amp; \theta-\tfrac{6}{5} &amp; \tfrac{8\theta^2+1}{25} &amp; -\tfrac{6}{5} &amp; \tfrac{8\theta^2+37}{25} \\
 Y/6 + X/4 + 1/2 &amp; \theta &amp; \tfrac{7}{24}\theta^2 + \tfrac{1}{36} &amp; 0 &amp; \tfrac{7}{24}\theta^2 + \tfrac{1}{36} \\
 \end{array}
-\]</span></p>
+</span></p>
 <hr>
 <p><strong>b. Unbiasedness condition.</strong></p>
-<p><span class="math display">\[
+<p><span class="math display">
 \mathrm{E}[\hat{\theta}] = a\,\mathrm{E}[X] + b\,\mathrm{E}[Y] + c
 = a(2\theta+6) + b(3\theta-12) + c.
-\]</span></p>
-<p>For unbiasedness: <span class="math inline">\(\mathrm{E}[\hat{\theta}] = \theta\)</span> for all <span class="math inline">\(\theta\)</span>.</p>
-<p>So <span class="math display">\[
+</span></p>
+<p>For unbiasedness: <span class="math inline">\mathrm{E}[\hat{\theta}] = \theta</span> for all <span class="math inline">\theta</span>.</p>
+<p>So <span class="math display">
 (2a+3b-1)\theta + (6a - 12b + c) = 0.
-\]</span></p>
-<p>This gives the system: <span class="math display">\[
+</span></p>
+<p>This gives the system: <span class="math display">
 2a+3b=1, \qquad 6a - 12b + c = 0.
-\]</span></p>
+</span></p>
 <hr>
-<p><strong>c.&nbsp;Minimising MSE when <span class="math inline">\(\theta=1\)</span>.</strong></p>
+<p><strong>c.&nbsp;Minimising MSE when <span class="math inline">\theta=1</span>.</strong></p>
 <p>For an unbiased estimator, MSE = variance:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \mathrm{Var}[\hat{\theta}] = a^2 \mathrm{Var}(X) + b^2 \mathrm{Var}(Y)
 = 2a^2 \theta^2 + b^2(6\theta^2+1).
-\]</span></p>
-<p>At <span class="math inline">\(\theta=1\)</span>: <span class="math display">\[
+</span></p>
+<p>At <span class="math inline">\theta=1</span>: <span class="math display">
 \mathrm{Var}[\hat{\theta}] = 2a^2 + 7b^2.
-\]</span></p>
-<p>From part (b): <span class="math inline">\(a = \tfrac{1-3b}{2}\)</span>, <span class="math inline">\(c = 12b - 6a\)</span>.</p>
-<p>Substitute <span class="math inline">\(a=(1-3b)/2\)</span>: <span class="math display">\[
+</span></p>
+<p>From part (b): <span class="math inline">a = \tfrac{1-3b}{2}</span>, <span class="math inline">c = 12b - 6a</span>.</p>
+<p>Substitute <span class="math inline">a=(1-3b)/2</span>: <span class="math display">
 \mathrm{Var}[\hat{\theta}] = 2\Big(\tfrac{1-3b}{2}\Big)^2 + 7b^2
 = \tfrac{(1-3b)^2}{2} + 7b^2
 = \tfrac{23}{2}b^2 - 3b + \tfrac{1}{2}.
-\]</span></p>
-<p>Minimise by setting derivative <span class="math inline">\(=0\)</span>:<br>
-<span class="math display">\[
+</span></p>
+<p>Minimise by setting derivative <span class="math inline">=0</span>:<br>
+<span class="math display">
 23b - 3 = 0 \quad \Rightarrow \quad b = \tfrac{3}{23}.
-\]</span></p>
-<p>Then <span class="math display">\[
+</span></p>
+<p>Then <span class="math display">
 a = \tfrac{1-3b}{2} = \tfrac{7}{23},
 \qquad c = 12b - 6a = -\tfrac{6}{23}.
-\]</span></p>
-<p><strong>Final recommended estimator:</strong> <span class="math display">\[
+</span></p>
+<p><strong>Final recommended estimator:</strong> <span class="math display">
 \hat{\theta} = \frac{7X + 3Y - 6}{23}.
-\]</span></p>
+</span></p>
 </details>
 </div>
 </div>
@@ -2128,19 +2142,19 @@ a = \tfrac{1-3b}{2} = \tfrac{7}{23},
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Suppose that <span class="math inline">\(X_1, X_2, \ldots, X_n\)</span>, for <span class="math inline">\(n \geq 1\)</span>, are independent <span class="math inline">\(\mathrm{Poisson}(\lambda)\)</span> random variables.</p>
-<p>Two possible estimators of <span class="math inline">\(\lambda\)</span> are: <span class="math display">\[
+<p>Suppose that <span class="math inline">X_1, X_2, \ldots, X_n</span>, for <span class="math inline">n \geq 1</span>, are independent <span class="math inline">\mathrm{Poisson}(\lambda)</span> random variables.</p>
+<p>Two possible estimators of <span class="math inline">\lambda</span> are: <span class="math display">
 \hat{\lambda}_1 = \frac{1}{n} \sum_{i=1}^n X_i,
 \qquad
 \hat{\lambda}_2 = \frac{1}{n^2} \sum_{i=1}^n X_i.
-\]</span></p>
+</span></p>
 <ol type="a">
-<li><p>Show that <span class="math inline">\(\hat{\lambda}_1\)</span> is unbiased but <span class="math inline">\(\hat{\lambda}_2\)</span> is not.</p></li>
-<li><p>Show that <span class="math display">\[
+<li><p>Show that <span class="math inline">\hat{\lambda}_1</span> is unbiased but <span class="math inline">\hat{\lambda}_2</span> is not.</p></li>
+<li><p>Show that <span class="math display">
 \mathrm{Var}(\hat{\lambda}_1) = \frac{\lambda}{n},
 \qquad
 \mathrm{Var}(\hat{\lambda}_2) = \frac{\lambda}{n^3}.
-\]</span></p></li>
+</span></p></li>
 <li><p>For each estimator, determine whether it can be shown to be <strong>consistent</strong> using its mean and variance.</p></li>
 </ol>
 <details class="solution">
@@ -2148,37 +2162,37 @@ a = \tfrac{1-3b}{2} = \tfrac{7}{23},
 Solution
 </summary>
 <p><strong>a. Unbiasedness.</strong></p>
-<p><span class="math display">\[
+<p><span class="math display">
 \mathrm{E}[\hat{\lambda}_1] = \frac{1}{n}\sum_{i=1}^n \mathrm{E}[X_i]
 = \frac{1}{n} \cdot n\lambda = \lambda.
-\]</span></p>
-<p>So <span class="math inline">\(\hat{\lambda}_1\)</span> is unbiased.</p>
-<p><span class="math display">\[
+</span></p>
+<p>So <span class="math inline">\hat{\lambda}_1</span> is unbiased.</p>
+<p><span class="math display">
 \mathrm{E}[\hat{\lambda}_2] = \frac{1}{n^2}\sum_{i=1}^n \mathrm{E}[X_i]
 = \frac{1}{n^2} \cdot n\lambda = \frac{\lambda}{n}.
-\]</span></p>
-<p>So <span class="math inline">\(\hat{\lambda}_2\)</span> is biased.</p>
+</span></p>
+<p>So <span class="math inline">\hat{\lambda}_2</span> is biased.</p>
 <hr>
 <p><strong>b. Variances.</strong></p>
-<p>Since <span class="math inline">\(X_i \sim \mathrm{Poisson}(\lambda)\)</span>, <span class="math inline">\(\mathrm{Var}(X_i) = \lambda\)</span>.</p>
-<p><span class="math display">\[
+<p>Since <span class="math inline">X_i \sim \mathrm{Poisson}(\lambda)</span>, <span class="math inline">\mathrm{Var}(X_i) = \lambda</span>.</p>
+<p><span class="math display">
 \mathrm{Var}(\hat{\lambda}_1)
 = \frac{1}{n^2}\sum_{i=1}^n \mathrm{Var}(X_i)
 = \frac{1}{n^2} \cdot n\lambda
 = \frac{\lambda}{n}.
-\]</span></p>
-<p><span class="math display">\[
+</span></p>
+<p><span class="math display">
 \mathrm{Var}(\hat{\lambda}_2)
 = \frac{1}{n^4}\sum_{i=1}^n \mathrm{Var}(X_i)
 = \frac{1}{n^4} \cdot n\lambda
 = \frac{\lambda}{n^3}.
-\]</span></p>
+</span></p>
 <hr>
 <p><strong>c.&nbsp;Consistency.</strong></p>
 <ul>
-<li><span class="math inline">\(\hat{\lambda}_1\)</span>: unbiased and <span class="math inline">\(\mathrm{Var}(\hat{\lambda}_1)\to 0\)</span> as <span class="math inline">\(n\to\infty\)</span>, so <span class="math inline">\(\hat{\lambda}_1\)</span> is consistent.<br>
+<li><span class="math inline">\hat{\lambda}_1</span>: unbiased and <span class="math inline">\mathrm{Var}(\hat{\lambda}_1)\to 0</span> as <span class="math inline">n\to\infty</span>, so <span class="math inline">\hat{\lambda}_1</span> is consistent.<br>
 </li>
-<li><span class="math inline">\(\hat{\lambda}_2\)</span>: <span class="math inline">\(\mathrm{E}[\hat{\lambda}_2] = \lambda/n \to 0\)</span> as <span class="math inline">\(n\to\infty\)</span>, so it does not converge to <span class="math inline">\(\lambda\)</span>. Therefore it is not consistent.</li>
+<li><span class="math inline">\hat{\lambda}_2</span>: <span class="math inline">\mathrm{E}[\hat{\lambda}_2] = \lambda/n \to 0</span> as <span class="math inline">n\to\infty</span>, so it does not converge to <span class="math inline">\lambda</span>. Therefore it is not consistent.</li>
 </ul>
 </details>
 </div>
@@ -2193,36 +2207,36 @@ Solution
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Suppose that <span class="math inline">\(X_1,\ldots,X_n\)</span> is random sample from a <span class="math inline">\(\mathrm{Gamma}(1, b)\)</span> distribution.</p>
+<p>Suppose that <span class="math inline">X_1,\ldots,X_n</span> is random sample from a <span class="math inline">\mathrm{Gamma}(1, b)</span> distribution.</p>
 <ol type="a">
-<li><p>Show that the log-likelihood takes the form <span class="math display">\[
+<li><p>Show that the log-likelihood takes the form <span class="math display">
 \ell(b;\underline{x}) = n\log(b) - b\sum_{i=1}^n x_i.
-\]</span></p></li>
-<li><p>Using R or Python, plot the likelihood function of <span class="math inline">\(b\)</span> given the data <span class="math display">\[
+</span></p></li>
+<li><p>Using R or Python, plot the likelihood function of <span class="math inline">b</span> given the data <span class="math display">
 x_1 = 0.043,\quad x_2 = 0.060,\quad x_3 = 0.011,\quad x_4 = 0.142,\quad x_5 = 1.027.
-\]</span></p></li>
-<li><p>Derive the maximum likelihood estimate <span class="math inline">\(\hat{b}\)</span> of <span class="math inline">\(b\)</span>. You do not need to verify it is a maximum.</p></li>
+</span></p></li>
+<li><p>Derive the maximum likelihood estimate <span class="math inline">\hat{b}</span> of <span class="math inline">b</span>. You do not need to verify it is a maximum.</p></li>
 </ol>
 <details class="solution">
 <summary>
 Solution
 </summary>
 <p><strong>a. Likelihood and log-likelihood.</strong></p>
-<p>The PDF of the <span class="math inline">\(\mathrm{Gamma}(1,b)\)</span> distribution is</p>
-<p><span class="math display">\[
+<p>The PDF of the <span class="math inline">\mathrm{Gamma}(1,b)</span> distribution is</p>
+<p><span class="math display">
 f(x \mid b) = b e^{-bx}, \quad x &gt; 0.
-\]</span></p>
+</span></p>
 <p>Thus</p>
-<p><span class="math display">\[
+<p><span class="math display">
 L(b;\underline{x}) = \prod_{i=1}^n f(x_i;b)
 = \prod_{i=1}^n b e^{-bx_i}
 = b^n \exp\!\left(-b\sum_{i=1}^n x_i\right).
-\]</span></p>
+</span></p>
 <p>Therefore</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \ell(b;\underline{x}) = \log L(b;\underline{x})
 = n\log(b) - b\sum_{i=1}^n x_i.
-\]</span></p>
+</span></p>
 <hr>
 <p><strong>b. Plotting.</strong></p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
@@ -2274,18 +2288,17 @@ L(b;\underline{x}) = \prod_{i=1}^n f(x_i;b)
 <hr>
 <p><strong>c.&nbsp;Maximum likelihood estimate.</strong></p>
 <p>Differentiate the log-likelihood:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \frac{\partial}{\partial b}\ell(b;\underline{x}) = \frac{n}{b} - \sum_{i=1}^n x_i.
-\]</span></p>
+</span></p>
 <p>Set equal to 0:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \frac{n}{b} = \sum_{i=1}^n x_i \quad \Rightarrow \quad \hat{b} = \frac{1}{\bar{x}}.
-\]</span></p>
-<p>So the MLE is <span class="math inline">\(\hat{b} = 1/\bar{x}\)</span>.</p>
+</span></p>
+<p>So the MLE is <span class="math inline">\hat{b} = 1/\bar{x}</span>.</p>
 </details>
 </div>
 </div>
-
 
 
 

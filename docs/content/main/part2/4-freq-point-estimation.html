@@ -220,8 +220,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script type="module" src="../../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
 <link href="../../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -668,11 +682,11 @@ window.Quarto = {
 
 
 <p>A <strong>statistic</strong> is any function of the sample</p>
-<p><span class="math display">\[
+<p><span class="math display">
 T \;=\; T(X_1,\dots,X_n).
-\]</span></p>
-<p>Because it is built from the random variables <span class="math inline">\(X_1,\dots,X_n\)</span>, the statistic <span class="math inline">\(T\)</span> itself is a <strong>random quantity</strong>: its value varies from sample to sample. Once the data have been observed <span class="math inline">\((x_1,\dots,x_n)\)</span>, plugging them into the same formula produces a single <strong>non-random number</strong>, which we denote by <span class="math inline">\(t_{\mathrm{obs}}\)</span> (or simply <span class="math inline">\(t\)</span>).</p>
-<p>When we pick a statistic for the specific purpose of approximating a parameter <span class="math inline">\(\theta\)</span>, we call it an <strong>estimator</strong>. Its realised value is the <strong>estimate</strong>.</p>
+</span></p>
+<p>Because it is built from the random variables <span class="math inline">X_1,\dots,X_n</span>, the statistic <span class="math inline">T</span> itself is a <strong>random quantity</strong>: its value varies from sample to sample. Once the data have been observed <span class="math inline">(x_1,\dots,x_n)</span>, plugging them into the same formula produces a single <strong>non-random number</strong>, which we denote by <span class="math inline">t_{\mathrm{obs}}</span> (or simply <span class="math inline">t</span>).</p>
+<p>When we pick a statistic for the specific purpose of approximating a parameter <span class="math inline">\theta</span>, we call it an <strong>estimator</strong>. Its realised value is the <strong>estimate</strong>.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -684,9 +698,9 @@ T \;=\; T(X_1,\dots,X_n).
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li><strong>Upper-case</strong> letters <span class="math inline">\((T, \bar X, S^2)\)</span> denote random statistics.<br>
+<li><strong>Upper-case</strong> letters <span class="math inline">(T, \bar X, S^2)</span> denote random statistics.<br>
 </li>
-<li><strong>Lower-case</strong> letters with a subscript “obs” <span class="math inline">\((t_{\mathrm{obs}}, \bar x, s^2)\)</span> denote the observed values of those statistics.</li>
+<li><strong>Lower-case</strong> letters with a subscript “obs” <span class="math inline">(t_{\mathrm{obs}}, \bar x, s^2)</span> denote the observed values of those statistics.</li>
 </ul>
 </div>
 </div>
@@ -708,12 +722,12 @@ T \;=\; T(X_1,\dots,X_n).
 <tbody>
 <tr class="odd">
 <td><strong>Estimator</strong></td>
-<td><span class="math inline">\(\hat{\theta} = \hat{\theta}(X_1, \dots, X_n)\)</span></td>
+<td><span class="math inline">\hat{\theta} = \hat{\theta}(X_1, \dots, X_n)</span></td>
 <td>A <strong>function</strong> of the data. A rule for producing an estimate.</td>
 </tr>
 <tr class="even">
 <td><strong>Estimate</strong></td>
-<td><span class="math inline">\(\hat{\theta}_{\text{obs}} = \hat{\theta}(x_1, \dots, x_n)\)</span></td>
+<td><span class="math inline">\hat{\theta}_{\text{obs}} = \hat{\theta}(x_1, \dots, x_n)</span></td>
 <td>The <strong>numerical value</strong> you get after plugging in your data.</td>
 </tr>
 </tbody>
@@ -729,22 +743,22 @@ T \;=\; T(X_1,\dots,X_n).
 </div>
 <div class="callout-body-container">
 <div id="def-sample-mean" class="definition theorem">
-<p><span class="theorem-title"><strong>Definition 4.1 (Sample Mean)</strong></span> The sample mean of a <strong>random sample</strong> <span class="math inline">\(X_1,\ldots,X_n\)</span> is</p>
-<p><span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 4.1 (Sample Mean)</strong></span> The sample mean of a <strong>random sample</strong> <span class="math inline">X_1,\ldots,X_n</span> is</p>
+<p><span class="math display">
 \bar{X} = \frac{1}{n}\sum_{i=1}^n X_i.
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
 </div>
-<p>For observed data <span class="math inline">\(x_1,\ldots,x_n\)</span>, the corresponding <strong>estimate</strong> is</p>
-<p><span class="math display">\[
+<p>For observed data <span class="math inline">x_1,\ldots,x_n</span>, the corresponding <strong>estimate</strong> is</p>
+<p><span class="math display">
 \bar x \;=\; \frac{1}{n}\sum_{i=1}^n x_i,
-\]</span></p>
+</span></p>
 <p>and we will frequently use the shorthand</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \sum_{i=1}^n x_i \;=\; n\,\bar x.
-\]</span></p>
+</span></p>
 <div class="callout callout-style-simple callout-note no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -752,42 +766,42 @@ T \;=\; T(X_1,\dots,X_n).
 </div>
 <div class="callout-body-container">
 <div id="def-sample-variance" class="definition theorem">
-<p><span class="theorem-title"><strong>Definition 4.2 (Sample Variance)</strong></span> For a <strong>random sample</strong> <span class="math inline">\(X_1,\ldots,X_n\)</span>, the (unbiased) sample variance is</p>
-<p><span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 4.2 (Sample Variance)</strong></span> For a <strong>random sample</strong> <span class="math inline">X_1,\ldots,X_n</span>, the (unbiased) sample variance is</p>
+<p><span class="math display">
 S^2 \;=\; \frac{1}{n-1}\sum_{i=1}^n (X_i-\bar X)^2.
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
 </div>
-<p>For observed data <span class="math inline">\(x_1,\ldots,x_n\)</span>, the corresponding estimate is</p>
-<p><span class="math display">\[
+<p>For observed data <span class="math inline">x_1,\ldots,x_n</span>, the corresponding estimate is</p>
+<p><span class="math display">
 s^2 \;=\; \frac{1}{n-1}\sum_{i=1}^n (x_i-\bar x)^2.
-\]</span></p>
+</span></p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Remark (Why <span class="math inline">\(n-1\)</span>?)
+<span class="screen-reader-only">Tip</span>Remark (Why <span class="math inline">n-1</span>?)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="rem-sample-variance" class="proof remark">
-<p><span class="proof-title"><em>Remark 4.1</em> (Why <span class="math inline">\(n-1\)</span>?). </span>The factor <span class="math inline">\(\tfrac{1}{n-1}\)</span> in the definition of <span class="math inline">\(S^2\)</span> is called <strong>Bessel’s correction</strong>.</p>
-<p>It accounts for the fact that the deviations <span class="math inline">\((X_i-\bar X)\)</span> satisfy the constraint <span class="math inline">\(\sum_{i=1}^n (X_i-\bar X)=0\)</span>, leaving only <span class="math inline">\(n-1\)</span> degrees of freedom.</p>
-<p>Under an i.i.d. model with finite variance <span class="math inline">\(\sigma^2\)</span>, this choice makes <span class="math inline">\(S^2\)</span> <em>unbiased</em>: <span class="math display">\[
+<p><span class="proof-title"><em>Remark 4.1</em> (Why <span class="math inline">n-1</span>?). </span>The factor <span class="math inline">\tfrac{1}{n-1}</span> in the definition of <span class="math inline">S^2</span> is called <strong>Bessel’s correction</strong>.</p>
+<p>It accounts for the fact that the deviations <span class="math inline">(X_i-\bar X)</span> satisfy the constraint <span class="math inline">\sum_{i=1}^n (X_i-\bar X)=0</span>, leaving only <span class="math inline">n-1</span> degrees of freedom.</p>
+<p>Under an i.i.d. model with finite variance <span class="math inline">\sigma^2</span>, this choice makes <span class="math inline">S^2</span> <em>unbiased</em>: <span class="math display">
 \mathrm{E}[S^2]=\sigma^2.
-\]</span></p>
+</span></p>
 <p>See <a href="#exm-bias-sv" class="quarto-xref">Example&nbsp;<span>4.5</span></a> for more details.</p>
 </div>
 </div>
 </div>
 </div>
-<p>The following representation of the <strong>sample variance</strong> is convenient in <em>theoretical derivations</em> (e.g.&nbsp;the unbiasedness of <span class="math inline">\(S^2\)</span>) and in <em>practice</em>, where precomputed totals <span class="math inline">\(\sum_i X_i\)</span> and <span class="math inline">\(\sum_i X_i^2\)</span> allow immediate evaluation of <span class="math inline">\(S^2\)</span>.</p>
+<p>The following representation of the <strong>sample variance</strong> is convenient in <em>theoretical derivations</em> (e.g.&nbsp;the unbiasedness of <span class="math inline">S^2</span>) and in <em>practice</em>, where precomputed totals <span class="math inline">\sum_i X_i</span> and <span class="math inline">\sum_i X_i^2</span> allow immediate evaluation of <span class="math inline">S^2</span>.</p>
 <div class="callout callout-style-simple callout-note no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -795,9 +809,9 @@ s^2 \;=\; \frac{1}{n-1}\sum_{i=1}^n (x_i-\bar x)^2.
 </div>
 <div class="callout-body-container">
 <div id="prp-sv-rewrite" class="proposition theorem">
-<p><span class="theorem-title"><strong>Proposition 4.1 (Alternative Form of the Sample Variance)</strong></span> For a <strong>random sample</strong> <span class="math inline">\(X_1,\ldots,X_n\)</span> with sample mean <span class="math inline">\(\bar X\)</span>, the <span class="xref-no-num"><a href="#def-sample-variance" class="quarto-xref">sample variance&nbsp;<span>4.2</span></a></span> admits the <em>computational identity</em> <span class="math display">\[
+<p><span class="theorem-title"><strong>Proposition 4.1 (Alternative Form of the Sample Variance)</strong></span> For a <strong>random sample</strong> <span class="math inline">X_1,\ldots,X_n</span> with sample mean <span class="math inline">\bar X</span>, the <span class="xref-no-num"><a href="#def-sample-variance" class="quarto-xref">sample variance&nbsp;<span>4.2</span></a></span> admits the <em>computational identity</em> <span class="math display">
 S^2 \;=\; \frac{1}{n-1}\left(\sum_{i=1}^n X_i^{2}\;-\; n\,\bar X^{\,2}\right).
-\]</span> This is often convenient in deriving properties of the sample variance and, in practice, when sums of squares are already available.</p>
+</span> This is often convenient in deriving properties of the sample variance and, in practice, when sums of squares are already available.</p>
 </div>
 </div>
 </div>
@@ -815,17 +829,17 @@ S^2 \;=\; \frac{1}{n-1}\left(\sum_{i=1}^n X_i^{2}\;-\; n\,\bar X^{\,2}\right).
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="prf-sv-rewrite" class="proof">
-<p><span class="proof-title"><em>Proof 4.1</em>. </span>Starting from <a href="#def-sample-variance" class="quarto-xref">Definition&nbsp;<span>4.2</span></a> and expanding the quadratic, we have <span class="math display">\[
+<p><span class="proof-title"><em>Proof 4.1</em>. </span>Starting from <a href="#def-sample-variance" class="quarto-xref">Definition&nbsp;<span>4.2</span></a> and expanding the quadratic, we have <span class="math display">
 S^2=\frac{1}{n-1}\sum_{i=1}^n (X_i-\bar X)^2,
-\]</span> expand the square and sum term-by-term: <span class="math display">\[
+</span> expand the square and sum term-by-term: <span class="math display">
 \sum_{i=1}^n (X_i-\bar X)^2
 = \sum_{i=1}^n \bigl(X_i^2 - 2\bar X\,X_i + \bar X^{\,2}\bigr)
 = \sum_{i=1}^n X_i^2 \;-\; 2\bar X \sum_{i=1}^n X_i \;+\; \sum_{i=1}^n \bar X^{\,2}.
-\]</span> Since <span class="math inline">\(\sum_{i=1}^n X_i = n\bar X\)</span> and <span class="math inline">\(\sum_{i=1}^n \bar X^{\,2}= n\bar X^{\,2}\)</span>, this becomes <span class="math display">\[
+</span> Since <span class="math inline">\sum_{i=1}^n X_i = n\bar X</span> and <span class="math inline">\sum_{i=1}^n \bar X^{\,2}= n\bar X^{\,2}</span>, this becomes <span class="math display">
 \sum_{i=1}^n (X_i-\bar X)^2
 = \sum_{i=1}^n X_i^2 \;-\; 2n\bar X^{\,2} \;+\; n\bar X^{\,2}
 = \sum_{i=1}^n X_i^2 \;-\; n\bar X^{\,2}.
-\]</span> Dividing by <span class="math inline">\(n-1\)</span> yields the stated identity.</p>
+</span> Dividing by <span class="math inline">n-1</span> yields the stated identity.</p>
 </div>
 </div>
 </div>
@@ -834,12 +848,12 @@ S^2=\frac{1}{n-1}\sum_{i=1}^n (X_i-\bar X)^2,
 <section id="the-randomness-of-estimators" class="level3" data-number="4.1.2">
 <h3 data-number="4.1.2" class="anchored" data-anchor-id="the-randomness-of-estimators"><span class="header-section-number">4.1.2</span> The Randomness of Estimators</h3>
 <p>An <strong>estimator</strong> is a rule that turns a random sample into a number:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \hat\theta \;=\; \hat{\theta}(X_1,\ldots,X_n).
-\]</span></p>
-<p>Since <span class="math inline">\(X_1,\ldots,X_n\)</span> are random variables, the output <span class="math inline">\(\hat\theta\)</span> is <strong>also a random variable</strong>. Its value changes from sample to sample; only after we observe data <span class="math inline">\((x_1,\ldots,x_n)\)</span> do we get the <strong>estimate</strong> <span class="math inline">\(\hat\theta_{\text{obs}}=\hat{\theta}(x_1,\ldots,x_n)\)</span>, a fixed number.</p>
+</span></p>
+<p>Since <span class="math inline">X_1,\ldots,X_n</span> are random variables, the output <span class="math inline">\hat\theta</span> is <strong>also a random variable</strong>. Its value changes from sample to sample; only after we observe data <span class="math inline">(x_1,\ldots,x_n)</span> do we get the <strong>estimate</strong> <span class="math inline">\hat\theta_{\text{obs}}=\hat{\theta}(x_1,\ldots,x_n)</span>, a fixed number.</p>
 <hr>
-<p><strong>Visualisation.</strong> The left panel shows one random sample of size <span class="math inline">\(n\)</span> and its sample mean <span class="math inline">\(\bar x\)</span>. The right panel approximates the <strong>sampling distribution of <span class="math inline">\(\bar X\)</span></strong> by repeatedly drawing fresh samples of size <span class="math inline">\(n\)</span> from the same model (parameters held fixed) and plotting the resulting means - only the data vary from run to run.</p>
+<p><strong>Visualisation.</strong> The left panel shows one random sample of size <span class="math inline">n</span> and its sample mean <span class="math inline">\bar x</span>. The right panel approximates the <strong>sampling distribution of <span class="math inline">\bar X</span></strong> by repeatedly drawing fresh samples of size <span class="math inline">n</span> from the same model (parameters held fixed) and plotting the resulting means - only the data vary from run to run.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="138" data-source-offset="-1"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 137;"><span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a>mutable rngSeed <span class="op">=</span> <span class="dv">1</span></span>
 <span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a>mutable meanHistory <span class="op">=</span> []</span>
@@ -1477,7 +1491,7 @@ S^2=\frac{1}{n-1}\sum_{i=1}^n (X_i-\bar X)^2,
 </div>
 <div class="callout-body-container">
 <div id="def-sampling-distribution" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 4.3 (Sampling Distribution)</strong></span> The <strong>sampling distribution</strong> of an estimator <span class="math inline">\(\hat\theta=\hat{\theta}(X_1,\ldots,X_n)\)</span> is the probability distribution of <span class="math inline">\(\hat\theta\)</span> induced by the joint distribution of <span class="math inline">\((X_1,\ldots,X_n)\)</span>.</p>
+<p><span class="theorem-title"><strong>Definition 4.3 (Sampling Distribution)</strong></span> The <strong>sampling distribution</strong> of an estimator <span class="math inline">\hat\theta=\hat{\theta}(X_1,\ldots,X_n)</span> is the probability distribution of <span class="math inline">\hat\theta</span> induced by the joint distribution of <span class="math inline">(X_1,\ldots,X_n)</span>.</p>
 </div>
 </div>
 </div>
@@ -1485,9 +1499,9 @@ S^2=\frac{1}{n-1}\sum_{i=1}^n (X_i-\bar X)^2,
 <p>The <span class="xref-no-num"><a href="#sec-estimator-properties" class="quarto-xref">properties&nbsp;<span>4.2</span></a></span> of an estimator, such as <em>bias</em> and <em>standard error</em>, are defined via this distribution.</p>
 <p>In general, however, deriving an exact sampling distribution is <strong>hard</strong>, because:</p>
 <ol type="1">
-<li>It depends on the chosen <strong>statistical model</strong> for the data (the distribution of <span class="math inline">\(X_i\)</span>).<br>
+<li>It depends on the chosen <strong>statistical model</strong> for the data (the distribution of <span class="math inline">X_i</span>).<br>
 </li>
-<li>The estimator <span class="math inline">\(\hat\theta\)</span> may be a <strong>complicated/nonlinear function</strong> of the sample.</li>
+<li>The estimator <span class="math inline">\hat\theta</span> may be a <strong>complicated/nonlinear function</strong> of the sample.</li>
 </ol>
 <p>In a few special cases, however, we can derive the full sampling distribution of the estimator.</p>
 <div class="callout callout-style-simple callout-caution no-icon">
@@ -1497,11 +1511,11 @@ S^2=\frac{1}{n-1}\sum_{i=1}^n (X_i-\bar X)^2,
 </div>
 <div class="callout-body-container">
 <div id="exm-normal-sample-mean" class="example theorem">
-<p><span class="theorem-title"><strong>Example 4.1 (Normal Random Sample: Sampling Distribution of <span class="math inline">\(\bar{X}\)</span>)</strong></span> If <span class="math display">\[
+<p><span class="theorem-title"><strong>Example 4.1 (Normal Random Sample: Sampling Distribution of <span class="math inline">\bar{X}</span>)</strong></span> If <span class="math display">
 X_1,\dots,X_n \overset{\text{iid}}{\sim} \mathcal{N}(\mu,\sigma^2),
-\]</span> then <span class="math display">\[
+</span> then <span class="math display">
 \bar{X} \;\sim\; \mathcal{N}\!\left(\mu,\ \frac{\sigma^2}{n}\right).
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
@@ -1519,10 +1533,10 @@ X_1,\dots,X_n \overset{\text{iid}}{\sim} \mathcal{N}(\mu,\sigma^2),
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="sol-normal-sample-mean" class="proof solution">
-<p><span class="proof-title"><em>Solution 4.2</em>. </span>Averages are linear combinations: <span class="math inline">\(\bar X=\tfrac1n\sum_{i=1}^n X_i\)</span>. By the <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-normal-properties" class="quarto-xref">properties of the normal distribution&nbsp;<span>2.4.1</span></a></span>, a linear combination of independent Normal variables is Normal. Moreover, <span class="math display">\[
+<p><span class="proof-title"><em>Solution 4.2</em>. </span>Averages are linear combinations: <span class="math inline">\bar X=\tfrac1n\sum_{i=1}^n X_i</span>. By the <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-normal-properties" class="quarto-xref">properties of the normal distribution&nbsp;<span>2.4.1</span></a></span>, a linear combination of independent Normal variables is Normal. Moreover, <span class="math display">
 \mathrm{E}[\bar X]=\tfrac1n\sum \mathrm{E}[X_i]=\mu,\qquad
 \mathrm{Var}(\bar X)=\tfrac{1}{n^2}\sum \mathrm{Var}(X_i)=\frac{\sigma^2}{n}.
-\]</span> So <span class="math inline">\(\bar X\sim \mathcal N\!\left(\mu,\sigma^2/n\right)\)</span>.</p>
+</span> So <span class="math inline">\bar X\sim \mathcal N\!\left(\mu,\sigma^2/n\right)</span>.</p>
 </div>
 </div>
 </div>
@@ -1534,11 +1548,11 @@ X_1,\dots,X_n \overset{\text{iid}}{\sim} \mathcal{N}(\mu,\sigma^2),
 </div>
 <div class="callout-body-container">
 <div id="exm-normal-sample-mean" class="example theorem">
-<p><span class="theorem-title"><strong>Example 4.2 (Normal Random Sample: Sampling Distribution of <span class="math inline">\(S^2\)</span>)</strong></span> If <span class="math display">\[
+<p><span class="theorem-title"><strong>Example 4.2 (Normal Random Sample: Sampling Distribution of <span class="math inline">S^2</span>)</strong></span> If <span class="math display">
 X_1,\dots,X_n \overset{\text{iid}}{\sim} \mathcal{N}(\mu,\sigma^2),
-\]</span> then <span class="math display">\[
+</span> then <span class="math display">
 S^2 \;\sim\; \chi^2_{n-1}
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
@@ -1556,10 +1570,10 @@ S^2 \;\sim\; \chi^2_{n-1}
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="sol-normal-sample-mean" class="proof solution">
-<p><span class="proof-title"><em>Solution 4.2</em>. </span>Averages are linear combinations: <span class="math inline">\(\bar X=\tfrac1n\sum_{i=1}^n X_i\)</span>. By the <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-normal-properties" class="quarto-xref">properties of the normal distribution&nbsp;<span>2.4.1</span></a></span>, a linear combination of independent Normal variables is Normal. Moreover, <span class="math display">\[
+<p><span class="proof-title"><em>Solution 4.2</em>. </span>Averages are linear combinations: <span class="math inline">\bar X=\tfrac1n\sum_{i=1}^n X_i</span>. By the <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-normal-properties" class="quarto-xref">properties of the normal distribution&nbsp;<span>2.4.1</span></a></span>, a linear combination of independent Normal variables is Normal. Moreover, <span class="math display">
 \mathrm{E}[\bar X]=\tfrac1n\sum \mathrm{E}[X_i]=\mu,\qquad
 \mathrm{Var}(\bar X)=\tfrac{1}{n^2}\sum \mathrm{Var}(X_i)=\frac{\sigma^2}{n}.
-\]</span> So <span class="math inline">\(\bar X\sim \mathcal N\!\left(\mu,\sigma^2/n\right)\)</span>.</p>
+</span> So <span class="math inline">\bar X\sim \mathcal N\!\left(\mu,\sigma^2/n\right)</span>.</p>
 </div>
 </div>
 </div>
@@ -1582,7 +1596,7 @@ S^2 \;\sim\; \chi^2_{n-1}
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="rem-estimators" class="proof remark">
-<p><span class="proof-title"><em>Remark 4.2</em>. </span>These properties can often be studied without the full sampling distribution: it is enough to work with <strong>moments</strong> (expectations/variances) of <span class="math inline">\(\hat\theta\)</span>.</p>
+<p><span class="proof-title"><em>Remark 4.2</em>. </span>These properties can often be studied without the full sampling distribution: it is enough to work with <strong>moments</strong> (expectations/variances) of <span class="math inline">\hat\theta</span>.</p>
 </div>
 </div>
 </div>
@@ -1596,13 +1610,13 @@ S^2 \;\sim\; \chi^2_{n-1}
 </div>
 <div class="callout-body-container">
 <div id="def-bias" class="definition theorem">
-<p><span class="theorem-title"><strong>Definition 4.4 (Bias of an Estimator)</strong></span> The <strong>bias</strong> of an estimator <span class="math inline">\(\hat{\theta}\)</span> for a parameter <span class="math inline">\(\theta\)</span> is the difference between its expected value and the true parameter value:</p>
-<p><span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 4.4 (Bias of an Estimator)</strong></span> The <strong>bias</strong> of an estimator <span class="math inline">\hat{\theta}</span> for a parameter <span class="math inline">\theta</span> is the difference between its expected value and the true parameter value:</p>
+<p><span class="math display">
 \mathrm{Bias}(\hat{\theta}) = \mathrm{E}[\hat{\theta}] - \theta.
-\]</span></p>
+</span></p>
 <ul>
-<li>If <span class="math inline">\(\mathrm{Bias}(\hat{\theta}) = 0\)</span>, the estimator is called <strong>unbiased</strong>.</li>
-<li>Otherwise, it is <strong>biased</strong>: it systematically over- or under-estimates <span class="math inline">\(\theta\)</span>.</li>
+<li>If <span class="math inline">\mathrm{Bias}(\hat{\theta}) = 0</span>, the estimator is called <strong>unbiased</strong>.</li>
+<li>Otherwise, it is <strong>biased</strong>: it systematically over- or under-estimates <span class="math inline">\theta</span>.</li>
 </ul>
 </div>
 </div>
@@ -1615,12 +1629,12 @@ S^2 \;\sim\; \chi^2_{n-1}
 </div>
 <div class="callout-body-container">
 <div id="exm-bias1" class="example theorem">
-<p><span class="theorem-title"><strong>Example 4.3 (Bias of the Sample Mean)</strong></span> Suppose <span class="math inline">\(X_1,\dots,X_n \overset{iid}{\sim} \mathrm{Distribution}(\mu,\sigma^2)\)</span> with mean <span class="math inline">\(\mu\)</span>.<br>
+<p><span class="theorem-title"><strong>Example 4.3 (Bias of the Sample Mean)</strong></span> Suppose <span class="math inline">X_1,\dots,X_n \overset{iid}{\sim} \mathrm{Distribution}(\mu,\sigma^2)</span> with mean <span class="math inline">\mu</span>.<br>
 Show that the sample mean</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \bar{X} = \frac{1}{n}\sum_{i=1}^n X_i
-\]</span></p>
-<p>is an <strong>unbiased estimator</strong> of <span class="math inline">\(\mu\)</span>.</p>
+</span></p>
+<p>is an <strong>unbiased estimator</strong> of <span class="math inline">\mu</span>.</p>
 </div>
 </div>
 </div>
@@ -1638,23 +1652,23 @@ Show that the sample mean</p>
 <div id="callout-7" class="callout-7-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="sol-bias1" class="proof solution">
-<p><span class="proof-title"><em>Solution 4.3</em>. </span>We compute the expectation of <span class="math inline">\(\bar{X}\)</span>:</p>
-<p><span class="math display">\[
+<p><span class="proof-title"><em>Solution 4.3</em>. </span>We compute the expectation of <span class="math inline">\bar{X}</span>:</p>
+<p><span class="math display">
 \mathrm{E}[\bar{X}]
 = \mathrm{E}\!\left[\frac{1}{n}\sum_{i=1}^n X_i\right]
 = \frac{1}{n}\sum_{i=1}^n \mathrm{E}[X_i].
-\]</span></p>
-<p>Since each <span class="math inline">\(X_i\)</span> has mean <span class="math inline">\(\mu\)</span>,</p>
-<p><span class="math display">\[
+</span></p>
+<p>Since each <span class="math inline">X_i</span> has mean <span class="math inline">\mu</span>,</p>
+<p><span class="math display">
 \mathrm{E}[\bar{X}] = \frac{1}{n}(n\mu) = \mu.
-\]</span></p>
+</span></p>
 <p>Therefore,</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \mathrm{Bias}(\bar{X})
 = \mathrm{E}[\bar{X}] - \mu
 = \mu - \mu = 0.
-\]</span></p>
-<p>So the sample mean <span class="math inline">\(\bar{X}\)</span> is an <strong>unbiased</strong> estimator of <span class="math inline">\(\mu\)</span>.</p>
+</span></p>
+<p>So the sample mean <span class="math inline">\bar{X}</span> is an <strong>unbiased</strong> estimator of <span class="math inline">\mu</span>.</p>
 </div>
 </div>
 </div>
@@ -1667,9 +1681,9 @@ Show that the sample mean</p>
 <div class="callout-body-container">
 <div id="def-variance" class="definition theorem">
 <p><span class="theorem-title"><strong>Definition 4.5 (Variance of an Estimator)</strong></span> The variance measures how much the estimator fluctuates around its expectation:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \mathrm{Var}(\hat{\theta}) = \mathrm{E}\!\big[(\hat{\theta}-\mathrm{E}[\hat{\theta}])^2\big].
-\]</span></p>
+</span></p>
 <p>A smaller variance means the estimator is more <strong>concentrated</strong> and less “noisy.”</p>
 </div>
 </div>
@@ -1682,10 +1696,10 @@ Show that the sample mean</p>
 </div>
 <div class="callout-body-container">
 <div id="exm-variance-sm" class="example theorem">
-<p><span class="theorem-title"><strong>Example 4.4 (Variance of the Sample Mean)</strong></span> Suppose <span class="math inline">\(X_1,\ldots,X_n\)</span> is a <em>random sample</em> such that <span class="math inline">\(\mathrm{Var}(X_i) = \sigma^2\)</span>.</p>
-<p>Show that <span class="math display">\[
+<p><span class="theorem-title"><strong>Example 4.4 (Variance of the Sample Mean)</strong></span> Suppose <span class="math inline">X_1,\ldots,X_n</span> is a <em>random sample</em> such that <span class="math inline">\mathrm{Var}(X_i) = \sigma^2</span>.</p>
+<p>Show that <span class="math display">
 \mathrm{Var}(\bar{X}) = \frac{\sigma^2}{n}.
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
@@ -1703,13 +1717,13 @@ Show that the sample mean</p>
 <div id="callout-8" class="callout-8-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="sol-variance-sm" class="proof solution">
-<p><span class="proof-title"><em>Solution 4.4</em>. </span>Since the data <span class="math inline">\(X_i\)</span> are <em>independent</em> and have common variance <span class="math inline">\(\sigma^2\)</span>, we have</p>
-<p><span class="math display">\[
+<p><span class="proof-title"><em>Solution 4.4</em>. </span>Since the data <span class="math inline">X_i</span> are <em>independent</em> and have common variance <span class="math inline">\sigma^2</span>, we have</p>
+<p><span class="math display">
 \mathrm{Var}(\bar{X})
 = \frac{1}{n^2} \mathrm{Var}\left[\sum_{i=1}^n X_i\right] = \frac{1}{n^2} \sum_{i=1}^n \mathrm{Var}(X_i)
 = \frac{\sigma^2}{n}.
-\]</span></p>
-<p>So as <span class="math inline">\(n\)</span> increases, <span class="math inline">\(\bar{X}\)</span> becomes more tightly clustered around <span class="math inline">\(\mu\)</span>.</p>
+</span></p>
+<p>So as <span class="math inline">n</span> increases, <span class="math inline">\bar{X}</span> becomes more tightly clustered around <span class="math inline">\mu</span>.</p>
 </div>
 </div>
 </div>
@@ -1721,11 +1735,11 @@ Show that the sample mean</p>
 </div>
 <div class="callout-body-container">
 <div id="exm-bias-sv" class="example theorem">
-<p><span class="theorem-title"><strong>Example 4.5 (Bias of the Sample Variance)</strong></span> Suppose <span class="math inline">\(X_1,\ldots,X_n\)</span> is a <em>random sample</em> such that <span class="math display">\[
+<p><span class="theorem-title"><strong>Example 4.5 (Bias of the Sample Variance)</strong></span> Suppose <span class="math inline">X_1,\ldots,X_n</span> is a <em>random sample</em> such that <span class="math display">
 \mathrm{E}[X_i]=\mu \quad \text{and} \quad \mathrm{Var}(X_i)=\sigma^2&lt;\infty.
-\]</span> Consider the class of estimators <span class="math display">\[
+</span> Consider the class of estimators <span class="math display">
 S_c^{2} \;=\; c \sum_{i=1}^n (X_i-\bar X)^2.
-\]</span> Find <span class="math inline">\(c\)</span> such that <span class="math inline">\(S_c^{2}\)</span> is <strong>unbiased</strong> for <span class="math inline">\(\sigma^2\)</span>.</p>
+</span> Find <span class="math inline">c</span> such that <span class="math inline">S_c^{2}</span> is <strong>unbiased</strong> for <span class="math inline">\sigma^2</span>.</p>
 </div>
 </div>
 </div>
@@ -1745,27 +1759,27 @@ S_c^{2} \;=\; c \sum_{i=1}^n (X_i-\bar X)^2.
 <div id="sol-bias-sv" class="sol proof solution">
 <p><span class="proof-title"><em>Solution 4.5</em>. </span></p>
 <hr>
-<p><strong>Note:</strong> In the following, we use the fact that, for any random variable <span class="math inline">\(Y\)</span>, <span class="math display">\[
+<p><strong>Note:</strong> In the following, we use the fact that, for any random variable <span class="math inline">Y</span>, <span class="math display">
 \mathrm{Var}(Y) = \mathrm{E}[Y^2] - \mathrm{E}[Y]^2 \Rightarrow \mathrm{E}[Y^2] = \mathrm{Var}(Y) + \mathrm{E}[Y]^2.
-\]</span></p>
+</span></p>
 <hr>
-<p>We seek <span class="math inline">\(c\)</span> such that <span class="math inline">\(\mathrm{E}[S_c^{2}] = \sigma^2\)</span>.</p>
-<p>Using <span class="xref-no-num"><a href="#prp-sv-rewrite" class="quarto-xref">the computational identity&nbsp;<span>4.1</span></a></span>, <span class="math display">\[
+<p>We seek <span class="math inline">c</span> such that <span class="math inline">\mathrm{E}[S_c^{2}] = \sigma^2</span>.</p>
+<p>Using <span class="xref-no-num"><a href="#prp-sv-rewrite" class="quarto-xref">the computational identity&nbsp;<span>4.1</span></a></span>, <span class="math display">
 \sum_{i=1}^n (X_i-\bar X)^2 \;=\; \sum_{i=1}^n X_i^2 \;-\; n\,\bar X^{\,2}.
-\]</span></p>
-<p>Hence, taking expectations termwise, <span class="math display">\[
+</span></p>
+<p>Hence, taking expectations termwise, <span class="math display">
 \mathrm{E}[X_i^2]=\sigma^2+\mu^2,\qquad
 \mathrm{E}[\bar X^{\,2}]=\mathrm{Var}(\bar X)+\{\mathrm{E}[\bar X]\}^2=\frac{\sigma^2}{n}+\mu^2.
-\]</span> Therefore <span class="math display">\[
+</span> Therefore <span class="math display">
 \mathrm{E}\!\left[\sum_{i=1}^n (X_i-\bar X)^2\right]
 = n(\sigma^2+\mu^2) - n\!\left(\frac{\sigma^2}{n}+\mu^2\right)
 = (n-1)\sigma^2.
-\]</span> It follows that <span class="math display">\[
+</span> It follows that <span class="math display">
 \mathrm{E}[S_c^{2}] = c\,(n-1)\sigma^2.
-\]</span> Unbiasedness <span class="math inline">\(\mathrm{E}[S_c^{2}]=\sigma^2\)</span> gives <span class="math inline">\(c=\dfrac{1}{n-1}\)</span>.</p>
-<p><strong>Conclusion.</strong> The unbiased estimator is <span class="math display">\[
+</span> Unbiasedness <span class="math inline">\mathrm{E}[S_c^{2}]=\sigma^2</span> gives <span class="math inline">c=\dfrac{1}{n-1}</span>.</p>
+<p><strong>Conclusion.</strong> The unbiased estimator is <span class="math display">
 S^{2} \;=\; \frac{1}{n-1}\sum_{i=1}^n (X_i-\bar X)^2.
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
@@ -1785,13 +1799,13 @@ S^{2} \;=\; \frac{1}{n-1}\sum_{i=1}^n (X_i-\bar X)^2.
 <div id="rem-bias-sv-notes" class="proof remark">
 <p><span class="proof-title"><em>Remark 4.3</em> (Notes on <a href="#exm-bias-sv" class="quarto-xref">Example&nbsp;<span>4.5</span></a>). </span></p>
 <ul>
-<li><strong>Distributional assumptions.</strong> No Normality is required: the conclusion holds for i.i.d. observations with finite variance, <span class="math inline">\(\mathrm{Var}(X_i)=\sigma^2&lt;\infty\)</span>.</li>
-<li><strong>MLE under Normality.</strong> If the data are Normal, the maximum-likelihood estimator is <span class="math display">\[
+<li><strong>Distributional assumptions.</strong> No Normality is required: the conclusion holds for i.i.d. observations with finite variance, <span class="math inline">\mathrm{Var}(X_i)=\sigma^2&lt;\infty</span>.</li>
+<li><strong>MLE under Normality.</strong> If the data are Normal, the maximum-likelihood estimator is <span class="math display">
 \hat\sigma^2_{\text{MLE}}=\frac{1}{n}\sum_{i=1}^n (X_i-\bar X)^2,
-\]</span> which is <strong>biased downward</strong>: <span class="math display">\[
+</span> which is <strong>biased downward</strong>: <span class="math display">
 \mathrm{E}\!\left[\hat\sigma^2_{\text{MLE}}\right]=\frac{n-1}{n}\,\sigma^2
 \quad\big(\text{bias}=-\sigma^2/n\big).
-\]</span> See <a href="5-likelihood.html#exm-normal-mu-mle" class="quarto-xref">Example&nbsp;<span>5.6</span></a> for full details.</li>
+</span> See <a href="5-likelihood.html#exm-normal-mu-mle" class="quarto-xref">Example&nbsp;<span>5.6</span></a> for full details.</li>
 </ul>
 </div>
 </div>
@@ -1804,10 +1818,10 @@ S^{2} \;=\; \frac{1}{n-1}\sum_{i=1}^n (X_i-\bar X)^2.
 </div>
 <div class="callout-body-container">
 <div id="def-se" class="definition theorem">
-<p><span class="theorem-title"><strong>Definition 4.6 (Standard Error)</strong></span> The <strong>standard error</strong> of an estimator <span class="math inline">\(\hat{\theta}\)</span> of <span class="math inline">\(\theta\)</span>, is just the <em>standard deviation</em> of the estimator:</p>
-<p><span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 4.6 (Standard Error)</strong></span> The <strong>standard error</strong> of an estimator <span class="math inline">\hat{\theta}</span> of <span class="math inline">\theta</span>, is just the <em>standard deviation</em> of the estimator:</p>
+<p><span class="math display">
 \mathrm{S.E.}(\hat{\theta}) = \sqrt{\mathrm{Var}(\hat{\theta})}.
-\]</span></p>
+</span></p>
 <p>It gives a scale for how much we expect the estimator to vary from sample to sample.</p>
 </div>
 </div>
@@ -1825,9 +1839,9 @@ S^{2} \;=\; \frac{1}{n-1}\sum_{i=1}^n (X_i-\bar X)^2.
 <div class="callout-body-container">
 <div id="def-error" class="definition theorem">
 <p><span class="theorem-title"><strong>Definition 4.7 (Error)</strong></span> The <strong>error</strong> of an estimator is the difference between the estimate and the true parameter:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \mathrm{Error}(\hat{\theta}) = \hat{\theta} - \theta.
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
@@ -1845,10 +1859,10 @@ S^{2} \;=\; \frac{1}{n-1}\sum_{i=1}^n (X_i-\bar X)^2.
 </div>
 <div class="callout-body-container">
 <div id="def-mse" class="definition theorem">
-<p><span class="theorem-title"><strong>Definition 4.8 (Mean Squared Error (MSE))</strong></span> The <strong>MSE</strong> of an estimator <span class="math inline">\(\hat{\theta}\)</span> of <span class="math inline">\(\theta\)</span> is</p>
-<p><span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 4.8 (Mean Squared Error (MSE))</strong></span> The <strong>MSE</strong> of an estimator <span class="math inline">\hat{\theta}</span> of <span class="math inline">\theta</span> is</p>
+<p><span class="math display">
 \mathrm{MSE}(\hat{\theta})=\mathrm{E}\!\big[(\hat{\theta}-\theta)^2\big].
-\]</span></p>
+</span></p>
 <p>This measures the <em>average squared distance</em> between the estimator and the truth.</p>
 </div>
 </div>
@@ -1862,11 +1876,11 @@ S^{2} \;=\; \frac{1}{n-1}\sum_{i=1}^n (X_i-\bar X)^2.
 </div>
 <div class="callout-body-container">
 <div id="prp-mse-bias-variance" class="theorem proposition">
-<p><span class="theorem-title"><strong>Proposition 4.2 (MSE: Bias–Variance Decomposition)</strong></span> For any estimator <span class="math inline">\(\hat{\theta}\)</span>,</p>
-<p><span class="math display">\[
+<p><span class="theorem-title"><strong>Proposition 4.2 (MSE: Bias–Variance Decomposition)</strong></span> For any estimator <span class="math inline">\hat{\theta}</span>,</p>
+<p><span class="math display">
 \mathrm{MSE}(\hat{\theta})
 = \mathrm{Bias}(\hat{\theta})^2+\mathrm{Var}(\hat{\theta}).
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
@@ -1885,34 +1899,34 @@ S^{2} \;=\; \frac{1}{n-1}\sum_{i=1}^n (X_i-\bar X)^2.
 <div class="callout-body-container callout-body">
 <div id="prf-mse-bias-variance" class="proof">
 <p><span class="proof-title"><em>Proof 4.2</em>. </span>Start from the definition:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \mathrm{MSE}(\hat{\theta})=\mathrm{E}\!\big[(\hat{\theta}-\theta)^2\big].
-\]</span></p>
-<p><strong>Step 1 (add–and–subtract the mean).</strong> Let <span class="math inline">\(m=\mathrm{E}[\hat{\theta}]\)</span>. Then</p>
-<p><span class="math display">\[
+</span></p>
+<p><strong>Step 1 (add–and–subtract the mean).</strong> Let <span class="math inline">m=\mathrm{E}[\hat{\theta}]</span>. Then</p>
+<p><span class="math display">
 \hat{\theta}-\theta
 =\big(\hat{\theta}-m\big)+\big(m-\theta\big).
-\]</span></p>
+</span></p>
 <p><strong>Step 2 (expand the square).</strong></p>
-<p><span class="math display">\[
+<p><span class="math display">
 (\hat{\theta}-\theta)^2
 =\big(\hat{\theta}-m\big)^2
 +2\big(\hat{\theta}-m\big)\big(m-\theta\big)
 +\big(m-\theta\big)^2.
-\]</span></p>
+</span></p>
 <p><strong>Step 3 (take expectations; use linearity).</strong></p>
-<p><span class="math display">\[
+<p><span class="math display">
 \mathrm{E}\!\big[(\hat{\theta}-\theta)^2\big]
 =\underbrace{\mathrm{E}\!\big[(\hat{\theta}-m)\!^2\big]}_{\mathrm{Var}(\hat{\theta})}
 +2\,(m-\theta)\,\underbrace{\mathrm{E}\!\big[\hat{\theta}-m\big]}_{=\,0}
 +\underbrace{(m-\theta)^2}_{\mathrm{Bias}(\hat{\theta})^2}.
-\]</span></p>
-<p>The middle term vanishes because <span class="math inline">\(\mathrm{E}[\hat{\theta}-m]=\mathrm{E}[\hat{\theta}]-m=0\)</span>. Hence</p>
-<p><span class="math display">\[
+</span></p>
+<p>The middle term vanishes because <span class="math inline">\mathrm{E}[\hat{\theta}-m]=\mathrm{E}[\hat{\theta}]-m=0</span>. Hence</p>
+<p><span class="math display">
 \mathrm{MSE}(\hat{\theta})
 =\mathrm{Var}(\hat{\theta})+\big(\mathrm{E}[\hat{\theta}]-\theta\big)^2
 =\mathrm{Var}(\hat{\theta})+\mathrm{Bias}(\hat{\theta})^2.
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
@@ -1932,7 +1946,7 @@ S^{2} \;=\; \frac{1}{n-1}\sum_{i=1}^n (X_i-\bar X)^2.
 <div id="rem-mse" class="proof remark">
 <p><span class="proof-title"><em>Remark 4.4</em> (Why this helps). </span></p>
 <ul>
-<li>If <span class="math inline">\(\hat{\theta}\)</span> is <strong>unbiased</strong>, then <span class="math inline">\(\mathrm{MSE}(\hat{\theta})=\mathrm{Var}(\hat{\theta})\)</span>.</li>
+<li>If <span class="math inline">\hat{\theta}</span> is <strong>unbiased</strong>, then <span class="math inline">\mathrm{MSE}(\hat{\theta})=\mathrm{Var}(\hat{\theta})</span>.</li>
 <li>In general there is a <strong>bias–variance trade-off</strong>: a small intentional bias can reduce variance enough to lower MSE (common in shrinkage/regularised estimators).</li>
 </ul>
 </div>
@@ -1947,10 +1961,10 @@ S^{2} \;=\; \frac{1}{n-1}\sum_{i=1}^n (X_i-\bar X)^2.
 <div class="callout-body-container">
 <div id="exm-mse1" class="example theorem">
 <p><span class="theorem-title"><strong>Example 4.6 (MSE of Sample Mean)</strong></span> Suppose we have a random sample</p>
-<p><span class="math display">\[
+<p><span class="math display">
 X_1,\dots,X_n  \overset{iid}{\sim} \mathrm{Distribution}(\underline{\theta})
-\]</span></p>
-<p>and we wish to estimate its <em>population mean</em> <span class="math inline">\(\mu\)</span> with <span class="math inline">\(\hat{\mu} = c\bar{X}\)</span>, where <span class="math inline">\(c\)</span> is a constant.</p>
+</span></p>
+<p>and we wish to estimate its <em>population mean</em> <span class="math inline">\mu</span> with <span class="math inline">\hat{\mu} = c\bar{X}</span>, where <span class="math inline">c</span> is a constant.</p>
 <p>Compute the MSE of this estimator.</p>
 </div>
 </div>
@@ -1972,18 +1986,18 @@ X_1,\dots,X_n  \overset{iid}{\sim} \mathrm{Distribution}(\underline{\theta})
 <p><span class="proof-title"><em>Solution 4.6</em>. </span></p>
 <ul>
 <li><p>Bias:<br>
-<span class="math display">\[
+<span class="math display">
 \mathrm{Bias}(\hat{\mu}) = (c-1)\mu.
-\]</span></p></li>
+</span></p></li>
 <li><p>Variance:<br>
-<span class="math display">\[
+<span class="math display">
 \mathrm{Var}(\hat{\mu}) = c^2 \frac{\sigma^2}{n}.
-\]</span></p></li>
+</span></p></li>
 <li><p>MSE:<br>
-<span class="math display">\[
+<span class="math display">
 \mathrm{MSE}(\hat{\mu})
 = \frac{c^2\sigma^2}{n} + (c-1)^2 \mu^2.
-\]</span></p></li>
+</span></p></li>
 </ul>
 <p>This shows how a biased estimator can still have low MSE if variance is reduced.</p>
 </div>
@@ -1997,15 +2011,15 @@ X_1,\dots,X_n  \overset{iid}{\sim} \mathrm{Distribution}(\underline{\theta})
 </div>
 <div class="callout-body-container">
 <div id="exm-mse2" class="example theorem">
-<p><span class="theorem-title"><strong>Example 4.7 (MSE of Three Estimators)</strong></span> Suppose that a random variable <span class="math inline">\(X\)</span> has expected value <span class="math inline">\(\mathrm{E}[X] = 2\theta\)</span> and variance <span class="math inline">\(\mathrm{Var}(X) = \theta^2\)</span>, where <span class="math inline">\(\theta &gt; 0\)</span> is an unknown parameter.</p>
-<p>Another random variable <span class="math inline">\(Y\)</span>, independent of <span class="math inline">\(X\)</span>, has <span class="math inline">\(\mathrm{E}[Y] = 3\theta\)</span> and <span class="math inline">\(\mathrm{Var}(Y) = 2\theta^2\)</span>.</p>
-<p>Consider the following three estimators of <span class="math inline">\(\theta\)</span>:</p>
+<p><span class="theorem-title"><strong>Example 4.7 (MSE of Three Estimators)</strong></span> Suppose that a random variable <span class="math inline">X</span> has expected value <span class="math inline">\mathrm{E}[X] = 2\theta</span> and variance <span class="math inline">\mathrm{Var}(X) = \theta^2</span>, where <span class="math inline">\theta &gt; 0</span> is an unknown parameter.</p>
+<p>Another random variable <span class="math inline">Y</span>, independent of <span class="math inline">X</span>, has <span class="math inline">\mathrm{E}[Y] = 3\theta</span> and <span class="math inline">\mathrm{Var}(Y) = 2\theta^2</span>.</p>
+<p>Consider the following three estimators of <span class="math inline">\theta</span>:</p>
 <ol type="1">
-<li><span class="math inline">\(\hat{\theta}_1 = X/2\)</span>,<br>
+<li><span class="math inline">\hat{\theta}_1 = X/2</span>,<br>
 </li>
-<li><span class="math inline">\(\hat{\theta}_2 = Y/3\)</span>,<br>
+<li><span class="math inline">\hat{\theta}_2 = Y/3</span>,<br>
 </li>
-<li><span class="math inline">\(\hat{\theta}_3 = (3X + 2Y)/12\)</span>.</li>
+<li><span class="math inline">\hat{\theta}_3 = (3X + 2Y)/12</span>.</li>
 </ol>
 <p>Compute the <strong>MSE</strong> of each estimator, and recommend the best one.</p>
 </div>
@@ -2025,56 +2039,56 @@ X_1,\dots,X_n  \overset{iid}{\sim} \mathrm{Distribution}(\underline{\theta})
 <div id="callout-14" class="callout-14-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="sol-mse2" class="proof solution">
-<p><span class="proof-title"><em>Solution 4.7</em>. </span>We use the rules of expectation and variance for linear functions of random variables (independence of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is needed for the variance of <span class="math inline">\(\hat{\theta}_3\)</span>).</p>
+<p><span class="proof-title"><em>Solution 4.7</em>. </span>We use the rules of expectation and variance for linear functions of random variables (independence of <span class="math inline">X</span> and <span class="math inline">Y</span> is needed for the variance of <span class="math inline">\hat{\theta}_3</span>).</p>
 <hr>
-<p><strong>Estimator (i):</strong> <span class="math inline">\(\hat{\theta}_1 = X/2\)</span></p>
+<p><strong>Estimator (i):</strong> <span class="math inline">\hat{\theta}_1 = X/2</span></p>
 <ul>
 <li>Mean:<br>
-<span class="math display">\[
+<span class="math display">
 \mathrm{E}[\hat{\theta}_1] = \frac{\mathrm{E}[X]}{2} = \frac{2\theta}{2} = \theta.
-\]</span></li>
+</span></li>
 <li>Variance:<br>
-<span class="math display">\[
+<span class="math display">
 \mathrm{Var}(\hat{\theta}_1) = \frac{\mathrm{Var}(X)}{4} = \frac{\theta^2}{4}.
-\]</span></li>
-<li>Since unbiased, <span class="math inline">\(\mathrm{MSE}(\hat{\theta}_1) = \tfrac{\theta^2}{4}\)</span>.</li>
+</span></li>
+<li>Since unbiased, <span class="math inline">\mathrm{MSE}(\hat{\theta}_1) = \tfrac{\theta^2}{4}</span>.</li>
 </ul>
 <hr>
-<p><strong>Estimator (ii):</strong> <span class="math inline">\(\hat{\theta}_2 = Y/3\)</span></p>
+<p><strong>Estimator (ii):</strong> <span class="math inline">\hat{\theta}_2 = Y/3</span></p>
 <ul>
 <li>Mean:<br>
-<span class="math display">\[
+<span class="math display">
 \mathrm{E}[\hat{\theta}_2] = \frac{\mathrm{E}[Y]}{3} = \frac{3\theta}{3} = \theta.
-\]</span></li>
+</span></li>
 <li>Variance:<br>
-<span class="math display">\[
+<span class="math display">
 \mathrm{Var}(\hat{\theta}_2) = \frac{\mathrm{Var}(Y)}{9} = \frac{2\theta^2}{9}.
-\]</span></li>
-<li>Since unbiased, <span class="math inline">\(\mathrm{MSE}(\hat{\theta}_2) = \tfrac{2\theta^2}{9}\)</span>.</li>
+</span></li>
+<li>Since unbiased, <span class="math inline">\mathrm{MSE}(\hat{\theta}_2) = \tfrac{2\theta^2}{9}</span>.</li>
 </ul>
 <hr>
-<p><strong>Estimator (iii):</strong> <span class="math inline">\(\hat{\theta}_3 = (3X + 2Y)/12\)</span></p>
+<p><strong>Estimator (iii):</strong> <span class="math inline">\hat{\theta}_3 = (3X + 2Y)/12</span></p>
 <ul>
 <li>Mean:<br>
-<span class="math display">\[
+<span class="math display">
 \mathrm{E}[\hat{\theta}_3] = \frac{3\,\mathrm{E}[X] + 2\,\mathrm{E}[Y]}{12}
 = \frac{3(2\theta) + 2(3\theta)}{12} = \theta.
-\]</span></li>
+</span></li>
 <li>Variance (using independence):<br>
-<span class="math display">\[
+<span class="math display">
 \mathrm{Var}(\hat{\theta}_3)
 = \frac{1}{144}\Big(9\,\mathrm{Var}(X) + 4\,\mathrm{Var}(Y)\Big)
 = \frac{1}{144}(9\theta^2 + 8\theta^2)
 = \frac{17}{144}\theta^2.
-\]</span></li>
-<li>Since unbiased, <span class="math inline">\(\mathrm{MSE}(\hat{\theta}_3) = \tfrac{17}{144}\theta^2\)</span>.</li>
+</span></li>
+<li>Since unbiased, <span class="math inline">\mathrm{MSE}(\hat{\theta}_3) = \tfrac{17}{144}\theta^2</span>.</li>
 </ul>
 <hr>
 <p><strong>Comparison:</strong><br>
-- <span class="math inline">\(\mathrm{MSE}(\hat{\theta}_1) = 0.25\theta^2\)</span><br>
-- <span class="math inline">\(\mathrm{MSE}(\hat{\theta}_2) \approx 0.222\theta^2\)</span><br>
-- <span class="math inline">\(\mathrm{MSE}(\hat{\theta}_3) \approx 0.118\theta^2\)</span></p>
-<p>Thus, <span class="math inline">\(\hat{\theta}_3\)</span> has the smallest MSE and is the best choice.</p>
+- <span class="math inline">\mathrm{MSE}(\hat{\theta}_1) = 0.25\theta^2</span><br>
+- <span class="math inline">\mathrm{MSE}(\hat{\theta}_2) \approx 0.222\theta^2</span><br>
+- <span class="math inline">\mathrm{MSE}(\hat{\theta}_3) \approx 0.118\theta^2</span></p>
+<p>Thus, <span class="math inline">\hat{\theta}_3</span> has the smallest MSE and is the best choice.</p>
 </div>
 </div>
 </div>
@@ -2090,12 +2104,12 @@ X_1,\dots,X_n  \overset{iid}{\sim} \mathrm{Distribution}(\underline{\theta})
 </div>
 <div class="callout-body-container">
 <div id="thm-clt" class="thm theorem">
-<p><span class="theorem-title"><strong>Theorem 4.1 (Central Limit Theorem (CLT))</strong></span> Let <span class="math inline">\(X_1, X_2, \ldots\)</span> be an infinite sequence of <strong>independent and identically distributed</strong> random variables with finite mean <span class="math inline">\(\mu=\mathrm{E}[X_1]\)</span> and finite variance <span class="math inline">\(\sigma^2=\mathrm{Var}(X_1)&lt;\infty\)</span>.<br>
-Define the sample mean <span class="math display">\[
+<p><span class="theorem-title"><strong>Theorem 4.1 (Central Limit Theorem (CLT))</strong></span> Let <span class="math inline">X_1, X_2, \ldots</span> be an infinite sequence of <strong>independent and identically distributed</strong> random variables with finite mean <span class="math inline">\mu=\mathrm{E}[X_1]</span> and finite variance <span class="math inline">\sigma^2=\mathrm{Var}(X_1)&lt;\infty</span>.<br>
+Define the sample mean <span class="math display">
 \bar X_n \;=\; \frac{1}{n}\sum_{i=1}^n X_i.
-\]</span> Then, <strong>regardless of the original distribution of the <span class="math inline">\(X_i\)</span></strong>, <span class="math display">\[
+</span> Then, <strong>regardless of the original distribution of the <span class="math inline">X_i</span></strong>, <span class="math display">
 \frac{\bar X_n - \mu}{\sigma/\sqrt{n}} \;\xrightarrow{\,d\,}\; \mathcal N(0,1)\quad\text{as } n\to\infty.
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
@@ -2114,18 +2128,18 @@ Define the sample mean <span class="math display">\[
 <div class="callout-body-container callout-body">
 <div id="prf-clt" class="proof">
 <p><span class="proof-title"><em>Proof 4.3</em> (Not Examinable). </span>We do not give a proof here. An outline is provided in separate practice exercises (not examinable).</p>
-<p><em>Note.</em> The notation <span class="math inline">\(\xrightarrow{d}\)</span> means <strong>convergence in distribution</strong>: the distribution of the random variable on the left approaches the distribution on the right as <span class="math inline">\(n\)</span> grows.</p>
+<p><em>Note.</em> The notation <span class="math inline">\xrightarrow{d}</span> means <strong>convergence in distribution</strong>: the distribution of the random variable on the left approaches the distribution on the right as <span class="math inline">n</span> grows.</p>
 </div>
 </div>
 </div>
 </div>
-<p>The CLT is remarkable: it tells us that <strong>whatever the original distribution</strong> of the data, the <strong>sample mean</strong> is approximately Normal for sufficiently large <span class="math inline">\(n\)</span>, and the approximation <strong>improves</strong> as <span class="math inline">\(n\)</span> increases.</p>
-<p>In practice, for a <em>reasonable</em> sample size we may write <span class="math display">\[
+<p>The CLT is remarkable: it tells us that <strong>whatever the original distribution</strong> of the data, the <strong>sample mean</strong> is approximately Normal for sufficiently large <span class="math inline">n</span>, and the approximation <strong>improves</strong> as <span class="math inline">n</span> increases.</p>
+<p>In practice, for a <em>reasonable</em> sample size we may write <span class="math display">
 \bar X_n \;\overset{approx}{\sim}\; \mathcal N\!\left(\mu,\ \frac{\sigma^2}{n}\right),
-\]</span> not only for Normal samples but for many non-Normal populations as well. What counts as “reasonable” depends on how skewed/heavy-tailed the original distribution is; often <span class="math inline">\(n&gt;20\)</span> suffices, and in many settings even smaller <span class="math inline">\(n\)</span> will do.</p>
-<p>Because <span class="math inline">\(\bar X_n = \tfrac{1}{n}\sum_{i=1}^n X_i\)</span>, the CLT also yields an approximation for <strong>sums</strong>: <span class="math display">\[
+</span> not only for Normal samples but for many non-Normal populations as well. What counts as “reasonable” depends on how skewed/heavy-tailed the original distribution is; often <span class="math inline">n&gt;20</span> suffices, and in many settings even smaller <span class="math inline">n</span> will do.</p>
+<p>Because <span class="math inline">\bar X_n = \tfrac{1}{n}\sum_{i=1}^n X_i</span>, the CLT also yields an approximation for <strong>sums</strong>: <span class="math display">
 \sum_{i=1}^n X_i \;\overset{approx}{\sim}\; \mathcal N\!\left(n\mu,\ n\sigma^2\right).
-\]</span></p>
+</span></p>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -2136,7 +2150,7 @@ Define the sample mean <span class="math display">\[
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The CLT does <strong>not</strong> say the <em>data</em> become Normal; it says the <strong>distribution of the sample mean</strong> becomes approximately Normal as <span class="math inline">\(n\)</span> grows.</p>
+<p>The CLT does <strong>not</strong> say the <em>data</em> become Normal; it says the <strong>distribution of the sample mean</strong> becomes approximately Normal as <span class="math inline">n</span> grows.</p>
 </div>
 </div>
 </section>
@@ -2154,23 +2168,23 @@ Important&nbsp;4.1: Terminology: <em>Asymptotic</em> in Statistics
 </div>
 <div id="callout-17" class="callout-17-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>An <strong>asymptotic property</strong> of an estimator is a property that emerges in the limit as the number of observations <span class="math inline">\(n \to \infty\)</span>.</p>
+<p>An <strong>asymptotic property</strong> of an estimator is a property that emerges in the limit as the number of observations <span class="math inline">n \to \infty</span>.</p>
 <p>In other words, it describes the <em>large-sample behaviour</em> of an estimator.</p>
 </div>
 </div>
 </div>
-<p>So far, we have judged estimators by properties that hold for a <em>fixed</em> sample size <span class="math inline">\(n\)</span>, such as <span class="xref-no-num"><a href="#def-bias" class="quarto-xref">bias&nbsp;<span>4.4</span></a></span>, <span class="xref-no-num"><a href="#def-variance" class="quarto-xref">variance&nbsp;<span>4.5</span></a></span>, and <span class="xref-no-num"><a href="#def-mse" class="quarto-xref">MSE&nbsp;<span>4.8</span></a></span>.</p>
+<p>So far, we have judged estimators by properties that hold for a <em>fixed</em> sample size <span class="math inline">n</span>, such as <span class="xref-no-num"><a href="#def-bias" class="quarto-xref">bias&nbsp;<span>4.4</span></a></span>, <span class="xref-no-num"><a href="#def-variance" class="quarto-xref">variance&nbsp;<span>4.5</span></a></span>, and <span class="xref-no-num"><a href="#def-mse" class="quarto-xref">MSE&nbsp;<span>4.8</span></a></span>.</p>
 <p>It is also useful to consider how estimators behave when the sample size grows very large.<br>
 These are known as the <strong>asymptotic (large-sample) properties</strong> of estimators.</p>
 <p>Formally, suppose we have a random sample</p>
-<p><span class="math display">\[
+<p><span class="math display">
 X_1, X_2, \ldots, X_n \;\overset{iid}{\sim}\; \mathrm{Distribution}(\theta),
-\]</span></p>
-<p>and a <em>sequence</em> of estimators of <span class="math inline">\(\theta\)</span> given by</p>
-<p><span class="math display">\[
+</span></p>
+<p>and a <em>sequence</em> of estimators of <span class="math inline">\theta</span> given by</p>
+<p><span class="math display">
 \hat{\theta}_n = g(X_1, X_2, \ldots, X_n).
-\]</span></p>
-<p>We are interested in the properties of <span class="math inline">\(\hat{\theta}_n\)</span> as <span class="math inline">\(n \to \infty\)</span>. Two fundamental criteria are <em>asymptotic unbiasedness</em> and <em>consistency</em>.</p>
+</span></p>
+<p>We are interested in the properties of <span class="math inline">\hat{\theta}_n</span> as <span class="math inline">n \to \infty</span>. Two fundamental criteria are <em>asymptotic unbiasedness</em> and <em>consistency</em>.</p>
 <div class="callout callout-style-simple callout-note no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -2178,15 +2192,15 @@ X_1, X_2, \ldots, X_n \;\overset{iid}{\sim}\; \mathrm{Distribution}(\theta),
 </div>
 <div class="callout-body-container">
 <div id="def-asymptotic-unbiasedness" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 4.9 (Asymptotic Unbiasedness)</strong></span> We say that <span class="math inline">\(\hat{\theta}_n\)</span> is <strong>asymptotically unbiased</strong> for <span class="math inline">\(\theta\)</span> if</p>
-<p><span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 4.9 (Asymptotic Unbiasedness)</strong></span> We say that <span class="math inline">\hat{\theta}_n</span> is <strong>asymptotically unbiased</strong> for <span class="math inline">\theta</span> if</p>
+<p><span class="math display">
 \lim_{n \to \infty} \mathrm{E}[\hat{\theta}_n] = \theta.
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
 </div>
-<p>If an estimator is unbiased for every <span class="math inline">\(n\)</span>, then it is automatically asymptotically unbiased.<br>
+<p>If an estimator is unbiased for every <span class="math inline">n</span>, then it is automatically asymptotically unbiased.<br>
 However, some biased estimators may still “correct themselves” in the limit and become asymptotically unbiased.</p>
 <div class="callout callout-style-simple callout-note no-icon">
 <div class="callout-body d-flex">
@@ -2195,11 +2209,11 @@ However, some biased estimators may still “correct themselves” in the limit 
 </div>
 <div class="callout-body-container">
 <div id="def-consistency" class="definition theorem">
-<p><span class="theorem-title"><strong>Definition 4.10 (Consistency)</strong></span> An estimator <span class="math inline">\(\hat{\theta}_n\)</span> is a <strong>consistent</strong> estimator of <span class="math inline">\(\theta\)</span> if</p>
-<p><span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 4.10 (Consistency)</strong></span> An estimator <span class="math inline">\hat{\theta}_n</span> is a <strong>consistent</strong> estimator of <span class="math inline">\theta</span> if</p>
+<p><span class="math display">
 \hat{\theta}_n \;\xrightarrow{p}\; \theta
 \quad \text{as } n \to \infty,
-\]</span></p>
+</span></p>
 <p>that is, it <span class="xref-no-num"><a href="../part1/1-prob-theory.html#def-convergence-in-probability" class="quarto-xref">converges in probability&nbsp;<span>1.17</span></a></span> to the true parameter value.</p>
 </div>
 </div>
@@ -2214,16 +2228,16 @@ However, some biased estimators may still “correct themselves” in the limit 
 </div>
 <div class="callout-body-container">
 <div id="prp-sufficient-consistency" class="theorem proposition">
-<p><span class="theorem-title"><strong>Proposition 4.3 (Sufficient Condition for Consistency)</strong></span> An estimator <span class="math inline">\(\hat{\theta}_n\)</span> of <span class="math inline">\(\theta\)</span> is consistent <strong>if</strong> both the following hold:</p>
+<p><span class="theorem-title"><strong>Proposition 4.3 (Sufficient Condition for Consistency)</strong></span> An estimator <span class="math inline">\hat{\theta}_n</span> of <span class="math inline">\theta</span> is consistent <strong>if</strong> both the following hold:</p>
 <ol type="1">
-<li><span class="math inline">\(\hat{\theta}_n\)</span> is <em>asymptotically unbiased</em>, i.e.<br>
-<span class="math display">\[
+<li><span class="math inline">\hat{\theta}_n</span> is <em>asymptotically unbiased</em>, i.e.<br>
+<span class="math display">
 \mathrm{Bias}(\hat{\theta}_n) \;\to\; 0 \quad \text{as } n\to\infty,
-\]</span></li>
+</span></li>
 <li>Its variance shrinks to zero:<br>
-<span class="math display">\[
+<span class="math display">
 \mathrm{Var}(\hat{\theta}_n) \;\to\; 0 \quad \text{as } n\to\infty.
-\]</span></li>
+</span></li>
 </ol>
 </div>
 </div>
@@ -2242,21 +2256,21 @@ However, some biased estimators may still “correct themselves” in the limit 
 <div id="callout-18" class="callout-18-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="prf-sufficient-consistency" class="proof">
-<p><span class="proof-title"><em>Proof 4.4</em> (Not Examinable). </span>Suppose <span class="math inline">\(\hat{\theta}_n\)</span> satisfies conditions (1) and (2).<br>
-For any <span class="math inline">\(\varepsilon &gt; 0\)</span>, by <span class="xref-no-num"><a href="../part1/1-prob-theory.html#prp-chebyshev" class="quarto-xref">Chebyshev’s inequality&nbsp;<span>1.1</span></a></span>:</p>
-<p><span class="math display">\[
+<p><span class="proof-title"><em>Proof 4.4</em> (Not Examinable). </span>Suppose <span class="math inline">\hat{\theta}_n</span> satisfies conditions (1) and (2).<br>
+For any <span class="math inline">\varepsilon &gt; 0</span>, by <span class="xref-no-num"><a href="../part1/1-prob-theory.html#prp-chebyshev" class="quarto-xref">Chebyshev’s inequality&nbsp;<span>1.1</span></a></span>:</p>
+<p><span class="math display">
 \Pr\big(|\hat{\theta}_n - \mathrm{E}[\hat{\theta}_n]| \geq \varepsilon \big)
 \;\leq\; \frac{\mathrm{Var}(\hat{\theta}_n)}{\varepsilon^2}.
-\]</span></p>
-<p>As <span class="math inline">\(n \to \infty\)</span>, the variance term tends to <span class="math inline">\(0\)</span>, so</p>
-<p><span class="math display">\[
+</span></p>
+<p>As <span class="math inline">n \to \infty</span>, the variance term tends to <span class="math inline">0</span>, so</p>
+<p><span class="math display">
 \hat{\theta}_n - \mathrm{E}[\hat{\theta}_n] \;\xrightarrow{p}\; 0.
-\]</span></p>
-<p>Meanwhile, <span class="math inline">\(\mathrm{E}[\hat{\theta}_n] \to \theta\)</span> by assumption of asymptotic unbiasedness.<br>
+</span></p>
+<p>Meanwhile, <span class="math inline">\mathrm{E}[\hat{\theta}_n] \to \theta</span> by assumption of asymptotic unbiasedness.<br>
 Hence,</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \hat{\theta}_n \;\xrightarrow{p}\; \theta,
-\]</span></p>
+</span></p>
 <p>which proves consistency.</p>
 </div>
 </div>
@@ -2269,8 +2283,8 @@ Hence,</p>
 </div>
 <div class="callout-body-container">
 <div id="exm-consistency-samplemean" class="example theorem">
-<p><span class="theorem-title"><strong>Example 4.8 (Consistency of the Sample Mean)</strong></span> Suppose <span class="math inline">\(X_1,\dots,X_n\)</span> are i.i.d. with mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2 &lt; \infty\)</span>.<br>
-Show that <span class="math inline">\(\bar{X}_n\)</span> is a <strong>consistent estimator</strong> of <span class="math inline">\(\mu\)</span>.</p>
+<p><span class="theorem-title"><strong>Example 4.8 (Consistency of the Sample Mean)</strong></span> Suppose <span class="math inline">X_1,\dots,X_n</span> are i.i.d. with mean <span class="math inline">\mu</span> and variance <span class="math inline">\sigma^2 &lt; \infty</span>.<br>
+Show that <span class="math inline">\bar{X}_n</span> is a <strong>consistent estimator</strong> of <span class="math inline">\mu</span>.</p>
 </div>
 </div>
 </div>
@@ -2288,22 +2302,22 @@ Show that <span class="math inline">\(\bar{X}_n\)</span> is a <strong>consistent
 <div id="callout-19" class="callout-19-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="sol-consistency-samplemean" class="proof solution">
-<p><span class="proof-title"><em>Solution 4.8</em>. </span>Recall that <span class="math display">\[
+<p><span class="proof-title"><em>Solution 4.8</em>. </span>Recall that <span class="math display">
 \bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i.
-\]</span></p>
+</span></p>
 <ul>
 <li><p><strong>Bias:</strong><br>
-<span class="math display">\[
+<span class="math display">
 \mathrm{E}[\bar{X}_n] = \frac{1}{n}\sum_{i=1}^n \mathrm{E}[X_i] = \mu.
-\]</span> Thus <span class="math inline">\(\bar{X}_n\)</span> is unbiased for all <span class="math inline">\(n\)</span>, hence asymptotically unbiased.</p></li>
+</span> Thus <span class="math inline">\bar{X}_n</span> is unbiased for all <span class="math inline">n</span>, hence asymptotically unbiased.</p></li>
 <li><p><strong>Variance:</strong><br>
-Since the <span class="math inline">\(X_i\)</span> are independent, <span class="math display">\[
+Since the <span class="math inline">X_i</span> are independent, <span class="math display">
 \mathrm{Var}(\bar{X}_n) = \frac{1}{n^2}\sum_{i=1}^n \mathrm{Var}(X_i)
 = \frac{\sigma^2}{n}.
-\]</span> As <span class="math inline">\(n \to \infty\)</span>, this variance tends to <span class="math inline">\(0\)</span>.</p></li>
+</span> As <span class="math inline">n \to \infty</span>, this variance tends to <span class="math inline">0</span>.</p></li>
 </ul>
-<p>Therefore, <span class="math inline">\(\bar{X}_n\)</span> is both unbiased and has variance vanishing as <span class="math inline">\(n\)</span> grows.<br>
-By <a href="#prp-sufficient-consistency" class="quarto-xref">Proposition&nbsp;<span>4.3</span></a>, it is a <strong>consistent</strong> estimator of <span class="math inline">\(\mu\)</span>.</p>
+<p>Therefore, <span class="math inline">\bar{X}_n</span> is both unbiased and has variance vanishing as <span class="math inline">n</span> grows.<br>
+By <a href="#prp-sufficient-consistency" class="quarto-xref">Proposition&nbsp;<span>4.3</span></a>, it is a <strong>consistent</strong> estimator of <span class="math inline">\mu</span>.</p>
 </div>
 </div>
 </div>
@@ -2323,7 +2337,7 @@ By <a href="#prp-sufficient-consistency" class="quarto-xref">Proposition&nbsp;<s
 <div id="rem-consistency" class="proof remark">
 <p><span class="proof-title"><em>Remark 4.5</em> (Consistency). </span></p>
 <ul>
-<li>Consistency requires <span class="xref-no-num"><a href="../part1/1-prob-theory.html#def-convergence-in-probability" class="quarto-xref">convergence in probability&nbsp;<span>1.17</span></a></span>, not necessarily unbiasedness at every finite <span class="math inline">\(n\)</span>.<br>
+<li>Consistency requires <span class="xref-no-num"><a href="../part1/1-prob-theory.html#def-convergence-in-probability" class="quarto-xref">convergence in probability&nbsp;<span>1.17</span></a></span>, not necessarily unbiasedness at every finite <span class="math inline">n</span>.<br>
 </li>
 <li>In this course, you can always use the sufficient condition (<a href="#prp-sufficient-consistency" class="quarto-xref">Proposition&nbsp;<span>4.3</span></a>) to prove consistency.</li>
 </ul>
@@ -2331,7 +2345,6 @@ By <a href="#prp-sufficient-consistency" class="quarto-xref">Proposition&nbsp;<s
 </div>
 </div>
 </div>
-
 
 
 </section>

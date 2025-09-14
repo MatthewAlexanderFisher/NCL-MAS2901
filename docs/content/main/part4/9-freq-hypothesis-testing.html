@@ -220,8 +220,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script type="module" src="../../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
 <link href="../../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -675,30 +689,30 @@ window.Quarto = {
 <p>If the data are consistent, this provides <strong>support</strong> for the hypothesis (though never proof). If the data look very unlikely under the hypothesis, this is evidence <em>against</em> it.</p>
 <section id="formal-setup" class="level2" data-number="9.1">
 <h2 data-number="9.1" class="anchored" data-anchor-id="formal-setup"><span class="header-section-number">9.1</span> Formal Setup</h2>
-<p>Unlike estimation (which gives a range of plausible values), hypothesis testing asks a <strong>yes/no question</strong> about the parameter <span class="math inline">\(\theta\)</span>.</p>
-<p>We formalise this by specifying a <strong>null hypothesis</strong> <span class="math inline">\(H_0\)</span>, a concrete <em>mathematical statement</em> about <span class="math inline">\(\theta\)</span>:</p>
-<p><span class="math display">\[
+<p>Unlike estimation (which gives a range of plausible values), hypothesis testing asks a <strong>yes/no question</strong> about the parameter <span class="math inline">\theta</span>.</p>
+<p>We formalise this by specifying a <strong>null hypothesis</strong> <span class="math inline">H_0</span>, a concrete <em>mathematical statement</em> about <span class="math inline">\theta</span>:</p>
+<p><span class="math display">
 H_0 : \theta \in \Theta_0,
-\]</span></p>
-<p>where <span class="math inline">\(\Theta_0 \subseteq \Theta\)</span> is part of the parameter space.</p>
-<p>We then use the observed data <span class="math inline">\(\underline{x}\)</span> to evaluate whether <span class="math inline">\(H_0\)</span> is plausible. The frequentist reasoning is:</p>
+</span></p>
+<p>where <span class="math inline">\Theta_0 \subseteq \Theta</span> is part of the parameter space.</p>
+<p>We then use the observed data <span class="math inline">\underline{x}</span> to evaluate whether <span class="math inline">H_0</span> is plausible. The frequentist reasoning is:</p>
 <ol type="1">
-<li><strong>Assume <span class="math inline">\(H_0\)</span> is true.</strong></li>
-<li>Use the statistical model to work out what kinds of data would be typical under <span class="math inline">\(H_0\)</span>.</li>
-<li>Compare the actual data with this prediction. If the data look very unusual under <span class="math inline">\(H_0\)</span>, this counts against the hypothesis.</li>
+<li><strong>Assume <span class="math inline">H_0</span> is true.</strong></li>
+<li>Use the statistical model to work out what kinds of data would be typical under <span class="math inline">H_0</span>.</li>
+<li>Compare the actual data with this prediction. If the data look very unusual under <span class="math inline">H_0</span>, this counts against the hypothesis.</li>
 </ol>
 <hr>
 <p><strong>Visualisation</strong></p>
 <p>Suppose our model is</p>
-<p><span class="math display">\[
+<p><span class="math display">
 X_i \mid \gamma \sim \mathcal{N}(200, \gamma),
-\]</span></p>
-<p>where <span class="math inline">\(\gamma\)</span> is the variance.</p>
-<p>We want to test whether <span class="math inline">\(\gamma = 10\)</span>. That is:</p>
-<p><span class="math display">\[
+</span></p>
+<p>where <span class="math inline">\gamma</span> is the variance.</p>
+<p>We want to test whether <span class="math inline">\gamma = 10</span>. That is:</p>
+<p><span class="math display">
 H_0: \gamma = 10.
-\]</span></p>
-<p>The frequentist approach is: <em>assume <span class="math inline">\(H_0\)</span> is true</em> and then check whether the observed data are typical of a normal distribution with variance <span class="math inline">\(10\)</span>.</p>
+</span></p>
+<p>The frequentist approach is: <em>assume <span class="math inline">H_0</span> is true</em> and then check whether the observed data are typical of a normal distribution with variance <span class="math inline">10</span>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="54" data-source-offset="-14"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 53;"><span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">30</span></span>
 <span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>mu0 <span class="op">=</span> <span class="dv">200</span>       <span class="co">// null mean</span></span>
@@ -821,25 +835,25 @@ H_0: \gamma = 10.
 </section>
 <section id="the-testing-procedure" class="level2" data-number="9.2">
 <h2 data-number="9.2" class="anchored" data-anchor-id="the-testing-procedure"><span class="header-section-number">9.2</span> The Testing Procedure</h2>
-<p>Working directly with the full data distribution can be complicated. Instead, we reduce the data to a <strong>test statistic</strong> <span class="math inline">\(T(\underline{X})\)</span> that captures the evidence relevant to <span class="math inline">\(H_0\)</span>.</p>
+<p>Working directly with the full data distribution can be complicated. Instead, we reduce the data to a <strong>test statistic</strong> <span class="math inline">T(\underline{X})</span> that captures the evidence relevant to <span class="math inline">H_0</span>.</p>
 <p>The general frequentist procedure is:</p>
 <ol type="1">
-<li><p><strong>Choose a test statistic</strong> <span class="math inline">\(T(\underline{X})\)</span> that is sensitive to departures from <span class="math inline">\(H_0\)</span>.</p></li>
-<li><p><strong>Derive its sampling distribution under <span class="math inline">\(H_0\)</span>.</strong></p></li>
-<li><p><strong>Compute the observed test statistic</strong> <span class="math inline">\(T_{\text{obs}}\)</span> from the data.</p></li>
-<li><p><strong>Calculate a <span class="math inline">\(p\)</span>-value:</strong> the probability of observing <span class="math inline">\(T(\underline{X})\)</span> at least as extreme as <span class="math inline">\(T_{\text{obs}}\)</span>, assuming <span class="math inline">\(H_0\)</span> is true.</p></li>
+<li><p><strong>Choose a test statistic</strong> <span class="math inline">T(\underline{X})</span> that is sensitive to departures from <span class="math inline">H_0</span>.</p></li>
+<li><p><strong>Derive its sampling distribution under <span class="math inline">H_0</span>.</strong></p></li>
+<li><p><strong>Compute the observed test statistic</strong> <span class="math inline">T_{\text{obs}}</span> from the data.</p></li>
+<li><p><strong>Calculate a <span class="math inline">p</span>-value:</strong> the probability of observing <span class="math inline">T(\underline{X})</span> at least as extreme as <span class="math inline">T_{\text{obs}}</span>, assuming <span class="math inline">H_0</span> is true.</p></li>
 <li><p><strong>Decision:</strong></p>
 <ul>
-<li>If the <span class="math inline">\(p\)</span>-value is below a chosen threshold <span class="math inline">\(\alpha\)</span> (the <strong>significance level</strong>), we <strong>reject <span class="math inline">\(H_0\)</span></strong>.</li>
-<li>Otherwise, we <strong>fail to reject <span class="math inline">\(H_0\)</span></strong><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</li>
+<li>If the <span class="math inline">p</span>-value is below a chosen threshold <span class="math inline">\alpha</span> (the <strong>significance level</strong>), we <strong>reject <span class="math inline">H_0</span></strong>.</li>
+<li>Otherwise, we <strong>fail to reject <span class="math inline">H_0</span></strong><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</li>
 </ul></li>
 </ol>
 <section id="types-of-errors" class="level3" data-number="9.2.1">
 <h3 data-number="9.2.1" class="anchored" data-anchor-id="types-of-errors"><span class="header-section-number">9.2.1</span> Types of Errors</h3>
 <p>Because decisions are based on data (which vary by chance), mistakes are inevitable:</p>
 <ul>
-<li><strong>Type I Error:</strong> rejecting <span class="math inline">\(H_0\)</span> when it is actually true.</li>
-<li><strong>Type II Error:</strong> failing to reject <span class="math inline">\(H_0\)</span> when the alternative is true.</li>
+<li><strong>Type I Error:</strong> rejecting <span class="math inline">H_0</span> when it is actually true.</li>
+<li><strong>Type II Error:</strong> failing to reject <span class="math inline">H_0</span> when the alternative is true.</li>
 </ul>
 <p>We will return to these concepts later when discussing test performance and power.</p>
 </section>
@@ -854,13 +868,12 @@ H_0: \gamma = 10.
 <h3 data-number="9.3.1" class="anchored" data-anchor-id="neyman-pearson-lemma"><span class="header-section-number">9.3.1</span> Neyman-Pearson Lemma</h3>
 
 
-
 </section>
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>It is common to say “reject <span class="math inline">\(H_0\)</span>” when the <span class="math inline">\(p\)</span>-value is small, and “fail to reject <span class="math inline">\(H_0\)</span>” otherwise. Both phrases should be interpreted with care: rejecting <span class="math inline">\(H_0\)</span> does <strong>not</strong> prove it is false, and failing to reject <span class="math inline">\(H_0\)</span> does <strong>not</strong> prove it is true. Instead, hypothesis testing provides a decision rule about whether the data are sufficiently inconsistent with <span class="math inline">\(H_0\)</span> at a chosen significance level.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>It is common to say “reject <span class="math inline">H_0</span>” when the <span class="math inline">p</span>-value is small, and “fail to reject <span class="math inline">H_0</span>” otherwise. Both phrases should be interpreted with care: rejecting <span class="math inline">H_0</span> does <strong>not</strong> prove it is false, and failing to reject <span class="math inline">H_0</span> does <strong>not</strong> prove it is true. Instead, hypothesis testing provides a decision rule about whether the data are sufficiently inconsistent with <span class="math inline">H_0</span> at a chosen significance level.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 

@@ -220,8 +220,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script type="module" src="../../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
 <link href="../../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -680,8 +694,8 @@ window.Quarto = {
 <h2 data-number="6.1" class="anchored" data-anchor-id="introduction-to-the-bayesian-approach"><span class="header-section-number">6.1</span> Introduction to the Bayesian approach</h2>
 <p>As discussed in the course introduction, <strong>Bayesian inference</strong> takes a different perspective from the frequentist approach:</p>
 <ul>
-<li>In the frequentist view, the parameter <span class="math inline">\(\theta\)</span> is <strong>fixed but unknown</strong>.</li>
-<li>In the Bayesian view, the parameter <span class="math inline">\(\theta\)</span> is treated as a <strong>random variable</strong>.</li>
+<li>In the frequentist view, the parameter <span class="math inline">\theta</span> is <strong>fixed but unknown</strong>.</li>
+<li>In the Bayesian view, the parameter <span class="math inline">\theta</span> is treated as a <strong>random variable</strong>.</li>
 </ul>
 <p>The randomness here does not mean that the parameter is <em>physically fluctuating</em> — instead, it reflects our <strong>uncertainty</strong> about its value.</p>
 <section id="why-is-this-useful" class="level3" data-number="6.1.1">
@@ -694,11 +708,11 @@ window.Quarto = {
 </div>
 <div class="callout-body-container">
 <div id="def-prior" class="definition theorem">
-<p><span class="theorem-title"><strong>Definition 6.1 (Prior Distribution.)</strong></span> Our uncertainty about <span class="math inline">\(\theta\)</span> is represented by a probability distribution, called the <strong>prior distribution</strong>:</p>
-<p><span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 6.1 (Prior Distribution.)</strong></span> Our uncertainty about <span class="math inline">\theta</span> is represented by a probability distribution, called the <strong>prior distribution</strong>:</p>
+<p><span class="math display">
 \theta \sim \pi(\theta).
-\]</span></p>
-<p>Here <span class="math inline">\(\pi(\theta)\)</span> denotes the prior density (PDF or PMF).</p>
+</span></p>
+<p>Here <span class="math inline">\pi(\theta)</span> denotes the prior density (PDF or PMF).</p>
 </div>
 </div>
 </div>
@@ -710,11 +724,11 @@ window.Quarto = {
 </div>
 <div class="callout-body-container">
 <div id="exm-prior" class="worked-example theorem example">
-<p><span class="theorem-title"><strong>Example 6.1</strong></span> Suppose <span class="math inline">\(\theta\)</span> is the average exam score of students in a module. From past experience, the average score tends to be around 60, with most cohorts lying within about 10 marks of this.</p>
+<p><span class="theorem-title"><strong>Example 6.1</strong></span> Suppose <span class="math inline">\theta</span> is the average exam score of students in a module. From past experience, the average score tends to be around 60, with most cohorts lying within about 10 marks of this.</p>
 <p>We could encode this information as a <strong>Normal prior</strong>:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \theta \sim \mathcal{N}(\mu=60,\;\sigma^2=10^2).
-\]</span></p>
+</span></p>
 <p>This prior expresses our belief <em>before seeing the new data</em>.</p>
 </div>
 </div>
@@ -781,15 +795,15 @@ window.Quarto = {
 </section>
 <section id="bayes-theorem" class="level2" data-number="6.2">
 <h2 data-number="6.2" class="anchored" data-anchor-id="bayes-theorem"><span class="header-section-number">6.2</span> Bayes’ Theorem</h2>
-<p>Bayesian inference takes its name from <strong>Bayes’ theorem</strong>, which tells us how to update our beliefs about <span class="math inline">\(\theta\)</span> after seeing data.</p>
-<p>Recall from probability that for events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>:</p>
-<p><span class="math display">\[
+<p>Bayesian inference takes its name from <strong>Bayes’ theorem</strong>, which tells us how to update our beliefs about <span class="math inline">\theta</span> after seeing data.</p>
+<p>Recall from probability that for events <span class="math inline">A</span> and <span class="math inline">B</span>:</p>
+<p><span class="math display">
 \mathrm{Pr}(A \mid B) = \frac{\mathrm{Pr}(B \mid A)\,\mathrm{Pr}(A)}{\mathrm{Pr}(B)}.
-\]</span></p>
+</span></p>
 <p>To generalise this idea to <strong>random variables and densities</strong>, we use conditional densities:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 f_{X \mid Y}(x \mid y) = \frac{f_{XY}(x,y)}{f_Y(y)}.
-\]</span></p>
+</span></p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -803,7 +817,7 @@ f_{X \mid Y}(x \mid y) = \frac{f_{XY}(x,y)}{f_Y(y)}.
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="rem-notation" class="proof remark">
-<p><span class="proof-title"><em>Remark 6.1</em>. </span><strong>Notation.</strong> We will usually write <span class="math inline">\(f(x \mid y)\)</span> rather than <span class="math inline">\(f_{X \mid Y}(x \mid y)\)</span> to keep things simple. Both mean the same thing.</p>
+<p><span class="proof-title"><em>Remark 6.1</em>. </span><strong>Notation.</strong> We will usually write <span class="math inline">f(x \mid y)</span> rather than <span class="math inline">f_{X \mid Y}(x \mid y)</span> to keep things simple. Both mean the same thing.</p>
 </div>
 </div>
 </div>
@@ -816,10 +830,10 @@ f_{X \mid Y}(x \mid y) = \frac{f_{XY}(x,y)}{f_Y(y)}.
 </div>
 <div class="callout-body-container">
 <div id="thm-bayes" class="thm theorem">
-<p><span class="theorem-title"><strong>Theorem 6.1 (Bayes’ Theorem for Densities.)</strong></span> For random variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>:</p>
-<p><span class="math display">\[
+<p><span class="theorem-title"><strong>Theorem 6.1 (Bayes’ Theorem for Densities.)</strong></span> For random variables <span class="math inline">X</span> and <span class="math inline">Y</span>:</p>
+<p><span class="math display">
 f(x \mid y) = \frac{f(y \mid x)\,f(x)}{f(y)}.
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
@@ -838,15 +852,15 @@ f(x \mid y) = \frac{f(y \mid x)\,f(x)}{f(y)}.
 <div class="callout-body-container callout-body">
 <div id="prf-bayes" class="prf proof">
 <p><span class="proof-title"><em>Proof 6.1</em>. </span>By the definition of conditional density:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 f(x \mid y) = \frac{f(x,y)}{f(y)},
 \qquad
 f(y \mid x) = \frac{f(x,y)}{f(x)}.
-\]</span></p>
-<p>Rearranging the second expression gives <span class="math inline">\(f(x,y) = f(y \mid x) f(x)\)</span>. Substituting this into the first gives</p>
-<p><span class="math display">\[
+</span></p>
+<p>Rearranging the second expression gives <span class="math inline">f(x,y) = f(y \mid x) f(x)</span>. Substituting this into the first gives</p>
+<p><span class="math display">
 f(x \mid y) = \frac{f(y \mid x) f(x)}{f(y)}.
-\]</span></p>
+</span></p>
 </div>
 </div>
 </div>
@@ -857,14 +871,14 @@ f(x \mid y) = \frac{f(y \mid x) f(x)}{f(y)}.
 <h2 data-number="6.3" class="anchored" data-anchor-id="bayes-theorem-in-statistics"><span class="header-section-number">6.3</span> Bayes’ Theorem in Statistics</h2>
 <p>In Bayesian inference, we apply Bayes’ theorem with:</p>
 <ul>
-<li><span class="math inline">\(x = \theta\)</span> (the parameter, treated as random),</li>
-<li><span class="math inline">\(y = \underline{x}\)</span> (the observed data).</li>
+<li><span class="math inline">x = \theta</span> (the parameter, treated as random),</li>
+<li><span class="math inline">y = \underline{x}</span> (the observed data).</li>
 </ul>
 <p>This gives:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \pi(\theta \mid \underline{x})
 = \frac{f(\underline{x} \mid \theta)\,\pi(\theta)}{f(\underline{x})}.
-\]</span></p>
+</span></p>
 <div class="callout callout-style-simple callout-note no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -872,16 +886,16 @@ f(x \mid y) = \frac{f(y \mid x) f(x)}{f(y)}.
 </div>
 <div class="callout-body-container">
 <div id="def-posterior" class="definition theorem">
-<p><span class="theorem-title"><strong>Definition 6.2 (Posterior Distribution.)</strong></span> <span class="math display">\[
+<p><span class="theorem-title"><strong>Definition 6.2 (Posterior Distribution.)</strong></span> <span class="math display">
 \pi(\theta \mid \underline{x})
 = \frac{f(\underline{x} \mid \theta)\,\pi(\theta)}{f(\underline{x})}.
-\]</span></p>
+</span></p>
 <p>The <strong>posterior</strong> combines two ingredients:</p>
 <ul>
-<li>The <strong>likelihood</strong> <span class="math inline">\(f(\underline{x} \mid \theta)\)</span> (information from the data).</li>
-<li>The <strong>prior</strong> <span class="math inline">\(\pi(\theta)\)</span> (information before seeing the data).</li>
+<li>The <strong>likelihood</strong> <span class="math inline">f(\underline{x} \mid \theta)</span> (information from the data).</li>
+<li>The <strong>prior</strong> <span class="math inline">\pi(\theta)</span> (information before seeing the data).</li>
 </ul>
-<p>The denominator <span class="math inline">\(f(\underline{x})\)</span> is a normalising constant ensuring the posterior integrates to 1.</p>
+<p>The denominator <span class="math inline">f(\underline{x})</span> is a normalising constant ensuring the posterior integrates to 1.</p>
 </div>
 </div>
 </div>
@@ -907,10 +921,10 @@ f(x \mid y) = \frac{f(y \mid x) f(x)}{f(y)}.
 </div>
 <div class="callout-body-container">
 <div id="exm-biased-coin" class="example theorem">
-<p><span class="theorem-title"><strong>Example 6.2 (Biased Coin)</strong></span> We consider a possibly biased coin with parameter <span class="math inline">\(\theta = \Pr(\text{Head})\)</span>. Before seeing data, we express <em>no preference</em> over <span class="math inline">\(\theta\in(0,1)\)</span> via a uniform prior: <span class="math display">\[
+<p><span class="theorem-title"><strong>Example 6.2 (Biased Coin)</strong></span> We consider a possibly biased coin with parameter <span class="math inline">\theta = \Pr(\text{Head})</span>. Before seeing data, we express <em>no preference</em> over <span class="math inline">\theta\in(0,1)</span> via a uniform prior: <span class="math display">
 \theta \sim \mathrm{Uniform}(0,1) \equiv \mathrm{Beta}(1,1), \qquad \pi(\theta)=1 \ \text{for } 0&lt;\theta&lt;1.
-\]</span> Hence <span class="math inline">\(\mathrm{E}[\theta]=0.5\)</span>.</p>
-<p>We toss the coin <span class="math inline">\(n=5\)</span> times and observe <span class="math inline">\(x=1\)</span> head. Find the <strong>posterior</strong> <span class="math inline">\(\pi(\theta\mid x)\)</span>.</p>
+</span> Hence <span class="math inline">\mathrm{E}[\theta]=0.5</span>.</p>
+<p>We toss the coin <span class="math inline">n=5</span> times and observe <span class="math inline">x=1</span> head. Find the <strong>posterior</strong> <span class="math inline">\pi(\theta\mid x)</span>.</p>
 </div>
 </div>
 </div>
@@ -928,11 +942,11 @@ f(x \mid y) = \frac{f(y \mid x) f(x)}{f(y)}.
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="sol-biased-coin" class="proof solution">
-<p><span class="proof-title"><em>Solution 6.1</em>. </span>Let <span class="math inline">\(X\)</span> be the number of heads in <span class="math inline">\(5\)</span> tosses. Assuming that each coin throw is <em>independent and identically distributed</em>, <span class="math inline">\(X\)</span> is Binomial<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>: <span class="math display">\[
+<p><span class="proof-title"><em>Solution 6.1</em>. </span>Let <span class="math inline">X</span> be the number of heads in <span class="math inline">5</span> tosses. Assuming that each coin throw is <em>independent and identically distributed</em>, <span class="math inline">X</span> is Binomial<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>: <span class="math display">
     X \mid \theta \sim \textrm{Bin}(5,\theta).
-\]</span> Note that there is only a <strong>single observation</strong> here: one experiment is “tossing the coin <span class="math inline">\(5\)</span> times and seeing how many come up heads”. The probability of observing <span class="math inline">\(X=1\)</span> is <span class="math display">\[
+</span> Note that there is only a <strong>single observation</strong> here: one experiment is “tossing the coin <span class="math inline">5</span> times and seeing how many come up heads”. The probability of observing <span class="math inline">X=1</span> is <span class="math display">
     f(x = 1 \mid \theta) = 5\theta(1-\theta)^4
-\]</span> If we plot this:</p>
+</span> If we plot this:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: "Show code"</span></span>
@@ -956,35 +970,35 @@ f(x \mid y) = \frac{f(y \mid x) f(x)}{f(y)}.
 <span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Binomial Likelihood (with $n=5$ and $X=1$)"</span>)</span>
 <span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
 <span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>plt.show()  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>we see that this favours <span class="math inline">\(\theta\)</span> around <span class="math inline">\(0.2\)</span>. In fact, in <a href="5-likelihood.html#exm-binom-mle-single" class="quarto-xref">Example&nbsp;<span>5.4</span></a>, we saw that the MLE is <span class="math inline">\(\hat{\theta} = 0.2\)</span>.</p>
-<p>Our prior for <span class="math inline">\(\theta\)</span> was <span class="math inline">\(\pi(\theta) = 1\)</span>, for <span class="math inline">\(0 &lt; \theta &lt; 1\)</span>. To update our beliefs, by conditioning on the single observation <span class="math inline">\(x=2\)</span>, we use <span class="xref-no-num"><a href="#def-posterior" class="quarto-xref">Bayes Theorem&nbsp;<span>6.2</span></a></span>: <span class="math display">\[
+<p>we see that this favours <span class="math inline">\theta</span> around <span class="math inline">0.2</span>. In fact, in <a href="5-likelihood.html#exm-binom-mle-single" class="quarto-xref">Example&nbsp;<span>5.4</span></a>, we saw that the MLE is <span class="math inline">\hat{\theta} = 0.2</span>.</p>
+<p>Our prior for <span class="math inline">\theta</span> was <span class="math inline">\pi(\theta) = 1</span>, for <span class="math inline">0 &lt; \theta &lt; 1</span>. To update our beliefs, by conditioning on the single observation <span class="math inline">x=2</span>, we use <span class="xref-no-num"><a href="#def-posterior" class="quarto-xref">Bayes Theorem&nbsp;<span>6.2</span></a></span>: <span class="math display">
     \pi(\theta|x=1)=\frac{\pi(\theta)f(x=1|\theta)}{f(x=1)} = \frac{1 \times 5\theta(1-\theta)^4}{f(x=1)}, \quad 0 &lt; \theta &lt; 1.
-\]</span> To compute the <em>denominator</em>, <span class="math inline">\(f(x=1)\)</span>, we use the <span class="xref-no-num"><a href="../part1/1-prob-theory.html#thm-total-probability-pdfs" class="quarto-xref">law of total probability&nbsp;<span>1.3</span></a></span>:</p>
-<p><span class="math display">\[\begin{align*}
+</span> To compute the <em>denominator</em>, <span class="math inline">f(x=1)</span>, we use the <span class="xref-no-num"><a href="../part1/1-prob-theory.html#thm-total-probability-pdfs" class="quarto-xref">law of total probability&nbsp;<span>1.3</span></a></span>:</p>
+<p><span class="math display">\begin{align*}
 f(x=1) &amp;=\int_\Theta\pi(\theta)f(x=1\, |\,\theta)\,d\theta = \int_0^1 1\times 5\theta(1-\theta)^4\,d\theta \\
 &amp;=\int_0^1 \theta\times 5(1-\theta)^4\,d\theta =\left[-(1-\theta)^5\,\theta\right]^1_0
 +\int_0^1 (1-\theta)^5\,d\theta \\
 &amp;=0 + \left[-\frac{(1-\theta)^6}{6}\right]^1_0 =\frac{1}{6}.
-\end{align*}\]</span></p>
-<p>Therefore, the posterior density is (for <span class="math inline">\(0&lt;\theta&lt;1\)</span>):</p>
-<p><span class="math display">\[\begin{align*}
+\end{align*}</span></p>
+<p>Therefore, the posterior density is (for <span class="math inline">0&lt;\theta&lt;1</span>):</p>
+<p><span class="math display">\begin{align*}
 \pi(\theta|x=1)&amp;=\frac{\pi(\theta)f(x=1|\theta)}{f(x=1)} =\frac{5\theta(1-\theta)^4}{1/6}\\
 &amp;=30\,\theta(1-\theta)^4 =\frac{\theta(1-\theta)^4}{\mathrm{B}(2,5)},\quad\quad 0&lt;\theta&lt;1,
-\end{align*}\]</span></p>
-<p>and so the posterior distribution is <span class="math inline">\(\theta|x=1\sim \textrm{Beta}(2,5)\)</span>. This distribution has its mode at <span class="math inline">\(\theta=0.2\)</span>, and mean at <span class="math inline">\(\mathrm{E}[\theta|x=1]=2/7=0.286\)</span>.</p>
+\end{align*}</span></p>
+<p>and so the posterior distribution is <span class="math inline">\theta|x=1\sim \textrm{Beta}(2,5)</span>. This distribution has its mode at <span class="math inline">\theta=0.2</span>, and mean at <span class="math inline">\mathrm{E}[\theta|x=1]=2/7=0.286</span>.</p>
 </div>
 </div>
 </div>
 </div>
-<p>The main difficulty in calculating the posterior distribution was in obtaining the <span class="math inline">\(f(x)\)</span> term. However, in many cases we can recognise the posterior distribution without the need to calculate this constant term (constant with respect to <span class="math inline">\(\theta\)</span>). In this example, we can calculate the posterior distribution as</p>
-<p><span class="math display">\[\begin{align*}
+<p>The main difficulty in calculating the posterior distribution was in obtaining the <span class="math inline">f(x)</span> term. However, in many cases we can recognise the posterior distribution without the need to calculate this constant term (constant with respect to <span class="math inline">\theta</span>). In this example, we can calculate the posterior distribution as</p>
+<p><span class="math display">\begin{align*}
 \pi(\theta|\underline{x})&amp;\propto\pi(\theta)f(x=1|\theta) \\
 &amp;\propto 1\times 5\theta(1-\theta)^4,\quad\quad 0&lt;\theta&lt;1  \\
 &amp;=k\theta(1-\theta)^4,\quad\quad 0&lt;\theta&lt;1.
-\end{align*}\]</span></p>
-<p>As <span class="math inline">\(\theta\)</span> is a continuous quantity, what we would like to know is what continuous distribution defined on <span class="math inline">\((0,1)\)</span> has a probability density function which takes the form <span class="math inline">\(k\theta^{g-1}(1-\theta)^{h-1}\)</span>. The answer is the <span class="math inline">\(\textrm{Beta}(g,h)\)</span> distribution. Therefore, choosing <span class="math inline">\(g\)</span> and <span class="math inline">\(h\)</span> appropriately, we can see that the posterior distribution is <span class="math inline">\(\theta|x=1\sim \textrm{Beta}(2,5)\)</span>.</p>
+\end{align*}</span></p>
+<p>As <span class="math inline">\theta</span> is a continuous quantity, what we would like to know is what continuous distribution defined on <span class="math inline">(0,1)</span> has a probability density function which takes the form <span class="math inline">k\theta^{g-1}(1-\theta)^{h-1}</span>. The answer is the <span class="math inline">\textrm{Beta}(g,h)</span> distribution. Therefore, choosing <span class="math inline">g</span> and <span class="math inline">h</span> appropriately, we can see that the posterior distribution is <span class="math inline">\theta|x=1\sim \textrm{Beta}(2,5)</span>.</p>
 <p><strong>Summary:</strong></p>
-<p>It is possible that we have a biased coin. If we suppose that all values of <span class="math inline">\(\theta=\text{Pr(Head)}\)</span> are equally likely and then observe 1 head out of 5, then the most likely value of <span class="math inline">\(\theta\)</span> is 0.2 — the same as the most likely value from the data alone (not surprising!). However, on average, we would expect <span class="math inline">\(\theta\)</span> to be around 0.286. Uncertainty about <span class="math inline">\(\theta\)</span> has changed from a (prior) standard deviation of 0.289 to a (posterior) standard deviation of 0.160. The changes in our beliefs about <span class="math inline">\(\theta\)</span> are more fully described by the prior and posterior distributions shown in <a href="#fig-beta-posterior" class="quarto-xref">Figure&nbsp;<span>6.1</span></a>.</p>
+<p>It is possible that we have a biased coin. If we suppose that all values of <span class="math inline">\theta=\text{Pr(Head)}</span> are equally likely and then observe 1 head out of 5, then the most likely value of <span class="math inline">\theta</span> is 0.2 — the same as the most likely value from the data alone (not surprising!). However, on average, we would expect <span class="math inline">\theta</span> to be around 0.286. Uncertainty about <span class="math inline">\theta</span> has changed from a (prior) standard deviation of 0.289 to a (posterior) standard deviation of 0.160. The changes in our beliefs about <span class="math inline">\theta</span> are more fully described by the prior and posterior distributions shown in <a href="#fig-beta-posterior" class="quarto-xref">Figure&nbsp;<span>6.1</span></a>.</p>
 <hr>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="296" data-source-offset="-19"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 295;"><span id="cb6-296"><a href="#cb6-296" aria-hidden="true" tabindex="-1"></a>mDomain <span class="op">=</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]</span>
@@ -1078,7 +1092,7 @@ f(x=1) &amp;=\int_\Theta\pi(\theta)f(x=1\, |\,\theta)\,d\theta = \int_0^1 1\time
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-beta-posterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6.1: Prior and posterior distributions for the coin bias parameter <span class="math inline">\(\theta=\Pr(\text{Head})\)</span> after observing 1 head in 5 tosses. The posterior is more concentrated, reflecting reduced uncertainty about <span class="math inline">\(\theta\)</span> compared to the uniform prior
+Figure&nbsp;6.1: Prior and posterior distributions for the coin bias parameter <span class="math inline">\theta=\Pr(\text{Head})</span> after observing 1 head in 5 tosses. The posterior is more concentrated, reflecting reduced uncertainty about <span class="math inline">\theta</span> compared to the uniform prior
 </figcaption>
 </figure>
 </div>
@@ -1091,9 +1105,9 @@ Figure&nbsp;6.1: Prior and posterior distributions for the coin bias parameter <
 </div>
 <div class="callout-body-container">
 <div id="exm-music-expert" class="theorem example">
-<p><span class="theorem-title"><strong>Example 6.3</strong></span> Consider an experiment to determine how good a music expert is at distinguishing between pages from Haydn and Mozart scores. Let <span class="math inline">\(\theta=\mathrm{Pr}(\text{correct choice})\)</span>. Suppose that, before conducting the experiment, we have been told that the expert is very competent. In fact, it is suggested that we should have a prior distribution which has a mode around <span class="math inline">\(\theta=0.95\)</span> and for which <span class="math inline">\(\mathrm{Pr}(\theta&lt;0.8)\)</span> is very small. We choose <span class="math inline">\(\theta\sim \textrm{Beta}(77,5)\)</span>, with probability density function <span class="math display">\[
+<p><span class="theorem-title"><strong>Example 6.3</strong></span> Consider an experiment to determine how good a music expert is at distinguishing between pages from Haydn and Mozart scores. Let <span class="math inline">\theta=\mathrm{Pr}(\text{correct choice})</span>. Suppose that, before conducting the experiment, we have been told that the expert is very competent. In fact, it is suggested that we should have a prior distribution which has a mode around <span class="math inline">\theta=0.95</span> and for which <span class="math inline">\mathrm{Pr}(\theta&lt;0.8)</span> is very small. We choose <span class="math inline">\theta\sim \textrm{Beta}(77,5)</span>, with probability density function <span class="math display">
 \pi(\theta)=128107980\,\theta^{76}(1-\theta)^4,\quad\quad 0&lt;\theta&lt;1.
-\]</span> A graph of this prior density is given as follows:</p>
+</span> A graph of this prior density is given as follows:</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
@@ -1170,15 +1184,14 @@ Figure&nbsp;6.1: Prior and posterior distributions for the coin bias parameter <
 <h2 data-number="6.4" class="anchored" data-anchor-id="bayesian-vs.-frequentist-again"><span class="header-section-number">6.4</span> Bayesian vs.&nbsp;Frequentist (again)</h2>
 
 
-
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p><strong>Prior distribution.</strong> In Bayesian inference, the <em>prior</em> represents our beliefs about the parameter <span class="math inline">\(\theta\)</span> <strong>before seeing any data</strong>. It is written as a probability distribution <span class="math inline">\(\pi(\theta)\)</span>, which can be based on previous studies, expert knowledge, or simply chosen to reflect uncertainty (e.g.&nbsp;a flat prior).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p><strong>Binomial distribution.</strong> If we assume each coin throw <span class="math inline">\(C_i\)</span> is an i.i.d. <span class="math inline">\(\textrm{Bernoulli}(\theta)\)</span> trial with a <span class="math inline">\(1\)</span> representing a heads landing, and a <span class="math inline">\(0\)</span> representing a tails, the total number of heads out of <span class="math inline">\(5\)</span> is <span class="math inline">\(X = C_1 + C_2 + C_3 + C_4 + C_5\)</span>. Therefore: <span class="math display">\[
+<li id="fn1"><p><strong>Prior distribution.</strong> In Bayesian inference, the <em>prior</em> represents our beliefs about the parameter <span class="math inline">\theta</span> <strong>before seeing any data</strong>. It is written as a probability distribution <span class="math inline">\pi(\theta)</span>, which can be based on previous studies, expert knowledge, or simply chosen to reflect uncertainty (e.g.&nbsp;a flat prior).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p><strong>Binomial distribution.</strong> If we assume each coin throw <span class="math inline">C_i</span> is an i.i.d. <span class="math inline">\textrm{Bernoulli}(\theta)</span> trial with a <span class="math inline">1</span> representing a heads landing, and a <span class="math inline">0</span> representing a tails, the total number of heads out of <span class="math inline">5</span> is <span class="math inline">X = C_1 + C_2 + C_3 + C_4 + C_5</span>. Therefore: <span class="math display">
     X \mid \theta \sim \textrm{Bin}(5,\theta).
-\]</span><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</span><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
