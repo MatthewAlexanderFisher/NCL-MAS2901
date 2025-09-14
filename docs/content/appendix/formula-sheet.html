@@ -1025,13 +1025,16 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.contains('lecture-zoom') ||
     document.documentElement.classList.contains('lecture-zoom');
 
+  // Define closeLectureSearch early (forward declaration)
+  let closeLectureSearch;
+
   const apply = (on) => {
     document.body.classList.toggle('lecture-zoom', on);
     document.documentElement.classList.toggle('lecture-zoom', on);
     btn.setAttribute('aria-pressed', on ? 'true' : 'false');
     
     // Close search overlay when exiting lecture zoom
-    if (!on) {
+    if (!on && closeLectureSearch) {
       closeLectureSearch();
     }
     
@@ -1066,12 +1069,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Close on backdrop click
       overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) closeLectureSearch();
+        if (e.target === overlay && closeLectureSearch) closeLectureSearch();
       });
 
       // Close on Esc
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeLectureSearch();
+        if (e.key === 'Escape' && closeLectureSearch) closeLectureSearch();
       });
     }
     return overlay;
@@ -1146,7 +1149,8 @@ document.addEventListener('DOMContentLoaded', () => {
     return true;
   }
 
-  function closeLectureSearch() {
+  // Now properly define closeLectureSearch
+  closeLectureSearch = function() {
     const overlay = document.getElementById('lecture-search-overlay');
     if (!overlay || !overlay.classList.contains('open')) return;
 
@@ -1166,9 +1170,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     overlay.classList.remove('open');
     document.documentElement.classList.remove('search-open');
-  }
+  };
 
-  // Your existing hotkeys:
+  // Existing hotkeys:
   document.addEventListener('keydown', (e) => {
     const tag = e.target.tagName.toLowerCase();
     const typing = tag === 'input' || tag === 'textarea' || tag === 'select' || e.isComposing;
@@ -1185,12 +1189,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Make sure exiting lecture mode also closes search
-  const oldApply = apply;
-  apply = (on) => {            // wrap your existing apply()
-    oldApply(on);
-    if (!on) closeLectureSearch();
-  };
 });
 </script>
 <script id="quarto-html-after-body" type="application/javascript">
