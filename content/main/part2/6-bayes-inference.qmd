@@ -8,132 +8,326 @@ plot_bg = "#f8f8f8"
 plt.rcParams["figure.facecolor"] = plot_bg
 plt.rcParams["axes.facecolor"]   = plot_bg
 
+dark_plot_bg = "#151515"
+
 ```
 
 ```{ojs}
 bodyFont = getComputedStyle(document.body).fontFamily
 ```
 
-## Introduction to the Bayesian approach
 
-As discussed in the course introduction, **Bayesian inference** takes a different perspective from the frequentist approach:
+## Introduction to the Bayesian Approach
 
-* In the frequentist view, the parameter $\theta$ is **fixed but unknown**.
-* In the Bayesian view, the parameter $\theta$ is treated as a **random variable**.
+So far we have taken a **frequentist perspective**: parameters such as $\theta$ are fixed but unknown, and all randomness comes from the sample.
 
-The randomness here does not mean that the parameter is *physically fluctuating* — instead, it reflects our **uncertainty** about its value.
+Bayesian inference takes a different view:
 
-### Why is this useful?
+* **Frequentist**: the parameter $\theta$ is **fixed but unknown**.
+* **Bayesian**: the parameter $\theta$ is treated as a **random variable**.
 
-A **key advantage** of Bayesian inference is that it allows us to **incorporate prior information**[^prior] about the parameter.
+The word *random* here does **not** mean that the parameter is physically fluctuating. Instead, it represents our **uncertainty** about its true value.
 
-::: {.definition #def-prior}
-### Prior Distribution.
-Our uncertainty about $\theta$ is represented by a probability distribution, called the **prior distribution**:
+### Probability as Uncertainty
 
-$$
-\theta \sim \pi(\theta).
-$$
+In the Bayesian framework, probability is interpreted as a way of **quantifying uncertainty** about unknown quantities.
 
-Here $\pi(\theta)$ denotes the prior density (PDF or PMF).
-:::
+Rather than saying “*the parameter is a fixed number we don’t know*”, we describe how plausible different values are using a probability distribution.
 
-::: {.worked-example #exm-prior}
-Suppose $\theta$ is the average exam score of students in a module. From past experience, the average score tends to be around 60, with most cohorts lying within about 10 marks of this.
+::: {#exm-bayes-umbrella}
+#### Umbrella Decisions
 
-We could encode this information as a **Normal prior**:
+Imagine the weather forecast says there is a $70\%$ chance of rain tomorrow.
 
-$$
-\theta \sim \mathcal{N}(\mu=60,\;\sigma^2=10^2).
-$$
+* The sky doesn’t “rain in $70\%$ of parallel universes.”
 
-This prior expresses our belief *before seeing the new data*.
-:::
+* Instead, the number $70\%$ reflects our uncertainty given current information (satellite data, forecasts, etc.).
 
-
-
-::: {.panel-tabset}
-
-### Python
-
-```python
-#| echo: true
-#| code-fold: true
-#| code-summary: "Show code"
-#| fig-align: center
-
-import matplotlib.pyplot as plt
-import numpy as np
-import math
-
-def normal_pdf(theta, mean, sd):
-    const = 1 / (sd * (2 * math.pi) ** 0.5)
-    exp_term = np.exp(-((theta - mean) / sd) ** 2 / 2)
-    return const * exp_term
-
-mean = 100.0
-sd   = 10.0
-
-theta_grid = np.linspace(mean - 3*sd, mean + 3*sd, 200)
-pdf_values = normal_pdf(theta_grid, mean=mean, sd=sd)
-
-plt.figure(figsize=(7,4))
-plt.plot(theta_grid, pdf_values)
-plt.xlabel(r"$\theta$")
-plt.ylabel("Density")
-plt.title("Normal PDF: mean = 100, sd = 10")
-plt.tight_layout()
-
+```{=html}
+<details>
+  <summary><strong> Show Plot </strong></summary>
 ```
 
-### R
+```{ojs}
+// === (A) Umbrella decision: 70% chance of rain (everyday uncertainty) ===
+// Build a single horizontal bar split into "Rain" (0.7) and "No rain" (0.3)
 
-```{r}
-#| echo: true
-#| code-fold: true
-#| code-summary: "Show code"
-#| fig-align: center
+rainP = 0.7
+noRainP = 1 - rainP
 
-mean <- 100
-sd   <- 10
-
-theta_grid <- seq(mean - 3*sd, mean + 3*sd, length.out = 200)
-pdf_values <- dnorm(theta_grid, mean = mean, sd = sd)
-
-plot(theta_grid, pdf_values, type = "l",
-     xlab = expression(theta),
-     ylab = "Density",
-     main = "Normal PDF: mean = 100, sd = 10")
+umbrellaSegments = [
+  { label: "Rain (70%)",    x1: 0,     x2: rainP,  which: "Rain" },
+  { label: "No rain (30%)", x1: rainP, x2: 1,      which: "No rain" }
+]
 ```
+
+```{ojs}
+//| label: fig-umbrella-uncertainty
+//| fig-cap: Everyday uncertainty — a 70% chance of rain means our **belief** favours rain over no rain given current information.
+//| fig-align: center
+//| echo: false
+
+Plot.plot({
+  height: 120,
+  marginLeft: 50,
+  marginRight: 20,
+  marginBottom: 45,
+  x: { label: "Probability", domain: [0, 1], nice: false },
+  y: { axis: null },
+    style: {
+      width: "100%",
+      display: "block", 
+      margin: "0 auto", 
+      maxWidth: "960px",
+      background: "var(--brand-bg)",
+      color: "var(--brand-fg)",
+      fontFamily: bodyFont, 
+      fontSize: 12
+    },
+  marks: [
+    Plot.ruleY([0], { stroke: "var(--border)", strokeOpacity: 0.6 }),
+    // two stacked rectangles forming one bar
+    Plot.rectX(umbrellaSegments, {
+      x1: "x1",
+      x2: "x2",
+      y: 0,
+      height: 24,
+      fill: d => d.which === "Rain" ? "var(--brand-teal)" : "var(--brand-red)",
+      fillOpacity: d => d.which === "Rain" ? 0.35 : 0.15,
+      stroke: "var(--brand-fg)"
+    }),
+    // labels
+    Plot.text(umbrellaSegments, {
+      x: d => (d.x1 + d.x2) / 2,
+      y: 0,
+      text: "label",
+      dy: -8
+    })
+  ]
+})
+```
+
+```{=html}
+</details>
+```
+
 :::
 
+::: {#exm-bayes-exam-marks}
+#### Exam Marks
 
-## Bayes’ Theorem
+Suppose $\theta$ is the average exam mark of a module. From past years, we believe:
 
-Bayesian inference takes its name from **Bayes’ theorem**, which tells us how to update our beliefs about $\theta$ after seeing data.
+* It’s usually around $60$ marks,
 
-Recall from probability that for events $A$ and $B$:
+* but could reasonably be anywhere between $50$ and $70$.
 
+We could represent this belief as a Normal prior distribution centred at $60$ with standard deviation $10$.
+
+```{=html}
+<details>
+  <summary><strong> Show Plot </strong></summary>
+```
+
+
+```{ojs}
+// === (B) Exam-mark prior: Normal(μ=60, σ=10) ===
+// Domain and grid
+markDomain = [0, 100]
+markXs = d3.scaleLinear().domain(markDomain).ticks(400)
+
+// Normal PDF helper
+function normalPDF(x, mu, sigma){
+  const z = (x - mu) / sigma;
+  return Math.exp(-0.5 * z * z) / (sigma * Math.sqrt(2 * Math.PI));
+}
+
+// Prior parameters and curve
+mu_prior = 60
+sd_prior = 10
+
+markPrior = markXs.map(x => ({ x, y: normalPDF(x, mu_prior, sd_prior), which: "Prior  N(60, 10²)" }))
+
+// Shading bounds for "plausible" 50–70 region
+loBand = 50
+hiBand = 70
+bandFill = markXs
+  .filter(x => x >= loBand && x <= hiBand)
+  .map(x => ({ x, y: normalPDF(x, mu_prior, sd_prior) }))
+```
+
+```{ojs}
+//| label: fig-exam-prior-normal
+//| fig-cap: Prior for the average exam mark. A Normal prior centred at $60$ with standard deviation $10$ encodes “likely around $60$, plausibly $50–70$”.
+//| fig-align: center
+//| echo: false
+
+Plot.plot({
+  height: 320,
+  marginLeft: 48,
+  marginBottom: 45,
+  x: { label: "Average mark θ", domain: markDomain },
+  y: { label: "Density" },
+  style: {
+    width: "100%",
+    display: "block", 
+    margin: "0 auto", 
+    maxWidth: "960px",
+    background: "var(--brand-bg)",
+    color: "var(--brand-fg)",
+    fontFamily: bodyFont, 
+    fontSize: 12
+  },
+  marks: [
+    Plot.ruleY([0], { stroke: "var(--border)", strokeOpacity: 0.6 }),
+    // shade the 50–70 plausible band
+    Plot.areaY(bandFill, { x: "x", y: "y", fill: "var(--brand-teal)", fillOpacity: 0.12 }),
+    // main prior curve
+    Plot.lineY(markPrior, { x: "x", y: "y", stroke: "var(--brand-teal)", strokeWidth: 2 }),
+    // annotations
+    Plot.ruleX([mu_prior], { stroke: "var(--brand-fg)", strokeWidth: 2, strokeDasharray: "3,3", strokeOpacity: 0.4 }),
+    Plot.text(
+      [
+        { x: mu_prior + 8, y: normalPDF(mu_prior, mu_prior, sd_prior) * 0.99, label: "Prior mean 60" },
+        { x: (loBand+hiBand)/2, y: normalPDF((loBand+hiBand)/2, mu_prior, sd_prior) / 3, label: "Plausible 50–70" }
+      ],
+      { x: "x", y: "y", text: "label", dy: -10 }
+    )
+  ]
+})
+```
+
+```{=html}
+</details>
+```
+
+:::
+
+::: {#exm-bayes-disease}
+#### Disease Prevalance
+Let $\theta$ be the proportion of people with a rare condition.
+
+Before collecting data, experts might believe $\theta$ is “probably around $2\%$, but definitely less than $10\%$”.
+
+We could express this with a <span class="xref-no-num">[Beta distribution @sec-beta]</span> prior.
+
+
+```{=html}
+<details>
+  <summary><strong> Show Plot </strong></summary>
+```
+
+```{ojs}
+// === (C) Disease prevalence prior: Beta(2, 98) ~ mean 0.02, mass < 0.10 ===
+// Domain and grid
+pDomain = [0, 0.12]  // zoom in to show the small probabilities clearly
+pXs = d3.scaleLinear().domain(pDomain).ticks(400)
+
+// Beta PDF helper (using log-space for stability)
+function logGamma(z){ // Lanczos approximation via d3? keep simple: use Math.lgamma fallback if present; else crude Stirling
+  // Minimal Stirling for teaching visuals (fine for small α,β here)
+  return (z-0.5)*Math.log(z) - z + 0.5*Math.log(2*Math.PI);
+}
+function betaLogPDF(x, a, b){
+  if (x <= 0 || x >= 1) return -Infinity;
+  return (a-1)*Math.log(x) + (b-1)*Math.log(1-x) - (logGamma(a)+logGamma(b)-logGamma(a+b));
+}
+function betaPDF(x, a, b){
+  const lg = betaLogPDF(x, a, b);
+  return Number.isFinite(lg) ? Math.exp(lg) : 0;
+}
+
+// Prior parameters and curve
+alpha_prior = 2
+beta_prior  = 98
+
+betaPrior = pXs.map(x => ({ x, y: betaPDF(x, alpha_prior, beta_prior), which: "Prior  Beta(2, 98)" }))
+
+// Optional “< 10%” visual marker
+capThreshold = 0.10
+```
+
+```{ojs}
+//| label: fig-beta-prevalence-prior
+//| fig-cap: Prior for disease prevalence $\theta$ using a $\mathrm{Beta}(2, 98)$. This encodes “likely around $2\%$, very unlikely above $10\%$.”
+//| fig-align: center
+//| echo: false
+
+Plot.plot({
+  height: 320,
+  marginLeft: 48,
+  marginBottom: 45,
+  x: { label: "Prevalence θ", domain: pDomain },
+  y: { label: "Density" },
+  style: {
+    width: "100%",
+    display: "block", 
+    margin: "0 auto", 
+    maxWidth: "960px",
+    background: "var(--brand-bg)",
+    color: "var(--brand-fg)",
+    fontFamily: bodyFont, 
+    fontSize: 14
+  },
+  marks: [
+    Plot.ruleY([0], { stroke: "var(--border)", strokeOpacity: 0.6 }),
+    Plot.lineY(betaPrior, { x: "x", y: "y", stroke: "var(--brand-red)", strokeWidth: 2, strokeOpacity: 0.9 }),
+    Plot.areaY(betaPrior, { x: "x", y: "y", fill: "var(--brand-red)", fillOpacity: 0.15 }),
+    // visual cap at 10%
+    Plot.ruleX([capThreshold], { stroke: "var(--brand-fg)", strokeDasharray: "3,3", strokeOpacity: 0.6 }),
+    Plot.text(
+      [
+        { x: 0.02, y: betaPDF(0.02, alpha_prior, beta_prior), label: "Prior mean ≈ 2%" },
+        { x: capThreshold, y: 0, label: "10% upper cap (unlikely)" }
+      ],
+      { x: "x", y: "y", text: "label", dy: -10 }
+    )
+  ]
+})
+```
+
+```{=html}
+</details>
+```
+
+:::
+
+This provides a **language of degrees of belief**: probability distributions describe how plausible different values of $\theta$ are, given what we know.
+
+### The Bayesian Inference Procedure
+
+The Bayesian approach to inference has three ingredients:
+
+1. **Prior** — a probability distribution that captures what we believe about $\theta$ *before* seeing the data.
+2. **Likelihood** — the distribution of the data $\underline{x}$ given $\theta$.
+3. **Posterior** — the updated distribution for $\theta$ that combines prior information with the evidence from the data.
+
+The update is performed using **Bayes’ theorem** (introduced in the next section). Intuitively:
+
+$$
+\text{Posterior} \;\; \propto \;\; \text{Likelihood} \times \text{Prior}.
+$$
+
+This equation expresses the central idea: *our beliefs about $\theta$ are revised in light of the observed data*.
+
+## Bayes' Theorem for Densities
+
+Bayesian inference is named after <span class="xref-no-num">[Bayes’ Theorem @thm-bayes]</span>, a general identity in probability theory. For two events $A$ and $B$, the conditional probability is given by
 $$
 \mathrm{Pr}(A \mid B) = \frac{\mathrm{Pr}(B \mid A)\,\mathrm{Pr}(A)}{\mathrm{Pr}(B)}.
 $$
+This rule is sometimes described as **reversing conditioning**: it lets us swap the order, turning “$B$ given $A$” into “$A$ given $B$,” with a correction for their overall probabilities.
 
-To generalise this idea to **random variables and densities**, we use conditional densities:
-
+To apply this idea in Bayesian inference, we extend it from events to random variables and their densities. Using <span class="xref-no-num">[conditional densities @def-conditional-pdf]</span>,
 $$
-f_{X \mid Y}(x \mid y) = \frac{f_{XY}(x,y)}{f_Y(y)}.
+f_{X \mid Y}(x \mid y) = \frac{f_{XY}(x,y)}{f_Y(y)},
 $$
 
-::: {.remark #rem-notation}
-**Notation.**
-We will usually write $f(x \mid y)$ rather than $f_{X \mid Y}(x \mid y)$ to keep things simple. Both mean the same thing.
-:::
+we arrive at Bayes’ theorem for densities.
 
-Using this, we obtain Bayes’ theorem for densities.
-
-::: {.thm #thm-bayes}
+::: {.thm #thm-bayes-density}
 ### Bayes’ Theorem for Densities.
-For random variables $X$ and $Y$:
+For random variables $X$ and $Y$ with joint density (or PMF) $f(x,y)$:
 
 $$
 f(x \mid y) = \frac{f(y \mid x)\,f(x)}{f(y)}.
@@ -157,56 +351,139 @@ f(x \mid y) = \frac{f(y \mid x) f(x)}{f(y)}.
 $$
 :::
 
----
 
 ## Bayes’ Theorem in Statistics
 
-In Bayesian inference, we apply Bayes’ theorem with:
+Once we have specified a parameter $\theta$, the model tells us the **distribution of the data**:
+$$
+f(\underline{x} \mid \theta).
+$$
 
-* $x = \theta$ (the parameter, treated as random),
-* $y = \underline{x}$ (the observed data).
+This is the <span class="xref-no-num">[likelihood @sec-likelihood]</span> (the joint density/PMF of the observed sample under $\theta$).
 
-This gives:
+Our Bayesian goal is the reverse: to describe the **distribution of the parameter given the data**:
+$$
+\pi(\theta \mid \underline{x}).
+$$
+
+This is exactly the “reversing conditioning” step that <span class="xref-no-num">[Bayes’ theorem @thm-bayes]</span> makes possible. It takes the likelihood $f(\underline{x}\mid \theta)$ and the prior $\pi(\theta)$ and turns them into the posterior $\pi(\theta \mid \underline{x})$:
+$$
+\text{Known: } f(\underline{x}\mid \theta)
+\quad\;\; \xRightarrow[\text{Bayes’ theorem}]{} \quad\;\;
+\text{Wanted: } \pi(\theta \mid \underline{x})
+$$
+
+::: {.remark}
+### Likelihood vs. Likelihood Function
+Here we use **likelihood** to mean the joint density/PMF $f(\underline{x}\mid\theta)$ itself.  
+
+When viewed as a function of $\theta$ (with the data fixed), this is the <span class="xref-no-num">[likelihood function @def-likelihood]</span>. In this course, we will not stress this distinction further.
+:::
+
+
+::: {#imp-notation-bayes .callout-important collapse="true" appearance="simple"}
+
+### Notation in Bayesian Statistics
+
+Both frequentist and Bayesian inference involve probability distributions for the **data**.
+
+* In the **frequentist setting** we write
+
+  $$
+  X_i \sim \mathrm{Distribution}(\theta),
+  $$
+
+  where $\theta$ is a fixed but unknown parameter.
+
+* In the **Bayesian setting** we write
+
+  $$
+  X_i \mid \theta \sim \mathrm{Distribution}(\theta),
+  $$
+
+  where the conditioning bar $\mid \theta$ emphasises that $\theta$ itself is random, and we are describing the distribution of the data **given** a particular value of $\theta$.
+
+In both cases, $f(x_i \mid \theta)$ denotes the PDF/PMF of the data conditional on $\theta$.
+
+---
+
+**The Bayesian addition:** we also introduce probability distributions *over the parameter $\theta$ itself*.
+To emphasise the difference in notation:
+
+* **Prior distribution** (before data): $\pi(\theta)$
+* **Posterior distribution** (after data): $\pi(\theta \mid \underline{x})$
+
+In Bayesian inference there are therefore two distinct kinds of distributions, which our notation keeps separate:
+
+* **Data distributions:** $f(x \mid \theta)$ describe how the data would look *if we knew $\theta$*.
+* **Parameter distributions:** $\pi(\theta)$ and $\pi(\theta \mid \underline{x})$ describe our *uncertainty about $\theta$*.
+
+:::
+
+### From Bayes’ theorem to the Posterior
+
+To apply <span class="xref-no-num">[Bayes’ theorem @thm-bayes-density]</span> in statistics we make the identification:
+
+- $x = \theta$ : the **parameter**, treated as a random variable.  
+- $y = \underline{x}$ : the **observed data**.  
+
+This leads directly to the **posterior distribution**:
 
 $$
 \pi(\theta \mid \underline{x}) 
 = \frac{f(\underline{x} \mid \theta)\,\pi(\theta)}{f(\underline{x})}.
 $$
+
+::: {.definition #def-prior}
+### Prior Distribution.
+The **prior distribution** represents our uncertainty about $\theta$ *before observing the data*.
+
+We denote its density (PDF or PMF) by
+
+$$
+\pi(\theta).
+$$
+:::
+
 
 ::: {.definition #def-posterior}
-### Posterior Distribution.
+### Posterior Distribution
 
+The **posterior distribution** represents our uncertainty about $\theta$ *after observing the data*.
+
+It is defined by
 $$
 \pi(\theta \mid \underline{x}) 
 = \frac{f(\underline{x} \mid \theta)\,\pi(\theta)}{f(\underline{x})}.
 $$
 
-The **posterior** combines two ingredients:
-
-* The **likelihood** $f(\underline{x} \mid \theta)$ (information from the data).
-* The **prior** $\pi(\theta)$ (information before seeing the data).
-
-The denominator $f(\underline{x})$ is a normalising constant ensuring the posterior integrates to 1.
+- The **likelihood** $f(\underline{x} \mid \theta)$ is the term where data and parameter appear together; it is this dependence that updates the prior into the posterior.
+- The **prior** $\pi(\theta)$ reflects what we believed about $\theta$ before seeing the data.
+- The denominator $f(\underline{x})$ is a normalising constant ensuring the posterior integrates to $1$.
 :::
 
-::: {.callout-important appearance="minimal"}
-## ✨ Big picture:
-Bayesian inference updates prior beliefs about parameters using the likelihood from the data, producing the posterior distribution which represents *updated uncertainty*.
-:::
+### Posteriors in Practice
 
-Let's start with a simple example to see how this works:
+We now work through a simple example to see how this update works.
 
 ::: {.example #exm-biased-coin}
 ## Biased Coin
 
-We consider a possibly biased coin with parameter $\theta = \Pr(\text{Head})$.
-Before seeing data, we express *no preference* over $\theta\in(0,1)$ via a uniform prior:
-$$
-\theta \sim \mathrm{Uniform}(0,1) \equiv \mathrm{Beta}(1,1), \qquad \pi(\theta)=1 \ \text{for } 0<\theta<1.
-$$
-Hence $\mathrm{E}[\theta]=0.5$.
+Let $\theta = \Pr(\text{Head})$ for a possibly biased coin.
 
-We toss the coin $n=5$ times and observe $x=1$ head. Find the **posterior** $\pi(\theta\mid x)$.
+* **Prior:** Before seeing data, we express no preference over $\theta \in (0,1)$ by choosing a **uniform prior**:
+
+  $$
+  \theta \sim \mathrm{Uniform}(0,1) \equiv \mathrm{Beta}(1,1), 
+  \qquad \pi(\theta) = 1 \text{ for } 0<\theta<1.
+  $$
+
+  This prior has mean $\mathrm{E}[\theta]=0.5$.
+
+* **Data:** We toss the coin $n=5$ times and observe $x=1$ head.
+
+* **Posterior:** Bayes’ theorem combines the Binomial likelihood with the prior to give $\pi(\theta \mid x)$.
+
 :::
 
 ::: {.solution #sol-biased-coin}
@@ -248,7 +525,7 @@ plt.show()
 
 we see that this favours $\theta$ around $0.2$. In fact, in @exm-binom-mle-single, we saw that the MLE is $\hat{\theta} = 0.2$.
 
-Our prior for $\theta$ was $\pi(\theta) = 1$, for $0 < \theta < 1$. To update our beliefs, by conditioning on the single observation $x=2$, we use <span class="xref-no-num">[Bayes Theorem @def-posterior]</span>:
+Our prior for $\theta$ was $\pi(\theta) = 1$, for $0 < \theta < 1$. To update our beliefs, by conditioning on the single observation $x=2$, we use <span class="xref-no-num">[Bayes' Theorem @def-posterior]</span>:
 $$
     \pi(\theta|x=1)=\frac{\pi(\theta)f(x=1|\theta)}{f(x=1)} = \frac{1 \times 5\theta(1-\theta)^4}{f(x=1)}, \quad 0 < \theta < 1.
 $$
@@ -273,7 +550,6 @@ $\theta=0.2$, and mean at $\mathrm{E}[\theta|x=1]=2/7=0.286$.
 
 :::
 
-
 The main difficulty in calculating the posterior distribution was in obtaining the $f(x)$ term. However, in many cases we can recognise the posterior distribution without the need to calculate this constant term (constant with respect to $\theta$). In this example, we can calculate the posterior distribution as
 
 \begin{align*}
@@ -285,11 +561,20 @@ The main difficulty in calculating the posterior distribution was in obtaining t
 
 As $\theta$ is a continuous quantity, what we would like to know is what continuous distribution defined on $(0,1)$ has a probability density function which takes the form $k\theta^{g-1}(1-\theta)^{h-1}$. The answer is the $\textrm{Beta}(g,h)$ distribution. Therefore, choosing $g$ and $h$ appropriately, we can see that the posterior distribution is $\theta|x=1\sim \textrm{Beta}(2,5)$.
 
-**Summary:** 
-
-It is possible that we have a biased coin. If we suppose that all values of $\theta=\text{Pr(Head)}$ are equally likely and then observe 1 head out of 5, then the most likely value of $\theta$ is 0.2 --- the same as the most likely value from the data alone (not surprising!). However, on average, we would expect $\theta$ to be around 0.286. Uncertainty about $\theta$ has changed from a (prior) standard deviation of 0.289 to a (posterior) standard deviation of 0.160. The changes in our beliefs about $\theta$ are more fully described by the prior and posterior distributions shown in @fig-beta-posterior.
-
 ---
+
+**Interpretation:**
+
+* **Most likely value (mode):** $\hat{\theta} \approx 0.2$, the same as the sample proportion $1/5$.
+* **Posterior mean:** $\mathrm{E}[\theta \mid x] \approx 0.286$, slightly larger than $0.2$ because the prior was centred at $0.5$.
+* **Uncertainty reduced:** the posterior standard deviation shrinks from $0.289$ (prior) to $0.160$ (posterior).
+
+So, after seeing the data, our beliefs about $\theta$ have been updated: we now think small values of $\theta$ are more plausible, but not as extremely as the raw data alone would suggest.
+
+```{=html}
+<details>
+  <summary><strong> Show Plot </strong></summary>
+```
 
 ```{ojs}
 // Domain and grid
@@ -316,14 +601,18 @@ Plot.plot({
   // omit width to let it be responsive
   height: 320,
   marginLeft: 48,
-  marginBottom: 40,
+  marginBottom: 45,
   x: { label: "θ", domain: [0, 1] },
   y: { label: "Density" },
   style: {
     width: "100%",
-    display: "block",
-    margin: "0 auto",
-    maxWidth: "960px"   
+    display: "block", 
+    margin: "0 auto", 
+    maxWidth: "960px",
+    background: "var(--brand-bg)",
+    color: "var(--brand-fg)",
+    fontFamily: bodyFont, 
+    fontSize: 14
   },
   marks: [
     Plot.ruleY([0], { stroke: "var(--border)", strokeOpacity: 0.6 }),
@@ -341,6 +630,11 @@ Plot.plot({
   ]
 })
 ```
+
+```{=html}
+</details>
+```
+
 
 ---
 
@@ -421,6 +715,9 @@ plot(theta_grid, pdf_values, type = "l",
 :::
 
 
+### Conjugacy
+
+
 [^prior]:
   **Prior distribution.** In Bayesian inference, the *prior* represents our beliefs about the parameter $\theta$ **before seeing any data**. It is written as a probability distribution $\pi(\theta)$, which can be based on previous studies, expert knowledge, or simply chosen to reflect uncertainty (e.g. a flat prior).
 
@@ -430,6 +727,4 @@ plot(theta_grid, pdf_values, type = "l",
         X \mid \theta \sim \textrm{Bin}(5,\theta).
     $$
 
-
-## Bayesian vs. Frequentist (again)
 

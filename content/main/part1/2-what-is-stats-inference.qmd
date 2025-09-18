@@ -36,7 +36,19 @@ For example:
 This allows us to keep the definitions *general*! 
 :::
 
-## Statistical Inference as "Inverse Probability"
+::: {#imp-terminology-sample .callout-important collapse="true" appearance="simple"}
+### Terminology: Population, Sample, Data
+
+- **Population:** the entire group we want to study (conceptual, often infinite).  
+- **Sample:** the $n$ random variables we actually collect from the population $X_1,X_2,\ldots, X_n$.  
+- **Data:** the realised values of the sample once observed $x_1,x_2,\ldots, x_n$.  
+- **Observation / data point:** a single element of the sample, e.g. $X_i$ (random) or $x_i$ (observed).  
+
+**Note:** In practice, the terms *data*, *observations*, and *data points* are often used interchangeably. In these notes, we’ll do the same unless we need to be precise about whether something is random (sample) or fixed (data).
+:::
+
+
+## Statistical Inference as "Inverse Probability" {#sec-stat-inf-as-inv-prob}
 
 In **probability theory**, the usual direction is:
 
@@ -58,15 +70,20 @@ $$
 - *Independent*: knowing the value of one $X_i$ gives no information about any other.  
 - *Identically distributed*: each $X_i$ comes from the same population distribution $f(x \mid \theta)$.  
 
-The goal of *statistical inference* is to use the observed sample to learn about $\theta$, and hence about the underlying population.  
+The goal of *statistical inference* is to use the observed sample to learn about $\theta$, and hence about the underlying population. 
 
 ::: {#imp-term-random-sample .callout-important collapse="true" appearance="simple"}
 ### Terminology: Random Sample
-A **random sample** means $n$ i.i.d. observations from some distribution.  
 
-This is the standard framework in which most inference procedures are developed.
+- A <span class="xref-no-num">[sample @imp-terminology-sample]</span> means the $n$ random variables we collect from the population, $X_1,\dots,X_n$. These need not be independent or identically distributed.  
+
+- A **random sample** is the special case where the $X_i$ are assumed *independent and identically distributed (i.i.d.)* from the same distribution:
+  $$
+  X_1, \dots, X_n \stackrel{\text{iid}}{\sim} \mathrm{Distribution}(\theta).
+  $$
+
+Most of the inference procedures in this course are developed under the random-sample (iid) assumption.
 :::
-
 
 ### Statistical Inference by Eye {#sec-inference-eye}
 
@@ -76,7 +93,10 @@ Try to “guess” $\mu$ and $\sigma^2$ by eye from the data:
 
 ---
 
-**Visualisation:**
+```{=html}
+<details>
+  <summary> Show Visualisation </summary>
+```
 
 ```{ojs}
 // helper for curve scale
@@ -314,130 +334,6 @@ data = {
 ```
 
 ```{ojs}
-//| echo: false
-
-// --- Styles: compact, 2-column, collapsible, custom button ---
-html`<style>
-  /* ---------- Scope all styles to this controls box ---------- */
-  details.controls-root { 
-    --ctrl-font: 12px;
-    font-size: var(--ctrl-font);
-  }
-
-  /* Dropdown header */
-  details.controls-root > summary {
-    list-style: none; cursor: pointer; user-select: none;
-    background: var(--surface, #f1f5f9);
-    border: 1px solid var(--border, #e5e7eb);
-    border-radius: 10px;
-    padding: 8px 10px;
-    font-weight: 600; font-size: calc(var(--ctrl-font) + 1px);
-    color: var(--fg-strong, #334155);
-    display: flex; align-items: center; gap: 8px;
-  }
-  details.controls-root > summary::-webkit-details-marker { display: none; }
-  details.controls-root[open] > summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
-
-  /* Two-column grid (side-by-side) */
-  details.controls-root .controls-grid {
-    display: grid;
-    grid-template-columns: minmax(260px, 1fr) minmax(260px, 1fr);
-    gap: 12px;
-    border: 1px solid var(--border, #e5e7eb); border-top: none;
-    border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;
-    padding: 10px;
-    background: var(--surface-weak, #fafafa);
-    overflow-x: auto;
-  }
-  details.controls-root .controls-col { min-width: 260px; }
-  details.controls-root .controls-col h4 {
-    margin: 0 0 6px 0;
-    font-size: var(--ctrl-font); font-weight: 700;
-    color: var(--fg-muted, #475569);
-  }
-
-  /* ---- Align label & slider (form-level grid) ---- */
-  details.controls-root .controls-col form {
-    display: grid !important;
-    grid-template-columns: minmax(150px, auto) 1fr; /* label | inputs */
-    align-items: center;         /* vertical centring */
-    column-gap: 10px;
-    font-size: var(--ctrl-font) !important;
-    line-height: 1.25;
-    margin: 6px 0;
-  }
-
-  /* Label: kill default <p> margin; align KaTeX + text */
-  details.controls-root .controls-col form > label {
-    margin: 0 !important;
-    display: flex; align-items: center; gap: 8px;
-    font-size: var(--ctrl-font) !important;
-    color: var(--fg-muted, #475569);
-    font-weight: 600;
-  }
-  details.controls-root .controls-col form > label p { margin: 0 !important; }
-
-  /* Inputs wrapper (auto-generated, e.g. .oi-*-input): align number + slider */
-  details.controls-root .controls-col form > [class$="-input"],
-  details.controls-root .controls-col form > [class*="-input"] {
-    display: flex; align-items: center; gap: 8px;
-    min-height: 22px;
-  }
-
-  /* Number input normalisation */
-  details.controls-root .controls-col input[type="number"] {
-    height: 24px; padding: 2px 6px;
-    font-size: var(--ctrl-font);
-    border: 1px solid var(--border, #e5e7eb); border-radius: 6px;
-    background: var(--surface, #f1f5f9); color: var(--fg-strong, #334155);
-  }
-
-  /* Slider styling */
-  details.controls-root .controls-col input[type="range"] {
-    -webkit-appearance: none; appearance: none;
-    width: 100%; height: 18px; background: transparent;
-    vertical-align: middle;
-    accent-color: var(--brand-teal, #55C3CB);
-  }
-  details.controls-root .controls-col input[type="range"]::-webkit-slider-runnable-track {
-    height: 4px; border-radius: 999px;
-    background: color-mix(in srgb, var(--brand-teal, #55C3CB) 35%, transparent);
-  }
-  details.controls-root .controls-col input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none; appearance: none;
-    width: 12px; height: 12px; border-radius: 50%;
-    background: var(--brand-teal, #55C3CB); border: 0; margin-top: -4px; /* centre thumb over 4px track */
-  }
-  details.controls-root .controls-col input[type="range"]::-moz-range-track {
-    height: 4px; border-radius: 999px;
-    background: color-mix(in srgb, var(--brand-teal, #55C3CB) 35%, transparent);
-  }
-  details.controls-root .controls-col input[type="range"]::-moz-range-thumb {
-    width: 12px; height: 12px; border-radius: 50%;
-    background: var(--brand-teal, #55C3CB); border: 0;
-  }
-
-  /* Button */
-  details.controls-root .btn-resim button {
-    background: var(--brand-teal, #55C3CB); color: #fff;
-    border: none; border-radius: 6px; padding: 6px 12px;
-    font-weight: 600; font-size: var(--ctrl-font); cursor: pointer;
-    transition: filter 120ms ease, background-color 120ms ease;
-  }
-  details.controls-root .btn-resim button:hover {
-    background: color-mix(in srgb, var(--brand-teal, #55C3CB) 88%, black);
-  }
-
-  /* Chevron */
-  details.controls-root > summary::before {
-    content: ""; display: inline-block; margin-right: 8px; width: 0; height: 0;
-    border-style: solid; border-width: 3px 0 3px 6px;
-    border-color: transparent transparent transparent var(--fg-strong);
-    transform: rotate(0deg); transform-origin: 3px 50%; transition: transform 50ms ease;
-  }
-  details.controls-root[open] > summary::before { transform: rotate(90deg); }
-`
-
 // --- Build one merged, collapsible control "input" ---
 viewof controls = {
   const resimBtn = Inputs.button("Resimulate data");
@@ -490,125 +386,132 @@ resample = controls.resim
 
 ```
 
+
+```{=html}
+</details>
+```
+
 ---
 
 ## Statistical Models
 
-Whenever we perform statistical inference, we must specify a *statistical model*.
+Whenever we perform statistical inference, we must specify a **model**.
 
-::: {.definition #def-model}
-### Statistical Model
-A **statistical model** is a *set* of candidate population distributions:
+In @sec-stat-inf-as-inv-prob we wrote
 $$
-\mathcal{P}=\{P_\theta \mid \theta\in\Theta\},
+X_1,\ldots,X_n \stackrel{\text{iid}}{\sim} \mathrm{Distribution}(\theta)
 $$
-where $P_\theta$ is a probability distribution indexed by a **parameter** $\theta$, and $\Theta$ is the **parameter space** (the set of allowable parameter values).
-:::
+using $\mathrm{Distribution}(\theta)$ as a placeholder for “some distribution indexed by $\theta$”.
 
-A statistical model is a working assumption that needs to be checked and verified!
+We now make this precise:
+
+> A **statistical model** is a mathematical description of how we think the data are generated.  
+> Concretely, it is a **family of possible distributions**, one for each parameter value in a parameter space $\Theta$.
+
 
 ::: {.example #exm-exponential-model}
 ### Exponential model
-Suppose we are interested in modelling **waiting times** until some event occurs  
-(e.g. the time between customer arrivals at a service desk).  
+Suppose we are interested in modelling **waiting times** until some event occurs (e.g. the time between customer arrivals at a service desk).  
 
-A simple model is to assume the data are i.i.d. from an exponential distribution:
+A natural assumption is that the data are i.i.d. <span class="xref-no-num">[exponential @sec-exp]</span>:
 $$
-X_i \mid \lambda \sim \mathrm{Exp}(\lambda).
-$$
-Write this formally as a **statistical model** and write down the **parameter space**.
-:::
-
-::: {#sol-exponential-model}
-Each data follows the exponential distribution with parameter $\lambda$. Since $\lambda > 0$, we have the model:
-$$
-\mathcal{P}=\big\{\mathrm{Exp}(\lambda)\ \big|\ \lambda>0\big\},
-$$
-with parameter $\theta=\lambda$ and parameter space[^sets]
-$$
-\Theta = \{\lambda \mid \lambda > 0\} = (0,\infty) = \mathbb{R}^+.
+X_1,\ldots, X_n \stackrel{\text{iid}}{\sim}\mathrm{Exponential}(\lambda).
 $$
 
-The exponential distribution is often used for modelling the time between events in a **Poisson process** — situations where events occur continuously and independently at a constant average rate.  
+- **Model:** each $X_i$ is i.i.d. exponential with rate $\lambda$
+- **Parameter:** $\theta = \lambda$
+- **Parameter space**[^sets1] **:** $\Theta = \{ \lambda \mid \lambda > 0\} = (0,\infty)$
 
-For example:  
-- the time between buses arriving at a stop if buses come at random,  
-- the time until the next radioactive decay of an atom,  
-- the waiting time until the next customer enters a shop.  
-
-In each case, the exponential model is a natural first assumption.
+The exponential model often arises in *Poisson processes*, where events occur independently at a constant rate (e.g. radioactive decay, arrivals at a bus stop).
 :::
 
 ::: {.example #exm-normal-model}
 ### Normal model
-Write down the **statistical model** and the corresponding **parameter space** used in @sec-inference-eye.
+In @sec-inference-eye we assumed the data were i.i.d. Normal with unknown mean and variance:
+$$
+X_1,\ldots, X_n \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2).
+$$
+
+- **Model:** each $X_i$ is i.i.d. Normal with mean $\mu$ and variance $\sigma^2$
+- **Parameters:** $\theta = (\mu,\sigma^2)$  
+- **Parameter space**[^sets2] **:**  $\Theta = \{ (\mu, \sigma^2) \mid \mu \in \mathbb{R}, \sigma^2 > 0 \} = \mathbb{R} \times (0,\infty)$  
+
+This model is widely used, e.g. for measurement error or traits like human height.
 :::
 
-::: {#sol-normal-model}
-We assumed the data are i.i.d. Normally distributed with *unknown mean* and *unknown variance*:
-$$
-X_i \mid \mu, \sigma^2 \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2).
-$$
+::: {.callout-tip}
+###  Common misconceptions
 
-The **statistical model** is
-$$
-\mathcal{P} = \{ \mathcal{N}(\mu,\sigma^2) \mid \mu \in \mathbb{R},\ \sigma^2 > 0 \}.
-$$
-
-Here there are two parameters, $\mu$ and $\sigma^2$, which we group into a parameter vector $\underline{\theta} = (\mu, \sigma^2)$.  
-The **parameter space** is[^sets2]  
-$$
-\Theta = \{ (\mu, \sigma^2) \mid \mu \in \mathbb{R},\ \sigma^2 > 0 \} 
-       = \mathbb{R} \times (0,\infty) 
-       = \mathbb{R} \times \mathbb{R}^+.
-$$
-
-The normal model is widely used in practice, for example when data are approximately symmetric and unimodal, such as measurement errors in physics or biological traits like human heights.
+- **Parameter $\neq$ statistic.** A *parameter* $\theta$ is a property of the population/model (e.g. $p,\ \mu,\ \sigma^2$). A *statistic* (e.g. $\bar{X}$, a sample proportion) is computed from the sample to learn about $\theta$.
+- **“Random sample” $\neq$ “whatever data we found”.** *Random sample* means the data are collected according to a design that makes the i.i.d. assumption reasonable (e.g. simple random sampling, independent trials). Convenience samples (e.g. surveying only your friends) or dependent data (e.g. repeated measures on the same person) can break the i.i.d. assumption and bias inference.
+- **Models are approximations.** A model is a useful idealisation, not the truth. Choose $\mathcal{P}$ sensibly, then check fit later and revise if needed.
 :::
-
-
 
 ::: {.example #exm-identify-model}
-### From words to a model (one-dimensional)
-A questionnaire records whether each respondent would recommend a service: “yes” or “no”. Write down a simple model and identify the parameter.
+### From words to a model
+A questionnaire records whether each respondent would recommend a service (“yes” or “no”). Write down a simple model and identify the parameter.
 :::
 
 ::: {#sol-identify-model}
 Let $X_i=1$ if respondent $i$ says “yes”, and $0$ otherwise.  
-Model $X_1,\ldots,X_n \stackrel{\text{iid}}{\sim}\mathrm{Bernoulli}(p)$, where $p=\Pr(X_i=1)$ is the (unknown) long-run recommendation proportion.  
-Here $\theta=p$ and $\Theta=(0,1)$. The **population** is all (current/future) potential respondents of interest; the **sample** is the $n$ surveyed respondents.
+
+Assume $X_1,\ldots,X_n \stackrel{\text{iid}}{\sim}\mathrm{Bernoulli}(p)$.  
+
+- **Model:** $\mathcal{P} = \{ \mathrm{Bernoulli}(p) : 0 < p < 1 \}$  
+- **Parameter:** $\theta = p$  
+- **Parameter space:** $\Theta = (0,1)$  
+
+Here $p$ is the long-run proportion of “yes” responses.
 :::
 
 ::: {.example #exm-identify-model-multinomial}
-### A slightly richer example (multinomial)
-A bag contains sweets of three colours $\{\text{red},\text{blue},\text{green}\}$. You draw $n$ sweets at random *with replacement* and record counts $(R,B,G)$. Propose a model and name the parameter(s).
+### A slightly richer example
+A bag contains sweets of three colours $\{\text{red},\text{blue},\text{green}\}$. You draw $n$ sweets *with replacement* and record counts $(R,B,G)$. Propose a model and identify the parameters.
 :::
 
 ::: {#sol-identify-model-multinomial}
-Model $(R,B,G) \sim \mathrm{Multinomial}\!\left(n;\,p_R,p_B,p_G\right)$ with $p_R,p_B,p_G\ge 0$ and $p_R+p_B+p_G=1$.  
-The parameter is $\theta=(p_R,p_B,p_G)$, and the parameter space is the 2-simplex $\Theta=\{(p_R,p_B,p_G)\in[0,1]^3:\sum p_\cdot=1\}$. The **population** is the long-run distribution of colours produced by the bag; the **sample** is the observed draws.
+Each *draw* is an independent categorical outcome with probabilities $(p_R,p_B,p_G)$ for red/blue/green. After $n$ draws, we observe the *count vector* $(R,B,G)$.
+
+- **Model:** $(R,B,G) \sim \mathrm{Multinomial}\!\left(n;\,p_R,p_B,p_G\right)$ with $p_R+p_B+p_G=1$  
+  *(equivalently, $X_1,\dots,X_n \stackrel{\text{iid}}{\sim} \mathrm{Categorical}(p_R,p_B,p_G)$ and $(R,B,G)$ are the totals).*
+- **Parameters:** $\theta = (p_R,p_B,p_G)$  
+- **Parameter space:** the 2-simplex $\;\Theta=\{(p_R,p_B,p_G)\in[0,1]^3 \mid \,p_R+p_B+p_G=1\}$  
+
+If you only had two colours, the multinomial distribution would become the **binomial distribution**.
 :::
 
+
+
 ::: {.example #exm-ml-inference}
-### Image Classification from Machine Learning
-In image classification (cat vs not-cat), each training example is a pair $(X_i,Y_i)$ where $X_i$ is an image and $Y_i\in\{0,1\}$. A generic probabilistic model writes the conditional distribution
+### Machine learning example
+In image classification, each "training" example is a pair $(X_i,Y_i)$ where $X_i$ is an image and $Y_i\in\{0,1\}$. A generic probabilistic model specifies
 $$
 \mathrm{Pr}_\theta(Y=1\mid X=x)=g_\theta(x),
 $$
-for some function family $g_\theta$ (e.g. logistic regression or a neural network). What are the sample, population, model, and parameter?
+for some function family $g_\theta$ (e.g. logistic regression or a neural network).  
+
+What are the *sample*, *population*, *model*, and *parameter*?
 :::
 
 ::: {#sol-ml-inference}
-- **Sample:** the labelled training set $\{(X_i,Y_i)\}_{i=1}^n$.  
-- **Population:** all (future) images and labels of interest.  
-- **Model:** the family of conditional distributions $\{ \Pr_\theta(Y=1\mid X=x)=g_\theta(x)\}$.  
-- **Parameter:** $\theta$ (e.g. regression co
+- **Sample:** the dataset $\{(X_i,Y_i)\}_{i=1}^n$.  
+- **Population:** the (conceptual) set of all image–label pairs of interest; equivalently, the joint distribution of $(X,Y)$ in the real world we care about.  
+- **Model:** we specify the conditional distribution of $Y$ given $X$,
+  $$Y \mid X \sim \mathrm{Bernoulli}\!\big(g_\theta(X)\big),$$
+  i.e.
+  $$\Pr_\theta(Y=1\mid X=x)=g_\theta(x).$$
+- **Parameter:** $\theta$ indexes the function $g_\theta$ (e.g. regression coefficients or neural-network weights).  
+- **Parameter space:** $\Theta\subseteq\mathbb{R}^d$ (dimension $d$ depends on the chosen model class).
+
+*Common misconception:* confusing the *training sample* (finite) with the *population* (conceptual/infinite). The goal of inference/learning is to use the sample to learn $\theta$ so that the model generalises to the population.
 :::
+
 
 ::: {.callout-warning}
 ### Non-Examinable Content: Specifying Statistical Models
-In this course we focus on **how to perform statistical inference once a statistical model has been specified**.  
-We will **assume the model is given**, and our task is to carry out inference by finding good parameter values using techniques such as:
+In this course we concentrate on **how to carry out statistical inference once a model has been chosen**.  
+
+In all assessed questions the **statistical model will be provided**. Your task will be to perform inference by working with the parameter(s), using methods such as:
 
 - <span class="xref-no-num">[Parameter Estimation @sec-freq-point-estimate]</span>
 - <span class="xref-no-num">[Interval Estimation @sec-freq-interval-estimate]</span>
@@ -616,13 +519,25 @@ We will **assume the model is given**, and our task is to carry out inference by
 
 :::
 
-::: {.callout-tip}
-###  Common misconceptions and how to avoid them
+The (non-examinable) **formal** definition of a statistical model is the following:
 
-- **Parameter $\neq$ statistic.** A *parameter* $\theta$ is a property of the population/model (e.g. $p,\ \mu,\ \sigma^2$). A *statistic* (e.g. $\bar{X}$, a sample proportion) is computed from the sample to learn about $\theta$.
-- **“Random sample” $\neq$ “whatever data we found”.** The iid assumption is part of the design; convenience samples or dependence can bias inference.
-- **Models are approximations.** A model is a useful idealisation, not the truth. Choose $\mathcal{P}$ sensibly, then check fit later and revise if needed.
+::: {.definition #def-model}
+### Statistical Model (non-examinable)
+A **statistical model**[^statistical-model] is a *family of probability distributions* labelled by a parameter value:
+$$
+\mathcal{P}=\{P_\theta \mid \theta\in\Theta\},
+$$
+
+where:
+
+- $P_\theta$ is one possible distribution the data might follow,
+
+- $\theta$ is the **parameter**,
+
+- $\Theta$ is the **parameter space** (the set of all possible parameter values).
+
 :::
+
 
 ---
 
@@ -633,7 +548,7 @@ We will **assume the model is given**, and our task is to carry out inference by
 3. State what “iid” means in one sentence, and give one example of how it could fail in practice.
 4. Revisit @sec-inference-eye: if the spread of points increases, which parameter of $\mathcal{N}(\mu,\sigma^2)$ has changed, and how would you describe that change informally?
 
-[^sets]:
+[^sets1]:
   **Set notation.** There are several equivalent ways to write sets:
   
      - **Set-builder notation:** $\{\lambda \mid \lambda > 0\}$  
@@ -667,3 +582,11 @@ We will **assume the model is given**, and our task is to carry out inference by
 
       This is called a **Cartesian product**: we form the parameter space by taking all possible pairs $(\mu, \sigma^2)$ where the first component is from $\mathbb{R}$ and the second from $(0,\infty)$.  
       Intuitively, it’s just “all combinations” of the allowed values for each parameter.
+
+
+[^statistical-model]:
+   **Note on Statistical models.** Strictly speaking, the model refers to the joint distribution of the full dataset. If $X_1,\dots,X_n$ are i.i.d. from $P_\theta$, then the model is 
+    $$
+    \mathcal{P} = \{ P_\theta^n \mid \theta \in \Theta \}.
+    $$
+    But for intuition, we usually just describe the distribution of a single observation, $X_i \sim P_\theta$, and keep in mind that the whole dataset follows from this.

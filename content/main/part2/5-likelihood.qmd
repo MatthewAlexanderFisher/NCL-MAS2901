@@ -1,6 +1,23 @@
-# Likelihood
+# Likelihood {#sec-likelihood}
 
-The **likelihood function** is simply the **joint density (or probability mass function)** of the observed data:
+```{ojs}
+gap = 20
+containerW = width
+plotW = Math.round(Math.max(240, Math.min(600, (containerW - gap) / 2 - 15)))
+plotH = Math.round(plotW * 0.8)
+
+marginTop = 20
+marginRight = 35
+marginBottom = 35
+marginLeft = 35
+innerW = plotW - marginLeft - marginRight
+innerH = plotH - marginTop - marginBottom
+
+bodyFont = getComputedStyle(document.body).fontFamily
+
+```
+
+The **likelihood** is simply the **joint density (or probability mass function)** of the observed data:
 
 $$
 f(\underline{x} \mid \theta),
@@ -39,16 +56,17 @@ It plays a central role in both **frequentist** and **Bayesian** statistics.
   where the bar $\mid \theta$ reflects its probabilistic meaning: *conditioning on random parameters*.
 :::
 
+
 ## Likelihoods Under Independence and Dependence
 
-The form of the likelihood depends crucially on whether our observations are independent and identically distributed (i.i.d.), merely independent, or dependent. These three cases look similar but lead to different joint densities. 
+The form of the likelihood depends crucially on whether our observations are independent and identically distributed ([i.i.d.]{title="Independent and Identically Distributed"}), merely independent, or dependent. These three cases look similar but lead to different joint densities. 
 
 ::: {.panel-tabset}
-### i.i.d. data
+### [i.i.d.]{title="Independent and Identically Distributed"} data
 
 **This is the default case in most of this course.**
 
-Suppose $X_1, \ldots, X_n$ are **independent and identically distributed (i.i.d.)** random variables:
+Suppose $X_1, \ldots, X_n$ are **independent and identically distributed ([i.i.d.]{title="Independent and Identically Distributed"})** random variables:
 
 $$
 X_i \overset{\text{iid}}{\sim} \mathrm{Distribution}(\theta),
@@ -112,7 +130,8 @@ $$
 
 ::: {.callout-warning}
 #### Non-Examinable Content
-This course focuses on the **independent case**.  
+This course focuses only on the **i.i.d.** or **independent** case.  
+
 Dependent data will be covered in later modules and is **not examinable**.
 :::
 
@@ -121,7 +140,7 @@ Dependent data will be covered in later modules and is **not examinable**.
 
 | Case                          | Assumption                                                | Factorisation of Joint Density |
 |-------------------------------|-----------------------------------------------------------|--------------------------------|
-| **i.i.d. data**               | Independent and identically distributed; each with density $f(x\mid\theta)$ | $f(\underline{x}\mid\theta) = \prod_{i=1}^n f(x_i\mid\theta)$ |
+| **[i.i.d.]{title="Independent and Identically Distributed"} data**               | Independent and identically distributed; each with density $f(x\mid\theta)$ | $f(\underline{x}\mid\theta) = \prod_{i=1}^n f(x_i\mid\theta)$ |
 | **Independent (not identical) data** | Independent; each $X_i$ may have its own density $f_{X_i}(x_i\mid\theta)$ | $f(\underline{x}\mid\theta) = \prod_{i=1}^n f_{X_i}(x_i\mid\theta)$ |
 | **Dependent data (general)**  | Dependent; factorise using the chain rule                  | $f(\underline{x}\mid\theta) = f(x_1\mid\theta)\prod_{t=2}^n f(x_t \mid x_1,\ldots,x_{t-1},\theta)$ |
 
@@ -131,7 +150,7 @@ Dependent data will be covered in later modules and is **not examinable**.
 
 The **dependent case** in the above table is shown for completeness.
 
-This course focuses on the independent case, and the dependent case is **not examinable**.
+This course focuses only on the **i.i.d.** or **independent** case, and the dependent case is **not examinable**.
 :::
 
 ::: {.remark #rem-products}
@@ -151,7 +170,7 @@ This course focuses on the independent case, and the dependent case is **not exa
 
 So far we have described the likelihood informally as “the joint density of the data given the parameter.”
 
-We now give a **formal definition** and introduce the notation we will use in the **frequentist parts** of the course.
+We now give a **formal definition** of the *likelihood function* and introduce the notation we will use in the **frequentist parts** of the course.
 
 ::: {.definition #def-likelihood}
 **Likelihood Function.**
@@ -164,6 +183,309 @@ $$
 Here we treat $\theta$ as the **variable**, and the data $\underline{x}$ as fixed.
 :::
 
+
+### Illustration (Likelihood with a coin)
+
+Suppose we toss a possibly biased coin twice, where
+
+$$
+\Pr(\text{Head})=\theta, 
+\qquad 
+\Pr(\text{Tail})=1-\theta.
+$$
+
+Let $X$ be the number of heads in two tosses. Then, since this is a <span class="xref-no-num">[Binomial @sec-binom]</span> observation:
+
+$$
+f(x\mid\theta)=\Pr(X=x\mid\theta)
+=\binom{2}{x}\theta^x(1-\theta)^{2-x},
+\qquad x=0,1,2.
+$$
+
+There are *two* interpretations of this:
+
+1. **Probability view (before observing data).**  
+  For fixed $\theta$, this is a *probability mass function* (PMF) in $x$.  It satisfies
+  $$
+  f(x=0 \mid \theta) + f(x=1 \mid \theta) + f(x = 2 \mid \theta) = 1.
+  $$
+  It tells us how likely different data values $x$ are under parameter $\theta$.
+
+2. **Likelihood view (after observing data).**  
+  Now suppose we observe $x=2$. Now, since $x=2$ is fixed, the same formula becomes
+  $$
+  L(\theta; x=2) = f(2\mid\theta) = \theta^2.
+  $$
+  This function tells us how plausible different values of $\theta$ are, given the observed data.
+
+---
+
+```{=html}
+<details>
+<summary><strong>Show Visualisation</strong></summary>
+```
+
+```{ojs}
+// Add custom CSS for the slider styling (without the details.controls-root requirement)
+html`<style>
+/* Style all range sliders in the document */
+input[type="range"] {
+  /* Reset browser defaults */
+  -webkit-appearance: none;
+  appearance: none;
+  
+  /* Layout */
+  width: 100%;
+  height: 18px;
+  background: transparent;
+  vertical-align: middle;
+  
+  /* Brand theming */
+  accent-color: var(--ctrl-brand);
+}
+
+/* Hide the number input box that appears with Inputs.range */
+form:has(input[type="range"]) input[type="number"] {
+  display: none !important;
+}
+
+/* Center the slider container */
+form:has(input[type="range"]) {
+  margin: 0 auto;
+  max-width: 600px; /* Adjust as needed */
+  padding: 10px 0;
+}
+
+/* Slider track - WebKit */
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ctrl-brand, #667eea) 35%, transparent);
+}
+
+/* Slider thumb - WebKit */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--ctrl-brand, #667eea);
+  
+  /* Center thumb over 4px track */
+  margin-top: -4px;
+}
+
+/* Slider track - Firefox */
+input[type="range"]::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ctrl-brand, #667eea) 35%, transparent);
+}
+
+/* Slider thumb - Firefox */
+input[type="range"]::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--ctrl-brand, #667eea);
+}
+
+/* Firefox progress styling */
+input[type="range"]::-moz-range-progress {
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ctrl-brand, #667eea) 35%, transparent);
+}
+</style>`
+```
+
+```{ojs}
+// Text readout: Pr(X = 2 | θ) = θ^2
+probabilityText = {
+  const fmt = d3.format(".3f");
+  const val = theta ** 2;
+  return md`${tex`\Pr(X=2 \mid \theta=${fmt(theta)}) = ${fmt(val)}`}`;
+}
+```
+
+```{ojs}
+// Probability view: PMF of X ~ Binomial(n=2, θ)
+pmfPlot = {
+  // Data: x ∈ {0,1,2}, P(X=x | θ) = C(2,x) θ^x (1-θ)^{2-x}
+  const pmf = [
+    {x: 0, p: (1 - theta) ** 2},
+    {x: 1, p: 2 * theta * (1 - theta)},
+    {x: 2, p: theta ** 2}
+  ];
+
+  return Plot.plot({
+    width: dynamicPlotW, height: plotH,
+    marginLeft: marginLeft,
+    marginBottom: marginBottom,
+    style: {
+        fontFamily: bodyFont, 
+        fontSize: 14.,
+        background: "var(--brand-bg)",
+    }, 
+    x: {
+      label: "x (number of heads)", 
+      domain: [-0.5, 2.5], 
+      ticks: [0, 1, 2],
+      tickFormat: d => d.toFixed(0)
+    },
+    y: {
+      label: "Probability", 
+      domain: [0, 1],
+      grid: true
+    },
+    marks: [
+      Plot.ruleY([0]),
+      Plot.rectY(pmf, {
+        x: "x", 
+        y: "p", 
+        x1: d => d.x - 0.4,
+        x2: d => d.x + 0.4,
+        fill: "var(--brand-teal)",
+        inset: 0.5
+      }),
+      Plot.dot(pmf, {
+        x: "x", 
+        y: "p", 
+        r: 4, 
+        fill: "var(--fg-muted)",
+        fillOpacity: 0.
+      }),
+      Plot.text(pmf, {
+        x: "x",
+        y: "p",
+        text: d => d3.format(".3f")(d.p),
+        dy: -10,
+        fontSize: 11
+      })
+    ]
+  });
+}
+```
+
+```{ojs}
+// Likelihood view: L(θ; x=2) = θ^2 for θ ∈ [0,1]
+likelihoodPlot = {
+  // Curve samples
+  const T = d3.range(0, 1.001, 0.005).map(t => ({theta: t, L: t ** 2}));
+  const point = {theta: theta, L: theta ** 2};
+
+  return Plot.plot({
+    width: dynamicPlotW, height: plotH,
+    marginLeft: marginLeft,
+    marginBottom: marginBottom,
+    style: {
+        fontFamily: bodyFont, 
+        fontSize: 14.,
+        background: "var(--brand-bg)",
+    }, 
+    x: {
+      label: "θ", 
+      domain: [0, 1],
+      grid: true
+    },
+    y: {
+      label: "Likelihood", 
+      domain: [0, 1],
+      grid: true
+    },
+    marks: [
+      Plot.line(T, {
+        x: "theta", 
+        y: "L",
+        stroke: "var(--brand-red)",
+        strokeWidth: 2
+      }),
+      Plot.ruleY([0]),
+      Plot.ruleX([theta], {
+        stroke: "var(--fg-muted)",
+        strokeDasharray: "4 2"
+      }),
+      Plot.dot([point], {
+        x: "theta", 
+        y: "L",
+        r: 5,
+        fill: "var(--brand-red)"
+      }),
+      Plot.text([point], {
+        x: "theta",
+        y: "L",
+        text: d => `(${d3.format(".2f")(d.theta)}, ${d3.format(".3f")(d.L)})`,
+        dy: -10,
+        fontSize: 11,
+        fill: "var(--brand-fg)"
+      })
+    ]
+  });
+}
+```
+
+```{ojs}
+dynamicPlotW = Math.min(400, width * 0.45)  // Each plot takes ~45% of available width
+```
+
+
+```{ojs}
+// Combined side-by-side view - responsive, with titles
+html`<div style="width:100%; box-sizing:border-box;">
+  <div style="display:flex; gap:${gap}px; align-items:flex-start; flex-wrap:wrap; justify-content:center;">
+    
+    <div style="flex:0 1 ${dynamicPlotW}px; min-width:300px; text-align:center;">
+      <div style="margin-bottom:6px; font-weight:600; font-size:15px;">Binomial PMF</div>
+      ${pmfPlot}
+    </div>
+    
+    <div style="flex:0 1 ${dynamicPlotW}px; min-width:300px; text-align:center;">
+      <div style="margin-bottom:6px; font-weight:600; font-size:15px;">Likelihood Function</div>
+      ${likelihoodPlot}
+    </div>
+    
+  </div>
+  <div style="margin-top:15px; text-align:center; font-size:14px;">
+    ${probabilityText}
+  </div>
+</div>`
+
+```
+
+```{ojs}
+// Simple slider with tex label, no input box
+viewof theta = Inputs.range([0, 1], {
+  value: 0.5,
+  step: 0.01
+})
+```
+
+```{=html}
+</details>
+```
+---
+
+**Interpretation**
+
+Consider two **competing** values of $\theta$ for observing $x=2$ heads in $n=2$ tosses:  
+
+1. If **$\theta=0.01$**, the probability of observing $X=2$ is
+  $$
+  L(0.01;2)=0.0001.
+  $$
+  For such a coin, two heads would be highly unusual.
+
+2. If **$\theta=0.99$**, the probability of observing $X=2$ is
+  $$
+  L(0.99;2)=0.9801 \approx 0.98.
+  $$
+  For such a coin, observing $X=2$ is exactly what we’d expect.
+
+Given $x=2$, values of $\theta$ close to $1$ are much more plausible than values near $0$.
 
 ::: {.remark #rem-lik-vs-prob}
 ### Likelihood vs. Probability
@@ -188,15 +510,546 @@ It is important to distinguish between the **joint density** of the data and the
 
 In short:
 
-* **Joint density**: given $\theta$, how likely are different data values $\underline{x}$?
-* **Likelihood**: given observed $\underline{x}$, how plausible are different values of $\theta$?
+* **Joint density**: given $\theta$, how *likely* are different data values $\underline{x}$?
+* **Likelihood**: given observed $\underline{x}$, how *plausible* are different values of $\theta$?
+
+:::
+
+
+
+### Computing Likelihood Functions
+
+This is a **very important skill** in the course: you will use it often in the *frequentist* parts, and it is **essential** for the *Bayesian* part.
+
+---
+
+```{=html}
+<details>
+<summary><strong>Guide to Computing Likelihood Functions</strong></summary>
+```
+
+The general strategy is:
+
+1. **Check the model carefully.** Look for:
+
+   * Are the data **[i.i.d.]{title="Independent and Identically Distributed"}** or just **independent**?
+   * How many **data points** are observed?
+   * What notation is used for the data ($X_i$, $Y_i$, $Z_i$, …)?
+   * What notation is used for the parameters ($\mu$, $\alpha$, $\gamma$, $\theta$, …)?
+
+   *(In the examples below we assume $n$ independent data points $X_1,\dots,X_n$ with parameter $\theta$. If there is only one data point, the likelihood is just its PDF/PMF.)*
+
+2. **Write down the PDF/PMF of one observation.**
+
+   $$
+   f_{X_i}(x_i \mid \theta)
+   $$
+
+3. **Multiply to form the joint density**, i.e. the likelihood:
+
+   $$
+   L(\theta ; \underline{x}) 
+   = f(\underline{x} \mid \theta) 
+   = \prod_{i=1}^n f_{X_i}(x_i \mid \theta).
+   $$
+
+
+#### Common Mistakes {.unnumbered}
+
+It is **very easy** to slip up when multiplying terms. Watch out for:
+
+1. **Forgetting the index.**
+   Always use $x_i$ inside the product.
+
+   Example (Exponential model):
+   If $X_i \sim \mathrm{Exponential}(\theta)$ with density
+
+   $$
+   f(x_i \mid \theta) = \theta e^{-\theta x_i}, \quad x_i > 0,
+   $$
+
+   then the likelihood is
+
+   $$
+   f(\underline{x} \mid \theta) 
+   = \prod_{i=1}^n \theta e^{-\theta x_i} 
+   = \theta^n \exp\!\left(-\theta \sum_{i=1}^n x_i\right).
+   $$
+
+   A common mistake is to write
+
+   $$
+   \prod_{i=1}^n \theta e^{-\theta x} = \theta^n e^{-\theta n x} \quad \text{(wrong!)}
+   $$
+
+   which ignores the index on $x_i$.
+
+2. **Oversimplifying.**
+   Many likelihoods look messy — that is normal!
+
+   Example (Gamma model):
+   If $X_i \sim \mathrm{Gamma}(\alpha, \theta)$ with density
+
+   $$
+   f(x_i \mid \alpha, \theta) 
+   = \frac{1}{\Gamma(\alpha)\theta^\alpha}\, x_i^{\alpha - 1} e^{-x_i/\theta}, 
+   \quad x_i > 0,
+   $$
+
+   then the likelihood is
+
+   $$
+   f(\underline{x} \mid \alpha, \theta) 
+   = \left(\frac{1}{\Gamma(\alpha)\theta^\alpha}\right)^n 
+     \left(\prod_{i=1}^n x_i^{\alpha - 1}\right)
+     \exp\!\left(-\frac{1}{\theta}\sum_{i=1}^n x_i\right).
+   $$
+
+   Notice how the product
+
+   $$
+   \prod_{i=1}^n x_i^{\alpha - 1}
+   $$
+
+   cannot be simplified further (unless you introduce the geometric mean[^geometric-mean]).
+
+#### A Safe Strategy {.unnumbered}
+
+When starting out, it is helpful to **expand the product term by term**:
+
+$$
+f(\underline{x} \mid \theta) 
+= f(x_1 \mid \theta) 
+\times f(x_2 \mid \theta) 
+\times \cdots 
+\times f(x_n \mid \theta).
+$$
+
+Then simplify step by step.
+
+This is slower, but it reduces errors. With practice, you’ll be able to simplify likelihoods much more quickly.
+
+```{=html}
+</details>
+```
+
+
+---
+
+::: {.example #exm-bern-likelihood}
+### Bernoulli Likelihood
+Suppose we have $n$ [i.i.d.]{title="Independent and Identically Distributed"} data distributed according to the <span class="xref-no-num">[Bernoulli distribution @sec-bern]</span>:
+
+$$
+  Y_i \sim \textrm{Bernoulli}(p).
+$$
+Derive the **likelihood function**.
+:::
+
+::: {#sol-bern-likelihood}
+
+Because the $Y_i$ are [i.i.d.]{title="Independent and Identically Distributed"}, the joint PMF factorises:
+
+$$
+L(p;\underline{y}) = f(\underline{y}\mid p) = \prod_{i=1}^n f(y_i \mid p).
+$$
+
+For the Bernoulli distribution,
+
+$$
+f(y_i \mid p) = p^{y_i}(1-p)^{1-y_i}.
+$$
+
+Hence,
+
+\begin{align*}
+L(p; \underline{y}) &= \prod_{i=1}^n p^{y_i}(1 - p)^{1-y_i} \\ 
+&= p^{y_1} (1-p)^{1-y_1} \times p^{y_2} (1-p)^{1-y_2} \times \ldots \times p^{y_n} (1-p)^{1-y_n} \\ 
+&= p^{y_1 + \ldots + y_n} (1 - p)^{(1-y_1) + \ldots + (1-y_n)} \\ 
+&= p^{\sum_{i=1}^n y_i} (1-p)^{\sum_{i=1}^n 1 - y_i}.
+\end{align*}
+
+Writing $\sum_{i=1}^n y_i = n\bar{y}$ gives
+
+$$
+L(p;\underline{y}) = p^{n\bar{y}}(1-p)^{n(1-\bar{y})}.
+$$
+:::
+
+In practice, and in **assessed questions** in this course, it is important to be comfortable with computing likelihood functions for actual observed data. The next example does this:
+
+::: {#exm-bern-likelihood-data}
+### Bernoulli Likelihood with Data
+Suppose $n=5$ [i.i.d.]{title="Independent and Identically Distributed"} observations $X_i \sim \mathrm{Bernoulli}(p)$ are observed as
+$$
+\underline{x} = (1,0,1,1,0).
+$$
+Derive the **likelihood function** and evaluate it for a few values of $p$.
+:::
+
+::: {#sol-bern-likelihood-data}
+Since $\underline{x}  = (1,0,1,1,0)$, we have $\sum_i x_i = 3$. Therefore:
+$$
+L(p ; \underline{x}) = p^3 (1-p)^2.
+$$
+
+  * If $p=0.5$, $L(0.5) = 0.5^3 \cdot 0.5^2 = 0.03125$.
+  * If $p=0.7$, $L(0.7) = 0.7^3 \cdot 0.3^2 \approx 0.0309$.
+  * If $p=0.8$, $L(0.8) = 0.8^3 \cdot 0.2^2 = 0.0205$.
+
+So the data are slightly more likely under $p=0.5$ than $p=0.8$.
+:::
+
+::: {#exm-normal-likelihood}
+### Normal Likelihood
+
+Suppose we have $n$ [i.i.d.]{title="Independent and Identically Distributed"} data distributed according to the <span class="xref-no-num">[Normal distribution @sec-normal]</span>:
+
+$$
+  T_i \sim \mathcal{N}(\mu, \gamma).
+$$
+
+Derive the **likelihood function**.
+:::
+
+::: {#sol-normal-likelihood}
+
+Because the $T_i$ are [i.i.d.]{title="Independent and Identically Distributed"}, the joint PDF factorises:
+
+$$
+L(\mu, \gamma ;\underline{t}) = f(\underline{t}\mid \mu, \gamma) = \prod_{i=1}^n f(t_i \mid \mu, \gamma).
+$$
+
+For the Normal distribution (with variance $\gamma = \sigma^2$),
+
+$$
+f(t_i \mid \mu, \gamma) = \frac{1}{\sqrt{2\pi \gamma}} \exp\left\{ -\frac{1}{2\gamma} (t_i - \mu)^2 \right\}.
+$$
+
+Hence,
+
+\begin{align*}
+L(\mu, \gamma ;\underline{t}) &= \prod_{i=1}^n \frac{1}{\sqrt{2\pi \gamma}} \exp\left\{ -\frac{1}{2\gamma} (t_i - \mu)^2 \right\} \\
+&= (2\pi \gamma)^{-\tfrac{n}{2}} \exp\left\{ \sum_{i=1}^n -\frac{1}{2\gamma} (t_i - \mu)^2 \right\}.
+\end{align*}
+
+Therefore,
+
+$$
+L(\mu, \gamma ;\underline{t}) = (2\pi \gamma)^{-\tfrac{n}{2}} \exp\left\{ -\frac{1}{2\gamma} \sum_{i=1}^n  (t_i - \mu)^2 \right\}.
+$$
+
+:::
+
+::: {#exm-poisson-likelihood}
+### Poisson Likelihood
+
+Suppose we have $n$ [i.i.d.]{title="Independent and Identically Distributed"} data distributed according to the <span class="xref-no-num">[Poisson distribution @sec-pois]</span>:
+
+$$
+  V_i \sim \mathrm{Pois}(\alpha)
+$$
+
+Derive the **likelihood function**.
+:::
+
+::: {#sol-poisson-likelihood}
+
+Because the $V_i$ are [i.i.d.]{title="Independent and Identically Distributed"}, the joint PMF factorises:
+
+$$
+L(\alpha ;\underline{v}) = f(\underline{v}\mid \alpha) = \prod_{i=1}^n f(v_i \mid \alpha).
+$$
+
+For the Poisson distribution
+
+$$
+f(v_i \mid \alpha) = \frac{\alpha^{v_i} e^{-\alpha}}{v_i!}
+$$
+
+Hence,
+
+\begin{align*}
+L(\alpha ;\underline{v}) &= \prod_{i=1}^n  \frac{\alpha^{v_i} e^{-\alpha}}{v_i!} \\
+&= \alpha^{n\bar{v}} e^{-n\alpha} \prod_{i=1}^n \frac{1}{v_i!}
+\end{align*}
+
+Therefore,
+
+$$
+L(\alpha ;\underline{v}) = \alpha^{n\bar{v}} e^{-n\alpha} \prod_{i=1}^n \frac{1}{v_i!}.
+$$
+
+:::
+
+## Maximum Likelihood Estimation
+
+::: {.definition #def-mle}
+### Maximum Likelihood Estimator (MLE)
+
+The **maximum likelihood estimator (MLE)** is the parameter value that makes the observed data most likely:
+
+$$
+\hat{\theta}_{\text{MLE}} = \argmax_{\theta \in \Theta} \, L(\theta ; \underline{X}),
+$$
+
+where $L(\theta ; \underline{X})$ is the likelihood function.
+:::
+
+::: {#imp-term-argmax-max .callout-important collapse="false" appearance="simple"}
+
+### Terminology: $\argmax$ vs. $\max$
+
+The $\max$ gives the **largest value** attained by a function.
+$$
+\max_{\theta \in \Theta} L(\theta ; \underline{X})
+$$
+means “the maximum likelihood value.”
+
+The $\argmax$ gives the **argument (input)** where the maximum occurs.
+$$
+\argmax_{\theta \in \Theta} L(\theta ; \underline{X})
+$$
+means “the parameter value that maximises the likelihood.”
+
+So: $\max$ is the **height**, $\argmax$ is the **location**.
+
+```{=html}
+<details>
+  <summary><strong> Show Visualisation </strong></summary>
+```
+
+```{ojs}
+// --- Define a "likelihood-like" function with multiple bumps ---
+// L(θ) = exp( - (θ^4 - θ^2 + 0.3 θ) )
+L = θ => Math.exp(-(θ**4 - θ**2 + 0.3*θ))
+
+// Sample the function on a grid
+θmin = -2.2
+θmax =  2.2
+N = 801
+Θ = Array.from({length: N}, (_, i) => θmin + i*(θmax - θmin)/(N - 1))
+Y = Θ.map(L)
+
+// Find max (height) and argmax (location)
+imax = Y.reduce((best, y, i) => (y > Y[best] ? i : best), 0)
+θhat = Θ[imax]
+Lmax = Y[imax]
+```
+
+```{ojs}
+// Create the base plot without LaTeX labels
+argmaxPlot = Plot.plot({
+  width: Math.min(720, Math.max(380, width - 40)),
+  height: 340,
+  style: {
+    background: "var(--brand-bg)",
+    color: "var(--brand-fg)",
+    fontFamily: bodyFont,
+    fontSize: 14
+  },
+  marginLeft: 65,
+  marginBottom: 50,
+  marginTop: 20,
+  marginRight: 20,
+  x: {label: "", domain: [θmin, θmax]},  
+  y: {label: "", nice: true},       
+  marks: [
+    // Likelihood curve
+    Plot.line(
+      Θ.map((t,i) => ({θ: t, L: Y[i]})), 
+      {x: "θ", y: "L", stroke: "var(--brand-red)", strokeWidth: 2}
+    ),
+    
+    // Vertical line at argmax (location)
+    Plot.ruleX([θhat], {strokeDasharray: "4,3", stroke: "var(--brand-fg)", ariaLabel: "argmax", strokeOpacity: 0.8}),
+    
+    // Horizontal line at max (height)
+    Plot.ruleY([Lmax], {strokeDasharray: "4,3", stroke: "var(--brand-fg)", ariaLabel: "max", strokeOpacity: 0.8}),
+
+    // Axes at baseline
+    Plot.ruleX([θmin], {stroke: "var(--brand-fg)"}),
+    Plot.ruleY([0], {stroke: "var(--brand-fg)"}),
+
+    // Point at the maximiser
+    Plot.dot(
+      [{θ: θhat, L: Lmax}], 
+      {x: "θ", y: "L", r: 5, fill: "var(--brand-teal)"}
+    )
+  ]
+})
+
+```
+
+```{ojs}
+//| fig-cap: Illustration of the difference between $\argmax$ and $\max$. The red curve shows a likelihood function $L(\theta;\underline{x})$. The vertical dashed line marks the $\argmax$ (the parameter value $\hat\theta$ where the maximum occurs), while the horizontal dashed line marks the $\max$ (the maximum likelihood value itself).
+
+// Add LaTeX overlays after plot renders
+plotWithLatex = {
+  // Create container
+  const container = html`<div style="position: relative; display: inline-block;"></div>`;
+  
+  // Add the plot
+  container.append(argmaxPlot);
+  
+  // Function to add labels after render
+  const addLabels = () => {
+    // Get the SVG element
+    const svg = container.querySelector("svg");
+    if (!svg) {
+      requestAnimationFrame(addLabels);
+      return;
+    }
+    
+    // Get dimensions from the SVG
+    const svgRect = svg.getBoundingClientRect();
+    const plotWidth = svgRect.width;
+    const plotHeight = svgRect.height;
+    
+    // Approximate margins from plot config
+    const marginLeft = 74;
+    const marginBottom = 30;
+    const marginTop = 30;
+    const marginRight = 20;
+    
+    // Calculate plot area dimensions
+    const plotAreaWidth = plotWidth - marginLeft - marginRight;
+    const plotAreaHeight = plotHeight - marginTop - marginBottom;
+    
+    // Linear mapping functions for data to pixel coordinates
+    const xToPixel = (x) => marginLeft + ((x - θmin) / (θmax - θmin)) * plotAreaWidth;
+    const yToPixel = (y) => marginTop + (1 - (y / (Math.max(...Y) * 1.05))) * plotAreaHeight;
+    
+    // Calculate positions
+    const θhatPixel = xToPixel(θhat);
+    const LmaxPixel = yToPixel(Lmax);
+    
+    // Create and add LaTeX labels with boxes
+    const labels = [
+      // X-axis label
+      {
+        element: tex`\theta`,
+        style: `
+          position: absolute;
+          bottom: 8px;
+          left: ${plotWidth / 2}px;
+          transform: translateX(-50%);
+          pointer-events: none;
+        `
+      },
+      // Y-axis label  
+      {
+        element: tex`L(\theta;\,\underline{x})`,
+        style: `
+          position: absolute;
+          left: 8px;
+          top: ${(plotHeight - marginBottom) / 2}px;
+          transform: rotate(-90deg) translateY(5px);
+          transform-origin: left center;
+          pointer-events: none;
+        `
+      },
+      // Argmax label at bottom - positioned on x-axis
+      {
+        element: tex`\arg\max\, L(\theta;\,\underline{x})`,
+        style: `
+          position: absolute;
+          top: ${plotHeight - marginBottom}px;
+          left: ${θhatPixel}px;
+          transform: translate(-50%, -50%);
+          font-size: 13px;
+          pointer-events: none;
+          color: var(--brand-fg);
+          background: var(--plot-panel-bg, white);
+          padding: 3px 6px;
+          border: 1px solid var(--border, #ddd);
+          border-radius: 4px;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        `
+      },
+      // Max value label on left - positioned on y-axis
+      {
+        element: tex`\max\, L(\theta;\,\underline{x})`,
+        style: `
+          position: absolute;
+          top: ${LmaxPixel}px;
+          left: ${marginLeft}px;
+          transform: translate(-50%, -50%);
+          font-size: 13px;
+          pointer-events: none;
+          color: var(--brand-fg);
+          background: var(--plot-panel-bg, white);
+          padding: 3px 6px;
+          border: 1px solid var(--border, #ddd);
+          border-radius: 4px;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        `
+      }
+    ];
+    
+    // Add each label to the container
+    labels.forEach(({element, style}) => {
+      const div = html`<div style="${style}"></div>`;
+      div.append(element);
+      container.append(div);
+    });
+    
+    // Hide the original axis labels
+    // X-axis label
+    const xAxisLabel = svg.querySelector('g[aria-label="x-axis label"]');
+    if (xAxisLabel) xAxisLabel.style.display = "none";
+    
+    // Y-axis label
+    const yAxisLabel = svg.querySelector('g[aria-label="y-axis label"]');
+    if (yAxisLabel) yAxisLabel.style.display = "none";
+    
+    // Alternative: hide any text elements that contain θ or L(θ
+    svg.querySelectorAll('text').forEach(text => {
+      if (text.textContent === 'θ' || text.textContent.includes('L(θ')) {
+        text.style.display = 'none';
+      }
+    });
+  };
+  
+  // Schedule label addition
+  requestAnimationFrame(addLabels);
+  
+  return container;
+}
+```
+
+```{=html}
+</details>
+```
+
+:::
+
+Because the logarithm is a **monotonically increasing function**, the value of $\theta$ that maximises the likelihood will also maximise the **log-likelihood**.  
+
+In practice, we almost always work with the log-likelihood because it is **simpler to handle mathematically**: it turns products into sums, and derivatives are easier to compute.  
+
+
+::: {.definition #def-log-likelihood}
+### Log-Likelihood
+
+The **log-likelihood** is defined as
+
+$$
+\ell(\theta ; \underline{x}) = \log L(\theta ; \underline{x}).
+$$
+
+- This is literally just the logarithm of the likelihood.  
+- Because $\log$ is increasing, maximising $\ell(\theta;\underline{x})$ gives the same $\hat{\theta}$ as maximising $L(\theta;\underline{x})$.  
 
 :::
 
 
 ---
 
-**Visualisation:**
+```{=html}
+<details>
+  <summary><strong> Show Visualisation </strong></summary>
+```
 
 ```{ojs}
 //| echo: false
@@ -264,17 +1117,6 @@ llValues = {
 
 
 // ---- Geometry / domains (responsive) ----
-gap = 20
-containerW = width
-plotW = Math.round(Math.max(240, Math.min(600, (containerW - gap) / 2 - 15)))
-plotH = Math.round(plotW * 0.8)
-
-marginTop = 20
-marginRight = 35
-marginBottom = 20
-marginLeft = 35
-innerW = plotW - marginLeft - marginRight
-innerH = plotH - marginTop - marginBottom
 
 muDomain = [muGrid[0], muGrid[muGrid.length - 1]]
 sig2Domain = [sig2Grid[0], sig2Grid[sig2Grid.length - 1]]
@@ -291,8 +1133,6 @@ q05 = d3.quantileSorted(llRelSorted, 0.05) ?? d3.min(llRelFinite)
 colorDomain = [q05, 0]
 llRelClipped = Float64Array.from(llRel, v => Math.max(q05, v))
 contourThresholds = d3.ticks(q05, 0, 10)
-
-bodyFont = getComputedStyle(document.body).fontFamily
 
 // ---- Left panel: raster (clipped) + contour (same grid) ----
 viewof leftPanel = {
@@ -424,20 +1264,6 @@ viewof leftPanel = {
 
   return wrap;                           // <-- the view element
 }
-
-
-// isDragging = leftPanel.dragging ?? false
-// console.log(isDragging)
-// numPts = isDragging ? 100 : 200   // fewer x-samples while dragging
-// pdfStroke = isDragging ? 1 : 2   // thinner line while dragging
-
-
-// // Read probe values reactively (no extra visible block)
-// probeRaw = Generators.input(leftPanel.hit);
-// probeMu = (Array.isArray(probeRaw) ? probeRaw[0] : probeRaw?.x) ?? muhat;
-// probeSig2 = (Array.isArray(probeRaw) ? probeRaw[1] : probeRaw?.y) ?? sigma2hat;
-// probeLL = logLik(probeMu, probeSig2);
-
 
 // leftPanel is now { x, y, dragging }
 isDragging = leftPanel.dragging
@@ -712,160 +1538,20 @@ resim = controls.resim
 
 ```
 
+```{=html}
+</details>
+```
+
 ---
 
-
-### Computing Likelihood Functions
-
-This is a **very important skill** in the course: you will use it often in the *frequentist* parts, and it is **essential** for the *Bayesian* part.
-
-The general strategy is:
-
-1. **Check the model carefully.** Look for:
-
-   * Are the data **i.i.d.** or just **independent**?
-   * How many **data points** are observed?
-   * What notation is used for the data ($X_i$, $Y_i$, $Z_i$, …)?
-   * What notation is used for the parameters ($\mu$, $\alpha$, $\gamma$, $\theta$, …)?
-
-   *(In the examples below we assume $n$ independent data points $X_1,\dots,X_n$ with parameter $\theta$. If there is only one data point, the likelihood is just its PDF/PMF.)*
-
-2. **Write down the PDF/PMF of one observation.**
-
-   $$
-   f_{X_i}(x_i \mid \theta)
-   $$
-
-3. **Multiply to form the joint density**, i.e. the likelihood:
-
-   $$
-   L(\theta ; \underline{x}) 
-   = f(\underline{x} \mid \theta) 
-   = \prod_{i=1}^n f_{X_i}(x_i \mid \theta).
-   $$
-
-
-#### Common Mistakes {.unnumbered}
-
-It is **very easy** to slip up when multiplying terms. Watch out for:
-
-1. **Forgetting the index.**
-   Always use $x_i$ inside the product.
-
-   Example (Exponential model):
-   If $X_i \sim \mathrm{Exponential}(\theta)$ with density
-
-   $$
-   f(x_i \mid \theta) = \theta e^{-\theta x_i}, \quad x_i > 0,
-   $$
-
-   then the likelihood is
-
-   $$
-   f(\underline{x} \mid \theta) 
-   = \prod_{i=1}^n \theta e^{-\theta x_i} 
-   = \theta^n \exp\!\left(-\theta \sum_{i=1}^n x_i\right).
-   $$
-
-   A common mistake is to write
-
-   $$
-   \prod_{i=1}^n \theta e^{-\theta x} = \theta^n e^{-\theta n x} \quad \text{(wrong!)}
-   $$
-
-   which ignores the index on $x_i$.
-
-2. **Oversimplifying.**
-   Many likelihoods look messy — that is normal!
-
-   Example (Gamma model):
-   If $X_i \sim \mathrm{Gamma}(\alpha, \theta)$ with density
-
-   $$
-   f(x_i \mid \alpha, \theta) 
-   = \frac{1}{\Gamma(\alpha)\theta^\alpha}\, x_i^{\alpha - 1} e^{-x_i/\theta}, 
-   \quad x_i > 0,
-   $$
-
-   then the likelihood is
-
-   $$
-   f(\underline{x} \mid \alpha, \theta) 
-   = \left(\frac{1}{\Gamma(\alpha)\theta^\alpha}\right)^n 
-     \left(\prod_{i=1}^n x_i^{\alpha - 1}\right)
-     \exp\!\left(-\frac{1}{\theta}\sum_{i=1}^n x_i\right).
-   $$
-
-   Notice how the product
-
-   $$
-   \prod_{i=1}^n x_i^{\alpha - 1}
-   $$
-
-   cannot be simplified further (unless you introduce the geometric mean[^geometric-mean]).
-
-#### A Safe Strategy {.unnumbered}
-
-When starting out, it is helpful to **expand the product term by term**:
-
-$$
-f(\underline{x} \mid \theta) 
-= f(x_1 \mid \theta) 
-\times f(x_2 \mid \theta) 
-\times \cdots 
-\times f(x_n \mid \theta).
-$$
-
-Then simplify step by step.
-
-This is slower, but it reduces errors. With practice, you’ll be able to simplify likelihoods much more quickly.
-
-
-::: {.example #exm-bern-likelihood}
-### Bernoulli Likelihood
-  Suppose we have $n$ i.i.d. data distributed according to the <span class="xref-no-num">[Bernoulli distribution @sec-bern]</span>:
-
-$$
-  Y_i \sim \textrm{Bernoulli}(p).
-$$
-Derive the **likelihood function**.
+::: {.callout-tip appearance="minimal"}
+## ✨ Big picture:
+* The <span class="xref-no-num">[likelihood function @def-likelihood]</span>  tells us how **plausible** each parameter value is, given the data.
+* The <span class="xref-no-num">[MLE @def-mle]</span> chooses the parameter value that makes the observed data most likely.
+* Later, in Bayesian inference, we will combine the likelihood with a **prior distribution** on $\theta$ to obtain a **posterior distribution**.
 :::
 
-
-
-::: {#exm-bern-likelihood-data}
-### Bernoulli Likelihood
-Suppose $n=5$ trials give data $\underline{x} = (1,0,1,1,0)$. Then $\sum_i x_i = 3$.
-$$
-L(p ; \underline{x}) = p^3 (1-p)^2.
-$$
-
-  * If $p=0.5$, $L(0.5) = 0.5^3 \cdot 0.5^2 = 0.03125$.
-  * If $p=0.7$, $L(0.7) = 0.7^3 \cdot 0.3^2 \approx 0.0309$.
-  * If $p=0.8$, $L(0.8) = 0.8^3 \cdot 0.2^2 = 0.0205$.
-
-So the data are slightly more likely under $p=0.5$ than $p=0.8$.
-:::
-
-
-
-## Maximum Likelihood Estimation
-
-::: {.definition #def-mle}
-### Maximum Likelihood Estimator (MLE)
-  The MLE is the parameter value $\hat{\theta}$ that maximises the likelihood function:
-  $$
-  \hat{\theta}_{\text{MLE}} = \arg \max_{\theta \in \Theta} L(\theta ; \underline{x}).
-  $$
-:::
-
-Because logs are monotone, it is usually easier to maximise the **log-likelihood**:
-
-$$
-\ell(\theta ; \underline{x}) = \log L(\theta ; \underline{x}).
-$$
-
-### Computing MLEs
+### Computing Univariate MLEs
 
 ::: {.example #exm-bern-mle}
 ### Bernoulli MLE
@@ -953,25 +1639,385 @@ $$
 Compute the MLE of $p$.
 :::
 
+### Computing Multivariate MLEs
+
+::: {.example #exm-normal-full-mle}
+### Normal MLE for $\mu$ and $\sigma^2$
+
+Under 
+$$ 
+ L(\theta ; x)
+$$
+
+Compute the MLE of $p$.
+:::
 
 ---
 
-::: {.callout-tip appearance="minimal"}
-## ✨ Big picture:
-* Likelihood tells us how **plausible** each parameter value is, given the data.
-* The MLE chooses the parameter value that makes the observed data most likely.
-* Later, in Bayesian inference, we will combine the likelihood with a **prior distribution** on $\theta$ to obtain a **posterior distribution**.
+
+
+## Information and Efficiency of Estimators
+
+In the previous chapter we studied two kinds of *properties of estimators*:
+
+* In <span class="xref-no-num">[Properties of Estimators @sec-estimator-properties]</span>, we introduced: <span class="xref-no-num">[bias @def-bias]</span>, <span class="xref-no-num">[variance @def-variance]</span>, and <span class="xref-no-num">[MSE @def-mse]</span>.  
+* In <span class="xref-no-num">[Asymptotic Properties of Estimators @sec-estimator-asymp-properties]</span>, we introduced: <span class="xref-no-num">[asymptotic unbiasedness @def-asymptotic-unbiasedness]</span> and <span class="xref-no-num">[consistency @def-consistency]</span>.
+
+Now that we have the *likelihood function*, we can go further and introduce two powerful ideas:
+
+* **Cramér–Rao Lower Bound ([CRLB]{title="Cramér–Rao Lower Bound"}):** a universal lower bound on the variance of any unbiased estimator.
+* **Efficiency:** whether an estimator actually attains this bound (at least asymptotically).
+
+::: {#imp-crlb-motivation .callout-important collapse="true" appearance="simple"}
+### Motivation
+
+Our central measure of estimator quality was the **mean squared error (MSE)**. From the <span class="xref-no-num">[bias-variance decomposition @prp-mse-bias-variance]</span> of the MSE, we know:
+
+$$
+\mathrm{MSE}(\hat{\theta}) = \mathrm{Bias}(\hat{\theta})^2 + \mathrm{Var}(\hat{\theta}).
+$$
+
+For **unbiased estimators** ($\mathrm{Bias}(\hat{\theta})=0$), this reduces to
+
+$$
+\mathrm{MSE}(\hat{\theta}) = \mathrm{Var}(\hat{\theta}).
+$$
+
+So if we restrict attention to unbiased estimators, the question of “how good” becomes:
+
+> *Which unbiased estimator has the **smallest possible variance**?*
+
+The Cramér–Rao Lower Bound ([CRLB]{title="Cramér–Rao Lower Bound"}) answers this: it gives a universal benchmark for how small the variance can ever be.
+
 :::
 
-## Properties of the MLE
+Before introducing the [CRLB]{title="Cramér–Rao Lower Bound"} and efficiency, we first need two key definitions derived from the likelihood function.
 
-### Bias
+### Score and Fisher Information
 
-### Fisher Information
+::: {#def-score-statistic}
+#### Score Statistic
 
-### Cramer-Rao Lower Bound
+The **score** is the derivative of the log-likelihood with respect to the parameter:
 
-### Asymptotics of the MLE
+$$
+U(\theta;\underline{X}) \;=\; \frac{\partial}{\partial \theta}\,\ell(\theta;\underline{X})
+= \frac{\partial}{\partial \theta}\,\log f(\underline{X}\mid \theta).
+$$
+
+It is a **random quantity**.
+
+:::
+
+::: {#def-fisher-information}
+#### Fisher Information
+
+The **Fisher Information** (or *expected information*) is
+
+$$
+\mathcal{I}(\theta) \;=\; -\,\mathrm{E}\!\left[ \frac{\partial^2}{\partial \theta^2}\,\ell(\theta;\underline{X}) \right].
+$$
+:::
+
+**Intuition:** Fisher information measures how much information the data carry about $\theta$.
+
+* If the log-likelihood is sharply peaked around its maximum, a small change in $\theta$ makes the likelihood much worse — so the data are highly informative.
+* If the log-likelihood is flat, many values of $\theta$ fit almost equally well — so there is little information.
+  The “peakedness” is captured by the curvature (second derivative) of the log-likelihood
+
+### Cramér–Rao Lower Bound and Efficiency
+
+We can now state one of the most important results in statistical inference: the **Cramér–Rao inequality**. It tells us how small the variance of an unbiased estimator can ever be.
+
+::: {#thm-crlb}
+#### The Cramér–Rao Inequality and the [CRLB]{title="Cramér–Rao Lower Bound"}
+
+Let $X_1,\dots,X_n$ be [i.i.d.]{title="Independent and Identically Distributed"} random variables with likelihood function $L(\theta;\underline{x})$, and let $\hat{\theta}$ be an unbiased estimator of $\theta$.
+
+Then, under *regularity conditions*,
+
+$$
+\mathrm{Var}(\hat{\theta}) \;\geq\; \frac{1}{\mathcal{I}(\theta)}.
+$$
+
+The quantity $\tfrac{1}{\mathcal{I}(\theta)}$ is called the **Cramér–Rao Lower Bound ([CRLB]{title="Cramér–Rao Lower Bound"})**. It represents the *smallest possible variance* achievable by any unbiased estimator of $\theta$.
+:::
+
+::: {#prf-crlb}
+#### Not Examinable
+
+The proof of the Cramér–Rao inequality follows from the **covariance inequality**:
+
+$$
+\mathrm{Cov}(X,Y)^2 \leq \mathrm{Var}(X)\,\mathrm{Var}(Y),
+$$
+
+applied to the score random variable $X = U(\theta; \underline{X})$ and the estimator $Y = \hat{\theta}(\underline{X})$. Substituting these in and rearranging for the variance of $\hat{\theta}$ gives
+
+$$
+\mathrm{Var}(\hat{\theta}) \;\geq\; \frac{\mathrm{Cov}(\hat{\theta},U)^2}{\mathrm{Var}(U)}.
+$$
+
+Then, under *regularity conditions*, one can show that the variance of $U$ is the Fisher information, and the covariance term equals $1$.
+
+Thus, the proof can be broken into steps:
+
+1. **Prove the Covariance Inequality**
+2. **Show:** $\mathrm{E}[U] = 0$
+3. **Show:** $\mathrm{Var}(U) = \mathcal{I}(\theta)$
+4. **Show:** $\mathrm{Cov}(\hat{\theta}, U) = 1$
+
+Along the way, we will present the regularity conditions.
+
+---
+
+**Step 1 (Proving Covariance Inequality):** 
+
+The covariance inequality follows from the [Cauchy-Schwarz inequality](https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality) for random variables:
+
+::: {.callout-tip appearance="minimal"}
+#### Cauchy-Schwarz Inequality for Random Variables
+For any random variables $X$ and $Y$ of finite variance,
+$$
+\mathrm{E}[XY]^2 \leq \mathrm{E}[X^2] \mathrm{E}[Y^2].
+$$
+
+<details>
+<summary><strong>Proof of Cauchy-Schwarz Inequality</strong></summary>
+
+Consider $\mathrm{E}\left[ (aX+Y)^2 \right]$, which is clearly non-negative for real $a$.
+
+Multiplying out gives:
+$$
+a^2 \mathrm{E}[X^2] + 2a \mathrm{E}[XY] + \mathrm{E}[Y^2] \geq 0.
+$$
+Consider the left hand side as a quadratic in $a$.
+Since it is always non-negative it cannot have two real roots.
+Using the quadratic formula the roots satisfy:
+$$
+a = \frac{-2\mathrm{E}[XY] \pm \sqrt{4 \mathrm{E}[XY]^2 - 4 \mathrm{E}[X^2] \mathrm{E}[Y^2]}}{2 \mathrm{E}[X^2]}
+$$
+For there to be zero or one real roots, the square root term must be non-positive i.e.
+$$
+\mathrm{E}[XY]^2 - \mathrm{E}[X^2] \mathrm{E}[Y^2] \leq 0.
+$$
+which gives the required result.
+
+</details>
+
+
+:::
+
+
+Applying Cauchy-Schwarz, to the mean-zero shifted random variables, $X - \mathrm{E}[X]$ and $Y-\mathrm{E}[Y]$, we obtain
+
+\begin{align*}
+\mathrm{Cov}(X,Y)^2 &= \mathrm{E}\left[(X-\mathrm{E}[X])(Y-\mathrm{E}[Y])\right]^2 \\
+&\leq \mathrm{E}\left[ (X-\mathrm{E}[X])^2 \right] \mathrm{E}\left[(Y-\mathrm{E}[Y])^2\right]  = \mathrm{Var}(X)\mathrm{Var}(Y).
+\end{align*}
+
+---
+
+**Aside:** You may recall that the *correlation* between two random variables is defined as
+$$
+\mathrm{Cor}(X,Y) = \frac{\mathrm{Cov}(X,Y)}{\mathrm{Var}(X)^{1/2} \mathrm{Var}(Y)^{1/2}}
+$$
+and satisfies $-1\leq \mathrm{Cor}(X,Y) \leq 1$. This inequality is derived from the **covariance inequality**.
+
+---
+
+**Step 2 (Proving $\mathrm{E}[U] = 0$):**
+
+By the definition of the log-likelihood: 
+$$
+\tfrac{\partial}{\partial\theta} \ell(\theta;\underline{x}) = \frac{\partial}{\partial\theta} \log f(\underline{x} \mid \theta).
+$$
+
+Using the chain rule, we have
+$$
+\frac{\partial}{\partial\theta} \ell(\theta;\underline{x}) = \frac{\partial}{\partial\theta} \log f(\underline{x} \mid \theta) = \frac{\frac{\partial}{\partial\theta} f(\underline{x}\mid \theta)}{f(\underline{x}\mid \theta)}.
+$$
+
+Since $U(\theta; \underline{x}) = \tfrac{\partial}{\partial\theta} \ell(\theta;\underline{x})$, we can compute its expectation as follows
+
+\begin{align*}
+\mathrm{E}[U(\theta; \underline{X})] &= \int U(\theta;\underline{x}) f(\underline{x}\mid\theta) \,\mathrm{d}\underline{x} \\
+&= \int \frac{\frac{\partial}{\partial\theta} f(\underline{x}\mid \theta)}{f(\underline{x}\mid \theta)} f(\underline{x}\mid\theta)\,\mathrm{d}\underline{x} \\
+&= \int \frac{\partial}{\partial\theta} f(\underline{x}\mid \theta) \,\mathrm{d}\underline{x} \\
+&= \frac{\partial}{\partial \theta} \int f(\underline{x}\mid \theta) \,\mathrm{d}\underline{x} \\
+&=  \frac{\partial}{\partial \theta} 1 \\
+&= 0.
+\end{align*}
+
+Here, we assumed the first *regularity condition*:
+
+> **Regularity Condition 1:** We assumed we can interchange the integral and derivative in the step
+> $$
+> \int \frac{\partial}{\partial \theta}  f(\underline{x}\mid \theta) \,\mathrm{d}\underline{x} = \frac{\partial}{\partial \theta} \int f(\underline{x}\mid \theta) \,\mathrm{d}\underline{x}
+> $$
+
+
+---
+
+**Step 3 (Proving $\mathrm{Var}(U) = \mathcal{I}(\theta)$):**
+
+By definition,
+
+$$
+\mathrm{Var}(U) = \mathrm{E}[U^2] - \big(\mathrm{E}[U]\big)^2.
+$$
+
+From Step 2 we know $\mathrm{E}[U] = 0$, so
+
+$$
+\mathrm{Var}(U) = \mathrm{E}[U^2] = \mathrm{E}\!\left[\left(\frac{\partial}{\partial \theta}\,\ell(\theta;\underline{X})\right)^2\right].
+$$
+
+Recall the identity derived in Step 2:
+$$
+\frac{\partial}{\partial \theta} \ell(\theta ; \underline{x})
+= \frac{\frac{\partial}{\partial \theta} f(\underline{x}\mid \theta) }{f(\underline{x}\mid \theta)}.
+$$
+Differentiating again, using the product and chain rules, yields:
+
+$$
+\frac{\partial^2}{\partial \theta^2} \ell(\theta ; \underline{x})
+= -\frac{ \left( \frac{\partial}{\partial \theta} f(\underline{x}\mid \theta) \right)^2}{f(\underline{x}\mid \theta)^2} + \frac{\frac{\partial^2}{\partial \theta^2} f(\underline{x}\mid \theta)}{f(\underline{x}\mid \theta)} .
+$$
+Therefore,
+$$
+\frac{\partial^2}{\partial \theta^2} \ell(\theta ; \underline{x})
+= -\left(\frac{\partial}{\partial \theta} \ell(\theta;\underline{x})\right)^2 + \frac{\frac{\partial^2}{\partial \theta^2} f(\underline{x}\mid \theta)}{f(\underline{x}\mid \theta)} .
+$$
+Rearranging for $\left(\frac{\partial}{\partial \theta} \ell(\theta;\underline{x})\right)^2$ yields:
+$$
+\left(\frac{\partial}{\partial \theta} \ell(\theta;\underline{x})\right)^2 = \frac{\frac{\partial^2}{\partial \theta^2} f(\underline{x}\mid \theta)}{f(\underline{x}\mid \theta)} - \frac{\partial^2}{\partial \theta^2} \ell(\theta ; \underline{x}).
+$$
+
+Computing the expectation, we have
+
+\begin{align*}
+\mathrm{Var}(U) &= \mathrm{E}\left[\frac{\frac{\partial^2}{\partial \theta^2} f(\underline{X}\mid \theta)}{f(\underline{X}\mid \theta)} - \frac{\partial^2}{\partial \theta^2} \ell(\theta ; \underline{X})\right] \\
+&= \mathrm{E}\left[\frac{\frac{\partial^2}{\partial \theta^2} f(\underline{X}\mid \theta)}{f(\underline{X}\mid \theta)}\right] + \underbrace{\mathrm{E}\left[-\frac{\partial^2}{\partial \theta^2} \ell(\theta ; \underline{X})\right]}_{= \mathcal{I}(\theta)}.
+\end{align*}
+
+Concentrating on the remaining expectation:
+
+\begin{align*}
+\mathrm{E}\left[\frac{\frac{\partial^2}{\partial \theta^2} f(\underline{X}\mid \theta)}{f(\underline{X}\mid \theta)}\right] &= \int \frac{\partial^2}{\partial \theta^2} f(\underline{x}\mid \theta) \, \mathrm{d}\underline{x} \\
+&= \frac{\partial^2}{\partial \theta^2} \int f(\underline{x}\mid \theta) \, \mathrm{d}\underline{x} \\
+&= \frac{\partial^2}{\partial \theta^2} 1 \\
+&= 0.
+\end{align*}
+
+Here, we assumed the second *regularity condition*:
+
+> **Regularity Condition 2:** We assumed we can interchange the integral and second derivative in the step
+> $$
+> \int \frac{\partial^2}{\partial \theta^2}  f(\underline{x}\mid \theta) \,\mathrm{d}\underline{x} = \frac{\partial^2}{\partial \theta^2} \int f(\underline{x}\mid \theta) \,\mathrm{d}\underline{x}
+> $$
+
+Therefore, we can conclude Step 3 with the final result:
+
+$$
+\mathrm{Var}(U) = \mathcal{I}(\theta).
+$$
+
+---
+
+**Step 4 (Proving $\mathrm{Cov}(\hat{\theta}, U) = 1$):**
+
+By definition,
+
+$$
+\mathrm{Cov}(\hat{\theta}, U) = \mathrm{E}\big[(\hat{\theta}-\theta)\,U\big].
+$$
+
+Using the same result used in steps 2 and 3:
+$$
+U(\theta;\underline{x}) = \frac{\partial}{\partial \theta} \log f(\underline{x}\mid \theta) = \frac{\frac{\partial}{\partial \theta} f(\underline{x}\mid \theta)}{f(\underline{x}\mid \theta)},
+$$
+
+we have
+$$
+\mathrm{E}[\hat{\theta} U] 
+= \int \hat{\theta}(\underline{x}) \,\frac{\partial}{\partial \theta} f(\underline{x}\mid\theta) \,\mathrm{d}\underline{x}.
+$$
+
+Since $\hat{\theta}$ is *constant* in $\theta$ and assuming we can interchange the derivative and integral, we arrive at:
+
+$$
+\mathrm{E}[\hat{\theta} U] 
+= \frac{\partial}{\partial \theta} \int \hat{\theta}(\underline{x}) f(\underline{x}\mid \theta)\,\mathrm{d}\underline{x}.
+$$
+
+This assumption forms our third regularity condition:
+
+> **Regularity Condition 3:** We assumed we can interchange the integral and derivative in the step
+> $$
+>  \int \frac{\partial}{\partial \theta}\left(\hat{\theta}(\underline{x}) f(\underline{x}\mid \theta)\right)\,\mathrm{d}\underline{x} = \frac{\partial}{\partial \theta} \int \hat{\theta}(\underline{x}) f(\underline{x}\mid \theta)\,\mathrm{d}\underline{x}
+> $$
+
+Note now that $\int \hat{\theta}(\underline{x}) f(\underline{x}\mid \theta)\,\mathrm{d}\underline{x} = \mathrm{E}[\hat{\theta}]$ and, since we assumed $\hat{\theta}$ is **unbiased**, we have
+$$
+\int \hat{\theta}(\underline{x}) f(\underline{x}\mid \theta)\,\mathrm{d}\underline{x} = \mathrm{E}[\hat{\theta}] = \theta.
+$$
+Hence,
+$$
+\mathrm{E}[\hat{\theta} U] = \frac{\partial}{\partial \theta}\,\theta = 1.
+$$
+
+Also, from Step 2, $\mathrm{E}[U]=0$. Therefore,
+
+$$
+\mathrm{Cov}(\hat{\theta}, U) = \mathrm{E}[\hat{\theta} U] - \mathrm{E}[\hat{\theta}]\,\mathrm{E}[U] = 1 - \theta \cdot 0 = 1.
+$$
+
+---
+
+**Conclusion:**
+
+Putting Steps 1–4 together:
+
+$$
+\mathrm{Var}(\hat{\theta}) \;\geq\; \frac{\mathrm{Cov}(\hat{\theta},U)^2}{\mathrm{Var}(U)} \;=\; \frac{1^2}{\mathcal{I}(\theta)} \;=\; \frac{1}{\mathcal{I}(\theta)}.
+$$
+
+This completes the proof of the **Cramér–Rao inequality**.
+
+:::
+
+
+::: {.callout-warning}
+#### Non-Examinable Content
+The *regularity conditions* required for the [CRLB]{title="Cramér–Rao Lower Bound"} are **not examinable**. 
+
+Informally, these conditions rule out “badly behaved” cases; for example, densities $f(x\mid\theta)$ with infinite variance, infinite expectation, or parameter-dependent support. They also justify steps such as interchanging derivatives and integrals in the proof.
+
+If you are curious, see the non-examinable proof in @prf-crlb.
+:::
+
+::: {#def-efficiency}
+#### Efficiency of an Estimator
+
+* An unbiased estimator is called **efficient** if its variance *achieves* the [CRLB]{title="Cramér–Rao Lower Bound"} exactly:
+
+  $$
+  \mathrm{Var}(\hat{\theta}) = \frac{1}{\mathcal{I}(\theta)}.
+  $$
+* A sequence of estimators $\hat{\theta}_n$ is **asymptotically efficient** if, as the sample size grows, its variance approaches the [CRLB]{title="Cramér–Rao Lower Bound"}:
+  $$
+  \lim_{n \to \infty} \frac{\mathrm{Var}(\hat{\theta}_n)}{1/\mathcal{I}(\theta)} \;=\; 1,
+  $$
+  where $\mathcal{I}(\theta)$ is the <span class="xref-no-num">[Fisher information @def-fisher-information]</span>
+
+:::
+
+
+
+## The Asymptotic Distribution of the MLE
+
+
 
 [^difflog]: **Differentiating the log.** 
 

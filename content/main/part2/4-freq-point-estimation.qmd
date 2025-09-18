@@ -1,7 +1,10 @@
 # Frequentist Point Estimation {#sec-freq-point-estimate}
 
-A **statistic** is any function of the sample
+```{ojs}
+bodyFont = getComputedStyle(document.body).fontFamily
+```
 
+A **statistic** is any function of the sample
 $$
 T \;=\; T(X_1,\dots,X_n).
 $$
@@ -11,8 +14,8 @@ Once the data have been observed $(x_1,\dots,x_n)$, plugging them into the same 
 
 When we pick a statistic for the specific purpose of approximating a parameter $\theta$, we call it an **estimator**. Its realised value is the **estimate**.
 
-::: {.callout-tip}
-## Notation rule
+::: {#imp-not-random-statistics .callout-important collapse="false" appearance="simple"}
+## Notation: Random vs. Non-Random statistics
 - **Upper-case** letters $(T, \bar X, S^2)$ denote random statistics.  
 - **Lower-case** letters with a subscript “obs” $(t_{\mathrm{obs}}, \bar x, s^2)$ denote the observed values of those statistics.
 :::
@@ -130,221 +133,271 @@ Since $X_1,\ldots,X_n$ are random variables, the output $\hat\theta$ is **also a
 
 ---
 
-**Visualisation.** The left panel shows one random sample of size $n$ and its sample mean $\bar x$. The right panel approximates the **sampling distribution of $\bar X$** by repeatedly drawing fresh samples of size $n$ from the same model (parameters held fixed) and plotting the resulting means - only the data vary from run to run.
+```{=html}
+<details>
+<summary><strong>Show Visualisation</strong></summary>
+```
+
+
+The left panel shows one random sample of size $n$ and its sample mean $\bar x$. The right panel approximates the **sampling distribution** of $\bar X$ by repeatedly drawing fresh samples of size $n$ from the same model (parameters held fixed) and plotting the resulting means - only the data vary from run to run.
 
 ```{ojs}
-//| echo: false
-
 mutable rngSeed = 1
 mutable meanHistory = []
 mutable resampleClicks = 0
 mutable resetClicks = 0
-mutable lastXbar = null  // Store the previous xbar
+mutable lastSamplesPerClick = 1
 ```
 
 ```{ojs}
-//| echo: false
-
 // Edge-trigger the Reset
 {
   if (reset > resetClicks) {
     mutable meanHistory = [];
     mutable resetClicks = reset;
-    mutable lastXbar = null;  // Also reset the stored xbar
   }
-  return html``; // <- prevents "undefined" from being shown
+  return html``;
 }
 
-// Edge-trigger the Resample: save the PREVIOUS mean before generating new sample
+// Reset resampleClicks when samplesPerClick changes
+{
+  if (controls.samplesPerClick !== lastSamplesPerClick) {
+    mutable lastSamplesPerClick = controls.samplesPerClick;
+    mutable resampleClicks = 0; // Reset to match the new button's counter
+  }
+  return html``;
+}
+
+// Edge-trigger the Resample: add current mean to history then generate new sample
 {
   if (resample > resampleClicks) {
-    // If we have a previous mean stored, add it to history
-    if (lastXbar !== null) {
-      mutable meanHistory = [...meanHistory, lastXbar];
+    // Add the current mean to history first
+    mutable meanHistory = [...meanHistory, xbar];
+    
+    // If doing multiple samples, add the additional ones
+    if (controls.samplesPerClick > 1) {
+      const additionalMeans = [];
+      for (let i = 1; i < controls.samplesPerClick; i++) {
+        const rand = d3.randomNormal.source(d3.randomLcg(rngSeed + i))(controls.trueMu, controls.trueSigma);
+        const sample = d3.range(controls.n).map(rand);
+        additionalMeans.push(d3.mean(sample));
+      }
+      mutable meanHistory = [...meanHistory, ...additionalMeans];
     }
-    // Store current mean for next time
-    mutable lastXbar = xbar;
-    // Then bump seed for new sample
-    mutable rngSeed = rngSeed + 1;
+    
+    // Update seed for next sample (which will be displayed)
+    mutable rngSeed = rngSeed + controls.samplesPerClick;
     mutable resampleClicks = resample;
   }
-  return html``; // <- prevents "undefined" from being shown
+  return html``;
 }
 ```
 
 
 ```{ojs}
-//| echo: false
-
-// --- Buttons at the top ---
-bodyFont = getComputedStyle(document.body).fontFamily
-
 // Helper to make a styled Inputs.button
 function styledButton(label, cls, options = {}) {
-  const el = Inputs.button(label, options);              // <form>…<button>…</button></form>
+  const el = Inputs.button(label, options);
   const btn = el.querySelector('button');
-  if (btn) btn.classList.add(cls);                       // add your custom class
+  if (btn) btn.classList.add(cls);
   return el;
 }
 
-// Define themed buttons
-viewof resample = styledButton("Resample", "btn-resample", {
-  reduce: c => (c ?? 0) + 1
-});
+// Define themed buttons with updated label for multi-sample
+viewof resample = styledButton(
+  controls.samplesPerClick > 1 
+    ? `Resample (×${controls.samplesPerClick})` 
+    : "Resample", 
+  "btn-resample", 
+  { reduce: c => (c ?? 0) + 1 }
+);
 
 viewof reset = styledButton("Reset", "btn-reset", {
   reduce: c => (c ?? 0) + 1
 });
 
-
-// viewof resample = Inputs.button("Resample", { reduce: c => (c ?? 0) + 1 }) 
-// viewof reset = Inputs.button("Reset", { reduce: c => (c ?? 0) + 1 })
-
-// --- Current sample depends on rngSeed + controls ---
+// --- Current sample (always visible) ---
 X = {
   const rand = d3.randomNormal.source(d3.randomLcg(rngSeed))(controls.trueMu, controls.trueSigma);
   return d3.range(controls.n).map(rand);
 }
 xbar = d3.mean(X)
 
-// ========= Helpers =========
-makeDensityReducer = (total) => (values, extent) =>
-  values.length / Math.max(1, total) / Math.max(1e-9, extent.x2 - extent.x1);
+// ========= Left panel: current sample ========= 
+// Compute histogram bins and densities once 
+leftBins = d3.bin().domain(xDomain).thresholds(controls.bins)(X)
+leftDensities = leftBins.map(b => b.length / controls.n / Math.max(1e-9, b.x1 - b.x0) )
+leftYMax = Math.max(0.1, d3.max(leftDensities) || 0.1);
 
-// ========= Left panel: current sample (histogram + dots at y=0) =========
-leftDensity = makeDensityReducer(controls.n)
-xExtent = d3.extent(X)
+// ========= Shared computation =========
 xPad = 3 * controls.trueSigma
-xDomain = [xExtent[0] - 0.1 * (xPad || 1), xExtent[1] + 0.1 * (xPad || 1)]
-
-// === Compute yMax from actual binned densities ===
-bins = d3.bin().domain(xDomain).thresholds(controls.bins)(X);
-densities = bins.map(b =>
-  (b.length / Math.max(1, controls.n)) / Math.max(1e-9, (b.x1 - b.x0))
-);
-yMax = d3.max(densities);
-stickHeight = 0.1 * yMax; // 10% of the current y-range used by the histogram
+xDomain = [controls.trueMu - xPad, controls.trueMu + xPad]
+mid      = 0.5 * (xDomain[0] + xDomain[1]);
+anchor   = xbar < mid ? "start" : "end";   // right of line if on left half, else left
 
 leftPlot = Plot.plot({
   width: Math.min(600, Math.max(320, width/2 - 20)),
   height: 320,
   style: {
     background: "var(--plot-panel-bg)",
-    color: "var(--brand-fg)",          // drives 'currentColor'
-    fontFamily: bodyFont, 
+    color: "var(--brand-fg)",
+    fontFamily: bodyFont,
     fontSize: 14,
-  }, 
+  },
   x: { label: "Data", domain: xDomain },
-  y: { label: "Density" },
+  y: { label: "Density", domain: [0, leftYMax * 1.1] },
   marks: [
     // histogram
-    Plot.rectY(
-      X,
-      Plot.binX(
-        { y: leftDensity },
-        {
-          x: d => d,
-          thresholds: controls.bins,
-          inset: 0,
-          fillOpacity: 0.4,
-          fill: "var(--brand-teal)"
-        }
-      )
-    ),
-    // raw points
-    // Plot.dot(
-    //   X.map(x => ({ x, y: 0 })),
-    //   {
-    //     x: "x",
-    //     y: "y",
-    //     r: 2,
-    //     fillOpacity: 0.9,
-    //     fill: "var(--brand-teal)",
-    //     symbol: "cross"
-    //   }
-    // ),
-    Plot.ruleX(
-    X,
-    { y1: 0, y2: yMax * 0.05, stroke: "var(--brand-teal)", strokeWidth: 3, strokeOpacity: 1.}
-    ),
-    // xbar reference
-    Plot.ruleX([xbar], { stroke: "currentColor", strokeDasharray: "4,3" }),
-    Plot.dot([{ x: xbar, y: 0 }], { x: "x", y: "y", r: 3, fill: "currentColor" }),
-    Plot.ruleY([0])
+    Plot.rectY(leftBins, {
+      x1: d => d.x0,
+      x2: d => d.x1,
+      y: d => d.length / controls.n / Math.max(1e-9, d.x1 - d.x0),
+      fill: "var(--brand-teal)",
+      fillOpacity: 0.4
+    }),
+
+    // ticks at data points
+    Plot.ruleX(X, {
+      y1: 0,
+      y2: leftYMax * 0.05,
+      stroke: "var(--brand-teal)",
+      strokeWidth: 2,
+      strokeOpacity: 0.8
+    }),
+
+    // sample mean line + label
+    Plot.ruleX([xbar], {
+      stroke: "currentColor",
+      strokeDasharray: "4,3",
+      strokeWidth: 2
+    }),
+    // label 
+    Plot.text([xbar], {
+      x: d => d,
+      y: leftYMax * 0.95,
+      text: d => `x̄ = ${d.toFixed(2)}`,
+      textAnchor: anchor,
+      dx: xbar < mid ? 8 : -8,
+      dy: -2,
+      fontSize: 14,
+      fill: "currentColor"
+    }),
+    Plot.ruleY([0]),
   ]
-})
+});
 
-// ========= Right panel: saved sample means (strip + hist + optional true curve) =========
+// ========= Right panel: saved sample means =========
 means = meanHistory
-rightDensity = makeDensityReducer(means.length)
 
+// Domain for right panel
 mPad = 3 * controls.trueSigma / Math.sqrt(controls.n)
-meansDomain = means.length ? d3.extent(means) : [controls.trueMu - mPad, controls.trueMu + mPad]
-mDomain = [
-  Math.min(meansDomain[0], controls.trueMu - mPad),
-  Math.max(meansDomain[1], controls.trueMu + mPad)
-]
+mDomain = means.length > 0 
+  ? [
+      Math.min(d3.min(means), controls.trueMu - mPad, xbar - 0.1),
+      Math.max(d3.max(means), controls.trueMu + mPad, xbar + 0.1)
+    ]
+  : [controls.trueMu - mPad, controls.trueMu + mPad]
 
-sampleMeanPdf = (x) =>
-  (1 / Math.sqrt(2 * Math.PI * (controls.trueSigma**2 / controls.n))) *
-  Math.exp(-((x - controls.trueMu)**2) / (2 * (controls.trueSigma**2 / controls.n)))
+// True distribution PDF
+sampleMeanPdf = (x) => {
+  const variance = controls.trueSigma ** 2 / controls.n;
+  return (1 / Math.sqrt(2 * Math.PI * variance)) *
+    Math.exp(-((x - controls.trueMu) ** 2) / (2 * variance));
+}
 
-pdfXs = d3.scaleLinear().domain(mDomain).ticks(200)
-pdfData = pdfXs.map(x => ({ x, y: sampleMeanPdf(x) }))
+pdfData = d3.range(mDomain[0], mDomain[1], (mDomain[1] - mDomain[0]) / 200)
+  .map(x => ({ x, y: sampleMeanPdf(x) }));
+
+// Compute histogram for means if we have any
+rightBins = means.length > 0 
+  ? d3.bin().domain(mDomain).thresholds(controls.bins)(means)
+  : [];
+rightDensities = rightBins.map(b => 
+  b.length / means.length / Math.max(1e-9, b.x1 - b.x0)
+);
+rightYMax = Math.max(
+  d3.max(rightDensities) || 0.1,
+  controls.showTrue ? d3.max(pdfData, d => d.y) || 0.1 : 0.1
+);
 
 rightPlot = Plot.plot({
   width: Math.min(600, Math.max(320, width/2 - 20)),
   height: 320,
-  style: {                     // make the figure match your theme
+  style: {
     background: "var(--plot-panel-bg)",
-    color: "var(--brand-fg)",   // this drives 'currentColor'
-    fontFamily: bodyFont, 
+    color: "var(--brand-fg)",
+    fontFamily: bodyFont,
     fontSize: 14,
   },
   x: { label: "x̄", domain: mDomain },
-  y: { label: "Density" },
+  y: { label: "Density", domain: [0, rightYMax * 1.1] },
   marks: [
-    Plot.rectY(
-      means,
-      Plot.binX(
-        { y: rightDensity },
-        { x: d => d, thresholds: controls.bins, inset: 0, fillOpacity: 0.3,
-          fill: "var(--brand-red)" }
-      )
-    ),
-    Plot.dot(means.map(m => ({ x: m, y: 0 })), {
-      x: "x", y: "y", r: 2, fillOpacity: 0.7, fill: "var(--brand-red)"
+    // Histogram of means
+    means.length > 0 ? Plot.rectY(
+      rightBins,
+      {
+        x1: d => d.x0,
+        x2: d => d.x1,
+        y: d => d.length / means.length / (d.x1 - d.x0),
+        fill: "var(--brand-red)",
+        fillOpacity: 0.3
+      }
+    ) : null,
+    // Vertical lines for saved means (like left plot)
+    means.length > 0 ? Plot.ruleX(means, {
+      y1: 0,
+      y2: rightYMax * 0.05,
+      stroke: "var(--brand-red)",
+      strokeWidth: 2,
+      strokeOpacity: 0.8
+    }) : null,
+    // Current sample mean (not yet in history)
+    Plot.ruleX([xbar], {
+      y1: 0,
+      y2: rightYMax * 0.07,
+      stroke: "currentColor",
+      strokeWidth: 3,
+      strokeOpacity: 1
     }),
-    Plot.dot([{ x: xbar, y: 0 }], {
-      x: "x", y: "y", r: 4, fill: "currentColor"     // uses style.color above
+    // Label for current mean
+    Plot.text([xbar], {
+      x: d => d,
+      y: rightYMax * 0.08,
+      text: "current",
+      textAnchor: "middle",
+      fontSize: 10,
+      fill: "currentColor"
     }),
-    ...(controls.showTrue
-      ? [Plot.line(pdfData, { x: "x", y: "y", strokeWidth: 2, stroke: "var(--brand-red)" })]
-      : []
-    ),
+    // True distribution
+    Plot.line(pdfData, {
+      x: "x",
+      y: "y",
+      strokeWidth: 2,
+      stroke: "var(--brand-red)",
+      strokeOpacity: controls.showTrue ? 1 : 0
+    }),
     Plot.ruleY([0])
-  ]
+  ].filter(d => d !== null)
 })
 
 // ========= Display =========
-
-
 {
-  // Make the forms behave nicely in the grid
   for (const f of [viewof resample, viewof reset]) {
     f.style.margin = "0";
-    f.style.width = "100%";      // inline style beats the library rule
+    f.style.width = "100%";
     f.style.maxWidth = "none";
-    f.style.display = "flex";    // so we can push the button left/right
+    f.style.display = "flex";
   }
-  // Left button to the left, right button to the right
   viewof resample.style.justifyContent = "flex-start";
-  viewof reset.style.justifyContent    = "flex-end";
+  viewof reset.style.justifyContent = "flex-end";
 
   return html`<div class="ojs-toolbar-grid">
     <div class="left">${viewof resample}</div>
     <div class="center">
-      ${md`${tex`\bar{x} = ${xbar.toFixed(2)}`}`}
+      <div>${tex`\bar{x} = ${xbar.toFixed(2)}`}</div>
+      <div style="font-size:0.8em; opacity:0.7">
+        ${means.length} sample${means.length !== 1 ? 's' : ''} collected
+      </div>
     </div>
     <div class="right">${viewof reset}</div>
   </div>
@@ -352,7 +405,7 @@ rightPlot = Plot.plot({
   <style>
     .ojs-toolbar-grid{
       display:grid;
-      grid-template-columns:1fr auto 1fr; /* left, middle, right */
+      grid-template-columns:1fr auto 1fr;
       align-items:center;
       width:100%;
       box-sizing:border-box;
@@ -364,8 +417,8 @@ rightPlot = Plot.plot({
       max-width:none !important;
       display:flex !important;
     }
-    .ojs-toolbar-grid .left  form{ justify-content:flex-start !important; }
-    .ojs-toolbar-grid .right form{ justify-content:flex-end   !important; }
+    .ojs-toolbar-grid .left form{ justify-content:flex-start !important; }
+    .ojs-toolbar-grid .right form{ justify-content:flex-end !important; }
 
     .btn.btn-resample{ background: var(--brand-teal); color:#fff; border:none; }
     .btn.btn-resample:hover{ background: var(--brand-teal-hover); }
@@ -385,9 +438,6 @@ rightPlot = Plot.plot({
   </style>`;
 }
 
-
-
-
 html`<div style="max-width:100%; display:flex; gap:14px; align-items:flex-start; flex-wrap:nowrap;">
   <div>${leftPlot}</div>
   <div>${rightPlot}</div>
@@ -395,115 +445,23 @@ html`<div style="max-width:100%; display:flex; gap:14px; align-items:flex-start;
 ```
 
 ```{ojs}
-html`<style>
-details.controls-root > summary {
-  list-style: none; cursor: pointer; user-select: none;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 8px 10px;
-  font-weight: 600; font-size: 13px;
-  color: var(--fg-strong);
-  display: flex; align-items: center; gap: 8px;
-}
-details.controls-root > summary::-webkit-details-marker { display: none; }
-details.controls-root[open] > summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
-
-/* ---------- Compact Inputs (fixed slider alignment) ---------- */
-.controls-col label { font-size: 12px !important; }
-
-.controls-col input[type="range"] {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 18px;                     /* overall control box height */
-  background: transparent;
-  vertical-align: middle;
-  accent-color: var(--brand-teal, #55C3CB);
-}
-
-/* WebKit track */
-.controls-col input[type="range"]::-webkit-slider-runnable-track {
-  height: 4px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--brand-teal, #55C3CB) 35%, transparent);
-}
-
-/* WebKit thumb */
-.controls-col input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 12px; height: 12px; border-radius: 50%;
-  background: var(--brand-teal, #55C3CB);
-  border: 0;
-  /* Center the 12px thumb over the 4px track: (4 - 12)/2 = -4px */
-  margin-top: -4px;
-}
-
-/* Firefox track */
-.controls-col input[type="range"]::-moz-range-track {
-  height: 4px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--brand-teal, #55C3CB) 35%, transparent);
-}
-
-/* Firefox thumb (auto-centred; no negative margin needed) */
-.controls-col input[type="range"]::-moz-range-thumb {
-  width: 12px; height: 12px; border-radius: 50%;
-  background: var(--brand-teal, #55C3CB);
-  border: 0;
-}
-
-/* Optional: hide the default filled "progress" colour in Firefox */
-.controls-col input[type="range"]::-moz-range-progress {
-  height: 4px; border-radius: 999px;
-  background: color-mix(in srgb, var(--brand-teal, #55C3CB) 35%, transparent);
-}
-
-.controls-grid {
-  display: grid;
-  grid-template-columns: minmax(260px,1fr) minmax(260px,1fr);
-  gap: 12px;
-  border: 1px solid var(--border); border-top: none;
-  border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;
-  padding: 10px;
-  background: var(--surface-weak);
-  overflow-x: auto;
-}
-.controls-col { min-width: 260px; }
-.controls-col h4 {
-  margin: 0 0 6px 0; font-size: 12px; font-weight: 700;
-  color: var(--fg-muted);
-}
-
-/* chevron */
-details.controls-root > summary::before {
-  content: ""; display: inline-block; margin-right: 8px; width: 0; height: 0;
-  border-style: solid; border-width: 3px 0 3px 6px;
-  border-color: transparent transparent transparent var(--fg-strong);
-  transform: rotate(0deg); transform-origin: 3px 50%; transition: transform 50ms ease;
-}
-details.controls-root[open] > summary::before { transform: rotate(90deg); }
-</style>`
-
-/* ---------- One merged, collapsible control ---------- */
 viewof controls = {
-
-  // Left column: data & truth
   const leftForm = Inputs.form({
     n: Inputs.range([1, 400], { value: 10, step: 1, label: md`${tex`n`}` }),
     trueMu: Inputs.range([-2, 2], { value: 0, step: 0.1, label: md`${tex`\mu_{\text{true}}`}` }),
     trueSigma: Inputs.range([0.3, 3], { value: 1, step: 0.1, label: md`${tex`\sigma_{\text{true}}`}` })
   }, { submit: false });
 
-  // Right column: display & actions
   const rightForm = Inputs.form({
+    samplesPerClick: Inputs.range([1, 10], { 
+      value: 1, 
+      step: 1, 
+      label: "Samples per click" 
+    }),
     bins: Inputs.range([10, 60], { value: 24, step: 1, label: "Histogram bins" }),
-    showTrue: Inputs.toggle({ label: md`Show ${tex`\bar{X}`} distribution`, value: false }),
-    // include the buttons as inputs so their *click counts* become part of form.value
+    showTrue: Inputs.toggle({ label: md`Show ${tex`\bar{X}`} distribution`, value: false })
   }, { submit: false });
 
-  // Collapsible wrapper
   const root = html`<details class="controls-root" open>
     <summary>Simulation controls</summary>
     <div class="controls-grid">
@@ -511,10 +469,10 @@ viewof controls = {
       <div class="controls-col"><h4>Display & actions</h4></div>
     </div>
   </details>`;
+  
   root.querySelector(".controls-grid").children[0].append(leftForm);
   root.querySelector(".controls-grid").children[1].append(rightForm);
 
-  // Merge both forms into a single value object
   const getValue = () => ({ ...leftForm.value, ...rightForm.value });
   const update = () => {
     root.value = getValue();
@@ -523,12 +481,14 @@ viewof controls = {
 
   leftForm.addEventListener("input", update);
   rightForm.addEventListener("input", update);
-  // make sure button clicks trigger updates even if no 'input' is fired
 
   queueMicrotask(update);
   return root;
 }
+```
 
+```{=html}
+</details>
 ```
 
 ---
@@ -548,7 +508,7 @@ In general, however, deriving an exact sampling distribution is **hard**, becaus
 
 In a few special cases, however, we can derive the full sampling distribution of the estimator.
 
-::: {.example #exm-normal-sample-mean}
+::: {.prp #prp-normal-sample-mean}
 #### Normal Random Sample: Sampling Distribution of $\bar{X}$
 
 If
@@ -561,7 +521,7 @@ $$
 $$
 :::
 
-::: {.solution #sol-normal-sample-mean}
+::: {.prf #prf-normal-sample-mean}
 Averages are linear combinations: $\bar X=\tfrac1n\sum_{i=1}^n X_i$. By the <span class="xref-no-num">[properties of the normal distribution @sec-normal-properties]</span>, a linear combination of independent Normal variables is Normal. Moreover,
 $$
 \mathrm{E}[\bar X]=\tfrac1n\sum \mathrm{E}[X_i]=\mu,\qquad
@@ -571,35 +531,169 @@ So $\bar X\sim \mathcal N\!\left(\mu,\sigma^2/n\right)$.
 :::
 
 
-::: {.example #exm-normal-sample-mean}
+::: {.prp #prp-normal-sample-variance}
 #### Normal Random Sample: Sampling Distribution of $S^2$
 
 If
+
 $$
 X_1,\dots,X_n \overset{\text{iid}}{\sim} \mathcal{N}(\mu,\sigma^2),
 $$
+
 then
 $$
-S^2 \;\sim\; \chi^2_{n-1}
+\dfrac{(n-1)S^2}{\sigma^2} \;\sim\; \chi^2_{\,n-1}.
 $$
+
 :::
 
-::: {.solution #sol-normal-sample-mean}
-Averages are linear combinations: $\bar X=\tfrac1n\sum_{i=1}^n X_i$. By the <span class="xref-no-num">[properties of the normal distribution @sec-normal-properties]</span>, a linear combination of independent Normal variables is Normal. Moreover,
-$$
-\mathrm{E}[\bar X]=\tfrac1n\sum \mathrm{E}[X_i]=\mu,\qquad
-\mathrm{Var}(\bar X)=\tfrac{1}{n^2}\sum \mathrm{Var}(X_i)=\frac{\sigma^2}{n}.
-$$
-So $\bar X\sim \mathcal N\!\left(\mu,\sigma^2/n\right)$.
-:::
+::: {.prf #prf-normal-sample-variance}
 
+#### Not Examinable
+
+The proof relies on the following *property* of the $\chi^2_p$ distribution: For $p$ i.i.d. standard normal random variables
+$$
+Z_1,\ldots, Z_p \overset{\text{iid}}{\sim} \mathcal{N}(0, 1)
+$$
+their *squared* sum is $\chi^2_p$ distributed:
+$$
+\sum_{i=1}^p Z_i^2 \sim \chi^2_p.
+$$
+
+The key idea in the following proof to express $\dfrac{(n-1)S^2}{\sigma^2}$ as a sum of $n-1$ i.i.d. standard normal random variables.
+
+**Step 1 (Standardise and express $S^2$ as a residual sum of squares).**
+Define the standardised variables
+
+$$
+Y_i \;=\; \frac{X_i-\mu}{\sigma}\quad (i=1,\dots,n), \qquad
+\text{so } Y_1,\dots,Y_n \overset{\text{iid}}{\sim} \mathcal{N}(0, 1).
+$$
+
+Let $\bar Y = \tfrac1n\sum_{i=1}^n Y_i = \dfrac{\bar X-\mu}{\sigma}$. Then
+
+$$
+\sum_{i=1}^n (X_i-\bar X)^2
+= \sigma^2 \sum_{i=1}^n \bigl( Y_i-\bar Y \bigr)^2,
+$$
+
+so
+
+$$
+\frac{(n-1)S^2}{\sigma^2}
+= \sum_{i=1}^n \bigl( Y_i-\bar Y \bigr)^2.
+$$
+
+Thus $\dfrac{(n-1)S^2}{\sigma^2}$ is the **sum of squares of residuals** after projecting $Y$ onto its mean.
+
+The remaining steps are to manipulate $\sum_{i=1}^n \bigl( Y_i-\bar Y \bigr)^2$ as a sum of $n-1$ i.i.d. squared standard Normal random variables. 
+
+**Step 2 (Define $n-1$ “difference of mean vs next observation” variables).**
+For $k=1,\dots,n-1$, let $\bar Y_k=\tfrac1k\sum_{i=1}^k Y_i$ and define
+
+$$
+Z_k \;=\; \sqrt{\frac{k}{k+1}}\;\bigl(\bar Y_k - Y_{k+1}\bigr).
+$$
+
+Each $Z_k$ is a linear combination of independent $\mathcal N(0,1)$, hence Normal. Also,
+
+$$
+\mathrm{E}[Z_k]=0,\qquad
+\mathrm{Var}(Z_k)=\frac{k}{k+1}\Bigl(\mathrm{Var}(\bar Y_k)+\mathrm{Var}(Y_{k+1})\Bigr)
+=\frac{k}{k+1}\Bigl(\frac{1}{k}+1\Bigr)=1,
+$$
+
+so $Z_k\sim \mathcal N(0,1)$.
+
+**Step 3 (The $Z_k$ are independent).**
+
+Fix $1\le j<k\le n-1$. Write $Z_j=a_j(\bar Y_j-Y_{j+1})$ with $a_j=\sqrt{j/(j+1)}$, and
+
+$$
+Z_k=a_k(\bar Y_k-Y_{k+1}),\qquad a_k=\sqrt{\frac{k}{k+1}},\qquad
+\bar Y_k=\frac{1}{k}\sum_{i=1}^k Y_i.
+$$
+
+View each $Z$ as a linear combination of the $Y_i$. The coefficients are:
+
+* for $Z_j$: $a_j\cdot \frac1j$ on $Y_1,\dots,Y_j$; $-a_j$ on $Y_{j+1}$; $0$ otherwise;
+* for $Z_k$: $a_k\cdot \frac1k$ on $Y_1,\dots,Y_k$; $-a_k$ on $Y_{k+1}$; $0$ otherwise.
+
+Using independence and $\mathrm{Var}(Y_i)=1$,
+
+$$
+\mathrm{Cov}(Z_j,Z_k)=\sum_{i=1}^n \text{(coeff of }Y_i\text{ in }Z_j)\times \text{(coeff of }Y_i\text{ in }Z_k).
+$$
+
+Only $i=1,\dots,j$ and $i=j+1$ overlap. Hence
+
+$$
+\mathrm{Cov}(Z_j,Z_k)
+=\sum_{i=1}^j \Bigl(a_j\frac1j\Bigr)\Bigl(a_k\frac1k\Bigr)
+\;+\; \Bigl(-a_j\Bigr)\Bigl(a_k\frac1k\Bigr)
+= a_ja_k\Bigl(\frac{j}{jk}-\frac{1}{k}\Bigr)=0.
+$$
+
+Thus the $Z_k$ are pairwise uncorrelated. Since they are all Normal (linear combos of independent Normals), *uncorrelated $\Rightarrow$ independent*. So $Z_1,\dots,Z_{n-1}$ are **independent** $\mathcal N(0,1)$.
+
+**Step 4 ($\tfrac{(n-1)S^2}{\sigma^2}= \sum_{k=1}^{n-1} Z_k^2$ ).**
+
+Define $S_k=\sum_{i=1}^k (Y_i-\bar Y_k)^2$ (so $S_n=\sum_{i=1}^n (Y_i-\bar Y)^2$). Write $Y_i-\bar Y_{k+1} = (Y_i-\bar Y_k) + (\bar Y_k-\bar Y_{k+1})$, use $\sum_{i=1}^k (Y_i-\bar Y_k)=0$ to kill the cross-term, and note
+$\bar Y_{k+1}-\bar Y_k=\tfrac{Y_{k+1}-\bar Y_k}{k+1}$.
+
+Therefore, we have the recursive formula for $S_k$:
+$$
+S_{k+1} \;=\; S_k \;+\; \frac{k}{k+1}\,\bigl(\bar Y_k - Y_{k+1}\bigr)^2
+\qquad (k=1,\dots,n-1).
+$$
+
+By induction,
+$$
+S_n
+=\sum_{k=1}^{n-1}\frac{k}{k+1}\,\bigl(\bar Y_k - Y_{k+1}\bigr)^2
+=\sum_{k=1}^{n-1} Z_k^2.
+$$
+
+**Conclusion**
+From the previous step, we have shown
+
+$$
+\frac{(n-1)S^2}{\sigma^2}
+=\sum_{i=1}^n (Y_i-\bar Y)^2
+=\sum_{k=1}^{n-1} Z_k^2,
+$$
+
+a sum of $n-1$ **independent standard Normal squares**, hence
+
+$$
+\boxed{\;\frac{(n-1)S^2}{\sigma^2} \sim \chi^2_{\,n-1}\;}.
+$$
+
+
+:::
 
 ## Properties of Estimators {#sec-estimator-properties}
 
-When we use a statistic to estimate a parameter, we want to know how *good* it is. Three core ideas are **bias**, **variance**, and **standard error**.
+When we use a statistic to estimate a parameter, we want to judge how *good* an estimator is.
+
+Three fundamental properties guide this assessment:
+
+1. **Bias:** Does the estimator hit the right target on average?
+
+2. **Variance/Standard Error:** How much does it fluctuate from sample to sample?
+
+3. **Mean Squared Error (MSE):** A combined measure that balances both bias and variance.
+
+In this section we first look at <span class="xref-no-num">[bias @def-bias]</span>, <span class="xref-no-num">[variance @def-variance]</span>, and <span class="xref-no-num">[standard error @def-se]</span>, then bring them together through the <span class="xref-no-num">[MSE @def-mse]</span>.
 
 ::: {.remark #rem-estimators}
-These properties can often be studied without the full sampling distribution: it is enough to work with **moments** (expectations/variances) of $\hat\theta$.  
+### Properties via Moments
+
+In the previous section we introduced the <span class="xref-no-num">[sampling distribution @def-sampling-distribution]</span> of an estimator. 
+
+The key idea for what follows is that we don’t need the entire distribution to study how *good* an estimator is. The main properties — bias, variance, standard error, and MSE — can all be expressed in terms of expectations (i.e. <span class="xref-no-num">[moments @def-moments]</span>). 
+
+So in practice, we will usually only need to work with the first and second moments of $\hat\theta$, rather than its full sampling distribution.
 :::
 
 ### Bias, Variance, and Standard Error
@@ -621,7 +715,7 @@ $$
 ::: {.example #exm-bias1}
 ### Bias of the Sample Mean
 
-Suppose $X_1,\dots,X_n \overset{iid}{\sim} \mathrm{Distribution}(\mu,\sigma^2)$ with mean $\mu$.  
+Suppose $X_1,\dots,X_n \overset{\text{iid}}{\sim} \mathrm{Distribution}(\mu,\sigma^2)$ with mean $\mu$.  
 Show that the sample mean
 
 $$
@@ -705,7 +799,7 @@ $$
 $$
 Consider the class of estimators
 $$
-S_c^{2} \;=\; c \sum_{i=1}^n (X_i-\bar X)^2.
+S_c^{2} \;=\; \frac{1}{c} \sum_{i=1}^n (X_i-\bar X)^2.
 $$
 Find $c$ such that $S_c^{2}$ is **unbiased** for $\sigma^2$.
 :::
@@ -742,15 +836,500 @@ $$
 $$
 It follows that
 $$
-\mathrm{E}[S_c^{2}] = c\,(n-1)\sigma^2.
+\mathrm{E}[S_c^{2}] = \frac{(n-1)\sigma^2}{c}
 $$
-Unbiasedness $\mathrm{E}[S_c^{2}]=\sigma^2$ gives $c=\dfrac{1}{n-1}$.
+Unbiasedness $\mathrm{E}[S_c^{2}]=\sigma^2$ gives $c=n-1$.
 
 **Conclusion.** The unbiased estimator is
 $$
 S^{2} \;=\; \frac{1}{n-1}\sum_{i=1}^n (X_i-\bar X)^2.
 $$
 :::
+
+In the next visualisation we look at the *bias* of the *naive sample variance*:
+
+$$
+S^2_n = \frac{1}{n}\sum_{i=1}^n (X_i-\bar{X})^2.
+$$
+
+From @exm-bias-sv, the bias is
+
+$$
+\mathrm{Bias}(S^2_n) = -\frac{\sigma^2}{n}.
+$$
+
+This means $S^2_n$ **systematically underestimates** the true population variance $\sigma^2$.
+
+---
+
+```{=html}
+<details>
+<summary><strong>Show Visualisation</strong></summary>
+```
+
+In the right-hand panel of the simulation, notice how the sampling distribution of $S^2_n$ is centred *below* $\sigma^2$. As $n$ increases, the bias shrinks (since $-\sigma^2/n \to 0$), but for small $n$ the underestimation is quite visible.
+
+```{ojs}
+addLegendTopRight = (svg, items, {
+  padding = 8,
+  gap = 10,                // you can keep this small now
+  swatch = 17,
+  fontFamily = bodyFont,
+  fontSize = 12,
+  corner = 10,             // distance from top-right
+  bg = "var(--header-bg)",
+  border = "var(--border)"
+} = {}) => {
+  const root = d3.select(svg);
+
+  // Build legend; park it off-screen so it still participates in layout.
+  const g = root.append("g")
+    .attr("class", "plot-legend")
+    .attr("font-family", fontFamily)
+    .attr("font-size", fontSize)
+    .attr("pointer-events", "none")
+    .attr("transform", "translate(-1000000,-1000000)");
+
+  const rowGap = 8;
+  const rows = g.selectAll("g.row")
+    .data(items)
+    .join("g")
+      .attr("class", "row")
+      .attr("transform", (d, i) => `translate(0, ${i * (fontSize + rowGap) + fontSize / 2})`);
+
+  // swatch
+  rows.append("line")
+    .attr("x1", 0).attr("x2", swatch)
+    .attr("y1", 0).attr("y2", 0)
+    .attr("stroke", d => d.stroke)
+    .attr("stroke-width", d => d.strokeWidth ?? 2)
+    .attr("stroke-dasharray", d => d.dasharray ?? null)
+    .attr("stroke-linecap", "butt");
+
+  // label
+  rows.append("text")
+    .attr("x", swatch + gap)
+    .attr("y", 0)
+    .attr("dominant-baseline", "middle")
+    .attr("fill", d => d.stroke)
+    .attr("font-weight", "600")
+    .text(d => d.label);
+
+  const labels = rows.select("text");
+
+  // Background (inserted now; sized after measurement)
+  const bgRect = g.insert("rect", ":first-child")
+    .attr("class", "legend-bg")
+    .attr("rx", 8).attr("ry", 8)
+    .attr("fill", bg)
+    .attr("fill-opacity", 0.9)
+    .attr("stroke", border);
+
+  function place() {
+    // 1) Ensure labels' *painted* left edge starts at swatch+gap
+    let adjusted = false;
+    labels.each(function () {
+      const t = this;
+      const b = t.getBBox();
+      const desiredLeft = swatch + gap;   // in the row's coord system
+      const overshoot = desiredLeft - b.x; // >0 means glyph extends left
+      if (overshoot > 0.1) {
+        const x = parseFloat(t.getAttribute("x")) || 0;
+        t.setAttribute("x", x + overshoot);
+        adjusted = true;
+      }
+    });
+
+    // If we adjusted any label, schedule another frame so BBoxes settle
+    if (adjusted) {
+      requestAnimationFrame(place);
+      return;
+    }
+
+    // 2) Size background to content
+    const content = g.node().getBBox();
+    if (!content || content.width === 0 || content.height === 0) {
+      requestAnimationFrame(place);
+      return;
+    }
+
+    const boxW = content.width + 2 * padding;
+    const boxH = content.height + 2 * padding;
+
+    bgRect
+      .attr("x", content.x - padding)
+      .attr("y", content.y - padding)
+      .attr("width", boxW)
+      .attr("height", boxH);
+
+    // 3) Anchor to SVG viewBox top-right
+    const vb = svg.viewBox?.baseVal;
+    const vbx = vb?.x ?? 0;
+    const vby = vb?.y ?? 0;
+    const vbw = vb?.width
+      ?? (+svg.getAttribute("width") || svg.getBBox().width || svg.getBoundingClientRect().width);
+
+    const tx = Math.round(vbx + vbw - boxW - corner);
+    const ty = Math.round(vby + corner);
+
+    g.attr("transform", `translate(${tx}, ${ty})`);
+  }
+
+  requestAnimationFrame(place);
+};
+
+```
+
+```{ojs}
+mutable biasRngSeed = 1
+mutable varianceHistory = []
+mutable biasResampleClicks = 0
+mutable biasResetClicks = 0
+mutable biasLastSamplesPerClick = 1
+```
+
+```{ojs}
+// Edge-trigger the Reset
+{
+  if (biasReset > biasResetClicks) {
+    mutable varianceHistory = [];
+    mutable biasResetClicks = biasReset;
+  }
+  return html``;
+}
+
+// Reset biasResampleClicks when samplesPerClick changes
+{
+  if (biasControls.biasSamplesPerClick !== biasLastSamplesPerClick) {
+    mutable biasLastSamplesPerClick = biasControls.biasSamplesPerClick;
+    mutable biasResampleClicks = 0;
+  }
+  return html``;
+}
+
+// Edge-trigger the Resample: add current variance to history then generate new sample
+{
+  if (biasResample > biasResampleClicks) {
+    // Add the current variance to history first
+    mutable varianceHistory = [...varianceHistory, sampleVar];
+    
+    // If doing multiple samples, add the additional ones
+    if (biasControls.biasSamplesPerClick > 1) {
+      const additionalVariances = [];
+      for (let i = 1; i < biasControls.biasSamplesPerClick; i++) {
+        const rand = d3.randomNormal.source(d3.randomLcg(biasRngSeed + i))(biasControls.biasTrueMu, biasControls.biasTrueSigma);
+        const sample = d3.range(biasControls.biasN).map(rand);
+        const mean = d3.mean(sample);
+        // Biased variance estimator (1/n)
+        const variance = d3.sum(sample, d => (d - mean) ** 2) / biasControls.biasN;
+        additionalVariances.push(variance);
+      }
+      mutable varianceHistory = [...varianceHistory, ...additionalVariances];
+    }
+    
+    // Update seed for next sample (which will be displayed)
+    mutable biasRngSeed = biasRngSeed + biasControls.biasSamplesPerClick;
+    mutable biasResampleClicks = biasResample;
+  }
+  return html``;
+}
+```
+
+
+```{ojs}
+// Helper to make a styled button (reuse from above but with bias prefix)
+function biasStyledButton(label, cls, options = {}) {
+  const el = Inputs.button(label, options);
+  const btn = el.querySelector('button');
+  if (btn) btn.classList.add(cls);
+  return el;
+}
+
+// Define themed buttons with updated label for multi-sample
+viewof biasResample = biasStyledButton(
+  biasControls.biasSamplesPerClick > 1 
+    ? `Resample (×${biasControls.biasSamplesPerClick})` 
+    : "Resample", 
+  "btn-resample", 
+  { reduce: c => (c ?? 0) + 1 }
+);
+
+viewof biasReset = biasStyledButton("Reset", "btn-reset", {
+  reduce: c => (c ?? 0) + 1
+});
+
+// --- Current sample (always visible) ---
+biasX = {
+  const rand = d3.randomNormal.source(d3.randomLcg(biasRngSeed))(biasControls.biasTrueMu, biasControls.biasTrueSigma);
+  return d3.range(biasControls.biasN).map(rand);
+}
+biasXbar = d3.mean(biasX)
+// Biased variance estimator (1/n instead of 1/(n-1))
+sampleVar = d3.sum(biasX, d => (d - biasXbar) ** 2) / biasControls.biasN
+// Unbiased variance for comparison
+unbiasedVar = biasControls.biasN > 1 ? d3.sum(biasX, d => (d - biasXbar) ** 2) / (biasControls.biasN - 1) : 0
+
+// ========= Left panel: current sample ========= 
+biasLeftBins = d3.bin().domain(biasXDomain).thresholds(biasControls.biasBins)(biasX)
+biasLeftDensities = biasLeftBins.map(b => b.length / biasControls.biasN / Math.max(1e-9, b.x1 - b.x0))
+biasLeftYMax = Math.max(0.1, d3.max(biasLeftDensities) || 0.1);
+
+// ========= Shared computation =========
+biasXPad = 3 * biasControls.biasTrueSigma
+biasXDomain = [biasControls.biasTrueMu - biasXPad, biasControls.biasTrueMu + biasXPad]
+
+biasLeftPlot = Plot.plot({
+  width: Math.min(600, Math.max(320, width/2 - 20)),
+  height: 320,
+  marginTop: 20,
+  marginRight: 20,
+  marginBottom: 40,
+  marginLeft: 50,
+  style: {
+    background: "var(--plot-panel-bg)",
+    color: "var(--brand-fg)",
+    fontFamily: bodyFont,
+    fontSize: 14,
+  },
+  x: { label: "Data", domain: biasXDomain },
+  y: { label: "Density", domain: [0, biasLeftYMax * 1.1] },
+  marks: [
+    // histogram
+    Plot.rectY(biasLeftBins, {
+      x1: d => d.x0,
+      x2: d => d.x1,
+      y: d => d.length / biasControls.biasN / Math.max(1e-9, d.x1 - d.x0),
+      fill: "var(--brand-teal)",
+      fillOpacity: 0.4
+    }),
+    Plot.ruleY([0]),
+    // ticks at data points
+    Plot.ruleX(biasX, {
+      y1: 0,
+      y2: biasLeftYMax * 0.05,
+      stroke: "var(--brand-teal)",
+      strokeWidth: 2,
+      strokeOpacity: 0.8
+    }),
+  ]
+});
+
+// ========= Right panel: saved sample variances =========
+variances = varianceHistory
+trueVariance = biasControls.biasTrueSigma ** 2
+
+// Calculate empirical bias
+empiricalMean = variances.length > 0 ? d3.mean(variances) : null
+empiricalBias = empiricalMean !== null ? empiricalMean - trueVariance : null
+
+// Domain for right panel
+varPad = trueVariance * 2
+varDomain = variances.length > 0 
+  ? [
+      Math.min(d3.min(variances), 0),
+      Math.max(d3.max(variances), trueVariance + varPad, sampleVar + 0.1)
+    ]
+  : [0, trueVariance + varPad]
+
+// Compute histogram for variances if we have any
+biasRightBins = variances.length > 0 
+  ? d3.bin().domain(varDomain).thresholds(biasControls.biasBins)(variances)
+  : [];
+biasRightDensities = biasRightBins.map(b => 
+  b.length / variances.length / Math.max(1e-9, b.x1 - b.x0)
+);
+biasRightYMax = Math.max(
+  d3.max(biasRightDensities) || 0.1,
+  0.1
+);
+
+// ------- usage inside your cell that creates the plot -------
+biasRightPlot = {
+  // Ensure d3 exists in this runtime
+  const d3 = globalThis.d3 ?? await require("d3@7");
+
+  const svg = Plot.plot({
+    width: Math.min(600, Math.max(320, width / 2 - 20)),
+    height: 320,
+    style: {
+      background: "var(--plot-panel-bg)",
+      color: "var(--brand-fg)",
+      fontFamily: bodyFont,
+      fontSize: 14
+    },
+    x: { label: "sₙ²", domain: varDomain },
+    y: { label: "Density", domain: [0, biasRightYMax * 1.1] },
+    marks: [
+      variances.length > 0 ? Plot.rectY(
+        biasRightBins,
+        {
+          x1: d => d.x0,
+          x2: d => d.x1,
+          y: d => d.length / variances.length / (d.x1 - d.x0),
+          fill: "var(--brand-red)",
+          fillOpacity: 0.3
+        }
+      ) : null,
+      variances.length > 0 ? Plot.ruleX(variances, {
+        y1: 0,
+        y2: biasRightYMax * 0.05,
+        stroke: "var(--brand-red)",
+        strokeWidth: 2,
+        strokeOpacity: 0.8
+      }) : null,
+      Plot.ruleX([sampleVar], {
+        y1: 0,
+        y2: biasRightYMax * 0.07,
+        stroke: "currentColor",
+        strokeWidth: 3,
+        strokeOpacity: 1
+      }),
+      Plot.ruleX([trueVariance], {
+        stroke: "var(--brand-purple)",
+        strokeWidth: 3,
+        strokeOpacity: biasControls.biasShowTrue ? 1 : 0
+      }),
+      empiricalMean !== null && biasControls.biasShowTrue ? Plot.ruleX([empiricalMean], {
+        stroke: "var(--brand-red)",
+        strokeWidth: 2,
+        strokeDasharray: "6,3",
+        strokeOpacity: 1
+      }) : null,
+      Plot.ruleY([0])
+    ].filter(Boolean)
+  });
+
+  // Legend items
+  const items = [];
+  if (biasControls.biasShowTrue) {
+    items.push({ label: `σ² = ${trueVariance.toFixed(2)}`, stroke: "var(--brand-purple)", strokeWidth: 3 });
+  }
+  if (empiricalMean !== null && biasControls.biasShowTrue) {
+    items.push({ label: `E[Sₙ²] ≈ ${empiricalMean.toFixed(3)}`, stroke: "var(--brand-red)", strokeWidth: 2, dasharray: "6,3" });
+  }
+
+  if (items.length) addLegendTopRight(svg, items, { fontFamily: bodyFont, fontSize: 12, corner: 10 });
+
+  return svg;
+}
+
+
+// ========= Display =========
+{
+  for (const f of [viewof biasResample, viewof biasReset]) {
+    f.style.margin = "0";
+    f.style.width = "100%";
+    f.style.maxWidth = "none";
+    f.style.display = "flex";
+  }
+  viewof biasResample.style.justifyContent = "flex-start";
+  viewof biasReset.style.justifyContent = "flex-end";
+
+  return html`<div class="ojs-toolbar-grid">
+    <div class="left">${viewof biasResample}</div>
+    <div class="center">
+      ${empiricalBias !== null && biasControls.biasShowTrue ? html`
+      <div>${tex`s_n^2 = ${sampleVar.toFixed(3)} \,`}  and  ${tex`\, \text{Bias}(S_n^2) \approx ${empiricalBias.toFixed(3)}`}</div>
+      ` : html`<div>${tex`s^2 = ${sampleVar.toFixed(3)}`}</div>`}
+      <div style="font-size:0.8em; opacity:0.7">
+        ${variances.length} sample${variances.length !== 1 ? 's' : ''} collected
+      </div>
+    </div>
+    <div class="right">${viewof biasReset}</div>
+  </div>
+
+  <style>
+    .ojs-toolbar-grid{
+      display:grid;
+      grid-template-columns:1fr auto 1fr;
+      align-items:center;
+      width:100%;
+      box-sizing:border-box;
+      margin:0; padding:0;
+    }
+    .ojs-toolbar-grid form{
+      margin:0 !important;
+      width:100% !important;
+      max-width:none !important;
+      display:flex !important;
+    }
+    .ojs-toolbar-grid .left form{ justify-content:flex-start !important; }
+    .ojs-toolbar-grid .right form{ justify-content:flex-end !important; }
+
+    .btn.btn-resample{ background: var(--brand-teal); color:#fff; border:none; }
+    .btn.btn-resample:hover{ background: var(--brand-teal-hover); }
+    .btn.btn-reset{ background: var(--brand-red); color:#fff; border:none; }
+    .btn.btn-reset:hover{ background: var(--brand-red-hover); }
+    .btn.btn-resample:focus-visible,
+    .btn.btn-reset:focus-visible{
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+
+    .ojs-toolbar-grid .center{
+      text-align:center;
+      font-size:0.9rem;
+      color: var(--brand-fg);
+    }
+  </style>`;
+}
+
+html`<div style="max-width:100%; display:flex; gap:14px; align-items:flex-start; flex-wrap:nowrap;">
+  <div>${biasLeftPlot}</div>
+  <div>${biasRightPlot}</div>
+</div>`
+```
+
+```{ojs}
+viewof biasControls = {
+  const leftForm = Inputs.form({
+    biasN: Inputs.range([2, 100], { value: 5, step: 1, label: md`${tex`n`}` }),
+    biasTrueMu: Inputs.range([-2, 2], { value: 0, step: 0.1, label: md`${tex`\mu_{\text{true}}`}` }),
+    biasTrueSigma: Inputs.range([0.3, 3], { value: 1, step: 0.1, label: md`${tex`\sigma_{\text{true}}`}` })
+  }, { submit: false });
+
+  const rightForm = Inputs.form({
+    biasSamplesPerClick: Inputs.range([1, 10], { 
+      value: 1, 
+      step: 1, 
+      label: "Samples per click" 
+    }),
+    biasBins: Inputs.range([10, 60], { value: 24, step: 1, label: "Histogram bins" }),
+    biasShowTrue: Inputs.toggle({ label: md`Show empirical bias & true ${tex`\sigma^2`}`, value: true })
+  }, { submit: false });
+  
+  const root = html`<div class="controls-wrap">
+    <details class="controls-root" open>
+      <summary>Simulation controls</summary>
+      <div class="controls-grid">
+        <div class="controls-col"><h4>Data & truth size</h4></div>
+        <div class="controls-col"><h4>Display & actions</h4></div>
+      </div>
+    </details>
+  </div>`;
+
+  root.querySelector(".controls-grid").children[0].append(leftForm);
+  root.querySelector(".controls-grid").children[1].append(rightForm);
+
+  const getValue = () => ({ ...leftForm.value, ...rightForm.value });
+  const update = () => {
+    root.value = getValue();
+    root.dispatchEvent(new CustomEvent("input", { bubbles: true }));
+  };
+
+  leftForm.addEventListener("input", update);
+  rightForm.addEventListener("input", update);
+
+  queueMicrotask(update);
+  return root;
+}
+```
+
+```{=html}
+</details>
+```
+
+---
 
 ::: {.remark #rem-bias-sv-notes}
 #### Notes on @exm-bias-sv
@@ -785,7 +1364,9 @@ It gives a scale for how much we expect the estimator to vary from sample to sam
 
 ### Mean Squared Error (MSE)
 
-Bias and variance both matter. The **mean squared error (MSE)** combines them into a single measure of accuracy.
+So far we have seen that estimators can have **bias** and **variance**. Both are important, but it is often useful to combine them into a *single* overall measure of accuracy.
+
+To get there, we start with the basic idea of **error**.
 
 ::: {.definition #def-error}
 
@@ -798,12 +1379,12 @@ $$
 $$
 :::
 
-However, 
+This captures exactly “how far off” our estimate is. But there are two problems:
 
-1. The error is random (depends on the sample).
-2. It can be positive or negative (so errors may “cancel out”).
+1. The error is a **random variable** (it depends on the sample we happened to draw).
+2. The error can be **positive or negative** — so if we just averaged it across many samples, the positives and negatives might cancel out, misleading us into thinking the estimator is more accurate than it really is.
 
-To overcome this, we square the error and take its expectation.
+To fix this, we square the error (so it’s always positive) and then take its expectation (so we measure its *typical size* across many samples).
 
 ::: {.definition #def-mse}
 
@@ -815,10 +1396,32 @@ $$
 \mathrm{MSE}(\hat{\theta})=\mathrm{E}\!\big[(\hat{\theta}-\theta)^2\big].
 $$
 
-This measures the *average squared distance* between the estimator and the truth.
+This measures the *average squared distance* between the estimator and the true parameter value.
 :::
 
-Directly using <span class="xref-no-num">[this @def-mse]</span> can be awkward. A more useful identity decomposes MSE into **bias** and **variance**:
+::: {#rem-mse}
+### Why Squared Error?
+
+The MSE is built to solve the two problems with using the <span class="xref-no-num">[error @def-error]</span>:
+
+* **Squaring** makes all errors positive (so no cancellation).
+* **Expectation** removes randomness and shows the long-run behaviour of the estimator.
+
+But squaring isn’t the only possible choice. For example, we could use absolute error and define the **Mean Absolute Error (MAE):**
+
+$$
+\mathrm{MAE}(\hat{\theta}) = \mathrm{E}\!\big[ \lvert \hat{\theta} - \theta \rvert \big].
+$$
+
+This is also a sensible measure. In fact, in practice people sometimes prefer MAE because it is less sensitive to occasional very large errors.
+
+So why is **MSE** so common in theory?
+
+1. It penalises **large deviations more strongly**, which can be useful.
+2. It is mathematically **easier to work with**. Many nice algebraic decompositions (like the <span class="xref-no-num">[bias-variance decomposition @prp-mse-bias-variance]</span>) only hold neatly for squared error.
+:::
+
+Directly using the <span class="xref-no-num">[definition @def-mse]</span> of MSE can be awkward. A more useful identity decomposes MSE into **bias** and **variance**:
 
 ::: {#prp-mse-bias-variance}
 
@@ -888,7 +1491,7 @@ $$
 Suppose we have a random sample
 
 $$
-X_1,\dots,X_n  \overset{iid}{\sim} \mathrm{Distribution}(\underline{\theta})
+X_1,\dots,X_n  \overset{\text{iid}}{\sim} \mathrm{Distribution}(\underline{\theta})
 $$
 
 and we wish to estimate its *population mean* $\mu$ with $\hat{\mu} = c\bar{X}$, where $c$ is a constant.
@@ -1021,22 +1624,22 @@ The CLT is remarkable: it tells us that **whatever the original distribution** o
 
 In practice, for a *reasonable* sample size we may write
 $$
-\bar X_n \;\overset{approx}{\sim}\; \mathcal N\!\left(\mu,\ \frac{\sigma^2}{n}\right),
+\bar X_n \;\overset{\text{approx.}}{\sim}\; \mathcal N\!\left(\mu,\ \frac{\sigma^2}{n}\right),
 $$
 not only for Normal samples but for many non-Normal populations as well. What counts as “reasonable” depends on how skewed/heavy-tailed the original distribution is; often $n>20$ suffices, and in many settings even smaller $n$ will do.
 
 Because $\bar X_n = \tfrac{1}{n}\sum_{i=1}^n X_i$, the CLT also yields an approximation for **sums**:
 $$
-\sum_{i=1}^n X_i \;\overset{approx}{\sim}\; \mathcal N\!\left(n\mu,\ n\sigma^2\right).
+\sum_{i=1}^n X_i \;\overset{\text{approx.}}{\sim}\; \mathcal N\!\left(n\mu,\ n\sigma^2\right).
 $$
 
-::: {.callout-warning}
-### Common misconception
+::: {.callout-tip}
+### Common misconceptions
  The CLT does **not** say the *data* become Normal; it says the **distribution of the sample mean** becomes approximately Normal as $n$ grows.
 :::
 
 
-## Asymptotic Properties of Estimators
+## Asymptotic Properties of Estimators {#sec-estimator-asymp-properties}
 
 ::: {#imp-term-asymptotic .callout-important collapse="true" appearance="simple"}
 ### Terminology: *Asymptotic* in Statistics
@@ -1053,7 +1656,7 @@ These are known as the **asymptotic (large-sample) properties** of estimators.
 Formally, suppose we have a random sample  
 
 $$
-X_1, X_2, \ldots, X_n \;\overset{iid}{\sim}\; \mathrm{Distribution}(\theta),
+X_1, X_2, \ldots, X_n \;\overset{\text{iid}}{\sim}\; \mathrm{Distribution}(\theta),
 $$
 
 and a *sequence* of estimators of $\theta$ given by  
@@ -1079,7 +1682,7 @@ However, some biased estimators may still “correct themselves” in the limit 
 ::: {.definition #def-consistency}
 ### Consistency
 
-An estimator $\hat{\theta}_n$ is a **consistent** estimator of $\theta$ if
+A sequence of estimator $\hat{\theta}_n$ is **consistent** for $\theta$ if
 
 $$
 \hat{\theta}_n \;\xrightarrow{p}\; \theta 
@@ -1091,7 +1694,7 @@ that is, it <span class="xref-no-num">[converges in probability @def-convergence
 
 Intuitively, a consistent estimator will “home in” on the true parameter as the sample size grows.
 
-Using @def-consistency directly can be tricky. The following gives a **sufficient condition** that is easier to verify in practice.
+Using @def-consistency directly to prove an estimator is consistent can be difficult. The following gives a **sufficient condition** that is easier to verify in practice.
 
 ::: {#prp-sufficient-consistency}
 ### Sufficient Condition for Consistency

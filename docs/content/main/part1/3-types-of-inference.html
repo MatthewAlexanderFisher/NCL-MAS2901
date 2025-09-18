@@ -44,9 +44,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-85e81ffbedff08a56d4889441742b9db.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark-75a111721aa004656ac7aaad64f9f2ec.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../../site_libs/bootstrap/bootstrap-85e81ffbedff08a56d4889441742b9db.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-eee127bcbcf69f6d1c4f39497eef8043.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-ca592282aabca1dce090d3def4fc59bb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-eee127bcbcf69f6d1c4f39497eef8043.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -238,6 +238,8 @@ window.Quarto = {
 <link rel="stylesheet" href="../../../theming/question-bank.css">
 <link rel="stylesheet" href="../../../theming/sidebar.css">
 <link rel="stylesheet" href="../../../theming/lecture-zoom.css">
+<link rel="stylesheet" href="../../../theming/visualisation-controls.css">
+<link rel="stylesheet" href="../../../theming/tables.css">
 </head>
 
 <body class="nav-sidebar floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -615,7 +617,7 @@ window.Quarto = {
   <li><a href="#philosophies-of-inference" id="toc-philosophies-of-inference" class="nav-link active" data-scroll-target="#philosophies-of-inference"><span class="header-section-number">3.1</span> Philosophies of Inference</a>
   <ul class="collapse">
   <li><a href="#frequentist-inference" id="toc-frequentist-inference" class="nav-link" data-scroll-target="#frequentist-inference"><span class="header-section-number">3.1.1</span> Frequentist Inference</a></li>
-  <li><a href="#bayesian-inference" id="toc-bayesian-inference" class="nav-link" data-scroll-target="#bayesian-inference"><span class="header-section-number">3.1.2</span> Bayesian Inference</a></li>
+  <li><a href="#sec-philo-bayesian" id="toc-sec-philo-bayesian" class="nav-link" data-scroll-target="#sec-philo-bayesian"><span class="header-section-number">3.1.2</span> Bayesian Inference</a></li>
   <li><a href="#key-differences" id="toc-key-differences" class="nav-link" data-scroll-target="#key-differences"><span class="header-section-number">3.1.3</span> Key Differences</a></li>
   </ul></li>
   <li><a href="#sec-inference-tasks" id="toc-sec-inference-tasks" class="nav-link" data-scroll-target="#sec-inference-tasks"><span class="header-section-number">3.2</span> Inference Tasks</a></li>
@@ -658,8 +660,8 @@ window.Quarto = {
 </ul>
 <p><strong>Preview examples (we will return to these later):</strong> the sample mean <span class="math inline">\hat{\mu}</span> as an estimator of <span class="math inline">\mu</span>, a <span class="math inline">t</span>-test for comparing means, or a <span class="math inline">95\%</span> confidence interval.</p>
 </section>
-<section id="bayesian-inference" class="level3" data-number="3.1.2">
-<h3 data-number="3.1.2" class="anchored" data-anchor-id="bayesian-inference"><span class="header-section-number">3.1.2</span> Bayesian Inference</h3>
+<section id="sec-philo-bayesian" class="level3" data-number="3.1.2">
+<h3 data-number="3.1.2" class="anchored" data-anchor-id="sec-philo-bayesian"><span class="header-section-number">3.1.2</span> Bayesian Inference</h3>
 <p>Bayesian inference is based on <strong>subjective probability as degree of belief</strong>.</p>
 <ul>
 <li>The <strong>data</strong> are fixed once observed.</li>
@@ -734,9 +736,9 @@ window.Quarto = {
 L \leq \theta \leq U
 </span></p>
 <p>with a given long-run coverage probability.</p></li>
-<li><p>Bayesian: <strong>credible interval</strong>, the posterior probability that <span class="math inline">\theta</span> lies in <span class="math inline">[L,U]</span> is, say, 95%.</p></li>
+<li><p>Bayesian: <strong>credible interval</strong>, the posterior probability that <span class="math inline">\theta</span> lies in <span class="math inline">[L,U]</span> is, say, <span class="math inline">95\%</span>.</p></li>
 </ul></li>
-<li><p><strong>Hypothesis Testing</strong> {#sec-hypothesis-testing-intro} Ask a <strong>yes/no question</strong> about the parameter <span class="math inline">\theta</span>. This is done by formalising a claim (the <em>null hypothesis</em>) such as <span class="math display">
+<li><p><strong>Hypothesis Testing</strong> Ask a <strong>yes/no question</strong> about the parameter <span class="math inline">\theta</span>. This is done by formalising a claim (the <em>null hypothesis</em>) such as <span class="math display">
      H_0: \theta \in \Theta_0,
 </span> and then using the data to judge whether this claim is <strong>compatible with the evidence</strong>.</p>
 <ul>

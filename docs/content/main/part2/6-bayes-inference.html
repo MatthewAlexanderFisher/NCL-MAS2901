@@ -79,9 +79,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-85e81ffbedff08a56d4889441742b9db.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark-75a111721aa004656ac7aaad64f9f2ec.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../../site_libs/bootstrap/bootstrap-85e81ffbedff08a56d4889441742b9db.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-eee127bcbcf69f6d1c4f39497eef8043.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-ca592282aabca1dce090d3def4fc59bb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-eee127bcbcf69f6d1c4f39497eef8043.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -275,6 +275,8 @@ window.Quarto = {
 <link rel="stylesheet" href="../../../theming/question-bank.css">
 <link rel="stylesheet" href="../../../theming/sidebar.css">
 <link rel="stylesheet" href="../../../theming/lecture-zoom.css">
+<link rel="stylesheet" href="../../../theming/visualisation-controls.css">
+<link rel="stylesheet" href="../../../theming/tables.css">
 </head>
 
 <body class="nav-sidebar floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -649,13 +651,18 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction-to-the-bayesian-approach" id="toc-introduction-to-the-bayesian-approach" class="nav-link active" data-scroll-target="#introduction-to-the-bayesian-approach"><span class="header-section-number">6.1</span> Introduction to the Bayesian approach</a>
+  <li><a href="#introduction-to-the-bayesian-approach" id="toc-introduction-to-the-bayesian-approach" class="nav-link active" data-scroll-target="#introduction-to-the-bayesian-approach"><span class="header-section-number">6.1</span> Introduction to the Bayesian Approach</a>
   <ul class="collapse">
-  <li><a href="#why-is-this-useful" id="toc-why-is-this-useful" class="nav-link" data-scroll-target="#why-is-this-useful"><span class="header-section-number">6.1.1</span> Why is this useful?</a></li>
+  <li><a href="#probability-as-uncertainty" id="toc-probability-as-uncertainty" class="nav-link" data-scroll-target="#probability-as-uncertainty"><span class="header-section-number">6.1.1</span> Probability as Uncertainty</a></li>
+  <li><a href="#the-bayesian-inference-procedure" id="toc-the-bayesian-inference-procedure" class="nav-link" data-scroll-target="#the-bayesian-inference-procedure"><span class="header-section-number">6.1.2</span> The Bayesian Inference Procedure</a></li>
   </ul></li>
-  <li><a href="#bayes-theorem" id="toc-bayes-theorem" class="nav-link" data-scroll-target="#bayes-theorem"><span class="header-section-number">6.2</span> Bayes’ Theorem</a></li>
-  <li><a href="#bayes-theorem-in-statistics" id="toc-bayes-theorem-in-statistics" class="nav-link" data-scroll-target="#bayes-theorem-in-statistics"><span class="header-section-number">6.3</span> Bayes’ Theorem in Statistics</a></li>
-  <li><a href="#bayesian-vs.-frequentist-again" id="toc-bayesian-vs.-frequentist-again" class="nav-link" data-scroll-target="#bayesian-vs.-frequentist-again"><span class="header-section-number">6.4</span> Bayesian vs.&nbsp;Frequentist (again)</a></li>
+  <li><a href="#bayes-theorem-for-densities" id="toc-bayes-theorem-for-densities" class="nav-link" data-scroll-target="#bayes-theorem-for-densities"><span class="header-section-number">6.2</span> Bayes’ Theorem for Densities</a></li>
+  <li><a href="#bayes-theorem-in-statistics" id="toc-bayes-theorem-in-statistics" class="nav-link" data-scroll-target="#bayes-theorem-in-statistics"><span class="header-section-number">6.3</span> Bayes’ Theorem in Statistics</a>
+  <ul class="collapse">
+  <li><a href="#from-bayes-theorem-to-the-posterior" id="toc-from-bayes-theorem-to-the-posterior" class="nav-link" data-scroll-target="#from-bayes-theorem-to-the-posterior"><span class="header-section-number">6.3.1</span> From Bayes’ theorem to the Posterior</a></li>
+  <li><a href="#posteriors-in-practice" id="toc-posteriors-in-practice" class="nav-link" data-scroll-target="#posteriors-in-practice"><span class="header-section-number">6.3.2</span> Posteriors in Practice</a></li>
+  <li><a href="#conjugacy" id="toc-conjugacy" class="nav-link" data-scroll-target="#conjugacy"><span class="header-section-number">6.3.3</span> Conjugacy</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -687,9 +694,11 @@ window.Quarto = {
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>plot_bg <span class="op">=</span> <span class="st">"#f8f8f8"</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"figure.facecolor"</span>] <span class="op">=</span> plot_bg</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"axes.facecolor"</span>]   <span class="op">=</span> plot_bg</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"axes.facecolor"</span>]   <span class="op">=</span> plot_bg</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>dark_plot_bg <span class="op">=</span> <span class="st">"#151515"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="13" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 12;"><span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>bodyFont <span class="op">=</span> <span class="fu">getComputedStyle</span>(<span class="bu">document</span><span class="op">.</span><span class="at">body</span>)<span class="op">.</span><span class="at">fontFamily</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="15" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 14;"><span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>bodyFont <span class="op">=</span> <span class="fu">getComputedStyle</span>(<span class="bu">document</span><span class="op">.</span><span class="at">body</span>)<span class="op">.</span><span class="at">fontFamily</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-1" data-nodetype="declaration">
 
@@ -697,28 +706,115 @@ window.Quarto = {
 </div>
 </div>
 <section id="introduction-to-the-bayesian-approach" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="introduction-to-the-bayesian-approach"><span class="header-section-number">6.1</span> Introduction to the Bayesian approach</h2>
-<p>As discussed in the course introduction, <strong>Bayesian inference</strong> takes a different perspective from the frequentist approach:</p>
+<h2 data-number="6.1" class="anchored" data-anchor-id="introduction-to-the-bayesian-approach"><span class="header-section-number">6.1</span> Introduction to the Bayesian Approach</h2>
+<p>So far we have taken a <strong>frequentist perspective</strong>: parameters such as <span class="math inline">\theta</span> are fixed but unknown, and all randomness comes from the sample.</p>
+<p>Bayesian inference takes a different view:</p>
 <ul>
-<li>In the frequentist view, the parameter <span class="math inline">\theta</span> is <strong>fixed but unknown</strong>.</li>
-<li>In the Bayesian view, the parameter <span class="math inline">\theta</span> is treated as a <strong>random variable</strong>.</li>
+<li><strong>Frequentist</strong>: the parameter <span class="math inline">\theta</span> is <strong>fixed but unknown</strong>.</li>
+<li><strong>Bayesian</strong>: the parameter <span class="math inline">\theta</span> is treated as a <strong>random variable</strong>.</li>
 </ul>
-<p>The randomness here does not mean that the parameter is <em>physically fluctuating</em> — instead, it reflects our <strong>uncertainty</strong> about its value.</p>
-<section id="why-is-this-useful" class="level3" data-number="6.1.1">
-<h3 data-number="6.1.1" class="anchored" data-anchor-id="why-is-this-useful"><span class="header-section-number">6.1.1</span> Why is this useful?</h3>
-<p>A <strong>key advantage</strong> of Bayesian inference is that it allows us to <strong>incorporate prior information</strong><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> about the parameter.</p>
-<div class="callout callout-style-simple callout-note no-icon">
+<p>The word <em>random</em> here does <strong>not</strong> mean that the parameter is physically fluctuating. Instead, it represents our <strong>uncertainty</strong> about its true value.</p>
+<section id="probability-as-uncertainty" class="level3" data-number="6.1.1">
+<h3 data-number="6.1.1" class="anchored" data-anchor-id="probability-as-uncertainty"><span class="header-section-number">6.1.1</span> Probability as Uncertainty</h3>
+<p>In the Bayesian framework, probability is interpreted as a way of <strong>quantifying uncertainty</strong> about unknown quantities.</p>
+<p>Rather than saying “<em>the parameter is a fixed number we don’t know</em>”, we describe how plausible different values are using a probability distribution.</p>
+<div class="callout callout-style-simple callout-caution no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-body-container">
-<div id="def-prior" class="definition theorem">
-<p><span class="theorem-title"><strong>Definition 6.1 (Prior Distribution.)</strong></span> Our uncertainty about <span class="math inline">\theta</span> is represented by a probability distribution, called the <strong>prior distribution</strong>:</p>
-<p><span class="math display">
-\theta \sim \pi(\theta).
-</span></p>
-<p>Here <span class="math inline">\pi(\theta)</span> denotes the prior density (PDF or PMF).</p>
+<div id="exm-bayes-umbrella" class="theorem example">
+<p><span class="theorem-title"><strong>Example 6.1 (Umbrella Decisions)</strong></span> Imagine the weather forecast says there is a <span class="math inline">70\%</span> chance of rain tomorrow.</p>
+<ul>
+<li><p>The sky doesn’t “rain in <span class="math inline">70\%</span> of parallel universes.”</p></li>
+<li><p>Instead, the number <span class="math inline">70\%</span> reflects our uncertainty given current information (satellite data, forecasts, etc.).</p></li>
+</ul>
+<details>
+  <summary><strong> Show Plot </strong></summary>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="55" data-source-offset="-154"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 54;"><span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>rainP <span class="op">=</span> <span class="fl">0.7</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>noRainP <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> rainP</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>umbrellaSegments <span class="op">=</span> [</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>  { <span class="dt">label</span><span class="op">:</span> <span class="st">"Rain (70%)"</span><span class="op">,</span>    <span class="dt">x1</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span>     <span class="dt">x2</span><span class="op">:</span> rainP<span class="op">,</span>  <span class="dt">which</span><span class="op">:</span> <span class="st">"Rain"</span> }<span class="op">,</span></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>  { <span class="dt">label</span><span class="op">:</span> <span class="st">"No rain (30%)"</span><span class="op">,</span> <span class="dt">x1</span><span class="op">:</span> rainP<span class="op">,</span> <span class="dt">x2</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span>      <span class="dt">which</span><span class="op">:</span> <span class="st">"No rain"</span> }</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="68" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 67;"><span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">120</span><span class="op">,</span></span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span></span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginRight</span><span class="op">:</span> <span class="dv">20</span><span class="op">,</span></span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">45</span><span class="op">,</span></span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">"Probability"</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span> <span class="dt">nice</span><span class="op">:</span> <span class="kw">false</span> }<span class="op">,</span></span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> { <span class="dt">axis</span><span class="op">:</span> <span class="kw">null</span> }<span class="op">,</span></span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>    <span class="dt">style</span><span class="op">:</span> {</span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a>      <span class="dt">width</span><span class="op">:</span> <span class="st">"100%"</span><span class="op">,</span></span>
+<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a>      <span class="dt">display</span><span class="op">:</span> <span class="st">"block"</span><span class="op">,</span> </span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a>      <span class="dt">margin</span><span class="op">:</span> <span class="st">"0 auto"</span><span class="op">,</span> </span>
+<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a>      <span class="dt">maxWidth</span><span class="op">:</span> <span class="st">"960px"</span><span class="op">,</span></span>
+<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a>      <span class="dt">background</span><span class="op">:</span> <span class="st">"var(--brand-bg)"</span><span class="op">,</span></span>
+<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a>      <span class="dt">color</span><span class="op">:</span> <span class="st">"var(--brand-fg)"</span><span class="op">,</span></span>
+<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontFamily</span><span class="op">:</span> bodyFont<span class="op">,</span> </span>
+<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontSize</span><span class="op">:</span> <span class="dv">12</span></span>
+<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>]<span class="op">,</span> { <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--border)"</span><span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.6</span> })<span class="op">,</span></span>
+<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>    <span class="co">// two stacked rectangles forming one bar</span></span>
+<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">rectX</span>(umbrellaSegments<span class="op">,</span> {</span>
+<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x1</span><span class="op">:</span> <span class="st">"x1"</span><span class="op">,</span></span>
+<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x2</span><span class="op">:</span> <span class="st">"x2"</span><span class="op">,</span></span>
+<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span></span>
+<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a>      <span class="dt">height</span><span class="op">:</span> <span class="dv">24</span><span class="op">,</span></span>
+<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fill</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">which</span> <span class="op">===</span> <span class="st">"Rain"</span> <span class="op">?</span> <span class="st">"var(--brand-teal)"</span> <span class="op">:</span> <span class="st">"var(--brand-red)"</span><span class="op">,</span></span>
+<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fillOpacity</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">which</span> <span class="op">===</span> <span class="st">"Rain"</span> <span class="op">?</span> <span class="fl">0.35</span> <span class="op">:</span> <span class="fl">0.15</span><span class="op">,</span></span>
+<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a>      <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--brand-fg)"</span></span>
+<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a>    <span class="co">// labels</span></span>
+<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">text</span>(umbrellaSegments<span class="op">,</span> {</span>
+<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> d <span class="kw">=&gt;</span> (d<span class="op">.</span><span class="at">x1</span> <span class="op">+</span> d<span class="op">.</span><span class="at">x2</span>) <span class="op">/</span> <span class="dv">2</span><span class="op">,</span></span>
+<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span></span>
+<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a>      <span class="dt">text</span><span class="op">:</span> <span class="st">"label"</span><span class="op">,</span></span>
+<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a>      <span class="dt">dy</span><span class="op">:</span> <span class="op">-</span><span class="dv">8</span></span>
+<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="fig-umbrella-uncertainty" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-umbrella-uncertainty-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div id="ojs-cell-3" data-nodetype="expression">
+
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-umbrella-uncertainty-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.1: Everyday uncertainty — a 70% chance of rain means our <strong>belief</strong> favours rain over no rain given current information.
+</figcaption>
+</figure>
+</div>
+</div>
+</details>
 </div>
 </div>
 </div>
@@ -729,114 +825,339 @@ window.Quarto = {
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-body-container">
-<div id="exm-prior" class="worked-example theorem example">
-<p><span class="theorem-title"><strong>Example 6.1</strong></span> Suppose <span class="math inline">\theta</span> is the average exam score of students in a module. From past experience, the average score tends to be around 60, with most cohorts lying within about 10 marks of this.</p>
-<p>We could encode this information as a <strong>Normal prior</strong>:</p>
-<p><span class="math display">
-\theta \sim \mathcal{N}(\mu=60,\;\sigma^2=10^2).
-</span></p>
-<p>This prior expresses our belief <em>before seeing the new data</em>.</p>
+<div id="exm-bayes-exam-marks" class="theorem example">
+<p><span class="theorem-title"><strong>Example 6.2 (Exam Marks)</strong></span> Suppose <span class="math inline">\theta</span> is the average exam mark of a module. From past years, we believe:</p>
+<ul>
+<li><p>It’s usually around <span class="math inline">60</span> marks,</p></li>
+<li><p>but could reasonably be anywhere between <span class="math inline">50</span> and <span class="math inline">70</span>.</p></li>
+</ul>
+<p>We could represent this belief as a Normal prior distribution centred at <span class="math inline">60</span> with standard deviation <span class="math inline">10</span>.</p>
+<details>
+  <summary><strong> Show Plot </strong></summary>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb5" data-startfrom="136" data-source-offset="-70"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 135;"><span id="cb5-136"><a href="#cb5-136" aria-hidden="true" tabindex="-1"></a>markDomain <span class="op">=</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">100</span>]</span>
+<span id="cb5-137"><a href="#cb5-137" aria-hidden="true" tabindex="-1"></a>markXs <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleLinear</span>()<span class="op">.</span><span class="fu">domain</span>(markDomain)<span class="op">.</span><span class="fu">ticks</span>(<span class="dv">400</span>)</span>
+<span id="cb5-138"><a href="#cb5-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-139"><a href="#cb5-139" aria-hidden="true" tabindex="-1"></a><span class="co">// Normal PDF helper</span></span>
+<span id="cb5-140"><a href="#cb5-140" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">normalPDF</span>(x<span class="op">,</span> mu<span class="op">,</span> sigma){</span>
+<span id="cb5-141"><a href="#cb5-141" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> z <span class="op">=</span> (x <span class="op">-</span> mu) <span class="op">/</span> sigma<span class="op">;</span></span>
+<span id="cb5-142"><a href="#cb5-142" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(<span class="op">-</span><span class="fl">0.5</span> <span class="op">*</span> z <span class="op">*</span> z) <span class="op">/</span> (sigma <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="dv">2</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span>))<span class="op">;</span></span>
+<span id="cb5-143"><a href="#cb5-143" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-144"><a href="#cb5-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-145"><a href="#cb5-145" aria-hidden="true" tabindex="-1"></a><span class="co">// Prior parameters and curve</span></span>
+<span id="cb5-146"><a href="#cb5-146" aria-hidden="true" tabindex="-1"></a>mu_prior <span class="op">=</span> <span class="dv">60</span></span>
+<span id="cb5-147"><a href="#cb5-147" aria-hidden="true" tabindex="-1"></a>sd_prior <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb5-148"><a href="#cb5-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-149"><a href="#cb5-149" aria-hidden="true" tabindex="-1"></a>markPrior <span class="op">=</span> markXs<span class="op">.</span><span class="fu">map</span>(x <span class="kw">=&gt;</span> ({ x<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">normalPDF</span>(x<span class="op">,</span> mu_prior<span class="op">,</span> sd_prior)<span class="op">,</span> <span class="dt">which</span><span class="op">:</span> <span class="st">"Prior  N(60, 10²)"</span> }))</span>
+<span id="cb5-150"><a href="#cb5-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-151"><a href="#cb5-151" aria-hidden="true" tabindex="-1"></a><span class="co">// Shading bounds for "plausible" 50–70 region</span></span>
+<span id="cb5-152"><a href="#cb5-152" aria-hidden="true" tabindex="-1"></a>loBand <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb5-153"><a href="#cb5-153" aria-hidden="true" tabindex="-1"></a>hiBand <span class="op">=</span> <span class="dv">70</span></span>
+<span id="cb5-154"><a href="#cb5-154" aria-hidden="true" tabindex="-1"></a>bandFill <span class="op">=</span> markXs</span>
+<span id="cb5-155"><a href="#cb5-155" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">filter</span>(x <span class="kw">=&gt;</span> x <span class="op">&gt;=</span> loBand <span class="op">&amp;&amp;</span> x <span class="op">&lt;=</span> hiBand)</span>
+<span id="cb5-156"><a href="#cb5-156" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">map</span>(x <span class="kw">=&gt;</span> ({ x<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">normalPDF</span>(x<span class="op">,</span> mu_prior<span class="op">,</span> sd_prior) }))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-7" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-8" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-9" data-nodetype="declaration">
+
 </div>
 </div>
 </div>
 </div>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">R</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: "Show code"</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-align: center</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normal_pdf(theta, mean, sd):</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    const <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> (sd <span class="op">*</span> (<span class="dv">2</span> <span class="op">*</span> math.pi) <span class="op">**</span> <span class="fl">0.5</span>)</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    exp_term <span class="op">=</span> np.exp(<span class="op">-</span>((theta <span class="op">-</span> mean) <span class="op">/</span> sd) <span class="op">**</span> <span class="dv">2</span> <span class="op">/</span> <span class="dv">2</span>)</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> const <span class="op">*</span> exp_term</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>mean <span class="op">=</span> <span class="fl">100.0</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>sd   <span class="op">=</span> <span class="fl">10.0</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>theta_grid <span class="op">=</span> np.linspace(mean <span class="op">-</span> <span class="dv">3</span><span class="op">*</span>sd, mean <span class="op">+</span> <span class="dv">3</span><span class="op">*</span>sd, <span class="dv">200</span>)</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>pdf_values <span class="op">=</span> normal_pdf(theta_grid, mean<span class="op">=</span>mean, sd<span class="op">=</span>sd)</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>,<span class="dv">4</span>))</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>plt.plot(theta_grid, pdf_values)</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="ch">\t</span><span class="vs">heta</span><span class="dv">$</span><span class="vs">"</span>)</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Density"</span>)</span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Normal PDF: mean = 100, sd = 10"</span>)</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>mean <span class="ot">&lt;-</span> <span class="dv">100</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>sd   <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>theta_grid <span class="ot">&lt;-</span> <span class="fu">seq</span>(mean <span class="sc">-</span> <span class="dv">3</span><span class="sc">*</span>sd, mean <span class="sc">+</span> <span class="dv">3</span><span class="sc">*</span>sd, <span class="at">length.out =</span> <span class="dv">200</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>pdf_values <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(theta_grid, <span class="at">mean =</span> mean, <span class="at">sd =</span> sd)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(theta_grid, pdf_values, <span class="at">type =</span> <span class="st">"l"</span>,</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="fu">expression</span>(theta),</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Density"</span>,</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Normal PDF: mean = 100, sd = 10"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="6-bayes-inference_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="163" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 162;"><span id="cb6-163"><a href="#cb6-163" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb6-164"><a href="#cb6-164" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">320</span><span class="op">,</span></span>
+<span id="cb6-165"><a href="#cb6-165" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">48</span><span class="op">,</span></span>
+<span id="cb6-166"><a href="#cb6-166" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">45</span><span class="op">,</span></span>
+<span id="cb6-167"><a href="#cb6-167" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">"Average mark θ"</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> markDomain }<span class="op">,</span></span>
+<span id="cb6-168"><a href="#cb6-168" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">"Density"</span> }<span class="op">,</span></span>
+<span id="cb6-169"><a href="#cb6-169" aria-hidden="true" tabindex="-1"></a>  <span class="dt">style</span><span class="op">:</span> {</span>
+<span id="cb6-170"><a href="#cb6-170" aria-hidden="true" tabindex="-1"></a>    <span class="dt">width</span><span class="op">:</span> <span class="st">"100%"</span><span class="op">,</span></span>
+<span id="cb6-171"><a href="#cb6-171" aria-hidden="true" tabindex="-1"></a>    <span class="dt">display</span><span class="op">:</span> <span class="st">"block"</span><span class="op">,</span> </span>
+<span id="cb6-172"><a href="#cb6-172" aria-hidden="true" tabindex="-1"></a>    <span class="dt">margin</span><span class="op">:</span> <span class="st">"0 auto"</span><span class="op">,</span> </span>
+<span id="cb6-173"><a href="#cb6-173" aria-hidden="true" tabindex="-1"></a>    <span class="dt">maxWidth</span><span class="op">:</span> <span class="st">"960px"</span><span class="op">,</span></span>
+<span id="cb6-174"><a href="#cb6-174" aria-hidden="true" tabindex="-1"></a>    <span class="dt">background</span><span class="op">:</span> <span class="st">"var(--brand-bg)"</span><span class="op">,</span></span>
+<span id="cb6-175"><a href="#cb6-175" aria-hidden="true" tabindex="-1"></a>    <span class="dt">color</span><span class="op">:</span> <span class="st">"var(--brand-fg)"</span><span class="op">,</span></span>
+<span id="cb6-176"><a href="#cb6-176" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fontFamily</span><span class="op">:</span> bodyFont<span class="op">,</span> </span>
+<span id="cb6-177"><a href="#cb6-177" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fontSize</span><span class="op">:</span> <span class="dv">12</span></span>
+<span id="cb6-178"><a href="#cb6-178" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb6-179"><a href="#cb6-179" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb6-180"><a href="#cb6-180" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>]<span class="op">,</span> { <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--border)"</span><span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.6</span> })<span class="op">,</span></span>
+<span id="cb6-181"><a href="#cb6-181" aria-hidden="true" tabindex="-1"></a>    <span class="co">// shade the 50–70 plausible band</span></span>
+<span id="cb6-182"><a href="#cb6-182" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">areaY</span>(bandFill<span class="op">,</span> { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"var(--brand-teal)"</span><span class="op">,</span> <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.12</span> })<span class="op">,</span></span>
+<span id="cb6-183"><a href="#cb6-183" aria-hidden="true" tabindex="-1"></a>    <span class="co">// main prior curve</span></span>
+<span id="cb6-184"><a href="#cb6-184" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">lineY</span>(markPrior<span class="op">,</span> { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--brand-teal)"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span> })<span class="op">,</span></span>
+<span id="cb6-185"><a href="#cb6-185" aria-hidden="true" tabindex="-1"></a>    <span class="co">// annotations</span></span>
+<span id="cb6-186"><a href="#cb6-186" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleX</span>([mu_prior]<span class="op">,</span> { <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--brand-fg)"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"3,3"</span><span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.4</span> })<span class="op">,</span></span>
+<span id="cb6-187"><a href="#cb6-187" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">text</span>(</span>
+<span id="cb6-188"><a href="#cb6-188" aria-hidden="true" tabindex="-1"></a>      [</span>
+<span id="cb6-189"><a href="#cb6-189" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">x</span><span class="op">:</span> mu_prior <span class="op">+</span> <span class="dv">8</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">normalPDF</span>(mu_prior<span class="op">,</span> mu_prior<span class="op">,</span> sd_prior) <span class="op">*</span> <span class="fl">0.99</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Prior mean 60"</span> }<span class="op">,</span></span>
+<span id="cb6-190"><a href="#cb6-190" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">x</span><span class="op">:</span> (loBand<span class="op">+</span>hiBand)<span class="op">/</span><span class="dv">2</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">normalPDF</span>((loBand<span class="op">+</span>hiBand)<span class="op">/</span><span class="dv">2</span><span class="op">,</span> mu_prior<span class="op">,</span> sd_prior) <span class="op">/</span> <span class="dv">3</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Plausible 50–70"</span> }</span>
+<span id="cb6-191"><a href="#cb6-191" aria-hidden="true" tabindex="-1"></a>      ]<span class="op">,</span></span>
+<span id="cb6-192"><a href="#cb6-192" aria-hidden="true" tabindex="-1"></a>      { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">text</span><span class="op">:</span> <span class="st">"label"</span><span class="op">,</span> <span class="dt">dy</span><span class="op">:</span> <span class="op">-</span><span class="dv">10</span> }</span>
+<span id="cb6-193"><a href="#cb6-193" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-194"><a href="#cb6-194" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb6-195"><a href="#cb6-195" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="fig-exam-prior-normal" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-exam-prior-normal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div id="ojs-cell-5" data-nodetype="expression">
+
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-exam-prior-normal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.2: Prior for the average exam mark. A Normal prior centred at <span class="math inline">60</span> with standard deviation <span class="math inline">10</span> encodes “likely around <span class="math inline">60</span>, plausibly <span class="math inline">50–70</span>”.
+</figcaption>
 </figure>
 </div>
 </div>
+</details>
 </div>
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="bayes-theorem" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="bayes-theorem"><span class="header-section-number">6.2</span> Bayes’ Theorem</h2>
-<p>Bayesian inference takes its name from <strong>Bayes’ theorem</strong>, which tells us how to update our beliefs about <span class="math inline">\theta</span> after seeing data.</p>
-<p>Recall from probability that for events <span class="math inline">A</span> and <span class="math inline">B</span>:</p>
-<p><span class="math display">
-\mathrm{Pr}(A \mid B) = \frac{\mathrm{Pr}(B \mid A)\,\mathrm{Pr}(A)}{\mathrm{Pr}(B)}.
-</span></p>
-<p>To generalise this idea to <strong>random variables and densities</strong>, we use conditional densities:</p>
-<p><span class="math display">
-f_{X \mid Y}(x \mid y) = \frac{f_{XY}(x,y)}{f_Y(y)}.
-</span></p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
 <div class="callout-icon-container">
-<i class="callout-icon"></i>
+<i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Remark
+<div class="callout-body-container">
+<div id="exm-bayes-disease" class="theorem example">
+<p><span class="theorem-title"><strong>Example 6.3 (Disease Prevalance)</strong></span> Let <span class="math inline">\theta</span> be the proportion of people with a rare condition.</p>
+<p>Before collecting data, experts might believe <span class="math inline">\theta</span> is “probably around <span class="math inline">2\%</span>, but definitely less than <span class="math inline">10\%</span>”.</p>
+<p>We could express this with a <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-beta" class="quarto-xref">Beta distribution&nbsp;<span>2.9</span></a></span> prior.</p>
+<details>
+  <summary><strong> Show Plot </strong></summary>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb7" data-startfrom="223" data-source-offset="-97"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 222;"><span id="cb7-223"><a href="#cb7-223" aria-hidden="true" tabindex="-1"></a>pDomain <span class="op">=</span> [<span class="dv">0</span><span class="op">,</span> <span class="fl">0.12</span>]  <span class="co">// zoom in to show the small probabilities clearly</span></span>
+<span id="cb7-224"><a href="#cb7-224" aria-hidden="true" tabindex="-1"></a>pXs <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleLinear</span>()<span class="op">.</span><span class="fu">domain</span>(pDomain)<span class="op">.</span><span class="fu">ticks</span>(<span class="dv">400</span>)</span>
+<span id="cb7-225"><a href="#cb7-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-226"><a href="#cb7-226" aria-hidden="true" tabindex="-1"></a><span class="co">// Beta PDF helper (using log-space for stability)</span></span>
+<span id="cb7-227"><a href="#cb7-227" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">logGamma</span>(z){ <span class="co">// Lanczos approximation via d3? keep simple: use Math.lgamma fallback if present; else crude Stirling</span></span>
+<span id="cb7-228"><a href="#cb7-228" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Minimal Stirling for teaching visuals (fine for small α,β here)</span></span>
+<span id="cb7-229"><a href="#cb7-229" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> (z<span class="op">-</span><span class="fl">0.5</span>)<span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="fu">log</span>(z) <span class="op">-</span> z <span class="op">+</span> <span class="fl">0.5</span><span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="fu">log</span>(<span class="dv">2</span><span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span>)<span class="op">;</span></span>
+<span id="cb7-230"><a href="#cb7-230" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-231"><a href="#cb7-231" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">betaLogPDF</span>(x<span class="op">,</span> a<span class="op">,</span> b){</span>
+<span id="cb7-232"><a href="#cb7-232" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (x <span class="op">&lt;=</span> <span class="dv">0</span> <span class="op">||</span> x <span class="op">&gt;=</span> <span class="dv">1</span>) <span class="cf">return</span> <span class="op">-</span><span class="kw">Infinity</span><span class="op">;</span></span>
+<span id="cb7-233"><a href="#cb7-233" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> (a<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="fu">log</span>(x) <span class="op">+</span> (b<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="fu">log</span>(<span class="dv">1</span><span class="op">-</span>x) <span class="op">-</span> (<span class="fu">logGamma</span>(a)<span class="op">+</span><span class="fu">logGamma</span>(b)<span class="op">-</span><span class="fu">logGamma</span>(a<span class="op">+</span>b))<span class="op">;</span></span>
+<span id="cb7-234"><a href="#cb7-234" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-235"><a href="#cb7-235" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">betaPDF</span>(x<span class="op">,</span> a<span class="op">,</span> b){</span>
+<span id="cb7-236"><a href="#cb7-236" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> lg <span class="op">=</span> <span class="fu">betaLogPDF</span>(x<span class="op">,</span> a<span class="op">,</span> b)<span class="op">;</span></span>
+<span id="cb7-237"><a href="#cb7-237" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">Number</span><span class="op">.</span><span class="fu">isFinite</span>(lg) <span class="op">?</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(lg) <span class="op">:</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-238"><a href="#cb7-238" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-239"><a href="#cb7-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-240"><a href="#cb7-240" aria-hidden="true" tabindex="-1"></a><span class="co">// Prior parameters and curve</span></span>
+<span id="cb7-241"><a href="#cb7-241" aria-hidden="true" tabindex="-1"></a>alpha_prior <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb7-242"><a href="#cb7-242" aria-hidden="true" tabindex="-1"></a>beta_prior  <span class="op">=</span> <span class="dv">98</span></span>
+<span id="cb7-243"><a href="#cb7-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-244"><a href="#cb7-244" aria-hidden="true" tabindex="-1"></a>betaPrior <span class="op">=</span> pXs<span class="op">.</span><span class="fu">map</span>(x <span class="kw">=&gt;</span> ({ x<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">betaPDF</span>(x<span class="op">,</span> alpha_prior<span class="op">,</span> beta_prior)<span class="op">,</span> <span class="dt">which</span><span class="op">:</span> <span class="st">"Prior  Beta(2, 98)"</span> }))</span>
+<span id="cb7-245"><a href="#cb7-245" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-246"><a href="#cb7-246" aria-hidden="true" tabindex="-1"></a><span class="co">// Optional “&lt; 10%” visual marker</span></span>
+<span id="cb7-247"><a href="#cb7-247" aria-hidden="true" tabindex="-1"></a>capThreshold <span class="op">=</span> <span class="fl">0.10</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-6-1" data-nodetype="declaration">
+
 </div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div id="rem-notation" class="proof remark">
-<p><span class="proof-title"><em>Remark 6.1</em>. </span><strong>Notation.</strong> We will usually write <span class="math inline">f(x \mid y)</span> rather than <span class="math inline">f_{X \mid Y}(x \mid y)</span> to keep things simple. Both mean the same thing.</p>
 </div>
 </div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-6-2" data-nodetype="declaration">
+
 </div>
 </div>
-<p>Using this, we obtain Bayes’ theorem for densities.</p>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-6-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-6-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-6-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-6-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-6-7" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-6-8" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-6-9" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb8" data-startfrom="254" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 253;"><span id="cb8-254"><a href="#cb8-254" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb8-255"><a href="#cb8-255" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">320</span><span class="op">,</span></span>
+<span id="cb8-256"><a href="#cb8-256" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">48</span><span class="op">,</span></span>
+<span id="cb8-257"><a href="#cb8-257" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">45</span><span class="op">,</span></span>
+<span id="cb8-258"><a href="#cb8-258" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">"Prevalence θ"</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> pDomain }<span class="op">,</span></span>
+<span id="cb8-259"><a href="#cb8-259" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">"Density"</span> }<span class="op">,</span></span>
+<span id="cb8-260"><a href="#cb8-260" aria-hidden="true" tabindex="-1"></a>  <span class="dt">style</span><span class="op">:</span> {</span>
+<span id="cb8-261"><a href="#cb8-261" aria-hidden="true" tabindex="-1"></a>    <span class="dt">width</span><span class="op">:</span> <span class="st">"100%"</span><span class="op">,</span></span>
+<span id="cb8-262"><a href="#cb8-262" aria-hidden="true" tabindex="-1"></a>    <span class="dt">display</span><span class="op">:</span> <span class="st">"block"</span><span class="op">,</span> </span>
+<span id="cb8-263"><a href="#cb8-263" aria-hidden="true" tabindex="-1"></a>    <span class="dt">margin</span><span class="op">:</span> <span class="st">"0 auto"</span><span class="op">,</span> </span>
+<span id="cb8-264"><a href="#cb8-264" aria-hidden="true" tabindex="-1"></a>    <span class="dt">maxWidth</span><span class="op">:</span> <span class="st">"960px"</span><span class="op">,</span></span>
+<span id="cb8-265"><a href="#cb8-265" aria-hidden="true" tabindex="-1"></a>    <span class="dt">background</span><span class="op">:</span> <span class="st">"var(--brand-bg)"</span><span class="op">,</span></span>
+<span id="cb8-266"><a href="#cb8-266" aria-hidden="true" tabindex="-1"></a>    <span class="dt">color</span><span class="op">:</span> <span class="st">"var(--brand-fg)"</span><span class="op">,</span></span>
+<span id="cb8-267"><a href="#cb8-267" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fontFamily</span><span class="op">:</span> bodyFont<span class="op">,</span> </span>
+<span id="cb8-268"><a href="#cb8-268" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fontSize</span><span class="op">:</span> <span class="dv">14</span></span>
+<span id="cb8-269"><a href="#cb8-269" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb8-270"><a href="#cb8-270" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb8-271"><a href="#cb8-271" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>]<span class="op">,</span> { <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--border)"</span><span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.6</span> })<span class="op">,</span></span>
+<span id="cb8-272"><a href="#cb8-272" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">lineY</span>(betaPrior<span class="op">,</span> { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--brand-red)"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.9</span> })<span class="op">,</span></span>
+<span id="cb8-273"><a href="#cb8-273" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">areaY</span>(betaPrior<span class="op">,</span> { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"var(--brand-red)"</span><span class="op">,</span> <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.15</span> })<span class="op">,</span></span>
+<span id="cb8-274"><a href="#cb8-274" aria-hidden="true" tabindex="-1"></a>    <span class="co">// visual cap at 10%</span></span>
+<span id="cb8-275"><a href="#cb8-275" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleX</span>([capThreshold]<span class="op">,</span> { <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--brand-fg)"</span><span class="op">,</span> <span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"3,3"</span><span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.6</span> })<span class="op">,</span></span>
+<span id="cb8-276"><a href="#cb8-276" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">text</span>(</span>
+<span id="cb8-277"><a href="#cb8-277" aria-hidden="true" tabindex="-1"></a>      [</span>
+<span id="cb8-278"><a href="#cb8-278" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">x</span><span class="op">:</span> <span class="fl">0.02</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">betaPDF</span>(<span class="fl">0.02</span><span class="op">,</span> alpha_prior<span class="op">,</span> beta_prior)<span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Prior mean ≈ 2%"</span> }<span class="op">,</span></span>
+<span id="cb8-279"><a href="#cb8-279" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">x</span><span class="op">:</span> capThreshold<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"10% upper cap (unlikely)"</span> }</span>
+<span id="cb8-280"><a href="#cb8-280" aria-hidden="true" tabindex="-1"></a>      ]<span class="op">,</span></span>
+<span id="cb8-281"><a href="#cb8-281" aria-hidden="true" tabindex="-1"></a>      { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">text</span><span class="op">:</span> <span class="st">"label"</span><span class="op">,</span> <span class="dt">dy</span><span class="op">:</span> <span class="op">-</span><span class="dv">10</span> }</span>
+<span id="cb8-282"><a href="#cb8-282" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb8-283"><a href="#cb8-283" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb8-284"><a href="#cb8-284" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="fig-beta-prevalence-prior" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-beta-prevalence-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div id="ojs-cell-7" data-nodetype="expression">
+
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-beta-prevalence-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.3: Prior for disease prevalence <span class="math inline">\theta</span> using a <span class="math inline">\mathrm{Beta}(2, 98)</span>. This encodes “likely around <span class="math inline">2\%</span>, very unlikely above <span class="math inline">10\%</span>.”
+</figcaption>
+</figure>
+</div>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+<p>This provides a <strong>language of degrees of belief</strong>: probability distributions describe how plausible different values of <span class="math inline">\theta</span> are, given what we know.</p>
+</section>
+<section id="the-bayesian-inference-procedure" class="level3" data-number="6.1.2">
+<h3 data-number="6.1.2" class="anchored" data-anchor-id="the-bayesian-inference-procedure"><span class="header-section-number">6.1.2</span> The Bayesian Inference Procedure</h3>
+<p>The Bayesian approach to inference has three ingredients:</p>
+<ol type="1">
+<li><strong>Prior</strong> — a probability distribution that captures what we believe about <span class="math inline">\theta</span> <em>before</em> seeing the data.</li>
+<li><strong>Likelihood</strong> — the distribution of the data <span class="math inline">\underline{x}</span> given <span class="math inline">\theta</span>.</li>
+<li><strong>Posterior</strong> — the updated distribution for <span class="math inline">\theta</span> that combines prior information with the evidence from the data.</li>
+</ol>
+<p>The update is performed using <strong>Bayes’ theorem</strong> (introduced in the next section). Intuitively:</p>
+<p><span class="math display">
+\text{Posterior} \;\; \propto \;\; \text{Likelihood} \times \text{Prior}.
+</span></p>
+<p>This equation expresses the central idea: <em>our beliefs about <span class="math inline">\theta</span> are revised in light of the observed data</em>.</p>
+</section>
+</section>
+<section id="bayes-theorem-for-densities" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="bayes-theorem-for-densities"><span class="header-section-number">6.2</span> Bayes’ Theorem for Densities</h2>
+<p>Bayesian inference is named after <span class="xref-no-num"><a href="../part1/1-prob-theory.html#thm-bayes" class="quarto-xref">Bayes’ Theorem&nbsp;<span>1.2</span></a></span>, a general identity in probability theory. For two events <span class="math inline">A</span> and <span class="math inline">B</span>, the conditional probability is given by <span class="math display">
+\mathrm{Pr}(A \mid B) = \frac{\mathrm{Pr}(B \mid A)\,\mathrm{Pr}(A)}{\mathrm{Pr}(B)}.
+</span> This rule is sometimes described as <strong>reversing conditioning</strong>: it lets us swap the order, turning “<span class="math inline">B</span> given <span class="math inline">A</span>” into “<span class="math inline">A</span> given <span class="math inline">B</span>,” with a correction for their overall probabilities.</p>
+<p>To apply this idea in Bayesian inference, we extend it from events to random variables and their densities. Using <span class="xref-no-num"><a href="../part1/1-prob-theory.html#def-conditional-pdf" class="quarto-xref">conditional densities&nbsp;<span>1.7</span></a></span>, <span class="math display">
+f_{X \mid Y}(x \mid y) = \frac{f_{XY}(x,y)}{f_Y(y)},
+</span></p>
+<p>we arrive at Bayes’ theorem for densities.</p>
 <div class="callout callout-style-simple callout-note no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-body-container">
-<div id="thm-bayes" class="thm theorem">
-<p><span class="theorem-title"><strong>Theorem 6.1 (Bayes’ Theorem for Densities.)</strong></span> For random variables <span class="math inline">X</span> and <span class="math inline">Y</span>:</p>
+<div id="thm-bayes-density" class="thm theorem">
+<p><span class="theorem-title"><strong>Theorem 6.1 (Bayes’ Theorem for Densities.)</strong></span> For random variables <span class="math inline">X</span> and <span class="math inline">Y</span> with joint density (or PMF) <span class="math inline">f(x,y)</span>:</p>
 <p><span class="math display">
 f(x \mid y) = \frac{f(y \mid x)\,f(x)}{f(y)}.
 </span></p>
@@ -845,7 +1166,7 @@ f(x \mid y) = \frac{f(y \mid x)\,f(x)}{f(y)}.
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -854,7 +1175,7 @@ f(x \mid y) = \frac{f(y \mid x)\,f(x)}{f(y)}.
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="prf-bayes" class="prf proof">
 <p><span class="proof-title"><em>Proof 6.1</em>. </span>By the definition of conditional density:</p>
@@ -871,16 +1192,89 @@ f(x \mid y) = \frac{f(y \mid x) f(x)}{f(y)}.
 </div>
 </div>
 </div>
-<hr>
 </section>
 <section id="bayes-theorem-in-statistics" class="level2" data-number="6.3">
 <h2 data-number="6.3" class="anchored" data-anchor-id="bayes-theorem-in-statistics"><span class="header-section-number">6.3</span> Bayes’ Theorem in Statistics</h2>
-<p>In Bayesian inference, we apply Bayes’ theorem with:</p>
+<p>Once we have specified a parameter <span class="math inline">\theta</span>, the model tells us the <strong>distribution of the data</strong>: <span class="math display">
+f(\underline{x} \mid \theta).
+</span></p>
+<p>This is the <span class="xref-no-num"><a href="5-likelihood.html" class="quarto-xref">likelihood&nbsp;<span>5</span></a></span> (the joint density/PMF of the observed sample under <span class="math inline">\theta</span>).</p>
+<p>Our Bayesian goal is the reverse: to describe the <strong>distribution of the parameter given the data</strong>: <span class="math display">
+\pi(\theta \mid \underline{x}).
+</span></p>
+<p>This is exactly the “reversing conditioning” step that <span class="xref-no-num"><a href="../part1/1-prob-theory.html#thm-bayes" class="quarto-xref">Bayes’ theorem&nbsp;<span>1.2</span></a></span> makes possible. It takes the likelihood <span class="math inline">f(\underline{x}\mid \theta)</span> and the prior <span class="math inline">\pi(\theta)</span> and turns them into the posterior <span class="math inline">\pi(\theta \mid \underline{x})</span>: <span class="math display">
+\text{Known: } f(\underline{x}\mid \theta)
+\quad\;\; \xRightarrow[\text{Bayes’ theorem}]{} \quad\;\;
+\text{Wanted: } \pi(\theta \mid \underline{x})
+</span></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Remark (Likelihood vs.&nbsp;Likelihood Function)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="proof remark">
+<p><span class="proof-title"><em>Remark</em> (Likelihood vs.&nbsp;Likelihood Function). </span>Here we use <strong>likelihood</strong> to mean the joint density/PMF <span class="math inline">f(\underline{x}\mid\theta)</span> itself.</p>
+<p>When viewed as a function of <span class="math inline">\theta</span> (with the data fixed), this is the <span class="xref-no-num"><a href="5-likelihood.html#def-likelihood" class="quarto-xref">likelihood function&nbsp;<span>5.1</span></a></span>. In this course, we will not stress this distinction further.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="imp-notation-bayes" class="callout callout-style-simple callout-important callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important&nbsp;6.1: Notation in Bayesian Statistics
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Both frequentist and Bayesian inference involve probability distributions for the <strong>data</strong>.</p>
 <ul>
-<li><span class="math inline">x = \theta</span> (the parameter, treated as random),</li>
-<li><span class="math inline">y = \underline{x}</span> (the observed data).</li>
+<li><p>In the <strong>frequentist setting</strong> we write</p>
+<p><span class="math display">
+X_i \sim \mathrm{Distribution}(\theta),
+</span></p>
+<p>where <span class="math inline">\theta</span> is a fixed but unknown parameter.</p></li>
+<li><p>In the <strong>Bayesian setting</strong> we write</p>
+<p><span class="math display">
+X_i \mid \theta \sim \mathrm{Distribution}(\theta),
+</span></p>
+<p>where the conditioning bar <span class="math inline">\mid \theta</span> emphasises that <span class="math inline">\theta</span> itself is random, and we are describing the distribution of the data <strong>given</strong> a particular value of <span class="math inline">\theta</span>.</p></li>
 </ul>
-<p>This gives:</p>
+<p>In both cases, <span class="math inline">f(x_i \mid \theta)</span> denotes the PDF/PMF of the data conditional on <span class="math inline">\theta</span>.</p>
+<hr>
+<p><strong>The Bayesian addition:</strong> we also introduce probability distributions <em>over the parameter <span class="math inline">\theta</span> itself</em>. To emphasise the difference in notation:</p>
+<ul>
+<li><strong>Prior distribution</strong> (before data): <span class="math inline">\pi(\theta)</span></li>
+<li><strong>Posterior distribution</strong> (after data): <span class="math inline">\pi(\theta \mid \underline{x})</span></li>
+</ul>
+<p>In Bayesian inference there are therefore two distinct kinds of distributions, which our notation keeps separate:</p>
+<ul>
+<li><strong>Data distributions:</strong> <span class="math inline">f(x \mid \theta)</span> describe how the data would look <em>if we knew <span class="math inline">\theta</span></em>.</li>
+<li><strong>Parameter distributions:</strong> <span class="math inline">\pi(\theta)</span> and <span class="math inline">\pi(\theta \mid \underline{x})</span> describe our <em>uncertainty about <span class="math inline">\theta</span></em>.</li>
+</ul>
+</div>
+</div>
+</div>
+<section id="from-bayes-theorem-to-the-posterior" class="level3" data-number="6.3.1">
+<h3 data-number="6.3.1" class="anchored" data-anchor-id="from-bayes-theorem-to-the-posterior"><span class="header-section-number">6.3.1</span> From Bayes’ theorem to the Posterior</h3>
+<p>To apply <span class="xref-no-num"><a href="#thm-bayes-density" class="quarto-xref">Bayes’ theorem&nbsp;<span>6.1</span></a></span> in statistics we make the identification:</p>
+<ul>
+<li><span class="math inline">x = \theta</span> : the <strong>parameter</strong>, treated as a random variable.<br>
+</li>
+<li><span class="math inline">y = \underline{x}</span> : the <strong>observed data</strong>.</li>
+</ul>
+<p>This leads directly to the <strong>posterior distribution</strong>:</p>
 <p><span class="math display">
 \pi(\theta \mid \underline{x})
 = \frac{f(\underline{x} \mid \theta)\,\pi(\theta)}{f(\underline{x})}.
@@ -891,35 +1285,41 @@ f(x \mid y) = \frac{f(y \mid x) f(x)}{f(y)}.
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-body-container">
-<div id="def-posterior" class="definition theorem">
-<p><span class="theorem-title"><strong>Definition 6.2 (Posterior Distribution.)</strong></span> <span class="math display">
-\pi(\theta \mid \underline{x})
-= \frac{f(\underline{x} \mid \theta)\,\pi(\theta)}{f(\underline{x})}.
+<div id="def-prior" class="definition theorem">
+<p><span class="theorem-title"><strong>Definition 6.1 (Prior Distribution.)</strong></span> The <strong>prior distribution</strong> represents our uncertainty about <span class="math inline">\theta</span> <em>before observing the data</em>.</p>
+<p>We denote its density (PDF or PMF) by</p>
+<p><span class="math display">
+\pi(\theta).
 </span></p>
-<p>The <strong>posterior</strong> combines two ingredients:</p>
-<ul>
-<li>The <strong>likelihood</strong> <span class="math inline">f(\underline{x} \mid \theta)</span> (information from the data).</li>
-<li>The <strong>prior</strong> <span class="math inline">\pi(\theta)</span> (information before seeing the data).</li>
-</ul>
-<p>The denominator <span class="math inline">f(\underline{x})</span> is a normalising constant ensuring the posterior integrates to 1.</p>
 </div>
 </div>
 </div>
 </div>
-<div class="callout callout-style-simple callout-important no-icon callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout callout-style-simple callout-note no-icon">
+<div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>✨ Big picture:
+<div class="callout-body-container">
+<div id="def-posterior" class="definition theorem">
+<p><span class="theorem-title"><strong>Definition 6.2 (Posterior Distribution)</strong></span> The <strong>posterior distribution</strong> represents our uncertainty about <span class="math inline">\theta</span> <em>after observing the data</em>.</p>
+<p>It is defined by <span class="math display">
+\pi(\theta \mid \underline{x})
+= \frac{f(\underline{x} \mid \theta)\,\pi(\theta)}{f(\underline{x})}.
+</span></p>
+<ul>
+<li>The <strong>likelihood</strong> <span class="math inline">f(\underline{x} \mid \theta)</span> is the term where data and parameter appear together; it is this dependence that updates the prior into the posterior.</li>
+<li>The <strong>prior</strong> <span class="math inline">\pi(\theta)</span> reflects what we believed about <span class="math inline">\theta</span> before seeing the data.</li>
+<li>The denominator <span class="math inline">f(\underline{x})</span> is a normalising constant ensuring the posterior integrates to <span class="math inline">1</span>.</li>
+</ul>
 </div>
 </div>
-<div class="callout-body-container callout-body">
-<p>Bayesian inference updates prior beliefs about parameters using the likelihood from the data, producing the posterior distribution which represents <em>updated uncertainty</em>.</p>
 </div>
 </div>
-<p>Let’s start with a simple example to see how this works:</p>
+</section>
+<section id="posteriors-in-practice" class="level3" data-number="6.3.2">
+<h3 data-number="6.3.2" class="anchored" data-anchor-id="posteriors-in-practice"><span class="header-section-number">6.3.2</span> Posteriors in Practice</h3>
+<p>We now work through a simple example to see how this update works.</p>
 <div class="callout callout-style-simple callout-caution no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -927,10 +1327,17 @@ f(x \mid y) = \frac{f(y \mid x) f(x)}{f(y)}.
 </div>
 <div class="callout-body-container">
 <div id="exm-biased-coin" class="example theorem">
-<p><span class="theorem-title"><strong>Example 6.2 (Biased Coin)</strong></span> We consider a possibly biased coin with parameter <span class="math inline">\theta = \Pr(\text{Head})</span>. Before seeing data, we express <em>no preference</em> over <span class="math inline">\theta\in(0,1)</span> via a uniform prior: <span class="math display">
-\theta \sim \mathrm{Uniform}(0,1) \equiv \mathrm{Beta}(1,1), \qquad \pi(\theta)=1 \ \text{for } 0&lt;\theta&lt;1.
-</span> Hence <span class="math inline">\mathrm{E}[\theta]=0.5</span>.</p>
-<p>We toss the coin <span class="math inline">n=5</span> times and observe <span class="math inline">x=1</span> head. Find the <strong>posterior</strong> <span class="math inline">\pi(\theta\mid x)</span>.</p>
+<p><span class="theorem-title"><strong>Example 6.4 (Biased Coin)</strong></span> Let <span class="math inline">\theta = \Pr(\text{Head})</span> for a possibly biased coin.</p>
+<ul>
+<li><p><strong>Prior:</strong> Before seeing data, we express no preference over <span class="math inline">\theta \in (0,1)</span> by choosing a <strong>uniform prior</strong>:</p>
+<p><span class="math display">
+\theta \sim \mathrm{Uniform}(0,1) \equiv \mathrm{Beta}(1,1),
+\qquad \pi(\theta) = 1 \text{ for } 0&lt;\theta&lt;1.
+</span></p>
+<p>This prior has mean <span class="math inline">\mathrm{E}[\theta]=0.5</span>.</p></li>
+<li><p><strong>Data:</strong> We toss the coin <span class="math inline">n=5</span> times and observe <span class="math inline">x=1</span> head.</p></li>
+<li><p><strong>Posterior:</strong> Bayes’ theorem combines the Binomial likelihood with the prior to give <span class="math inline">\pi(\theta \mid x)</span>.</p></li>
+</ul>
 </div>
 </div>
 </div>
@@ -948,36 +1355,36 @@ f(x \mid y) = \frac{f(y \mid x) f(x)}{f(y)}.
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="sol-biased-coin" class="proof solution">
-<p><span class="proof-title"><em>Solution 6.1</em>. </span>Let <span class="math inline">X</span> be the number of heads in <span class="math inline">5</span> tosses. Assuming that each coin throw is <em>independent and identically distributed</em>, <span class="math inline">X</span> is Binomial<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>: <span class="math display">
+<p><span class="proof-title"><em>Solution 6.1</em>. </span>Let <span class="math inline">X</span> be the number of heads in <span class="math inline">5</span> tosses. Assuming that each coin throw is <em>independent and identically distributed</em>, <span class="math inline">X</span> is Binomial<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>: <span class="math display">
     X \mid \theta \sim \textrm{Bin}(5,\theta).
 </span> Note that there is only a <strong>single observation</strong> here: one experiment is “tossing the coin <span class="math inline">5</span> times and seeing how many come up heads”. The probability of observing <span class="math inline">X=1</span> is <span class="math display">
     f(x = 1 \mid \theta) = 5\theta(1-\theta)^4
 </span> If we plot this:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: "Show code"</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-align: center</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> binom_lik(theta):</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">5</span> <span class="op">*</span> theta <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> theta) <span class="op">**</span> <span class="dv">4</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>theta_grid <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">200</span>)</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>binom_lik_vals <span class="op">=</span> binom_lik(theta_grid)</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">5</span>,<span class="dv">3</span>))</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>plt.plot(theta_grid, binom_lik_vals)</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="ch">\t</span><span class="vs">heta</span><span class="dv">$</span><span class="vs">"</span>)</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Likelihood"</span>)</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Binomial Likelihood (with $n=5$ and $X=1$)"</span>)</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>plt.show()  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>we see that this favours <span class="math inline">\theta</span> around <span class="math inline">0.2</span>. In fact, in <a href="5-likelihood.html#exm-binom-mle-single" class="quarto-xref">Example&nbsp;<span>5.4</span></a>, we saw that the MLE is <span class="math inline">\hat{\theta} = 0.2</span>.</p>
-<p>Our prior for <span class="math inline">\theta</span> was <span class="math inline">\pi(\theta) = 1</span>, for <span class="math inline">0 &lt; \theta &lt; 1</span>. To update our beliefs, by conditioning on the single observation <span class="math inline">x=2</span>, we use <span class="xref-no-num"><a href="#def-posterior" class="quarto-xref">Bayes Theorem&nbsp;<span>6.2</span></a></span>: <span class="math display">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: "Show code"</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-align: center</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> binom_lik(theta):</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">5</span> <span class="op">*</span> theta <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> theta) <span class="op">**</span> <span class="dv">4</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>theta_grid <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">200</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>binom_lik_vals <span class="op">=</span> binom_lik(theta_grid)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">5</span>,<span class="dv">3</span>))</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>plt.plot(theta_grid, binom_lik_vals)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="ch">\t</span><span class="vs">heta</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Likelihood"</span>)</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Binomial Likelihood (with $n=5$ and $X=1$)"</span>)</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>plt.show()  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>we see that this favours <span class="math inline">\theta</span> around <span class="math inline">0.2</span>. In fact, in <a href="5-likelihood.html#exm-binom-mle-single" class="quarto-xref">Example&nbsp;<span>5.6</span></a>, we saw that the MLE is <span class="math inline">\hat{\theta} = 0.2</span>.</p>
+<p>Our prior for <span class="math inline">\theta</span> was <span class="math inline">\pi(\theta) = 1</span>, for <span class="math inline">0 &lt; \theta &lt; 1</span>. To update our beliefs, by conditioning on the single observation <span class="math inline">x=2</span>, we use <span class="xref-no-num"><a href="#def-posterior" class="quarto-xref">Bayes’ Theorem&nbsp;<span>6.2</span></a></span>: <span class="math display">
     \pi(\theta|x=1)=\frac{\pi(\theta)f(x=1|\theta)}{f(x=1)} = \frac{1 \times 5\theta(1-\theta)^4}{f(x=1)}, \quad 0 &lt; \theta &lt; 1.
 </span> To compute the <em>denominator</em>, <span class="math inline">f(x=1)</span>, we use the <span class="xref-no-num"><a href="../part1/1-prob-theory.html#thm-total-probability-pdfs" class="quarto-xref">law of total probability&nbsp;<span>1.3</span></a></span>:</p>
 <p><span class="math display">\begin{align*}
@@ -1003,106 +1410,118 @@ f(x=1) &amp;=\int_\Theta\pi(\theta)f(x=1\, |\,\theta)\,d\theta = \int_0^1 1\time
 &amp;=k\theta(1-\theta)^4,\quad\quad 0&lt;\theta&lt;1.
 \end{align*}</span></p>
 <p>As <span class="math inline">\theta</span> is a continuous quantity, what we would like to know is what continuous distribution defined on <span class="math inline">(0,1)</span> has a probability density function which takes the form <span class="math inline">k\theta^{g-1}(1-\theta)^{h-1}</span>. The answer is the <span class="math inline">\textrm{Beta}(g,h)</span> distribution. Therefore, choosing <span class="math inline">g</span> and <span class="math inline">h</span> appropriately, we can see that the posterior distribution is <span class="math inline">\theta|x=1\sim \textrm{Beta}(2,5)</span>.</p>
-<p><strong>Summary:</strong></p>
-<p>It is possible that we have a biased coin. If we suppose that all values of <span class="math inline">\theta=\text{Pr(Head)}</span> are equally likely and then observe 1 head out of 5, then the most likely value of <span class="math inline">\theta</span> is 0.2 — the same as the most likely value from the data alone (not surprising!). However, on average, we would expect <span class="math inline">\theta</span> to be around 0.286. Uncertainty about <span class="math inline">\theta</span> has changed from a (prior) standard deviation of 0.289 to a (posterior) standard deviation of 0.160. The changes in our beliefs about <span class="math inline">\theta</span> are more fully described by the prior and posterior distributions shown in <a href="#fig-beta-posterior" class="quarto-xref">Figure&nbsp;<span>6.1</span></a>.</p>
 <hr>
+<p><strong>Interpretation:</strong></p>
+<ul>
+<li><strong>Most likely value (mode):</strong> <span class="math inline">\hat{\theta} \approx 0.2</span>, the same as the sample proportion <span class="math inline">1/5</span>.</li>
+<li><strong>Posterior mean:</strong> <span class="math inline">\mathrm{E}[\theta \mid x] \approx 0.286</span>, slightly larger than <span class="math inline">0.2</span> because the prior was centred at <span class="math inline">0.5</span>.</li>
+<li><strong>Uncertainty reduced:</strong> the posterior standard deviation shrinks from <span class="math inline">0.289</span> (prior) to <span class="math inline">0.160</span> (posterior).</li>
+</ul>
+<p>So, after seeing the data, our beliefs about <span class="math inline">\theta</span> have been updated: we now think small values of <span class="math inline">\theta</span> are more plausible, but not as extremely as the raw data alone would suggest.</p>
+<details>
+  <summary><strong> Show Plot </strong></summary>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="296" data-source-offset="-19"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 295;"><span id="cb6-296"><a href="#cb6-296" aria-hidden="true" tabindex="-1"></a>mDomain <span class="op">=</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]</span>
-<span id="cb6-297"><a href="#cb6-297" aria-hidden="true" tabindex="-1"></a>pdfXs <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleLinear</span>()<span class="op">.</span><span class="fu">domain</span>(mDomain)<span class="op">.</span><span class="fu">ticks</span>(<span class="dv">200</span>)  <span class="co">// 201 points including 0 and 1</span></span>
-<span id="cb6-298"><a href="#cb6-298" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-299"><a href="#cb6-299" aria-hidden="true" tabindex="-1"></a><span class="co">// PDFs (closed-form)</span></span>
-<span id="cb6-300"><a href="#cb6-300" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">priorPDF</span>(x)     { <span class="cf">return</span> (x <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> x <span class="op">&lt;</span> <span class="dv">1</span>) <span class="op">?</span> <span class="dv">1</span> <span class="op">:</span> <span class="dv">0</span><span class="op">;</span> }</span>
-<span id="cb6-301"><a href="#cb6-301" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">posteriorPDF</span>(x) { <span class="cf">return</span> (x <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> x <span class="op">&lt;</span> <span class="dv">1</span>) <span class="op">?</span> <span class="dv">30</span> <span class="op">*</span> x <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> x) <span class="op">**</span> <span class="dv">4</span> <span class="op">:</span> <span class="dv">0</span><span class="op">;</span> }</span>
-<span id="cb6-302"><a href="#cb6-302" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-303"><a href="#cb6-303" aria-hidden="true" tabindex="-1"></a><span class="co">// Data (use the scalar x from map!)</span></span>
-<span id="cb6-304"><a href="#cb6-304" aria-hidden="true" tabindex="-1"></a>prior <span class="op">=</span> pdfXs<span class="op">.</span><span class="fu">map</span>(x <span class="kw">=&gt;</span> ({ x<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">priorPDF</span>(x)<span class="op">,</span> <span class="dt">which</span><span class="op">:</span> <span class="st">"Prior  Beta(1,1)"</span> }))</span>
-<span id="cb6-305"><a href="#cb6-305" aria-hidden="true" tabindex="-1"></a>post  <span class="op">=</span> pdfXs<span class="op">.</span><span class="fu">map</span>(x <span class="kw">=&gt;</span> ({ x<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">posteriorPDF</span>(x)<span class="op">,</span> <span class="dt">which</span><span class="op">:</span> <span class="st">"Posterior  Beta(2,5)"</span> }))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb10" data-startfrom="581" data-source-offset="-19"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 580;"><span id="cb10-581"><a href="#cb10-581" aria-hidden="true" tabindex="-1"></a>mDomain <span class="op">=</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]</span>
+<span id="cb10-582"><a href="#cb10-582" aria-hidden="true" tabindex="-1"></a>pdfXs <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleLinear</span>()<span class="op">.</span><span class="fu">domain</span>(mDomain)<span class="op">.</span><span class="fu">ticks</span>(<span class="dv">200</span>)  <span class="co">// 201 points including 0 and 1</span></span>
+<span id="cb10-583"><a href="#cb10-583" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-584"><a href="#cb10-584" aria-hidden="true" tabindex="-1"></a><span class="co">// PDFs (closed-form)</span></span>
+<span id="cb10-585"><a href="#cb10-585" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">priorPDF</span>(x)     { <span class="cf">return</span> (x <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> x <span class="op">&lt;</span> <span class="dv">1</span>) <span class="op">?</span> <span class="dv">1</span> <span class="op">:</span> <span class="dv">0</span><span class="op">;</span> }</span>
+<span id="cb10-586"><a href="#cb10-586" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">posteriorPDF</span>(x) { <span class="cf">return</span> (x <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> x <span class="op">&lt;</span> <span class="dv">1</span>) <span class="op">?</span> <span class="dv">30</span> <span class="op">*</span> x <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> x) <span class="op">**</span> <span class="dv">4</span> <span class="op">:</span> <span class="dv">0</span><span class="op">;</span> }</span>
+<span id="cb10-587"><a href="#cb10-587" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-588"><a href="#cb10-588" aria-hidden="true" tabindex="-1"></a><span class="co">// Data (use the scalar x from map!)</span></span>
+<span id="cb10-589"><a href="#cb10-589" aria-hidden="true" tabindex="-1"></a>prior <span class="op">=</span> pdfXs<span class="op">.</span><span class="fu">map</span>(x <span class="kw">=&gt;</span> ({ x<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">priorPDF</span>(x)<span class="op">,</span> <span class="dt">which</span><span class="op">:</span> <span class="st">"Prior  Beta(1,1)"</span> }))</span>
+<span id="cb10-590"><a href="#cb10-590" aria-hidden="true" tabindex="-1"></a>post  <span class="op">=</span> pdfXs<span class="op">.</span><span class="fu">map</span>(x <span class="kw">=&gt;</span> ({ x<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">posteriorPDF</span>(x)<span class="op">,</span> <span class="dt">which</span><span class="op">:</span> <span class="st">"Posterior  Beta(2,5)"</span> }))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
-<div id="ojs-cell-2-1" data-nodetype="declaration">
+<div id="ojs-cell-8-1" data-nodetype="declaration">
 
 </div>
 </div>
 </div>
 <div class="cell-output cell-output-display">
 <div>
-<div id="ojs-cell-2-2" data-nodetype="declaration">
+<div id="ojs-cell-8-2" data-nodetype="declaration">
 
 </div>
 </div>
 </div>
 <div class="cell-output cell-output-display">
 <div>
-<div id="ojs-cell-2-3" data-nodetype="declaration">
+<div id="ojs-cell-8-3" data-nodetype="declaration">
 
 </div>
 </div>
 </div>
 <div class="cell-output cell-output-display">
 <div>
-<div id="ojs-cell-2-4" data-nodetype="declaration">
+<div id="ojs-cell-8-4" data-nodetype="declaration">
 
 </div>
 </div>
 </div>
 <div class="cell-output cell-output-display">
 <div>
-<div id="ojs-cell-2-5" data-nodetype="declaration">
+<div id="ojs-cell-8-5" data-nodetype="declaration">
 
 </div>
 </div>
 </div>
 <div class="cell-output cell-output-display">
 <div>
-<div id="ojs-cell-2-6" data-nodetype="declaration">
+<div id="ojs-cell-8-6" data-nodetype="declaration">
 
 </div>
 </div>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb7" data-startfrom="312" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 311;"><span id="cb7-312"><a href="#cb7-312" aria-hidden="true" tabindex="-1"></a><span class="co">// Create the plot directly without viewof</span></span>
-<span id="cb7-313"><a href="#cb7-313" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb7-314"><a href="#cb7-314" aria-hidden="true" tabindex="-1"></a>  <span class="co">// omit width to let it be responsive</span></span>
-<span id="cb7-315"><a href="#cb7-315" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">320</span><span class="op">,</span></span>
-<span id="cb7-316"><a href="#cb7-316" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">48</span><span class="op">,</span></span>
-<span id="cb7-317"><a href="#cb7-317" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">40</span><span class="op">,</span></span>
-<span id="cb7-318"><a href="#cb7-318" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">"θ"</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>] }<span class="op">,</span></span>
-<span id="cb7-319"><a href="#cb7-319" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">"Density"</span> }<span class="op">,</span></span>
-<span id="cb7-320"><a href="#cb7-320" aria-hidden="true" tabindex="-1"></a>  <span class="dt">style</span><span class="op">:</span> {</span>
-<span id="cb7-321"><a href="#cb7-321" aria-hidden="true" tabindex="-1"></a>    <span class="dt">width</span><span class="op">:</span> <span class="st">"100%"</span><span class="op">,</span></span>
-<span id="cb7-322"><a href="#cb7-322" aria-hidden="true" tabindex="-1"></a>    <span class="dt">display</span><span class="op">:</span> <span class="st">"block"</span><span class="op">,</span></span>
-<span id="cb7-323"><a href="#cb7-323" aria-hidden="true" tabindex="-1"></a>    <span class="dt">margin</span><span class="op">:</span> <span class="st">"0 auto"</span><span class="op">,</span></span>
-<span id="cb7-324"><a href="#cb7-324" aria-hidden="true" tabindex="-1"></a>    <span class="dt">maxWidth</span><span class="op">:</span> <span class="st">"960px"</span>   </span>
-<span id="cb7-325"><a href="#cb7-325" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
-<span id="cb7-326"><a href="#cb7-326" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb7-327"><a href="#cb7-327" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>]<span class="op">,</span> { <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--border)"</span><span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.6</span> })<span class="op">,</span></span>
-<span id="cb7-328"><a href="#cb7-328" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">lineY</span>(prior<span class="op">,</span> { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--brand-red)"</span><span class="op">,</span>  <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.85</span> })<span class="op">,</span></span>
-<span id="cb7-329"><a href="#cb7-329" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">areaY</span>(prior<span class="op">,</span> { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"var(--brand-red)"</span><span class="op">,</span> <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.05</span> })<span class="op">,</span></span>
-<span id="cb7-330"><a href="#cb7-330" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">lineY</span>(post<span class="op">,</span>  { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--brand-teal)"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span> })<span class="op">,</span></span>
-<span id="cb7-331"><a href="#cb7-331" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">areaY</span>(post<span class="op">,</span>  { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"var(--brand-teal)"</span><span class="op">,</span> <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.2</span> })<span class="op">,</span></span>
-<span id="cb7-332"><a href="#cb7-332" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">text</span>(</span>
-<span id="cb7-333"><a href="#cb7-333" aria-hidden="true" tabindex="-1"></a>      [</span>
-<span id="cb7-334"><a href="#cb7-334" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">x</span><span class="op">:</span> <span class="fl">0.8</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">priorPDF</span>(<span class="fl">0.8</span>)<span class="op">,</span>     <span class="dt">label</span><span class="op">:</span> <span class="st">"Prior"</span> }<span class="op">,</span></span>
-<span id="cb7-335"><a href="#cb7-335" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">x</span><span class="op">:</span> <span class="fl">0.35</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">posteriorPDF</span>(<span class="fl">0.3</span>)<span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Posterior"</span> }</span>
-<span id="cb7-336"><a href="#cb7-336" aria-hidden="true" tabindex="-1"></a>      ]<span class="op">,</span></span>
-<span id="cb7-337"><a href="#cb7-337" aria-hidden="true" tabindex="-1"></a>      { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">text</span><span class="op">:</span> <span class="st">"label"</span><span class="op">,</span> <span class="dt">dy</span><span class="op">:</span> <span class="op">-</span><span class="dv">8</span> }</span>
-<span id="cb7-338"><a href="#cb7-338" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb7-339"><a href="#cb7-339" aria-hidden="true" tabindex="-1"></a>  ]</span>
-<span id="cb7-340"><a href="#cb7-340" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb11" data-startfrom="597" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 596;"><span id="cb11-597"><a href="#cb11-597" aria-hidden="true" tabindex="-1"></a><span class="co">// Create the plot directly without viewof</span></span>
+<span id="cb11-598"><a href="#cb11-598" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb11-599"><a href="#cb11-599" aria-hidden="true" tabindex="-1"></a>  <span class="co">// omit width to let it be responsive</span></span>
+<span id="cb11-600"><a href="#cb11-600" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">320</span><span class="op">,</span></span>
+<span id="cb11-601"><a href="#cb11-601" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">48</span><span class="op">,</span></span>
+<span id="cb11-602"><a href="#cb11-602" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">45</span><span class="op">,</span></span>
+<span id="cb11-603"><a href="#cb11-603" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">"θ"</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>] }<span class="op">,</span></span>
+<span id="cb11-604"><a href="#cb11-604" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">"Density"</span> }<span class="op">,</span></span>
+<span id="cb11-605"><a href="#cb11-605" aria-hidden="true" tabindex="-1"></a>  <span class="dt">style</span><span class="op">:</span> {</span>
+<span id="cb11-606"><a href="#cb11-606" aria-hidden="true" tabindex="-1"></a>    <span class="dt">width</span><span class="op">:</span> <span class="st">"100%"</span><span class="op">,</span></span>
+<span id="cb11-607"><a href="#cb11-607" aria-hidden="true" tabindex="-1"></a>    <span class="dt">display</span><span class="op">:</span> <span class="st">"block"</span><span class="op">,</span> </span>
+<span id="cb11-608"><a href="#cb11-608" aria-hidden="true" tabindex="-1"></a>    <span class="dt">margin</span><span class="op">:</span> <span class="st">"0 auto"</span><span class="op">,</span> </span>
+<span id="cb11-609"><a href="#cb11-609" aria-hidden="true" tabindex="-1"></a>    <span class="dt">maxWidth</span><span class="op">:</span> <span class="st">"960px"</span><span class="op">,</span></span>
+<span id="cb11-610"><a href="#cb11-610" aria-hidden="true" tabindex="-1"></a>    <span class="dt">background</span><span class="op">:</span> <span class="st">"var(--brand-bg)"</span><span class="op">,</span></span>
+<span id="cb11-611"><a href="#cb11-611" aria-hidden="true" tabindex="-1"></a>    <span class="dt">color</span><span class="op">:</span> <span class="st">"var(--brand-fg)"</span><span class="op">,</span></span>
+<span id="cb11-612"><a href="#cb11-612" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fontFamily</span><span class="op">:</span> bodyFont<span class="op">,</span> </span>
+<span id="cb11-613"><a href="#cb11-613" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fontSize</span><span class="op">:</span> <span class="dv">14</span></span>
+<span id="cb11-614"><a href="#cb11-614" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb11-615"><a href="#cb11-615" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb11-616"><a href="#cb11-616" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>]<span class="op">,</span> { <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--border)"</span><span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.6</span> })<span class="op">,</span></span>
+<span id="cb11-617"><a href="#cb11-617" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">lineY</span>(prior<span class="op">,</span> { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--brand-red)"</span><span class="op">,</span>  <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.85</span> })<span class="op">,</span></span>
+<span id="cb11-618"><a href="#cb11-618" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">areaY</span>(prior<span class="op">,</span> { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"var(--brand-red)"</span><span class="op">,</span> <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.05</span> })<span class="op">,</span></span>
+<span id="cb11-619"><a href="#cb11-619" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">lineY</span>(post<span class="op">,</span>  { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--brand-teal)"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span> })<span class="op">,</span></span>
+<span id="cb11-620"><a href="#cb11-620" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">areaY</span>(post<span class="op">,</span>  { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"var(--brand-teal)"</span><span class="op">,</span> <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.2</span> })<span class="op">,</span></span>
+<span id="cb11-621"><a href="#cb11-621" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">text</span>(</span>
+<span id="cb11-622"><a href="#cb11-622" aria-hidden="true" tabindex="-1"></a>      [</span>
+<span id="cb11-623"><a href="#cb11-623" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">x</span><span class="op">:</span> <span class="fl">0.8</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">priorPDF</span>(<span class="fl">0.8</span>)<span class="op">,</span>     <span class="dt">label</span><span class="op">:</span> <span class="st">"Prior"</span> }<span class="op">,</span></span>
+<span id="cb11-624"><a href="#cb11-624" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">x</span><span class="op">:</span> <span class="fl">0.35</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">posteriorPDF</span>(<span class="fl">0.3</span>)<span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Posterior"</span> }</span>
+<span id="cb11-625"><a href="#cb11-625" aria-hidden="true" tabindex="-1"></a>      ]<span class="op">,</span></span>
+<span id="cb11-626"><a href="#cb11-626" aria-hidden="true" tabindex="-1"></a>      { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">text</span><span class="op">:</span> <span class="st">"label"</span><span class="op">,</span> <span class="dt">dy</span><span class="op">:</span> <span class="op">-</span><span class="dv">8</span> }</span>
+<span id="cb11-627"><a href="#cb11-627" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb11-628"><a href="#cb11-628" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb11-629"><a href="#cb11-629" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div id="fig-beta-posterior" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-beta-posterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div id="ojs-cell-3" data-nodetype="expression">
+<div id="ojs-cell-9" data-nodetype="expression">
 
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-beta-posterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6.1: Prior and posterior distributions for the coin bias parameter <span class="math inline">\theta=\Pr(\text{Head})</span> after observing 1 head in 5 tosses. The posterior is more concentrated, reflecting reduced uncertainty about <span class="math inline">\theta</span> compared to the uniform prior
+Figure&nbsp;6.4: Prior and posterior distributions for the coin bias parameter <span class="math inline">\theta=\Pr(\text{Head})</span> after observing 1 head in 5 tosses. The posterior is more concentrated, reflecting reduced uncertainty about <span class="math inline">\theta</span> compared to the uniform prior
 </figcaption>
 </figure>
 </div>
 </div>
+</details>
 <hr>
 <div class="callout callout-style-simple callout-caution no-icon">
 <div class="callout-body d-flex">
@@ -1111,69 +1530,69 @@ Figure&nbsp;6.1: Prior and posterior distributions for the coin bias parameter <
 </div>
 <div class="callout-body-container">
 <div id="exm-music-expert" class="theorem example">
-<p><span class="theorem-title"><strong>Example 6.3</strong></span> Consider an experiment to determine how good a music expert is at distinguishing between pages from Haydn and Mozart scores. Let <span class="math inline">\theta=\mathrm{Pr}(\text{correct choice})</span>. Suppose that, before conducting the experiment, we have been told that the expert is very competent. In fact, it is suggested that we should have a prior distribution which has a mode around <span class="math inline">\theta=0.95</span> and for which <span class="math inline">\mathrm{Pr}(\theta&lt;0.8)</span> is very small. We choose <span class="math inline">\theta\sim \textrm{Beta}(77,5)</span>, with probability density function <span class="math display">
+<p><span class="theorem-title"><strong>Example 6.5</strong></span> Consider an experiment to determine how good a music expert is at distinguishing between pages from Haydn and Mozart scores. Let <span class="math inline">\theta=\mathrm{Pr}(\text{correct choice})</span>. Suppose that, before conducting the experiment, we have been told that the expert is very competent. In fact, it is suggested that we should have a prior distribution which has a mode around <span class="math inline">\theta=0.95</span> and for which <span class="math inline">\mathrm{Pr}(\theta&lt;0.8)</span> is very small. We choose <span class="math inline">\theta\sim \textrm{Beta}(77,5)</span>, with probability density function <span class="math display">
 \pi(\theta)=128107980\,\theta^{76}(1-\theta)^4,\quad\quad 0&lt;\theta&lt;1.
 </span> A graph of this prior density is given as follows:</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">R</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
-<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: "Show code"</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-align: center</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Beta(α, β) with α=77, β=5  →  π(θ) ∝ θ^(76) (1-θ)^(4)</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>alpha, beta <span class="op">=</span> <span class="dv">77</span>, <span class="dv">5</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co"># B(α,β) = Γ(α)Γ(β)/Γ(α+β)  ⇒  1/B = exp(lgamma(α+β) - lgamma(α) - lgamma(β))</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Note the lgamma function computes the logarithm of the Gamma function.</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>beta_const_inv <span class="op">=</span> math.exp(math.lgamma(alpha <span class="op">+</span> beta) <span class="op">-</span> math.lgamma(alpha) <span class="op">-</span> math.lgamma(beta))</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> beta_pdf(theta):</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> beta_const_inv <span class="op">*</span> np.power(theta, alpha <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> np.power(<span class="dv">1</span> <span class="op">-</span> theta, beta <span class="op">-</span> <span class="dv">1</span>)</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>theta_grid <span class="op">=</span> np.linspace(<span class="fl">0.0</span>, <span class="fl">1.0</span>, <span class="dv">500</span>)</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>pdf_values <span class="op">=</span> beta_pdf(theta_grid)</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>,<span class="dv">4</span>))</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>plt.plot(theta_grid, pdf_values)</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="ch">\t</span><span class="vs">heta</span><span class="dv">$</span><span class="vs">"</span>)</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Density"</span>)</span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="vs">rf"Beta PDF: </span><span class="dv">$</span><span class="ch">\a</span><span class="vs">lpha=</span><span class="sc">{</span>alpha<span class="sc">}</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$\b</span><span class="vs">eta=</span><span class="sc">{</span>beta<span class="sc">}</span><span class="dv">$</span><span class="vs">"</span>)</span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.xlim(0, 1)</span></span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: "Show code"</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-align: center</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Beta(α, β) with α=77, β=5  →  π(θ) ∝ θ^(76) (1-θ)^(4)</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>alpha, beta <span class="op">=</span> <span class="dv">77</span>, <span class="dv">5</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co"># B(α,β) = Γ(α)Γ(β)/Γ(α+β)  ⇒  1/B = exp(lgamma(α+β) - lgamma(α) - lgamma(β))</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Note the lgamma function computes the logarithm of the Gamma function.</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>beta_const_inv <span class="op">=</span> math.exp(math.lgamma(alpha <span class="op">+</span> beta) <span class="op">-</span> math.lgamma(alpha) <span class="op">-</span> math.lgamma(beta))</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> beta_pdf(theta):</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> beta_const_inv <span class="op">*</span> np.power(theta, alpha <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> np.power(<span class="dv">1</span> <span class="op">-</span> theta, beta <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>theta_grid <span class="op">=</span> np.linspace(<span class="fl">0.0</span>, <span class="fl">1.0</span>, <span class="dv">500</span>)</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>pdf_values <span class="op">=</span> beta_pdf(theta_grid)</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>,<span class="dv">4</span>))</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>plt.plot(theta_grid, pdf_values)</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="ch">\t</span><span class="vs">heta</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Density"</span>)</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="vs">rf"Beta PDF: </span><span class="dv">$</span><span class="ch">\a</span><span class="vs">lpha=</span><span class="sc">{</span>alpha<span class="sc">}</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$\b</span><span class="vs">eta=</span><span class="sc">{</span>beta<span class="sc">}</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.xlim(0, 1)</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="dv">77</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>beta  <span class="ot">&lt;-</span> <span class="dv">5</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalising constant via log-gamma (works like Python's lgamma)</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>beta_const_inv <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">lgamma</span>(alpha <span class="sc">+</span> beta) <span class="sc">-</span> <span class="fu">lgamma</span>(alpha) <span class="sc">-</span> <span class="fu">lgamma</span>(beta))</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>beta_pdf <span class="ot">&lt;-</span> <span class="cf">function</span>(theta) {</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  beta_const_inv <span class="sc">*</span> theta<span class="sc">^</span>(alpha <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> theta)<span class="sc">^</span>(beta <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>theta_grid <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">500</span>)</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>pdf_values <span class="ot">&lt;-</span> <span class="fu">beta_pdf</span>(theta_grid)</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(theta_grid, pdf_values, <span class="at">type =</span> <span class="st">"l"</span>,</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="fu">expression</span>(theta), <span class="at">ylab =</span> <span class="st">"Density"</span>,</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">bquote</span>(<span class="st">"Beta PDF: "</span> <span class="sc">~</span> alpha <span class="sc">==</span> .(alpha) <span class="sc">~</span> <span class="st">","</span> <span class="sc">~</span> beta <span class="sc">==</span> .(beta)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="dv">77</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>beta  <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalising constant via log-gamma (works like Python's lgamma)</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>beta_const_inv <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">lgamma</span>(alpha <span class="sc">+</span> beta) <span class="sc">-</span> <span class="fu">lgamma</span>(alpha) <span class="sc">-</span> <span class="fu">lgamma</span>(beta))</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>beta_pdf <span class="ot">&lt;-</span> <span class="cf">function</span>(theta) {</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  beta_const_inv <span class="sc">*</span> theta<span class="sc">^</span>(alpha <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> theta)<span class="sc">^</span>(beta <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>theta_grid <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">500</span>)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>pdf_values <span class="ot">&lt;-</span> <span class="fu">beta_pdf</span>(theta_grid)</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(theta_grid, pdf_values, <span class="at">type =</span> <span class="st">"l"</span>,</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="fu">expression</span>(theta), <span class="at">ylab =</span> <span class="st">"Density"</span>,</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">bquote</span>(<span class="st">"Beta PDF: "</span> <span class="sc">~</span> alpha <span class="sc">==</span> .(alpha) <span class="sc">~</span> <span class="st">","</span> <span class="sc">~</span> beta <span class="sc">==</span> .(beta)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="6-bayes-inference_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<p><img src="6-bayes-inference_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1186,18 +1605,18 @@ Figure&nbsp;6.1: Prior and posterior distributions for the coin bias parameter <
 </div>
 </div>
 </section>
-<section id="bayesian-vs.-frequentist-again" class="level2" data-number="6.4">
-<h2 data-number="6.4" class="anchored" data-anchor-id="bayesian-vs.-frequentist-again"><span class="header-section-number">6.4</span> Bayesian vs.&nbsp;Frequentist (again)</h2>
+<section id="conjugacy" class="level3" data-number="6.3.3">
+<h3 data-number="6.3.3" class="anchored" data-anchor-id="conjugacy"><span class="header-section-number">6.3.3</span> Conjugacy</h3>
 
 
+</section>
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p><strong>Prior distribution.</strong> In Bayesian inference, the <em>prior</em> represents our beliefs about the parameter <span class="math inline">\theta</span> <strong>before seeing any data</strong>. It is written as a probability distribution <span class="math inline">\pi(\theta)</span>, which can be based on previous studies, expert knowledge, or simply chosen to reflect uncertainty (e.g.&nbsp;a flat prior).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p><strong>Binomial distribution.</strong> If we assume each coin throw <span class="math inline">C_i</span> is an i.i.d. <span class="math inline">\textrm{Bernoulli}(\theta)</span> trial with a <span class="math inline">1</span> representing a heads landing, and a <span class="math inline">0</span> representing a tails, the total number of heads out of <span class="math inline">5</span> is <span class="math inline">X = C_1 + C_2 + C_3 + C_4 + C_5</span>. Therefore: <span class="math display">
+<li id="fn1"><p><strong>Binomial distribution.</strong> If we assume each coin throw <span class="math inline">C_i</span> is an i.i.d. <span class="math inline">\textrm{Bernoulli}(\theta)</span> trial with a <span class="math inline">1</span> representing a heads landing, and a <span class="math inline">0</span> representing a tails, the total number of heads out of <span class="math inline">5</span> is <span class="math inline">X = C_1 + C_2 + C_3 + C_4 + C_5</span>. Therefore: <span class="math display">
     X \mid \theta \sim \textrm{Bin}(5,\theta).
-</span><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</span><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -1538,7 +1957,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImJvZHlGb250ID0gZ2V0Q29tcHV0ZWRTdHlsZShkb2N1bWVudC5ib2R5KS5mb250RmFtaWx5XG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTIiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiIvLyBEb21haW4gYW5kIGdyaWRcbm1Eb21haW4gPSBbMCwgMV1cbnBkZlhzID0gZDMuc2NhbGVMaW5lYXIoKS5kb21haW4obURvbWFpbikudGlja3MoMjAwKSAgLy8gMjAxIHBvaW50cyBpbmNsdWRpbmcgMCBhbmQgMVxuXG4vLyBQREZzIChjbG9zZWQtZm9ybSlcbmZ1bmN0aW9uIHByaW9yUERGKHgpICAgICB7IHJldHVybiAoeCA+IDAgJiYgeCA8IDEpID8gMSA6IDA7IH1cbmZ1bmN0aW9uIHBvc3RlcmlvclBERih4KSB7IHJldHVybiAoeCA+IDAgJiYgeCA8IDEpID8gMzAgKiB4ICogKDEgLSB4KSAqKiA0IDogMDsgfVxuXG4vLyBEYXRhICh1c2UgdGhlIHNjYWxhciB4IGZyb20gbWFwISlcbnByaW9yID0gcGRmWHMubWFwKHggPT4gKHsgeCwgeTogcHJpb3JQREYoeCksIHdoaWNoOiBcIlByaW9yICBCZXRhKDEsMSlcIiB9KSlcbnBvc3QgID0gcGRmWHMubWFwKHggPT4gKHsgeCwgeTogcG9zdGVyaW9yUERGKHgpLCB3aGljaDogXCJQb3N0ZXJpb3IgIEJldGEoMiw1KVwiIH0pKVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0zIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiXG4vLyBDcmVhdGUgdGhlIHBsb3QgZGlyZWN0bHkgd2l0aG91dCB2aWV3b2ZcblBsb3QucGxvdCh7XG4gIC8vIG9taXQgd2lkdGggdG8gbGV0IGl0IGJlIHJlc3BvbnNpdmVcbiAgaGVpZ2h0OiAzMjAsXG4gIG1hcmdpbkxlZnQ6IDQ4LFxuICBtYXJnaW5Cb3R0b206IDQwLFxuICB4OiB7IGxhYmVsOiBcIs64XCIsIGRvbWFpbjogWzAsIDFdIH0sXG4gIHk6IHsgbGFiZWw6IFwiRGVuc2l0eVwiIH0sXG4gIHN0eWxlOiB7XG4gICAgd2lkdGg6IFwiMTAwJVwiLFxuICAgIGRpc3BsYXk6IFwiYmxvY2tcIixcbiAgICBtYXJnaW46IFwiMCBhdXRvXCIsXG4gICAgbWF4V2lkdGg6IFwiOTYwcHhcIiAgIFxuICB9LFxuICBtYXJrczogW1xuICAgIFBsb3QucnVsZVkoWzBdLCB7IHN0cm9rZTogXCJ2YXIoLS1ib3JkZXIpXCIsIHN0cm9rZU9wYWNpdHk6IDAuNiB9KSxcbiAgICBQbG90LmxpbmVZKHByaW9yLCB7IHg6IFwieFwiLCB5OiBcInlcIiwgc3Ryb2tlOiBcInZhcigtLWJyYW5kLXJlZClcIiwgIHN0cm9rZVdpZHRoOiAyLCBzdHJva2VPcGFjaXR5OiAwLjg1IH0pLFxuICAgIFBsb3QuYXJlYVkocHJpb3IsIHsgeDogXCJ4XCIsIHk6IFwieVwiLCBmaWxsOiBcInZhcigtLWJyYW5kLXJlZClcIiwgZmlsbE9wYWNpdHk6IDAuMDUgfSksXG4gICAgUGxvdC5saW5lWShwb3N0LCAgeyB4OiBcInhcIiwgeTogXCJ5XCIsIHN0cm9rZTogXCJ2YXIoLS1icmFuZC10ZWFsKVwiLCBzdHJva2VXaWR0aDogMiB9KSxcbiAgICBQbG90LmFyZWFZKHBvc3QsICB7IHg6IFwieFwiLCB5OiBcInlcIiwgZmlsbDogXCJ2YXIoLS1icmFuZC10ZWFsKVwiLCBmaWxsT3BhY2l0eTogMC4yIH0pLFxuICAgIFBsb3QudGV4dChcbiAgICAgIFtcbiAgICAgICAgeyB4OiAwLjgsIHk6IHByaW9yUERGKDAuOCksICAgICBsYWJlbDogXCJQcmlvclwiIH0sXG4gICAgICAgIHsgeDogMC4zNSwgeTogcG9zdGVyaW9yUERGKDAuMyksIGxhYmVsOiBcIlBvc3RlcmlvclwiIH1cbiAgICAgIF0sXG4gICAgICB7IHg6IFwieFwiLCB5OiBcInlcIiwgdGV4dDogXCJsYWJlbFwiLCBkeTogLTggfVxuICAgIClcbiAgXVxufSlcbiJ9XX0=
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImJvZHlGb250ID0gZ2V0Q29tcHV0ZWRTdHlsZShkb2N1bWVudC5ib2R5KS5mb250RmFtaWx5XG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTIiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiIvLyA9PT0gKEEpIFVtYnJlbGxhIGRlY2lzaW9uOiA3MCUgY2hhbmNlIG9mIHJhaW4gKGV2ZXJ5ZGF5IHVuY2VydGFpbnR5KSA9PT1cbi8vIEJ1aWxkIGEgc2luZ2xlIGhvcml6b250YWwgYmFyIHNwbGl0IGludG8gXCJSYWluXCIgKDAuNykgYW5kIFwiTm8gcmFpblwiICgwLjMpXG5cbnJhaW5QID0gMC43XG5ub1JhaW5QID0gMSAtIHJhaW5QXG5cbnVtYnJlbGxhU2VnbWVudHMgPSBbXG4gIHsgbGFiZWw6IFwiUmFpbiAoNzAlKVwiLCAgICB4MTogMCwgICAgIHgyOiByYWluUCwgIHdoaWNoOiBcIlJhaW5cIiB9LFxuICB7IGxhYmVsOiBcIk5vIHJhaW4gKDMwJSlcIiwgeDE6IHJhaW5QLCB4MjogMSwgICAgICB3aGljaDogXCJObyByYWluXCIgfVxuXVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0zIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiXG5QbG90LnBsb3Qoe1xuICBoZWlnaHQ6IDEyMCxcbiAgbWFyZ2luTGVmdDogNTAsXG4gIG1hcmdpblJpZ2h0OiAyMCxcbiAgbWFyZ2luQm90dG9tOiA0NSxcbiAgeDogeyBsYWJlbDogXCJQcm9iYWJpbGl0eVwiLCBkb21haW46IFswLCAxXSwgbmljZTogZmFsc2UgfSxcbiAgeTogeyBheGlzOiBudWxsIH0sXG4gICAgc3R5bGU6IHtcbiAgICAgIHdpZHRoOiBcIjEwMCVcIixcbiAgICAgIGRpc3BsYXk6IFwiYmxvY2tcIiwgXG4gICAgICBtYXJnaW46IFwiMCBhdXRvXCIsIFxuICAgICAgbWF4V2lkdGg6IFwiOTYwcHhcIixcbiAgICAgIGJhY2tncm91bmQ6IFwidmFyKC0tYnJhbmQtYmcpXCIsXG4gICAgICBjb2xvcjogXCJ2YXIoLS1icmFuZC1mZylcIixcbiAgICAgIGZvbnRGYW1pbHk6IGJvZHlGb250LCBcbiAgICAgIGZvbnRTaXplOiAxMlxuICAgIH0sXG4gIG1hcmtzOiBbXG4gICAgUGxvdC5ydWxlWShbMF0sIHsgc3Ryb2tlOiBcInZhcigtLWJvcmRlcilcIiwgc3Ryb2tlT3BhY2l0eTogMC42IH0pLFxuICAgIC8vIHR3byBzdGFja2VkIHJlY3RhbmdsZXMgZm9ybWluZyBvbmUgYmFyXG4gICAgUGxvdC5yZWN0WCh1bWJyZWxsYVNlZ21lbnRzLCB7XG4gICAgICB4MTogXCJ4MVwiLFxuICAgICAgeDI6IFwieDJcIixcbiAgICAgIHk6IDAsXG4gICAgICBoZWlnaHQ6IDI0LFxuICAgICAgZmlsbDogZCA9PiBkLndoaWNoID09PSBcIlJhaW5cIiA/IFwidmFyKC0tYnJhbmQtdGVhbClcIiA6IFwidmFyKC0tYnJhbmQtcmVkKVwiLFxuICAgICAgZmlsbE9wYWNpdHk6IGQgPT4gZC53aGljaCA9PT0gXCJSYWluXCIgPyAwLjM1IDogMC4xNSxcbiAgICAgIHN0cm9rZTogXCJ2YXIoLS1icmFuZC1mZylcIlxuICAgIH0pLFxuICAgIC8vIGxhYmVsc1xuICAgIFBsb3QudGV4dCh1bWJyZWxsYVNlZ21lbnRzLCB7XG4gICAgICB4OiBkID0+IChkLngxICsgZC54MikgLyAyLFxuICAgICAgeTogMCxcbiAgICAgIHRleHQ6IFwibGFiZWxcIixcbiAgICAgIGR5OiAtOFxuICAgIH0pXG4gIF1cbn0pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTQiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiIvLyA9PT0gKEIpIEV4YW0tbWFyayBwcmlvcjogTm9ybWFsKM68PTYwLCDPgz0xMCkgPT09XG4vLyBEb21haW4gYW5kIGdyaWRcbm1hcmtEb21haW4gPSBbMCwgMTAwXVxubWFya1hzID0gZDMuc2NhbGVMaW5lYXIoKS5kb21haW4obWFya0RvbWFpbikudGlja3MoNDAwKVxuXG4vLyBOb3JtYWwgUERGIGhlbHBlclxuZnVuY3Rpb24gbm9ybWFsUERGKHgsIG11LCBzaWdtYSl7XG4gIGNvbnN0IHogPSAoeCAtIG11KSAvIHNpZ21hO1xuICByZXR1cm4gTWF0aC5leHAoLTAuNSAqIHogKiB6KSAvIChzaWdtYSAqIE1hdGguc3FydCgyICogTWF0aC5QSSkpO1xufVxuXG4vLyBQcmlvciBwYXJhbWV0ZXJzIGFuZCBjdXJ2ZVxubXVfcHJpb3IgPSA2MFxuc2RfcHJpb3IgPSAxMFxuXG5tYXJrUHJpb3IgPSBtYXJrWHMubWFwKHggPT4gKHsgeCwgeTogbm9ybWFsUERGKHgsIG11X3ByaW9yLCBzZF9wcmlvciksIHdoaWNoOiBcIlByaW9yICBOKDYwLCAxMMKyKVwiIH0pKVxuXG4vLyBTaGFkaW5nIGJvdW5kcyBmb3IgXCJwbGF1c2libGVcIiA1MOKAkzcwIHJlZ2lvblxubG9CYW5kID0gNTBcbmhpQmFuZCA9IDcwXG5iYW5kRmlsbCA9IG1hcmtYc1xuICAuZmlsdGVyKHggPT4geCA+PSBsb0JhbmQgJiYgeCA8PSBoaUJhbmQpXG4gIC5tYXAoeCA9PiAoeyB4LCB5OiBub3JtYWxQREYoeCwgbXVfcHJpb3IsIHNkX3ByaW9yKSB9KSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IlxuUGxvdC5wbG90KHtcbiAgaGVpZ2h0OiAzMjAsXG4gIG1hcmdpbkxlZnQ6IDQ4LFxuICBtYXJnaW5Cb3R0b206IDQ1LFxuICB4OiB7IGxhYmVsOiBcIkF2ZXJhZ2UgbWFyayDOuFwiLCBkb21haW46IG1hcmtEb21haW4gfSxcbiAgeTogeyBsYWJlbDogXCJEZW5zaXR5XCIgfSxcbiAgc3R5bGU6IHtcbiAgICB3aWR0aDogXCIxMDAlXCIsXG4gICAgZGlzcGxheTogXCJibG9ja1wiLCBcbiAgICBtYXJnaW46IFwiMCBhdXRvXCIsIFxuICAgIG1heFdpZHRoOiBcIjk2MHB4XCIsXG4gICAgYmFja2dyb3VuZDogXCJ2YXIoLS1icmFuZC1iZylcIixcbiAgICBjb2xvcjogXCJ2YXIoLS1icmFuZC1mZylcIixcbiAgICBmb250RmFtaWx5OiBib2R5Rm9udCwgXG4gICAgZm9udFNpemU6IDEyXG4gIH0sXG4gIG1hcmtzOiBbXG4gICAgUGxvdC5ydWxlWShbMF0sIHsgc3Ryb2tlOiBcInZhcigtLWJvcmRlcilcIiwgc3Ryb2tlT3BhY2l0eTogMC42IH0pLFxuICAgIC8vIHNoYWRlIHRoZSA1MOKAkzcwIHBsYXVzaWJsZSBiYW5kXG4gICAgUGxvdC5hcmVhWShiYW5kRmlsbCwgeyB4OiBcInhcIiwgeTogXCJ5XCIsIGZpbGw6IFwidmFyKC0tYnJhbmQtdGVhbClcIiwgZmlsbE9wYWNpdHk6IDAuMTIgfSksXG4gICAgLy8gbWFpbiBwcmlvciBjdXJ2ZVxuICAgIFBsb3QubGluZVkobWFya1ByaW9yLCB7IHg6IFwieFwiLCB5OiBcInlcIiwgc3Ryb2tlOiBcInZhcigtLWJyYW5kLXRlYWwpXCIsIHN0cm9rZVdpZHRoOiAyIH0pLFxuICAgIC8vIGFubm90YXRpb25zXG4gICAgUGxvdC5ydWxlWChbbXVfcHJpb3JdLCB7IHN0cm9rZTogXCJ2YXIoLS1icmFuZC1mZylcIiwgc3Ryb2tlV2lkdGg6IDIsIHN0cm9rZURhc2hhcnJheTogXCIzLDNcIiwgc3Ryb2tlT3BhY2l0eTogMC40IH0pLFxuICAgIFBsb3QudGV4dChcbiAgICAgIFtcbiAgICAgICAgeyB4OiBtdV9wcmlvciArIDgsIHk6IG5vcm1hbFBERihtdV9wcmlvciwgbXVfcHJpb3IsIHNkX3ByaW9yKSAqIDAuOTksIGxhYmVsOiBcIlByaW9yIG1lYW4gNjBcIiB9LFxuICAgICAgICB7IHg6IChsb0JhbmQraGlCYW5kKS8yLCB5OiBub3JtYWxQREYoKGxvQmFuZCtoaUJhbmQpLzIsIG11X3ByaW9yLCBzZF9wcmlvcikgLyAzLCBsYWJlbDogXCJQbGF1c2libGUgNTDigJM3MFwiIH1cbiAgICAgIF0sXG4gICAgICB7IHg6IFwieFwiLCB5OiBcInlcIiwgdGV4dDogXCJsYWJlbFwiLCBkeTogLTEwIH1cbiAgICApXG4gIF1cbn0pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTYiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiIvLyA9PT0gKEMpIERpc2Vhc2UgcHJldmFsZW5jZSBwcmlvcjogQmV0YSgyLCA5OCkgfiBtZWFuIDAuMDIsIG1hc3MgPCAwLjEwID09PVxuLy8gRG9tYWluIGFuZCBncmlkXG5wRG9tYWluID0gWzAsIDAuMTJdICAvLyB6b29tIGluIHRvIHNob3cgdGhlIHNtYWxsIHByb2JhYmlsaXRpZXMgY2xlYXJseVxucFhzID0gZDMuc2NhbGVMaW5lYXIoKS5kb21haW4ocERvbWFpbikudGlja3MoNDAwKVxuXG4vLyBCZXRhIFBERiBoZWxwZXIgKHVzaW5nIGxvZy1zcGFjZSBmb3Igc3RhYmlsaXR5KVxuZnVuY3Rpb24gbG9nR2FtbWEoeil7IC8vIExhbmN6b3MgYXBwcm94aW1hdGlvbiB2aWEgZDM/IGtlZXAgc2ltcGxlOiB1c2UgTWF0aC5sZ2FtbWEgZmFsbGJhY2sgaWYgcHJlc2VudDsgZWxzZSBjcnVkZSBTdGlybGluZ1xuICAvLyBNaW5pbWFsIFN0aXJsaW5nIGZvciB0ZWFjaGluZyB2aXN1YWxzIChmaW5lIGZvciBzbWFsbCDOsSzOsiBoZXJlKVxuICByZXR1cm4gKHotMC41KSpNYXRoLmxvZyh6KSAtIHogKyAwLjUqTWF0aC5sb2coMipNYXRoLlBJKTtcbn1cbmZ1bmN0aW9uIGJldGFMb2dQREYoeCwgYSwgYil7XG4gIGlmICh4IDw9IDAgfHwgeCA+PSAxKSByZXR1cm4gLUluZmluaXR5O1xuICByZXR1cm4gKGEtMSkqTWF0aC5sb2coeCkgKyAoYi0xKSpNYXRoLmxvZygxLXgpIC0gKGxvZ0dhbW1hKGEpK2xvZ0dhbW1hKGIpLWxvZ0dhbW1hKGErYikpO1xufVxuZnVuY3Rpb24gYmV0YVBERih4LCBhLCBiKXtcbiAgY29uc3QgbGcgPSBiZXRhTG9nUERGKHgsIGEsIGIpO1xuICByZXR1cm4gTnVtYmVyLmlzRmluaXRlKGxnKSA/IE1hdGguZXhwKGxnKSA6IDA7XG59XG5cbi8vIFByaW9yIHBhcmFtZXRlcnMgYW5kIGN1cnZlXG5hbHBoYV9wcmlvciA9IDJcbmJldGFfcHJpb3IgID0gOThcblxuYmV0YVByaW9yID0gcFhzLm1hcCh4ID0+ICh7IHgsIHk6IGJldGFQREYoeCwgYWxwaGFfcHJpb3IsIGJldGFfcHJpb3IpLCB3aGljaDogXCJQcmlvciAgQmV0YSgyLCA5OClcIiB9KSlcblxuLy8gT3B0aW9uYWwg4oCcPCAxMCXigJ0gdmlzdWFsIG1hcmtlclxuY2FwVGhyZXNob2xkID0gMC4xMFxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC03IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiXG5QbG90LnBsb3Qoe1xuICBoZWlnaHQ6IDMyMCxcbiAgbWFyZ2luTGVmdDogNDgsXG4gIG1hcmdpbkJvdHRvbTogNDUsXG4gIHg6IHsgbGFiZWw6IFwiUHJldmFsZW5jZSDOuFwiLCBkb21haW46IHBEb21haW4gfSxcbiAgeTogeyBsYWJlbDogXCJEZW5zaXR5XCIgfSxcbiAgc3R5bGU6IHtcbiAgICB3aWR0aDogXCIxMDAlXCIsXG4gICAgZGlzcGxheTogXCJibG9ja1wiLCBcbiAgICBtYXJnaW46IFwiMCBhdXRvXCIsIFxuICAgIG1heFdpZHRoOiBcIjk2MHB4XCIsXG4gICAgYmFja2dyb3VuZDogXCJ2YXIoLS1icmFuZC1iZylcIixcbiAgICBjb2xvcjogXCJ2YXIoLS1icmFuZC1mZylcIixcbiAgICBmb250RmFtaWx5OiBib2R5Rm9udCwgXG4gICAgZm9udFNpemU6IDE0XG4gIH0sXG4gIG1hcmtzOiBbXG4gICAgUGxvdC5ydWxlWShbMF0sIHsgc3Ryb2tlOiBcInZhcigtLWJvcmRlcilcIiwgc3Ryb2tlT3BhY2l0eTogMC42IH0pLFxuICAgIFBsb3QubGluZVkoYmV0YVByaW9yLCB7IHg6IFwieFwiLCB5OiBcInlcIiwgc3Ryb2tlOiBcInZhcigtLWJyYW5kLXJlZClcIiwgc3Ryb2tlV2lkdGg6IDIsIHN0cm9rZU9wYWNpdHk6IDAuOSB9KSxcbiAgICBQbG90LmFyZWFZKGJldGFQcmlvciwgeyB4OiBcInhcIiwgeTogXCJ5XCIsIGZpbGw6IFwidmFyKC0tYnJhbmQtcmVkKVwiLCBmaWxsT3BhY2l0eTogMC4xNSB9KSxcbiAgICAvLyB2aXN1YWwgY2FwIGF0IDEwJVxuICAgIFBsb3QucnVsZVgoW2NhcFRocmVzaG9sZF0sIHsgc3Ryb2tlOiBcInZhcigtLWJyYW5kLWZnKVwiLCBzdHJva2VEYXNoYXJyYXk6IFwiMywzXCIsIHN0cm9rZU9wYWNpdHk6IDAuNiB9KSxcbiAgICBQbG90LnRleHQoXG4gICAgICBbXG4gICAgICAgIHsgeDogMC4wMiwgeTogYmV0YVBERigwLjAyLCBhbHBoYV9wcmlvciwgYmV0YV9wcmlvciksIGxhYmVsOiBcIlByaW9yIG1lYW4g4omIIDIlXCIgfSxcbiAgICAgICAgeyB4OiBjYXBUaHJlc2hvbGQsIHk6IDAsIGxhYmVsOiBcIjEwJSB1cHBlciBjYXAgKHVubGlrZWx5KVwiIH1cbiAgICAgIF0sXG4gICAgICB7IHg6IFwieFwiLCB5OiBcInlcIiwgdGV4dDogXCJsYWJlbFwiLCBkeTogLTEwIH1cbiAgICApXG4gIF1cbn0pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTgiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiIvLyBEb21haW4gYW5kIGdyaWRcbm1Eb21haW4gPSBbMCwgMV1cbnBkZlhzID0gZDMuc2NhbGVMaW5lYXIoKS5kb21haW4obURvbWFpbikudGlja3MoMjAwKSAgLy8gMjAxIHBvaW50cyBpbmNsdWRpbmcgMCBhbmQgMVxuXG4vLyBQREZzIChjbG9zZWQtZm9ybSlcbmZ1bmN0aW9uIHByaW9yUERGKHgpICAgICB7IHJldHVybiAoeCA+IDAgJiYgeCA8IDEpID8gMSA6IDA7IH1cbmZ1bmN0aW9uIHBvc3RlcmlvclBERih4KSB7IHJldHVybiAoeCA+IDAgJiYgeCA8IDEpID8gMzAgKiB4ICogKDEgLSB4KSAqKiA0IDogMDsgfVxuXG4vLyBEYXRhICh1c2UgdGhlIHNjYWxhciB4IGZyb20gbWFwISlcbnByaW9yID0gcGRmWHMubWFwKHggPT4gKHsgeCwgeTogcHJpb3JQREYoeCksIHdoaWNoOiBcIlByaW9yICBCZXRhKDEsMSlcIiB9KSlcbnBvc3QgID0gcGRmWHMubWFwKHggPT4gKHsgeCwgeTogcG9zdGVyaW9yUERGKHgpLCB3aGljaDogXCJQb3N0ZXJpb3IgIEJldGEoMiw1KVwiIH0pKVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC05IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiXG4vLyBDcmVhdGUgdGhlIHBsb3QgZGlyZWN0bHkgd2l0aG91dCB2aWV3b2ZcblBsb3QucGxvdCh7XG4gIC8vIG9taXQgd2lkdGggdG8gbGV0IGl0IGJlIHJlc3BvbnNpdmVcbiAgaGVpZ2h0OiAzMjAsXG4gIG1hcmdpbkxlZnQ6IDQ4LFxuICBtYXJnaW5Cb3R0b206IDQ1LFxuICB4OiB7IGxhYmVsOiBcIs64XCIsIGRvbWFpbjogWzAsIDFdIH0sXG4gIHk6IHsgbGFiZWw6IFwiRGVuc2l0eVwiIH0sXG4gIHN0eWxlOiB7XG4gICAgd2lkdGg6IFwiMTAwJVwiLFxuICAgIGRpc3BsYXk6IFwiYmxvY2tcIiwgXG4gICAgbWFyZ2luOiBcIjAgYXV0b1wiLCBcbiAgICBtYXhXaWR0aDogXCI5NjBweFwiLFxuICAgIGJhY2tncm91bmQ6IFwidmFyKC0tYnJhbmQtYmcpXCIsXG4gICAgY29sb3I6IFwidmFyKC0tYnJhbmQtZmcpXCIsXG4gICAgZm9udEZhbWlseTogYm9keUZvbnQsIFxuICAgIGZvbnRTaXplOiAxNFxuICB9LFxuICBtYXJrczogW1xuICAgIFBsb3QucnVsZVkoWzBdLCB7IHN0cm9rZTogXCJ2YXIoLS1ib3JkZXIpXCIsIHN0cm9rZU9wYWNpdHk6IDAuNiB9KSxcbiAgICBQbG90LmxpbmVZKHByaW9yLCB7IHg6IFwieFwiLCB5OiBcInlcIiwgc3Ryb2tlOiBcInZhcigtLWJyYW5kLXJlZClcIiwgIHN0cm9rZVdpZHRoOiAyLCBzdHJva2VPcGFjaXR5OiAwLjg1IH0pLFxuICAgIFBsb3QuYXJlYVkocHJpb3IsIHsgeDogXCJ4XCIsIHk6IFwieVwiLCBmaWxsOiBcInZhcigtLWJyYW5kLXJlZClcIiwgZmlsbE9wYWNpdHk6IDAuMDUgfSksXG4gICAgUGxvdC5saW5lWShwb3N0LCAgeyB4OiBcInhcIiwgeTogXCJ5XCIsIHN0cm9rZTogXCJ2YXIoLS1icmFuZC10ZWFsKVwiLCBzdHJva2VXaWR0aDogMiB9KSxcbiAgICBQbG90LmFyZWFZKHBvc3QsICB7IHg6IFwieFwiLCB5OiBcInlcIiwgZmlsbDogXCJ2YXIoLS1icmFuZC10ZWFsKVwiLCBmaWxsT3BhY2l0eTogMC4yIH0pLFxuICAgIFBsb3QudGV4dChcbiAgICAgIFtcbiAgICAgICAgeyB4OiAwLjgsIHk6IHByaW9yUERGKDAuOCksICAgICBsYWJlbDogXCJQcmlvclwiIH0sXG4gICAgICAgIHsgeDogMC4zNSwgeTogcG9zdGVyaW9yUERGKDAuMyksIGxhYmVsOiBcIlBvc3RlcmlvclwiIH1cbiAgICAgIF0sXG4gICAgICB7IHg6IFwieFwiLCB5OiBcInlcIiwgdGV4dDogXCJsYWJlbFwiLCBkeTogLTggfVxuICAgIClcbiAgXVxufSlcbiJ9XX0=
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }

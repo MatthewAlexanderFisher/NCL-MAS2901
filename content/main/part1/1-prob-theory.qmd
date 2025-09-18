@@ -45,7 +45,10 @@ We can write the definitions of complement, intersection and union formally with
 
 ---
 
-**Visualisation:**
+```{=html}
+<details>
+<summary><strong>Show Visualisation</strong></summary>
+```
 
 ```{ojs}
 // Toggle: highlight selection (use explicit values for robust comparisons)
@@ -188,6 +191,10 @@ venn = {
 
 ```
 
+```{=html}
+</details>
+```
+
 ---
 
 ::: {.def #def-inclusion-exclusion}
@@ -240,7 +247,10 @@ where $\Omega$ is the sample space.
 
 ---
 
-**Visualisation:**
+```{=html}
+<details>
+<summary><strong>Show Visualisation</strong></summary>
+```
 
 ```{ojs}
 //| label: fig-partition-voronoi
@@ -349,131 +359,6 @@ where $\Omega$ is the sample space.
 ```
 
 ```{ojs}
-// Compact, styled controls BELOW the plot (two inputs only) — fixed grid + fonts
-
-html`<style>
-/* ---------- Scope all styles to this controls box ---------- */
-details.controls-root { 
-  --ctrl-font: 12px;
-  font-size: var(--ctrl-font);
-}
-
-/* Dropdown header */
-details.controls-root > summary {
-  list-style: none; cursor: pointer; user-select: none;
-  background: var(--surface, #f1f5f9);
-  border: 1px solid var(--border, #e5e7eb);
-  border-radius: 10px;
-  padding: 8px 10px;
-  font-weight: 600; font-size: calc(var(--ctrl-font) + 1px);
-  color: var(--fg-strong, #334155);
-  display: flex; align-items: center; gap: 8px;
-}
-details.controls-root > summary::-webkit-details-marker { display: none; }
-details.controls-root[open] > summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
-
-/* Two-column grid (side-by-side) */
-details.controls-root .controls-grid {
-  display: grid;
-  grid-template-columns: minmax(260px, 1fr) minmax(260px, 1fr);
-  gap: 12px;
-  border: 1px solid var(--border, #e5e7eb); border-top: none;
-  border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;
-  padding: 10px;
-  background: var(--surface-weak, #fafafa);
-  overflow-x: auto;
-}
-details.controls-root .controls-col { min-width: 260px; }
-details.controls-root .controls-col h4 {
-  margin: 0 0 6px 0;
-  font-size: var(--ctrl-font); font-weight: 700;
-  color: var(--fg-muted, #475569);
-}
-
-/* ---- Align label & slider (form-level grid) ---- */
-details.controls-root .controls-col form {
-  display: grid !important;
-  grid-template-columns: minmax(150px, auto) 1fr; /* label | inputs */
-  align-items: center;         /* vertical centring */
-  column-gap: 10px;
-  font-size: var(--ctrl-font) !important;
-  line-height: 1.25;
-  margin: 6px 0;
-}
-
-/* Label: kill default <p> margin; align KaTeX + text */
-details.controls-root .controls-col form > label {
-  margin: 0 !important;
-  display: flex; align-items: center; gap: 8px;
-  font-size: var(--ctrl-font) !important;
-  color: var(--fg-muted, #475569);
-  font-weight: 600;
-}
-details.controls-root .controls-col form > label p { margin: 0 !important; }
-
-/* Inputs wrapper (auto-generated, e.g. .oi-*-input): align number + slider */
-details.controls-root .controls-col form > [class$="-input"],
-details.controls-root .controls-col form > [class*="-input"] {
-  display: flex; align-items: center; gap: 8px;
-  min-height: 22px;
-}
-
-/* Number input normalisation */
-details.controls-root .controls-col input[type="number"] {
-  height: 24px; padding: 2px 6px;
-  font-size: var(--ctrl-font);
-  border: 1px solid var(--border, #e5e7eb); border-radius: 6px;
-  background: var(--surface, #f1f5f9); color: var(--fg-strong, #334155);
-}
-
-/* Slider styling */
-details.controls-root .controls-col input[type="range"] {
-  -webkit-appearance: none; appearance: none;
-  width: 100%; height: 18px; background: transparent;
-  vertical-align: middle;
-  accent-color: var(--brand-teal, #55C3CB);
-}
-details.controls-root .controls-col input[type="range"]::-webkit-slider-runnable-track {
-  height: 4px; border-radius: 999px;
-  background: color-mix(in srgb, var(--brand-teal, #55C3CB) 35%, transparent);
-}
-details.controls-root .controls-col input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none; appearance: none;
-  width: 12px; height: 12px; border-radius: 50%;
-  background: var(--brand-teal, #55C3CB); border: 0; margin-top: -4px; /* centre thumb over 4px track */
-}
-details.controls-root .controls-col input[type="range"]::-moz-range-track {
-  height: 4px; border-radius: 999px;
-  background: color-mix(in srgb, var(--brand-teal, #55C3CB) 35%, transparent);
-}
-details.controls-root .controls-col input[type="range"]::-moz-range-thumb {
-  width: 12px; height: 12px; border-radius: 50%;
-  background: var(--brand-teal, #55C3CB); border: 0;
-}
-
-/* Button */
-details.controls-root .btn-resim button {
-  background: var(--brand-teal, #55C3CB); color: #fff;
-  border: none; border-radius: 6px; padding: 6px 12px;
-  font-weight: 600; font-size: var(--ctrl-font); cursor: pointer;
-  transition: filter 120ms ease, background-color 120ms ease;
-}
-details.controls-root .btn-resim button:hover {
-  background: color-mix(in srgb, var(--brand-teal, #55C3CB) 88%, black);
-}
-
-/* Chevron */
-details.controls-root > summary::before {
-  content: ""; display: inline-block; margin-right: 8px; width: 0; height: 0;
-  border-style: solid; border-width: 3px 0 3px 6px;
-  border-color: transparent transparent transparent var(--fg-strong);
-  transform: rotate(0deg); transform-origin: 3px 50%; transition: transform 50ms ease;
-}
-details.controls-root[open] > summary::before { transform: rotate(90deg); }
-
-/* Optional: match plot width and center the controls block */
-.controls-wrap { max-width: 720px; margin: 8px auto 0; }
-</style>`
 
 // Build the two inputs only, in a side-by-side grid
 viewof controls = {
@@ -515,6 +400,10 @@ viewof controls = {
 // reactive bindings for the plot
 n = controls.n
 reseed = controls.reseed
+```
+
+```{=html}
+</details>
 ```
 
 ---
@@ -567,7 +456,10 @@ $$
 
 ---
 
-**Visualisation:**
+```{=html}
+<details>
+<summary><strong>Show Visualisation</strong></summary>
+```
 
 ```{ojs}
 //| label: fig-lotp-voronoi
@@ -736,72 +628,6 @@ frame2 = {
 ```{ojs}
 // Compact controls BELOW the plot (two inputs): k and Play animation
 
-html`<style>
-details.controls-root { --ctrl-font: 12px; font-size: var(--ctrl-font); }
-details.controls-root > summary {
-  list-style:none; cursor:pointer; user-select:none;
-  background:var(--surface,#f1f5f9); border:1px solid var(--border,#e5e7eb);
-  border-radius:10px; padding:8px 10px; font-weight:600;
-  font-size:calc(var(--ctrl-font) + 1px); color:var(--fg-strong,#334155);
-  display:flex; align-items:center; gap:8px;
-}
-details.controls-root > summary::-webkit-details-marker { display:none; }
-details.controls-root[open] > summary { border-bottom-left-radius:0; border-bottom-right-radius:0; }
-.controls-grid {
-  display:grid; grid-template-columns:minmax(260px,1fr) minmax(260px,1fr);
-  gap:12px; border:1px solid var(--border,#e5e7eb); border-top:none;
-  border-bottom-left-radius:10px; border-bottom-right-radius:10px;
-  padding:10px; background:var(--surface-weak,#fafafa); overflow-x:auto;
-}
-.controls-col { min-width:260px; }
-.controls-col h4 { margin:0 0 6px; font-size:var(--ctrl-font); font-weight:700; color:var(--fg-muted,#475569); }
-
-/* Form-level grid: label | inputs, centred vertically */
-.controls-col form {
-  display:grid !important; grid-template-columns:minmax(150px,auto) 1fr;
-  align-items:center; column-gap:10px; font-size:var(--ctrl-font) !important; line-height:1.25; margin:6px 0;
-}
-/* Label, no <p> margins */
-.controls-col form > label { margin:0 !important; display:flex; align-items:center; gap:8px; font-size:var(--ctrl-font) !important; color:var(--fg-muted,#475569); font-weight:600; }
-.controls-col form > label p { margin:0 !important; }
-/* Inputs wrapper (auto-generated) */
-.controls-col form > [class$="-input"], .controls-col form > [class*="-input"] { display:flex; align-items:center; gap:8px; min-height:22px; }
-
-/* Number input */
-.controls-col input[type="number"] {
-  height:24px; padding:2px 6px; font-size:var(--ctrl-font);
-  border:1px solid var(--border,#e5e7eb); border-radius:6px;
-  background:var(--surface,#f1f5f9); color:var(--fg-strong,#334155);
-}
-
-/* Slider */
-.controls-col input[type="range"] {
-  -webkit-appearance:none; appearance:none; width:100%; height:18px; background:transparent; vertical-align:middle; accent-color:var(--brand-teal,#55C3CB);
-}
-.controls-col input[type="range"]::-webkit-slider-runnable-track { height:4px; border-radius:999px; background: color-mix(in srgb, var(--brand-teal,#55C3CB) 35%, transparent); }
-.controls-col input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:12px; height:12px; border-radius:50%; background:var(--brand-teal,#55C3CB); border:0; margin-top:-4px; }
-.controls-col input[type="range"]::-moz-range-track { height:4px; border-radius:999px; background: color-mix(in srgb, var(--brand-teal,#55C3CB) 35%, transparent); }
-.controls-col input[type="range"]::-moz-range-thumb { width:12px; height:12px; border-radius:50%; background:var(--brand-teal,#55C3CB); border:0; }
-
-/* Button (if you later add one) */
-.btn-resim button {
-  background: var(--brand-teal,#55C3CB); color:#fff; border:none; border-radius:6px; padding:6px 12px;
-  font-weight:600; font-size:var(--ctrl-font); cursor:pointer; transition: filter 120ms ease, background-color 120ms ease;
-}
-.btn-resim button:hover { background: color-mix(in srgb, var(--brand-teal,#55C3CB) 88%, black); }
-
-/* Chevron */
-details.controls-root > summary::before {
-  content:""; display:inline-block; margin-right:8px; width:0; height:0;
-  border-style:solid; border-width:3px 0 3px 6px; border-color:transparent transparent transparent var(--fg-strong);
-  transform:rotate(0deg); transform-origin:3px 50%; transition:transform 50ms ease;
-}
-details.controls-root[open] > summary::before { transform:rotate(90deg); }
-
-/* Wrap width */
-.controls-wrap { max-width: 720px; margin: 8px auto 0; }
-</style>`
-
 // Two controls: k (slider) and Play animation (button)
 viewof controls2 = {
   const leftForm  = Inputs.form(
@@ -838,6 +664,10 @@ viewof controls2 = {
 // reactive
 n2     = controls2.n
 click2 = controls2.click2
+```
+
+```{=html}
+</details>
 ```
 
 ---
