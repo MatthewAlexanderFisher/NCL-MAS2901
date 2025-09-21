@@ -1109,5 +1109,64 @@ This provides a bound on the probability of large deviations from the mean.
 :::
 
 
+---
+
+### Factorising the Joint
+
+::: {#prp-chain-rule}
+#### The Chain Rule
+
+Let $\underline{X} = (X_1,\ldots, X_n)$ with joint PDF/PMF $f(\underline{x})$. Then
+$$
+f(\underline{x}) \;=\; f(x_1)\;\prod_{t=2}^n f \big(x_t \mid x_1, \ldots, x_{t-1}\big).
+$$
+:::
+
+::: {#prf-chain-rule}
+#### Not Examinable
+
+We use the definition of conditional PDF/PMF (@def-conditional-pdf) and induction.
+
+- **Base case ($n=2$).** By definition,
+  $$
+  f(x_2\mid x_1) \;=\; \frac{f(x_1,x_2)}{f(x_1)} \quad \text{(for $f(x_1)>0$),}
+  $$
+  hence $f(x_1,x_2)=f(x_1)\,f(x_2\mid x_1)$.
+
+- **Inductive step.** For $k\ge 2$,
+  $$
+  f(x_1,\ldots,x_k)
+  \;=\; f(x_1,\ldots,x_{k-1})\, f(x_k\mid x_1,\ldots,x_{k-1}),
+  $$
+  again by @def-conditional-pdf:
+  $$
+  f(x_k\mid x_1,\ldots,x_{k-1})
+  \;=\; \frac{f(x_1,\ldots,x_k)}{f(x_1,\ldots,x_{k-1})}.
+  $$
+  Iterating this factorisation from $k=2$ up to $k=n$ yields
+  $$
+  f(x_1,\ldots,x_n)
+  \;=\; f(x_1)\prod_{t=2}^n f(x_t\mid x_1,\ldots,x_{t-1}).
+  $$
+
+**Telescoping viewpoint.** Equivalently,
+$$
+\prod_{t=2}^n f(x_t\mid x_1,\ldots,x_{t-1})
+= \prod_{t=2}^n \frac{f(x_1,\ldots,x_t)}{f(x_1,\ldots,x_{t-1})}
+= \frac{f(x_1,\ldots,x_n)}{f(x_1)},
+$$
+so rearranging gives the same result.
+
+---
+
+**Remarks.** 
+
+- The argument applies to both PMFs and PDFs (assuming the relevant conditionals exist).
+- The identity does **not** assume independence; it is always valid wherever the conditionals are defined.
+
+:::
+
+
+
 [^prob-space]:
   **Note on Probability Theory.** Formally, a probability space is written as a triple $(\Omega,\Sigma,P)$, where $\Sigma$ is the collection of “measurable” events. This level of mathematical detail goes beyond what we need in this course and will **not be assessed**. (See the [Wikipedia article on probability spaces](https://en.wikipedia.org/wiki/Probability_space) if you are curious.)

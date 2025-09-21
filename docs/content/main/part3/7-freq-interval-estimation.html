@@ -2031,11 +2031,11 @@ X_1,\dots,X_n \;\overset{\text{iid}}{\sim}\; \mathrm{Distribution}(\underline{\t
 <summary><strong>Solution</strong></summary>
 <p><strong>Step 1: Define the model and estimator</strong></p>
 <p>Let <span class="math inline">X_i \sim \mathrm{Poisson}(\lambda)</span> denote the <strong>total</strong> number of goals per football match. Note that the <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-pois" class="quarto-xref">Poisson distribution&nbsp;<span>1.4</span></a></span> satisfies <span class="math inline">\mathrm{E}[X_i] = \lambda</span>.</p>
-<p>Therefore, we use the sample mean</p>
+<p>Therefore, we use the <span class="xref-no-num"><a href="../part2/4-freq-point-estimation.html#def-sample-mean" class="quarto-xref">sample mean&nbsp;<span>4.1</span></a></span></p>
 <p><span class="math display">
-\hat{\lambda} = \frac{1}{n} \sum_{i=1}^n X_i.
+\hat{\lambda} = \frac{1}{n} \sum_{i=1}^n X_i
 </span></p>
-<p>as our estimator of <span class="math inline">\lambda</span>:</p>
+<p>as our estimator of <span class="math inline">\lambda</span>.</p>
 <p><strong>Step 2: Apply the CLT</strong></p>
 <p>From the <span class="xref-no-num"><a href="../part2/4-freq-point-estimation.html#thm-clt" class="quarto-xref">CLT&nbsp;<span>4.1</span></a></span>, for sufficiently large <span class="math inline">n</span> and <em>known</em> variance <span class="math inline">\sigma^2 = \mathrm{Var}(X_i)</span>, we have</p>
 <p><span class="math display">
@@ -2159,7 +2159,7 @@ S^2 \approx 3.956.
 \lambda \in [\,3.20 \pm 1.96\times 0.566\,] \ =\ [\,2.09,\ 4.31\,].
 </span></p></li>
 </ul>
-<p><strong>Result.</strong> With these 10 matches, the approximate <span class="math inline">95%</span> CIs are</p>
+<p><strong>Result.</strong> With these 10 matches, the approximate <span class="math inline">95\%</span> CIs are</p>
 <p><span class="math display">
 \boxed{\ [1.97,\ 4.43]\ \text{(using }S^2\text{)} \quad\text{and}\quad [2.09,\ 4.31]\ \text{(using }\hat{\lambda}\text{)}\ }.
 </span></p>

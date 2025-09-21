@@ -81,21 +81,7 @@
   margin-left: 0.5rem;
 }
 
-/* Editor */
-.editor-text {
-  width: 100%;
-  height: 100%;
-  border: 0;
-  padding: 1rem;
-  font-family: "Atkinson Hyperlegible Mono", "Fira Code", "Cascadia Code", ui-monospace, monospace;
-  font-size: 13px;
-  line-height: 1.5;
-  background: var(--brand-bg);
-  color: var(--code-fg);
-  outline: none;
-  tab-size: 2;
-  resize: none;
-}
+
 
 /* Terminal output */
 #terminal {
@@ -235,49 +221,27 @@
   }
 }
 
-/* Minimal Python syntax highlighting - only color what needs coloring */
-.editor-highlight {
-  color: var(--code-fg) !important;  /* Default text stays your color */
-  font-family: "Atkinson Hyperlegible Mono", "Fira Code", ui-monospace, monospace !important;
+
+/* CodeMirror theme overrides */
+.CodeMirror {
+  background: transparent !important;
+  color: var(--code-fg) !important;
+  font-family: "Atkinson Hyperlegible Mono", monospace !important;
   font-size: 13px !important;
-  line-height: 1.5 !important;
+  height: 100% !important;
 }
 
-#code .language-python {
-  color: inherit !important;  /* Reset all token colors */
+.CodeMirror-gutters {
+  background: var(--brand-bg) !important;
+  border-right: 1px solid #333 !important;
 }
 
-/* Only highlight these specific tokens */
-.editor-highlight .token.comment {
-  color: #6a7a8a;  /* Muted gray for comments */
-  font-style: italic;
+.CodeMirror-linenumber {
+  color: var(--border) !important;
+  font-size: 12px !important;
 }
 
-.editor-highlight .token.string {
-  color: #8be77c;  /* Soft green for strings */
-}
 
-.editor-highlight .token.keyword {
-  color: #ff79c6;  /* Pink for keywords (def, if, for, etc.) */
-}
-
-.editor-highlight .token.function {
-  color: #66d9ef;  /* Cyan for function names */
-}
-
-.editor-highlight .token.number {
-  color: #bd93f9;  /* Purple for numbers */
-}
-
-.editor-highlight .token.operator {
-  color: var(--code-fg);  /* Keep operators the same as regular text */
-}
-
-.editor-highlight .token.punctuation {
-  color: var(--code-fg);  /* Keep punctuation the same */
-}
-
-/* Everything else stays the default color */
-.editor-highlight .token {
-  color: inherit;
+.CodeMirror-line  {
+  background: transparent !important;
 }

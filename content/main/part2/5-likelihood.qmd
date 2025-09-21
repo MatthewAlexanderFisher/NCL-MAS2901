@@ -122,7 +122,7 @@ f(x_1,\ldots,x_n \mid \sigma^2)
 = \prod_{t=1}^n f(x_t \mid x_{t-1}, \sigma^2).
 $$
 
-The example above assumed a Markov property (each observation only depends on the previous one). In general, observations may depend on the entire history, in which case the joint density factorises via the chain rule:
+The example above assumed a Markov property (each observation only depends on the previous one). In general, observations may depend on the entire history, in which case the joint density factorises via the <span class="xref-no-num">[chain rule @prp-chain-rule]</span>:
 $$
 f(x_1,\ldots,x_n \mid \theta) = f(x_1\mid\theta)\prod_{t=2}^n f(x_t \mid x_1,\ldots,x_{t-1},\theta)
 $$
@@ -142,7 +142,7 @@ Dependent data will be covered in later modules and is **not examinable**.
 |-------------------------------|-----------------------------------------------------------|--------------------------------|
 | **[i.i.d.]{title="Independent and Identically Distributed"} data**               | Independent and identically distributed; each with density $f(x\mid\theta)$ | $f(\underline{x}\mid\theta) = \prod_{i=1}^n f(x_i\mid\theta)$ |
 | **Independent (not identical) data** | Independent; each $X_i$ may have its own density $f_{X_i}(x_i\mid\theta)$ | $f(\underline{x}\mid\theta) = \prod_{i=1}^n f_{X_i}(x_i\mid\theta)$ |
-| **Dependent data (general)**  | Dependent; factorise using the chain rule                  | $f(\underline{x}\mid\theta) = f(x_1\mid\theta)\prod_{t=2}^n f(x_t \mid x_1,\ldots,x_{t-1},\theta)$ |
+| **Dependent data (general)**  | Dependent; factorise using the <span class="xref-no-num">[chain rule @prp-chain-rule]</span>                 | $f(\underline{x}\mid\theta) = f(x_1\mid\theta)\prod_{t=2}^n f(x_t \mid x_1,\ldots,x_{t-1},\theta)$ |
 
 
 ::: {.callout-warning}

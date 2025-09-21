@@ -661,6 +661,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#convergence-of-random-variables" id="toc-convergence-of-random-variables" class="nav-link" data-scroll-target="#convergence-of-random-variables"><span class="header-section-number">1.4.1</span> Convergence of Random Variables</a></li>
   <li><a href="#probability-inequalities" id="toc-probability-inequalities" class="nav-link" data-scroll-target="#probability-inequalities"><span class="header-section-number">1.4.2</span> Probability Inequalities</a></li>
+  <li><a href="#factorising-the-joint" id="toc-factorising-the-joint" class="nav-link" data-scroll-target="#factorising-the-joint"><span class="header-section-number">1.4.3</span> Factorising the Joint</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -1973,6 +1974,68 @@ X_n \xrightarrow{p} X \;\;\;\implies\;\;\; X_n \xrightarrow{d} X.
 \;\leq\; \frac{\sigma^2}{\varepsilon^2}.
 </span></p>
 <p>This provides a bound on the probability of large deviations from the mean.</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="factorising-the-joint" class="level3" data-number="1.4.3">
+<h3 data-number="1.4.3" class="anchored" data-anchor-id="factorising-the-joint"><span class="header-section-number">1.4.3</span> Factorising the Joint</h3>
+<div class="callout callout-style-simple callout-note no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="prp-chain-rule" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposition 1.2 (The Chain Rule)</strong></span> Let <span class="math inline">\underline{X} = (X_1,\ldots, X_n)</span> with joint PDF/PMF <span class="math inline">f(\underline{x})</span>. Then <span class="math display">
+f(\underline{x}) \;=\; f(x_1)\;\prod_{t=2}^n f \big(x_t \mid x_1, \ldots, x_{t-1}\big).
+</span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof (Not Examinable)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="prf-chain-rule" class="proof">
+<p><span class="proof-title"><em>Proof 1.3</em> (Not Examinable). </span>We use the definition of conditional PDF/PMF (<a href="#def-conditional-pdf" class="quarto-xref">Definition&nbsp;<span>1.7</span></a>) and induction.</p>
+<ul>
+<li><p><strong>Base case (<span class="math inline">n=2</span>).</strong> By definition, <span class="math display">
+f(x_2\mid x_1) \;=\; \frac{f(x_1,x_2)}{f(x_1)} \quad \text{(for $f(x_1)&gt;0$),}
+</span> hence <span class="math inline">f(x_1,x_2)=f(x_1)\,f(x_2\mid x_1)</span>.</p></li>
+<li><p><strong>Inductive step.</strong> For <span class="math inline">k\ge 2</span>, <span class="math display">
+f(x_1,\ldots,x_k)
+\;=\; f(x_1,\ldots,x_{k-1})\, f(x_k\mid x_1,\ldots,x_{k-1}),
+</span> again by <a href="#def-conditional-pdf" class="quarto-xref">Definition&nbsp;<span>1.7</span></a>: <span class="math display">
+f(x_k\mid x_1,\ldots,x_{k-1})
+\;=\; \frac{f(x_1,\ldots,x_k)}{f(x_1,\ldots,x_{k-1})}.
+</span> Iterating this factorisation from <span class="math inline">k=2</span> up to <span class="math inline">k=n</span> yields <span class="math display">
+f(x_1,\ldots,x_n)
+\;=\; f(x_1)\prod_{t=2}^n f(x_t\mid x_1,\ldots,x_{t-1}).
+</span></p></li>
+</ul>
+<p><strong>Telescoping viewpoint.</strong> Equivalently, <span class="math display">
+\prod_{t=2}^n f(x_t\mid x_1,\ldots,x_{t-1})
+= \prod_{t=2}^n \frac{f(x_1,\ldots,x_t)}{f(x_1,\ldots,x_{t-1})}
+= \frac{f(x_1,\ldots,x_n)}{f(x_1)},
+</span> so rearranging gives the same result.</p>
+<hr>
+<p><strong>Remarks.</strong></p>
+<ul>
+<li>The argument applies to both PMFs and PDFs (assuming the relevant conditionals exist).</li>
+<li>The identity does <strong>not</strong> assume independence; it is always valid wherever the conditionals are defined.</li>
+</ul>
 </div>
 </div>
 </div>

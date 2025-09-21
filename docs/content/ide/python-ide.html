@@ -1014,73 +1014,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  async function setupSyntaxHighlighting() {
-    // Load Prism core + Python language (no theme!)
-    await loadScript('https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-core.min.js');
-    await loadScript('https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-clike.min.js');
-    await loadScript('https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js');
-
-    // Create overlay wrapper and highlighter <pre><code>
-    const wrapper = document.createElement('div');
-    wrapper.className = 'editor-wrap';
-    wrapper.style.position = 'relative';
-    wrapper.style.height = '100%';
-    wrapper.style.background = 'var(--brand-bg)';
-
-    const pre = document.createElement('pre');
-    pre.className = 'editor-highlight language-python';
-    pre.style.position = 'absolute';
-    pre.style.inset = '0';
-    pre.style.margin = '0';
-    pre.style.padding = '1rem';
-    pre.style.overflow = 'auto';
-    pre.style.pointerEvents = 'none';
-    pre.style.whiteSpace = 'pre-wrap';
-    pre.style.wordWrap = 'break-word';
-    pre.style.border = '0';
-    pre.style.borderRadius = '0';
-    pre.style.background = 'transparent';
-    pre.style.font = 'inherit';  // Use same font as textarea
-    pre.style.lineHeight = 'inherit';
-    pre.style.fontSize = 'inherit';
-
-    const code = document.createElement('code');
-    code.className = 'language-python';
-    pre.appendChild(code);
-
-    // Insert wrapper before textarea, then move textarea inside (on top)
-    codeEl.parentNode.insertBefore(wrapper, codeEl);
-    wrapper.appendChild(pre);
-    wrapper.appendChild(codeEl);
-
-    // Make textarea transparent (so syntax layer shows), but keep caret visible
-    codeEl.style.background = 'transparent';
-    codeEl.style.color = 'transparent';
-    codeEl.style.caretColor = 'var(--code-fg)';
-    // Ensure padding matches the <pre> padding
-    if (!codeEl.style.padding) codeEl.style.padding = '1rem';
-
-    // Sync scroll positions
-    function syncScroll() {
-      pre.scrollTop  = codeEl.scrollTop;
-      pre.scrollLeft = codeEl.scrollLeft;
-    }
-    codeEl.addEventListener('scroll', syncScroll);
-
-    // Render current code
-    function renderHighlight() {
-      if (window.Prism?.highlight) {
-        code.innerHTML = Prism.highlight(codeEl.value, Prism.languages.python, 'python');
-      } else {
-        code.textContent = codeEl.value;
-      }
-      syncScroll();
-    }
-    codeEl.addEventListener('input', renderHighlight);
-    renderHighlight();
-  }
-
-  // Make Matplotlib toolbar buttons show hover tooltips & hide inline text
+// Make Matplotlib toolbar buttons show hover tooltips & hide inline text
   function enhanceMplToolbar(root = document) {
     root.querySelectorAll('#terminal .mpl-toolbar button.mpl-widget').forEach(btn => {
       let label = (btn.getAttribute('aria-label') || btn.getAttribute('title') || '').trim();
@@ -1118,7 +1052,9 @@ document.addEventListener('DOMContentLoaded', () => {
   (async function init() {
     try {
       // Start syntax highlighting in parallel
-      setupSyntaxHighlighting().catch(() => { /* highlighting is optional */ });
+      setupCodeMirror().catch(() => { 
+        console.warn('CodeMirror failed to load, using plain textarea');
+      });
 
       status.textContent = "Loading Pyodide...";
       pyodide = await loadPyodide({
@@ -1128,7 +1064,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       status.textContent = "Loading packages...";
-      await pyodide.loadPackage(["numpy", "matplotlib"]);
+      await pyodide.loadPackage(["numpy", "matplotlib", "scipy"]);
 
       // Configure Matplotlib defaults once (users can override later)
       await pyodide.runPythonAsync(`
@@ -1159,20 +1095,58 @@ print(f"Matplotlib {matplotlib.__version__}")
     }
   })();
 
-  // Run code
+  // Replace the entire setupSyntaxHighlighting function with this:
+  async function setupCodeMirror() {
+    // Load CodeMirror CSS and JS
+    const cmBase = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5';
+    
+    // Load CSS
+    await loadCSS(`${cmBase}/codemirror.min.css`);
+    await loadCSS(`${cmBase}/theme/dracula.min.css`); // Dark theme that matches your style
+    
+    // Load JS
+    await loadScript(`${cmBase}/codemirror.min.js`);
+    await loadScript(`${cmBase}/mode/python/python.min.js`);
+    
+    // Convert textarea to CodeMirror
+    const editor = CodeMirror.fromTextArea(codeEl, {
+      mode: 'python',
+      theme: 'dracula',
+      lineNumbers: true,
+      lineWrapping: true,
+      tabSize: 2,
+      indentUnit: 2,
+      autoCloseBrackets: true,
+      matchBrackets: true,
+      extraKeys: {
+        'Shift-Enter': () => runCode()
+      }
+    });
+    
+    // Store editor reference globally so runCode can access it
+    window.cmEditor = editor;
+    
+    // Fix sizing
+    editor.setSize('100%', '100%');
+    
+    // Update the global codeEl reference to use getValue/setValue
+    window.getCode = () => editor.getValue();
+    window.setCode = (val) => editor.setValue(val);
+  }
+
+
+  // Update runCode to get code from CodeMirror:
   async function runCode() {
     runBtn.disabled = true;
     status.textContent = "Running...";
     output('\n--- Running ---\n', 'separator');
 
-    const code = codeEl.value;
+    // Get code from CodeMirror if it exists, otherwise from textarea
+    const code = window.cmEditor ? window.cmEditor.getValue() : codeEl.value;
 
     try {
-      // Close previous figures so they don't re-render
       await pyodide.runPythonAsync(`import matplotlib.pyplot as plt; plt.close('all')`);
-      // Execute user code
       await pyodide.runPythonAsync(code);
-      // Enhance any newly created toolbars
       enhanceMplToolbar();
     } catch (err) {
       output('\n' + err.toString() + '\n', 'error');
@@ -1182,12 +1156,11 @@ print(f"Matplotlib {matplotlib.__version__}")
     runBtn.disabled = false;
   }
 
-  // Events
+  // Event listeners - these were missing!
   runBtn.addEventListener("click", runCode);
   clearBtn.addEventListener("click", clearOutput);
-  codeEl.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && e.shiftKey) { e.preventDefault(); runCode(); }
-  });
+
+
 </script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
