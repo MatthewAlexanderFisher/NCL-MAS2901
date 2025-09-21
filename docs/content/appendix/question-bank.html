@@ -528,7 +528,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
- <span class="menu-text">Part II — Parameter Estimation</span></a>
+ <span class="menu-text">Part II — Point Estimation</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -1814,7 +1814,7 @@ Solution
 <p><span class="math display">
 X \mid p \sim \mathrm{Binomial}(n,p).
 </span></p>
-<p>Following the <span class="xref-no-num"><a href="../main/part3/7-freq-interval-estimation.html#sec-general-ci-strategy" class="quarto-xref">general strategy&nbsp;<span>General Strategy</span></a></span>, construct an <em>exact</em> two-sided <span class="math inline">(1-\alpha)</span> confidence interval for <span class="math inline">p</span>.</p>
+<p>Following the <span class="xref-no-num"><a href="../main/part3/7-freq-interval-estimation.html#sec-general-ci-strategy" class="quarto-xref">general strategy&nbsp;<span>General Recipe</span></a></span>, construct an <em>exact</em> two-sided <span class="math inline">(1-\alpha)</span> confidence interval for <span class="math inline">p</span>.</p>
 <p><strong>Note on exact (discrete) coverage.</strong> In the discrete case, an “exact” interval <span class="math inline">[L(X), U(X)]</span> means, for every <span class="math inline">0\leq p \leq 1</span>,</p>
 <p><span class="math display">
 \operatorname{Pr}\!\big(L(X) \leq p \leq U(X)\big) \ge 1-\alpha, \quad\text{where }X \sim \text{Binomial}(n,p).
@@ -2305,6 +2305,77 @@ L(b;\underline{x}) = \prod_{i=1}^n f(x_i;b)
 \frac{n}{b} = \sum_{i=1}^n x_i \quad \Rightarrow \quad \hat{b} = \frac{1}{\bar{x}}.
 </span></p>
 <p>So the MLE is <span class="math inline">\hat{b} = 1/\bar{x}</span>.</p>
+</details>
+</div>
+</div>
+<div class="question callout callout-style-simple callout-important no-icon callout-titled" data-tags="probability normal student-t chi-squared" data-difficulty="3">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Deriving the Student-<span class="math inline">t</span> distribution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">X_1,\ldots, X_n \overset{\text{iid}}{\sim} \mathcal{N}(\mu,\sigma^2)</span>. From <a href="../main/part2/4-freq-point-estimation.html#prp-normal-sample-mean" class="quarto-xref">Proposition&nbsp;<span>4.2</span></a> and <a href="../main/part2/4-freq-point-estimation.html#prp-normal-sample-variance" class="quarto-xref">Proposition&nbsp;<span>4.3</span></a>, we saw that</p>
+<ol type="1">
+<li><span class="math inline">\bar{X} \sim \mathcal{N}(\mu, \sigma^2/n)</span>,</li>
+<li><span class="math inline">\dfrac{(n-1)S^2}{\sigma^2} \;\sim\; \chi^2_{\,n-1}</span>, and</li>
+<li>The sample variance <span class="math inline">S^2</span> was independent of the sample mean <span class="math inline">\bar{X}</span>.</li>
+</ol>
+<p>Derive the PDF of the random variable <span class="math display">
+T = \frac{\bar{X} - \mu}{S / \sqrt{n}}.
+</span></p>
+<details class="solution">
+<summary>
+Solution
+</summary>
+<p>Set <span class="math display">
+Z \;=\; \frac{\bar{X}-\mu}{\sigma/\sqrt{n}} \sim \mathcal{N}(0,1),
+\qquad
+U \;=\; \frac{(n-1)S^2}{\sigma^2} \sim \chi^2_{\,n-1},
+</span> with <span class="math inline">Z</span> independent of <span class="math inline">U</span>. Then <span class="math display">
+T \;=\; \frac{\sigma Z}{\sqrt{(\sigma^2 U)/(n-1)}} \;=\; \frac{Z}{\sqrt{U/\nu}},
+\qquad \nu := n-1.
+</span></p>
+<p><strong>Conditional distribution.</strong> Conditioning on <span class="math inline">U=u</span>, <span class="math display">
+T \mid U=u \;=\; \frac{Z}{\sqrt{u/\nu}}
+\;\sim\; \mathcal{N}\!\left(0,\; \frac{\nu}{u}\right),
+</span> so its conditional density is <span class="math display">
+f_{T\mid U}(t\mid u)
+= \sqrt{\frac{u}{2\pi\nu}}\;\exp\!\left(-\frac{u}{2\nu}t^2\right), \qquad t\in\mathbb{R}.
+</span></p>
+<p><strong>Mixture over <span class="math inline">U</span>.</strong> The marginal PDF of <span class="math inline">T</span> is <span class="math display">
+f_T(t)
+= \int_0^\infty f_{T\mid U}(t\mid u)\, f_U(u)\, \mathrm{d}u,
+</span></p>
+<p>where <span class="math inline">f_U(u) = \dfrac{1}{2^{\nu/2}\Gamma(\nu/2)}\,u^{\nu/2-1} e^{-u/2}</span> for <span class="math inline">u&gt;0</span>. Thus</p>
+<p><span class="math display">\begin{align*}
+f_T(t)
+&amp;= \int_0^\infty
+\left[\sqrt{\frac{u}{2\pi\nu}}\;e^{-\frac{u}{2\nu}t^2}\right]
+\left[\frac{1}{2^{\nu/2}\Gamma(\nu/2)}\,u^{\nu/2-1} e^{-u/2}\right] \mathrm{d}u \\
+&amp;= \frac{1}{\sqrt{2\pi\nu}\,2^{\nu/2}\Gamma(\nu/2)}
+\int_0^\infty
+u^{\frac{\nu+1}{2}-1}
+\exp\!\left\{-\frac{1}{2}\!\left(1+\frac{t^2}{\nu}\right)u\right\}
+\,\mathrm{d}u.
+\end{align*}</span></p>
+<p>Use the Gamma integral <span class="math inline">\displaystyle \int_0^\infty u^{a-1} e^{-b u}\,\mathrm{d}u = \Gamma(a)\,b^{-a}</span> with <span class="math inline">a=\frac{\nu+1}{2}</span> and <span class="math inline">b=\frac{1}{2}\!\left(1+\frac{t^2}{\nu}\right)</span>:</p>
+<p><span class="math display">\begin{align*}
+f_T(t)
+&amp;= \frac{1}{\sqrt{2\pi\nu}\,2^{\nu/2}\Gamma(\nu/2)}
+\cdot \Gamma\!\left(\frac{\nu+1}{2}\right)
+\left[\frac{1}{2}\!\left(1+\frac{t^2}{\nu}\right)\right]^{-\frac{\nu+1}{2}} \\
+&amp;= \frac{\Gamma\!\left(\frac{\nu+1}{2}\right)}{\sqrt{\nu\pi}\,\Gamma\!\left(\frac{\nu}{2}\right)}
+\left(1+\frac{t^2}{\nu}\right)^{-\frac{\nu+1}{2}}, \qquad t\in\mathbb{R}.
+\end{align*}</span></p>
+<p>This is the <strong>Student-<span class="math inline">t</span></strong> density with <span class="math inline">\nu=n-1</span> degrees of freedom: <span class="math display">
+T \sim t_\nu \quad \text{with} \quad
+f_T(t) = \frac{\Gamma\!\left(\frac{\nu+1}{2}\right)}{\sqrt{\nu\pi}\,\Gamma\!\left(\frac{\nu}{2}\right)}
+\left(1+\frac{t^2}{\nu}\right)^{-\frac{\nu+1}{2}}.
+</span></p>
 </details>
 </div>
 </div>

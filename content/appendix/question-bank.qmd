@@ -1690,3 +1690,88 @@ So the MLE is $\hat{b} = 1/\bar{x}$.
 </details>
 
 :::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="probability normal student-t chi-squared" data-difficulty="3"}
+## Deriving the Student-$t$ distribution
+
+Let $X_1,\ldots, X_n \overset{\text{iid}}{\sim} \mathcal{N}(\mu,\sigma^2)$. From @prp-normal-sample-mean and @prp-normal-sample-variance, we saw that
+
+1. $\bar{X} \sim \mathcal{N}(\mu, \sigma^2/n)$,
+2. $\dfrac{(n-1)S^2}{\sigma^2} \;\sim\; \chi^2_{\,n-1}$, and
+3. The sample variance $S^2$ was independent of the sample mean $\bar{X}$.
+
+Derive the PDF of the random variable
+$$
+T = \frac{\bar{X} - \mu}{S / \sqrt{n}}.
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+Set 
+$$
+Z \;=\; \frac{\bar{X}-\mu}{\sigma/\sqrt{n}} \sim \mathcal{N}(0,1), 
+\qquad 
+U \;=\; \frac{(n-1)S^2}{\sigma^2} \sim \chi^2_{\,n-1},
+$$
+with $Z$ independent of $U$. Then
+$$
+T \;=\; \frac{\sigma Z}{\sqrt{(\sigma^2 U)/(n-1)}} \;=\; \frac{Z}{\sqrt{U/\nu}},
+\qquad \nu := n-1.
+$$
+
+**Conditional distribution.** Conditioning on $U=u$,
+$$
+T \mid U=u \;=\; \frac{Z}{\sqrt{u/\nu}}
+\;\sim\; \mathcal{N}\!\left(0,\; \frac{\nu}{u}\right),
+$$
+so its conditional density is
+$$
+f_{T\mid U}(t\mid u)
+= \sqrt{\frac{u}{2\pi\nu}}\;\exp\!\left(-\frac{u}{2\nu}t^2\right), \qquad t\in\mathbb{R}.
+$$
+
+**Mixture over $U$.** The marginal PDF of $T$ is
+$$
+f_T(t) 
+= \int_0^\infty f_{T\mid U}(t\mid u)\, f_U(u)\, \mathrm{d}u,
+$$
+
+where $f_U(u) = \dfrac{1}{2^{\nu/2}\Gamma(\nu/2)}\,u^{\nu/2-1} e^{-u/2}$ for $u>0$. Thus
+
+\begin{align*}
+f_T(t)
+&= \int_0^\infty 
+\left[\sqrt{\frac{u}{2\pi\nu}}\;e^{-\frac{u}{2\nu}t^2}\right]
+\left[\frac{1}{2^{\nu/2}\Gamma(\nu/2)}\,u^{\nu/2-1} e^{-u/2}\right] \mathrm{d}u \\
+&= \frac{1}{\sqrt{2\pi\nu}\,2^{\nu/2}\Gamma(\nu/2)}
+\int_0^\infty 
+u^{\frac{\nu+1}{2}-1}
+\exp\!\left\{-\frac{1}{2}\!\left(1+\frac{t^2}{\nu}\right)u\right\}
+\,\mathrm{d}u.
+\end{align*}
+
+Use the Gamma integral $\displaystyle \int_0^\infty u^{a-1} e^{-b u}\,\mathrm{d}u = \Gamma(a)\,b^{-a}$ with
+$a=\frac{\nu+1}{2}$ and $b=\frac{1}{2}\!\left(1+\frac{t^2}{\nu}\right)$:
+
+\begin{align*}
+f_T(t)
+&= \frac{1}{\sqrt{2\pi\nu}\,2^{\nu/2}\Gamma(\nu/2)}
+\cdot \Gamma\!\left(\frac{\nu+1}{2}\right)
+\left[\frac{1}{2}\!\left(1+\frac{t^2}{\nu}\right)\right]^{-\frac{\nu+1}{2}} \\
+&= \frac{\Gamma\!\left(\frac{\nu+1}{2}\right)}{\sqrt{\nu\pi}\,\Gamma\!\left(\frac{\nu}{2}\right)}
+\left(1+\frac{t^2}{\nu}\right)^{-\frac{\nu+1}{2}}, \qquad t\in\mathbb{R}.
+\end{align*}
+
+This is the **Student-$t$** density with $\nu=n-1$ degrees of freedom:
+$$
+T \sim t_\nu \quad \text{with} \quad
+f_T(t) = \frac{\Gamma\!\left(\frac{\nu+1}{2}\right)}{\sqrt{\nu\pi}\,\Gamma\!\left(\frac{\nu}{2}\right)}
+\left(1+\frac{t^2}{\nu}\right)^{-\frac{\nu+1}{2}}.
+$$
+
+
+</details>
+
+:::

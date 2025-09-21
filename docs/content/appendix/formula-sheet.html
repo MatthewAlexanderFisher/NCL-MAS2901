@@ -491,7 +491,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
- <span class="menu-text">Part II — Parameter Estimation</span></a>
+ <span class="menu-text">Part II — Point Estimation</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -618,6 +618,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#sec-bern" id="toc-sec-bern" class="nav-link" data-scroll-target="#sec-bern">Bernoulli</a></li>
   <li><a href="#sec-binom" id="toc-sec-binom" class="nav-link" data-scroll-target="#sec-binom">Binomial</a></li>
+  <li><a href="#sec-multinomial" id="toc-sec-multinomial" class="nav-link" data-scroll-target="#sec-multinomial">Multinomial</a></li>
   <li><a href="#sec-pois" id="toc-sec-pois" class="nav-link" data-scroll-target="#sec-pois">Poisson</a></li>
   <li><a href="#sec-geom" id="toc-sec-geom" class="nav-link" data-scroll-target="#sec-geom">Geometric</a></li>
   <li><a href="#sec-negbin" id="toc-sec-negbin" class="nav-link" data-scroll-target="#sec-negbin">Negative Binomial</a></li>
@@ -685,6 +686,23 @@ window.Quarto = {
 <strong>PMF.</strong> <span class="math display">
 \operatorname{Pr}(X=x) = \binom{n}{x} p^x (1-p)^{n-x}.
 </span> <strong>Mean/Var.</strong> <span class="math inline">\operatorname{E}[X]=np,\quad \operatorname{Var}(X)=np(1-p).</span></p>
+</section>
+<section id="sec-multinomial" class="level3">
+<h3 class="anchored" data-anchor-id="sec-multinomial">Multinomial</h3>
+<p><strong>Model.</strong> <span class="math inline">\mathbf{X}=(X_1,\ldots,X_k) \sim \operatorname{Multinomial}(n,\mathbf{p})</span>, with <span class="math inline">n\in\mathbb{N}</span>, <span class="math inline">k\ge 2</span>, <span class="math inline">\mathbf{p}=(p_1,\ldots,p_k)</span>, <span class="math inline">p_i&gt;0</span>, and <span class="math inline">\sum_{i=1}^k p_i=1</span>.<br>
+<strong>Support.</strong> <span class="math inline">\mathbf{x}=(x_1,\ldots,x_k)</span> where <span class="math inline">x_i\in\{0,1,\ldots,n\}</span> and <span class="math inline">\sum_{i=1}^k x_i=n</span>.<br>
+<strong>PMF.</strong> <span class="math display">
+\Pr(\mathbf{X}=\mathbf{x})
+=\frac{n!}{x_1!\cdots x_k!}\prod_{i=1}^k p_i^{\,x_i}.
+</span> <strong>Mean/Cov.</strong> <span class="math display">
+\mathbb{E}[X_i]=n p_i,\qquad
+\operatorname{Var}(X_i)=n p_i(1-p_i),\qquad
+\operatorname{Cov}(X_i,X_j)=-\,n p_i p_j\quad (i\ne j).
+</span> <strong>Vector form.</strong> <span class="math display">
+\mathbb{E}[\mathbf{X}]=n\,\mathbf{p},\qquad
+\operatorname{Cov}(\mathbf{X})=n\left(\operatorname{diag}(\mathbf{p})-\mathbf{p}\mathbf{p}^\top\right).
+</span></p>
+<p><em>Note.</em> For <span class="math inline">k=2</span>, the first component <span class="math inline">X_1 \sim \operatorname{Bin}(n,p_1)</span> (Binomial).</p>
 </section>
 <section id="sec-pois" class="level3">
 <h3 class="anchored" data-anchor-id="sec-pois">Poisson</h3>

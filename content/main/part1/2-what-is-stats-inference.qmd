@@ -1,3 +1,7 @@
+---
+tbl-cap-location: bottom
+---
+
 # What is Statistical Inference?
 
 ::: {.callout-note collapse="true" title="Learning objectives"}
@@ -393,6 +397,216 @@ resample = controls.resim
 
 ---
 
+
+## Types of Data {#sec-types-of-data}
+
+Before we build **statistical models**, it helps to think about the kinds of data we might collect.
+Different data types naturally lead to different models.
+
+### Univariate vs. Multivariate data
+
+::: {#imp-term-unit .callout-important collapse="true" appearance="simple"}
+
+#### Terminology: Unit
+
+An **observational unit** (or simply *unit*) is a single element of the population on which we make a measurement.  
+
+- In a survey of students: each *student* is a unit.  
+- In a clinical trial: each *patient* is a unit.  
+- In a manufacturing study: each *product* is a unit.  
+- In an image analysis study: each *image* is a unit.
+
+:::
+
+* **Univariate** data: a single measurement per observational unit.
+  
+  > *Example:* the height of each student in a class.
+
+* **Multivariate** data: two or more measurements on each unit.
+  
+  > *Example:* the height and weight of each student (bivariate); or height, weight, and age (multivariate).
+
+
+Data are often represented in **tables**.  
+
+::: {.panel-tabset}
+
+### Univariate data
+
+Each unit has **one measurement**. 
+
+| Year        | 2011 | 2012 | 2013 | 2014 | 2015 | 2016 | 2017 | 2018 | 2019 | 2020 |
+|:-----------:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|
+| Earthquakes |    4 |    0 |    2 |    6 |    4 |    0 |    2 |    8 |    5 |    7 |
+
+: **Earthquake counts.** Table shows the number of UK earthquakes of magnitude $≥2$ on the Richter scale each year. {#tbl-earthquakes}
+
+Here, the **units** are the years (2011–2020), and the (single) **variable** is the annual count of UK earthquakes.
+
+### Multivariate data
+
+Each unit has **two or more measurements**.  
+
+| Station | Rainfall (mm) | Wind speed (km/h) | Pressure (hPa) |
+|:-------:|:-------------:|:-----------------:|:--------------:|
+| A       | 214.8 | 87 | 995 |
+| B       | 196.3 | 91 | 992 |
+| C       | 180.2 | 79 | 1001 |
+| D       | 205.5 | 94 | 998 |
+| E       | 209.0 | 89 | 997 |
+| …       | …     | …  | …   |
+
+: **Weather data.** Average rainfall, wind speed, and air pressure recorded at weather stations during a storm. {#tbl-weather}
+
+Here, the **units** are the weather **stations** (during the same storm), and the **variables** are rainfall (mm), wind speed (km/h), and pressure (hPa).
+
+:::
+
+Some data is **extremely high-dimensional**:
+
+::: {#exm-image-data}
+#### Image Data
+
+An image is made of a grid of **pixels**, where each pixel is a **colour**.  
+
+A colour can be represented by three channels: red, green, and blue[^a-channel].
+
+![A 32×32 image of a cat, broken into its three colour channels (red, green, blue). Each pixel has three values (one per channel), making the image a high-dimensional observation.](figures/cat_pixel.png){#fig-pixel}
+
+Each pixel has **multiple measurements** (one per channel), so images are an example of **high-dimensional multivariate data**. To see why, consider the size of real images:
+
+- A tiny image of size $32\times 32$ pixels with 3 channels (RGB) already has $32\times 32 \times 3 = 3072$ measurements.
+- A small image of size $128 \times 128$ pixels with 3 channels (RGB) has  
+  $128 \times 128 \times 3 \approx 50{,}000$ measurements.  
+- A “HD” photo of size $1920 \times 1080$ (1080p) contains over  
+  $1920 \times 1080 \times 3 \approx 6.2$ million measurements.  
+
+So even a single image can be thought of as a *very high-dimensional observation*. And **videos** are higher still: sequences of such images evolving over time[^compression].
+
+:::
+
+
+
+::: {.callout-warning}
+### Non-Examinable Content: Multivariate Data
+In this course we focus **only on univariate data** (one measurement per observational unit).  
+
+Although many real-world problems involve **multivariate data** (two or more measurements on the same unit), this topic will be studied in later statistics courses.
+:::
+
+
+### Numerical data
+
+* **Continuous**: can take any real value in an interval.
+  
+  > *Examples:* height, weight, reaction time.
+  >
+  > *Models:* Normal, Exponential, Uniform.
+
+* **Discrete numeric**: counts, usually non-negative integers.
+  
+  > *Examples:* number of accidents in a week, number of goals in a football match.
+  >
+  > *Models:* Binomial, Poisson, Geometric.
+
+
+::: {.panel-tabset}
+
+### Continuous data
+
+| Star   | Apparent magnitude |
+|:------:|:------------------:|
+| Sirius | –1.46 |
+| Vega   |  0.03 |
+| Altair |  0.77 |
+| Deneb  |  1.25 |
+| …      | … |
+
+: **Astronomy data.** The brightness of a star (its *magnitude*) is measured on a continuous scale. . {#tbl-astronomy}
+
+### Discrete data
+
+| Match                                | Home goals | Away goals |
+|:------------------------------------:|:----------:|:----------:|
+| Newcastle United vs Arsenal          | 7 | 0 |
+| Manchester United vs Liverpool F.C.  | 0 | 1 |
+| Tottenham Hotspur vs Chelsea F.C.    | 1 | 3 |
+| Aston Villa vs Leeds United          | 3 | 2 |
+| West Ham United vs Manchester City   | 0 | 4 |
+| Brighton & Hove Albion vs Everton    | 2 | 2 |
+| Leicester City vs Southampton        | 1 | 0 |
+| Wolverhampton Wanderers vs Brentford | 2 | 1 |
+| Crystal Palace vs Fulham             | 0 | 1 |
+| Nottingham Forest vs Bournemouth     | 1 | 1 |
+| …                                    | … | … |
+
+
+: **Sports analytics.** Goals scored in football matches are discrete counts. Each match provides *multivariate discrete data* (two counts per unit). {#tbl-goals}
+
+### Mixed data
+
+In practice, most datasets are **mixed**
+
+| Patient | Age (years) | Reaction time (ms) | Smoker (yes/no) |
+|:-------:|:-----------:|:------------------:|:---------------:|
+| A       | 22 | 318 | Yes |
+| B       | 35 | 241 | No  |
+| C       | 41 | 267 | Yes |
+| D       | 29 | 452 | No  |
+| …       | …  | …   | …   |
+
+: **Medical study.** Here each patient (unit) has both continuous and discrete measurements. {#tbl-mixed}
+
+:::
+
+### Categorical data
+
+* **Nominal**: categories with no natural order.
+  
+  > *Examples:* hair colour, brand of cereal, country of birth.
+
+* **Ordinal**: categories with a natural order, but not numerical spacing.
+  
+  > *Examples:* customer satisfaction ratings (“poor”, “fair”, “good”, “excellent”).
+
+Categorical data are often summarised in **contingency tables** (tables of counts).
+
+::: {.panel-tabset}
+
+### One-way table
+
+If we record the colours of sweets drawn from a bag:
+
+| Colour    | Count |
+|:----------|------:|
+| Red       |   $R$ |
+| Blue      |   $B$ |
+| Green     |   $G$ |
+| **Total** |   $n$ |
+
+This simple *one-way* table leads naturally to the <span class="xref-no-num">[multinomial model @sec-multinomial]</span>.
+
+### Two-way table
+
+Suppose we also record the *shop* where each sweet was bought (Shop A or Shop B).  
+Now we cross-classify by both colour and shop:
+
+| Colour | Shop A | Shop B | **Total** |
+|:-------|-------:|-------:|----------:|
+| Red    | $R_A$  | $R_B$  | $R$       |
+| Blue   | $B_A$  | $B_B$  | $B$       |
+| Green  | $G_A$  | $G_B$  | $G$       |
+| **Total** | $n_A$ | $n_B$ | $n$ |
+
+This *two-way* contingency table allows us to ask questions like:  
+
+> *“Are colours distributed differently across shops?”*
+
+Later in the course we will see this leads to the **chi-squared test of independence**.
+
+:::
+
+
 ## Statistical Models
 
 Whenever we perform statistical inference, we must specify a **model**.
@@ -440,19 +654,30 @@ This model is widely used, e.g. for measurement error or traits like human heigh
 :::
 
 ::: {.callout-tip}
-###  Common misconceptions
+### Common Misconceptions
 
-- **Parameter $\neq$ statistic.** A *parameter* $\theta$ is a property of the population/model (e.g. $p,\ \mu,\ \sigma^2$). A *statistic* (e.g. $\bar{X}$, a sample proportion) is computed from the sample to learn about $\theta$.
-- **“Random sample” $\neq$ “whatever data we found”.** *Random sample* means the data are collected according to a design that makes the i.i.d. assumption reasonable (e.g. simple random sampling, independent trials). Convenience samples (e.g. surveying only your friends) or dependent data (e.g. repeated measures on the same person) can break the i.i.d. assumption and bias inference.
-- **Models are approximations.** A model is a useful idealisation, not the truth. Choose $\mathcal{P}$ sensibly, then check fit later and revise if needed.
+- **Parameter $\neq$ statistic.**  
+  A *parameter* $\theta$ describes a feature of the population (e.g. $p, \mu, \sigma^2$).  
+  A *statistic* (e.g. $\bar{X}$, a sample proportion) is calculated from the sample and used to learn about $\theta$.
+
+- **“Random sample” is not just “whatever data we found”.**  
+  A random sample means data collected in a way that makes the i.i.d. assumption reasonable (e.g. independent trials, simple random sampling).  
+  
+  > Example: If your population is *all humans on the planet*, then sampling only your family would not be random and could bias inference.
+
+- **Models are approximations.**  
+  In practice you should treat models as *useful simplifications*, not as exact descriptions of reality. It’s important to choose them sensibly, and be prepared to adjust if they don’t fit the data well.
 :::
 
 ::: {.example #exm-identify-model}
 ### From words to a model
 A questionnaire records whether each respondent would recommend a service (“yes” or “no”). Write down a simple model and identify the parameter.
-:::
 
-::: {#sol-identify-model}
+```{=html}
+<details>
+  <summary><strong> Solution </strong></summary>
+```
+
 Let $X_i=1$ if respondent $i$ says “yes”, and $0$ otherwise.  
 
 Assume $X_1,\ldots,X_n \stackrel{\text{iid}}{\sim}\mathrm{Bernoulli}(p)$.  
@@ -462,22 +687,39 @@ Assume $X_1,\ldots,X_n \stackrel{\text{iid}}{\sim}\mathrm{Bernoulli}(p)$.
 - **Parameter space:** $\Theta = (0,1)$  
 
 Here $p$ is the long-run proportion of “yes” responses.
+
+
+```{=html}
+</details>
+```
+
 :::
+
 
 ::: {.example #exm-identify-model-multinomial}
 ### A slightly richer example
 A bag contains sweets of three colours $\{\text{red},\text{blue},\text{green}\}$. You draw $n$ sweets *with replacement* and record counts $(R,B,G)$. Propose a model and identify the parameters.
-:::
 
-::: {#sol-identify-model-multinomial}
+```{=html}
+<details>
+  <summary><strong> Solution </strong></summary>
+```
+
 Each *draw* is an independent categorical outcome with probabilities $(p_R,p_B,p_G)$ for red/blue/green. After $n$ draws, we observe the *count vector* $(R,B,G)$.
+
+A natural model is the <span class="xref-no-num">[multinomial @sec-multinomial]</span> distribution:
 
 - **Model:** $(R,B,G) \sim \mathrm{Multinomial}\!\left(n;\,p_R,p_B,p_G\right)$ with $p_R+p_B+p_G=1$  
   *(equivalently, $X_1,\dots,X_n \stackrel{\text{iid}}{\sim} \mathrm{Categorical}(p_R,p_B,p_G)$ and $(R,B,G)$ are the totals).*
 - **Parameters:** $\theta = (p_R,p_B,p_G)$  
 - **Parameter space:** the 2-simplex $\;\Theta=\{(p_R,p_B,p_G)\in[0,1]^3 \mid \,p_R+p_B+p_G=1\}$  
 
-If you only had two colours, the multinomial distribution would become the **binomial distribution**.
+If you only had two colours, the multinomial distribution would become the <span class="xref-no-num">[binomial distribution @sec-binomial]</span>.
+
+```{=html}
+</details>
+```
+
 :::
 
 
@@ -488,23 +730,33 @@ In image classification, each "training" example is a pair $(X_i,Y_i)$ where $X_
 $$
 \mathrm{Pr}_\theta(Y=1\mid X=x)=g_\theta(x),
 $$
-for some function family $g_\theta$ (e.g. logistic regression or a neural network).  
+for some family of functions $g_\theta$ (e.g. a *neural network*).
 
 What are the *sample*, *population*, *model*, and *parameter*?
-:::
 
-::: {#sol-ml-inference}
+```{=html}
+<details>
+  <summary><strong> Solution </strong></summary>
+```
+
 - **Sample:** the dataset $\{(X_i,Y_i)\}_{i=1}^n$.  
 - **Population:** the (conceptual) set of all image–label pairs of interest; equivalently, the joint distribution of $(X,Y)$ in the real world we care about.  
 - **Model:** we specify the conditional distribution of $Y$ given $X$,
-  $$Y \mid X \sim \mathrm{Bernoulli}\!\big(g_\theta(X)\big),$$
+  $$Y \mid X \sim \mathrm{Bernoulli}\big(g_\theta(X)\big),$$
   i.e.
-  $$\Pr_\theta(Y=1\mid X=x)=g_\theta(x).$$
+  $$\operatorname{Pr}_\theta(Y=1\mid X=x)=g_\theta(x).$$
 - **Parameter:** $\theta$ indexes the function $g_\theta$ (e.g. regression coefficients or neural-network weights).  
 - **Parameter space:** $\Theta\subseteq\mathbb{R}^d$ (dimension $d$ depends on the chosen model class).
 
-*Common misconception:* confusing the *training sample* (finite) with the *population* (conceptual/infinite). The goal of inference/learning is to use the sample to learn $\theta$ so that the model generalises to the population.
+*Common misconception:* confusing the *training sample* (finite) with the *population* (conceptual/infinite). The goal of inference is to use the sample to learn $\theta$ so that the model generalises to the population.
+
+
+```{=html}
+</details>
+```
+
 :::
+
 
 
 ::: {.callout-warning}
@@ -539,14 +791,14 @@ where:
 :::
 
 
----
+<!-- ---
 
 ## Exercises
 
 1. For a study recording daily counts of emails received by a helpdesk, propose a one-parameter model and state the parameter space.
 2. In a satisfaction survey with responses $\{\text{poor},\text{OK},\text{good}\}$, suggest a simple probabilistic model and identify the parameter(s).
 3. State what “iid” means in one sentence, and give one example of how it could fail in practice.
-4. Revisit @sec-inference-eye: if the spread of points increases, which parameter of $\mathcal{N}(\mu,\sigma^2)$ has changed, and how would you describe that change informally?
+4. Revisit @sec-inference-eye: if the spread of points increases, which parameter of $\mathcal{N}(\mu,\sigma^2)$ has changed, and how would you describe that change informally? -->
 
 [^sets1]:
   **Set notation.** There are several equivalent ways to write sets:
@@ -590,3 +842,8 @@ where:
     \mathcal{P} = \{ P_\theta^n \mid \theta \in \Theta \}.
     $$
     But for intuition, we usually just describe the distribution of a single observation, $X_i \sim P_\theta$, and keep in mind that the whole dataset follows from this.
+
+
+[^a-channel]: **Note on images.** Some image formats, such as `.png`, include an *alpha channel* (the “A” channel), which specifies pixel transparency.
+
+[^compression]: **Note on compression.** In practice, images are often *compressed* (e.g. JPEG, PNG), which reduces file size by exploiting redundancy in pixel values. Statistically, though, the raw number of pixel measurements still reflects the dimensionality of the data.

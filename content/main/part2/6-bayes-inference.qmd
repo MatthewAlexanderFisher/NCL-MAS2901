@@ -462,7 +462,7 @@ $$
 - The denominator $f(\underline{x})$ is a normalising constant ensuring the posterior integrates to $1$.
 :::
 
-### Posteriors in Practice
+### Posteriors in Practice {#sec-posteriors-in-practice}
 
 We now work through a simple example to see how this update works.
 
@@ -484,9 +484,11 @@ Let $\theta = \Pr(\text{Head})$ for a possibly biased coin.
 
 * **Posterior:** Bayes’ theorem combines the Binomial likelihood with the prior to give $\pi(\theta \mid x)$.
 
-:::
+```{=html}
+<details>
+  <summary><strong> Solution </strong></summary>
+```
 
-::: {.solution #sol-biased-coin}
 Let $X$ be the number of heads in $5$ tosses. Assuming that each coin throw is *independent and identically distributed*, $X$ is Binomial[^binomial]:
 $$
     X \mid \theta \sim \textrm{Bin}(5,\theta).
@@ -548,7 +550,13 @@ Therefore, the posterior density is (for $0<\theta<1$):
 and so the posterior distribution is $\theta|x=1\sim \textrm{Beta}(2,5)$. This distribution has its mode at
 $\theta=0.2$, and mean at $\mathrm{E}[\theta|x=1]=2/7=0.286$.
 
+
+```{=html}
+</details>
+```
+
 :::
+
 
 The main difficulty in calculating the posterior distribution was in obtaining the $f(x)$ term. However, in many cases we can recognise the posterior distribution without the need to calculate this constant term (constant with respect to $\theta$). In this example, we can calculate the posterior distribution as
 
@@ -711,15 +719,347 @@ plot(theta_grid, pdf_values, type = "l",
 
 :::
 
+```{=html}
+<details>
+  <summary><strong> Solution </strong></summary>
+```
+
+```{=html}
+</details>
+```
 
 :::
 
 
-### Conjugacy
+::: {#exm-instagram-bin}
+
+Software engineers at **Instagram** are interested in the click-through rate $\theta$ of their advertisement recommender.
+
+The **click-through rate** is the proportion of clicks out of the total number of impressions of an online advertisement.
+
+The engineers assess the click-through rate by testing their recommender on users of Instagram. They obtain a total of $n$ impressions.
+
+(a) Using a <span class="xref-no-num">[Beta prior @sec-beta]</span>, quantify your prior beliefs about $\theta$.
+(b) After running the test, the engineers obtained a total of $X=47$ successful clicks out of a total of $n=10,000$ impressions. Using a **Binomial** model and your prior specified in part (a), obtain the posterior distribution for $\theta$.
+
+```{=html}
+<details>
+  <summary><strong> Solution </strong></summary>
+```
+
+**a.**
+
+I personally never click on adverts, apart from on accident. I don’t think many people do. So, I believe that the click-through rate $\theta$ should be close to $0$.
+
+I am not very confident, so I will pick:
+
+$$
+\theta \sim \text{Beta}(5,\,100).
+$$
+
+This prior has mean
+
+$$
+\frac{5}{5+100} \approx 0.047,
+$$
+
+and places the vast majority of its probability mass on values $\theta < 0.1$.
+
+---
+
+**b.**
+
+The data model is
+
+$$
+X \mid \theta \sim \text{Binomial}(n=10000,\, \theta), \qquad X = 47,
+$$
+
+which has PMF
+
+$$
+f(x=47 \mid \theta) 
+= \binom{10000}{47} \theta^{47}(1-\theta)^{9953}.
+$$
+
+Using Bayes’ theorem:
+
+$$
+\pi(\theta \mid x) 
+\;\propto\; f(x \mid \theta)\,\pi(\theta).
+$$
+
+From part (a) the prior is
+
+$$
+\pi(\theta) \;\propto\; \theta^{\alpha-1}(1-\theta)^{\beta-1},
+\qquad \alpha=5, \;\beta=100.
+$$
+
+Therefore,
+
+$$
+\pi(\theta \mid x) 
+\;\propto\; \theta^{47}(1-\theta)^{9953}\;\cdot\;\theta^{\alpha-1}(1-\theta)^{\beta-1}.
+$$
+
+Simplifying exponents:
+
+$$
+\pi(\theta \mid x) 
+\;\propto\; \theta^{(\alpha+47)-1}(1-\theta)^{(\beta+9953)-1}.
+$$
+
+Thus, the posterior distribution is
+
+$$
+\theta \mid x \sim \text{Beta}(\alpha+47, \; \beta + 9953).
+$$
+
+Substituting $\alpha=5$, $\beta=100$:
+
+$$
+\theta \mid X \sim \text{Beta}(5+47, \; 100 + 9953) = \text{Beta}(52, \; 10053).
+$$
+
+---
+
+**Interpretation.**
+
+* The posterior mean is
+
+$$
+\mathrm{E}[\theta \mid X] = \frac{52}{52+10053} \approx 0.0052,
+$$
+
+which is about **0.52% click-through rate**.
+
+* The posterior variance is very small because $n=10{,}000$ is large, so the engineers can be quite confident that $\theta$ is very close to $0.5%$.
+
+```{=html}
+<details>
+  <summary><strong> Show Plot </strong></summary>
+```
+
+![Beta prior and posterior for the Instagram click-through rate parameter $\theta$ after observing $X=47$ clicks out of $n=10{,}000$ impressions. The posterior is sharply concentrated near ~0.5%](figures/prior_post_instagram.png)
 
 
-[^prior]:
-  **Prior distribution.** In Bayesian inference, the *prior* represents our beliefs about the parameter $\theta$ **before seeing any data**. It is written as a probability distribution $\pi(\theta)$, which can be based on previous studies, expert knowledge, or simply chosen to reflect uncertainty (e.g. a flat prior).
+```{=html}
+</details>
+```
+
+
+```{=html}
+</details>
+```
+
+:::
+
+
+
+::: {.example #exm-particle-speed}
+### Measuring a particle’s speed
+
+You are attempting to measure the **speed of a particle** $\theta$ and quantify the uncertainty in the measurement. The experiment is set up such that the particle **travels** $1$ km and the measurements are the speeds $X_i \mid \theta$ for $i=1,\ldots,n$ in kilometres per second (km/s).
+
+There are a **multitude of factors** that additively result in **measurement error** for the speed of the particle.
+
+**(a)** Using a **normal prior**, quantify **your prior beliefs** about $\theta$.
+
+```{=html}
+<details>
+  <summary><strong>Solution (a)</strong></summary>
+````
+
+Since speed is physically constrained, a normal prior is imperfect because it places mass on the whole real line. For speed we should have $0< \theta < c$, where $c=299{,}792 \text{km/s}$ (speed of light).
+
+Nonetheless, if we are asked to use a normal prior and have little prior knowledge about the particle type, a weakly informative prior is reasonable, e.g.
+
+$$
+\theta \sim \mathcal{N}\!\big(1.5\times 10^5,\ (4\times 10^4)^2\big).
+$$
+
+This concentrates most mass in the physically plausible range while remaining diffuse.
+
+```{=html}
+</details>
+```
+
+---
+
+**(b)** Why is a **normal distribution** appropriate for the likelihood? Write down the likelihood.
+
+```{=html}
+<details>
+  <summary><strong>Solution (b)</strong></summary>
+```
+
+Because many small, additive, independent sources of error contribute to each measurement, the <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span> motivates
+
+$$
+X_i \mid \theta \stackrel{\text{iid}}{\sim} \mathcal{N}(\theta,\sigma^2).
+$$
+
+Hence the likelihood is
+
+\begin{align*}
+f(\underline{x}\mid \theta,\sigma)
+&= (2\pi)^{-n/2}\sigma^{-n}
+\exp\!\left\{-\frac{1}{2\sigma^2}
+\sum_{i=1}^n (x_i-\theta)^2\right\} \\
+&= (2\pi)^{-n/2}\sigma^{-n}
+\exp\!\left\{-\frac{1}{2\sigma^2}
+\Big(\sum_{i=1}^n x_i^2 - 2\theta \sum_{i=1}^n x_i + n\theta^2\Big)\right\}.
+\end{align*}
+
+```{=html}
+</details>
+```
+
+---
+
+**(c)** Assuming the **standard deviation** $\sigma$ of the measurements is known, derive the posterior under a prior $\theta \sim \mathcal{N}(\mu_0,\sigma_0^2)$.
+
+```{=html}
+<details>
+  <summary><strong>Solution (c)</strong></summary>
+```
+
+Up to proportionality,
+
+$$
+f(\underline{x}\mid\theta,\sigma)\ \propto\ 
+\exp\!\left\{-\frac{1}{2\sigma^2}\big(n\theta^2-2n\bar{x}\,\theta\big)\right\},\qquad
+\pi(\theta)\ \propto\ 
+\exp\!\left\{-\frac{1}{2\sigma_0^2}\big(\theta^2-2\mu_0\theta\big)\right\}.
+$$
+
+Multiplying and completing the square, the posterior is normal with precision (inverse variance)
+
+$$
+\frac{1}{V}=\frac{n}{\sigma^2}+\frac{1}{\sigma_0^2},
+\qquad
+M = V\left(\frac{n\bar{x}}{\sigma^2}+\frac{\mu_0}{\sigma_0^2}\right).
+$$
+
+Therefore,
+
+$$
+\boxed{\ \theta\mid \underline{x}\ \sim\ \mathcal{N}(M,V)\ }.
+$$
+
+```{=html}
+</details>
+```
+
+---
+
+**(d)** Suppose you measured the speed $4$ times and obtained (km/s):
+$306135,\ 293227,\ 307985,\ 301298$.
+Using the prior from (a), set $\sigma=5000$ and derive your **posterior distribution**.
+
+```{=html}
+<details>
+  <summary><strong>Solution (d)</strong></summary>
+```
+
+Compute $\bar{x}=(306135+293227+307985+301298)/4=302{,}161.25$.
+With $\mu_0=150{,}000$, $\sigma_0^2=(40{,}000)^2$, $\sigma^2=(5{,}000)^2$, $n=4$:
+
+$$
+\frac{1}{V}=\frac{n}{\sigma^2}+\frac{1}{\sigma_0^2}
+=\frac{4}{25{,}000{,}000}+\frac{1}{1{,}600{,}000{,}000}
+=1.60625\times 10^{-7},
+\quad
+V=\frac{1}{1.60625\times 10^{-7}}\approx 6{,}225{,}681.
+$$
+
+$$
+M = V\left(\frac{n\bar{x}}{\sigma^2}+\frac{\mu_0}{\sigma_0^2}\right)
+\approx 6{,}225{,}681\left(\frac{4\cdot 302{,}161.25}{25{,}000{,}000}+\frac{150{,}000}{1{,}600{,}000{,}000}\right)
+\approx 301{,}569.18.
+$$
+
+Thus,
+
+$$
+\boxed{\ \theta\mid \underline{x}\ \sim\ \mathcal{N}\!\big(301{,}569.2,\ 6{,}225{,}681\big)\ }
+\quad \text{(i.e., SD } \approx 2{,}495.1\text{ km/s)}.
+$$
+
+```{=html}
+</details>
+```
+
+:::
+
+
+
+
+
+### Conjugacy {#sec-conjugacy}
+
+
+In all the examples in <span class="xref-no-num">[Posteriors in Practice @sec-posteriors-in-practice]</span>, a notable phenomenon occurred:
+
+1. The **prior** distribution $\pi(\theta)$
+2. The resulting **posterior** distribution $\pi(\theta \mid \underline{x})$
+
+belonged to the same *family of distributions*.
+
+In Bayesian inference, this property is called **conjugacy**, and it allows us to derive posterior distributions in closed form without approximation.
+
+::: {#def-conjugacy}
+
+#### Conjugate Prior
+
+Suppose $f(\underline{x} \mid \theta)$ is the joint PDF/PMF of the observations.
+
+A prior distribution for $\theta$ is said to be **conjugate** if, after updating with the data, the posterior distribution $\pi(\theta \mid \underline{x})$ remains in the same family as the prior $\pi(\theta)$.
+
+:::
+
+::: {#rem-conjugcay}
+
+#### Why is conjugacy useful?
+
+* Conjugacy makes Bayesian updating *algebraically simple*: posterior parameters can often be obtained by just “updating counts” or “adding observations”.
+* This provides intuition for how prior information and data combine, and gives closed-form formulas that are easy to compute.
+
+:::
+
+
+
+
+## Asymptotic Posterior Distribution
+
+In **frequentist statistics**, we saw two important results about the <span class="xref-no-num">[asymptotic @imp-term-asymptotic]</span> sampling distribution of estimators:
+
+1. The <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span> showed that the sampling distribution of the <span class="xref-no-num">[sample mean @def-sample-mean]</span> is approximately Normal for large $n$.
+2. The <span class="xref-no-num">[Asymptotic Distribution of the MLE @thm-asymp-mle]</span> showed that the sampling distribution of the maximum likelihood estimator is approximately Normal for large $n$.
+
+A similar phenomenon occurs in **Bayesian inference**: for large samples, the **posterior distribution** itself becomes approximately Normal, regardless of the prior (as long as it is not too extreme).
+
+::: {#thm-bernstein-von-mises}
+
+### Bernstein–von Mises
+
+Suppose we have an i.i.d. sample $X_1,\ldots,X_n$ drawn from the same distribution with PDF/PMF $f(x \mid \theta)$ and let $\pi(\theta \mid \underline{X}^{(n)})$ denote the posterior distribution for $\theta$.
+
+Under *regularity conditions*, as $n \to \infty$ the posterior distribution satisfies
+
+$$
+\theta \mid \underline{X}^{(n)} \;\overset{\text{approx.}}{\sim}
+\mathcal{N}\!\Big(\hat{\theta}_n,\, \mathcal{I}_n(\theta)^{-1}\Big),
+$$
+
+where
+
+* $\hat{\theta}_n$ is the MLE,
+* $\mathcal{I}_n(\theta)$ is the <span class="xref-no-num">[Fisher information @prp-fisher-one-obs]</span> for the **whole sample**.
+ 
+:::
+
 
 [^binomial]:
   **Binomial distribution.** If we assume each coin throw $C_i$ is an i.i.d. $\textrm{Bernoulli}(\theta)$ trial with a $1$ representing a heads landing, and a $0$ representing a tails, the total number of heads out of $5$ is $X = C_1 + C_2 + C_3 + C_4 + C_5$. Therefore:

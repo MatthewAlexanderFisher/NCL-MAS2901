@@ -528,7 +528,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
- <span class="menu-text">Part II — Parameter Estimation</span></a>
+ <span class="menu-text">Part II — Point Estimation</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -655,8 +655,13 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#sec-inference-eye" id="toc-sec-inference-eye" class="nav-link" data-scroll-target="#sec-inference-eye"><span class="header-section-number">2.1.1</span> Statistical Inference by Eye</a></li>
   </ul></li>
-  <li><a href="#statistical-models" id="toc-statistical-models" class="nav-link" data-scroll-target="#statistical-models"><span class="header-section-number">2.2</span> Statistical Models</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">2.3</span> Exercises</a></li>
+  <li><a href="#sec-types-of-data" id="toc-sec-types-of-data" class="nav-link" data-scroll-target="#sec-types-of-data"><span class="header-section-number">2.2</span> Types of Data</a>
+  <ul class="collapse">
+  <li><a href="#univariate-vs.-multivariate-data" id="toc-univariate-vs.-multivariate-data" class="nav-link" data-scroll-target="#univariate-vs.-multivariate-data"><span class="header-section-number">2.2.1</span> Univariate vs.&nbsp;Multivariate data</a></li>
+  <li><a href="#numerical-data" id="toc-numerical-data" class="nav-link" data-scroll-target="#numerical-data"><span class="header-section-number">2.2.2</span> Numerical data</a></li>
+  <li><a href="#categorical-data" id="toc-categorical-data" class="nav-link" data-scroll-target="#categorical-data"><span class="header-section-number">2.2.3</span> Categorical data</a></li>
+  </ul></li>
+  <li><a href="#statistical-models" id="toc-statistical-models" class="nav-link" data-scroll-target="#statistical-models"><span class="header-section-number">2.3</span> Statistical Models</a></li>
   </ul>
 </nav>
     </div>
@@ -707,7 +712,7 @@ window.Quarto = {
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="13" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 12;"><span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>bodyFont <span class="op">=</span> <span class="fu">getComputedStyle</span>(<span class="bu">document</span><span class="op">.</span><span class="at">body</span>)<span class="op">.</span><span class="at">fontFamily</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="17" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 16;"><span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>bodyFont <span class="op">=</span> <span class="fu">getComputedStyle</span>(<span class="bu">document</span><span class="op">.</span><span class="at">body</span>)<span class="op">.</span><span class="at">fontFamily</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-1" data-nodetype="declaration">
 
@@ -823,68 +828,68 @@ X_1, \dots, X_n \stackrel{\text{iid}}{\sim} \mathrm{Distribution}(\theta).
 <details>
   <summary> Show Visualisation </summary>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="103" data-source-offset="-26"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 102;"><span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a>approxSigma <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(approxVar)</span>
-<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a><span class="co">// density histogram + normal pdf (returns an SVG node)</span></span>
-<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a>histVis <span class="op">=</span> {</span>
-<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> colHist  <span class="op">=</span> <span class="st">"var(--brand-teal, #55C3CB)"</span><span class="op">;</span></span>
-<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> colCurve <span class="op">=</span> <span class="st">"var(--brand-red, #e65660)"</span><span class="op">;</span></span>
-<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> gridCol  <span class="op">=</span> <span class="st">"var(--plot-grid, #94a3b8)"</span><span class="op">;</span></span>
-<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- x-domain based on data (with padding) ---</span></span>
-<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> xMin <span class="op">=</span> d3<span class="op">.</span><span class="fu">min</span>(data)<span class="op">,</span> xMax <span class="op">=</span> d3<span class="op">.</span><span class="fu">max</span>(data)<span class="op">;</span></span>
-<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> pad <span class="op">=</span> <span class="fl">0.4</span> <span class="op">*</span> (xMax <span class="op">-</span> xMin <span class="op">||</span> <span class="dv">1</span>)<span class="op">;</span></span>
-<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> domain <span class="op">=</span> [xMin <span class="op">-</span> pad<span class="op">,</span> xMax <span class="op">+</span> pad]<span class="op">;</span></span>
-<span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> binCount <span class="op">=</span> bins <span class="op">??</span> <span class="dv">30</span><span class="op">;</span></span>
-<span id="cb2-117"><a href="#cb2-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-118"><a href="#cb2-118" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- compute density bins manually: density = count / (n * binWidth) ---</span></span>
-<span id="cb2-119"><a href="#cb2-119" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> bin <span class="op">=</span> d3<span class="op">.</span><span class="fu">bin</span>()<span class="op">.</span><span class="fu">domain</span>(domain)<span class="op">.</span><span class="fu">thresholds</span>(binCount)<span class="op">;</span></span>
-<span id="cb2-120"><a href="#cb2-120" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> B <span class="op">=</span> <span class="fu">bin</span>(data)<span class="op">;</span></span>
-<span id="cb2-121"><a href="#cb2-121" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> n <span class="op">=</span> data<span class="op">.</span><span class="at">length</span><span class="op">;</span></span>
-<span id="cb2-122"><a href="#cb2-122" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">const</span> b <span class="kw">of</span> B) b<span class="op">.</span><span class="at">density</span> <span class="op">=</span> b<span class="op">.</span><span class="at">length</span> <span class="op">/</span> (n <span class="op">*</span> (b<span class="op">.</span><span class="at">x1</span> <span class="op">-</span> b<span class="op">.</span><span class="at">x0</span>))<span class="op">;</span></span>
-<span id="cb2-123"><a href="#cb2-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-124"><a href="#cb2-124" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- normal pdf on same domain ---</span></span>
-<span id="cb2-125"><a href="#cb2-125" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> xs <span class="op">=</span> d3<span class="op">.</span><span class="fu">range</span>(domain[<span class="dv">0</span>]<span class="op">,</span> domain[<span class="dv">1</span>]<span class="op">,</span> (domain[<span class="dv">1</span>] <span class="op">-</span> domain[<span class="dv">0</span>]) <span class="op">/</span> <span class="dv">400</span>)<span class="op">;</span></span>
-<span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> normalPdf <span class="op">=</span> (x<span class="op">,</span> mu<span class="op">,</span> sigma) <span class="kw">=&gt;</span> (<span class="dv">1</span><span class="op">/</span>(sigma<span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="dv">2</span><span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span>))) <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(<span class="op">-</span><span class="fl">0.5</span><span class="op">*</span>((x<span class="op">-</span>mu)<span class="op">/</span>sigma)<span class="op">**</span><span class="dv">2</span>)<span class="op">;</span></span>
-<span id="cb2-127"><a href="#cb2-127" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> curve <span class="op">=</span> xs<span class="op">.</span><span class="fu">map</span>(x <span class="kw">=&gt;</span> ({ x<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">normalPdf</span>(x<span class="op">,</span> approxMu<span class="op">,</span> approxSigma) }))<span class="op">;</span></span>
-<span id="cb2-128"><a href="#cb2-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-129"><a href="#cb2-129" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- shared y-domain (max of both) ---</span></span>
-<span id="cb2-130"><a href="#cb2-130" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> ymax <span class="op">=</span> <span class="fl">1.1</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(</span>
-<span id="cb2-131"><a href="#cb2-131" aria-hidden="true" tabindex="-1"></a>    d3<span class="op">.</span><span class="fu">max</span>(B<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">density</span>) <span class="op">??</span> <span class="dv">0</span><span class="op">,</span></span>
-<span id="cb2-132"><a href="#cb2-132" aria-hidden="true" tabindex="-1"></a>    d3<span class="op">.</span><span class="fu">max</span>(curve<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">y</span>) <span class="op">??</span> <span class="dv">0</span></span>
-<span id="cb2-133"><a href="#cb2-133" aria-hidden="true" tabindex="-1"></a>  )<span class="op">;</span></span>
-<span id="cb2-134"><a href="#cb2-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-135"><a href="#cb2-135" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb2-136"><a href="#cb2-136" aria-hidden="true" tabindex="-1"></a>    <span class="dt">height</span><span class="op">:</span> <span class="dv">360</span><span class="op">,</span></span>
-<span id="cb2-137"><a href="#cb2-137" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span></span>
-<span id="cb2-138"><a href="#cb2-138" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span></span>
-<span id="cb2-139"><a href="#cb2-139" aria-hidden="true" tabindex="-1"></a>    <span class="dt">x</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> domain }<span class="op">,</span></span>
-<span id="cb2-140"><a href="#cb2-140" aria-hidden="true" tabindex="-1"></a>    <span class="dt">y</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">"Density"</span><span class="op">,</span> <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> ymax]<span class="op">,</span> <span class="dt">tickSize</span><span class="op">:</span> <span class="dv">6</span> }<span class="op">,</span></span>
-<span id="cb2-141"><a href="#cb2-141" aria-hidden="true" tabindex="-1"></a>    <span class="dt">style</span><span class="op">:</span> {</span>
-<span id="cb2-142"><a href="#cb2-142" aria-hidden="true" tabindex="-1"></a>      <span class="dt">background</span><span class="op">:</span> <span class="st">"var(--brand-bg)"</span><span class="op">,</span></span>
-<span id="cb2-143"><a href="#cb2-143" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontSize</span><span class="op">:</span> <span class="dv">14</span><span class="op">,</span></span>
-<span id="cb2-144"><a href="#cb2-144" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontFamily</span><span class="op">:</span> bodyFont<span class="op">,</span></span>
-<span id="cb2-145"><a href="#cb2-145" aria-hidden="true" tabindex="-1"></a>      <span class="dt">width</span><span class="op">:</span> <span class="st">"100%"</span><span class="op">,</span></span>
-<span id="cb2-146"><a href="#cb2-146" aria-hidden="true" tabindex="-1"></a>      <span class="dt">display</span><span class="op">:</span> <span class="st">"block"</span><span class="op">,</span></span>
-<span id="cb2-147"><a href="#cb2-147" aria-hidden="true" tabindex="-1"></a>      <span class="dt">margin</span><span class="op">:</span> <span class="st">"0 auto"</span><span class="op">,</span></span>
-<span id="cb2-148"><a href="#cb2-148" aria-hidden="true" tabindex="-1"></a>      <span class="dt">maxWidth</span><span class="op">:</span> <span class="st">"1200px"</span><span class="op">,</span></span>
-<span id="cb2-149"><a href="#cb2-149" aria-hidden="true" tabindex="-1"></a>      <span class="dt">color</span><span class="op">:</span> <span class="st">"var(--fg-strong, currentColor)"</span></span>
-<span id="cb2-150"><a href="#cb2-150" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
-<span id="cb2-151"><a href="#cb2-151" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb2-152"><a href="#cb2-152" aria-hidden="true" tabindex="-1"></a>      <span class="co">// density histogram (teal)</span></span>
-<span id="cb2-153"><a href="#cb2-153" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">rectY</span>(</span>
-<span id="cb2-154"><a href="#cb2-154" aria-hidden="true" tabindex="-1"></a>        B<span class="op">,</span></span>
-<span id="cb2-155"><a href="#cb2-155" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">x1</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">x0</span><span class="op">,</span> <span class="dt">x2</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">x1</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">density</span><span class="op">,</span></span>
-<span id="cb2-156"><a href="#cb2-156" aria-hidden="true" tabindex="-1"></a>          <span class="dt">fill</span><span class="op">:</span> colHist<span class="op">,</span> <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.35</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> colHist<span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.7</span> }</span>
-<span id="cb2-157"><a href="#cb2-157" aria-hidden="true" tabindex="-1"></a>      )<span class="op">,</span></span>
-<span id="cb2-158"><a href="#cb2-158" aria-hidden="true" tabindex="-1"></a>      <span class="co">// normal pdf (orange)</span></span>
-<span id="cb2-159"><a href="#cb2-159" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">line</span>(curve<span class="op">,</span> { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> colCurve<span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="fl">2.5</span> })<span class="op">,</span></span>
-<span id="cb2-160"><a href="#cb2-160" aria-hidden="true" tabindex="-1"></a>      <span class="co">// baseline</span></span>
-<span id="cb2-161"><a href="#cb2-161" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>]<span class="op">,</span> { <span class="dt">stroke</span><span class="op">:</span> gridCol<span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.4</span> })</span>
-<span id="cb2-162"><a href="#cb2-162" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb2-163"><a href="#cb2-163" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
-<span id="cb2-164"><a href="#cb2-164" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="107" data-source-offset="-26"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 106;"><span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a>approxSigma <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(approxVar)</span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a><span class="co">// density histogram + normal pdf (returns an SVG node)</span></span>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a>histVis <span class="op">=</span> {</span>
+<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> colHist  <span class="op">=</span> <span class="st">"var(--brand-teal, #55C3CB)"</span><span class="op">;</span></span>
+<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> colCurve <span class="op">=</span> <span class="st">"var(--brand-red, #e65660)"</span><span class="op">;</span></span>
+<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> gridCol  <span class="op">=</span> <span class="st">"var(--plot-grid, #94a3b8)"</span><span class="op">;</span></span>
+<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- x-domain based on data (with padding) ---</span></span>
+<span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> xMin <span class="op">=</span> d3<span class="op">.</span><span class="fu">min</span>(data)<span class="op">,</span> xMax <span class="op">=</span> d3<span class="op">.</span><span class="fu">max</span>(data)<span class="op">;</span></span>
+<span id="cb2-117"><a href="#cb2-117" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> pad <span class="op">=</span> <span class="fl">0.4</span> <span class="op">*</span> (xMax <span class="op">-</span> xMin <span class="op">||</span> <span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb2-118"><a href="#cb2-118" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> domain <span class="op">=</span> [xMin <span class="op">-</span> pad<span class="op">,</span> xMax <span class="op">+</span> pad]<span class="op">;</span></span>
+<span id="cb2-119"><a href="#cb2-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-120"><a href="#cb2-120" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> binCount <span class="op">=</span> bins <span class="op">??</span> <span class="dv">30</span><span class="op">;</span></span>
+<span id="cb2-121"><a href="#cb2-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-122"><a href="#cb2-122" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- compute density bins manually: density = count / (n * binWidth) ---</span></span>
+<span id="cb2-123"><a href="#cb2-123" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> bin <span class="op">=</span> d3<span class="op">.</span><span class="fu">bin</span>()<span class="op">.</span><span class="fu">domain</span>(domain)<span class="op">.</span><span class="fu">thresholds</span>(binCount)<span class="op">;</span></span>
+<span id="cb2-124"><a href="#cb2-124" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> B <span class="op">=</span> <span class="fu">bin</span>(data)<span class="op">;</span></span>
+<span id="cb2-125"><a href="#cb2-125" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> n <span class="op">=</span> data<span class="op">.</span><span class="at">length</span><span class="op">;</span></span>
+<span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">const</span> b <span class="kw">of</span> B) b<span class="op">.</span><span class="at">density</span> <span class="op">=</span> b<span class="op">.</span><span class="at">length</span> <span class="op">/</span> (n <span class="op">*</span> (b<span class="op">.</span><span class="at">x1</span> <span class="op">-</span> b<span class="op">.</span><span class="at">x0</span>))<span class="op">;</span></span>
+<span id="cb2-127"><a href="#cb2-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-128"><a href="#cb2-128" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- normal pdf on same domain ---</span></span>
+<span id="cb2-129"><a href="#cb2-129" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> xs <span class="op">=</span> d3<span class="op">.</span><span class="fu">range</span>(domain[<span class="dv">0</span>]<span class="op">,</span> domain[<span class="dv">1</span>]<span class="op">,</span> (domain[<span class="dv">1</span>] <span class="op">-</span> domain[<span class="dv">0</span>]) <span class="op">/</span> <span class="dv">400</span>)<span class="op">;</span></span>
+<span id="cb2-130"><a href="#cb2-130" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> normalPdf <span class="op">=</span> (x<span class="op">,</span> mu<span class="op">,</span> sigma) <span class="kw">=&gt;</span> (<span class="dv">1</span><span class="op">/</span>(sigma<span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="dv">2</span><span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span>))) <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(<span class="op">-</span><span class="fl">0.5</span><span class="op">*</span>((x<span class="op">-</span>mu)<span class="op">/</span>sigma)<span class="op">**</span><span class="dv">2</span>)<span class="op">;</span></span>
+<span id="cb2-131"><a href="#cb2-131" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> curve <span class="op">=</span> xs<span class="op">.</span><span class="fu">map</span>(x <span class="kw">=&gt;</span> ({ x<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">normalPdf</span>(x<span class="op">,</span> approxMu<span class="op">,</span> approxSigma) }))<span class="op">;</span></span>
+<span id="cb2-132"><a href="#cb2-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-133"><a href="#cb2-133" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- shared y-domain (max of both) ---</span></span>
+<span id="cb2-134"><a href="#cb2-134" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> ymax <span class="op">=</span> <span class="fl">1.1</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(</span>
+<span id="cb2-135"><a href="#cb2-135" aria-hidden="true" tabindex="-1"></a>    d3<span class="op">.</span><span class="fu">max</span>(B<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">density</span>) <span class="op">??</span> <span class="dv">0</span><span class="op">,</span></span>
+<span id="cb2-136"><a href="#cb2-136" aria-hidden="true" tabindex="-1"></a>    d3<span class="op">.</span><span class="fu">max</span>(curve<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">y</span>) <span class="op">??</span> <span class="dv">0</span></span>
+<span id="cb2-137"><a href="#cb2-137" aria-hidden="true" tabindex="-1"></a>  )<span class="op">;</span></span>
+<span id="cb2-138"><a href="#cb2-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-139"><a href="#cb2-139" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb2-140"><a href="#cb2-140" aria-hidden="true" tabindex="-1"></a>    <span class="dt">height</span><span class="op">:</span> <span class="dv">360</span><span class="op">,</span></span>
+<span id="cb2-141"><a href="#cb2-141" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span></span>
+<span id="cb2-142"><a href="#cb2-142" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span></span>
+<span id="cb2-143"><a href="#cb2-143" aria-hidden="true" tabindex="-1"></a>    <span class="dt">x</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> domain }<span class="op">,</span></span>
+<span id="cb2-144"><a href="#cb2-144" aria-hidden="true" tabindex="-1"></a>    <span class="dt">y</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">"Density"</span><span class="op">,</span> <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> ymax]<span class="op">,</span> <span class="dt">tickSize</span><span class="op">:</span> <span class="dv">6</span> }<span class="op">,</span></span>
+<span id="cb2-145"><a href="#cb2-145" aria-hidden="true" tabindex="-1"></a>    <span class="dt">style</span><span class="op">:</span> {</span>
+<span id="cb2-146"><a href="#cb2-146" aria-hidden="true" tabindex="-1"></a>      <span class="dt">background</span><span class="op">:</span> <span class="st">"var(--brand-bg)"</span><span class="op">,</span></span>
+<span id="cb2-147"><a href="#cb2-147" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontSize</span><span class="op">:</span> <span class="dv">14</span><span class="op">,</span></span>
+<span id="cb2-148"><a href="#cb2-148" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontFamily</span><span class="op">:</span> bodyFont<span class="op">,</span></span>
+<span id="cb2-149"><a href="#cb2-149" aria-hidden="true" tabindex="-1"></a>      <span class="dt">width</span><span class="op">:</span> <span class="st">"100%"</span><span class="op">,</span></span>
+<span id="cb2-150"><a href="#cb2-150" aria-hidden="true" tabindex="-1"></a>      <span class="dt">display</span><span class="op">:</span> <span class="st">"block"</span><span class="op">,</span></span>
+<span id="cb2-151"><a href="#cb2-151" aria-hidden="true" tabindex="-1"></a>      <span class="dt">margin</span><span class="op">:</span> <span class="st">"0 auto"</span><span class="op">,</span></span>
+<span id="cb2-152"><a href="#cb2-152" aria-hidden="true" tabindex="-1"></a>      <span class="dt">maxWidth</span><span class="op">:</span> <span class="st">"1200px"</span><span class="op">,</span></span>
+<span id="cb2-153"><a href="#cb2-153" aria-hidden="true" tabindex="-1"></a>      <span class="dt">color</span><span class="op">:</span> <span class="st">"var(--fg-strong, currentColor)"</span></span>
+<span id="cb2-154"><a href="#cb2-154" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb2-155"><a href="#cb2-155" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb2-156"><a href="#cb2-156" aria-hidden="true" tabindex="-1"></a>      <span class="co">// density histogram (teal)</span></span>
+<span id="cb2-157"><a href="#cb2-157" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">rectY</span>(</span>
+<span id="cb2-158"><a href="#cb2-158" aria-hidden="true" tabindex="-1"></a>        B<span class="op">,</span></span>
+<span id="cb2-159"><a href="#cb2-159" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">x1</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">x0</span><span class="op">,</span> <span class="dt">x2</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">x1</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">density</span><span class="op">,</span></span>
+<span id="cb2-160"><a href="#cb2-160" aria-hidden="true" tabindex="-1"></a>          <span class="dt">fill</span><span class="op">:</span> colHist<span class="op">,</span> <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.35</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> colHist<span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.7</span> }</span>
+<span id="cb2-161"><a href="#cb2-161" aria-hidden="true" tabindex="-1"></a>      )<span class="op">,</span></span>
+<span id="cb2-162"><a href="#cb2-162" aria-hidden="true" tabindex="-1"></a>      <span class="co">// normal pdf (orange)</span></span>
+<span id="cb2-163"><a href="#cb2-163" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">line</span>(curve<span class="op">,</span> { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> colCurve<span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="fl">2.5</span> })<span class="op">,</span></span>
+<span id="cb2-164"><a href="#cb2-164" aria-hidden="true" tabindex="-1"></a>      <span class="co">// baseline</span></span>
+<span id="cb2-165"><a href="#cb2-165" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>]<span class="op">,</span> { <span class="dt">stroke</span><span class="op">:</span> gridCol<span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.4</span> })</span>
+<span id="cb2-166"><a href="#cb2-166" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb2-167"><a href="#cb2-167" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb2-168"><a href="#cb2-168" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-2-1" data-nodetype="declaration">
@@ -901,140 +906,140 @@ X_1, \dots, X_n \stackrel{\text{iid}}{\sim} \mathrm{Distribution}(\theta).
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="169" data-source-offset="-37"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 168;"><span id="cb3-169"><a href="#cb3-169" aria-hidden="true" tabindex="-1"></a>mu_min <span class="op">=</span> mu_true <span class="op">-</span> muHalfWidth</span>
-<span id="cb3-170"><a href="#cb3-170" aria-hidden="true" tabindex="-1"></a>mu_max <span class="op">=</span> mu_true <span class="op">+</span> muHalfWidth</span>
-<span id="cb3-171"><a href="#cb3-171" aria-hidden="true" tabindex="-1"></a>var_min <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb3-172"><a href="#cb3-172" aria-hidden="true" tabindex="-1"></a>var_max <span class="op">=</span> sig2Max</span>
-<span id="cb3-173"><a href="#cb3-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-174"><a href="#cb3-174" aria-hidden="true" tabindex="-1"></a><span class="co">// Responsive 2D slider (scales with its container)</span></span>
-<span id="cb3-175"><a href="#cb3-175" aria-hidden="true" tabindex="-1"></a>viewof muVar2D <span class="op">=</span> {</span>
-<span id="cb3-176"><a href="#cb3-176" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Logical drawing size (not CSS pixels)</span></span>
-<span id="cb3-177"><a href="#cb3-177" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> width <span class="op">=</span> <span class="dv">220</span><span class="op">,</span> height <span class="op">=</span> <span class="dv">220</span><span class="op">;</span></span>
-<span id="cb3-178"><a href="#cb3-178" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> margin <span class="op">=</span> {<span class="dt">top</span><span class="op">:</span> <span class="dv">20</span><span class="op">,</span> <span class="dt">right</span><span class="op">:</span> <span class="dv">5</span><span class="op">,</span> <span class="dt">bottom</span><span class="op">:</span> <span class="dv">5</span><span class="op">,</span> <span class="dt">left</span><span class="op">:</span> <span class="dv">5</span>}<span class="op">;</span></span>
-<span id="cb3-179"><a href="#cb3-179" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> W <span class="op">=</span> width <span class="op">-</span> margin<span class="op">.</span><span class="at">left</span> <span class="op">-</span> margin<span class="op">.</span><span class="at">right</span><span class="op">;</span></span>
-<span id="cb3-180"><a href="#cb3-180" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> H <span class="op">=</span> height <span class="op">-</span> margin<span class="op">.</span><span class="at">top</span> <span class="op">-</span> margin<span class="op">.</span><span class="at">bottom</span><span class="op">;</span></span>
-<span id="cb3-181"><a href="#cb3-181" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-182"><a href="#cb3-182" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- helper: clamp number to [lo, hi] ---</span></span>
-<span id="cb3-183"><a href="#cb3-183" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> clamp <span class="op">=</span> (v<span class="op">,</span> lo<span class="op">,</span> hi) <span class="kw">=&gt;</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(hi<span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(lo<span class="op">,</span> v))<span class="op">;</span></span>
-<span id="cb3-184"><a href="#cb3-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-185"><a href="#cb3-185" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Scales (y increases upward in data space)</span></span>
-<span id="cb3-186"><a href="#cb3-186" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> x <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleLinear</span>()<span class="op">.</span><span class="fu">domain</span>([mu_min<span class="op">,</span> mu_max])<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> W])<span class="op">.</span><span class="fu">clamp</span>(<span class="kw">true</span>)<span class="op">;</span></span>
-<span id="cb3-187"><a href="#cb3-187" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> y <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleLinear</span>()<span class="op">.</span><span class="fu">domain</span>([var_min<span class="op">,</span> var_max])<span class="op">.</span><span class="fu">range</span>([H<span class="op">,</span> <span class="dv">0</span>])<span class="op">.</span><span class="fu">nice</span>()<span class="op">.</span><span class="fu">clamp</span>(<span class="kw">true</span>)<span class="op">;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="173" data-source-offset="-37"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 172;"><span id="cb3-173"><a href="#cb3-173" aria-hidden="true" tabindex="-1"></a>mu_min <span class="op">=</span> mu_true <span class="op">-</span> muHalfWidth</span>
+<span id="cb3-174"><a href="#cb3-174" aria-hidden="true" tabindex="-1"></a>mu_max <span class="op">=</span> mu_true <span class="op">+</span> muHalfWidth</span>
+<span id="cb3-175"><a href="#cb3-175" aria-hidden="true" tabindex="-1"></a>var_min <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb3-176"><a href="#cb3-176" aria-hidden="true" tabindex="-1"></a>var_max <span class="op">=</span> sig2Max</span>
+<span id="cb3-177"><a href="#cb3-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-178"><a href="#cb3-178" aria-hidden="true" tabindex="-1"></a><span class="co">// Responsive 2D slider (scales with its container)</span></span>
+<span id="cb3-179"><a href="#cb3-179" aria-hidden="true" tabindex="-1"></a>viewof muVar2D <span class="op">=</span> {</span>
+<span id="cb3-180"><a href="#cb3-180" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Logical drawing size (not CSS pixels)</span></span>
+<span id="cb3-181"><a href="#cb3-181" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> width <span class="op">=</span> <span class="dv">220</span><span class="op">,</span> height <span class="op">=</span> <span class="dv">220</span><span class="op">;</span></span>
+<span id="cb3-182"><a href="#cb3-182" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> margin <span class="op">=</span> {<span class="dt">top</span><span class="op">:</span> <span class="dv">20</span><span class="op">,</span> <span class="dt">right</span><span class="op">:</span> <span class="dv">5</span><span class="op">,</span> <span class="dt">bottom</span><span class="op">:</span> <span class="dv">5</span><span class="op">,</span> <span class="dt">left</span><span class="op">:</span> <span class="dv">5</span>}<span class="op">;</span></span>
+<span id="cb3-183"><a href="#cb3-183" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> W <span class="op">=</span> width <span class="op">-</span> margin<span class="op">.</span><span class="at">left</span> <span class="op">-</span> margin<span class="op">.</span><span class="at">right</span><span class="op">;</span></span>
+<span id="cb3-184"><a href="#cb3-184" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> H <span class="op">=</span> height <span class="op">-</span> margin<span class="op">.</span><span class="at">top</span> <span class="op">-</span> margin<span class="op">.</span><span class="at">bottom</span><span class="op">;</span></span>
+<span id="cb3-185"><a href="#cb3-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-186"><a href="#cb3-186" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- helper: clamp number to [lo, hi] ---</span></span>
+<span id="cb3-187"><a href="#cb3-187" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> clamp <span class="op">=</span> (v<span class="op">,</span> lo<span class="op">,</span> hi) <span class="kw">=&gt;</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(hi<span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(lo<span class="op">,</span> v))<span class="op">;</span></span>
 <span id="cb3-188"><a href="#cb3-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-189"><a href="#cb3-189" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Initial value</span></span>
-<span id="cb3-190"><a href="#cb3-190" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> state <span class="op">=</span> {</span>
-<span id="cb3-191"><a href="#cb3-191" aria-hidden="true" tabindex="-1"></a>    <span class="dt">approxMu</span><span class="op">:</span> <span class="fu">clamp</span>(mu_true<span class="op">,</span> mu_min<span class="op">,</span> mu_max)<span class="op">,</span></span>
-<span id="cb3-192"><a href="#cb3-192" aria-hidden="true" tabindex="-1"></a>    <span class="dt">approxVar</span><span class="op">:</span> <span class="fu">clamp</span>((var_max <span class="op">-</span> var_min) <span class="op">*</span> <span class="fl">0.4</span><span class="op">,</span> var_min<span class="op">,</span> var_max)</span>
-<span id="cb3-193"><a href="#cb3-193" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
-<span id="cb3-194"><a href="#cb3-194" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-195"><a href="#cb3-195" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> bg <span class="op">=</span> <span class="st">"var(--plot-panel-bg)"</span><span class="op">;</span></span>
-<span id="cb3-196"><a href="#cb3-196" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> grid <span class="op">=</span> <span class="st">"var(--plot-grid, #94a3b8)"</span><span class="op">;</span></span>
-<span id="cb3-197"><a href="#cb3-197" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> colHandle <span class="op">=</span> <span class="st">"var(--brand-red, #e65660)"</span><span class="op">;</span></span>
-<span id="cb3-198"><a href="#cb3-198" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> colAccent <span class="op">=</span> <span class="st">"var(--brand-teal, #55C3CB)"</span><span class="op">;</span></span>
-<span id="cb3-199"><a href="#cb3-199" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-200"><a href="#cb3-200" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Wrapper that controls responsive size</span></span>
-<span id="cb3-201"><a href="#cb3-201" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> wrap <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="</span></span>
-<span id="cb3-202"><a href="#cb3-202" aria-hidden="true" tabindex="-1"></a><span class="vs">    width: 100%;</span></span>
-<span id="cb3-203"><a href="#cb3-203" aria-hidden="true" tabindex="-1"></a><span class="vs">    max-width: 320px;      /* cap size; tweak as you like */</span></span>
-<span id="cb3-204"><a href="#cb3-204" aria-hidden="true" tabindex="-1"></a><span class="vs">    aspect-ratio: 1 / 1;   /* keep it square */</span></span>
-<span id="cb3-205"><a href="#cb3-205" aria-hidden="true" tabindex="-1"></a><span class="vs">    display: block;</span></span>
-<span id="cb3-206"><a href="#cb3-206" aria-hidden="true" tabindex="-1"></a><span class="vs">  "&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
-<span id="cb3-207"><a href="#cb3-207" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-208"><a href="#cb3-208" aria-hidden="true" tabindex="-1"></a>  <span class="co">// SVG uses logical coords; CSS scales it</span></span>
-<span id="cb3-209"><a href="#cb3-209" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> svg <span class="op">=</span> d3<span class="op">.</span><span class="fu">create</span>(<span class="st">"svg"</span>)</span>
-<span id="cb3-210"><a href="#cb3-210" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"viewBox"</span><span class="op">,</span> <span class="vs">`0 0 </span><span class="sc">${</span>width<span class="sc">}</span><span class="vs"> </span><span class="sc">${</span>height<span class="sc">}</span><span class="vs">`</span>)</span>
-<span id="cb3-211"><a href="#cb3-211" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"preserveAspectRatio"</span><span class="op">,</span> <span class="st">"xMidYMid meet"</span>)</span>
-<span id="cb3-212"><a href="#cb3-212" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"width"</span><span class="op">,</span> <span class="st">"100%"</span>)</span>
-<span id="cb3-213"><a href="#cb3-213" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"height"</span><span class="op">,</span> <span class="st">"100%"</span>)</span>
-<span id="cb3-214"><a href="#cb3-214" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"background"</span><span class="op">,</span> <span class="st">"transparent"</span>)</span>
-<span id="cb3-215"><a href="#cb3-215" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-opacity"</span><span class="op">,</span> <span class="fl">0.</span>)</span>
-<span id="cb3-216"><a href="#cb3-216" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-family"</span><span class="op">,</span> bodyFont)</span>
-<span id="cb3-217"><a href="#cb3-217" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-size"</span><span class="op">,</span> <span class="st">"14px"</span>)<span class="op">;</span></span>
-<span id="cb3-218"><a href="#cb3-218" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-219"><a href="#cb3-219" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> g <span class="op">=</span> svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"g"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"transform"</span><span class="op">,</span> <span class="vs">`translate(</span><span class="sc">${</span>margin<span class="op">.</span><span class="at">left</span><span class="sc">}</span><span class="vs">,</span><span class="sc">${</span>margin<span class="op">.</span><span class="at">top</span><span class="sc">}</span><span class="vs">)`</span>)<span class="op">;</span></span>
-<span id="cb3-220"><a href="#cb3-220" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-221"><a href="#cb3-221" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Background panel</span></span>
-<span id="cb3-222"><a href="#cb3-222" aria-hidden="true" tabindex="-1"></a>  g<span class="op">.</span><span class="fu">append</span>(<span class="st">"rect"</span>)</span>
-<span id="cb3-223"><a href="#cb3-223" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> W)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> H)</span>
-<span id="cb3-224"><a href="#cb3-224" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"rx"</span><span class="op">,</span> <span class="dv">10</span>)</span>
-<span id="cb3-225"><a href="#cb3-225" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> bg)</span>
-<span id="cb3-226"><a href="#cb3-226" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> grid)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-opacity"</span><span class="op">,</span> <span class="fl">0.5</span>)<span class="op">;</span></span>
-<span id="cb3-227"><a href="#cb3-227" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-228"><a href="#cb3-228" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Crosshairs</span></span>
-<span id="cb3-229"><a href="#cb3-229" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> crossX <span class="op">=</span> g<span class="op">.</span><span class="fu">append</span>(<span class="st">"line"</span>)</span>
-<span id="cb3-230"><a href="#cb3-230" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> colAccent)</span>
-<span id="cb3-231"><a href="#cb3-231" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-opacity"</span><span class="op">,</span> <span class="fl">0.7</span>)</span>
-<span id="cb3-232"><a href="#cb3-232" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-width"</span><span class="op">,</span> <span class="fl">1.5</span>)<span class="op">;</span></span>
-<span id="cb3-233"><a href="#cb3-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-234"><a href="#cb3-234" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> crossY <span class="op">=</span> g<span class="op">.</span><span class="fu">append</span>(<span class="st">"line"</span>)</span>
-<span id="cb3-235"><a href="#cb3-235" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> colAccent)</span>
-<span id="cb3-236"><a href="#cb3-236" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-opacity"</span><span class="op">,</span> <span class="fl">0.7</span>)</span>
-<span id="cb3-237"><a href="#cb3-237" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-width"</span><span class="op">,</span> <span class="fl">1.5</span>)<span class="op">;</span></span>
-<span id="cb3-238"><a href="#cb3-238" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-239"><a href="#cb3-239" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Handle</span></span>
-<span id="cb3-240"><a href="#cb3-240" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> handle <span class="op">=</span> g<span class="op">.</span><span class="fu">append</span>(<span class="st">"circle"</span>)</span>
-<span id="cb3-241"><a href="#cb3-241" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"r"</span><span class="op">,</span> <span class="dv">5</span>)</span>
-<span id="cb3-242"><a href="#cb3-242" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> colHandle)</span>
-<span id="cb3-243"><a href="#cb3-243" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> <span class="st">"white"</span>)</span>
-<span id="cb3-244"><a href="#cb3-244" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-width"</span><span class="op">,</span> <span class="fl">1.5</span>)</span>
-<span id="cb3-245"><a href="#cb3-245" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"cursor"</span><span class="op">,</span> <span class="st">"grab"</span>)<span class="op">;</span></span>
-<span id="cb3-246"><a href="#cb3-246" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-247"><a href="#cb3-247" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Readout</span></span>
-<span id="cb3-248"><a href="#cb3-248" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> readout <span class="op">=</span> svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"text"</span>)</span>
-<span id="cb3-249"><a href="#cb3-249" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> width <span class="op">/</span> <span class="dv">2</span>)        <span class="co">// center horizontally</span></span>
-<span id="cb3-250"><a href="#cb3-250" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> margin<span class="op">.</span><span class="at">top</span> <span class="op">/</span> <span class="fl">1.5</span>) <span class="co">// just above the chart area</span></span>
-<span id="cb3-251"><a href="#cb3-251" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"text-anchor"</span><span class="op">,</span> <span class="st">"middle"</span>)</span>
-<span id="cb3-252"><a href="#cb3-252" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"var(--fg-strong, currentColor)"</span>)</span>
-<span id="cb3-253"><a href="#cb3-253" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-weight"</span><span class="op">,</span> <span class="dv">400</span>)<span class="op">;</span></span>
-<span id="cb3-254"><a href="#cb3-254" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-255"><a href="#cb3-255" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">updateVisual</span>() {</span>
-<span id="cb3-256"><a href="#cb3-256" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> cx <span class="op">=</span> <span class="fu">x</span>(state<span class="op">.</span><span class="at">approxMu</span>)<span class="op">,</span> cy <span class="op">=</span> <span class="fu">y</span>(state<span class="op">.</span><span class="at">approxVar</span>)<span class="op">;</span></span>
-<span id="cb3-257"><a href="#cb3-257" aria-hidden="true" tabindex="-1"></a>    crossX<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x1"</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x2"</span><span class="op">,</span> W)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y1"</span><span class="op">,</span> cy)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y2"</span><span class="op">,</span> cy)<span class="op">;</span></span>
-<span id="cb3-258"><a href="#cb3-258" aria-hidden="true" tabindex="-1"></a>    crossY<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x1"</span><span class="op">,</span> cx)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x2"</span><span class="op">,</span> cx)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y1"</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y2"</span><span class="op">,</span> H)<span class="op">;</span></span>
-<span id="cb3-259"><a href="#cb3-259" aria-hidden="true" tabindex="-1"></a>    handle<span class="op">.</span><span class="fu">attr</span>(<span class="st">"cx"</span><span class="op">,</span> cx)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"cy"</span><span class="op">,</span> cy)<span class="op">;</span></span>
-<span id="cb3-260"><a href="#cb3-260" aria-hidden="true" tabindex="-1"></a>    readout<span class="op">.</span><span class="fu">text</span>(<span class="vs">`μ≈ </span><span class="sc">${</span>state<span class="op">.</span><span class="at">approxMu</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">,        σ²≈ </span><span class="sc">${</span>state<span class="op">.</span><span class="at">approxVar</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
-<span id="cb3-261"><a href="#cb3-261" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb3-262"><a href="#cb3-262" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-263"><a href="#cb3-263" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">setFromPointer</span>(evt) {</span>
-<span id="cb3-264"><a href="#cb3-264" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> [px<span class="op">,</span> py] <span class="op">=</span> d3<span class="op">.</span><span class="fu">pointer</span>(evt<span class="op">,</span> g<span class="op">.</span><span class="fu">node</span>())<span class="op">;</span> <span class="co">// in SVG user units (matches viewBox)</span></span>
-<span id="cb3-265"><a href="#cb3-265" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> mu <span class="op">=</span> <span class="fu">clamp</span>(x<span class="op">.</span><span class="fu">invert</span>(px)<span class="op">,</span> mu_min<span class="op">,</span> mu_max)<span class="op">;</span></span>
-<span id="cb3-266"><a href="#cb3-266" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> vv <span class="op">=</span> <span class="fu">clamp</span>(y<span class="op">.</span><span class="fu">invert</span>(py)<span class="op">,</span> var_min<span class="op">,</span> var_max)<span class="op">;</span></span>
-<span id="cb3-267"><a href="#cb3-267" aria-hidden="true" tabindex="-1"></a>    state <span class="op">=</span> { <span class="dt">approxMu</span><span class="op">:</span> mu<span class="op">,</span> <span class="dt">approxVar</span><span class="op">:</span> vv }<span class="op">;</span></span>
-<span id="cb3-268"><a href="#cb3-268" aria-hidden="true" tabindex="-1"></a>    <span class="bu">root</span><span class="op">.</span><span class="at">value</span> <span class="op">=</span> { <span class="dt">approxMu</span><span class="op">:</span> state<span class="op">.</span><span class="at">approxMu</span><span class="op">,</span> <span class="dt">approxVar</span><span class="op">:</span> state<span class="op">.</span><span class="at">approxVar</span> }<span class="op">;</span></span>
-<span id="cb3-269"><a href="#cb3-269" aria-hidden="true" tabindex="-1"></a>    <span class="bu">root</span><span class="op">.</span><span class="fu">dispatchEvent</span>(<span class="kw">new</span> <span class="bu">CustomEvent</span>(<span class="st">"input"</span><span class="op">,</span> {<span class="dt">bubbles</span><span class="op">:</span> <span class="kw">true</span>}))<span class="op">;</span></span>
-<span id="cb3-270"><a href="#cb3-270" aria-hidden="true" tabindex="-1"></a>    <span class="fu">updateVisual</span>()<span class="op">;</span></span>
-<span id="cb3-271"><a href="#cb3-271" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb3-272"><a href="#cb3-272" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-273"><a href="#cb3-273" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Interaction overlay</span></span>
-<span id="cb3-274"><a href="#cb3-274" aria-hidden="true" tabindex="-1"></a>  g<span class="op">.</span><span class="fu">append</span>(<span class="st">"rect"</span>)</span>
-<span id="cb3-275"><a href="#cb3-275" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> W)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> H)</span>
-<span id="cb3-276"><a href="#cb3-276" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"transparent"</span>)</span>
-<span id="cb3-277"><a href="#cb3-277" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"cursor"</span><span class="op">,</span> <span class="st">"crosshair"</span>)</span>
-<span id="cb3-278"><a href="#cb3-278" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">on</span>(<span class="st">"pointerdown"</span><span class="op">,</span> <span class="kw">function</span>(evt) {</span>
-<span id="cb3-279"><a href="#cb3-279" aria-hidden="true" tabindex="-1"></a>      <span class="kw">this</span><span class="op">.</span><span class="at">setPointerCapture</span><span class="op">?.</span>(evt<span class="op">.</span><span class="at">pointerId</span>)<span class="op">;</span></span>
-<span id="cb3-280"><a href="#cb3-280" aria-hidden="true" tabindex="-1"></a>      handle<span class="op">.</span><span class="fu">style</span>(<span class="st">"cursor"</span><span class="op">,</span> <span class="st">"grabbing"</span>)<span class="op">;</span></span>
-<span id="cb3-281"><a href="#cb3-281" aria-hidden="true" tabindex="-1"></a>      <span class="fu">setFromPointer</span>(evt)<span class="op">;</span></span>
-<span id="cb3-282"><a href="#cb3-282" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb3-283"><a href="#cb3-283" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">on</span>(<span class="st">"pointermove"</span><span class="op">,</span> <span class="kw">function</span>(evt) {</span>
-<span id="cb3-284"><a href="#cb3-284" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (evt<span class="op">.</span><span class="at">pressure</span> <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">||</span> evt<span class="op">.</span><span class="at">buttons</span>) <span class="fu">setFromPointer</span>(evt)<span class="op">;</span></span>
-<span id="cb3-285"><a href="#cb3-285" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb3-286"><a href="#cb3-286" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">on</span>(<span class="st">"pointerup"</span><span class="op">,</span> <span class="kw">function</span>(evt) {</span>
-<span id="cb3-287"><a href="#cb3-287" aria-hidden="true" tabindex="-1"></a>      <span class="kw">this</span><span class="op">.</span><span class="at">releasePointerCapture</span><span class="op">?.</span>(evt<span class="op">.</span><span class="at">pointerId</span>)<span class="op">;</span></span>
-<span id="cb3-288"><a href="#cb3-288" aria-hidden="true" tabindex="-1"></a>      handle<span class="op">.</span><span class="fu">style</span>(<span class="st">"cursor"</span><span class="op">,</span> <span class="st">"grab"</span>)<span class="op">;</span></span>
-<span id="cb3-289"><a href="#cb3-289" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
-<span id="cb3-290"><a href="#cb3-290" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-291"><a href="#cb3-291" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Root element with .value is the wrapper (so CSS controls size)</span></span>
-<span id="cb3-292"><a href="#cb3-292" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> <span class="bu">root</span> <span class="op">=</span> wrap<span class="op">;</span></span>
-<span id="cb3-293"><a href="#cb3-293" aria-hidden="true" tabindex="-1"></a>  <span class="bu">root</span><span class="op">.</span><span class="fu">append</span>(svg<span class="op">.</span><span class="fu">node</span>())<span class="op">;</span></span>
-<span id="cb3-294"><a href="#cb3-294" aria-hidden="true" tabindex="-1"></a>  <span class="bu">root</span><span class="op">.</span><span class="at">value</span> <span class="op">=</span> { <span class="dt">approxMu</span><span class="op">:</span> state<span class="op">.</span><span class="at">approxMu</span><span class="op">,</span> <span class="dt">approxVar</span><span class="op">:</span> state<span class="op">.</span><span class="at">approxVar</span> }<span class="op">;</span></span>
-<span id="cb3-295"><a href="#cb3-295" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-296"><a href="#cb3-296" aria-hidden="true" tabindex="-1"></a>  <span class="fu">updateVisual</span>()<span class="op">;</span></span>
-<span id="cb3-297"><a href="#cb3-297" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">root</span><span class="op">;</span></span>
-<span id="cb3-298"><a href="#cb3-298" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-189"><a href="#cb3-189" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Scales (y increases upward in data space)</span></span>
+<span id="cb3-190"><a href="#cb3-190" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> x <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleLinear</span>()<span class="op">.</span><span class="fu">domain</span>([mu_min<span class="op">,</span> mu_max])<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> W])<span class="op">.</span><span class="fu">clamp</span>(<span class="kw">true</span>)<span class="op">;</span></span>
+<span id="cb3-191"><a href="#cb3-191" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> y <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleLinear</span>()<span class="op">.</span><span class="fu">domain</span>([var_min<span class="op">,</span> var_max])<span class="op">.</span><span class="fu">range</span>([H<span class="op">,</span> <span class="dv">0</span>])<span class="op">.</span><span class="fu">nice</span>()<span class="op">.</span><span class="fu">clamp</span>(<span class="kw">true</span>)<span class="op">;</span></span>
+<span id="cb3-192"><a href="#cb3-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-193"><a href="#cb3-193" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Initial value</span></span>
+<span id="cb3-194"><a href="#cb3-194" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> state <span class="op">=</span> {</span>
+<span id="cb3-195"><a href="#cb3-195" aria-hidden="true" tabindex="-1"></a>    <span class="dt">approxMu</span><span class="op">:</span> <span class="fu">clamp</span>(mu_true<span class="op">,</span> mu_min<span class="op">,</span> mu_max)<span class="op">,</span></span>
+<span id="cb3-196"><a href="#cb3-196" aria-hidden="true" tabindex="-1"></a>    <span class="dt">approxVar</span><span class="op">:</span> <span class="fu">clamp</span>((var_max <span class="op">-</span> var_min) <span class="op">*</span> <span class="fl">0.4</span><span class="op">,</span> var_min<span class="op">,</span> var_max)</span>
+<span id="cb3-197"><a href="#cb3-197" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb3-198"><a href="#cb3-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-199"><a href="#cb3-199" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> bg <span class="op">=</span> <span class="st">"var(--plot-panel-bg)"</span><span class="op">;</span></span>
+<span id="cb3-200"><a href="#cb3-200" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> grid <span class="op">=</span> <span class="st">"var(--plot-grid, #94a3b8)"</span><span class="op">;</span></span>
+<span id="cb3-201"><a href="#cb3-201" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> colHandle <span class="op">=</span> <span class="st">"var(--brand-red, #e65660)"</span><span class="op">;</span></span>
+<span id="cb3-202"><a href="#cb3-202" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> colAccent <span class="op">=</span> <span class="st">"var(--brand-teal, #55C3CB)"</span><span class="op">;</span></span>
+<span id="cb3-203"><a href="#cb3-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-204"><a href="#cb3-204" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Wrapper that controls responsive size</span></span>
+<span id="cb3-205"><a href="#cb3-205" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> wrap <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="</span></span>
+<span id="cb3-206"><a href="#cb3-206" aria-hidden="true" tabindex="-1"></a><span class="vs">    width: 100%;</span></span>
+<span id="cb3-207"><a href="#cb3-207" aria-hidden="true" tabindex="-1"></a><span class="vs">    max-width: 320px;      /* cap size; tweak as you like */</span></span>
+<span id="cb3-208"><a href="#cb3-208" aria-hidden="true" tabindex="-1"></a><span class="vs">    aspect-ratio: 1 / 1;   /* keep it square */</span></span>
+<span id="cb3-209"><a href="#cb3-209" aria-hidden="true" tabindex="-1"></a><span class="vs">    display: block;</span></span>
+<span id="cb3-210"><a href="#cb3-210" aria-hidden="true" tabindex="-1"></a><span class="vs">  "&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb3-211"><a href="#cb3-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-212"><a href="#cb3-212" aria-hidden="true" tabindex="-1"></a>  <span class="co">// SVG uses logical coords; CSS scales it</span></span>
+<span id="cb3-213"><a href="#cb3-213" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> svg <span class="op">=</span> d3<span class="op">.</span><span class="fu">create</span>(<span class="st">"svg"</span>)</span>
+<span id="cb3-214"><a href="#cb3-214" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"viewBox"</span><span class="op">,</span> <span class="vs">`0 0 </span><span class="sc">${</span>width<span class="sc">}</span><span class="vs"> </span><span class="sc">${</span>height<span class="sc">}</span><span class="vs">`</span>)</span>
+<span id="cb3-215"><a href="#cb3-215" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"preserveAspectRatio"</span><span class="op">,</span> <span class="st">"xMidYMid meet"</span>)</span>
+<span id="cb3-216"><a href="#cb3-216" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"width"</span><span class="op">,</span> <span class="st">"100%"</span>)</span>
+<span id="cb3-217"><a href="#cb3-217" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"height"</span><span class="op">,</span> <span class="st">"100%"</span>)</span>
+<span id="cb3-218"><a href="#cb3-218" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"background"</span><span class="op">,</span> <span class="st">"transparent"</span>)</span>
+<span id="cb3-219"><a href="#cb3-219" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-opacity"</span><span class="op">,</span> <span class="fl">0.</span>)</span>
+<span id="cb3-220"><a href="#cb3-220" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-family"</span><span class="op">,</span> bodyFont)</span>
+<span id="cb3-221"><a href="#cb3-221" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-size"</span><span class="op">,</span> <span class="st">"14px"</span>)<span class="op">;</span></span>
+<span id="cb3-222"><a href="#cb3-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-223"><a href="#cb3-223" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> g <span class="op">=</span> svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"g"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"transform"</span><span class="op">,</span> <span class="vs">`translate(</span><span class="sc">${</span>margin<span class="op">.</span><span class="at">left</span><span class="sc">}</span><span class="vs">,</span><span class="sc">${</span>margin<span class="op">.</span><span class="at">top</span><span class="sc">}</span><span class="vs">)`</span>)<span class="op">;</span></span>
+<span id="cb3-224"><a href="#cb3-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-225"><a href="#cb3-225" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Background panel</span></span>
+<span id="cb3-226"><a href="#cb3-226" aria-hidden="true" tabindex="-1"></a>  g<span class="op">.</span><span class="fu">append</span>(<span class="st">"rect"</span>)</span>
+<span id="cb3-227"><a href="#cb3-227" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> W)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> H)</span>
+<span id="cb3-228"><a href="#cb3-228" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"rx"</span><span class="op">,</span> <span class="dv">10</span>)</span>
+<span id="cb3-229"><a href="#cb3-229" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> bg)</span>
+<span id="cb3-230"><a href="#cb3-230" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> grid)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-opacity"</span><span class="op">,</span> <span class="fl">0.5</span>)<span class="op">;</span></span>
+<span id="cb3-231"><a href="#cb3-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-232"><a href="#cb3-232" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Crosshairs</span></span>
+<span id="cb3-233"><a href="#cb3-233" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> crossX <span class="op">=</span> g<span class="op">.</span><span class="fu">append</span>(<span class="st">"line"</span>)</span>
+<span id="cb3-234"><a href="#cb3-234" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> colAccent)</span>
+<span id="cb3-235"><a href="#cb3-235" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-opacity"</span><span class="op">,</span> <span class="fl">0.7</span>)</span>
+<span id="cb3-236"><a href="#cb3-236" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-width"</span><span class="op">,</span> <span class="fl">1.5</span>)<span class="op">;</span></span>
+<span id="cb3-237"><a href="#cb3-237" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-238"><a href="#cb3-238" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> crossY <span class="op">=</span> g<span class="op">.</span><span class="fu">append</span>(<span class="st">"line"</span>)</span>
+<span id="cb3-239"><a href="#cb3-239" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> colAccent)</span>
+<span id="cb3-240"><a href="#cb3-240" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-opacity"</span><span class="op">,</span> <span class="fl">0.7</span>)</span>
+<span id="cb3-241"><a href="#cb3-241" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-width"</span><span class="op">,</span> <span class="fl">1.5</span>)<span class="op">;</span></span>
+<span id="cb3-242"><a href="#cb3-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-243"><a href="#cb3-243" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Handle</span></span>
+<span id="cb3-244"><a href="#cb3-244" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> handle <span class="op">=</span> g<span class="op">.</span><span class="fu">append</span>(<span class="st">"circle"</span>)</span>
+<span id="cb3-245"><a href="#cb3-245" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"r"</span><span class="op">,</span> <span class="dv">5</span>)</span>
+<span id="cb3-246"><a href="#cb3-246" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> colHandle)</span>
+<span id="cb3-247"><a href="#cb3-247" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> <span class="st">"white"</span>)</span>
+<span id="cb3-248"><a href="#cb3-248" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-width"</span><span class="op">,</span> <span class="fl">1.5</span>)</span>
+<span id="cb3-249"><a href="#cb3-249" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"cursor"</span><span class="op">,</span> <span class="st">"grab"</span>)<span class="op">;</span></span>
+<span id="cb3-250"><a href="#cb3-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-251"><a href="#cb3-251" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Readout</span></span>
+<span id="cb3-252"><a href="#cb3-252" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> readout <span class="op">=</span> svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"text"</span>)</span>
+<span id="cb3-253"><a href="#cb3-253" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> width <span class="op">/</span> <span class="dv">2</span>)        <span class="co">// center horizontally</span></span>
+<span id="cb3-254"><a href="#cb3-254" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> margin<span class="op">.</span><span class="at">top</span> <span class="op">/</span> <span class="fl">1.5</span>) <span class="co">// just above the chart area</span></span>
+<span id="cb3-255"><a href="#cb3-255" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"text-anchor"</span><span class="op">,</span> <span class="st">"middle"</span>)</span>
+<span id="cb3-256"><a href="#cb3-256" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"var(--fg-strong, currentColor)"</span>)</span>
+<span id="cb3-257"><a href="#cb3-257" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-weight"</span><span class="op">,</span> <span class="dv">400</span>)<span class="op">;</span></span>
+<span id="cb3-258"><a href="#cb3-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-259"><a href="#cb3-259" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">updateVisual</span>() {</span>
+<span id="cb3-260"><a href="#cb3-260" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> cx <span class="op">=</span> <span class="fu">x</span>(state<span class="op">.</span><span class="at">approxMu</span>)<span class="op">,</span> cy <span class="op">=</span> <span class="fu">y</span>(state<span class="op">.</span><span class="at">approxVar</span>)<span class="op">;</span></span>
+<span id="cb3-261"><a href="#cb3-261" aria-hidden="true" tabindex="-1"></a>    crossX<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x1"</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x2"</span><span class="op">,</span> W)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y1"</span><span class="op">,</span> cy)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y2"</span><span class="op">,</span> cy)<span class="op">;</span></span>
+<span id="cb3-262"><a href="#cb3-262" aria-hidden="true" tabindex="-1"></a>    crossY<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x1"</span><span class="op">,</span> cx)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x2"</span><span class="op">,</span> cx)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y1"</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y2"</span><span class="op">,</span> H)<span class="op">;</span></span>
+<span id="cb3-263"><a href="#cb3-263" aria-hidden="true" tabindex="-1"></a>    handle<span class="op">.</span><span class="fu">attr</span>(<span class="st">"cx"</span><span class="op">,</span> cx)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"cy"</span><span class="op">,</span> cy)<span class="op">;</span></span>
+<span id="cb3-264"><a href="#cb3-264" aria-hidden="true" tabindex="-1"></a>    readout<span class="op">.</span><span class="fu">text</span>(<span class="vs">`μ≈ </span><span class="sc">${</span>state<span class="op">.</span><span class="at">approxMu</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">,        σ²≈ </span><span class="sc">${</span>state<span class="op">.</span><span class="at">approxVar</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
+<span id="cb3-265"><a href="#cb3-265" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-266"><a href="#cb3-266" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-267"><a href="#cb3-267" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">setFromPointer</span>(evt) {</span>
+<span id="cb3-268"><a href="#cb3-268" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> [px<span class="op">,</span> py] <span class="op">=</span> d3<span class="op">.</span><span class="fu">pointer</span>(evt<span class="op">,</span> g<span class="op">.</span><span class="fu">node</span>())<span class="op">;</span> <span class="co">// in SVG user units (matches viewBox)</span></span>
+<span id="cb3-269"><a href="#cb3-269" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> mu <span class="op">=</span> <span class="fu">clamp</span>(x<span class="op">.</span><span class="fu">invert</span>(px)<span class="op">,</span> mu_min<span class="op">,</span> mu_max)<span class="op">;</span></span>
+<span id="cb3-270"><a href="#cb3-270" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> vv <span class="op">=</span> <span class="fu">clamp</span>(y<span class="op">.</span><span class="fu">invert</span>(py)<span class="op">,</span> var_min<span class="op">,</span> var_max)<span class="op">;</span></span>
+<span id="cb3-271"><a href="#cb3-271" aria-hidden="true" tabindex="-1"></a>    state <span class="op">=</span> { <span class="dt">approxMu</span><span class="op">:</span> mu<span class="op">,</span> <span class="dt">approxVar</span><span class="op">:</span> vv }<span class="op">;</span></span>
+<span id="cb3-272"><a href="#cb3-272" aria-hidden="true" tabindex="-1"></a>    <span class="bu">root</span><span class="op">.</span><span class="at">value</span> <span class="op">=</span> { <span class="dt">approxMu</span><span class="op">:</span> state<span class="op">.</span><span class="at">approxMu</span><span class="op">,</span> <span class="dt">approxVar</span><span class="op">:</span> state<span class="op">.</span><span class="at">approxVar</span> }<span class="op">;</span></span>
+<span id="cb3-273"><a href="#cb3-273" aria-hidden="true" tabindex="-1"></a>    <span class="bu">root</span><span class="op">.</span><span class="fu">dispatchEvent</span>(<span class="kw">new</span> <span class="bu">CustomEvent</span>(<span class="st">"input"</span><span class="op">,</span> {<span class="dt">bubbles</span><span class="op">:</span> <span class="kw">true</span>}))<span class="op">;</span></span>
+<span id="cb3-274"><a href="#cb3-274" aria-hidden="true" tabindex="-1"></a>    <span class="fu">updateVisual</span>()<span class="op">;</span></span>
+<span id="cb3-275"><a href="#cb3-275" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-276"><a href="#cb3-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-277"><a href="#cb3-277" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Interaction overlay</span></span>
+<span id="cb3-278"><a href="#cb3-278" aria-hidden="true" tabindex="-1"></a>  g<span class="op">.</span><span class="fu">append</span>(<span class="st">"rect"</span>)</span>
+<span id="cb3-279"><a href="#cb3-279" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> W)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> H)</span>
+<span id="cb3-280"><a href="#cb3-280" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"transparent"</span>)</span>
+<span id="cb3-281"><a href="#cb3-281" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"cursor"</span><span class="op">,</span> <span class="st">"crosshair"</span>)</span>
+<span id="cb3-282"><a href="#cb3-282" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">on</span>(<span class="st">"pointerdown"</span><span class="op">,</span> <span class="kw">function</span>(evt) {</span>
+<span id="cb3-283"><a href="#cb3-283" aria-hidden="true" tabindex="-1"></a>      <span class="kw">this</span><span class="op">.</span><span class="at">setPointerCapture</span><span class="op">?.</span>(evt<span class="op">.</span><span class="at">pointerId</span>)<span class="op">;</span></span>
+<span id="cb3-284"><a href="#cb3-284" aria-hidden="true" tabindex="-1"></a>      handle<span class="op">.</span><span class="fu">style</span>(<span class="st">"cursor"</span><span class="op">,</span> <span class="st">"grabbing"</span>)<span class="op">;</span></span>
+<span id="cb3-285"><a href="#cb3-285" aria-hidden="true" tabindex="-1"></a>      <span class="fu">setFromPointer</span>(evt)<span class="op">;</span></span>
+<span id="cb3-286"><a href="#cb3-286" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb3-287"><a href="#cb3-287" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">on</span>(<span class="st">"pointermove"</span><span class="op">,</span> <span class="kw">function</span>(evt) {</span>
+<span id="cb3-288"><a href="#cb3-288" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (evt<span class="op">.</span><span class="at">pressure</span> <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">||</span> evt<span class="op">.</span><span class="at">buttons</span>) <span class="fu">setFromPointer</span>(evt)<span class="op">;</span></span>
+<span id="cb3-289"><a href="#cb3-289" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb3-290"><a href="#cb3-290" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">on</span>(<span class="st">"pointerup"</span><span class="op">,</span> <span class="kw">function</span>(evt) {</span>
+<span id="cb3-291"><a href="#cb3-291" aria-hidden="true" tabindex="-1"></a>      <span class="kw">this</span><span class="op">.</span><span class="at">releasePointerCapture</span><span class="op">?.</span>(evt<span class="op">.</span><span class="at">pointerId</span>)<span class="op">;</span></span>
+<span id="cb3-292"><a href="#cb3-292" aria-hidden="true" tabindex="-1"></a>      handle<span class="op">.</span><span class="fu">style</span>(<span class="st">"cursor"</span><span class="op">,</span> <span class="st">"grab"</span>)<span class="op">;</span></span>
+<span id="cb3-293"><a href="#cb3-293" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
+<span id="cb3-294"><a href="#cb3-294" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-295"><a href="#cb3-295" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Root element with .value is the wrapper (so CSS controls size)</span></span>
+<span id="cb3-296"><a href="#cb3-296" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> <span class="bu">root</span> <span class="op">=</span> wrap<span class="op">;</span></span>
+<span id="cb3-297"><a href="#cb3-297" aria-hidden="true" tabindex="-1"></a>  <span class="bu">root</span><span class="op">.</span><span class="fu">append</span>(svg<span class="op">.</span><span class="fu">node</span>())<span class="op">;</span></span>
+<span id="cb3-298"><a href="#cb3-298" aria-hidden="true" tabindex="-1"></a>  <span class="bu">root</span><span class="op">.</span><span class="at">value</span> <span class="op">=</span> { <span class="dt">approxMu</span><span class="op">:</span> state<span class="op">.</span><span class="at">approxMu</span><span class="op">,</span> <span class="dt">approxVar</span><span class="op">:</span> state<span class="op">.</span><span class="at">approxVar</span> }<span class="op">;</span></span>
 <span id="cb3-299"><a href="#cb3-299" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-300"><a href="#cb3-300" aria-hidden="true" tabindex="-1"></a><span class="co">// Reactive outputs</span></span>
-<span id="cb3-301"><a href="#cb3-301" aria-hidden="true" tabindex="-1"></a>approxMu <span class="op">=</span> muVar2D<span class="op">.</span><span class="at">approxMu</span></span>
-<span id="cb3-302"><a href="#cb3-302" aria-hidden="true" tabindex="-1"></a>approxVar <span class="op">=</span> muVar2D<span class="op">.</span><span class="at">approxVar</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-300"><a href="#cb3-300" aria-hidden="true" tabindex="-1"></a>  <span class="fu">updateVisual</span>()<span class="op">;</span></span>
+<span id="cb3-301"><a href="#cb3-301" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">root</span><span class="op">;</span></span>
+<span id="cb3-302"><a href="#cb3-302" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-303"><a href="#cb3-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-304"><a href="#cb3-304" aria-hidden="true" tabindex="-1"></a><span class="co">// Reactive outputs</span></span>
+<span id="cb3-305"><a href="#cb3-305" aria-hidden="true" tabindex="-1"></a>approxMu <span class="op">=</span> muVar2D<span class="op">.</span><span class="at">approxMu</span></span>
+<span id="cb3-306"><a href="#cb3-306" aria-hidden="true" tabindex="-1"></a>approxVar <span class="op">=</span> muVar2D<span class="op">.</span><span class="at">approxVar</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-3-1" data-nodetype="declaration">
@@ -1086,25 +1091,25 @@ X_1, \dots, X_n \stackrel{\text{iid}}{\sim} \mathrm{Distribution}(\theta).
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="305" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 304;"><span id="cb4-305"><a href="#cb4-305" aria-hidden="true" tabindex="-1"></a><span class="co">// Layout container placing the histogram (left, 2fr) and slider (right, 1fr)</span></span>
-<span id="cb4-306"><a href="#cb4-306" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb4-307"><a href="#cb4-307" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> wrap <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="</span></span>
-<span id="cb4-308"><a href="#cb4-308" aria-hidden="true" tabindex="-1"></a><span class="vs">    display: grid;</span></span>
-<span id="cb4-309"><a href="#cb4-309" aria-hidden="true" tabindex="-1"></a><span class="vs">    grid-template-columns: 3fr 1fr;  /* change to 3fr 1fr for ~3:1 */</span></span>
-<span id="cb4-310"><a href="#cb4-310" aria-hidden="true" tabindex="-1"></a><span class="vs">    gap: 0.5rem;</span></span>
-<span id="cb4-311"><a href="#cb4-311" aria-hidden="true" tabindex="-1"></a><span class="vs">    align-items: start; /* left plot stays top-aligned */</span></span>
-<span id="cb4-312"><a href="#cb4-312" aria-hidden="true" tabindex="-1"></a><span class="vs">  "&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
-<span id="cb4-313"><a href="#cb4-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-314"><a href="#cb4-314" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Histogram (left)</span></span>
-<span id="cb4-315"><a href="#cb4-315" aria-hidden="true" tabindex="-1"></a>  wrap<span class="op">.</span><span class="fu">append</span>(histVis)<span class="op">;</span></span>
-<span id="cb4-316"><a href="#cb4-316" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-317"><a href="#cb4-317" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Slider (right, vertically centered)</span></span>
-<span id="cb4-318"><a href="#cb4-318" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> sliderBox <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="display:flex; align-items:center; height:100%"&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
-<span id="cb4-319"><a href="#cb4-319" aria-hidden="true" tabindex="-1"></a>  sliderBox<span class="op">.</span><span class="fu">append</span>(viewof muVar2D)<span class="op">;</span></span>
-<span id="cb4-320"><a href="#cb4-320" aria-hidden="true" tabindex="-1"></a>  wrap<span class="op">.</span><span class="fu">append</span>(sliderBox)<span class="op">;</span></span>
-<span id="cb4-321"><a href="#cb4-321" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-322"><a href="#cb4-322" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> wrap<span class="op">;</span></span>
-<span id="cb4-323"><a href="#cb4-323" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="309" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 308;"><span id="cb4-309"><a href="#cb4-309" aria-hidden="true" tabindex="-1"></a><span class="co">// Layout container placing the histogram (left, 2fr) and slider (right, 1fr)</span></span>
+<span id="cb4-310"><a href="#cb4-310" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb4-311"><a href="#cb4-311" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> wrap <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="</span></span>
+<span id="cb4-312"><a href="#cb4-312" aria-hidden="true" tabindex="-1"></a><span class="vs">    display: grid;</span></span>
+<span id="cb4-313"><a href="#cb4-313" aria-hidden="true" tabindex="-1"></a><span class="vs">    grid-template-columns: 3fr 1fr;  /* change to 3fr 1fr for ~3:1 */</span></span>
+<span id="cb4-314"><a href="#cb4-314" aria-hidden="true" tabindex="-1"></a><span class="vs">    gap: 0.5rem;</span></span>
+<span id="cb4-315"><a href="#cb4-315" aria-hidden="true" tabindex="-1"></a><span class="vs">    align-items: start; /* left plot stays top-aligned */</span></span>
+<span id="cb4-316"><a href="#cb4-316" aria-hidden="true" tabindex="-1"></a><span class="vs">  "&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb4-317"><a href="#cb4-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-318"><a href="#cb4-318" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Histogram (left)</span></span>
+<span id="cb4-319"><a href="#cb4-319" aria-hidden="true" tabindex="-1"></a>  wrap<span class="op">.</span><span class="fu">append</span>(histVis)<span class="op">;</span></span>
+<span id="cb4-320"><a href="#cb4-320" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-321"><a href="#cb4-321" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Slider (right, vertically centered)</span></span>
+<span id="cb4-322"><a href="#cb4-322" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> sliderBox <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="display:flex; align-items:center; height:100%"&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb4-323"><a href="#cb4-323" aria-hidden="true" tabindex="-1"></a>  sliderBox<span class="op">.</span><span class="fu">append</span>(viewof muVar2D)<span class="op">;</span></span>
+<span id="cb4-324"><a href="#cb4-324" aria-hidden="true" tabindex="-1"></a>  wrap<span class="op">.</span><span class="fu">append</span>(sliderBox)<span class="op">;</span></span>
+<span id="cb4-325"><a href="#cb4-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-326"><a href="#cb4-326" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> wrap<span class="op">;</span></span>
+<span id="cb4-327"><a href="#cb4-327" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-4" data-nodetype="expression">
 
@@ -1112,12 +1117,12 @@ X_1, \dots, X_n \stackrel{\text{iid}}{\sim} \mathrm{Distribution}(\theta).
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb5" data-startfrom="327" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 326;"><span id="cb5-327"><a href="#cb5-327" aria-hidden="true" tabindex="-1"></a><span class="co">// data</span></span>
-<span id="cb5-328"><a href="#cb5-328" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> {</span>
-<span id="cb5-329"><a href="#cb5-329" aria-hidden="true" tabindex="-1"></a>  resample<span class="op">;</span> <span class="co">// reacts to the "Resimulate data" button</span></span>
-<span id="cb5-330"><a href="#cb5-330" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> rnd <span class="op">=</span> d3<span class="op">.</span><span class="fu">randomNormal</span>(mu_true<span class="op">,</span> sigma_true)<span class="op">;</span></span>
-<span id="cb5-331"><a href="#cb5-331" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>({ <span class="dt">length</span><span class="op">:</span> n }<span class="op">,</span> () <span class="kw">=&gt;</span> <span class="fu">rnd</span>())<span class="op">;</span></span>
-<span id="cb5-332"><a href="#cb5-332" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb5" data-startfrom="331" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 330;"><span id="cb5-331"><a href="#cb5-331" aria-hidden="true" tabindex="-1"></a><span class="co">// data</span></span>
+<span id="cb5-332"><a href="#cb5-332" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> {</span>
+<span id="cb5-333"><a href="#cb5-333" aria-hidden="true" tabindex="-1"></a>  resample<span class="op">;</span> <span class="co">// reacts to the "Resimulate data" button</span></span>
+<span id="cb5-334"><a href="#cb5-334" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> rnd <span class="op">=</span> d3<span class="op">.</span><span class="fu">randomNormal</span>(mu_true<span class="op">,</span> sigma_true)<span class="op">;</span></span>
+<span id="cb5-335"><a href="#cb5-335" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>({ <span class="dt">length</span><span class="op">:</span> n }<span class="op">,</span> () <span class="kw">=&gt;</span> <span class="fu">rnd</span>())<span class="op">;</span></span>
+<span id="cb5-336"><a href="#cb5-336" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-5" data-nodetype="declaration">
 
@@ -1125,54 +1130,54 @@ X_1, \dots, X_n \stackrel{\text{iid}}{\sim} \mathrm{Distribution}(\theta).
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="338" data-source-offset="-57"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 337;"><span id="cb6-338"><a href="#cb6-338" aria-hidden="true" tabindex="-1"></a>viewof controls <span class="op">=</span> {</span>
-<span id="cb6-339"><a href="#cb6-339" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> resimBtn <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">button</span>(<span class="st">"Resimulate data"</span>)<span class="op">;</span></span>
-<span id="cb6-340"><a href="#cb6-340" aria-hidden="true" tabindex="-1"></a>  resimBtn<span class="op">.</span><span class="at">classList</span><span class="op">.</span><span class="fu">add</span>(<span class="st">"btn-resim"</span>)<span class="op">;</span></span>
-<span id="cb6-341"><a href="#cb6-341" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-342"><a href="#cb6-342" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> leftForm <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">form</span>({</span>
-<span id="cb6-343"><a href="#cb6-343" aria-hidden="true" tabindex="-1"></a>    <span class="dt">n</span><span class="op">:</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">400</span>]<span class="op">,</span> { <span class="dt">value</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`n`</span><span class="sc">}</span><span class="vs">`</span> })<span class="op">,</span></span>
-<span id="cb6-344"><a href="#cb6-344" aria-hidden="true" tabindex="-1"></a>    <span class="dt">mu_true</span><span class="op">:</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> { <span class="dt">value</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.05</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`</span><span class="sc">\m</span><span class="vs">u_{</span><span class="sc">\t</span><span class="vs">ext{true}}`</span><span class="sc">}</span><span class="vs">`</span> })<span class="op">,</span></span>
-<span id="cb6-345"><a href="#cb6-345" aria-hidden="true" tabindex="-1"></a>    <span class="dt">sigma_true</span><span class="op">:</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.3</span><span class="op">,</span> <span class="dv">4</span>]<span class="op">,</span> { <span class="dt">value</span><span class="op">:</span> <span class="fl">1.2</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.05</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`</span><span class="sc">\s</span><span class="vs">igma_{</span><span class="sc">\t</span><span class="vs">ext{true}}`</span><span class="sc">}</span><span class="vs">`</span> })</span>
-<span id="cb6-346"><a href="#cb6-346" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span> { <span class="dt">submit</span><span class="op">:</span> <span class="kw">false</span> })<span class="op">;</span></span>
-<span id="cb6-347"><a href="#cb6-347" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-348"><a href="#cb6-348" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> rightForm <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">form</span>({</span>
-<span id="cb6-349"><a href="#cb6-349" aria-hidden="true" tabindex="-1"></a>    <span class="dt">muHalfWidth</span><span class="op">:</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> { <span class="dt">value</span><span class="op">:</span> <span class="dv">5</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.05</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`</span><span class="sc">\m</span><span class="vs">u</span><span class="sc">\t</span><span class="vs">ext{-range}`</span><span class="sc">}</span><span class="vs">`</span> })<span class="op">,</span></span>
-<span id="cb6-350"><a href="#cb6-350" aria-hidden="true" tabindex="-1"></a>    <span class="dt">sig2Max</span><span class="op">:</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.2</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> { <span class="dt">value</span><span class="op">:</span> <span class="dv">5</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.05</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`</span><span class="sc">\s</span><span class="vs">igma^2</span><span class="sc">\t</span><span class="vs">ext{ max}`</span><span class="sc">}</span><span class="vs">`</span> })<span class="op">,</span></span>
-<span id="cb6-351"><a href="#cb6-351" aria-hidden="true" tabindex="-1"></a>    <span class="dt">bins</span><span class="op">:</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">10</span><span class="op">,</span> <span class="dv">60</span>]<span class="op">,</span> { <span class="dt">value</span><span class="op">:</span> <span class="dv">12</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Histogram bins"</span> })</span>
-<span id="cb6-352"><a href="#cb6-352" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span> { <span class="dt">submit</span><span class="op">:</span> <span class="kw">false</span> })<span class="op">;</span></span>
-<span id="cb6-353"><a href="#cb6-353" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-354"><a href="#cb6-354" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> <span class="bu">root</span> <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;details class="controls-root" open&gt;</span></span>
-<span id="cb6-355"><a href="#cb6-355" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;summary&gt;Simulation controls&lt;/summary&gt;</span></span>
-<span id="cb6-356"><a href="#cb6-356" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="controls-grid"&gt;</span></span>
-<span id="cb6-357"><a href="#cb6-357" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;div class="controls-col"&gt;&lt;h4&gt;Data &amp; truth&lt;/h4&gt;&lt;/div&gt;</span></span>
-<span id="cb6-358"><a href="#cb6-358" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;div class="controls-col"&gt;&lt;h4&gt;Grid &amp; display&lt;/h4&gt;&lt;/div&gt;</span></span>
-<span id="cb6-359"><a href="#cb6-359" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;</span></span>
-<span id="cb6-360"><a href="#cb6-360" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/details&gt;`</span><span class="op">;</span></span>
-<span id="cb6-361"><a href="#cb6-361" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-362"><a href="#cb6-362" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> grid <span class="op">=</span> <span class="bu">root</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">".controls-grid"</span>)<span class="op">;</span></span>
-<span id="cb6-363"><a href="#cb6-363" aria-hidden="true" tabindex="-1"></a>  grid<span class="op">.</span><span class="at">children</span>[<span class="dv">0</span>]<span class="op">.</span><span class="fu">append</span>(leftForm)<span class="op">;</span></span>
-<span id="cb6-364"><a href="#cb6-364" aria-hidden="true" tabindex="-1"></a>  grid<span class="op">.</span><span class="at">children</span>[<span class="dv">1</span>]<span class="op">.</span><span class="fu">append</span>(rightForm)<span class="op">;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="342" data-source-offset="-57"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 341;"><span id="cb6-342"><a href="#cb6-342" aria-hidden="true" tabindex="-1"></a>viewof controls <span class="op">=</span> {</span>
+<span id="cb6-343"><a href="#cb6-343" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> resimBtn <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">button</span>(<span class="st">"Resimulate data"</span>)<span class="op">;</span></span>
+<span id="cb6-344"><a href="#cb6-344" aria-hidden="true" tabindex="-1"></a>  resimBtn<span class="op">.</span><span class="at">classList</span><span class="op">.</span><span class="fu">add</span>(<span class="st">"btn-resim"</span>)<span class="op">;</span></span>
+<span id="cb6-345"><a href="#cb6-345" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-346"><a href="#cb6-346" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> leftForm <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">form</span>({</span>
+<span id="cb6-347"><a href="#cb6-347" aria-hidden="true" tabindex="-1"></a>    <span class="dt">n</span><span class="op">:</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">400</span>]<span class="op">,</span> { <span class="dt">value</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`n`</span><span class="sc">}</span><span class="vs">`</span> })<span class="op">,</span></span>
+<span id="cb6-348"><a href="#cb6-348" aria-hidden="true" tabindex="-1"></a>    <span class="dt">mu_true</span><span class="op">:</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> { <span class="dt">value</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.05</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`</span><span class="sc">\m</span><span class="vs">u_{</span><span class="sc">\t</span><span class="vs">ext{true}}`</span><span class="sc">}</span><span class="vs">`</span> })<span class="op">,</span></span>
+<span id="cb6-349"><a href="#cb6-349" aria-hidden="true" tabindex="-1"></a>    <span class="dt">sigma_true</span><span class="op">:</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.3</span><span class="op">,</span> <span class="dv">4</span>]<span class="op">,</span> { <span class="dt">value</span><span class="op">:</span> <span class="fl">1.2</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.05</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`</span><span class="sc">\s</span><span class="vs">igma_{</span><span class="sc">\t</span><span class="vs">ext{true}}`</span><span class="sc">}</span><span class="vs">`</span> })</span>
+<span id="cb6-350"><a href="#cb6-350" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span> { <span class="dt">submit</span><span class="op">:</span> <span class="kw">false</span> })<span class="op">;</span></span>
+<span id="cb6-351"><a href="#cb6-351" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-352"><a href="#cb6-352" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> rightForm <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">form</span>({</span>
+<span id="cb6-353"><a href="#cb6-353" aria-hidden="true" tabindex="-1"></a>    <span class="dt">muHalfWidth</span><span class="op">:</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> { <span class="dt">value</span><span class="op">:</span> <span class="dv">5</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.05</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`</span><span class="sc">\m</span><span class="vs">u</span><span class="sc">\t</span><span class="vs">ext{-range}`</span><span class="sc">}</span><span class="vs">`</span> })<span class="op">,</span></span>
+<span id="cb6-354"><a href="#cb6-354" aria-hidden="true" tabindex="-1"></a>    <span class="dt">sig2Max</span><span class="op">:</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.2</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> { <span class="dt">value</span><span class="op">:</span> <span class="dv">5</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.05</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`</span><span class="sc">\s</span><span class="vs">igma^2</span><span class="sc">\t</span><span class="vs">ext{ max}`</span><span class="sc">}</span><span class="vs">`</span> })<span class="op">,</span></span>
+<span id="cb6-355"><a href="#cb6-355" aria-hidden="true" tabindex="-1"></a>    <span class="dt">bins</span><span class="op">:</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">10</span><span class="op">,</span> <span class="dv">60</span>]<span class="op">,</span> { <span class="dt">value</span><span class="op">:</span> <span class="dv">12</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Histogram bins"</span> })</span>
+<span id="cb6-356"><a href="#cb6-356" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span> { <span class="dt">submit</span><span class="op">:</span> <span class="kw">false</span> })<span class="op">;</span></span>
+<span id="cb6-357"><a href="#cb6-357" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-358"><a href="#cb6-358" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> <span class="bu">root</span> <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;details class="controls-root" open&gt;</span></span>
+<span id="cb6-359"><a href="#cb6-359" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;summary&gt;Simulation controls&lt;/summary&gt;</span></span>
+<span id="cb6-360"><a href="#cb6-360" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="controls-grid"&gt;</span></span>
+<span id="cb6-361"><a href="#cb6-361" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;div class="controls-col"&gt;&lt;h4&gt;Data &amp; truth&lt;/h4&gt;&lt;/div&gt;</span></span>
+<span id="cb6-362"><a href="#cb6-362" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;div class="controls-col"&gt;&lt;h4&gt;Grid &amp; display&lt;/h4&gt;&lt;/div&gt;</span></span>
+<span id="cb6-363"><a href="#cb6-363" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;</span></span>
+<span id="cb6-364"><a href="#cb6-364" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/details&gt;`</span><span class="op">;</span></span>
 <span id="cb6-365"><a href="#cb6-365" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-366"><a href="#cb6-366" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> btnWrap <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="display:flex; justify-content:flex-start; margin-top:6px;"&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
-<span id="cb6-367"><a href="#cb6-367" aria-hidden="true" tabindex="-1"></a>  btnWrap<span class="op">.</span><span class="fu">append</span>(resimBtn)<span class="op">;</span></span>
-<span id="cb6-368"><a href="#cb6-368" aria-hidden="true" tabindex="-1"></a>  grid<span class="op">.</span><span class="at">children</span>[<span class="dv">1</span>]<span class="op">.</span><span class="fu">append</span>(btnWrap)<span class="op">;</span></span>
+<span id="cb6-366"><a href="#cb6-366" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> grid <span class="op">=</span> <span class="bu">root</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">".controls-grid"</span>)<span class="op">;</span></span>
+<span id="cb6-367"><a href="#cb6-367" aria-hidden="true" tabindex="-1"></a>  grid<span class="op">.</span><span class="at">children</span>[<span class="dv">0</span>]<span class="op">.</span><span class="fu">append</span>(leftForm)<span class="op">;</span></span>
+<span id="cb6-368"><a href="#cb6-368" aria-hidden="true" tabindex="-1"></a>  grid<span class="op">.</span><span class="at">children</span>[<span class="dv">1</span>]<span class="op">.</span><span class="fu">append</span>(rightForm)<span class="op">;</span></span>
 <span id="cb6-369"><a href="#cb6-369" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-370"><a href="#cb6-370" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> getValue <span class="op">=</span> () <span class="kw">=&gt;</span> ({ <span class="op">...</span>leftForm<span class="op">.</span><span class="at">value</span><span class="op">,</span> <span class="op">...</span>rightForm<span class="op">.</span><span class="at">value</span><span class="op">,</span> <span class="dt">resim</span><span class="op">:</span> resimBtn<span class="op">.</span><span class="at">value</span> })<span class="op">;</span></span>
-<span id="cb6-371"><a href="#cb6-371" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> update <span class="op">=</span> () <span class="kw">=&gt;</span> { <span class="bu">root</span><span class="op">.</span><span class="at">value</span> <span class="op">=</span> <span class="fu">getValue</span>()<span class="op">;</span> <span class="bu">root</span><span class="op">.</span><span class="fu">dispatchEvent</span>(<span class="kw">new</span> <span class="bu">CustomEvent</span>(<span class="st">"input"</span><span class="op">,</span> { <span class="dt">bubbles</span><span class="op">:</span> <span class="kw">true</span> }))<span class="op">;</span> }<span class="op">;</span></span>
-<span id="cb6-372"><a href="#cb6-372" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-373"><a href="#cb6-373" aria-hidden="true" tabindex="-1"></a>  grid<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"input"</span><span class="op">,</span> update)<span class="op">;</span></span>
-<span id="cb6-374"><a href="#cb6-374" aria-hidden="true" tabindex="-1"></a>  <span class="fu">queueMicrotask</span>(update)<span class="op">;</span></span>
-<span id="cb6-375"><a href="#cb6-375" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">root</span><span class="op">;</span></span>
-<span id="cb6-376"><a href="#cb6-376" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb6-377"><a href="#cb6-377" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-378"><a href="#cb6-378" aria-hidden="true" tabindex="-1"></a><span class="co">// --- Expose reactive vars</span></span>
-<span id="cb6-379"><a href="#cb6-379" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> controls<span class="op">.</span><span class="at">n</span></span>
-<span id="cb6-380"><a href="#cb6-380" aria-hidden="true" tabindex="-1"></a>mu_true <span class="op">=</span> controls<span class="op">.</span><span class="at">mu_true</span></span>
-<span id="cb6-381"><a href="#cb6-381" aria-hidden="true" tabindex="-1"></a>sigma_true <span class="op">=</span> controls<span class="op">.</span><span class="at">sigma_true</span></span>
-<span id="cb6-382"><a href="#cb6-382" aria-hidden="true" tabindex="-1"></a>muHalfWidth <span class="op">=</span> controls<span class="op">.</span><span class="at">muHalfWidth</span></span>
-<span id="cb6-383"><a href="#cb6-383" aria-hidden="true" tabindex="-1"></a>sig2Max <span class="op">=</span> controls<span class="op">.</span><span class="at">sig2Max</span></span>
-<span id="cb6-384"><a href="#cb6-384" aria-hidden="true" tabindex="-1"></a>bins <span class="op">=</span> controls<span class="op">.</span><span class="at">bins</span></span>
-<span id="cb6-385"><a href="#cb6-385" aria-hidden="true" tabindex="-1"></a>resample <span class="op">=</span> controls<span class="op">.</span><span class="at">resim</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-370"><a href="#cb6-370" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> btnWrap <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="display:flex; justify-content:flex-start; margin-top:6px;"&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb6-371"><a href="#cb6-371" aria-hidden="true" tabindex="-1"></a>  btnWrap<span class="op">.</span><span class="fu">append</span>(resimBtn)<span class="op">;</span></span>
+<span id="cb6-372"><a href="#cb6-372" aria-hidden="true" tabindex="-1"></a>  grid<span class="op">.</span><span class="at">children</span>[<span class="dv">1</span>]<span class="op">.</span><span class="fu">append</span>(btnWrap)<span class="op">;</span></span>
+<span id="cb6-373"><a href="#cb6-373" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-374"><a href="#cb6-374" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> getValue <span class="op">=</span> () <span class="kw">=&gt;</span> ({ <span class="op">...</span>leftForm<span class="op">.</span><span class="at">value</span><span class="op">,</span> <span class="op">...</span>rightForm<span class="op">.</span><span class="at">value</span><span class="op">,</span> <span class="dt">resim</span><span class="op">:</span> resimBtn<span class="op">.</span><span class="at">value</span> })<span class="op">;</span></span>
+<span id="cb6-375"><a href="#cb6-375" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> update <span class="op">=</span> () <span class="kw">=&gt;</span> { <span class="bu">root</span><span class="op">.</span><span class="at">value</span> <span class="op">=</span> <span class="fu">getValue</span>()<span class="op">;</span> <span class="bu">root</span><span class="op">.</span><span class="fu">dispatchEvent</span>(<span class="kw">new</span> <span class="bu">CustomEvent</span>(<span class="st">"input"</span><span class="op">,</span> { <span class="dt">bubbles</span><span class="op">:</span> <span class="kw">true</span> }))<span class="op">;</span> }<span class="op">;</span></span>
+<span id="cb6-376"><a href="#cb6-376" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-377"><a href="#cb6-377" aria-hidden="true" tabindex="-1"></a>  grid<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"input"</span><span class="op">,</span> update)<span class="op">;</span></span>
+<span id="cb6-378"><a href="#cb6-378" aria-hidden="true" tabindex="-1"></a>  <span class="fu">queueMicrotask</span>(update)<span class="op">;</span></span>
+<span id="cb6-379"><a href="#cb6-379" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">root</span><span class="op">;</span></span>
+<span id="cb6-380"><a href="#cb6-380" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-381"><a href="#cb6-381" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-382"><a href="#cb6-382" aria-hidden="true" tabindex="-1"></a><span class="co">// --- Expose reactive vars</span></span>
+<span id="cb6-383"><a href="#cb6-383" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> controls<span class="op">.</span><span class="at">n</span></span>
+<span id="cb6-384"><a href="#cb6-384" aria-hidden="true" tabindex="-1"></a>mu_true <span class="op">=</span> controls<span class="op">.</span><span class="at">mu_true</span></span>
+<span id="cb6-385"><a href="#cb6-385" aria-hidden="true" tabindex="-1"></a>sigma_true <span class="op">=</span> controls<span class="op">.</span><span class="at">sigma_true</span></span>
+<span id="cb6-386"><a href="#cb6-386" aria-hidden="true" tabindex="-1"></a>muHalfWidth <span class="op">=</span> controls<span class="op">.</span><span class="at">muHalfWidth</span></span>
+<span id="cb6-387"><a href="#cb6-387" aria-hidden="true" tabindex="-1"></a>sig2Max <span class="op">=</span> controls<span class="op">.</span><span class="at">sig2Max</span></span>
+<span id="cb6-388"><a href="#cb6-388" aria-hidden="true" tabindex="-1"></a>bins <span class="op">=</span> controls<span class="op">.</span><span class="at">bins</span></span>
+<span id="cb6-389"><a href="#cb6-389" aria-hidden="true" tabindex="-1"></a>resample <span class="op">=</span> controls<span class="op">.</span><span class="at">resim</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-6-1" data-nodetype="declaration">
@@ -1234,8 +1239,509 @@ X_1, \dots, X_n \stackrel{\text{iid}}{\sim} \mathrm{Distribution}(\theta).
 <hr>
 </section>
 </section>
-<section id="statistical-models" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="statistical-models"><span class="header-section-number">2.2</span> Statistical Models</h2>
+<section id="sec-types-of-data" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="sec-types-of-data"><span class="header-section-number">2.2</span> Types of Data</h2>
+<p>Before we build <strong>statistical models</strong>, it helps to think about the kinds of data we might collect. Different data types naturally lead to different models.</p>
+<section id="univariate-vs.-multivariate-data" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="univariate-vs.-multivariate-data"><span class="header-section-number">2.2.1</span> Univariate vs.&nbsp;Multivariate data</h3>
+<div id="imp-term-unit" class="callout callout-style-simple callout-important callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important&nbsp;2.4: Terminology: Unit
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>An <strong>observational unit</strong> (or simply <em>unit</em>) is a single element of the population on which we make a measurement.</p>
+<ul>
+<li>In a survey of students: each <em>student</em> is a unit.<br>
+</li>
+<li>In a clinical trial: each <em>patient</em> is a unit.<br>
+</li>
+<li>In a manufacturing study: each <em>product</em> is a unit.<br>
+</li>
+<li>In an image analysis study: each <em>image</em> is a unit.</li>
+</ul>
+</div>
+</div>
+</div>
+<ul>
+<li><p><strong>Univariate</strong> data: a single measurement per observational unit.</p>
+<blockquote class="blockquote">
+<p><em>Example:</em> the height of each student in a class.</p>
+</blockquote></li>
+<li><p><strong>Multivariate</strong> data: two or more measurements on each unit.</p>
+<blockquote class="blockquote">
+<p><em>Example:</em> the height and weight of each student (bivariate); or height, weight, and age (multivariate).</p>
+</blockquote></li>
+</ul>
+<p>Data are often represented in <strong>tables</strong>.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Univariate data</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Multivariate data</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p>Each unit has <strong>one measurement</strong>.</p>
+<div id="tbl-earthquakes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<div aria-describedby="tbl-earthquakes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Year</th>
+<th style="text-align: center;">2011</th>
+<th style="text-align: center;">2012</th>
+<th style="text-align: center;">2013</th>
+<th style="text-align: center;">2014</th>
+<th style="text-align: center;">2015</th>
+<th style="text-align: center;">2016</th>
+<th style="text-align: center;">2017</th>
+<th style="text-align: center;">2018</th>
+<th style="text-align: center;">2019</th>
+<th style="text-align: center;">2020</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Earthquakes</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">7</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-tbl" id="tbl-earthquakes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2.1: <strong>Earthquake counts.</strong> Table shows the number of UK earthquakes of magnitude <span class="math inline">≥2</span> on the Richter scale each year.
+</figcaption>
+</figure>
+</div>
+<p>Here, the <strong>units</strong> are the years (2011–2020), and the (single) <strong>variable</strong> is the annual count of UK earthquakes.</p>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>Each unit has <strong>two or more measurements</strong>.</p>
+<div id="tbl-weather" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<div aria-describedby="tbl-weather-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Station</th>
+<th style="text-align: center;">Rainfall (mm)</th>
+<th style="text-align: center;">Wind speed (km/h)</th>
+<th style="text-align: center;">Pressure (hPa)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">A</td>
+<td style="text-align: center;">214.8</td>
+<td style="text-align: center;">87</td>
+<td style="text-align: center;">995</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">B</td>
+<td style="text-align: center;">196.3</td>
+<td style="text-align: center;">91</td>
+<td style="text-align: center;">992</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">C</td>
+<td style="text-align: center;">180.2</td>
+<td style="text-align: center;">79</td>
+<td style="text-align: center;">1001</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">D</td>
+<td style="text-align: center;">205.5</td>
+<td style="text-align: center;">94</td>
+<td style="text-align: center;">998</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">E</td>
+<td style="text-align: center;">209.0</td>
+<td style="text-align: center;">89</td>
+<td style="text-align: center;">997</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-tbl" id="tbl-weather-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2.2: <strong>Weather data.</strong> Average rainfall, wind speed, and air pressure recorded at weather stations during a storm.
+</figcaption>
+</figure>
+</div>
+<p>Here, the <strong>units</strong> are the weather <strong>stations</strong> (during the same storm), and the <strong>variables</strong> are rainfall (mm), wind speed (km/h), and pressure (hPa).</p>
+</div>
+</div>
+</div>
+<p>Some data is <strong>extremely high-dimensional</strong>:</p>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exm-image-data" class="theorem example">
+<p><span class="theorem-title"><strong>Example 2.1 (Image Data)</strong></span> An image is made of a grid of <strong>pixels</strong>, where each pixel is a <strong>colour</strong>.</p>
+<p>A colour can be represented by three channels: red, green, and blue<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<div id="fig-pixel" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pixel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/cat_pixel.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pixel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.1: A 32×32 image of a cat, broken into its three colour channels (red, green, blue). Each pixel has three values (one per channel), making the image a high-dimensional observation.
+</figcaption>
+</figure>
+</div>
+<p>Each pixel has <strong>multiple measurements</strong> (one per channel), so images are an example of <strong>high-dimensional multivariate data</strong>. To see why, consider the size of real images:</p>
+<ul>
+<li>A tiny image of size <span class="math inline">32\times 32</span> pixels with 3 channels (RGB) already has <span class="math inline">32\times 32 \times 3 = 3072</span> measurements.</li>
+<li>A small image of size <span class="math inline">128 \times 128</span> pixels with 3 channels (RGB) has<br>
+<span class="math inline">128 \times 128 \times 3 \approx 50{,}000</span> measurements.<br>
+</li>
+<li>A “HD” photo of size <span class="math inline">1920 \times 1080</span> (1080p) contains over<br>
+<span class="math inline">1920 \times 1080 \times 3 \approx 6.2</span> million measurements.</li>
+</ul>
+<p>So even a single image can be thought of as a <em>very high-dimensional observation</em>. And <strong>videos</strong> are higher still: sequences of such images evolving over time<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Non-Examinable Content: Multivariate Data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In this course we focus <strong>only on univariate data</strong> (one measurement per observational unit).</p>
+<p>Although many real-world problems involve <strong>multivariate data</strong> (two or more measurements on the same unit), this topic will be studied in later statistics courses.</p>
+</div>
+</div>
+</section>
+<section id="numerical-data" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="numerical-data"><span class="header-section-number">2.2.2</span> Numerical data</h3>
+<ul>
+<li><p><strong>Continuous</strong>: can take any real value in an interval.</p>
+<blockquote class="blockquote">
+<p><em>Examples:</em> height, weight, reaction time.</p>
+<p><em>Models:</em> Normal, Exponential, Uniform.</p>
+</blockquote></li>
+<li><p><strong>Discrete numeric</strong>: counts, usually non-negative integers.</p>
+<blockquote class="blockquote">
+<p><em>Examples:</em> number of accidents in a week, number of goals in a football match.</p>
+<p><em>Models:</em> Binomial, Poisson, Geometric.</p>
+</blockquote></li>
+</ul>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Continuous data</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">Discrete data</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false" href="">Mixed data</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div id="tbl-astronomy" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<div aria-describedby="tbl-astronomy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Star</th>
+<th style="text-align: center;">Apparent magnitude</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Sirius</td>
+<td style="text-align: center;">–1.46</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Vega</td>
+<td style="text-align: center;">0.03</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Altair</td>
+<td style="text-align: center;">0.77</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Deneb</td>
+<td style="text-align: center;">1.25</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-tbl" id="tbl-astronomy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2.3: <strong>Astronomy data.</strong> The brightness of a star (its <em>magnitude</em>) is measured on a continuous scale. .
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div id="tbl-goals" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<div aria-describedby="tbl-goals-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Match</th>
+<th style="text-align: center;">Home goals</th>
+<th style="text-align: center;">Away goals</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Newcastle United vs Arsenal</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Manchester United vs Liverpool F.C.</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Tottenham Hotspur vs Chelsea F.C.</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Aston Villa vs Leeds United</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">West Ham United vs Manchester City</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Brighton &amp; Hove Albion vs Everton</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Leicester City vs Southampton</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Wolverhampton Wanderers vs Brentford</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Crystal Palace vs Fulham</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Nottingham Forest vs Bournemouth</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-tbl" id="tbl-goals-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2.4: <strong>Sports analytics.</strong> Goals scored in football matches are discrete counts. Each match provides <em>multivariate discrete data</em> (two counts per unit).
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
+<p>In practice, most datasets are <strong>mixed</strong></p>
+<div id="tbl-mixed" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<div aria-describedby="tbl-mixed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Patient</th>
+<th style="text-align: center;">Age (years)</th>
+<th style="text-align: center;">Reaction time (ms)</th>
+<th style="text-align: center;">Smoker (yes/no)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">A</td>
+<td style="text-align: center;">22</td>
+<td style="text-align: center;">318</td>
+<td style="text-align: center;">Yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">B</td>
+<td style="text-align: center;">35</td>
+<td style="text-align: center;">241</td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">C</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">267</td>
+<td style="text-align: center;">Yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">D</td>
+<td style="text-align: center;">29</td>
+<td style="text-align: center;">452</td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-tbl" id="tbl-mixed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2.5: <strong>Medical study.</strong> Here each patient (unit) has both continuous and discrete measurements.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="categorical-data" class="level3" data-number="2.2.3">
+<h3 data-number="2.2.3" class="anchored" data-anchor-id="categorical-data"><span class="header-section-number">2.2.3</span> Categorical data</h3>
+<ul>
+<li><p><strong>Nominal</strong>: categories with no natural order.</p>
+<blockquote class="blockquote">
+<p><em>Examples:</em> hair colour, brand of cereal, country of birth.</p>
+</blockquote></li>
+<li><p><strong>Ordinal</strong>: categories with a natural order, but not numerical spacing.</p>
+<blockquote class="blockquote">
+<p><em>Examples:</em> customer satisfaction ratings (“poor”, “fair”, “good”, “excellent”).</p>
+</blockquote></li>
+</ul>
+<p>Categorical data are often summarised in <strong>contingency tables</strong> (tables of counts).</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true" href="">One-way table</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false" href="">Two-way table</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<p>If we record the colours of sweets drawn from a bag:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Colour</th>
+<th style="text-align: right;">Count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Red</td>
+<td style="text-align: right;"><span class="math inline">R</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Blue</td>
+<td style="text-align: right;"><span class="math inline">B</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Green</td>
+<td style="text-align: right;"><span class="math inline">G</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Total</strong></td>
+<td style="text-align: right;"><span class="math inline">n</span></td>
+</tr>
+</tbody>
+</table>
+<p>This simple <em>one-way</em> table leads naturally to the <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-multinomial" class="quarto-xref">multinomial model&nbsp;<span>1.3</span></a></span>.</p>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<p>Suppose we also record the <em>shop</em> where each sweet was bought (Shop A or Shop B).<br>
+Now we cross-classify by both colour and shop:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Colour</th>
+<th style="text-align: right;">Shop A</th>
+<th style="text-align: right;">Shop B</th>
+<th style="text-align: right;"><strong>Total</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Red</td>
+<td style="text-align: right;"><span class="math inline">R_A</span></td>
+<td style="text-align: right;"><span class="math inline">R_B</span></td>
+<td style="text-align: right;"><span class="math inline">R</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Blue</td>
+<td style="text-align: right;"><span class="math inline">B_A</span></td>
+<td style="text-align: right;"><span class="math inline">B_B</span></td>
+<td style="text-align: right;"><span class="math inline">B</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Green</td>
+<td style="text-align: right;"><span class="math inline">G_A</span></td>
+<td style="text-align: right;"><span class="math inline">G_B</span></td>
+<td style="text-align: right;"><span class="math inline">G</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Total</strong></td>
+<td style="text-align: right;"><span class="math inline">n_A</span></td>
+<td style="text-align: right;"><span class="math inline">n_B</span></td>
+<td style="text-align: right;"><span class="math inline">n</span></td>
+</tr>
+</tbody>
+</table>
+<p>This <em>two-way</em> contingency table allows us to ask questions like:</p>
+<blockquote class="blockquote">
+<p><em>“Are colours distributed differently across shops?”</em></p>
+</blockquote>
+<p>Later in the course we will see this leads to the <strong>chi-squared test of independence</strong>.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="statistical-models" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="statistical-models"><span class="header-section-number">2.3</span> Statistical Models</h2>
 <p>Whenever we perform statistical inference, we must specify a <strong>model</strong>.</p>
 <p>In <a href="#sec-stat-inf-as-inv-prob" class="quarto-xref"><span>Section 2.1</span></a> we wrote <span class="math display">
 X_1,\ldots,X_n \stackrel{\text{iid}}{\sim} \mathrm{Distribution}(\theta)
@@ -1252,14 +1758,14 @@ Concretely, it is a <strong>family of possible distributions</strong>, one for e
 </div>
 <div class="callout-body-container">
 <div id="exm-exponential-model" class="example theorem">
-<p><span class="theorem-title"><strong>Example 2.1 (Exponential model)</strong></span> Suppose we are interested in modelling <strong>waiting times</strong> until some event occurs (e.g.&nbsp;the time between customer arrivals at a service desk).</p>
+<p><span class="theorem-title"><strong>Example 2.2 (Exponential model)</strong></span> Suppose we are interested in modelling <strong>waiting times</strong> until some event occurs (e.g.&nbsp;the time between customer arrivals at a service desk).</p>
 <p>A natural assumption is that the data are i.i.d. <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-exp" class="quarto-xref">exponential&nbsp;<span>2.2</span></a></span>: <span class="math display">
 X_1,\ldots, X_n \stackrel{\text{iid}}{\sim}\mathrm{Exponential}(\lambda).
 </span></p>
 <ul>
 <li><strong>Model:</strong> each <span class="math inline">X_i</span> is i.i.d. exponential with rate <span class="math inline">\lambda</span></li>
 <li><strong>Parameter:</strong> <span class="math inline">\theta = \lambda</span></li>
-<li><strong>Parameter space</strong><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <strong>:</strong> <span class="math inline">\Theta = \{ \lambda \mid \lambda &gt; 0\} = (0,\infty)</span></li>
+<li><strong>Parameter space</strong><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> <strong>:</strong> <span class="math inline">\Theta = \{ \lambda \mid \lambda &gt; 0\} = (0,\infty)</span></li>
 </ul>
 <p>The exponential model often arises in <em>Poisson processes</em>, where events occur independently at a constant rate (e.g.&nbsp;radioactive decay, arrivals at a bus stop).</p>
 </div>
@@ -1273,14 +1779,14 @@ X_1,\ldots, X_n \stackrel{\text{iid}}{\sim}\mathrm{Exponential}(\lambda).
 </div>
 <div class="callout-body-container">
 <div id="exm-normal-model" class="example theorem">
-<p><span class="theorem-title"><strong>Example 2.2 (Normal model)</strong></span> In <a href="#sec-inference-eye" class="quarto-xref"><span>Section 2.1.1</span></a> we assumed the data were i.i.d. Normal with unknown mean and variance: <span class="math display">
+<p><span class="theorem-title"><strong>Example 2.3 (Normal model)</strong></span> In <a href="#sec-inference-eye" class="quarto-xref"><span>Section 2.1.1</span></a> we assumed the data were i.i.d. Normal with unknown mean and variance: <span class="math display">
 X_1,\ldots, X_n \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2).
 </span></p>
 <ul>
 <li><strong>Model:</strong> each <span class="math inline">X_i</span> is i.i.d. Normal with mean <span class="math inline">\mu</span> and variance <span class="math inline">\sigma^2</span></li>
 <li><strong>Parameters:</strong> <span class="math inline">\theta = (\mu,\sigma^2)</span><br>
 </li>
-<li><strong>Parameter space</strong><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <strong>:</strong> <span class="math inline">\Theta = \{ (\mu, \sigma^2) \mid \mu \in \mathbb{R}, \sigma^2 &gt; 0 \} = \mathbb{R} \times (0,\infty)</span></li>
+<li><strong>Parameter space</strong><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> <strong>:</strong> <span class="math inline">\Theta = \{ (\mu, \sigma^2) \mid \mu \in \mathbb{R}, \sigma^2 &gt; 0 \} = \mathbb{R} \times (0,\infty)</span></li>
 </ul>
 <p>This model is widely used, e.g.&nbsp;for measurement error or traits like human height.</p>
 </div>
@@ -1293,14 +1799,21 @@ X_1,\ldots, X_n \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2).
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Common misconceptions
+<span class="screen-reader-only">Tip</span>Common Misconceptions
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li><strong>Parameter <span class="math inline">\neq</span> statistic.</strong> A <em>parameter</em> <span class="math inline">\theta</span> is a property of the population/model (e.g.&nbsp;<span class="math inline">p,\ \mu,\ \sigma^2</span>). A <em>statistic</em> (e.g.&nbsp;<span class="math inline">\bar{X}</span>, a sample proportion) is computed from the sample to learn about <span class="math inline">\theta</span>.</li>
-<li><strong>“Random sample” <span class="math inline">\neq</span> “whatever data we found”.</strong> <em>Random sample</em> means the data are collected according to a design that makes the i.i.d. assumption reasonable (e.g.&nbsp;simple random sampling, independent trials). Convenience samples (e.g.&nbsp;surveying only your friends) or dependent data (e.g.&nbsp;repeated measures on the same person) can break the i.i.d. assumption and bias inference.</li>
-<li><strong>Models are approximations.</strong> A model is a useful idealisation, not the truth. Choose <span class="math inline">\mathcal{P}</span> sensibly, then check fit later and revise if needed.</li>
+<li><p><strong>Parameter <span class="math inline">\neq</span> statistic.</strong><br>
+A <em>parameter</em> <span class="math inline">\theta</span> describes a feature of the population (e.g.&nbsp;<span class="math inline">p, \mu, \sigma^2</span>).<br>
+A <em>statistic</em> (e.g.&nbsp;<span class="math inline">\bar{X}</span>, a sample proportion) is calculated from the sample and used to learn about <span class="math inline">\theta</span>.</p></li>
+<li><p><strong>“Random sample” is not just “whatever data we found”.</strong><br>
+A random sample means data collected in a way that makes the i.i.d. assumption reasonable (e.g.&nbsp;independent trials, simple random sampling).</p>
+<blockquote class="blockquote">
+<p>Example: If your population is <em>all humans on the planet</em>, then sampling only your family would not be random and could bias inference.</p>
+</blockquote></li>
+<li><p><strong>Models are approximations.</strong><br>
+In practice you should treat models as <em>useful simplifications</em>, not as exact descriptions of reality. It’s important to choose them sensibly, and be prepared to adjust if they don’t fit the data well.</p></li>
 </ul>
 </div>
 </div>
@@ -1311,25 +1824,10 @@ X_1,\ldots, X_n \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2).
 </div>
 <div class="callout-body-container">
 <div id="exm-identify-model" class="example theorem">
-<p><span class="theorem-title"><strong>Example 2.3 (From words to a model)</strong></span> A questionnaire records whether each respondent would recommend a service (“yes” or “no”). Write down a simple model and identify the parameter.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-6" class="callout-6-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div id="sol-identify-model" class="proof solution">
-<p><span class="proof-title"><em>Solution 2.1</em>. </span>Let <span class="math inline">X_i=1</span> if respondent <span class="math inline">i</span> says “yes”, and <span class="math inline">0</span> otherwise.</p>
+<p><span class="theorem-title"><strong>Example 2.4 (From words to a model)</strong></span> A questionnaire records whether each respondent would recommend a service (“yes” or “no”). Write down a simple model and identify the parameter.</p>
+<details>
+  <summary><strong> Solution </strong></summary>
+<p>Let <span class="math inline">X_i=1</span> if respondent <span class="math inline">i</span> says “yes”, and <span class="math inline">0</span> otherwise.</p>
 <p>Assume <span class="math inline">X_1,\ldots,X_n \stackrel{\text{iid}}{\sim}\mathrm{Bernoulli}(p)</span>.</p>
 <ul>
 <li><strong>Model:</strong> <span class="math inline">\mathcal{P} = \{ \mathrm{Bernoulli}(p) : 0 &lt; p &lt; 1 \}</span><br>
@@ -1339,6 +1837,7 @@ X_1,\ldots, X_n \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2).
 <li><strong>Parameter space:</strong> <span class="math inline">\Theta = (0,1)</span></li>
 </ul>
 <p>Here <span class="math inline">p</span> is the long-run proportion of “yes” responses.</p>
+</details>
 </div>
 </div>
 </div>
@@ -1350,25 +1849,11 @@ X_1,\ldots, X_n \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2).
 </div>
 <div class="callout-body-container">
 <div id="exm-identify-model-multinomial" class="example theorem">
-<p><span class="theorem-title"><strong>Example 2.4 (A slightly richer example)</strong></span> A bag contains sweets of three colours <span class="math inline">\{\text{red},\text{blue},\text{green}\}</span>. You draw <span class="math inline">n</span> sweets <em>with replacement</em> and record counts <span class="math inline">(R,B,G)</span>. Propose a model and identify the parameters.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-7" class="callout-7-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div id="sol-identify-model-multinomial" class="proof solution">
-<p><span class="proof-title"><em>Solution 2.2</em>. </span>Each <em>draw</em> is an independent categorical outcome with probabilities <span class="math inline">(p_R,p_B,p_G)</span> for red/blue/green. After <span class="math inline">n</span> draws, we observe the <em>count vector</em> <span class="math inline">(R,B,G)</span>.</p>
+<p><span class="theorem-title"><strong>Example 2.5 (A slightly richer example)</strong></span> A bag contains sweets of three colours <span class="math inline">\{\text{red},\text{blue},\text{green}\}</span>. You draw <span class="math inline">n</span> sweets <em>with replacement</em> and record counts <span class="math inline">(R,B,G)</span>. Propose a model and identify the parameters.</p>
+<details>
+  <summary><strong> Solution </strong></summary>
+<p>Each <em>draw</em> is an independent categorical outcome with probabilities <span class="math inline">(p_R,p_B,p_G)</span> for red/blue/green. After <span class="math inline">n</span> draws, we observe the <em>count vector</em> <span class="math inline">(R,B,G)</span>.</p>
+<p>A natural model is the <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-multinomial" class="quarto-xref">multinomial&nbsp;<span>1.3</span></a></span> distribution:</p>
 <ul>
 <li><strong>Model:</strong> <span class="math inline">(R,B,G) \sim \mathrm{Multinomial}\!\left(n;\,p_R,p_B,p_G\right)</span> with <span class="math inline">p_R+p_B+p_G=1</span><br>
 <em>(equivalently, <span class="math inline">X_1,\dots,X_n \stackrel{\text{iid}}{\sim} \mathrm{Categorical}(p_R,p_B,p_G)</span> and <span class="math inline">(R,B,G)</span> are the totals).</em></li>
@@ -1376,7 +1861,8 @@ X_1,\ldots, X_n \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2).
 </li>
 <li><strong>Parameter space:</strong> the 2-simplex <span class="math inline">\;\Theta=\{(p_R,p_B,p_G)\in[0,1]^3 \mid \,p_R+p_B+p_G=1\}</span></li>
 </ul>
-<p>If you only had two colours, the multinomial distribution would become the <strong>binomial distribution</strong>.</p>
+<p>If you only had two colours, the multinomial distribution would become the <span class="xref-no-num"><span class="quarto-unresolved-ref">?sec-binomial</span></span>.</p>
+</details>
 </div>
 </div>
 </div>
@@ -1388,39 +1874,24 @@ X_1,\ldots, X_n \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2).
 </div>
 <div class="callout-body-container">
 <div id="exm-ml-inference" class="example theorem">
-<p><span class="theorem-title"><strong>Example 2.5 (Machine learning example)</strong></span> In image classification, each “training” example is a pair <span class="math inline">(X_i,Y_i)</span> where <span class="math inline">X_i</span> is an image and <span class="math inline">Y_i\in\{0,1\}</span>. A generic probabilistic model specifies <span class="math display">
+<p><span class="theorem-title"><strong>Example 2.6 (Machine learning example)</strong></span> In image classification, each “training” example is a pair <span class="math inline">(X_i,Y_i)</span> where <span class="math inline">X_i</span> is an image and <span class="math inline">Y_i\in\{0,1\}</span>. A generic probabilistic model specifies <span class="math display">
 \mathrm{Pr}_\theta(Y=1\mid X=x)=g_\theta(x),
-</span> for some function family <span class="math inline">g_\theta</span> (e.g.&nbsp;logistic regression or a neural network).</p>
+</span> for some family of functions <span class="math inline">g_\theta</span> (e.g.&nbsp;a <em>neural network</em>).</p>
 <p>What are the <em>sample</em>, <em>population</em>, <em>model</em>, and <em>parameter</em>?</p>
-</div>
-</div>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-8" class="callout-8-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div id="sol-ml-inference" class="proof solution">
-<p><span class="proof-title"><em>Solution 2.3</em>. </span></p>
+<details>
+  <summary><strong> Solution </strong></summary>
 <ul>
 <li><strong>Sample:</strong> the dataset <span class="math inline">\{(X_i,Y_i)\}_{i=1}^n</span>.<br>
 </li>
 <li><strong>Population:</strong> the (conceptual) set of all image–label pairs of interest; equivalently, the joint distribution of <span class="math inline">(X,Y)</span> in the real world we care about.<br>
 </li>
-<li><strong>Model:</strong> we specify the conditional distribution of <span class="math inline">Y</span> given <span class="math inline">X</span>, <span class="math display">Y \mid X \sim \mathrm{Bernoulli}\!\big(g_\theta(X)\big),</span> i.e. <span class="math display">\Pr_\theta(Y=1\mid X=x)=g_\theta(x).</span></li>
+<li><strong>Model:</strong> we specify the conditional distribution of <span class="math inline">Y</span> given <span class="math inline">X</span>, <span class="math display">Y \mid X \sim \mathrm{Bernoulli}\big(g_\theta(X)\big),</span> i.e. <span class="math display">\operatorname{Pr}_\theta(Y=1\mid X=x)=g_\theta(x).</span></li>
 <li><strong>Parameter:</strong> <span class="math inline">\theta</span> indexes the function <span class="math inline">g_\theta</span> (e.g.&nbsp;regression coefficients or neural-network weights).<br>
 </li>
 <li><strong>Parameter space:</strong> <span class="math inline">\Theta\subseteq\mathbb{R}^d</span> (dimension <span class="math inline">d</span> depends on the chosen model class).</li>
 </ul>
-<p><em>Common misconception:</em> confusing the <em>training sample</em> (finite) with the <em>population</em> (conceptual/infinite). The goal of inference/learning is to use the sample to learn <span class="math inline">\theta</span> so that the model generalises to the population.</p>
+<p><em>Common misconception:</em> confusing the <em>training sample</em> (finite) with the <em>population</em> (conceptual/infinite). The goal of inference is to use the sample to learn <span class="math inline">\theta</span> so that the model generalises to the population.</p>
+</details>
 </div>
 </div>
 </div>
@@ -1452,7 +1923,7 @@ X_1,\ldots, X_n \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2).
 </div>
 <div class="callout-body-container">
 <div id="def-model" class="definition theorem">
-<p><span class="theorem-title"><strong>Definition 2.1 (Statistical Model (non-examinable))</strong></span> A <strong>statistical model</strong><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> is a <em>family of probability distributions</em> labelled by a parameter value: <span class="math display">
+<p><span class="theorem-title"><strong>Definition 2.1 (Statistical Model (non-examinable))</strong></span> A <strong>statistical model</strong><a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> is a <em>family of probability distributions</em> labelled by a parameter value: <span class="math display">
 \mathcal{P}=\{P_\theta \mid \theta\in\Theta\},
 </span></p>
 <p>where:</p>
@@ -1465,23 +1936,23 @@ X_1,\ldots, X_n \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2).
 </div>
 </div>
 </div>
-<hr>
-</section>
-<section id="exercises" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="exercises"><span class="header-section-number">2.3</span> Exercises</h2>
-<ol type="1">
-<li>For a study recording daily counts of emails received by a helpdesk, propose a one-parameter model and state the parameter space.</li>
-<li>In a satisfaction survey with responses <span class="math inline">\{\text{poor},\text{OK},\text{good}\}</span>, suggest a simple probabilistic model and identify the parameter(s).</li>
-<li>State what “iid” means in one sentence, and give one example of how it could fail in practice.</li>
-<li>Revisit <a href="#sec-inference-eye" class="quarto-xref"><span>Section 2.1.1</span></a>: if the spread of points increases, which parameter of <span class="math inline">\mathcal{N}(\mu,\sigma^2)</span> has changed, and how would you describe that change informally?</li>
-</ol>
+<!-- ---
+
+## Exercises
+
+1. For a study recording daily counts of emails received by a helpdesk, propose a one-parameter model and state the parameter space.
+2. In a satisfaction survey with responses $\{\text{poor},\text{OK},\text{good}\}$, suggest a simple probabilistic model and identify the parameter(s).
+3. State what “iid” means in one sentence, and give one example of how it could fail in practice.
+4. Revisit @sec-inference-eye: if the spread of points increases, which parameter of $\mathcal{N}(\mu,\sigma^2)$ has changed, and how would you describe that change informally? -->
 
 
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p><strong>Set notation.</strong> There are several equivalent ways to write sets:</p>
+<li id="fn1"><p><strong>Note on images.</strong> Some image formats, such as <code>.png</code>, include an <em>alpha channel</em> (the “A” channel), which specifies pixel transparency.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p><strong>Note on compression.</strong> In practice, images are often <em>compressed</em> (e.g.&nbsp;JPEG, PNG), which reduces file size by exploiting redundancy in pixel values. Statistically, though, the raw number of pixel measurements still reflects the dimensionality of the data.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p><strong>Set notation.</strong> There are several equivalent ways to write sets:</p>
 <ul>
 <li><strong>Set-builder notation:</strong> <span class="math inline">\{\lambda \mid \lambda &gt; 0\}</span><br>
 </li>
@@ -1489,8 +1960,8 @@ X_1,\ldots, X_n \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2).
 </li>
 <li><strong>Named set:</strong> <span class="math inline">\mathbb{R}^+</span></li>
 </ul>
-<p>All three describe the same set. In this course, we recommend using <strong>set-builder notation</strong> when writing statistical models and their parameter spaces.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p><strong>Set notation (multiple parameters).</strong> When a model has several parameters, it is best to use <strong>set-builder notation</strong> and collect the parameters into a vector <span class="math display">
+<p>All three describe the same set. In this course, we recommend using <strong>set-builder notation</strong> when writing statistical models and their parameter spaces.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p><strong>Set notation (multiple parameters).</strong> When a model has several parameters, it is best to use <strong>set-builder notation</strong> and collect the parameters into a vector <span class="math display">
     \underline{\theta} = (\theta_1, \theta_2, \ldots, \theta_p).
   </span> The parameter space can then be written as <span class="math display">
     \Theta = \{(\theta_1,\ldots,\theta_p) \mid \theta_1 \in S_1,\ \ldots,\ \theta_p \in S_p\}.
@@ -1507,10 +1978,10 @@ X_1,\ldots, X_n \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2).
     \Theta = \mathbb{R} \times (0,\infty).
   </span></p>
 <p>This is called a <strong>Cartesian product</strong>: we form the parameter space by taking all possible pairs <span class="math inline">(\mu, \sigma^2)</span> where the first component is from <span class="math inline">\mathbb{R}</span> and the second from <span class="math inline">(0,\infty)</span>.<br>
-Intuitively, it’s just “all combinations” of the allowed values for each parameter.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p><strong>Note on Statistical models.</strong> Strictly speaking, the model refers to the joint distribution of the full dataset. If <span class="math inline">X_1,\dots,X_n</span> are i.i.d. from <span class="math inline">P_\theta</span>, then the model is <span class="math display">
+Intuitively, it’s just “all combinations” of the allowed values for each parameter.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p><strong>Note on Statistical models.</strong> Strictly speaking, the model refers to the joint distribution of the full dataset. If <span class="math inline">X_1,\dots,X_n</span> are i.i.d. from <span class="math inline">P_\theta</span>, then the model is <span class="math display">
 \mathcal{P} = \{ P_\theta^n \mid \theta \in \Theta \}.
-</span> But for intuition, we usually just describe the distribution of a single observation, <span class="math inline">X_i \sim P_\theta</span>, and keep in mind that the whole dataset follows from this.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</span> But for intuition, we usually just describe the distribution of a single observation, <span class="math inline">X_i \sim P_\theta</span>, and keep in mind that the whole dataset follows from this.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 

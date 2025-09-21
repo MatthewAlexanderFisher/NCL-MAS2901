@@ -644,9 +644,11 @@ $$
   Y_i \sim \textrm{Bernoulli}(p).
 $$
 Derive the **likelihood function**.
-:::
 
-::: {#sol-bern-likelihood}
+```{=html}
+<details>
+  <summary><strong> Solution </strong></summary>
+```
 
 Because the $Y_i$ are [i.i.d.]{title="Independent and Identically Distributed"}, the joint PMF factorises:
 
@@ -674,7 +676,14 @@ Writing $\sum_{i=1}^n y_i = n\bar{y}$ gives
 $$
 L(p;\underline{y}) = p^{n\bar{y}}(1-p)^{n(1-\bar{y})}.
 $$
+
+
+```{=html}
+</details>
+```
+
 :::
+
 
 In practice, and in **assessed questions** in this course, it is important to be comfortable with computing likelihood functions for actual observed data. The next example does this:
 
@@ -685,9 +694,12 @@ $$
 \underline{x} = (1,0,1,1,0).
 $$
 Derive the **likelihood function** and evaluate it for a few values of $p$.
-:::
 
-::: {#sol-bern-likelihood-data}
+```{=html}
+<details>
+  <summary><strong> Solution </strong></summary>
+```
+
 Since $\underline{x}  = (1,0,1,1,0)$, we have $\sum_i x_i = 3$. Therefore:
 $$
 L(p ; \underline{x}) = p^3 (1-p)^2.
@@ -698,6 +710,13 @@ $$
   * If $p=0.8$, $L(0.8) = 0.8^3 \cdot 0.2^2 = 0.0205$.
 
 So the data are slightly more likely under $p=0.5$ than $p=0.8$.
+
+
+```{=html}
+</details>
+```
+
+
 :::
 
 ::: {#exm-normal-likelihood}
@@ -710,9 +729,11 @@ $$
 $$
 
 Derive the **likelihood function**.
-:::
 
-::: {#sol-normal-likelihood}
+```{=html}
+<details>
+  <summary><strong> Solution </strong></summary>
+```
 
 Because the $T_i$ are [i.i.d.]{title="Independent and Identically Distributed"}, the joint PDF factorises:
 
@@ -739,7 +760,16 @@ $$
 L(\mu, \gamma ;\underline{t}) = (2\pi \gamma)^{-\tfrac{n}{2}} \exp\left\{ -\frac{1}{2\gamma} \sum_{i=1}^n  (t_i - \mu)^2 \right\}.
 $$
 
+
+
+
+```{=html}
+</details>
+```
+
+
 :::
+
 
 ::: {#exm-poisson-likelihood}
 ### Poisson Likelihood
@@ -747,13 +777,15 @@ $$
 Suppose we have $n$ [i.i.d.]{title="Independent and Identically Distributed"} data distributed according to the <span class="xref-no-num">[Poisson distribution @sec-pois]</span>:
 
 $$
-  V_i \sim \mathrm{Pois}(\alpha)
+  V_i \sim \mathrm{Poisson}(\alpha)
 $$
 
 Derive the **likelihood function**.
-:::
 
-::: {#sol-poisson-likelihood}
+```{=html}
+<details>
+  <summary><strong> Solution </strong></summary>
+```
 
 Because the $V_i$ are [i.i.d.]{title="Independent and Identically Distributed"}, the joint PMF factorises:
 
@@ -780,6 +812,94 @@ $$
 L(\alpha ;\underline{v}) = \alpha^{n\bar{v}} e^{-n\alpha} \prod_{i=1}^n \frac{1}{v_i!}.
 $$
 
+
+```{=html}
+</details>
+```
+
+:::
+
+### Data Reduction and Sufficient Statistics {#sec-sufficiency}
+
+When we write down a likelihood, the parameter often only depended on the sample through a few summaries (e.g. a sum or a mean). 
+
+**Sufficiency** formalises when such a summary contains *all the information in the sample about* the parameter $\theta$.
+
+::: {.definition #def-sufficient}
+#### Sufficient Statistic
+Let $\underline{X}=(X_1,\ldots,X_n)$ have joint PDF/PMF $f(\underline{x}\mid \theta)$.  
+
+A statistic $T(\underline{X})$ is **sufficient** for $\theta$ if the conditional distribution of the data given the statistic does **not** depend on $\theta$, i.e.
+$$
+f(\underline{x}\mid T(\underline{x})=t,\ \theta)\ \text{does not depend on } \theta.
+$$
+:::
+
+::: {.theorem #thm-factorisation}
+#### Neyman–Fisher Factorisation
+$T(\underline{X})$ is sufficient for $\theta$ **if and only if** there exist functions $g(\theta, T(\underline{x}))$ and $h(\underline{x})$ such that
+$$
+f_{\underline{X}}(\underline{x}\mid \theta)=g \big(\theta, T(\underline{x})\big)\,h(\underline{x}).
+$$
+:::
+
+::: {#exm-sufficient-bin-bern}
+### Sufficiency: Bernoulli model
+If $X_i \sim \mathrm{Bern}(p)$ i.i.d. and $y=\sum_{i=1}^n x_i$, then
+$$
+L(p;\underline{x})=f_{\underline{X}}(\underline{x}\mid p)
+=\prod_{i=1}^n p^{x_i}(1-p)^{1-x_i}
+=p^{\sum x_i}(1-p)^{n-\sum x_i}
+=\underbrace{p^{y}(1-p)^{n-y}}_{g(p,\,y)}\ \underbrace{1}_{h(\underline{x})}.
+$$
+By factorisation, $T(\underline{X})=\sum_{i=1}^n X_i$ is sufficient for $p$.
+:::
+
+::: {#exm-sufficient-pois}
+### Sufficiency: Poisson model
+If $X_i \sim \mathrm{Poisson}(\lambda)$ iid and $y=\sum_{i=1}^n x_i$, then
+$$
+L(\lambda;\underline{x})=f_{\underline{X}}(\underline{x}\mid \lambda)
+=\prod_{i=1}^n \frac{e^{-\lambda}\lambda^{x_i}}{x_i!}
+=\underbrace{e^{-n\lambda}\lambda^{\sum x_i}}_{g(\lambda,\,y)}
+\ \underbrace{\prod_{i=1}^n \frac{1}{x_i!}}_{h(\underline{x})},
+$$
+so $T(\underline{X})=\sum_{i=1}^n X_i$ is sufficient for $\lambda$.
+:::
+
+::: {#exm-sufficient-norm}
+### Sufficiency: Normal model
+If $X_i \sim \mathcal N(\mu,\sigma^2)$ iid:
+
+- **Known $\sigma^2$.** With $\bar{x}=\frac{1}{n}\sum x_i$,
+$$
+f_{\underline{X}}(\underline{x}\mid \mu)
+=(2\pi\sigma^2)^{-n/2}
+\exp\!\left[-\frac{1}{2\sigma^2}\sum_{i=1}^n(x_i-\mu)^2\right]
+=(2\pi\sigma^2)^{-n/2}\,
+\underbrace{\exp\!\left[-\frac{1}{2\sigma^2}\sum_{i=1}^n(x_i-\bar{x})^2\right]}_{h(\underline{x})}\,
+\underbrace{\exp\!\left[-\frac{n}{2\sigma^2}(\bar{x}-\mu)^2\right]}_{g(\mu,\,\bar{x})}.
+$$
+Hence $T(\underline{X})=\bar{X}$ is sufficient for $\mu$.
+
+- **Unknown $\sigma^2$.** Write $S^2=\frac{1}{n-1}\sum_{i=1}^n (X_i-\bar{X})^2$. Then
+$$
+f_{\underline{X}}(\underline{x}\mid \mu,\sigma^2)
+=(2\pi\sigma^2)^{-n/2}
+\exp\!\left[-\frac{1}{2\sigma^2}\Big\{\underbrace{\sum_{i=1}^n(x_i-\bar{x})^2}_{(n-1)s^2}
++n(\bar{x}-\mu)^2\Big\}\right]
+=\underbrace{(2\pi)^{-n/2}\exp(0)}_{h(\underline{x})}\,
+\underbrace{(\sigma^2)^{-n/2}\exp\!\left[-\frac{(n-1)s^2+n(\bar{x}-\mu)^2}{2\sigma^2}\right]}_{g\big((\mu,\sigma^2),\,(\bar{x},s^2)\big)}.
+$$
+Thus $T(\underline{X})=(\bar{X},S^2)$ is jointly sufficient for $(\mu,\sigma^2)$.
+:::
+
+
+::: {.callout-tip}
+### Common misconceptions
+- Sufficiency is **model-dependent**: change the sampling model, and what’s sufficient may change.  
+- *Sufficient* ≠ *efficient*: it tells us what data features matter for $\theta$, not how variable an estimator is.  
+- Although not explicitly mentioned, we will **reuse** these $T$ when we derive MLEs and, later in the Bayesian chapter, when posteriors update via the same statistics.
 :::
 
 ## Maximum Likelihood Estimation
@@ -1556,16 +1676,19 @@ resim = controls.resim
 ::: {.example #exm-bern-mle}
 ### Bernoulli MLE
 
-From @exm-bern-likelihood, we have
+From @exm-bern-likelihood, we saw that the likelihood function for $n$ i.i.d. $Y_i \sim \mathrm{Bernoulli}(p)$ observations was
 
 $$ 
- L(\theta ; x)
+ L(p;\underline{y}) = p^{n\bar{y}}(1-p)^{n(1-\bar{y})}.
 $$
 
 Compute the MLE of $p$.
-:::
 
-::: {#sol-bern-mle}
+```{=html}
+<details>
+  <summary><strong> Solution </strong></summary>
+```
+
 From the provided likelihood, we first compute the **log-likelihood**:
 
 $$
@@ -1583,6 +1706,12 @@ $$
 $$
 
 the **sample proportion of successes**.
+
+
+```{=html}
+</details>
+```
+
 :::
 
 ::: {.example #exm-binom-mle-single}
@@ -1591,70 +1720,385 @@ Suppose we have a **single** <span class="xref-no-num">[Binomial @sec-binom]</sp
 $$
 X \sim \textrm{Bin}(n, \theta).
 $$
-Derive its **likelihood function**.
-:::
+Derive the **maximum likelihood estimator** of $\theta$.
 
-::: {#sol-binom-mle-single}
+```{=html}
+<details>
+  <summary><strong> Solution </strong></summary>
+```
+
 Since we only have **one** observation, the likelihood function is just the distribution of the observation:
+
 $$
 L(\theta ; x) = f(x \mid \theta) = \binom{n}{x} \theta^x(1-\theta)^{n-x}.
 $$
+
 The log-likelihood is thus
+
 $$
 \ell(\theta; x) = \log f(x \mid \theta) = \log\left(\binom{n}{x}\right) + x\log\theta + (n-x)\log(1-\theta).
 $$
-Differentiating[^difflog], we obtain
+
+Differentiating, we obtain
+
 $$
-\frac{\partial}{\partial \theta}
+\frac{\partial}{\partial \theta}\,\ell(\theta;x)
+= \frac{x}{\theta} - \frac{n-x}{1-\theta}.
 $$
+
+Setting the derivative to zero and solving,
+
+$$
+\frac{x}{\theta} = \frac{n-x}{1-\theta}
+\;\Longrightarrow\;
+x(1-\theta) = (n-x)\theta
+\;\Longrightarrow\;
+x = n\theta
+\;\Longrightarrow\;
+\hat\theta = \frac{x}{n}.
+$$
+
+To confirm it is a maximum, the second derivative is
+
+$$
+\frac{\partial^2}{\partial \theta^2}\,\ell(\theta;x)
+= -\frac{x}{\theta^2} - \frac{n-x}{(1-\theta)^2} < 0
+\quad \text{for } \theta\in(0,1),
+$$
+
+so $\hat\theta=x/n$ maximises the likelihood. (At the boundaries, if $x=0$ then $\hat\theta=0$; if $x=n$ then $\hat\theta=1$.)
+
+```{=html}
+</details>
+```
+
+
 :::
+
+
 
 ::: {.example #exm-binom-mle}
-### Binomial MLE
+### Another Binomial MLE 
 Suppose we have $n$ **independent** Binomial data:
 $$
-X_i \sim \textrm{Bin}(n_i, \theta).
+X_i \sim \textrm{Bin}(k_i, \theta).
 $$
-Note here that each Binomial data has a different number of Bernoulli trials $n_i$, which are known.
+Note here that each Binomial data has a different number of Bernoulli trials $k_i$, which are known.
 
-Derive its **likelihood function**.
-:::
+Derive the **maximum likelihood estimator** of $\theta$.
 
-::: {#sol-binom-mle}
+```{=html}
+<details>
+  <summary><strong> Solution </strong></summary>
+```
 
 The likelihood function is the joint distribution of the $n$ observations
+
 $$
-f(\underline{x} \mid \theta) = \prod_{i=1}^n \binom{n_i}{x_i} \theta^{x_i}(1-\theta)^{n_i - x_i}.
+f(\underline{x} \mid \theta) = \prod_{i=1}^n \binom{k_i}{x_i} \theta^{x_i}(1-\theta)^{k_i - x_i}.
 $$
+
+The log-likelihood is
+
+$$
+\ell(\theta;\underline{x}) 
+= \sum_{i=1}^n \log\binom{k_i}{x_i}
++ \Big(\sum_{i=1}^n x_i\Big)\log\theta
++ \Big(\sum_{i=1}^n (k_i-x_i)\Big)\log(1-\theta).
+$$
+
+Let $S=\sum_{i=1}^n x_i$ (total successes) and $K=\sum_{i=1}^n k_i$ (total trials). Then
+
+$$
+\frac{\partial}{\partial\theta}\ell(\theta;\underline{x})
+= \frac{S}{\theta} - \frac{K-S}{1-\theta}.
+$$
+
+Setting to zero and solving:
+
+$$
+\frac{S}{\theta} = \frac{K-S}{1-\theta}
+\;\Longrightarrow\;
+S(1-\theta)=(K-S)\theta
+\;\Longrightarrow\;
+S=K\theta
+\;\Longrightarrow\;
+\hat\theta = \frac{S}{K}=\frac{\sum_{i=1}^n x_i}{\sum_{i=1}^n k_i}.
+$$
+
+The second derivative is
+
+$$
+\frac{\partial^2}{\partial\theta^2}\ell(\theta;\underline{x})
+= -\frac{S}{\theta^2}-\frac{K-S}{(1-\theta)^2}<0
+\quad \text{for } \theta\in(0,1),
+$$
+
+so this is a (strict) maximum. Boundary cases: if $S=0$ then $\hat\theta=0$; if $S=K$ then $\hat\theta=1$.
+
+
+```{=html}
+</details>
+```
+
+:::
+
+::: {.example #exm-pois-mle}
+### Poisson MLE
+
+From @exm-poisson-likelihood, we saw that the likelihood function for $n$ i.i.d. $V_i \sim \mathrm{Poisson}(\alpha)$ observations was
+$$
+L(\alpha ;\underline{v}) = \alpha^{n\bar{v}} e^{-n\alpha} \prod_{i=1}^n \frac{1}{v_i!}.
+$$
+
+Derive the **maximum likelihood estimator** of $\alpha$ and determine its **expected value** and **variance**.
+
+```{=html}
+<details>
+  <summary><strong> Solution </strong></summary>
+```
+
+**Step 1: Computing MLE**
+
+The log-likelihood is
+
+$$
+\ell(\alpha;\underline{v})
+= n\bar v \log \alpha - n\alpha - \sum_{i=1}^n \log(v_i!),
+\qquad \alpha \ge 0.
+$$
+
+Differentiate w.r.t. $\alpha$:
+
+$$
+\frac{\partial}{\partial \alpha}\,\ell(\alpha;\underline{v})
+= \frac{n\bar v}{\alpha} - n.
+$$
+
+Set to zero and solve:
+
+$$
+\frac{n\bar v}{\alpha} - n = 0
+\;\Longrightarrow\;
+\hat\alpha = \bar v = \frac{1}{n}\sum_{i=1}^n v_i.
+$$
+
+Second derivative:
+
+$$
+\frac{\partial^2}{\partial \alpha^2}\,\ell(\alpha;\underline{v})
+= -\frac{n\bar v}{\alpha^2} < 0 \quad (\alpha>0),
+$$
+
+so this is a maximum. Boundary case: if all $v_i=0$ (so $\bar v=0$), the likelihood $L(\alpha)=e^{-n\alpha}$ is maximised at $\hat\alpha=0$.
+
+Therefore, the maximum likelihood *estimator* is:
+
+$$
+ \hat\alpha = \bar{V}
+$$
+
+---
+
+**Step 2: Mean and Variance of $\hat\alpha$**
+
+Recall $\hat\alpha=\bar V=\frac{1}{n}\sum_{i=1}^n V_i$ with $V_i \stackrel{\text{iid}}{\sim} \mathrm{Poisson}(\alpha)$.
+
+*Mean*:
+$$
+\mathrm{E}[\hat\alpha]
+= \frac{1}{n}\sum_{i=1}^n \mathrm{E}[V_i]
+= \frac{1}{n}\cdot n\alpha
+= \alpha.
+$$
+
+*Variance* (using independence):
+$$
+\operatorname{Var}[\hat\alpha]
+= \operatorname{Var}\!\left(\frac{1}{n}\sum_{i=1}^n V_i\right)
+= \frac{1}{n^2}\sum_{i=1}^n \operatorname{Var}(V_i)
+= \frac{1}{n^2}\cdot n\alpha
+= \frac{\alpha}{n}.
+$$
+
+Here we used $\operatorname{Var}(V_i)=\mathrm{E}[V_i]=\alpha$ for the $\mathrm{Poisson}(\alpha)$ distribution.
+
+```{=html}
+</details>
+```
+
 :::
 
 ::: {.example #exm-normal-mu-mle}
 ### Normal MLE for $\mu$
 
-Under 
+From @exm-normal-likelihood, we saw that the likelihood function for $n$ i.i.d. $T_i \sim \mathcal{N}(\mu, \gamma)$ observations was
 $$ 
- L(\theta ; x)
+  L(\mu, \gamma ;\underline{t}) = (2\pi \gamma)^{-\tfrac{n}{2}} \exp\left\{ -\frac{1}{2\gamma} \sum_{i=1}^n  (t_i - \mu)^2 \right\}.
 $$
 
-Compute the MLE of $p$.
+Suppose that the variance $\gamma$ is *known*. Determine the **MLE** of $\mu$.
+
+```{=html}
+<details>
+  <summary><strong> Solution </strong></summary>
+```
+
+The log-likelihood (as a function of $\mu$) is
+
+$$
+\ell(\mu;\underline{t})
+= -\frac{n}{2}\log(2\pi\gamma) - \frac{1}{2\gamma}\sum_{i=1}^n (t_i-\mu)^2.
+$$
+
+Differentiating w.r.t. $\mu$,
+
+$$
+\frac{\partial}{\partial\mu}\,\ell(\mu;\underline{t})
+= -\frac{1}{2\gamma}\cdot 2\sum_{i=1}^n (t_i-\mu)(-1)
+= \frac{1}{\gamma}\sum_{i=1}^n (t_i-\mu).
+$$
+
+Setting equal to $0$ and solve:
+
+$$
+\sum_{i=1}^n (t_i-\mu)=0
+\;\Longrightarrow\;
+n\mu=\sum_{i=1}^n t_i
+\;\Longrightarrow\;
+\hat\mu=\bar{t}=\frac{1}{n}\sum_{i=1}^n t_i.
+$$
+
+The second derivative is
+
+$$
+\frac{\partial^2}{\partial\mu^2}\,\ell(\mu;\underline{t})
+= -\frac{n}{\gamma}<0,
+$$
+
+so $\hat\mu=\bar{t}$ maximises the likelihood.
+
+
+```{=html}
+</details>
+```
+
+
 :::
 
 ### Computing Multivariate MLEs
 
-::: {.example #exm-normal-full-mle}
-### Normal MLE for $\mu$ and $\sigma^2$
+In many practical problems, the statistical model involves more than a single parameter $\theta$. In this case, we work with a **vector of parameters**
 
-Under 
-$$ 
- L(\theta ; x)
+$$
+\underline{\theta} = (\theta_1, \ldots, \theta_p).
 $$
 
-Compute the MLE of $p$.
+The definitions of the likelihood function and the MLE extend in a natural way. The main difference is that the optimisation problem now requires solving **simultaneous equations** for each parameter.
+
+::: {#def-multivar-mle}
+
+#### Multivariate MLE
+
+Let $L(\underline{\theta}; \underline{x})$ and $\ell(\underline{\theta}; \underline{x})$ denote the **likelihood** and **log-likelihood** functions respectively, based on observations $\underline{x} = (x_1,\ldots,x_n)$ from a model with parameters $\underline{\theta} = (\theta_1,\ldots,\theta_p)$.
+
+The maximum likelihood estimator $\hat{\underline{\theta}}$ is obtained by solving the system
+
+$$
+\nabla_{\underline{\theta}} \,\ell(\underline{\theta}; \underline{x}) 
+\;=\;
+\begin{pmatrix}
+\dfrac{\partial}{\partial \theta_1}\,\ell(\underline{\theta}; \underline{x}) \\
+\dfrac{\partial}{\partial \theta_2}\,\ell(\underline{\theta}; \underline{x}) \\
+\vdots \\
+\dfrac{\partial}{\partial \theta_p}\,\ell(\underline{\theta}; \underline{x})
+\end{pmatrix}
+=
+\begin{pmatrix}
+0 \\ 0 \\ \vdots \\ 0
+\end{pmatrix}.
+$$
+
+:::
+
+In general, solving this system of equations cannot be done in closed form, so in practice we usually rely on *numerical optimisation methods* to approximate the MLE. We will not cover these methods in this course. Instead, we will focus on a few important cases where the MLE can be worked out explicitly.
+
+::: {.example #exm-normal-full-mle}
+### Normal MLE for $\mu$ and $\gamma$
+
+Suppose we have $n$ i.i.d. observations $X_i \sim \mathcal{N}(\mu, \gamma)$. 
+
+Determine the **maximum likelihood estimators** for $\mu$ and $\gamma$.
+
+```{=html}
+<details>
+  <summary><strong> Solution </strong></summary>
+```
+
+**Step 1. Compute log-likelihood:** 
+
+The likelihood function is a relabelling of the data terms in @exm-normal-likelihood:
+
+\begin{align*}
+L(\mu, \gamma ;\underline{x}) &= \prod_{i=1}^n \frac{1}{\sqrt{2\pi \gamma}} \exp\left\{ -\frac{1}{2\gamma} (x_i - \mu)^2 \right\} \\
+&= (2\pi \gamma)^{-\tfrac{n}{2}} \exp\left\{ \sum_{i=1}^n -\frac{1}{2\gamma} (x_i - \mu)^2 \right\}.
+\end{align*}
+
+The log-likelihood is thus
+
+$$
+\ell(\mu,\sigma^2;\underline{x}) 
+= -\frac{n}{2}\log(2\pi\sigma^2) 
+- \frac{1}{2\sigma^2}\sum_{i=1}^n (x_i - \mu)^2.
+$$
+
+
+**Step 2. Differentiate w.r.t. $\mu$:**
+
+$$
+\frac{\partial \ell}{\partial \mu}
+= \frac{1}{\sigma^2}\sum_{i=1}^n (x_i - \mu).
+$$
+
+Setting this equal to 0 gives
+
+$$
+\hat{\mu} = \bar{x}.
+$$
+
+**Step 2. Differentiate w.r.t. $\sigma^2$:**
+
+$$
+\frac{\partial \ell}{\partial \sigma^2}
+= -\frac{n}{2\sigma^2} + \frac{1}{2(\sigma^2)^2}\sum_{i=1}^n (x_i - \mu)^2.
+$$
+
+Setting this equal to $0$ and substituting $\mu = \hat{\mu}$ gives
+
+$$
+\hat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^n (x_i - \bar{x})^2.
+$$
+
+**Final Answer:**
+The MLEs are
+
+$$
+\hat{\mu} = \bar{X}, 
+\qquad
+\hat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^n (X_i - \bar{X})^2.
+$$
+
+**Note**: $\hat{\sigma}^2$ is biased (its expectation is $\tfrac{n-1}{n}\sigma^2$), but it is the maximum likelihood estimate.
+
+
+```{=html}
+</details>
+```
+
+
 :::
 
 ---
-
-
 
 ## Information and Efficiency of Estimators
 
@@ -1710,20 +2154,164 @@ It is a **random quantity**.
 :::
 
 ::: {#def-fisher-information}
+
 #### Fisher Information
 
-The **Fisher Information** (or *expected information*) is
+The **Fisher Information** (or *expected information*) for data $\underline{X}$ with log-likelihood $\ell(\theta;\underline{X})$ is
 
 $$
-\mathcal{I}(\theta) \;=\; -\,\mathrm{E}\!\left[ \frac{\partial^2}{\partial \theta^2}\,\ell(\theta;\underline{X}) \right].
+\mathcal{I}(\theta;\underline{X}) \;=\; -\,\mathrm{E}\!\left[ \frac{\partial^2}{\partial \theta^2}\,\ell(\theta;\underline{X}) \right].
 $$
+
 :::
 
-**Intuition:** Fisher information measures how much information the data carry about $\theta$.
+**Intuition:** Fisher information measures how much the data tell us about $\theta$.
 
-* If the log-likelihood is sharply peaked around its maximum, a small change in $\theta$ makes the likelihood much worse — so the data are highly informative.
-* If the log-likelihood is flat, many values of $\theta$ fit almost equally well — so there is little information.
-  The “peakedness” is captured by the curvature (second derivative) of the log-likelihood
+* A sharply peaked log-likelihood $\Rightarrow$ high information (data strongly constrain $\theta$).
+* A flat log-likelihood $\Rightarrow$ low information (many $\theta$’s are plausible).
+  The curvature (second derivative) captures this “peakedness.”
+
+
+::: {#prp-fisher-one-obs}
+
+#### Fisher Information for i.i.d. Data
+
+Suppose we have an i.i.d. sample $X_1,\ldots,X_n$ drawn from the same distribution with PDF/PMF $f(x \mid \theta)$. Define:
+
+* The Fisher information from **one observation**: 
+  $$
+  \mathcal{I}(\theta) = -\mathrm{E}\left [\tfrac{\partial^2}{\partial \theta^2}\log f(X\mid \theta)\right]
+  $$
+* The Fisher information from the **whole sample**: 
+  $$
+  \mathcal{I}_n(\theta) = -\mathrm{E}\left [\tfrac{\partial^2}{\partial \theta^2}\ell(\theta;\underline{X}^{(n)})\right]
+  $$
+
+Then
+
+$$
+\mathcal{I}_n(\theta) = n\,\mathcal{I}(\theta).
+$$
+
+:::
+
+::: {#prf-fisher-one-obs}
+For $n$ IID observations, the log-likelihood is
+
+$$
+\ell(\theta;\underline{X}) \;=\; \sum_{i=1}^n \log f(X_i \mid \theta).
+$$
+
+Differentiating twice,
+
+$$
+\frac{\partial^2}{\partial \theta^2}\ell(\theta;\underline{X}^{(n)}) 
+\;=\; \sum_{i=1}^n \frac{\partial^2}{\partial \theta^2}\log f(X_i \mid \theta).
+$$
+
+Now take expectations:
+
+$$
+\mathcal{I}_n(\theta) 
+\;=\; -\,\mathrm{E}\!\left[ \frac{\partial^2}{\partial \theta^2}\ell(\theta;\underline{X}^{(n)}) \right] 
+\;=\; -\,\mathrm{E}\!\left[\sum_{i=1}^n \frac{\partial^2}{\partial \theta^2}\log f(X_i \mid \theta)\right].
+$$
+
+By linearity of expectation,
+
+$$
+\mathcal{I}_n(\theta) 
+\;=\; \sum_{i=1}^n \left( -\,\mathrm{E}\!\left[ \frac{\partial^2}{\partial \theta^2}\log f(X_i \mid \theta)\right]\right).
+$$
+
+Since the $X_i$ are IID, each term in the sum is the same:
+
+$$
+\mathcal{I}_n(\theta) = n\,\mathcal{I}(\theta).
+$$
+
+:::
+
+::: {.example #exm-poisson-fisher}
+
+### Fisher Information for the Poisson Model
+
+Suppose we have $n$ i.i.d. observations $X_i\sim \mathrm{Poisson}(\alpha)$. From @exm-poisson-likelihood, we saw the likelihood took the form
+
+$$
+L(\alpha; \underline{x}) = \frac{ e^{-\alpha n} \alpha^{n\bar{x}} }{\prod_{i=1}^n x_i!}
+$$
+
+Determine the <span class="xref-no-num">[Fisher information @prp-fisher-one-obs]</span> for:
+
+(a) The **whole sample**
+(b) A **single observation**
+
+
+```{=html}
+<details>
+<summary><strong>Solution</strong></summary>
+```
+
+**a. Whole sample**
+
+We have
+
+$$
+\ell(\alpha; \underline{x}) = -n\alpha + \bigg(\sum_{i=1}^n x_i\bigg)\log \alpha - \sum_{i=1}^n \log x_i!,
+\qquad \alpha>0.
+$$
+
+Differentiate:
+
+$$
+\frac{\partial \ell}{\partial \alpha}
+= -n + \frac{\sum_{i=1}^n x_i}{\alpha},
+\qquad
+\frac{\partial^2 \ell}{\partial \alpha^2}
+= -\frac{\sum_{i=1}^n x_i}{\alpha^2}.
+$$
+
+Hence the Fisher information is
+
+$$
+\mathcal{I}_n(\alpha)
+= -\,\mathrm{E}\!\left[\frac{\partial^2 \ell}{\partial \alpha^2}\right]
+= -\,\mathrm{E}\!\left[-\frac{\sum_{i=1}^n X_i}{\alpha^2}\right]
+= \frac{n\alpha}{\alpha^2}
+= \frac{n}{\alpha}.
+$$
+
+---
+
+**b. Single observation**
+
+For one $X\sim\mathrm{Poisson}(\alpha)$,
+
+$$
+\ell_1(\alpha;x)=-\alpha + x\log\alpha - \log x!,
+\quad
+\frac{\partial^2 \ell_1}{\partial \alpha^2}
+= -\frac{x}{\alpha^2}.
+$$
+
+Therefore
+
+$$
+\mathcal{I}_1(\alpha)
+= -\,\mathrm{E}\!\left[\frac{\partial^2 \ell_1}{\partial \alpha^2}\right]
+= -\,\mathrm{E}\!\left[-\frac{X}{\alpha^2}\right]
+= \frac{\alpha}{\alpha^2}
+= \frac{1}{\alpha}.
+$$
+
+
+```{=html}
+</details
+```
+
+:::
+
 
 ### Cramér–Rao Lower Bound and Efficiency
 
@@ -1737,10 +2325,11 @@ Let $X_1,\dots,X_n$ be [i.i.d.]{title="Independent and Identically Distributed"}
 Then, under *regularity conditions*,
 
 $$
-\mathrm{Var}(\hat{\theta}) \;\geq\; \frac{1}{\mathcal{I}(\theta)}.
+\mathrm{Var}(\hat{\theta}) \;\geq\; \frac{1}{\mathcal{I}_n(\theta)},
 $$
+where $\mathcal{I}_n(\theta)$ is the <span class="xref-no-num">[Fisher information @prp-fisher-one-obs]</span> for the **whole sample**.
 
-The quantity $\tfrac{1}{\mathcal{I}(\theta)}$ is called the **Cramér–Rao Lower Bound ([CRLB]{title="Cramér–Rao Lower Bound"})**. It represents the *smallest possible variance* achievable by any unbiased estimator of $\theta$.
+The quantity $\tfrac{1}{\mathcal{I}_n(\theta)}$ is called the **Cramér–Rao Lower Bound ([CRLB]{title="Cramér–Rao Lower Bound"})**. It represents the *smallest possible variance* achievable by any unbiased estimator of $\theta$.
 :::
 
 ::: {#prf-crlb}
@@ -1859,7 +2448,7 @@ Here, we assumed the first *regularity condition*:
 
 ---
 
-**Step 3 (Proving $\mathrm{Var}(U) = \mathcal{I}(\theta)$):**
+**Step 3 (Proving $\mathrm{Var}(U) = \mathcal{I}_n(\theta)$):**
 
 By definition,
 
@@ -1898,7 +2487,7 @@ Computing the expectation, we have
 
 \begin{align*}
 \mathrm{Var}(U) &= \mathrm{E}\left[\frac{\frac{\partial^2}{\partial \theta^2} f(\underline{X}\mid \theta)}{f(\underline{X}\mid \theta)} - \frac{\partial^2}{\partial \theta^2} \ell(\theta ; \underline{X})\right] \\
-&= \mathrm{E}\left[\frac{\frac{\partial^2}{\partial \theta^2} f(\underline{X}\mid \theta)}{f(\underline{X}\mid \theta)}\right] + \underbrace{\mathrm{E}\left[-\frac{\partial^2}{\partial \theta^2} \ell(\theta ; \underline{X})\right]}_{= \mathcal{I}(\theta)}.
+&= \mathrm{E}\left[\frac{\frac{\partial^2}{\partial \theta^2} f(\underline{X}\mid \theta)}{f(\underline{X}\mid \theta)}\right] + \underbrace{\mathrm{E}\left[-\frac{\partial^2}{\partial \theta^2} \ell(\theta ; \underline{X})\right]}_{= \mathcal{I}_n(\theta)}.
 \end{align*}
 
 Concentrating on the remaining expectation:
@@ -1920,7 +2509,7 @@ Here, we assumed the second *regularity condition*:
 Therefore, we can conclude Step 3 with the final result:
 
 $$
-\mathrm{Var}(U) = \mathcal{I}(\theta).
+\mathrm{Var}(U) = \mathcal{I}_n(\theta).
 $$
 
 ---
@@ -1980,7 +2569,7 @@ $$
 Putting Steps 1–4 together:
 
 $$
-\mathrm{Var}(\hat{\theta}) \;\geq\; \frac{\mathrm{Cov}(\hat{\theta},U)^2}{\mathrm{Var}(U)} \;=\; \frac{1^2}{\mathcal{I}(\theta)} \;=\; \frac{1}{\mathcal{I}(\theta)}.
+\mathrm{Var}(\hat{\theta}) \;\geq\; \frac{\mathrm{Cov}(\hat{\theta},U)^2}{\mathrm{Var}(U)} \;=\; \frac{1^2}{\mathcal{I}_n(\theta)} \;=\; \frac{1}{\mathcal{I}_n(\theta)}.
 $$
 
 This completes the proof of the **Cramér–Rao inequality**.
@@ -1997,28 +2586,149 @@ Informally, these conditions rule out “badly behaved” cases; for example, de
 If you are curious, see the non-examinable proof in @prf-crlb.
 :::
 
+
 ::: {#def-efficiency}
 #### Efficiency of an Estimator
 
 * An unbiased estimator is called **efficient** if its variance *achieves* the [CRLB]{title="Cramér–Rao Lower Bound"} exactly:
 
   $$
-  \mathrm{Var}(\hat{\theta}) = \frac{1}{\mathcal{I}(\theta)}.
+  \mathrm{Var}(\hat{\theta}) = \frac{1}{\mathcal{I}_n(\theta)}.
   $$
-* A sequence of estimators $\hat{\theta}_n$ is **asymptotically efficient** if, as the sample size grows, its variance approaches the [CRLB]{title="Cramér–Rao Lower Bound"}:
+* A sequence of estimators $\hat{\theta}_n$ is **asymptotically efficient** if, as the sample size grows, its variance approaches the [CRLB]{title="Cramér–Rao Lower Bound"}[^asymp-equiv]:
   $$
-  \lim_{n \to \infty} \frac{\mathrm{Var}(\hat{\theta}_n)}{1/\mathcal{I}(\theta)} \;=\; 1,
+  \lim_{n \to \infty} \frac{\mathrm{Var}(\hat{\theta}_n)}{1/\mathcal{I}_n(\theta)} \;=\; 1,
   $$
-  where $\mathcal{I}(\theta)$ is the <span class="xref-no-num">[Fisher information @def-fisher-information]</span>
+  where $\mathcal{I}_n(\theta)$ is the <span class="xref-no-num">[Fisher information @prp-fisher-one-obs]</span> for the **whole** sample of size $n$.
+
+:::
+
+::: {#cor-crlb-efficiency}
+
+By the CRLB and <span class="xref-no-num">[Fisher Information for IID Data @prp-fisher-one-obs]</span>, the variance of an efficient estimator decreases at rate $1/n$ as the sample size increases.
+
+:::
+
+## The Asymptotic Distribution of the MLE
+
+Previously, we introduced <span class="xref-no-num">[asymptotic @imp-term-asymptotic]</span> properties of estimators.
+
+In particular, we saw that we can determine the asymptotic <span class="xref-no-num">[sampling distribution @def-sampling-distribution]</span> of an estimator:
+
+>  The <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span> told us that the sampling distribution of the <span class="xref-no-num">[sample mean @def-sample-mean]</span> is approximately Normal for large $n$.
+
+This gave us a first example of the principle: with enough data, many estimators behave like a Normal random variable around the true parameter.
+
+A much more general and powerful result is that maximum likelihood estimators also satisfy this property.
+
+::: {#thm-asymp-mle}
+
+### Asymptotic Distribution of the MLE
+
+Let $\hat{\theta}_n$ denote the <span class="xref-no-num">[maximum likelihood estimator @def-mle]</span> based on $n$ i.i.d. samples $X_1,\ldots, X_n$ drawn from the same distribution with PDF/PMF $f(x \mid \theta)$.
+
+Under *regularity conditions*, the MLE has the following asymptotic distribution:
+
+$$
+\sqrt{n}\,(\hat{\theta}_n - \theta) \;\xrightarrow{\,d\,}\; \mathcal{N} \big(0, \mathcal{I}(\theta)^{-1}\big),
+$$
+
+where $\mathcal{I}(\theta) \;=\; -\,\mathrm{E}\!\left[ \frac{\partial^2}{\partial \theta^2} \log f(X \mid \theta) \right]$ is the <span class="xref-no-num">[Fisher Information @prp-fisher-one-obs]</span> for **a single observation**.
+
+:::
+
+::: {#prf-asymp-mle}
+### Not Examinable
+
+The full proof uses advanced tools such as Taylor expansions of the score function and the Central Limit Theorem for sums of random variables.
+
+**Rough sketch:**
+
+
+
+:::
+
+::: {.callout-warning}
+#### Non-Examinable Content
+The *regularity conditions* required for the Asymptotic Distribution of the MLE are **not examinable**. 
+:::
+
+In this course, the main use of the @thm-asymp-mle will be to approximate the MLE distribution using the normal distribution for sufficienty large $n$:
+
+::: {#def-asymp-mle-approx}
+#### Approximate Sampling Distribution of the MLE
+
+From the <span class="xref-no-num">[asymptotic distribution of the MLE @thm-asymp-mle]</span>, we obtain the following approximation:
+
+$$
+\hat{\theta}_n \;\overset{\text{approx.}}{\sim}\; 
+\mathcal N\!\left(\theta,\; \tfrac{1}{n}\,\mathcal{I}(\theta)^{-1}\right),
+\qquad \text{for large } n.
+$$
+
+In practice, since the true parameter $\theta$ is unknown, we replace $\theta$ by the observed MLE $\hat{\theta}_{\text{obs}}$.
+This gives the practical approximation
+
+$$
+\hat{\theta}_n \;\overset{\text{approx.}}{\sim}\; 
+\mathcal N \left(\theta,\; \tfrac{1}{n}\,\mathcal{I}(\hat{\theta}_{\text{obs}})^{-1}\right).
+$$
+
+This Normal distribution serves as an **approximate sampling distribution** of the MLE and underpins methods such as constructing confidence intervals and hypothesis tests.
+:::
+
+
+::: {#exm-asymp-mle-pois}
+
+### Asymptotic Distribution of the Poisson MLE
+
+Suppose $X_1, X_2, \dots, X_n$ is an i.i.d. random sample from a $\text{Poisson}(\lambda)$ distribution.  
+
+We know that the maximum likelihood estimator for $\lambda$ is  
+
+$$
+\hat{\lambda} = \bar{X}.
+$$
+
+What is the asymptotic distribution of $\hat{\lambda} = \bar{X}$ as $n \to \infty$?
+
+```{=html}
+<details>
+<summary><strong>Solution</strong></summary>
+```
+
+In @exm-poisson-fisher, we saw the Fisher information for one Poisson observation is  
+
+$$
+\mathcal{I}(\lambda) = \frac{1}{\lambda}.
+$$
+
+For $n$ independent observations this scales to  
+
+$$
+\mathcal{I}_n(\lambda) = \frac{n}{\lambda}.
+$$
+
+Therefore,
+$$
+\frac{1}{\mathcal{I}_n(\lambda)} = \frac{\lambda}{n}.
+$$
+
+It follows immediately from @thm-asymp-mle that
+
+$$
+\hat{\lambda} \;\;\stackrel{\text{approx.}}{\sim}\;\; \mathcal{N}\!\left(\lambda,\; \tfrac{\lambda}{n}\right),
+\quad \text{as } n \to \infty.
+$$
+
+
+```{=html}
+</details>
+```
 
 :::
 
 
-
-## The Asymptotic Distribution of the MLE
-
-
-
-[^difflog]: **Differentiating the log.** 
-
 [^geometric-mean]: **Geometric mean.** One can write $\prod_{i=1}^n x_i = \bar{x}_g^n$ where $\bar{x}_g = \left(\prod_{i=1}^n x_i \right)^{1/n}$ is the *geometric mean*. This reformulation is rarely useful in practice, so it’s usually best to leave the product as it is.
+
+[^asymp-equiv]: **Asymptotic Equivalence.** Equivalently, we could say $\mathrm{Var}(\hat{\theta}_n) \sim \tfrac{1}{\mathcal{I}_n(\theta)}$, where "$\sim$" here means *asymptotically equivalent*.

@@ -541,9 +541,13 @@ X_1,\dots,X_n \overset{\text{iid}}{\sim} \mathcal{N}(\mu,\sigma^2),
 $$
 
 then
-$$
-\dfrac{(n-1)S^2}{\sigma^2} \;\sim\; \chi^2_{\,n-1}.
-$$
+
+1. The scaled sample variance follows a chi-squared distribution:
+  $$
+  \dfrac{(n-1)S^2}{\sigma^2} \;\sim\; \chi^2_{\,n-1},
+  $$
+
+2. The sample mean $\bar{X}$ and the sample variance $S^2$ are independent random variables.
 
 :::
 
@@ -712,7 +716,7 @@ $$
 * Otherwise, it is **biased**: it systematically over- or under-estimates $\theta$.
 :::
 
-::: {.example #exm-bias1}
+::: {.example #exm-bias-sm}
 ### Bias of the Sample Mean
 
 Suppose $X_1,\dots,X_n \overset{\text{iid}}{\sim} \mathrm{Distribution}(\mu,\sigma^2)$ with mean $\mu$.  
@@ -723,9 +727,12 @@ $$
 $$
 
 is an **unbiased estimator** of $\mu$.
-:::
 
-::: {#sol-bias1}
+```{=html}
+<details>
+  <summary><strong> Solution </strong></summary>
+```
+
 We compute the expectation of $\bar{X}$:
 
 $$
@@ -749,6 +756,12 @@ $$
 $$
 
 So the sample mean $\bar{X}$ is an **unbiased** estimator of $\mu$.
+
+
+```{=html}
+</details>
+```
+
 :::
 
 
@@ -775,9 +788,11 @@ Show that
 $$
 \mathrm{Var}(\bar{X}) = \frac{\sigma^2}{n}.
 $$
-:::
 
-::: {#sol-variance-sm}
+```{=html}
+<details>
+  <summary><strong> Solution </strong></summary>
+```
 
 Since the data $X_i$ are *independent* and have common variance $\sigma^2$, we have
 
@@ -788,7 +803,14 @@ $$
 $$
 
 So as $n$ increases, $\bar{X}$ becomes more tightly clustered around $\mu$.
+
+
+```{=html}
+</details>
+```
+
 :::
+
 
 ::: {.example #exm-bias-sv}
 #### Bias of the Sample Variance
@@ -802,9 +824,11 @@ $$
 S_c^{2} \;=\; \frac{1}{c} \sum_{i=1}^n (X_i-\bar X)^2.
 $$
 Find $c$ such that $S_c^{2}$ is **unbiased** for $\sigma^2$.
-:::
 
-::: {.sol #sol-bias-sv}
+```{=html}
+<details>
+  <summary><strong> Solution </strong></summary>
+```
 
 ---
 
@@ -844,7 +868,14 @@ Unbiasedness $\mathrm{E}[S_c^{2}]=\sigma^2$ gives $c=n-1$.
 $$
 S^{2} \;=\; \frac{1}{n-1}\sum_{i=1}^n (X_i-\bar X)^2.
 $$
+
+
+```{=html}
+</details>
+```
+
 :::
+
 
 In the next visualisation we look at the *bias* of the *naive sample variance*:
 
@@ -1496,10 +1527,13 @@ $$
 
 and we wish to estimate its *population mean* $\mu$ with $\hat{\mu} = c\bar{X}$, where $c$ is a constant.
 
-Compute the MSE of this estimator.
-:::
+Compute the **MSE** of this estimator.
 
-::: {#sol-mse1}
+```{=html}
+<details>
+  <summary><strong> Solution </strong></summary>
+```
+
 
 
 - Bias:  
@@ -1520,7 +1554,13 @@ $$
 
 This shows how a biased estimator can still have low MSE if variance is reduced.
 
+
+```{=html}
+</details>
+```
+
 :::
+
 
 ::: {.example #exm-mse2}
 ### MSE of Three Estimators
@@ -1536,9 +1576,12 @@ Consider the following three estimators of $\theta$:
 3. $\hat{\theta}_3 = (3X + 2Y)/12$.  
 
 Compute the **MSE** of each estimator, and recommend the best one.
-:::
 
-::: {#sol-mse2}
+```{=html}
+<details>
+  <summary><strong> Solution </strong></summary>
+```
+
 We use the rules of expectation and variance for linear functions of random variables (independence of $X$ and $Y$ is needed for the variance of $\hat{\theta}_3$).  
 
 ---
@@ -1595,6 +1638,12 @@ We use the rules of expectation and variance for linear functions of random vari
 - $\mathrm{MSE}(\hat{\theta}_3) \approx 0.118\theta^2$
 
 Thus, $\hat{\theta}_3$ has the smallest MSE and is the best choice.
+
+
+```{=html}
+</details>
+```
+
 :::
 
 
@@ -1694,7 +1743,7 @@ that is, it <span class="xref-no-num">[converges in probability @def-convergence
 
 Intuitively, a consistent estimator will “home in” on the true parameter as the sample size grows.
 
-Using @def-consistency directly to prove an estimator is consistent can be difficult. The following gives a **sufficient condition** that is easier to verify in practice.
+Using @def-consistency directly to prove an estimator is consistent can be difficult. The following gives a **sufficient condition** that is *usually* easier to verify in practice.
 
 ::: {#prp-sufficient-consistency}
 ### Sufficient Condition for Consistency
@@ -1743,9 +1792,12 @@ which proves consistency.
 
 Suppose $X_1,\dots,X_n$ are i.i.d. with mean $\mu$ and variance $\sigma^2 < \infty$.  
 Show that $\bar{X}_n$ is a **consistent estimator** of $\mu$.
-:::
 
-::: {#sol-consistency-samplemean}
+```{=html}
+<details>
+  <summary><strong> Solution </strong></summary>
+```
+
 Recall that
 $$
 \bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i.
@@ -1767,7 +1819,92 @@ $$
 
 Therefore, $\bar{X}_n$ is both unbiased and has variance vanishing as $n$ grows.  
 By @prp-sufficient-consistency, it is a **consistent** estimator of $\mu$.
+
+
+```{=html}
+</details>
+```
+
 :::
+
+
+In some cases, applying @prp-sufficient-consistency is *much harder* to do:
+
+::: {.example #prp-consistency-samplevariance}
+### Consistency of the Sample Variance
+
+Suppose $X_1,\dots,X_n$ are i.i.d. with mean $\mu$ and variance $\sigma^2<\infty$. 
+
+Then
+$$
+S_n^2 \;=\; \frac{1}{n-1}\sum_{i=1}^n \bigl(X_i-\bar{X}_n\bigr)^2
+$$
+is a **consistent estimator** of $\sigma^2$.
+
+:::
+
+
+::: {#prf-consistency-samplevariance}
+### Not Examinable
+
+Let’s first try to use the bias-variance approach of @prp-sufficient-consistency.
+
+**Bias.** From @exm-bias-sv, $\mathrm{Bias}(S_n^2)=0$ for all $n$, i.e. $\mathrm{E}[S_n^2]=\sigma^2$.
+
+**Variance.** Using @prp-sv-rewrite,
+
+$$
+S_n^2 \;=\; \frac{1}{n-1}\Big(\sum_{i=1}^n X_i^{2}\;-\; n\,\bar X_n^{\,2}\Big),
+$$
+
+so
+
+$$
+\operatorname{Var}(S_n^2)
+= \mathrm{E}\big[(S_n^2)^2\big] - \sigma^4
+= \frac{1}{(n-1)^2}\Big\{ \mathrm{E}\big[\big(\textstyle\sum X_i^2 - n\bar X_n^{\,2}\big)^2\big] \Big\} - \sigma^4.
+$$
+
+Expanding the square gives
+
+$$
+\frac{1}{(n-1)^2}\!\left[ \mathrm{E}\!\left(\sum_{i=1}^n X_i^{2}\right)^2
+- 2n\,\mathrm{E}\!\left(\bar X_n^{\,2}\sum_{i=1}^n X_i^{2}\right)
++ n^2\,\mathrm{E}(\bar X_n^{\,4}) \right] - \sigma^4
+\;=\; \cdots
+$$
+
+This leads to **non-trivial** moment algebra (4th moments and many cross-terms). If one carries it through (assuming the 4th central moment $\mu_4=\mathrm{E}[(X-\mu)^4]$ is finite), the result is
+
+$$
+\operatorname{Var}(S_n^2)
+\;=\; \frac{1}{n}\left(\mu_4 - \frac{n-3}{\,n-1\,}\sigma^4\right),
+$$
+
+so in particular $\operatorname{Var}(S_n^2)\le \frac{1}{n}(\mu_4+\sigma^4)\to 0$.
+
+---
+
+**A Different Approach.**
+
+Using @prp-sv-rewrite in **centred** form,
+
+$$
+S_n^2 \;=\; \frac{n}{n-1}\left(\frac{1}{n}\sum_{i=1}^n (X_i-\mu)^2\right)
+\;-\; \frac{n}{n-1}\,(\bar X_n-\mu)^2.
+$$
+
+By the Law of Large Numbers, $\frac{1}{n}\sum_{i=1}^n (X_i-\mu)^2 \xrightarrow{p} \mathrm{E}[(X-\mu)^2]=\sigma^2$ (finite **second** moment suffices), and $(\bar X_n-\mu)^2 \xrightarrow{p} 0$. Since $\frac{n}{n-1}\to 1$,
+
+$$
+S_n^2 \xrightarrow{p} \sigma^2.
+$$
+
+Thus $S_n^2$ is **consistent**. 
+
+
+:::
+
 
 ::: {#rem-consistency}
 ### Consistency

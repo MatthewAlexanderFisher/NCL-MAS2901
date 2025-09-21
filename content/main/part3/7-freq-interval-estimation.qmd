@@ -419,7 +419,7 @@ Instead, the correct interpretation is: **our method has long-run coverage $1-\a
 Before turning to specific examples, it is useful to outline the *general strategy* for constructing an <span class="xref-no-num">[exact confidence intervals @imp-term-exact-vs-approx-ci
 ]</span>.
 
-### General Strategy {#sec-general-ci-strategy}
+### General Recipe {#sec-general-ci-strategy}
 
 1. **Choose an estimator.**
    Start with an estimator $\hat{\theta}=\hat{\theta}(X_1,\ldots,X_n)$ for the parameter of interest $\theta$.
@@ -509,6 +509,35 @@ $$
 \bar{X} \;\pm\; z_{1-\alpha/2}\,\frac{\sigma}{\sqrt{n}}.
 $$
 
+
+::: {#def-normal-ci-known-var}
+
+#### Confidence Interval for the Normal Mean (Known Variance)
+
+Suppose $X_1,\dots,X_n \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu,\sigma^2)$ with **known variance** $\sigma^2$.
+Then an exact $(1-\alpha)$ confidence interval for $\mu$ is
+
+$$
+\mu \;\in\; 
+\left[
+\bar{X} - z_{1-\alpha/2}\,\frac{\sigma}{\sqrt{n}}, \;\;
+\bar{X} + z_{1-\alpha/2}\,\frac{\sigma}{\sqrt{n}}
+\right],
+$$
+
+or equivalently
+
+$$
+\bar{X} \;\pm\; z_{1-\alpha/2}\,\frac{\sigma}{\sqrt{n}},
+$$
+
+where
+
+* $\bar{X}$ is the <span class="xref-no-num">[sample mean @def-sample-mean]</span>, and
+* $z_{1-\alpha/2}$ is the $(1-\alpha/2)$ quantile of the standard Normal distribution $\mathcal{N}(0,1)$.
+
+:::
+
 ::: {.remark #rem-normal-ci}
 
 #### Quantiles of the pivot
@@ -539,7 +568,7 @@ The symmetric interval is usually preferred because it places equal probability 
 :::
 
 ::: {.example #exm-normal-ci-known-var}
-### Confidence Intervals with Known Variance
+### Archaeology and Skeleton Lengths: CI with Known Variance
 
 An archaeologist found preserved in a peat bog the skeletons of 30 adult males from an unknown
 human population. She is interested in skeleton lengths.  
@@ -547,12 +576,13 @@ human population. She is interested in skeleton lengths.
 The sample mean is $\bar{x} = 161.72$ cm. Assume that the skeleton lengths come from a $\mathcal{N}(\mu, \sigma^2)$ distribution.  
 Further, measurements from other human populations at the time suggest that it is reasonable to assume the population variance is $\sigma^2 = 100 \ \text{cm}^2$.  
 
-1. Construct **95%** and **99%** confidence intervals for $\mu$.  
-2. How many skeletons would be needed to ensure that the width of a 95% confidence interval for $\mu$ is no greater than 4 cm?
+1. Construct $95\%$ and $99\%$ confidence intervals for $\mu$.  
+2. How many skeletons would be needed to ensure that the width of a $95\%$ confidence interval for $\mu$ is no greater than 4 cm?
 
-:::
-
-::: {.sol #sol-normal-ci-known-var}
+```{=html}
+<details>
+  <summary><strong> Solution </strong></summary>
+```
 
 **Step 1. Confidence intervals for $\mu$.**
 
@@ -601,7 +631,10 @@ $$
 
 Therefore, at least **97 skeletons** are needed.
 
+
+```{=html}
 </details>
+```
 
 :::
 
@@ -626,14 +659,286 @@ $$
 
 #### Aside: The Student’s $t$ Distribution {.unnumbered}
 
-* Discovered by William Sealy Gosset in 1908, under the pseudonym *“Student”*.
-* Defined as
+* The <span class="xref-no-num">[Student-t @sec-t]</span> distribution was discovered in 1908 by William Sealy Gosset, who published under the pseudonym *“Student”*.
+* It arises when we replace the (unknown) variance $\sigma^2$ in a Normal problem with its estimate from the data. Formally,
 
   $$
-  T = \frac{Z}{\sqrt{U/\nu}}, \quad Z \sim \mathcal{N}(0,1), \;\; U \sim \chi^2_\nu, \;\; Z \perp U.
+  T = \frac{Z}{\sqrt{U/\nu}}, 
+  \quad Z \sim \mathcal{N}(0,1), \;\; U \sim \chi^2_\nu,
   $$
-* Shape is similar to $\mathcal{N}(0,1)$ but with **heavier tails**, reflecting the extra uncertainty from estimating $\sigma^2$.
-* As $\nu \to \infty$, $t_\nu \overset{d}{\to} \mathcal{N}(0,1)$.
+
+  where $Z$ and $U$ are independent.
+* The $t$ distribution looks very similar to the standard Normal, but has **heavier tails** - this accounts for the extra uncertainty caused by estimating $\sigma^2$.
+* As the degrees of freedom ($\nu \to \infty$), the $t$ distribution becomes almost indistinguishable from $\mathcal{N}(0,1)$.
+
+
+```{=html}
+<details>
+  <summary><strong> Show Visualisation </strong></summary>
+```
+
+
+```{ojs}
+// Student t PDF function
+function tPDF(x, nu) {
+  const B = Math.sqrt(nu * Math.PI) * gamma(nu/2) / gamma((nu+1)/2);
+  return Math.pow(1 + x*x/nu, -(nu+1)/2) / B;
+}
+
+// Gamma function (simplified approximation)
+function gamma(z) {
+  const g = 7;
+  const p = [0.99999999999980993, 676.5203681218851, -1259.1392167224028,
+             771.32342877765313, -176.61502916214059, 12.507343278686905,
+             -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7];
+  
+  if (z < 0.5) return Math.PI / (Math.sin(Math.PI * z) * gamma(1 - z));
+  
+  z -= 1;
+  let x = p[0];
+  for (let i = 1; i < g + 2; i++) x += p[i] / (z + i);
+  
+  const t = z + g + 0.5;
+  return Math.sqrt(2 * Math.PI) * Math.pow(t, z + 0.5) * Math.exp(-t) * x;
+}
+
+// Student t CDF using numerical integration (Simpson's rule)
+function tCDF(t, nu) {
+  if (t === 0) return 0.5;
+  
+  const n = 1000; // number of intervals
+  const a = t < 0 ? t : 0;
+  const b = t < 0 ? 0 : t;
+  const h = (b - a) / n;
+  
+  let sum = tPDF(a, nu) + tPDF(b, nu);
+  
+  for (let i = 1; i < n; i++) {
+    const x = a + i * h;
+    sum += (i % 2 === 0 ? 2 : 4) * tPDF(x, nu);
+  }
+  
+  const integral = (h / 3) * sum;
+  
+  // For negative t, subtract from 0.5; for positive t, add to 0.5
+  return t < 0 ? Math.max(0, integral) : 0.5 + integral;
+}
+
+// Helper function for linspace
+function linspace(start, end, n = 100) {
+  const step = (end - start) / (n - 1);
+  return Array.from({length: n}, (_, i) => start + i * step);
+}
+```
+
+
+
+```{ojs}
+// Sliders
+viewof t_nu = Inputs.range([1, 40], { value: 5, step: 1})
+viewof t_value = Inputs.range([-5, 5], { value: 1.5, step: 0.001 })
+
+```
+
+```{ojs}
+// Plot cell: reads t_nu, t_value; returns plot + math; NO sliders embedded here
+{
+  const ν = Math.round(t_nu);
+  const t = t_value;
+
+  const xPoints = linspace(-5, 5, 300);
+  const pdfData = xPoints.map(x => ({ x, y: tPDF(x, ν) }));
+  const fillData = xPoints.filter(x => x <= t).map(x => ({ x, y: tPDF(x, ν) }));
+  const yAtT = tPDF(t, ν);
+  const cdfValue = tCDF(t, ν);
+
+  const rightMath = md`**CDF:** ${tex`\mathrm{Pr}(T \leq ${t.toFixed(3)}) = ${cdfValue.toFixed(6)}`}`;
+
+  const plot = Plot.plot({
+    width: Math.min(960, width),
+    height: 320,
+    marginBottom: 50,
+    style: { background: "var(--brand-bg)", color: "var(--brand-fg)", fontFamily: bodyFont, fontSize: 14 },
+    y: { label: "PDF", domain: [0, Math.max(...pdfData.map(d => d.y)) * 1.1] },
+    x: { label: "x", domain: [-6, 6] },
+    marks: [
+      Plot.ruleY([0], { stroke: "var(--border)", strokeOpacity: 0.6 }),
+      Plot.areaY(fillData, { x: "x", y: "y", fill: "var(--brand-teal)", fillOpacity: 0.4 }),
+      Plot.lineY(pdfData, { x: "x", y: "y", stroke: "var(--brand-teal)", strokeWidth: 2 }),
+      Plot.ruleX([{ x: t, y1: 0, y2: yAtT }], { x: "x", y1: "y1", y2: "y2", stroke: "var(--brand-fg)", strokeWidth: 2, strokeDasharray: "5,3" }),
+      Plot.dot([{ x: t, y: yAtT }], { x: "x", y: "y", r: 4, fill: "var(--brand-fg)" }),
+      Plot.text([{ x: t, y: 0 }], { x: "x", y: "y", text: d => `CDF = ${cdfValue.toFixed(3)}`, dy: -10, dx: t > 3 ? -40 : 40, fontSize: 12, fill: "var(--brand-fg)" })
+    ]
+  });
+
+  return html`<div class="dist-panel">
+    <div class="top-math-row"><div class="math">${rightMath}</div></div>
+    <div class="plot-wrapper">${plot}</div>
+  </div>`;
+}
+
+```
+
+```{ojs}
+html`<div class="controls-row">
+  <div class="control-inline"><span class="label">${tex`\nu`}</span>${viewof t_nu}</div>
+  <div class="control-inline"><span class="label">${tex`t`}</span>${viewof t_value}</div>
+</div>`
+```
+
+```{ojs}
+// Styling
+html`<style>
+.dist-panel {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Center the math text */
+.top-math-row .math {
+  display: inline-block;
+  margin-bottom: 12px;
+  text-align: center;
+  background: var(--header-bg);
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+/* Center plot */
+.plot-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+/* Two columns that are allowed to shrink */
+.controls-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px 16px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Inline label + slider; allow shrinking */
+.control-inline {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;            /* critical: let this flex item shrink */
+}
+
+/* Keep math label tidy */
+.control-inline .label {
+  white-space: nowrap;
+  min-width: 2ch;
+}
+
+/* The viewof wrapper is a <form>; let it flex and shrink */
+.control-inline form {
+  flex: 1 1 auto;
+  min-width: 0;            /* critical: allow the form to shrink */
+}
+
+/* Make the actual slider fill the row */
+.control-inline input[type="range"] {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Stack on small screens */
+@media (max-width: 640px) {
+  .controls-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+</style>`
+
+```
+
+```{ojs}
+// Add custom CSS for the slider styling (without the details.controls-root requirement)
+html`<style>
+/* Style all range sliders in the document */
+input[type="range"] {
+  /* Reset browser defaults */
+  -webkit-appearance: none;
+  appearance: none;
+  
+  /* Layout */
+  width: 100%;
+  height: 18px;
+  background: transparent;
+  vertical-align: middle;
+  
+  /* Brand theming */
+  accent-color: var(--ctrl-brand);
+}
+
+
+/* Center the slider container */
+form:has(input[type="range"]) {
+  margin: 0 auto;
+  max-width: 600px; /* Adjust as needed */
+  padding: 10px 0;
+}
+
+/* Slider track - WebKit */
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ctrl-brand, #667eea) 35%, transparent);
+}
+
+/* Slider thumb - WebKit */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--ctrl-brand, #667eea);
+  
+  /* Center thumb over 4px track */
+  margin-top: -4px;
+}
+
+/* Slider track - Firefox */
+input[type="range"]::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ctrl-brand, #667eea) 35%, transparent);
+}
+
+/* Slider thumb - Firefox */
+input[type="range"]::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--ctrl-brand, #667eea);
+}
+
+/* Firefox progress styling */
+input[type="range"]::-moz-range-progress {
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ctrl-brand, #667eea) 35%, transparent);
+}
+</style>`
+```
+
+
+```{=html}
+</details>
+```
 
 ---
 
@@ -694,40 +999,392 @@ $$
 \bar{X} \;\pm\; t_{n-1,\,1-\alpha/2}\,\frac{S}{\sqrt{n}}.
 $$
 
+
+::: {#def-normal-ci-unknown-var}
+
+#### Confidence Interval for the Normal Mean (Unknown Variance)
+
+Suppose $X_1,\dots,X_n \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu,\sigma^2)$ with **unknown variance** $\sigma^2$.
+
+Then an exact $(1-\alpha)$ confidence interval for $\mu$ is
+
+$$
+\mu \;\in\;
+\left[
+\bar{X} - t_{n-1,\,1-\alpha/2}\,\frac{S}{\sqrt{n}}, \;\;
+\bar{X} + t_{n-1,\,1-\alpha/2}\,\frac{S}{\sqrt{n}}
+\right],
+$$
+
+or equivalently
+
+$$
+\bar{X} \;\pm\; t_{n-1,\,1-\alpha/2}\,\frac{S}{\sqrt{n}},
+$$
+
+where 
+
+* $\bar{X}$ is the <span class="xref-no-num">[sample mean @def-sample-mean]</span>,
+* $S^2$ is the <span class="xref-no-num">[sample variance @def-sample-variance]</span>, and
+* $t_{n-1,1-\alpha/2}$ is the $(1-\alpha/2)$ quantile of the Student’s $t$ distribution with $n-1$ degrees of freedom.
+
+:::
+
+::: {.example #exm-normal-ci-unknown-var}
+### Archaeology and Skeleton Lengths: CI with Unknown Variance
+
+Continuing with @exm-normal-ci-known-var, suppose now that we don't assume we know the population variance.
+
+In addition to the sample mean $\bar{x}=161.72$, we also compute the sample variance $s^2=86.63$.
+
+Provide the archaelogist with $95\%$ and $99\%$ confidence intervals for $\mu$.  
+
+```{=html}
+<details>
+  <summary><strong> Solution </strong></summary>
+```
+
+We need the critical values $t_{29,\,0.975}$ and $t_{29,\,0.995}$.
+
+From using R, Python or the above visualisation with degrees of freedon $\nu = n-1 = 29$, we have
+
+$$
+t_{29,\,0.975} = 2.045 \quad \text{and} \quad t_{29,\,0.995} = 2.756.
+$$
+
+Using the one-sample $t$ CI from @def-normal-ci-unknown-var:
+$$
+\bar{X} \;\pm\; t_{n-1,\,1-\alpha/2}\,\frac{S}{\sqrt{n}},
+\qquad
+n=30,\ \bar{x}=161.72,\ S^2=86.63
+\;\Rightarrow\;
+\frac{S}{\sqrt{n}}=\sqrt{\frac{86.63}{30}} \approx 1.6993.
+$$
+
+Therefore:
+
+1. **95% CI**:
+  $$
+  161.72 \;\pm\; 2.045 \times \sqrt{\frac{86.63}{30}}
+  \;=\; (158.24,\; 165.20).
+  $$
+
+1. **99% CI**
+  $$
+  161.72 \;\pm\; 2.756 \times \sqrt{\frac{86.63}{30}}
+  \;=\; (157.04,\; 166.40).
+  $$
+
+```{=html}
+</details>
+```
+
+:::
+
+
 ## Approximate Confidence Intervals {#sec-approx-ci}
 
-For more general distributions (not necessarily normal), exact CIs are not available. In such cases we rely on *asymptotics*. For example:
+For more general distributions (not necessarily normal), exact CIs are not available. In such cases we rely on <span class="xref-no-num">[asymptotics @imp-term-asymptotic]</span> to derive **approximate** CIs. For example:
 
-1. The *asymptotic* distribution of the *maximum likelihood estimator*
-2. The *central limit theorem*.
+1. The <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span>.
+2. The <span class="xref-no-num">[Asymptotic Distribution of the MLE @thm-asymp-mle]</span>.
 
-### Large Sample Confidence Intervals
+### CLT: Approximate CI for the Mean
 
-#### Step 1: CLT
-
-If $\hat{\theta}$ is an estimator of a parameter $\theta$ with finite variance, then for large $n$:
+Suppose
 
 $$
-\frac{\hat{\theta} - \theta}{\text{SE}(\hat{\theta})} \;\approx\; \mathcal{N}(0,1),
+X_1,\dots,X_n \;\overset{\text{iid}}{\sim}\; \mathrm{Distribution}(\underline{\theta})
 $$
 
-where $\text{SE}(\hat{\theta})$ is the standard error (the standard deviation of $\hat{\theta}$).
+with mean $\mu$ and variance $\sigma^2$.
 
-#### Step 2: Approximate interval
-
-Therefore, the same logic as in the normal case gives:
+The <span class="xref-no-num">[sample mean @def-sample-mean]</span> $\bar{X}$ is an estimator of $\mu$. By the <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span>, for large $n$:
 
 $$
-\theta \in \biggl[\,\hat{\theta} - z_{1-\alpha/2}\,\text{SE}(\hat{\theta}), \;\; \hat{\theta} + z_{1-\alpha/2}\,\text{SE}(\hat{\theta}) \,\biggr].
+\frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \;\overset{\text{approx.}}{\sim}\; \mathcal{N}(0,1).
 $$
 
-Or equivalently:
+Since $\sigma^2$ is usually unknown, we replace it with the <span class="xref-no-num">[sample variance @def-sample-variance]</span> $S^2$, noting that $S^2$ is a consistent estimator of $\sigma^2$.
+
+::: {#def-approx-ci-clt}
+
+#### CLT: Approximate CI for the Mean
+
+Suppose $X_1,\dots,X_n \overset{\text{iid}}{\sim} \mathrm{Distribution}(\underline{\theta})$ with mean $\mu$.
+Then an **approximate** $(1-\alpha)$ confidence interval for $\mu$ is
 
 $$
-\hat{\theta} \;\pm\; z_{1-\alpha/2}\,\text{SE}(\hat{\theta}).
+\mu \;\in\; 
+\left[
+\bar{X} - z_{1-\alpha/2}\,\frac{S}{\sqrt{n}}, \;\;
+\bar{X} + z_{1-\alpha/2}\,\frac{S}{\sqrt{n}}
+\right],
 $$
 
-This is an **approximate $(1-\alpha)$ confidence interval**, valid asymptotically as $n \to \infty$.
+or equivalently
+
+$$
+\bar{X} \;\pm\; z_{1-\alpha/2}\,\frac{S}{\sqrt{n}},
+$$
+
+where
+
+* $\bar{X}$ is the <span class="xref-no-num">[sample mean @def-sample-mean]</span>,
+* $S = \sqrt{S^2}$ and $S^2$ is the <span class="xref-no-num">[sample variance @def-sample-variance]</span>,
+* $z_{1-\alpha/2}$ is the $(1-\alpha/2)$ quantile of the standard Normal distribution $\mathcal{N}(0,1)$.
+ 
+:::
+
+
+::: {#exm-pois-approx-ci-clt}
+#### Poisson Goals: CLT Confidence Interval
+
+Suppose the **total** number of goals in a Premier league football match is assumed to be $\mathrm{Poisson}(\lambda)$ distributed.
+
+Using the available data in @tbl-goals, and assuming i.i.d. observations, and using the <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span> approximation, construct an approximate $95\%$ confidence interval for the parameter $\lambda$.
+
+```{=html}
+<details>
+<summary><strong>Solution</strong></summary>
+```
+
+**Step 1: Define the model and estimator**
+
+Let $X_i \sim \mathrm{Poisson}(\lambda)$ denote the **total** number of goals per football match. Note that the <span class="xref-no-num">[Poisson distribution @sec-pois]</span> satisfies $\mathrm{E}[X_i] = \lambda$. 
+
+Therefore, we use the sample mean 
+
+$$
+\hat{\lambda} = \frac{1}{n} \sum_{i=1}^n X_i.
+$$
+
+as our estimator of $\lambda$:
+
+**Step 2: Apply the CLT** 
+
+From the <span class="xref-no-num">[CLT @thm-clt]</span>, for sufficiently large $n$ and *known* variance $\sigma^2 = \mathrm{Var}(X_i)$, we have
+
+$$
+\hat{\lambda} \;\overset{\text{approx.}}{\sim}\; \mathcal N \left(\lambda, \frac{\sigma^2}{n}\right).
+$$
+
+We need an estimate of $\sigma^2=\mathrm{Var}(X_i)$:
+
+* **Option 1 (empirical variance):** $\widehat{\sigma^2}=S^2$ (sample variance).
+* **Option 2 (Poisson variance):** since $\mathrm{Var}(X_i)=\lambda$, use $\widehat{\sigma^2}=\hat{\lambda}$.
+
+**Step 3: Construct the CIs**
+
+With $z_{0.975}=1.96$:
+
+* **Option 1 (using $S^2$):**
+
+  $$
+  \lambda \in \left[\ \hat{\lambda} - 1.96\cdot \frac{S}{\sqrt{n}}\ ,\ \hat{\lambda} + 1.96\cdot \frac{S}{\sqrt{n}}\ \right].
+  $$
+* **Option 2 (using $\hat{\lambda}$ for Poisson variance):**
+
+  $$
+  \lambda \in \left[\ \hat{\lambda} - 1.96\cdot \sqrt{\frac{\hat{\lambda}}{n}}\ ,\ \hat{\lambda} + 1.96\cdot \sqrt{\frac{\hat{\lambda}}{n}}\ \right].
+  $$
+
+**Step 4: Apply to the data (first 10 matches shown)**
+
+From @tbl-goals, the **total number** of goals per match gives the data:
+
+| Match                                | Home goals | Away goals | Total goals |
+|:------------------------------------:|:----------:|:----------:|:------------:|
+| Newcastle United vs Arsenal          | 7 | 0 | $x_1 = 7$ |
+| Manchester United vs Liverpool F.C.  | 0 | 1 | $x_2 = 1$ |
+| Tottenham Hotspur vs Chelsea F.C.    | 1 | 3 | $x_3 = 4$ |
+| Aston Villa vs Leeds United          | 3 | 2 | $x_4 = 5$ |
+| West Ham United vs Manchester City   | 0 | 4 | $x_5 = 4$ |
+| Brighton & Hove Albion vs Everton    | 2 | 2 | $x_6 = 4$ |
+| Leicester City vs Southampton        | 1 | 0 | $x_7 = 1$ |
+| Wolverhampton Wanderers vs Brentford | 2 | 1 | $x_8 = 3$ |
+| Crystal Palace vs Fulham             | 0 | 1 | $x_9 = 1$ |
+| Nottingham Forest vs Bournemouth     | 1 | 1 | $x_{10} = 2$ |
+| …                                    | … | … | … |
+
+
+Then
+
+$$
+\hat{\lambda}=\bar{x}=\frac{32}{10}=3.2,\qquad
+S^2 \approx 3.956.
+$$
+
+* **Option 1:** $\text{SE}=S/\sqrt{n}\approx 0.629 \Rightarrow$
+
+  $$
+  \lambda \in [\,3.20 \pm 1.96\times 0.629\,] \ =\ [\,1.97,\ 4.43\,].
+  $$
+* **Option 2:** $\text{SE}=\sqrt{\hat{\lambda}/n}\approx 0.566 \Rightarrow$
+
+  $$
+  \lambda \in [\,3.20 \pm 1.96\times 0.566\,] \ =\ [\,2.09,\ 4.31\,].
+  $$
+
+**Result.** With these 10 matches, the approximate $95%$ CIs are
+
+$$
+\boxed{\ [1.97,\ 4.43]\ \text{(using }S^2\text{)} \quad\text{and}\quad [2.09,\ 4.31]\ \text{(using }\hat{\lambda}\text{)}\ }.
+$$
+
+---
+
+**Notes:**
+
+- **Option 2** uses the Poisson property $\mathrm{Var}(X_i) = \lambda$, whereas **Option 1** is more agnostic (i.e. can be used more broadly) and can be preferable if there’s overdispersion (variance > mean) or mild model misspecification.
+- If the model is well-specified (i.e. the total number of goals **is** Poisson distributed), as we observe more matches (larger $n$) the two intervals will get closer.
+
+```{=html}
+</details>
+```
+
+:::
+
+
+### Asymptotic MLE: Approximate CI for the MLE
+
+Suppose $\hat{\theta}_n$ is the maximum likelihood estimator of $\theta$ based on $n$ IID observations.
+
+From the <span class="xref-no-num">[Asymptotic Distribution of the MLE @thm-asymp-mle]</span>,
+
+$$
+\hat{\theta}_n \;\overset{\text{approx.}}{\sim} \; \mathcal{N} \Big(\theta,\; \tfrac{1}{n}\,\mathcal{I}(\theta)^{-1}\Big),
+$$
+
+where $\mathcal{I}(\theta)$ is the <span class="xref-no-num">[Fisher information @prp-fisher-one-obs]</span> for a **single observation**.
+
+But in practice, $\theta$ is unknown - that’s the very reason we’re estimating it! So we cannot evaluate $\mathcal{I}(\theta)$ directly.
+
+Just as in the <span class="xref-no-num">[CLT confidence interval @def-approx-ci-clt]</span> we replaced the unknown $\sigma$ with its estimator $S$, here we replace the unknown $\theta$ inside $\mathcal{I}(\theta)$ with the estimator $\hat{\theta}_n$.
+
+* This gives a **computable** estimate of the Fisher information:
+  $$
+  \mathcal{I}(\theta) \;\approx\; \mathcal{I}(\hat{\theta}_n).
+  $$
+* Since $\hat{\theta}_n \to \theta$ as $n \to \infty$ (consistency of the MLE), this substitution is asymptotically valid.
+
+In other words, this *plug-in idea* ensures the confidence interval uses only observable quantities, while still being asymptotically correct.
+
+::: {#def-approx-ci-mle}
+
+#### Asymptotic MLE: Approximate CI
+
+Suppose $\hat{\theta}_n$ is the maximum likelihood estimator of $\theta$ based on $n$ IID observations.
+Then an **approximate** $(1-\alpha)$ confidence interval for $\theta$ is
+
+$$
+\theta \;\in\;
+\left[
+\hat{\theta}_n - z_{1-\alpha/2}\,\sqrt{\tfrac{1}{n}\,\mathcal{I}(\hat{\theta}_n)^{-1}}, \;\;
+\hat{\theta}_n + z_{1-\alpha/2}\,\sqrt{\tfrac{1}{n}\,\mathcal{I}(\hat{\theta}_n)^{-1}}
+\right],
+$$
+
+or equivalently
+
+$$
+\hat{\theta}_n \;\pm\; z_{1-\alpha/2}\,\sqrt{\tfrac{1}{n}\,\mathcal{I}(\hat{\theta}_n)^{-1}},
+$$
+
+where
+
+* $\hat{\theta}_n$ is the maximum likelihood estimator,
+* $\mathcal{I}(\theta)$ is the <span class="xref-no-num">[Fisher information @prp-fisher-one-obs]</span> for a single observation, evaluated at $\hat{\theta}_n$, and
+* $z_{1-\alpha/2}$ is the $(1-\alpha/2)$ quantile of the standard Normal distribution $\mathcal{N}(0,1)$.
+
+:::
+
+
+::: {#exm-pois-approx-ci-mle}
+#### Poisson Goals: MLE Confidence Interval
+
+Following from @exm-pois-approx-ci-clt, but now using the <span class="xref-no-num">[Asymptotic Distribution of the MLE @thm-asymp-mle]</span>, construct an approximate $95\%$ confidence interval for $\lambda$.
+
+```{=html}
+<details>
+<summary><strong>Solution</strong></summary>
+```
+
+**Step 1: Relevant quantities**
+
+From <span class="xref-no-num">[Poisson MLE @exm-pois-mle]</span>, the MLE is
+
+$$
+\hat{\lambda}=\bar{X}.
+$$
+
+From <span class="xref-no-num">[Poisson Fisher Information @exm-poisson-fisher]</span>, the Fisher information for **one observation** is
+
+$$
+\mathcal{I}(\lambda)=\frac{1}{\lambda}.
+$$
+
+**Step 2: Asymptotic MLE distribution and CI**
+
+By <span class="xref-no-num">[Asymptotic MLE @thm-asymp-mle]</span>,
+
+$$
+\hat{\lambda}\ \overset{\text{approx.}}{\sim}\ \mathcal{N}\!\Big(\lambda,\ \tfrac{1}{n}\,\mathcal{I}(\lambda)^{-1}\Big)
+= \mathcal{N}\!\Big(\lambda,\ \tfrac{\lambda}{n}\Big).
+$$
+
+Since the variance involves the unknown $\lambda$, we follow @def-approx-ci-mle by plugging-in the MLE $\hat{\lambda$ into $\lambda$:
+
+$$
+\tfrac{\lambda}{n} \approx \sqrt{\tfrac{\hat{\lambda}}{n}}.
+$$
+
+Hence an approximate $(1-\alpha)$ CI is
+
+$$
+\lambda \ \in\ 
+\left[
+\hat{\lambda} - z_{1-\alpha/2}\,\sqrt{\tfrac{\hat{\lambda}}{n}},\ \ 
+\hat{\lambda} + z_{1-\alpha/2}\,\sqrt{\tfrac{\hat{\lambda}}{n}}
+\right].
+$$
+
+**Step 3: Apply to data**
+
+From @tbl-goals (first 10 rows),
+
+$$
+\underline{x}=(7,1,4,5,4,4,1,3,1,2),\quad n=10,
+$$
+
+so
+
+$$
+\hat{\lambda}=\bar{X}=\frac{32}{10}=3.2,\qquad
+\widehat{\mathrm{SE}}=\sqrt{\frac{3.2}{10}}=\sqrt{0.32}\approx 0.5657.
+$$
+
+With $z_{0.975}=1.96$,
+
+$$
+\lambda \in \left[\,3.2 \pm 1.96\times 0.5657\,\right]
+= [\,3.2 \pm 1.108\,]
+= \boxed{[\,2.09,\ 4.31\,]} \quad(\text{to 2 d.p.}).
+$$
+
+---
+
+**Notes.**
+
+This matches the CLT option that used $\mathrm{Var}(X)=\lambda$ (since the Poisson model implies variance equals mean). If there were overdispersion, the sample-variance based CLT interval would be wider.
+
+```{=html}
+</details>
+```
+
+
+:::
+
 
 
 [^bayes-exc]: Recall from @sec-bayes-inference that Bayesians do not return a single “best guess,” but a full **posterior distribution** over parameter values. From this distribution we can compute **summaries** such as plausible ranges of $\theta$ (see @sec-bayesian-intervals), which play a role similar to confidence intervals but with a different interpretation.

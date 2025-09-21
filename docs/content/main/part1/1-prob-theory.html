@@ -528,7 +528,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
- <span class="menu-text">Part II — Parameter Estimation</span></a>
+ <span class="menu-text">Part II — Point Estimation</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -953,24 +953,9 @@ Figure&nbsp;1.1: Venn diagram of two events <span class="math inline">A</span> a
 <div class="callout-body-container">
 <div id="exm-quick-inclusion-check" class="theorem example">
 <p><span class="theorem-title"><strong>Example 1.1 (A quick inclusion–exclusion check)</strong></span> Roll a fair six-sided die. Let <span class="math inline">A=\{\text{even}\}</span> and <span class="math inline">B=\{\text{number} \ge 4\}</span>. Compute <span class="math inline">\mathrm{Pr}(A\cup B)</span>.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div id="sol-quick-inclusion-check" class="proof solution">
-<p><span class="proof-title"><em>Solution 1.1</em>. </span>We have</p>
+<details>
+  <summary><strong> Solution </strong></summary>
+<p>We have</p>
 <ul>
 <li><span class="math inline">\mathrm{Pr}(A)=3/6=1/2</span> (even outcomes <span class="math inline">2,4,6</span>).<br>
 </li>
@@ -981,6 +966,7 @@ Figure&nbsp;1.1: Venn diagram of two events <span class="math inline">A</span> a
 <p>By <span class="xref-no-num"><a href="#def-inclusion-exclusion" class="quarto-xref">inclusion–exclusion&nbsp;<span>1.2</span></a></span>, <span class="math display">
 \mathrm{Pr}(A\cup B)=\tfrac{1}{2}+\tfrac{1}{2}-\tfrac{1}{3}=\tfrac{2}{3}.
 </span></p>
+</details>
 </div>
 </div>
 </div>
@@ -1016,105 +1002,105 @@ More generally, a collection of events <span class="math inline">\{B_1,\ldots,B_
 <details>
 <summary><strong>Show Visualisation</strong></summary>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="258" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 257;"><span id="cb4-258"><a href="#cb4-258" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb4-259"><a href="#cb4-259" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> width <span class="op">=</span> <span class="dv">720</span><span class="op">,</span> height <span class="op">=</span> <span class="dv">360</span><span class="op">;</span></span>
-<span id="cb4-260"><a href="#cb4-260" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> pad <span class="op">=</span> <span class="dv">20</span><span class="op">;</span></span>
-<span id="cb4-261"><a href="#cb4-261" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-262"><a href="#cb4-262" aria-hidden="true" tabindex="-1"></a>  <span class="co">// colour cycle from theme accents</span></span>
-<span id="cb4-263"><a href="#cb4-263" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> brand <span class="op">=</span> [</span>
-<span id="cb4-264"><a href="#cb4-264" aria-hidden="true" tabindex="-1"></a>    <span class="st">"var(--brand-teal, #55C3CB)"</span><span class="op">,</span></span>
-<span id="cb4-265"><a href="#cb4-265" aria-hidden="true" tabindex="-1"></a>    <span class="st">"var(--brand-orange, #F39C65)"</span><span class="op">,</span></span>
-<span id="cb4-266"><a href="#cb4-266" aria-hidden="true" tabindex="-1"></a>    <span class="st">"var(--brand-purple, #A180DA)"</span><span class="op">,</span></span>
-<span id="cb4-267"><a href="#cb4-267" aria-hidden="true" tabindex="-1"></a>    <span class="st">"var(--brand-mint, #DDFFEB)"</span><span class="op">,</span></span>
-<span id="cb4-268"><a href="#cb4-268" aria-hidden="true" tabindex="-1"></a>    <span class="st">"var(--brand-red, #e65660)"</span></span>
-<span id="cb4-269"><a href="#cb4-269" aria-hidden="true" tabindex="-1"></a>  ]<span class="op">;</span></span>
-<span id="cb4-270"><a href="#cb4-270" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> col <span class="op">=</span> i <span class="kw">=&gt;</span> brand[i <span class="op">%</span> brand<span class="op">.</span><span class="at">length</span>]<span class="op">;</span></span>
-<span id="cb4-271"><a href="#cb4-271" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-272"><a href="#cb4-272" aria-hidden="true" tabindex="-1"></a>  <span class="co">// seeded RNG so "Reseed" changes layout deterministically per click</span></span>
-<span id="cb4-273"><a href="#cb4-273" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> rng <span class="op">=</span> d3<span class="op">.</span><span class="fu">randomLcg</span>(reseed <span class="op">||</span> <span class="dv">1</span>)<span class="op">;</span></span>
-<span id="cb4-274"><a href="#cb4-274" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-275"><a href="#cb4-275" aria-hidden="true" tabindex="-1"></a>  <span class="co">// generate n sites inside Ω (inset by padding)</span></span>
-<span id="cb4-276"><a href="#cb4-276" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> sites <span class="op">=</span> d3<span class="op">.</span><span class="fu">range</span>(n)<span class="op">.</span><span class="fu">map</span>(i <span class="kw">=&gt;</span> ({</span>
-<span id="cb4-277"><a href="#cb4-277" aria-hidden="true" tabindex="-1"></a>    <span class="dt">name</span><span class="op">:</span> <span class="vs">`B</span><span class="sc">${</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="vs">`</span><span class="op">,</span></span>
-<span id="cb4-278"><a href="#cb4-278" aria-hidden="true" tabindex="-1"></a>    <span class="dt">x</span><span class="op">:</span> pad <span class="op">+</span> <span class="fu">rng</span>() <span class="op">*</span> (width <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>pad)<span class="op">,</span></span>
-<span id="cb4-279"><a href="#cb4-279" aria-hidden="true" tabindex="-1"></a>    <span class="dt">y</span><span class="op">:</span> pad <span class="op">+</span> <span class="fu">rng</span>() <span class="op">*</span> (height <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>pad)</span>
-<span id="cb4-280"><a href="#cb4-280" aria-hidden="true" tabindex="-1"></a>  }))<span class="op">;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="265" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 264;"><span id="cb4-265"><a href="#cb4-265" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb4-266"><a href="#cb4-266" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> width <span class="op">=</span> <span class="dv">720</span><span class="op">,</span> height <span class="op">=</span> <span class="dv">360</span><span class="op">;</span></span>
+<span id="cb4-267"><a href="#cb4-267" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> pad <span class="op">=</span> <span class="dv">20</span><span class="op">;</span></span>
+<span id="cb4-268"><a href="#cb4-268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-269"><a href="#cb4-269" aria-hidden="true" tabindex="-1"></a>  <span class="co">// colour cycle from theme accents</span></span>
+<span id="cb4-270"><a href="#cb4-270" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> brand <span class="op">=</span> [</span>
+<span id="cb4-271"><a href="#cb4-271" aria-hidden="true" tabindex="-1"></a>    <span class="st">"var(--brand-teal, #55C3CB)"</span><span class="op">,</span></span>
+<span id="cb4-272"><a href="#cb4-272" aria-hidden="true" tabindex="-1"></a>    <span class="st">"var(--brand-orange, #F39C65)"</span><span class="op">,</span></span>
+<span id="cb4-273"><a href="#cb4-273" aria-hidden="true" tabindex="-1"></a>    <span class="st">"var(--brand-purple, #A180DA)"</span><span class="op">,</span></span>
+<span id="cb4-274"><a href="#cb4-274" aria-hidden="true" tabindex="-1"></a>    <span class="st">"var(--brand-mint, #DDFFEB)"</span><span class="op">,</span></span>
+<span id="cb4-275"><a href="#cb4-275" aria-hidden="true" tabindex="-1"></a>    <span class="st">"var(--brand-red, #e65660)"</span></span>
+<span id="cb4-276"><a href="#cb4-276" aria-hidden="true" tabindex="-1"></a>  ]<span class="op">;</span></span>
+<span id="cb4-277"><a href="#cb4-277" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> col <span class="op">=</span> i <span class="kw">=&gt;</span> brand[i <span class="op">%</span> brand<span class="op">.</span><span class="at">length</span>]<span class="op">;</span></span>
+<span id="cb4-278"><a href="#cb4-278" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-279"><a href="#cb4-279" aria-hidden="true" tabindex="-1"></a>  <span class="co">// seeded RNG so "Reseed" changes layout deterministically per click</span></span>
+<span id="cb4-280"><a href="#cb4-280" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> rng <span class="op">=</span> d3<span class="op">.</span><span class="fu">randomLcg</span>(reseed <span class="op">||</span> <span class="dv">1</span>)<span class="op">;</span></span>
 <span id="cb4-281"><a href="#cb4-281" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-282"><a href="#cb4-282" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> delaunay <span class="op">=</span> d3<span class="op">.</span><span class="at">Delaunay</span><span class="op">.</span><span class="fu">from</span>(sites<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">x</span><span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">y</span>)<span class="op">;</span></span>
-<span id="cb4-283"><a href="#cb4-283" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> vor <span class="op">=</span> delaunay<span class="op">.</span><span class="fu">voronoi</span>([pad<span class="op">,</span> pad<span class="op">,</span> width <span class="op">-</span> pad<span class="op">,</span> height <span class="op">-</span> pad])<span class="op">;</span></span>
-<span id="cb4-284"><a href="#cb4-284" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-285"><a href="#cb4-285" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> svg <span class="op">=</span> d3<span class="op">.</span><span class="fu">create</span>(<span class="st">"svg"</span>)</span>
-<span id="cb4-286"><a href="#cb4-286" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"viewBox"</span><span class="op">,</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> width<span class="op">,</span> height])</span>
-<span id="cb4-287"><a href="#cb4-287" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> width)</span>
-<span id="cb4-288"><a href="#cb4-288" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> height)</span>
-<span id="cb4-289"><a href="#cb4-289" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"background"</span><span class="op">,</span> <span class="st">"var(--brand-bg)"</span>)</span>
-<span id="cb4-290"><a href="#cb4-290" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-family"</span><span class="op">,</span> bodyFont)</span>
-<span id="cb4-291"><a href="#cb4-291" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-size"</span><span class="op">,</span> <span class="st">"14px"</span>)<span class="op">;</span></span>
-<span id="cb4-292"><a href="#cb4-292" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-293"><a href="#cb4-293" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- defs: rounded-rect clip for Ω ---</span></span>
-<span id="cb4-294"><a href="#cb4-294" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> defs <span class="op">=</span> svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"defs"</span>)<span class="op">;</span></span>
-<span id="cb4-295"><a href="#cb4-295" aria-hidden="true" tabindex="-1"></a>  defs<span class="op">.</span><span class="fu">append</span>(<span class="st">"clipPath"</span>)</span>
-<span id="cb4-296"><a href="#cb4-296" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"id"</span><span class="op">,</span> <span class="st">"clipOmega"</span>)</span>
-<span id="cb4-297"><a href="#cb4-297" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">append</span>(<span class="st">"rect"</span>)</span>
-<span id="cb4-298"><a href="#cb4-298" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> pad)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> pad)</span>
-<span id="cb4-299"><a href="#cb4-299" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> width <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>pad)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> height <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>pad)</span>
-<span id="cb4-300"><a href="#cb4-300" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"rx"</span><span class="op">,</span> <span class="dv">10</span>)<span class="op">;</span></span>
-<span id="cb4-301"><a href="#cb4-301" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-302"><a href="#cb4-302" aria-hidden="true" tabindex="-1"></a>  <span class="co">// cells (clipped to rounded Ω so no sharp outer box)</span></span>
-<span id="cb4-303"><a href="#cb4-303" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> g <span class="op">=</span> svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"g"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"clip-path"</span><span class="op">,</span> <span class="st">"url(#clipOmega)"</span>)<span class="op">;</span></span>
-<span id="cb4-304"><a href="#cb4-304" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> polys <span class="op">=</span> []<span class="op">;</span>  <span class="co">// store polygons for centroid labelling</span></span>
-<span id="cb4-305"><a href="#cb4-305" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-306"><a href="#cb4-306" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> sites<span class="op">.</span><span class="at">length</span><span class="op">;</span> i<span class="op">++</span>) {</span>
-<span id="cb4-307"><a href="#cb4-307" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> poly <span class="op">=</span> vor<span class="op">.</span><span class="fu">cellPolygon</span>(i)<span class="op">;</span></span>
-<span id="cb4-308"><a href="#cb4-308" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="op">!</span>poly) <span class="cf">continue</span><span class="op">;</span></span>
-<span id="cb4-309"><a href="#cb4-309" aria-hidden="true" tabindex="-1"></a>    polys<span class="op">.</span><span class="fu">push</span>({ i<span class="op">,</span> poly<span class="op">,</span> <span class="dt">name</span><span class="op">:</span> sites[i]<span class="op">.</span><span class="at">name</span> })<span class="op">;</span></span>
-<span id="cb4-310"><a href="#cb4-310" aria-hidden="true" tabindex="-1"></a>    g<span class="op">.</span><span class="fu">append</span>(<span class="st">"path"</span>)</span>
-<span id="cb4-311"><a href="#cb4-311" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"d"</span><span class="op">,</span> d3<span class="op">.</span><span class="fu">line</span>()(poly))</span>
-<span id="cb4-312"><a href="#cb4-312" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="fu">col</span>(i))</span>
-<span id="cb4-313"><a href="#cb4-313" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill-opacity"</span><span class="op">,</span> <span class="fl">0.2</span>)</span>
-<span id="cb4-314"><a href="#cb4-314" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> <span class="st">"currentColor"</span>)</span>
-<span id="cb4-315"><a href="#cb4-315" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-opacity"</span><span class="op">,</span> <span class="fl">0.28</span>)<span class="op">;</span></span>
-<span id="cb4-316"><a href="#cb4-316" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb4-317"><a href="#cb4-317" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-318"><a href="#cb4-318" aria-hidden="true" tabindex="-1"></a>  <span class="co">// label font size adapts to n (clamped between 10px and 14px)</span></span>
-<span id="cb4-319"><a href="#cb4-319" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> fz <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="dv">10</span><span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(<span class="dv">14</span><span class="op">,</span> <span class="dv">16</span> <span class="op">-</span> <span class="fl">0.5</span> <span class="op">*</span> (n <span class="op">-</span> <span class="dv">3</span>)))<span class="op">;</span></span>
-<span id="cb4-320"><a href="#cb4-320" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-321"><a href="#cb4-321" aria-hidden="true" tabindex="-1"></a>  <span class="co">// labels at polygon centroids (true centre for convex Voronoi cells)</span></span>
-<span id="cb4-322"><a href="#cb4-322" aria-hidden="true" tabindex="-1"></a>  svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"g"</span>)</span>
-<span id="cb4-323"><a href="#cb4-323" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">selectAll</span>(<span class="st">"text"</span>)</span>
-<span id="cb4-324"><a href="#cb4-324" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">data</span>(polys<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> {</span>
-<span id="cb4-325"><a href="#cb4-325" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> [cx<span class="op">,</span> cy] <span class="op">=</span> d3<span class="op">.</span><span class="fu">polygonCentroid</span>(d<span class="op">.</span><span class="at">poly</span>)<span class="op">;</span></span>
-<span id="cb4-326"><a href="#cb4-326" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> { <span class="dt">x</span><span class="op">:</span> cx<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> cy<span class="op">,</span> <span class="dt">name</span><span class="op">:</span> d<span class="op">.</span><span class="at">name</span> }<span class="op">;</span></span>
-<span id="cb4-327"><a href="#cb4-327" aria-hidden="true" tabindex="-1"></a>    }))</span>
-<span id="cb4-328"><a href="#cb4-328" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">join</span>(<span class="st">"text"</span>)</span>
-<span id="cb4-329"><a href="#cb4-329" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">x</span>)</span>
-<span id="cb4-330"><a href="#cb4-330" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">y</span>)</span>
-<span id="cb4-331"><a href="#cb4-331" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">text</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">name</span>)</span>
-<span id="cb4-332"><a href="#cb4-332" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"font-weight"</span><span class="op">,</span> <span class="dv">700</span>)</span>
-<span id="cb4-333"><a href="#cb4-333" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"currentColor"</span>)</span>
-<span id="cb4-334"><a href="#cb4-334" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"font-size"</span><span class="op">,</span> <span class="vs">`</span><span class="sc">${</span>fz<span class="sc">}</span><span class="vs">px`</span>)</span>
-<span id="cb4-335"><a href="#cb4-335" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"text-anchor"</span><span class="op">,</span> <span class="st">"middle"</span>)</span>
-<span id="cb4-336"><a href="#cb4-336" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"dominant-baseline"</span><span class="op">,</span> <span class="st">"middle"</span>)<span class="op">;</span></span>
-<span id="cb4-337"><a href="#cb4-337" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-338"><a href="#cb4-338" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Ω frame (single rounded rectangle, drawn last)</span></span>
-<span id="cb4-339"><a href="#cb4-339" aria-hidden="true" tabindex="-1"></a>  svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"rect"</span>)</span>
-<span id="cb4-340"><a href="#cb4-340" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> pad)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> pad)</span>
-<span id="cb4-341"><a href="#cb4-341" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> width <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>pad)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> height <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>pad)</span>
-<span id="cb4-342"><a href="#cb4-342" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"rx"</span><span class="op">,</span> <span class="dv">10</span>)</span>
-<span id="cb4-343"><a href="#cb4-343" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"none"</span>)</span>
-<span id="cb4-344"><a href="#cb4-344" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> <span class="st">"currentColor"</span>)</span>
-<span id="cb4-345"><a href="#cb4-345" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-opacity"</span><span class="op">,</span> <span class="fl">0.55</span>)<span class="op">;</span></span>
-<span id="cb4-346"><a href="#cb4-346" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-347"><a href="#cb4-347" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Ω label</span></span>
-<span id="cb4-348"><a href="#cb4-348" aria-hidden="true" tabindex="-1"></a>  svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"text"</span>)</span>
-<span id="cb4-349"><a href="#cb4-349" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> pad <span class="op">+</span> <span class="dv">8</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> pad <span class="op">+</span> <span class="dv">16</span>)</span>
-<span id="cb4-350"><a href="#cb4-350" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">text</span>(<span class="st">"Ω"</span>)</span>
-<span id="cb4-351"><a href="#cb4-351" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-weight"</span><span class="op">,</span> <span class="dv">400</span>)</span>
-<span id="cb4-352"><a href="#cb4-352" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-size"</span><span class="op">,</span> <span class="st">"18px"</span>)</span>
-<span id="cb4-353"><a href="#cb4-353" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"currentColor"</span>)<span class="op">;</span></span>
-<span id="cb4-354"><a href="#cb4-354" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-355"><a href="#cb4-355" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> svg<span class="op">.</span><span class="fu">node</span>()<span class="op">;</span></span>
-<span id="cb4-356"><a href="#cb4-356" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-282"><a href="#cb4-282" aria-hidden="true" tabindex="-1"></a>  <span class="co">// generate n sites inside Ω (inset by padding)</span></span>
+<span id="cb4-283"><a href="#cb4-283" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> sites <span class="op">=</span> d3<span class="op">.</span><span class="fu">range</span>(n)<span class="op">.</span><span class="fu">map</span>(i <span class="kw">=&gt;</span> ({</span>
+<span id="cb4-284"><a href="#cb4-284" aria-hidden="true" tabindex="-1"></a>    <span class="dt">name</span><span class="op">:</span> <span class="vs">`B</span><span class="sc">${</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="vs">`</span><span class="op">,</span></span>
+<span id="cb4-285"><a href="#cb4-285" aria-hidden="true" tabindex="-1"></a>    <span class="dt">x</span><span class="op">:</span> pad <span class="op">+</span> <span class="fu">rng</span>() <span class="op">*</span> (width <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>pad)<span class="op">,</span></span>
+<span id="cb4-286"><a href="#cb4-286" aria-hidden="true" tabindex="-1"></a>    <span class="dt">y</span><span class="op">:</span> pad <span class="op">+</span> <span class="fu">rng</span>() <span class="op">*</span> (height <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>pad)</span>
+<span id="cb4-287"><a href="#cb4-287" aria-hidden="true" tabindex="-1"></a>  }))<span class="op">;</span></span>
+<span id="cb4-288"><a href="#cb4-288" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-289"><a href="#cb4-289" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> delaunay <span class="op">=</span> d3<span class="op">.</span><span class="at">Delaunay</span><span class="op">.</span><span class="fu">from</span>(sites<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">x</span><span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">y</span>)<span class="op">;</span></span>
+<span id="cb4-290"><a href="#cb4-290" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> vor <span class="op">=</span> delaunay<span class="op">.</span><span class="fu">voronoi</span>([pad<span class="op">,</span> pad<span class="op">,</span> width <span class="op">-</span> pad<span class="op">,</span> height <span class="op">-</span> pad])<span class="op">;</span></span>
+<span id="cb4-291"><a href="#cb4-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-292"><a href="#cb4-292" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> svg <span class="op">=</span> d3<span class="op">.</span><span class="fu">create</span>(<span class="st">"svg"</span>)</span>
+<span id="cb4-293"><a href="#cb4-293" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"viewBox"</span><span class="op">,</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> width<span class="op">,</span> height])</span>
+<span id="cb4-294"><a href="#cb4-294" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> width)</span>
+<span id="cb4-295"><a href="#cb4-295" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> height)</span>
+<span id="cb4-296"><a href="#cb4-296" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"background"</span><span class="op">,</span> <span class="st">"var(--brand-bg)"</span>)</span>
+<span id="cb4-297"><a href="#cb4-297" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-family"</span><span class="op">,</span> bodyFont)</span>
+<span id="cb4-298"><a href="#cb4-298" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-size"</span><span class="op">,</span> <span class="st">"14px"</span>)<span class="op">;</span></span>
+<span id="cb4-299"><a href="#cb4-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-300"><a href="#cb4-300" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- defs: rounded-rect clip for Ω ---</span></span>
+<span id="cb4-301"><a href="#cb4-301" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> defs <span class="op">=</span> svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"defs"</span>)<span class="op">;</span></span>
+<span id="cb4-302"><a href="#cb4-302" aria-hidden="true" tabindex="-1"></a>  defs<span class="op">.</span><span class="fu">append</span>(<span class="st">"clipPath"</span>)</span>
+<span id="cb4-303"><a href="#cb4-303" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"id"</span><span class="op">,</span> <span class="st">"clipOmega"</span>)</span>
+<span id="cb4-304"><a href="#cb4-304" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">append</span>(<span class="st">"rect"</span>)</span>
+<span id="cb4-305"><a href="#cb4-305" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> pad)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> pad)</span>
+<span id="cb4-306"><a href="#cb4-306" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> width <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>pad)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> height <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>pad)</span>
+<span id="cb4-307"><a href="#cb4-307" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"rx"</span><span class="op">,</span> <span class="dv">10</span>)<span class="op">;</span></span>
+<span id="cb4-308"><a href="#cb4-308" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-309"><a href="#cb4-309" aria-hidden="true" tabindex="-1"></a>  <span class="co">// cells (clipped to rounded Ω so no sharp outer box)</span></span>
+<span id="cb4-310"><a href="#cb4-310" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> g <span class="op">=</span> svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"g"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"clip-path"</span><span class="op">,</span> <span class="st">"url(#clipOmega)"</span>)<span class="op">;</span></span>
+<span id="cb4-311"><a href="#cb4-311" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> polys <span class="op">=</span> []<span class="op">;</span>  <span class="co">// store polygons for centroid labelling</span></span>
+<span id="cb4-312"><a href="#cb4-312" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-313"><a href="#cb4-313" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> sites<span class="op">.</span><span class="at">length</span><span class="op">;</span> i<span class="op">++</span>) {</span>
+<span id="cb4-314"><a href="#cb4-314" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> poly <span class="op">=</span> vor<span class="op">.</span><span class="fu">cellPolygon</span>(i)<span class="op">;</span></span>
+<span id="cb4-315"><a href="#cb4-315" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="op">!</span>poly) <span class="cf">continue</span><span class="op">;</span></span>
+<span id="cb4-316"><a href="#cb4-316" aria-hidden="true" tabindex="-1"></a>    polys<span class="op">.</span><span class="fu">push</span>({ i<span class="op">,</span> poly<span class="op">,</span> <span class="dt">name</span><span class="op">:</span> sites[i]<span class="op">.</span><span class="at">name</span> })<span class="op">;</span></span>
+<span id="cb4-317"><a href="#cb4-317" aria-hidden="true" tabindex="-1"></a>    g<span class="op">.</span><span class="fu">append</span>(<span class="st">"path"</span>)</span>
+<span id="cb4-318"><a href="#cb4-318" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"d"</span><span class="op">,</span> d3<span class="op">.</span><span class="fu">line</span>()(poly))</span>
+<span id="cb4-319"><a href="#cb4-319" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="fu">col</span>(i))</span>
+<span id="cb4-320"><a href="#cb4-320" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill-opacity"</span><span class="op">,</span> <span class="fl">0.2</span>)</span>
+<span id="cb4-321"><a href="#cb4-321" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> <span class="st">"currentColor"</span>)</span>
+<span id="cb4-322"><a href="#cb4-322" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-opacity"</span><span class="op">,</span> <span class="fl">0.28</span>)<span class="op">;</span></span>
+<span id="cb4-323"><a href="#cb4-323" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-324"><a href="#cb4-324" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-325"><a href="#cb4-325" aria-hidden="true" tabindex="-1"></a>  <span class="co">// label font size adapts to n (clamped between 10px and 14px)</span></span>
+<span id="cb4-326"><a href="#cb4-326" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> fz <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="dv">10</span><span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(<span class="dv">14</span><span class="op">,</span> <span class="dv">16</span> <span class="op">-</span> <span class="fl">0.5</span> <span class="op">*</span> (n <span class="op">-</span> <span class="dv">3</span>)))<span class="op">;</span></span>
+<span id="cb4-327"><a href="#cb4-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-328"><a href="#cb4-328" aria-hidden="true" tabindex="-1"></a>  <span class="co">// labels at polygon centroids (true centre for convex Voronoi cells)</span></span>
+<span id="cb4-329"><a href="#cb4-329" aria-hidden="true" tabindex="-1"></a>  svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"g"</span>)</span>
+<span id="cb4-330"><a href="#cb4-330" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">selectAll</span>(<span class="st">"text"</span>)</span>
+<span id="cb4-331"><a href="#cb4-331" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">data</span>(polys<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> {</span>
+<span id="cb4-332"><a href="#cb4-332" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> [cx<span class="op">,</span> cy] <span class="op">=</span> d3<span class="op">.</span><span class="fu">polygonCentroid</span>(d<span class="op">.</span><span class="at">poly</span>)<span class="op">;</span></span>
+<span id="cb4-333"><a href="#cb4-333" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> { <span class="dt">x</span><span class="op">:</span> cx<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> cy<span class="op">,</span> <span class="dt">name</span><span class="op">:</span> d<span class="op">.</span><span class="at">name</span> }<span class="op">;</span></span>
+<span id="cb4-334"><a href="#cb4-334" aria-hidden="true" tabindex="-1"></a>    }))</span>
+<span id="cb4-335"><a href="#cb4-335" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">join</span>(<span class="st">"text"</span>)</span>
+<span id="cb4-336"><a href="#cb4-336" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">x</span>)</span>
+<span id="cb4-337"><a href="#cb4-337" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">y</span>)</span>
+<span id="cb4-338"><a href="#cb4-338" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">text</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">name</span>)</span>
+<span id="cb4-339"><a href="#cb4-339" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"font-weight"</span><span class="op">,</span> <span class="dv">700</span>)</span>
+<span id="cb4-340"><a href="#cb4-340" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"currentColor"</span>)</span>
+<span id="cb4-341"><a href="#cb4-341" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"font-size"</span><span class="op">,</span> <span class="vs">`</span><span class="sc">${</span>fz<span class="sc">}</span><span class="vs">px`</span>)</span>
+<span id="cb4-342"><a href="#cb4-342" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"text-anchor"</span><span class="op">,</span> <span class="st">"middle"</span>)</span>
+<span id="cb4-343"><a href="#cb4-343" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"dominant-baseline"</span><span class="op">,</span> <span class="st">"middle"</span>)<span class="op">;</span></span>
+<span id="cb4-344"><a href="#cb4-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-345"><a href="#cb4-345" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Ω frame (single rounded rectangle, drawn last)</span></span>
+<span id="cb4-346"><a href="#cb4-346" aria-hidden="true" tabindex="-1"></a>  svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"rect"</span>)</span>
+<span id="cb4-347"><a href="#cb4-347" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> pad)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> pad)</span>
+<span id="cb4-348"><a href="#cb4-348" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> width <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>pad)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> height <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>pad)</span>
+<span id="cb4-349"><a href="#cb4-349" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"rx"</span><span class="op">,</span> <span class="dv">10</span>)</span>
+<span id="cb4-350"><a href="#cb4-350" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"none"</span>)</span>
+<span id="cb4-351"><a href="#cb4-351" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> <span class="st">"currentColor"</span>)</span>
+<span id="cb4-352"><a href="#cb4-352" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-opacity"</span><span class="op">,</span> <span class="fl">0.55</span>)<span class="op">;</span></span>
+<span id="cb4-353"><a href="#cb4-353" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-354"><a href="#cb4-354" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Ω label</span></span>
+<span id="cb4-355"><a href="#cb4-355" aria-hidden="true" tabindex="-1"></a>  svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"text"</span>)</span>
+<span id="cb4-356"><a href="#cb4-356" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> pad <span class="op">+</span> <span class="dv">8</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> pad <span class="op">+</span> <span class="dv">16</span>)</span>
+<span id="cb4-357"><a href="#cb4-357" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">text</span>(<span class="st">"Ω"</span>)</span>
+<span id="cb4-358"><a href="#cb4-358" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-weight"</span><span class="op">,</span> <span class="dv">400</span>)</span>
+<span id="cb4-359"><a href="#cb4-359" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-size"</span><span class="op">,</span> <span class="st">"18px"</span>)</span>
+<span id="cb4-360"><a href="#cb4-360" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"currentColor"</span>)<span class="op">;</span></span>
+<span id="cb4-361"><a href="#cb4-361" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-362"><a href="#cb4-362" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> svg<span class="op">.</span><span class="fu">node</span>()<span class="op">;</span></span>
+<span id="cb4-363"><a href="#cb4-363" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div id="fig-partition-voronoi" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-partition-voronoi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1129,45 +1115,45 @@ Figure&nbsp;1.2: A decomposition of the sample space <span class="math inline">\
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb5" data-startfrom="364" data-source-offset="-54"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 363;"><span id="cb5-364"><a href="#cb5-364" aria-hidden="true" tabindex="-1"></a>viewof controls <span class="op">=</span> {</span>
-<span id="cb5-365"><a href="#cb5-365" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> resBtn <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">button</span>(<span class="st">"Reseed points"</span>)<span class="op">;</span></span>
-<span id="cb5-366"><a href="#cb5-366" aria-hidden="true" tabindex="-1"></a>  resBtn<span class="op">.</span><span class="at">classList</span><span class="op">.</span><span class="fu">add</span>(<span class="st">"btn-resim"</span>)<span class="op">;</span></span>
-<span id="cb5-367"><a href="#cb5-367" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-368"><a href="#cb5-368" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> leftForm <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">form</span>(</span>
-<span id="cb5-369"><a href="#cb5-369" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">n</span><span class="op">:</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">3</span><span class="op">,</span> <span class="dv">50</span>]<span class="op">,</span> { <span class="dt">value</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`k`</span><span class="sc">}</span><span class="vs">: number of sets`</span> }) }<span class="op">,</span></span>
-<span id="cb5-370"><a href="#cb5-370" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">submit</span><span class="op">:</span> <span class="kw">false</span> }</span>
-<span id="cb5-371"><a href="#cb5-371" aria-hidden="true" tabindex="-1"></a>  )<span class="op">;</span></span>
-<span id="cb5-372"><a href="#cb5-372" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> rightForm <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">form</span>({ <span class="dt">reseed</span><span class="op">:</span> resBtn }<span class="op">,</span> { <span class="dt">submit</span><span class="op">:</span> <span class="kw">false</span> })<span class="op">;</span></span>
-<span id="cb5-373"><a href="#cb5-373" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-374"><a href="#cb5-374" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> <span class="bu">root</span> <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div class="controls-wrap"&gt;</span></span>
-<span id="cb5-375"><a href="#cb5-375" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;details class="controls-root" open&gt;</span></span>
-<span id="cb5-376"><a href="#cb5-376" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;summary&gt;Partition controls&lt;/summary&gt;</span></span>
-<span id="cb5-377"><a href="#cb5-377" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;div class="controls-grid"&gt;</span></span>
-<span id="cb5-378"><a href="#cb5-378" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;div class="controls-col"&gt;&lt;h4&gt;Number of regions&lt;/h4&gt;&lt;/div&gt;</span></span>
-<span id="cb5-379"><a href="#cb5-379" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;div class="controls-col"&gt;&lt;h4&gt;Randomisation&lt;/h4&gt;&lt;/div&gt;</span></span>
-<span id="cb5-380"><a href="#cb5-380" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;/div&gt;</span></span>
-<span id="cb5-381"><a href="#cb5-381" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/details&gt;</span></span>
-<span id="cb5-382"><a href="#cb5-382" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;`</span><span class="op">;</span></span>
-<span id="cb5-383"><a href="#cb5-383" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-384"><a href="#cb5-384" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> grid <span class="op">=</span> <span class="bu">root</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">".controls-grid"</span>)<span class="op">;</span></span>
-<span id="cb5-385"><a href="#cb5-385" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> leftCol <span class="op">=</span> grid<span class="op">.</span><span class="at">children</span>[<span class="dv">0</span>]<span class="op">;</span></span>
-<span id="cb5-386"><a href="#cb5-386" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> rightCol <span class="op">=</span> grid<span class="op">.</span><span class="at">children</span>[<span class="dv">1</span>]<span class="op">;</span></span>
-<span id="cb5-387"><a href="#cb5-387" aria-hidden="true" tabindex="-1"></a>  leftCol<span class="op">.</span><span class="fu">append</span>(leftForm)<span class="op">;</span></span>
-<span id="cb5-388"><a href="#cb5-388" aria-hidden="true" tabindex="-1"></a>  rightCol<span class="op">.</span><span class="fu">append</span>(rightForm)<span class="op">;</span></span>
-<span id="cb5-389"><a href="#cb5-389" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-390"><a href="#cb5-390" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> getValue <span class="op">=</span> () <span class="kw">=&gt;</span> ({ <span class="op">...</span>leftForm<span class="op">.</span><span class="at">value</span><span class="op">,</span> <span class="op">...</span>rightForm<span class="op">.</span><span class="at">value</span> })<span class="op">;</span></span>
-<span id="cb5-391"><a href="#cb5-391" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> update <span class="op">=</span> () <span class="kw">=&gt;</span> {</span>
-<span id="cb5-392"><a href="#cb5-392" aria-hidden="true" tabindex="-1"></a>    <span class="bu">root</span><span class="op">.</span><span class="at">value</span> <span class="op">=</span> <span class="fu">getValue</span>()<span class="op">;</span></span>
-<span id="cb5-393"><a href="#cb5-393" aria-hidden="true" tabindex="-1"></a>    <span class="bu">root</span><span class="op">.</span><span class="fu">dispatchEvent</span>(<span class="kw">new</span> <span class="bu">CustomEvent</span>(<span class="st">"input"</span><span class="op">,</span> { <span class="dt">bubbles</span><span class="op">:</span> <span class="kw">true</span> }))<span class="op">;</span></span>
-<span id="cb5-394"><a href="#cb5-394" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
-<span id="cb5-395"><a href="#cb5-395" aria-hidden="true" tabindex="-1"></a>  grid<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"input"</span><span class="op">,</span> update)<span class="op">;</span></span>
-<span id="cb5-396"><a href="#cb5-396" aria-hidden="true" tabindex="-1"></a>  <span class="fu">queueMicrotask</span>(update)<span class="op">;</span></span>
-<span id="cb5-397"><a href="#cb5-397" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">root</span><span class="op">;</span></span>
-<span id="cb5-398"><a href="#cb5-398" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-399"><a href="#cb5-399" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-400"><a href="#cb5-400" aria-hidden="true" tabindex="-1"></a><span class="co">// reactive bindings for the plot</span></span>
-<span id="cb5-401"><a href="#cb5-401" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> controls<span class="op">.</span><span class="at">n</span></span>
-<span id="cb5-402"><a href="#cb5-402" aria-hidden="true" tabindex="-1"></a>reseed <span class="op">=</span> controls<span class="op">.</span><span class="at">reseed</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb5" data-startfrom="371" data-source-offset="-54"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 370;"><span id="cb5-371"><a href="#cb5-371" aria-hidden="true" tabindex="-1"></a>viewof controls <span class="op">=</span> {</span>
+<span id="cb5-372"><a href="#cb5-372" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> resBtn <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">button</span>(<span class="st">"Reseed points"</span>)<span class="op">;</span></span>
+<span id="cb5-373"><a href="#cb5-373" aria-hidden="true" tabindex="-1"></a>  resBtn<span class="op">.</span><span class="at">classList</span><span class="op">.</span><span class="fu">add</span>(<span class="st">"btn-resim"</span>)<span class="op">;</span></span>
+<span id="cb5-374"><a href="#cb5-374" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-375"><a href="#cb5-375" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> leftForm <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">form</span>(</span>
+<span id="cb5-376"><a href="#cb5-376" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">n</span><span class="op">:</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">3</span><span class="op">,</span> <span class="dv">50</span>]<span class="op">,</span> { <span class="dt">value</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`k`</span><span class="sc">}</span><span class="vs">: number of sets`</span> }) }<span class="op">,</span></span>
+<span id="cb5-377"><a href="#cb5-377" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">submit</span><span class="op">:</span> <span class="kw">false</span> }</span>
+<span id="cb5-378"><a href="#cb5-378" aria-hidden="true" tabindex="-1"></a>  )<span class="op">;</span></span>
+<span id="cb5-379"><a href="#cb5-379" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> rightForm <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">form</span>({ <span class="dt">reseed</span><span class="op">:</span> resBtn }<span class="op">,</span> { <span class="dt">submit</span><span class="op">:</span> <span class="kw">false</span> })<span class="op">;</span></span>
+<span id="cb5-380"><a href="#cb5-380" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-381"><a href="#cb5-381" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> <span class="bu">root</span> <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div class="controls-wrap"&gt;</span></span>
+<span id="cb5-382"><a href="#cb5-382" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;details class="controls-root" open&gt;</span></span>
+<span id="cb5-383"><a href="#cb5-383" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;summary&gt;Partition controls&lt;/summary&gt;</span></span>
+<span id="cb5-384"><a href="#cb5-384" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;div class="controls-grid"&gt;</span></span>
+<span id="cb5-385"><a href="#cb5-385" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;div class="controls-col"&gt;&lt;h4&gt;Number of regions&lt;/h4&gt;&lt;/div&gt;</span></span>
+<span id="cb5-386"><a href="#cb5-386" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;div class="controls-col"&gt;&lt;h4&gt;Randomisation&lt;/h4&gt;&lt;/div&gt;</span></span>
+<span id="cb5-387"><a href="#cb5-387" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;/div&gt;</span></span>
+<span id="cb5-388"><a href="#cb5-388" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/details&gt;</span></span>
+<span id="cb5-389"><a href="#cb5-389" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb5-390"><a href="#cb5-390" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-391"><a href="#cb5-391" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> grid <span class="op">=</span> <span class="bu">root</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">".controls-grid"</span>)<span class="op">;</span></span>
+<span id="cb5-392"><a href="#cb5-392" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> leftCol <span class="op">=</span> grid<span class="op">.</span><span class="at">children</span>[<span class="dv">0</span>]<span class="op">;</span></span>
+<span id="cb5-393"><a href="#cb5-393" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> rightCol <span class="op">=</span> grid<span class="op">.</span><span class="at">children</span>[<span class="dv">1</span>]<span class="op">;</span></span>
+<span id="cb5-394"><a href="#cb5-394" aria-hidden="true" tabindex="-1"></a>  leftCol<span class="op">.</span><span class="fu">append</span>(leftForm)<span class="op">;</span></span>
+<span id="cb5-395"><a href="#cb5-395" aria-hidden="true" tabindex="-1"></a>  rightCol<span class="op">.</span><span class="fu">append</span>(rightForm)<span class="op">;</span></span>
+<span id="cb5-396"><a href="#cb5-396" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-397"><a href="#cb5-397" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> getValue <span class="op">=</span> () <span class="kw">=&gt;</span> ({ <span class="op">...</span>leftForm<span class="op">.</span><span class="at">value</span><span class="op">,</span> <span class="op">...</span>rightForm<span class="op">.</span><span class="at">value</span> })<span class="op">;</span></span>
+<span id="cb5-398"><a href="#cb5-398" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> update <span class="op">=</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb5-399"><a href="#cb5-399" aria-hidden="true" tabindex="-1"></a>    <span class="bu">root</span><span class="op">.</span><span class="at">value</span> <span class="op">=</span> <span class="fu">getValue</span>()<span class="op">;</span></span>
+<span id="cb5-400"><a href="#cb5-400" aria-hidden="true" tabindex="-1"></a>    <span class="bu">root</span><span class="op">.</span><span class="fu">dispatchEvent</span>(<span class="kw">new</span> <span class="bu">CustomEvent</span>(<span class="st">"input"</span><span class="op">,</span> { <span class="dt">bubbles</span><span class="op">:</span> <span class="kw">true</span> }))<span class="op">;</span></span>
+<span id="cb5-401"><a href="#cb5-401" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb5-402"><a href="#cb5-402" aria-hidden="true" tabindex="-1"></a>  grid<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"input"</span><span class="op">,</span> update)<span class="op">;</span></span>
+<span id="cb5-403"><a href="#cb5-403" aria-hidden="true" tabindex="-1"></a>  <span class="fu">queueMicrotask</span>(update)<span class="op">;</span></span>
+<span id="cb5-404"><a href="#cb5-404" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">root</span><span class="op">;</span></span>
+<span id="cb5-405"><a href="#cb5-405" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-406"><a href="#cb5-406" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-407"><a href="#cb5-407" aria-hidden="true" tabindex="-1"></a><span class="co">// reactive bindings for the plot</span></span>
+<span id="cb5-408"><a href="#cb5-408" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> controls<span class="op">.</span><span class="at">n</span></span>
+<span id="cb5-409"><a href="#cb5-409" aria-hidden="true" tabindex="-1"></a>reseed <span class="op">=</span> controls<span class="op">.</span><span class="at">reseed</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-5-1" data-nodetype="declaration">
@@ -1237,7 +1223,7 @@ Figure&nbsp;1.2: A decomposition of the sample space <span class="math inline">\
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1246,7 +1232,7 @@ Figure&nbsp;1.2: A decomposition of the sample space <span class="math inline">\
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="prf-total-prob" class="proof">
 <p><span class="proof-title"><em>Proof 1.1</em>. </span>Since <span class="math inline">B_1\ldots, B_n</span> form a partition of <span class="math inline">\Omega</span>, we can decompose any event <span class="math inline">A</span> in a <em>disjoint</em> union of intersections: <span class="math display">
@@ -1265,147 +1251,147 @@ A = \bigcup_{i=1}^n (A\cap B_i).
 <details>
 <summary><strong>Show Visualisation</strong></summary>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="467" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 466;"><span id="cb6-467"><a href="#cb6-467" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb6-468"><a href="#cb6-468" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> width <span class="op">=</span> <span class="dv">720</span><span class="op">,</span> height <span class="op">=</span> <span class="dv">360</span><span class="op">;</span></span>
-<span id="cb6-469"><a href="#cb6-469" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> pad <span class="op">=</span> <span class="dv">20</span><span class="op">;</span></span>
-<span id="cb6-470"><a href="#cb6-470" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-471"><a href="#cb6-471" aria-hidden="true" tabindex="-1"></a>  <span class="co">// colours</span></span>
-<span id="cb6-472"><a href="#cb6-472" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> brand <span class="op">=</span> [</span>
-<span id="cb6-473"><a href="#cb6-473" aria-hidden="true" tabindex="-1"></a>    <span class="st">"var(--brand-teal, #55C3CB)"</span><span class="op">,</span></span>
-<span id="cb6-474"><a href="#cb6-474" aria-hidden="true" tabindex="-1"></a>    <span class="st">"var(--brand-purple, #A180DA)"</span><span class="op">,</span></span>
-<span id="cb6-475"><a href="#cb6-475" aria-hidden="true" tabindex="-1"></a>    <span class="st">"var(--brand-mint, #DDFFEB)"</span><span class="op">,</span></span>
-<span id="cb6-476"><a href="#cb6-476" aria-hidden="true" tabindex="-1"></a>    <span class="st">"var(--brand-red, #e65660)"</span></span>
-<span id="cb6-477"><a href="#cb6-477" aria-hidden="true" tabindex="-1"></a>  ]<span class="op">;</span></span>
-<span id="cb6-478"><a href="#cb6-478" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> col <span class="op">=</span> i <span class="kw">=&gt;</span> brand[i <span class="op">%</span> brand<span class="op">.</span><span class="at">length</span>]<span class="op">;</span></span>
-<span id="cb6-479"><a href="#cb6-479" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> orange <span class="op">=</span> <span class="st">"var(--brand-orange, #F39C65)"</span><span class="op">;</span></span>
-<span id="cb6-480"><a href="#cb6-480" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-481"><a href="#cb6-481" aria-hidden="true" tabindex="-1"></a>  <span class="co">// deterministic RNG</span></span>
-<span id="cb6-482"><a href="#cb6-482" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> rng <span class="op">=</span> d3<span class="op">.</span><span class="fu">randomLcg</span>(<span class="dv">2</span>)<span class="op">;</span></span>
-<span id="cb6-483"><a href="#cb6-483" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-484"><a href="#cb6-484" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Voronoi sites</span></span>
-<span id="cb6-485"><a href="#cb6-485" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> sites <span class="op">=</span> d3<span class="op">.</span><span class="fu">range</span>(n2)<span class="op">.</span><span class="fu">map</span>(i <span class="kw">=&gt;</span> ({</span>
-<span id="cb6-486"><a href="#cb6-486" aria-hidden="true" tabindex="-1"></a>    <span class="dt">name</span><span class="op">:</span> <span class="vs">`B</span><span class="sc">${</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="vs">`</span><span class="op">,</span></span>
-<span id="cb6-487"><a href="#cb6-487" aria-hidden="true" tabindex="-1"></a>    <span class="dt">x</span><span class="op">:</span> pad <span class="op">+</span> <span class="fu">rng</span>() <span class="op">*</span> (width <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>pad)<span class="op">,</span></span>
-<span id="cb6-488"><a href="#cb6-488" aria-hidden="true" tabindex="-1"></a>    <span class="dt">y</span><span class="op">:</span> pad <span class="op">+</span> <span class="fu">rng</span>() <span class="op">*</span> (height <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>pad)</span>
-<span id="cb6-489"><a href="#cb6-489" aria-hidden="true" tabindex="-1"></a>  }))<span class="op">;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="474" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 473;"><span id="cb6-474"><a href="#cb6-474" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb6-475"><a href="#cb6-475" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> width <span class="op">=</span> <span class="dv">720</span><span class="op">,</span> height <span class="op">=</span> <span class="dv">360</span><span class="op">;</span></span>
+<span id="cb6-476"><a href="#cb6-476" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> pad <span class="op">=</span> <span class="dv">20</span><span class="op">;</span></span>
+<span id="cb6-477"><a href="#cb6-477" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-478"><a href="#cb6-478" aria-hidden="true" tabindex="-1"></a>  <span class="co">// colours</span></span>
+<span id="cb6-479"><a href="#cb6-479" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> brand <span class="op">=</span> [</span>
+<span id="cb6-480"><a href="#cb6-480" aria-hidden="true" tabindex="-1"></a>    <span class="st">"var(--brand-teal, #55C3CB)"</span><span class="op">,</span></span>
+<span id="cb6-481"><a href="#cb6-481" aria-hidden="true" tabindex="-1"></a>    <span class="st">"var(--brand-purple, #A180DA)"</span><span class="op">,</span></span>
+<span id="cb6-482"><a href="#cb6-482" aria-hidden="true" tabindex="-1"></a>    <span class="st">"var(--brand-mint, #DDFFEB)"</span><span class="op">,</span></span>
+<span id="cb6-483"><a href="#cb6-483" aria-hidden="true" tabindex="-1"></a>    <span class="st">"var(--brand-red, #e65660)"</span></span>
+<span id="cb6-484"><a href="#cb6-484" aria-hidden="true" tabindex="-1"></a>  ]<span class="op">;</span></span>
+<span id="cb6-485"><a href="#cb6-485" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> col <span class="op">=</span> i <span class="kw">=&gt;</span> brand[i <span class="op">%</span> brand<span class="op">.</span><span class="at">length</span>]<span class="op">;</span></span>
+<span id="cb6-486"><a href="#cb6-486" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> orange <span class="op">=</span> <span class="st">"var(--brand-orange, #F39C65)"</span><span class="op">;</span></span>
+<span id="cb6-487"><a href="#cb6-487" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-488"><a href="#cb6-488" aria-hidden="true" tabindex="-1"></a>  <span class="co">// deterministic RNG</span></span>
+<span id="cb6-489"><a href="#cb6-489" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> rng <span class="op">=</span> d3<span class="op">.</span><span class="fu">randomLcg</span>(<span class="dv">2</span>)<span class="op">;</span></span>
 <span id="cb6-490"><a href="#cb6-490" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-491"><a href="#cb6-491" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> delaunay <span class="op">=</span> d3<span class="op">.</span><span class="at">Delaunay</span><span class="op">.</span><span class="fu">from</span>(sites<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">x</span><span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">y</span>)<span class="op">;</span></span>
-<span id="cb6-492"><a href="#cb6-492" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> vor <span class="op">=</span> delaunay<span class="op">.</span><span class="fu">voronoi</span>([pad<span class="op">,</span> pad<span class="op">,</span> width <span class="op">-</span> pad<span class="op">,</span> height <span class="op">-</span> pad])<span class="op">;</span></span>
-<span id="cb6-493"><a href="#cb6-493" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-494"><a href="#cb6-494" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> svg <span class="op">=</span> d3<span class="op">.</span><span class="fu">create</span>(<span class="st">"svg"</span>)</span>
-<span id="cb6-495"><a href="#cb6-495" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"viewBox"</span><span class="op">,</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> width<span class="op">,</span> height])</span>
-<span id="cb6-496"><a href="#cb6-496" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> width)</span>
-<span id="cb6-497"><a href="#cb6-497" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> height)</span>
-<span id="cb6-498"><a href="#cb6-498" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"background"</span><span class="op">,</span> <span class="st">"var(--brand-bg)"</span>)</span>
-<span id="cb6-499"><a href="#cb6-499" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-family"</span><span class="op">,</span> bodyFont)</span>
-<span id="cb6-500"><a href="#cb6-500" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-size"</span><span class="op">,</span> <span class="st">"14px"</span>)<span class="op">;</span></span>
-<span id="cb6-501"><a href="#cb6-501" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-502"><a href="#cb6-502" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- defs: rounded-rect clip for Ω + per-cell clipPaths + ellipse for A ---</span></span>
-<span id="cb6-503"><a href="#cb6-503" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> defs <span class="op">=</span> svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"defs"</span>)<span class="op">;</span></span>
-<span id="cb6-504"><a href="#cb6-504" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-505"><a href="#cb6-505" aria-hidden="true" tabindex="-1"></a>  defs<span class="op">.</span><span class="fu">append</span>(<span class="st">"clipPath"</span>)</span>
-<span id="cb6-506"><a href="#cb6-506" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"id"</span><span class="op">,</span> <span class="st">"clipOmega-lotp2"</span>)</span>
-<span id="cb6-507"><a href="#cb6-507" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">append</span>(<span class="st">"rect"</span>)</span>
-<span id="cb6-508"><a href="#cb6-508" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> pad)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> pad)</span>
-<span id="cb6-509"><a href="#cb6-509" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> width <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>pad)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> height <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>pad)</span>
-<span id="cb6-510"><a href="#cb6-510" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"rx"</span><span class="op">,</span> <span class="dv">10</span>)<span class="op">;</span></span>
+<span id="cb6-491"><a href="#cb6-491" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Voronoi sites</span></span>
+<span id="cb6-492"><a href="#cb6-492" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> sites <span class="op">=</span> d3<span class="op">.</span><span class="fu">range</span>(n2)<span class="op">.</span><span class="fu">map</span>(i <span class="kw">=&gt;</span> ({</span>
+<span id="cb6-493"><a href="#cb6-493" aria-hidden="true" tabindex="-1"></a>    <span class="dt">name</span><span class="op">:</span> <span class="vs">`B</span><span class="sc">${</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="vs">`</span><span class="op">,</span></span>
+<span id="cb6-494"><a href="#cb6-494" aria-hidden="true" tabindex="-1"></a>    <span class="dt">x</span><span class="op">:</span> pad <span class="op">+</span> <span class="fu">rng</span>() <span class="op">*</span> (width <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>pad)<span class="op">,</span></span>
+<span id="cb6-495"><a href="#cb6-495" aria-hidden="true" tabindex="-1"></a>    <span class="dt">y</span><span class="op">:</span> pad <span class="op">+</span> <span class="fu">rng</span>() <span class="op">*</span> (height <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>pad)</span>
+<span id="cb6-496"><a href="#cb6-496" aria-hidden="true" tabindex="-1"></a>  }))<span class="op">;</span></span>
+<span id="cb6-497"><a href="#cb6-497" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-498"><a href="#cb6-498" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> delaunay <span class="op">=</span> d3<span class="op">.</span><span class="at">Delaunay</span><span class="op">.</span><span class="fu">from</span>(sites<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">x</span><span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">y</span>)<span class="op">;</span></span>
+<span id="cb6-499"><a href="#cb6-499" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> vor <span class="op">=</span> delaunay<span class="op">.</span><span class="fu">voronoi</span>([pad<span class="op">,</span> pad<span class="op">,</span> width <span class="op">-</span> pad<span class="op">,</span> height <span class="op">-</span> pad])<span class="op">;</span></span>
+<span id="cb6-500"><a href="#cb6-500" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-501"><a href="#cb6-501" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> svg <span class="op">=</span> d3<span class="op">.</span><span class="fu">create</span>(<span class="st">"svg"</span>)</span>
+<span id="cb6-502"><a href="#cb6-502" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"viewBox"</span><span class="op">,</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> width<span class="op">,</span> height])</span>
+<span id="cb6-503"><a href="#cb6-503" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> width)</span>
+<span id="cb6-504"><a href="#cb6-504" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> height)</span>
+<span id="cb6-505"><a href="#cb6-505" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"background"</span><span class="op">,</span> <span class="st">"var(--brand-bg)"</span>)</span>
+<span id="cb6-506"><a href="#cb6-506" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-family"</span><span class="op">,</span> bodyFont)</span>
+<span id="cb6-507"><a href="#cb6-507" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-size"</span><span class="op">,</span> <span class="st">"14px"</span>)<span class="op">;</span></span>
+<span id="cb6-508"><a href="#cb6-508" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-509"><a href="#cb6-509" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- defs: rounded-rect clip for Ω + per-cell clipPaths + ellipse for A ---</span></span>
+<span id="cb6-510"><a href="#cb6-510" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> defs <span class="op">=</span> svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"defs"</span>)<span class="op">;</span></span>
 <span id="cb6-511"><a href="#cb6-511" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-512"><a href="#cb6-512" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Per-cell clipPaths (so we can draw A∩B_i by clipping the ellipse to each cell)</span></span>
-<span id="cb6-513"><a href="#cb6-513" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> sites<span class="op">.</span><span class="at">length</span><span class="op">;</span> i<span class="op">++</span>) {</span>
-<span id="cb6-514"><a href="#cb6-514" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> poly <span class="op">=</span> vor<span class="op">.</span><span class="fu">cellPolygon</span>(i)<span class="op">;</span></span>
-<span id="cb6-515"><a href="#cb6-515" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="op">!</span>poly) <span class="cf">continue</span><span class="op">;</span></span>
-<span id="cb6-516"><a href="#cb6-516" aria-hidden="true" tabindex="-1"></a>    defs<span class="op">.</span><span class="fu">append</span>(<span class="st">"clipPath"</span>)</span>
-<span id="cb6-517"><a href="#cb6-517" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"id"</span><span class="op">,</span> <span class="vs">`clipCell-lotp2-</span><span class="sc">${</span>i<span class="sc">}</span><span class="vs">`</span>)</span>
-<span id="cb6-518"><a href="#cb6-518" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">append</span>(<span class="st">"path"</span>)</span>
-<span id="cb6-519"><a href="#cb6-519" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"d"</span><span class="op">,</span> d3<span class="op">.</span><span class="fu">line</span>()(poly))<span class="op">;</span></span>
-<span id="cb6-520"><a href="#cb6-520" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb6-521"><a href="#cb6-521" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-522"><a href="#cb6-522" aria-hidden="true" tabindex="-1"></a>  <span class="co">// A: ellipse geometry</span></span>
-<span id="cb6-523"><a href="#cb6-523" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> Ax <span class="op">=</span> width <span class="op">*</span> <span class="fl">0.50</span><span class="op">,</span> Ay <span class="op">=</span> height <span class="op">*</span> <span class="fl">0.52</span><span class="op">;</span>  <span class="co">// centre</span></span>
-<span id="cb6-524"><a href="#cb6-524" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> Arx <span class="op">=</span> width <span class="op">*</span> <span class="fl">0.42</span><span class="op">,</span> Ary <span class="op">=</span> height <span class="op">*</span> <span class="fl">0.4</span><span class="op">;</span></span>
-<span id="cb6-525"><a href="#cb6-525" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-526"><a href="#cb6-526" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Draw A outline (thin) so learners see the target set even before fills</span></span>
-<span id="cb6-527"><a href="#cb6-527" aria-hidden="true" tabindex="-1"></a>  svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"ellipse"</span>)</span>
-<span id="cb6-528"><a href="#cb6-528" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"cx"</span><span class="op">,</span> Ax)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"cy"</span><span class="op">,</span> Ay)</span>
-<span id="cb6-529"><a href="#cb6-529" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"rx"</span><span class="op">,</span> Arx)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"ry"</span><span class="op">,</span> Ary)</span>
-<span id="cb6-530"><a href="#cb6-530" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"none"</span>)</span>
-<span id="cb6-531"><a href="#cb6-531" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> orange)</span>
-<span id="cb6-532"><a href="#cb6-532" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-width"</span><span class="op">,</span> <span class="dv">2</span>)</span>
-<span id="cb6-533"><a href="#cb6-533" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"clip-path"</span><span class="op">,</span> <span class="st">"url(#clipOmega-lotp2)"</span>)<span class="op">;</span></span>
-<span id="cb6-534"><a href="#cb6-534" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-535"><a href="#cb6-535" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- Voronoi cells: visible strokes on TOP of orange pieces ---</span></span>
-<span id="cb6-536"><a href="#cb6-536" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> strokes <span class="op">=</span> svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"g"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"clip-path"</span><span class="op">,</span> <span class="st">"url(#clipOmega-lotp2)"</span>)<span class="op">;</span></span>
-<span id="cb6-537"><a href="#cb6-537" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> polys <span class="op">=</span> []<span class="op">;</span></span>
-<span id="cb6-538"><a href="#cb6-538" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> sites<span class="op">.</span><span class="at">length</span><span class="op">;</span> i<span class="op">++</span>) {</span>
-<span id="cb6-539"><a href="#cb6-539" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> poly <span class="op">=</span> vor<span class="op">.</span><span class="fu">cellPolygon</span>(i)<span class="op">;</span></span>
-<span id="cb6-540"><a href="#cb6-540" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="op">!</span>poly) <span class="cf">continue</span><span class="op">;</span></span>
-<span id="cb6-541"><a href="#cb6-541" aria-hidden="true" tabindex="-1"></a>    polys<span class="op">.</span><span class="fu">push</span>({ i<span class="op">,</span> poly<span class="op">,</span> <span class="dt">name</span><span class="op">:</span> sites[i]<span class="op">.</span><span class="at">name</span> })<span class="op">;</span></span>
-<span id="cb6-542"><a href="#cb6-542" aria-hidden="true" tabindex="-1"></a>    strokes<span class="op">.</span><span class="fu">append</span>(<span class="st">"path"</span>)</span>
-<span id="cb6-543"><a href="#cb6-543" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"d"</span><span class="op">,</span> d3<span class="op">.</span><span class="fu">line</span>()(poly))</span>
-<span id="cb6-544"><a href="#cb6-544" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> <span class="st">"currentColor"</span>)</span>
-<span id="cb6-545"><a href="#cb6-545" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="fu">col</span>(i))</span>
-<span id="cb6-546"><a href="#cb6-546" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill-opacity"</span><span class="op">,</span> <span class="fl">0.2</span>)</span>
-<span id="cb6-547"><a href="#cb6-547" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-opacity"</span><span class="op">,</span> <span class="fl">0.55</span>)<span class="op">;</span></span>
-<span id="cb6-548"><a href="#cb6-548" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb6-549"><a href="#cb6-549" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-550"><a href="#cb6-550" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Labels at polygon centroids; adaptive font size</span></span>
-<span id="cb6-551"><a href="#cb6-551" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> fz2 <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="dv">10</span><span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(<span class="dv">14</span><span class="op">,</span> <span class="dv">16</span> <span class="op">-</span> <span class="fl">0.3</span> <span class="op">*</span> (n2 <span class="op">-</span> <span class="dv">3</span>)))<span class="op">;</span></span>
-<span id="cb6-552"><a href="#cb6-552" aria-hidden="true" tabindex="-1"></a>  svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"g"</span>)</span>
-<span id="cb6-553"><a href="#cb6-553" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">selectAll</span>(<span class="st">"text"</span>)</span>
-<span id="cb6-554"><a href="#cb6-554" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">data</span>(polys<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> {</span>
-<span id="cb6-555"><a href="#cb6-555" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> [cx<span class="op">,</span> cy] <span class="op">=</span> d3<span class="op">.</span><span class="fu">polygonCentroid</span>(d<span class="op">.</span><span class="at">poly</span>)<span class="op">;</span></span>
-<span id="cb6-556"><a href="#cb6-556" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> { <span class="dt">x</span><span class="op">:</span> cx<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> cy<span class="op">,</span> <span class="dt">name</span><span class="op">:</span> d<span class="op">.</span><span class="at">name</span> }<span class="op">;</span></span>
-<span id="cb6-557"><a href="#cb6-557" aria-hidden="true" tabindex="-1"></a>    }))</span>
-<span id="cb6-558"><a href="#cb6-558" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">join</span>(<span class="st">"text"</span>)</span>
-<span id="cb6-559"><a href="#cb6-559" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">x</span>)</span>
-<span id="cb6-560"><a href="#cb6-560" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">y</span>)</span>
-<span id="cb6-561"><a href="#cb6-561" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">text</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">name</span>)</span>
-<span id="cb6-562"><a href="#cb6-562" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"font-weight"</span><span class="op">,</span> <span class="dv">700</span>)</span>
-<span id="cb6-563"><a href="#cb6-563" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"var(--fg-muted)"</span>)</span>
-<span id="cb6-564"><a href="#cb6-564" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"font-size"</span><span class="op">,</span> <span class="vs">`</span><span class="sc">${</span>fz2<span class="sc">}</span><span class="vs">px`</span>)</span>
-<span id="cb6-565"><a href="#cb6-565" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"text-anchor"</span><span class="op">,</span> <span class="st">"middle"</span>)</span>
-<span id="cb6-566"><a href="#cb6-566" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"dominant-baseline"</span><span class="op">,</span> <span class="st">"middle"</span>)<span class="op">;</span></span>
-<span id="cb6-567"><a href="#cb6-567" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-568"><a href="#cb6-568" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- A∩B_i pieces (orange), revealed up to 'frame2' ---</span></span>
-<span id="cb6-569"><a href="#cb6-569" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> overlaps <span class="op">=</span> svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"g"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"clip-path"</span><span class="op">,</span> <span class="st">"url(#clipOmega-lotp2)"</span>)<span class="op">;</span></span>
-<span id="cb6-570"><a href="#cb6-570" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> sites<span class="op">.</span><span class="at">length</span><span class="op">;</span> i<span class="op">++</span>) {</span>
-<span id="cb6-571"><a href="#cb6-571" aria-hidden="true" tabindex="-1"></a>    overlaps<span class="op">.</span><span class="fu">append</span>(<span class="st">"ellipse"</span>)</span>
-<span id="cb6-572"><a href="#cb6-572" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"cx"</span><span class="op">,</span> Ax)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"cy"</span><span class="op">,</span> Ay)</span>
-<span id="cb6-573"><a href="#cb6-573" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"rx"</span><span class="op">,</span> Arx)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"ry"</span><span class="op">,</span> Ary)</span>
-<span id="cb6-574"><a href="#cb6-574" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> orange)</span>
-<span id="cb6-575"><a href="#cb6-575" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill-opacity"</span><span class="op">,</span> i <span class="op">&lt;</span> frame2 <span class="op">?</span> <span class="fl">1.</span> <span class="op">:</span> <span class="dv">0</span>)  <span class="co">// reveal progressively</span></span>
-<span id="cb6-576"><a href="#cb6-576" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"clip-path"</span><span class="op">,</span> <span class="vs">`url(#clipCell-lotp2-</span><span class="sc">${</span>i<span class="sc">}</span><span class="vs">)`</span>)<span class="op">;</span></span>
-<span id="cb6-577"><a href="#cb6-577" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb6-578"><a href="#cb6-578" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-579"><a href="#cb6-579" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-580"><a href="#cb6-580" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Ω frame</span></span>
-<span id="cb6-581"><a href="#cb6-581" aria-hidden="true" tabindex="-1"></a>  svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"rect"</span>)</span>
-<span id="cb6-582"><a href="#cb6-582" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> pad)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> pad)</span>
-<span id="cb6-583"><a href="#cb6-583" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> width <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>pad)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> height <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>pad)</span>
-<span id="cb6-584"><a href="#cb6-584" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"rx"</span><span class="op">,</span> <span class="dv">10</span>)</span>
-<span id="cb6-585"><a href="#cb6-585" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"none"</span>)</span>
-<span id="cb6-586"><a href="#cb6-586" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> <span class="st">"currentColor"</span>)</span>
-<span id="cb6-587"><a href="#cb6-587" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-opacity"</span><span class="op">,</span> <span class="fl">0.55</span>)<span class="op">;</span></span>
-<span id="cb6-588"><a href="#cb6-588" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-589"><a href="#cb6-589" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Ω label</span></span>
-<span id="cb6-590"><a href="#cb6-590" aria-hidden="true" tabindex="-1"></a>  svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"text"</span>)</span>
-<span id="cb6-591"><a href="#cb6-591" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> pad <span class="op">+</span> <span class="dv">8</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> pad <span class="op">+</span> <span class="dv">16</span>)</span>
-<span id="cb6-592"><a href="#cb6-592" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">text</span>(<span class="st">"Ω"</span>)</span>
-<span id="cb6-593"><a href="#cb6-593" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-weight"</span><span class="op">,</span> <span class="dv">400</span>)</span>
-<span id="cb6-594"><a href="#cb6-594" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-size"</span><span class="op">,</span> <span class="st">"18px"</span>)</span>
-<span id="cb6-595"><a href="#cb6-595" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"currentColor"</span>)<span class="op">;</span></span>
-<span id="cb6-596"><a href="#cb6-596" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-597"><a href="#cb6-597" aria-hidden="true" tabindex="-1"></a>  <span class="co">// A label</span></span>
-<span id="cb6-598"><a href="#cb6-598" aria-hidden="true" tabindex="-1"></a>  svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"text"</span>)</span>
-<span id="cb6-599"><a href="#cb6-599" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> Ax)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> Ay)</span>
-<span id="cb6-600"><a href="#cb6-600" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">text</span>(<span class="st">"A"</span>)</span>
-<span id="cb6-601"><a href="#cb6-601" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"currentColor"</span>)</span>
-<span id="cb6-602"><a href="#cb6-602" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"font-size"</span><span class="op">,</span> <span class="dv">18</span>)</span>
-<span id="cb6-603"><a href="#cb6-603" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"font-weight"</span><span class="op">,</span> <span class="dv">700</span>)</span>
-<span id="cb6-604"><a href="#cb6-604" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"text-anchor"</span><span class="op">,</span> <span class="st">"middle"</span>)<span class="op">;</span></span>
-<span id="cb6-605"><a href="#cb6-605" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-606"><a href="#cb6-606" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> svg<span class="op">.</span><span class="fu">node</span>()<span class="op">;</span></span>
-<span id="cb6-607"><a href="#cb6-607" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-512"><a href="#cb6-512" aria-hidden="true" tabindex="-1"></a>  defs<span class="op">.</span><span class="fu">append</span>(<span class="st">"clipPath"</span>)</span>
+<span id="cb6-513"><a href="#cb6-513" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"id"</span><span class="op">,</span> <span class="st">"clipOmega-lotp2"</span>)</span>
+<span id="cb6-514"><a href="#cb6-514" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">append</span>(<span class="st">"rect"</span>)</span>
+<span id="cb6-515"><a href="#cb6-515" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> pad)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> pad)</span>
+<span id="cb6-516"><a href="#cb6-516" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> width <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>pad)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> height <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>pad)</span>
+<span id="cb6-517"><a href="#cb6-517" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"rx"</span><span class="op">,</span> <span class="dv">10</span>)<span class="op">;</span></span>
+<span id="cb6-518"><a href="#cb6-518" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-519"><a href="#cb6-519" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Per-cell clipPaths (so we can draw A∩B_i by clipping the ellipse to each cell)</span></span>
+<span id="cb6-520"><a href="#cb6-520" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> sites<span class="op">.</span><span class="at">length</span><span class="op">;</span> i<span class="op">++</span>) {</span>
+<span id="cb6-521"><a href="#cb6-521" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> poly <span class="op">=</span> vor<span class="op">.</span><span class="fu">cellPolygon</span>(i)<span class="op">;</span></span>
+<span id="cb6-522"><a href="#cb6-522" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="op">!</span>poly) <span class="cf">continue</span><span class="op">;</span></span>
+<span id="cb6-523"><a href="#cb6-523" aria-hidden="true" tabindex="-1"></a>    defs<span class="op">.</span><span class="fu">append</span>(<span class="st">"clipPath"</span>)</span>
+<span id="cb6-524"><a href="#cb6-524" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"id"</span><span class="op">,</span> <span class="vs">`clipCell-lotp2-</span><span class="sc">${</span>i<span class="sc">}</span><span class="vs">`</span>)</span>
+<span id="cb6-525"><a href="#cb6-525" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">append</span>(<span class="st">"path"</span>)</span>
+<span id="cb6-526"><a href="#cb6-526" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"d"</span><span class="op">,</span> d3<span class="op">.</span><span class="fu">line</span>()(poly))<span class="op">;</span></span>
+<span id="cb6-527"><a href="#cb6-527" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-528"><a href="#cb6-528" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-529"><a href="#cb6-529" aria-hidden="true" tabindex="-1"></a>  <span class="co">// A: ellipse geometry</span></span>
+<span id="cb6-530"><a href="#cb6-530" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> Ax <span class="op">=</span> width <span class="op">*</span> <span class="fl">0.50</span><span class="op">,</span> Ay <span class="op">=</span> height <span class="op">*</span> <span class="fl">0.52</span><span class="op">;</span>  <span class="co">// centre</span></span>
+<span id="cb6-531"><a href="#cb6-531" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> Arx <span class="op">=</span> width <span class="op">*</span> <span class="fl">0.42</span><span class="op">,</span> Ary <span class="op">=</span> height <span class="op">*</span> <span class="fl">0.4</span><span class="op">;</span></span>
+<span id="cb6-532"><a href="#cb6-532" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-533"><a href="#cb6-533" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Draw A outline (thin) so learners see the target set even before fills</span></span>
+<span id="cb6-534"><a href="#cb6-534" aria-hidden="true" tabindex="-1"></a>  svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"ellipse"</span>)</span>
+<span id="cb6-535"><a href="#cb6-535" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"cx"</span><span class="op">,</span> Ax)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"cy"</span><span class="op">,</span> Ay)</span>
+<span id="cb6-536"><a href="#cb6-536" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"rx"</span><span class="op">,</span> Arx)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"ry"</span><span class="op">,</span> Ary)</span>
+<span id="cb6-537"><a href="#cb6-537" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"none"</span>)</span>
+<span id="cb6-538"><a href="#cb6-538" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> orange)</span>
+<span id="cb6-539"><a href="#cb6-539" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-width"</span><span class="op">,</span> <span class="dv">2</span>)</span>
+<span id="cb6-540"><a href="#cb6-540" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"clip-path"</span><span class="op">,</span> <span class="st">"url(#clipOmega-lotp2)"</span>)<span class="op">;</span></span>
+<span id="cb6-541"><a href="#cb6-541" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-542"><a href="#cb6-542" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- Voronoi cells: visible strokes on TOP of orange pieces ---</span></span>
+<span id="cb6-543"><a href="#cb6-543" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> strokes <span class="op">=</span> svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"g"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"clip-path"</span><span class="op">,</span> <span class="st">"url(#clipOmega-lotp2)"</span>)<span class="op">;</span></span>
+<span id="cb6-544"><a href="#cb6-544" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> polys <span class="op">=</span> []<span class="op">;</span></span>
+<span id="cb6-545"><a href="#cb6-545" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> sites<span class="op">.</span><span class="at">length</span><span class="op">;</span> i<span class="op">++</span>) {</span>
+<span id="cb6-546"><a href="#cb6-546" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> poly <span class="op">=</span> vor<span class="op">.</span><span class="fu">cellPolygon</span>(i)<span class="op">;</span></span>
+<span id="cb6-547"><a href="#cb6-547" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="op">!</span>poly) <span class="cf">continue</span><span class="op">;</span></span>
+<span id="cb6-548"><a href="#cb6-548" aria-hidden="true" tabindex="-1"></a>    polys<span class="op">.</span><span class="fu">push</span>({ i<span class="op">,</span> poly<span class="op">,</span> <span class="dt">name</span><span class="op">:</span> sites[i]<span class="op">.</span><span class="at">name</span> })<span class="op">;</span></span>
+<span id="cb6-549"><a href="#cb6-549" aria-hidden="true" tabindex="-1"></a>    strokes<span class="op">.</span><span class="fu">append</span>(<span class="st">"path"</span>)</span>
+<span id="cb6-550"><a href="#cb6-550" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"d"</span><span class="op">,</span> d3<span class="op">.</span><span class="fu">line</span>()(poly))</span>
+<span id="cb6-551"><a href="#cb6-551" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> <span class="st">"currentColor"</span>)</span>
+<span id="cb6-552"><a href="#cb6-552" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="fu">col</span>(i))</span>
+<span id="cb6-553"><a href="#cb6-553" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill-opacity"</span><span class="op">,</span> <span class="fl">0.2</span>)</span>
+<span id="cb6-554"><a href="#cb6-554" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-opacity"</span><span class="op">,</span> <span class="fl">0.55</span>)<span class="op">;</span></span>
+<span id="cb6-555"><a href="#cb6-555" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-556"><a href="#cb6-556" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-557"><a href="#cb6-557" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Labels at polygon centroids; adaptive font size</span></span>
+<span id="cb6-558"><a href="#cb6-558" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> fz2 <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="dv">10</span><span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(<span class="dv">14</span><span class="op">,</span> <span class="dv">16</span> <span class="op">-</span> <span class="fl">0.3</span> <span class="op">*</span> (n2 <span class="op">-</span> <span class="dv">3</span>)))<span class="op">;</span></span>
+<span id="cb6-559"><a href="#cb6-559" aria-hidden="true" tabindex="-1"></a>  svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"g"</span>)</span>
+<span id="cb6-560"><a href="#cb6-560" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">selectAll</span>(<span class="st">"text"</span>)</span>
+<span id="cb6-561"><a href="#cb6-561" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">data</span>(polys<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> {</span>
+<span id="cb6-562"><a href="#cb6-562" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> [cx<span class="op">,</span> cy] <span class="op">=</span> d3<span class="op">.</span><span class="fu">polygonCentroid</span>(d<span class="op">.</span><span class="at">poly</span>)<span class="op">;</span></span>
+<span id="cb6-563"><a href="#cb6-563" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> { <span class="dt">x</span><span class="op">:</span> cx<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> cy<span class="op">,</span> <span class="dt">name</span><span class="op">:</span> d<span class="op">.</span><span class="at">name</span> }<span class="op">;</span></span>
+<span id="cb6-564"><a href="#cb6-564" aria-hidden="true" tabindex="-1"></a>    }))</span>
+<span id="cb6-565"><a href="#cb6-565" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">join</span>(<span class="st">"text"</span>)</span>
+<span id="cb6-566"><a href="#cb6-566" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">x</span>)</span>
+<span id="cb6-567"><a href="#cb6-567" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">y</span>)</span>
+<span id="cb6-568"><a href="#cb6-568" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">text</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">name</span>)</span>
+<span id="cb6-569"><a href="#cb6-569" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"font-weight"</span><span class="op">,</span> <span class="dv">700</span>)</span>
+<span id="cb6-570"><a href="#cb6-570" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"var(--fg-muted)"</span>)</span>
+<span id="cb6-571"><a href="#cb6-571" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"font-size"</span><span class="op">,</span> <span class="vs">`</span><span class="sc">${</span>fz2<span class="sc">}</span><span class="vs">px`</span>)</span>
+<span id="cb6-572"><a href="#cb6-572" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"text-anchor"</span><span class="op">,</span> <span class="st">"middle"</span>)</span>
+<span id="cb6-573"><a href="#cb6-573" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"dominant-baseline"</span><span class="op">,</span> <span class="st">"middle"</span>)<span class="op">;</span></span>
+<span id="cb6-574"><a href="#cb6-574" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-575"><a href="#cb6-575" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- A∩B_i pieces (orange), revealed up to 'frame2' ---</span></span>
+<span id="cb6-576"><a href="#cb6-576" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> overlaps <span class="op">=</span> svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"g"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"clip-path"</span><span class="op">,</span> <span class="st">"url(#clipOmega-lotp2)"</span>)<span class="op">;</span></span>
+<span id="cb6-577"><a href="#cb6-577" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> sites<span class="op">.</span><span class="at">length</span><span class="op">;</span> i<span class="op">++</span>) {</span>
+<span id="cb6-578"><a href="#cb6-578" aria-hidden="true" tabindex="-1"></a>    overlaps<span class="op">.</span><span class="fu">append</span>(<span class="st">"ellipse"</span>)</span>
+<span id="cb6-579"><a href="#cb6-579" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"cx"</span><span class="op">,</span> Ax)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"cy"</span><span class="op">,</span> Ay)</span>
+<span id="cb6-580"><a href="#cb6-580" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"rx"</span><span class="op">,</span> Arx)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"ry"</span><span class="op">,</span> Ary)</span>
+<span id="cb6-581"><a href="#cb6-581" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> orange)</span>
+<span id="cb6-582"><a href="#cb6-582" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill-opacity"</span><span class="op">,</span> i <span class="op">&lt;</span> frame2 <span class="op">?</span> <span class="fl">1.</span> <span class="op">:</span> <span class="dv">0</span>)  <span class="co">// reveal progressively</span></span>
+<span id="cb6-583"><a href="#cb6-583" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"clip-path"</span><span class="op">,</span> <span class="vs">`url(#clipCell-lotp2-</span><span class="sc">${</span>i<span class="sc">}</span><span class="vs">)`</span>)<span class="op">;</span></span>
+<span id="cb6-584"><a href="#cb6-584" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-585"><a href="#cb6-585" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-586"><a href="#cb6-586" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-587"><a href="#cb6-587" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Ω frame</span></span>
+<span id="cb6-588"><a href="#cb6-588" aria-hidden="true" tabindex="-1"></a>  svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"rect"</span>)</span>
+<span id="cb6-589"><a href="#cb6-589" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> pad)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> pad)</span>
+<span id="cb6-590"><a href="#cb6-590" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> width <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>pad)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> height <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>pad)</span>
+<span id="cb6-591"><a href="#cb6-591" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"rx"</span><span class="op">,</span> <span class="dv">10</span>)</span>
+<span id="cb6-592"><a href="#cb6-592" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"none"</span>)</span>
+<span id="cb6-593"><a href="#cb6-593" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> <span class="st">"currentColor"</span>)</span>
+<span id="cb6-594"><a href="#cb6-594" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-opacity"</span><span class="op">,</span> <span class="fl">0.55</span>)<span class="op">;</span></span>
+<span id="cb6-595"><a href="#cb6-595" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-596"><a href="#cb6-596" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Ω label</span></span>
+<span id="cb6-597"><a href="#cb6-597" aria-hidden="true" tabindex="-1"></a>  svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"text"</span>)</span>
+<span id="cb6-598"><a href="#cb6-598" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> pad <span class="op">+</span> <span class="dv">8</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> pad <span class="op">+</span> <span class="dv">16</span>)</span>
+<span id="cb6-599"><a href="#cb6-599" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">text</span>(<span class="st">"Ω"</span>)</span>
+<span id="cb6-600"><a href="#cb6-600" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-weight"</span><span class="op">,</span> <span class="dv">400</span>)</span>
+<span id="cb6-601"><a href="#cb6-601" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-size"</span><span class="op">,</span> <span class="st">"18px"</span>)</span>
+<span id="cb6-602"><a href="#cb6-602" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"currentColor"</span>)<span class="op">;</span></span>
+<span id="cb6-603"><a href="#cb6-603" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-604"><a href="#cb6-604" aria-hidden="true" tabindex="-1"></a>  <span class="co">// A label</span></span>
+<span id="cb6-605"><a href="#cb6-605" aria-hidden="true" tabindex="-1"></a>  svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"text"</span>)</span>
+<span id="cb6-606"><a href="#cb6-606" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> Ax)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> Ay)</span>
+<span id="cb6-607"><a href="#cb6-607" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">text</span>(<span class="st">"A"</span>)</span>
+<span id="cb6-608"><a href="#cb6-608" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"currentColor"</span>)</span>
+<span id="cb6-609"><a href="#cb6-609" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"font-size"</span><span class="op">,</span> <span class="dv">18</span>)</span>
+<span id="cb6-610"><a href="#cb6-610" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"font-weight"</span><span class="op">,</span> <span class="dv">700</span>)</span>
+<span id="cb6-611"><a href="#cb6-611" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"text-anchor"</span><span class="op">,</span> <span class="st">"middle"</span>)<span class="op">;</span></span>
+<span id="cb6-612"><a href="#cb6-612" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-613"><a href="#cb6-613" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> svg<span class="op">.</span><span class="fu">node</span>()<span class="op">;</span></span>
+<span id="cb6-614"><a href="#cb6-614" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div id="fig-lotp-voronoi" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-lotp-voronoi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1420,18 +1406,18 @@ Figure&nbsp;1.3: Law of Total Probability visualised. An event <span class="math
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb7" data-startfrom="612" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 611;"><span id="cb7-612"><a href="#cb7-612" aria-hidden="true" tabindex="-1"></a><span class="co">// Animation driver: each button click restarts the reveal</span></span>
-<span id="cb7-613"><a href="#cb7-613" aria-hidden="true" tabindex="-1"></a>frame2 <span class="op">=</span> {</span>
-<span id="cb7-614"><a href="#cb7-614" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="op">!</span>click2) <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb7-615"><a href="#cb7-615" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> delay <span class="op">=</span> <span class="dv">600</span><span class="op">;</span></span>
-<span id="cb7-616"><a href="#cb7-616" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb7-617"><a href="#cb7-617" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> (i <span class="op">&lt;=</span> n2) {</span>
-<span id="cb7-618"><a href="#cb7-618" aria-hidden="true" tabindex="-1"></a>    <span class="kw">yield</span> i<span class="op">;</span></span>
-<span id="cb7-619"><a href="#cb7-619" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> Promises<span class="op">.</span><span class="fu">delay</span>(delay)<span class="op">;</span></span>
-<span id="cb7-620"><a href="#cb7-620" aria-hidden="true" tabindex="-1"></a>    i<span class="op">++;</span></span>
-<span id="cb7-621"><a href="#cb7-621" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb7-622"><a href="#cb7-622" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> i<span class="op">;</span></span>
-<span id="cb7-623"><a href="#cb7-623" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb7" data-startfrom="619" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 618;"><span id="cb7-619"><a href="#cb7-619" aria-hidden="true" tabindex="-1"></a><span class="co">// Animation driver: each button click restarts the reveal</span></span>
+<span id="cb7-620"><a href="#cb7-620" aria-hidden="true" tabindex="-1"></a>frame2 <span class="op">=</span> {</span>
+<span id="cb7-621"><a href="#cb7-621" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="op">!</span>click2) <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-622"><a href="#cb7-622" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> delay <span class="op">=</span> <span class="dv">600</span><span class="op">;</span></span>
+<span id="cb7-623"><a href="#cb7-623" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-624"><a href="#cb7-624" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> (i <span class="op">&lt;=</span> n2) {</span>
+<span id="cb7-625"><a href="#cb7-625" aria-hidden="true" tabindex="-1"></a>    <span class="kw">yield</span> i<span class="op">;</span></span>
+<span id="cb7-626"><a href="#cb7-626" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> Promises<span class="op">.</span><span class="fu">delay</span>(delay)<span class="op">;</span></span>
+<span id="cb7-627"><a href="#cb7-627" aria-hidden="true" tabindex="-1"></a>    i<span class="op">++;</span></span>
+<span id="cb7-628"><a href="#cb7-628" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-629"><a href="#cb7-629" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> i<span class="op">;</span></span>
+<span id="cb7-630"><a href="#cb7-630" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-7" data-nodetype="declaration">
 
@@ -1439,41 +1425,41 @@ Figure&nbsp;1.3: Law of Total Probability visualised. An event <span class="math
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb8" data-startfrom="632" data-source-offset="-127"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 631;"><span id="cb8-632"><a href="#cb8-632" aria-hidden="true" tabindex="-1"></a>viewof controls2 <span class="op">=</span> {</span>
-<span id="cb8-633"><a href="#cb8-633" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> leftForm  <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">form</span>(</span>
-<span id="cb8-634"><a href="#cb8-634" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">n</span><span class="op">:</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">3</span><span class="op">,</span> <span class="dv">50</span>]<span class="op">,</span> { <span class="dt">value</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`k`</span><span class="sc">}</span><span class="vs">: number of sets`</span> }) }<span class="op">,</span></span>
-<span id="cb8-635"><a href="#cb8-635" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">submit</span><span class="op">:</span><span class="kw">false</span> }</span>
-<span id="cb8-636"><a href="#cb8-636" aria-hidden="true" tabindex="-1"></a>  )<span class="op">;</span></span>
-<span id="cb8-637"><a href="#cb8-637" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-638"><a href="#cb8-638" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> playBtn <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">button</span>(<span class="st">"▶ Play"</span>)<span class="op">;</span></span>
-<span id="cb8-639"><a href="#cb8-639" aria-hidden="true" tabindex="-1"></a>  playBtn<span class="op">.</span><span class="at">classList</span><span class="op">.</span><span class="fu">add</span>(<span class="st">"btn-resim"</span>)<span class="op">;</span>  <span class="co">// reuse your teal button style</span></span>
-<span id="cb8-640"><a href="#cb8-640" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-641"><a href="#cb8-641" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> rightForm <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">form</span>({ <span class="dt">click2</span><span class="op">:</span> playBtn }<span class="op">,</span> { <span class="dt">submit</span><span class="op">:</span><span class="kw">false</span> })<span class="op">;</span></span>
-<span id="cb8-642"><a href="#cb8-642" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-643"><a href="#cb8-643" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> <span class="bu">root</span> <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div class="controls-wrap"&gt;</span></span>
-<span id="cb8-644"><a href="#cb8-644" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;details class="controls-root" open&gt;</span></span>
-<span id="cb8-645"><a href="#cb8-645" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;summary&gt;Law of Total Probability controls&lt;/summary&gt;</span></span>
-<span id="cb8-646"><a href="#cb8-646" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;div class="controls-grid"&gt;</span></span>
-<span id="cb8-647"><a href="#cb8-647" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;div class="controls-col"&gt;&lt;h4&gt;Partition size&lt;/h4&gt;&lt;/div&gt;</span></span>
-<span id="cb8-648"><a href="#cb8-648" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;div class="controls-col"&gt;&lt;h4&gt;Animation&lt;/h4&gt;&lt;/div&gt;</span></span>
-<span id="cb8-649"><a href="#cb8-649" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;/div&gt;</span></span>
-<span id="cb8-650"><a href="#cb8-650" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/details&gt;</span></span>
-<span id="cb8-651"><a href="#cb8-651" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;`</span><span class="op">;</span></span>
-<span id="cb8-652"><a href="#cb8-652" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-653"><a href="#cb8-653" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> grid <span class="op">=</span> <span class="bu">root</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">".controls-grid"</span>)<span class="op">;</span></span>
-<span id="cb8-654"><a href="#cb8-654" aria-hidden="true" tabindex="-1"></a>  grid<span class="op">.</span><span class="at">children</span>[<span class="dv">0</span>]<span class="op">.</span><span class="fu">append</span>(leftForm)<span class="op">;</span></span>
-<span id="cb8-655"><a href="#cb8-655" aria-hidden="true" tabindex="-1"></a>  grid<span class="op">.</span><span class="at">children</span>[<span class="dv">1</span>]<span class="op">.</span><span class="fu">append</span>(rightForm)<span class="op">;</span></span>
-<span id="cb8-656"><a href="#cb8-656" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-657"><a href="#cb8-657" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> getValue <span class="op">=</span> () <span class="kw">=&gt;</span> ({ <span class="op">...</span>leftForm<span class="op">.</span><span class="at">value</span><span class="op">,</span> <span class="op">...</span>rightForm<span class="op">.</span><span class="at">value</span> })<span class="op">;</span></span>
-<span id="cb8-658"><a href="#cb8-658" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> update <span class="op">=</span> () <span class="kw">=&gt;</span> { <span class="bu">root</span><span class="op">.</span><span class="at">value</span> <span class="op">=</span> <span class="fu">getValue</span>()<span class="op">;</span> <span class="bu">root</span><span class="op">.</span><span class="fu">dispatchEvent</span>(<span class="kw">new</span> <span class="bu">CustomEvent</span>(<span class="st">"input"</span><span class="op">,</span> { <span class="dt">bubbles</span><span class="op">:</span><span class="kw">true</span> }))<span class="op">;</span> }<span class="op">;</span></span>
-<span id="cb8-659"><a href="#cb8-659" aria-hidden="true" tabindex="-1"></a>  grid<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"input"</span><span class="op">,</span> update)<span class="op">;</span></span>
-<span id="cb8-660"><a href="#cb8-660" aria-hidden="true" tabindex="-1"></a>  <span class="fu">queueMicrotask</span>(update)<span class="op">;</span></span>
-<span id="cb8-661"><a href="#cb8-661" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">root</span><span class="op">;</span></span>
-<span id="cb8-662"><a href="#cb8-662" aria-hidden="true" tabindex="-1"></a>}</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb8" data-startfrom="639" data-source-offset="-127"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 638;"><span id="cb8-639"><a href="#cb8-639" aria-hidden="true" tabindex="-1"></a>viewof controls2 <span class="op">=</span> {</span>
+<span id="cb8-640"><a href="#cb8-640" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> leftForm  <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">form</span>(</span>
+<span id="cb8-641"><a href="#cb8-641" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">n</span><span class="op">:</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">3</span><span class="op">,</span> <span class="dv">50</span>]<span class="op">,</span> { <span class="dt">value</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="fu">md</span><span class="vs">`</span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`k`</span><span class="sc">}</span><span class="vs">: number of sets`</span> }) }<span class="op">,</span></span>
+<span id="cb8-642"><a href="#cb8-642" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">submit</span><span class="op">:</span><span class="kw">false</span> }</span>
+<span id="cb8-643"><a href="#cb8-643" aria-hidden="true" tabindex="-1"></a>  )<span class="op">;</span></span>
+<span id="cb8-644"><a href="#cb8-644" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-645"><a href="#cb8-645" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> playBtn <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">button</span>(<span class="st">"▶ Play"</span>)<span class="op">;</span></span>
+<span id="cb8-646"><a href="#cb8-646" aria-hidden="true" tabindex="-1"></a>  playBtn<span class="op">.</span><span class="at">classList</span><span class="op">.</span><span class="fu">add</span>(<span class="st">"btn-resim"</span>)<span class="op">;</span>  <span class="co">// reuse your teal button style</span></span>
+<span id="cb8-647"><a href="#cb8-647" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-648"><a href="#cb8-648" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> rightForm <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">form</span>({ <span class="dt">click2</span><span class="op">:</span> playBtn }<span class="op">,</span> { <span class="dt">submit</span><span class="op">:</span><span class="kw">false</span> })<span class="op">;</span></span>
+<span id="cb8-649"><a href="#cb8-649" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-650"><a href="#cb8-650" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> <span class="bu">root</span> <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div class="controls-wrap"&gt;</span></span>
+<span id="cb8-651"><a href="#cb8-651" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;details class="controls-root" open&gt;</span></span>
+<span id="cb8-652"><a href="#cb8-652" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;summary&gt;Law of Total Probability controls&lt;/summary&gt;</span></span>
+<span id="cb8-653"><a href="#cb8-653" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;div class="controls-grid"&gt;</span></span>
+<span id="cb8-654"><a href="#cb8-654" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;div class="controls-col"&gt;&lt;h4&gt;Partition size&lt;/h4&gt;&lt;/div&gt;</span></span>
+<span id="cb8-655"><a href="#cb8-655" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;div class="controls-col"&gt;&lt;h4&gt;Animation&lt;/h4&gt;&lt;/div&gt;</span></span>
+<span id="cb8-656"><a href="#cb8-656" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;/div&gt;</span></span>
+<span id="cb8-657"><a href="#cb8-657" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/details&gt;</span></span>
+<span id="cb8-658"><a href="#cb8-658" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb8-659"><a href="#cb8-659" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-660"><a href="#cb8-660" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> grid <span class="op">=</span> <span class="bu">root</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">".controls-grid"</span>)<span class="op">;</span></span>
+<span id="cb8-661"><a href="#cb8-661" aria-hidden="true" tabindex="-1"></a>  grid<span class="op">.</span><span class="at">children</span>[<span class="dv">0</span>]<span class="op">.</span><span class="fu">append</span>(leftForm)<span class="op">;</span></span>
+<span id="cb8-662"><a href="#cb8-662" aria-hidden="true" tabindex="-1"></a>  grid<span class="op">.</span><span class="at">children</span>[<span class="dv">1</span>]<span class="op">.</span><span class="fu">append</span>(rightForm)<span class="op">;</span></span>
 <span id="cb8-663"><a href="#cb8-663" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-664"><a href="#cb8-664" aria-hidden="true" tabindex="-1"></a><span class="co">// reactive</span></span>
-<span id="cb8-665"><a href="#cb8-665" aria-hidden="true" tabindex="-1"></a>n2     <span class="op">=</span> controls2<span class="op">.</span><span class="at">n</span></span>
-<span id="cb8-666"><a href="#cb8-666" aria-hidden="true" tabindex="-1"></a>click2 <span class="op">=</span> controls2<span class="op">.</span><span class="at">click2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-664"><a href="#cb8-664" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> getValue <span class="op">=</span> () <span class="kw">=&gt;</span> ({ <span class="op">...</span>leftForm<span class="op">.</span><span class="at">value</span><span class="op">,</span> <span class="op">...</span>rightForm<span class="op">.</span><span class="at">value</span> })<span class="op">;</span></span>
+<span id="cb8-665"><a href="#cb8-665" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> update <span class="op">=</span> () <span class="kw">=&gt;</span> { <span class="bu">root</span><span class="op">.</span><span class="at">value</span> <span class="op">=</span> <span class="fu">getValue</span>()<span class="op">;</span> <span class="bu">root</span><span class="op">.</span><span class="fu">dispatchEvent</span>(<span class="kw">new</span> <span class="bu">CustomEvent</span>(<span class="st">"input"</span><span class="op">,</span> { <span class="dt">bubbles</span><span class="op">:</span><span class="kw">true</span> }))<span class="op">;</span> }<span class="op">;</span></span>
+<span id="cb8-666"><a href="#cb8-666" aria-hidden="true" tabindex="-1"></a>  grid<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"input"</span><span class="op">,</span> update)<span class="op">;</span></span>
+<span id="cb8-667"><a href="#cb8-667" aria-hidden="true" tabindex="-1"></a>  <span class="fu">queueMicrotask</span>(update)<span class="op">;</span></span>
+<span id="cb8-668"><a href="#cb8-668" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">root</span><span class="op">;</span></span>
+<span id="cb8-669"><a href="#cb8-669" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-670"><a href="#cb8-670" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-671"><a href="#cb8-671" aria-hidden="true" tabindex="-1"></a><span class="co">// reactive</span></span>
+<span id="cb8-672"><a href="#cb8-672" aria-hidden="true" tabindex="-1"></a>n2     <span class="op">=</span> controls2<span class="op">.</span><span class="at">n</span></span>
+<span id="cb8-673"><a href="#cb8-673" aria-hidden="true" tabindex="-1"></a>click2 <span class="op">=</span> controls2<span class="op">.</span><span class="at">click2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-8-1" data-nodetype="declaration">
@@ -1513,7 +1499,7 @@ Figure&nbsp;1.3: Law of Total Probability visualised. An event <span class="math
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1522,7 +1508,7 @@ Figure&nbsp;1.3: Law of Total Probability visualised. An event <span class="math
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="prf-bayes" class="proof">
 <p><span class="proof-title"><em>Proof 1.2</em>. </span>From the definition of <span class="xref-no-num"><a href="#def-conditional" class="quarto-xref">conditional probability&nbsp;<span>1.4</span></a></span>,<br>
@@ -1555,24 +1541,9 @@ Figure&nbsp;1.3: Law of Total Probability visualised. An event <span class="math
 <li>A student is selected at random. What is the probability that they pass the course?</li>
 <li>Given that the student passed the course, what is the probability that they were attentive?</li>
 </ol>
-</div>
-</div>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-6" class="callout-6-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div id="sol-student" class="proof solution">
-<p><span class="proof-title"><em>Solution 1.2</em>. </span>Let</p>
+<details>
+  <summary><strong> Solution </strong></summary>
+<p>Let</p>
 <ul>
 <li><span class="math inline">P</span> denote the event of a student passing the course.</li>
 <li><span class="math inline">A</span> denote the event of a student being attentive.</li>
@@ -1591,6 +1562,7 @@ Figure&nbsp;1.3: Law of Total Probability visualised. An event <span class="math
 \mathrm{Pr}(A\mid P)=\frac{\mathrm{Pr}(P\mid A)\mathrm{Pr}(A)}{\mathrm{Pr}(P)}
 =\frac{0.8\times0.7}{0.59}=0.949\ \text{(3 s.f.)}.
 </span></p>
+</details>
 </div>
 </div>
 </div>
@@ -1621,25 +1593,11 @@ f(x)=\frac{\partial F(x)}{\partial x},\qquad \mathrm{Pr}(a&lt;X\le b)=\int_a^b f
 <div class="callout-body-container">
 <div id="exm-discrete-cdf" class="theorem example">
 <p><span class="theorem-title"><strong>Example 1.3 (Discrete CDF.)</strong></span> Let <span class="math inline">X</span> be the outcome of a fair six-sided die. Find <span class="math inline">p(x)</span> and <span class="math inline">F(3)</span>.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-7" class="callout-7-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div id="sol-discrete-cdf" class="proof solution">
-<p><span class="proof-title"><em>Solution 1.3</em>. </span><span class="math inline">p(x)=\mathrm{Pr}(X=x)=1/6</span> for <span class="math inline">x\in\{1,2,3,4,5,6\}</span>, and <span class="math inline">0</span> otherwise.<br>
+<details>
+  <summary><strong> Solution </strong></summary>
+<p><span class="math inline">p(x)=\mathrm{Pr}(X=x)=1/6</span> for <span class="math inline">x\in\{1,2,3,4,5,6\}</span>, and <span class="math inline">0</span> otherwise.<br>
 <span class="math inline">F(3)=\mathrm{Pr}(X\le 3)=\mathrm{Pr}(\{1,2,3\})=3\times(1/6)=1/2.</span></p>
+</details>
 </div>
 </div>
 </div>
@@ -1652,27 +1610,13 @@ f(x)=\frac{\partial F(x)}{\partial x},\qquad \mathrm{Pr}(a&lt;X\le b)=\int_a^b f
 <div class="callout-body-container">
 <div id="exm-continuous-pdf" class="theorem example">
 <p><span class="theorem-title"><strong>Example 1.4</strong></span> Let <span class="math inline">X\sim \mathrm{Uniform}(0,1)</span>. Compute <span class="math inline">\mathrm{Pr}(0.2&lt;X&lt;0.5)</span>.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-8" class="callout-8-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div id="sol-continuous-pdf" class="proof solution">
-<p><span class="proof-title"><em>Solution 1.4</em>. </span>Here <span class="math inline">f(x)=1</span> for <span class="math inline">0&lt;x&lt;1</span> and <span class="math inline">0</span> otherwise.</p>
+<details>
+  <summary><strong> Solution </strong></summary>
+<p>Here <span class="math inline">f(x)=1</span> for <span class="math inline">0&lt;x&lt;1</span> and <span class="math inline">0</span> otherwise.</p>
 <p><span class="math display">
 \mathrm{Pr}(0.2&lt;X&lt;0.5)=\int_{0.2}^{0.5} 1\,dx = 0.3.
 </span></p>
+</details>
 </div>
 </div>
 </div>
@@ -1898,24 +1842,9 @@ f(x,y) = f_X(x) f_Y(y).
 \operatorname{Pr}(X=1) = p, \qquad \operatorname{Pr}(X=0) = 1-p, \qquad 0 \leq p \leq 1.
 </span></p>
 <p>For what value of <span class="math inline">p</span> is the variance maximised?</p>
-</div>
-</div>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-9" class="callout-9-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div id="sol-bern-var" class="proof solution">
-<p><span class="proof-title"><em>Solution 1.5</em>. </span>We compute the mean and variance of <span class="math inline">X</span>.</p>
+<details>
+  <summary><strong> Solution </strong></summary>
+<p>We compute the mean and variance of <span class="math inline">X</span>.</p>
 <p><span class="math display">
 \mathrm{E}[X] = 1 \cdot p + 0 \cdot (1-p) = p,
 </span></p>
@@ -1945,6 +1874,7 @@ The variance of a Bernoulli random variable is maximised at<br>
 <span class="math display">
 p = \tfrac{1}{2}, \quad \mathrm{Var}(X) = \tfrac{1}{4}.
 </span></p>
+</details>
 </div>
 </div>
 </div>

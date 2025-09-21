@@ -466,7 +466,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../content/main/part2/4-freq-point-estimation.html">Part II — Parameter Estimation</a></li><li class="breadcrumb-item"><a href="../../../content/main/part2/6-bayes-inference.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../content/main/part2/4-freq-point-estimation.html">Part II — Point Estimation</a></li><li class="breadcrumb-item"><a href="../../../content/main/part2/6-bayes-inference.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -528,7 +528,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
- <span class="menu-text">Part II — Parameter Estimation</span></a>
+ <span class="menu-text">Part II — Point Estimation</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -660,9 +660,10 @@ window.Quarto = {
   <li><a href="#bayes-theorem-in-statistics" id="toc-bayes-theorem-in-statistics" class="nav-link" data-scroll-target="#bayes-theorem-in-statistics"><span class="header-section-number">6.3</span> Bayes’ Theorem in Statistics</a>
   <ul class="collapse">
   <li><a href="#from-bayes-theorem-to-the-posterior" id="toc-from-bayes-theorem-to-the-posterior" class="nav-link" data-scroll-target="#from-bayes-theorem-to-the-posterior"><span class="header-section-number">6.3.1</span> From Bayes’ theorem to the Posterior</a></li>
-  <li><a href="#posteriors-in-practice" id="toc-posteriors-in-practice" class="nav-link" data-scroll-target="#posteriors-in-practice"><span class="header-section-number">6.3.2</span> Posteriors in Practice</a></li>
-  <li><a href="#conjugacy" id="toc-conjugacy" class="nav-link" data-scroll-target="#conjugacy"><span class="header-section-number">6.3.3</span> Conjugacy</a></li>
+  <li><a href="#sec-posteriors-in-practice" id="toc-sec-posteriors-in-practice" class="nav-link" data-scroll-target="#sec-posteriors-in-practice"><span class="header-section-number">6.3.2</span> Posteriors in Practice</a></li>
+  <li><a href="#sec-conjugacy" id="toc-sec-conjugacy" class="nav-link" data-scroll-target="#sec-conjugacy"><span class="header-section-number">6.3.3</span> Conjugacy</a></li>
   </ul></li>
+  <li><a href="#asymptotic-posterior-distribution" id="toc-asymptotic-posterior-distribution" class="nav-link" data-scroll-target="#asymptotic-posterior-distribution"><span class="header-section-number">6.4</span> Asymptotic Posterior Distribution</a></li>
   </ul>
 </nav>
     </div>
@@ -670,7 +671,7 @@ window.Quarto = {
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../content/main/part2/4-freq-point-estimation.html">Part II — Parameter Estimation</a></li><li class="breadcrumb-item"><a href="../../../content/main/part2/6-bayes-inference.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../content/main/part2/4-freq-point-estimation.html">Part II — Point Estimation</a></li><li class="breadcrumb-item"><a href="../../../content/main/part2/6-bayes-inference.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span id="sec-bayes-inference" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></span></h1>
 </div>
@@ -1317,8 +1318,8 @@ X_i \mid \theta \sim \mathrm{Distribution}(\theta),
 </div>
 </div>
 </section>
-<section id="posteriors-in-practice" class="level3" data-number="6.3.2">
-<h3 data-number="6.3.2" class="anchored" data-anchor-id="posteriors-in-practice"><span class="header-section-number">6.3.2</span> Posteriors in Practice</h3>
+<section id="sec-posteriors-in-practice" class="level3" data-number="6.3.2">
+<h3 data-number="6.3.2" class="anchored" data-anchor-id="sec-posteriors-in-practice"><span class="header-section-number">6.3.2</span> Posteriors in Practice</h3>
 <p>We now work through a simple example to see how this update works.</p>
 <div class="callout callout-style-simple callout-caution no-icon">
 <div class="callout-body d-flex">
@@ -1338,24 +1339,9 @@ X_i \mid \theta \sim \mathrm{Distribution}(\theta),
 <li><p><strong>Data:</strong> We toss the coin <span class="math inline">n=5</span> times and observe <span class="math inline">x=1</span> head.</p></li>
 <li><p><strong>Posterior:</strong> Bayes’ theorem combines the Binomial likelihood with the prior to give <span class="math inline">\pi(\theta \mid x)</span>.</p></li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div id="sol-biased-coin" class="proof solution">
-<p><span class="proof-title"><em>Solution 6.1</em>. </span>Let <span class="math inline">X</span> be the number of heads in <span class="math inline">5</span> tosses. Assuming that each coin throw is <em>independent and identically distributed</em>, <span class="math inline">X</span> is Binomial<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>: <span class="math display">
+<details>
+  <summary><strong> Solution </strong></summary>
+<p>Let <span class="math inline">X</span> be the number of heads in <span class="math inline">5</span> tosses. Assuming that each coin throw is <em>independent and identically distributed</em>, <span class="math inline">X</span> is Binomial<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>: <span class="math display">
     X \mid \theta \sim \textrm{Bin}(5,\theta).
 </span> Note that there is only a <strong>single observation</strong> here: one experiment is “tossing the coin <span class="math inline">5</span> times and seeing how many come up heads”. The probability of observing <span class="math inline">X=1</span> is <span class="math display">
     f(x = 1 \mid \theta) = 5\theta(1-\theta)^4
@@ -1383,7 +1369,7 @@ X_i \mid \theta \sim \mathrm{Distribution}(\theta),
 <span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Binomial Likelihood (with $n=5$ and $X=1$)"</span>)</span>
 <span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
 <span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>plt.show()  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>we see that this favours <span class="math inline">\theta</span> around <span class="math inline">0.2</span>. In fact, in <a href="5-likelihood.html#exm-binom-mle-single" class="quarto-xref">Example&nbsp;<span>5.6</span></a>, we saw that the MLE is <span class="math inline">\hat{\theta} = 0.2</span>.</p>
+<p>we see that this favours <span class="math inline">\theta</span> around <span class="math inline">0.2</span>. In fact, in <a href="5-likelihood.html#exm-binom-mle-single" class="quarto-xref">Example&nbsp;<span>5.9</span></a>, we saw that the MLE is <span class="math inline">\hat{\theta} = 0.2</span>.</p>
 <p>Our prior for <span class="math inline">\theta</span> was <span class="math inline">\pi(\theta) = 1</span>, for <span class="math inline">0 &lt; \theta &lt; 1</span>. To update our beliefs, by conditioning on the single observation <span class="math inline">x=2</span>, we use <span class="xref-no-num"><a href="#def-posterior" class="quarto-xref">Bayes’ Theorem&nbsp;<span>6.2</span></a></span>: <span class="math display">
     \pi(\theta|x=1)=\frac{\pi(\theta)f(x=1|\theta)}{f(x=1)} = \frac{1 \times 5\theta(1-\theta)^4}{f(x=1)}, \quad 0 &lt; \theta &lt; 1.
 </span> To compute the <em>denominator</em>, <span class="math inline">f(x=1)</span>, we use the <span class="xref-no-num"><a href="../part1/1-prob-theory.html#thm-total-probability-pdfs" class="quarto-xref">law of total probability&nbsp;<span>1.3</span></a></span>:</p>
@@ -1399,6 +1385,7 @@ f(x=1) &amp;=\int_\Theta\pi(\theta)f(x=1\, |\,\theta)\,d\theta = \int_0^1 1\time
 &amp;=30\,\theta(1-\theta)^4 =\frac{\theta(1-\theta)^4}{\mathrm{B}(2,5)},\quad\quad 0&lt;\theta&lt;1,
 \end{align*}</span></p>
 <p>and so the posterior distribution is <span class="math inline">\theta|x=1\sim \textrm{Beta}(2,5)</span>. This distribution has its mode at <span class="math inline">\theta=0.2</span>, and mean at <span class="math inline">\mathrm{E}[\theta|x=1]=2/7=0.286</span>.</p>
+</details>
 </div>
 </div>
 </div>
@@ -1421,16 +1408,16 @@ f(x=1) &amp;=\int_\Theta\pi(\theta)f(x=1\, |\,\theta)\,d\theta = \int_0^1 1\time
 <details>
   <summary><strong> Show Plot </strong></summary>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb10" data-startfrom="581" data-source-offset="-19"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 580;"><span id="cb10-581"><a href="#cb10-581" aria-hidden="true" tabindex="-1"></a>mDomain <span class="op">=</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]</span>
-<span id="cb10-582"><a href="#cb10-582" aria-hidden="true" tabindex="-1"></a>pdfXs <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleLinear</span>()<span class="op">.</span><span class="fu">domain</span>(mDomain)<span class="op">.</span><span class="fu">ticks</span>(<span class="dv">200</span>)  <span class="co">// 201 points including 0 and 1</span></span>
-<span id="cb10-583"><a href="#cb10-583" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-584"><a href="#cb10-584" aria-hidden="true" tabindex="-1"></a><span class="co">// PDFs (closed-form)</span></span>
-<span id="cb10-585"><a href="#cb10-585" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">priorPDF</span>(x)     { <span class="cf">return</span> (x <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> x <span class="op">&lt;</span> <span class="dv">1</span>) <span class="op">?</span> <span class="dv">1</span> <span class="op">:</span> <span class="dv">0</span><span class="op">;</span> }</span>
-<span id="cb10-586"><a href="#cb10-586" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">posteriorPDF</span>(x) { <span class="cf">return</span> (x <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> x <span class="op">&lt;</span> <span class="dv">1</span>) <span class="op">?</span> <span class="dv">30</span> <span class="op">*</span> x <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> x) <span class="op">**</span> <span class="dv">4</span> <span class="op">:</span> <span class="dv">0</span><span class="op">;</span> }</span>
-<span id="cb10-587"><a href="#cb10-587" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-588"><a href="#cb10-588" aria-hidden="true" tabindex="-1"></a><span class="co">// Data (use the scalar x from map!)</span></span>
-<span id="cb10-589"><a href="#cb10-589" aria-hidden="true" tabindex="-1"></a>prior <span class="op">=</span> pdfXs<span class="op">.</span><span class="fu">map</span>(x <span class="kw">=&gt;</span> ({ x<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">priorPDF</span>(x)<span class="op">,</span> <span class="dt">which</span><span class="op">:</span> <span class="st">"Prior  Beta(1,1)"</span> }))</span>
-<span id="cb10-590"><a href="#cb10-590" aria-hidden="true" tabindex="-1"></a>post  <span class="op">=</span> pdfXs<span class="op">.</span><span class="fu">map</span>(x <span class="kw">=&gt;</span> ({ x<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">posteriorPDF</span>(x)<span class="op">,</span> <span class="dt">which</span><span class="op">:</span> <span class="st">"Posterior  Beta(2,5)"</span> }))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb10" data-startfrom="589" data-source-offset="-19"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 588;"><span id="cb10-589"><a href="#cb10-589" aria-hidden="true" tabindex="-1"></a>mDomain <span class="op">=</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]</span>
+<span id="cb10-590"><a href="#cb10-590" aria-hidden="true" tabindex="-1"></a>pdfXs <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleLinear</span>()<span class="op">.</span><span class="fu">domain</span>(mDomain)<span class="op">.</span><span class="fu">ticks</span>(<span class="dv">200</span>)  <span class="co">// 201 points including 0 and 1</span></span>
+<span id="cb10-591"><a href="#cb10-591" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-592"><a href="#cb10-592" aria-hidden="true" tabindex="-1"></a><span class="co">// PDFs (closed-form)</span></span>
+<span id="cb10-593"><a href="#cb10-593" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">priorPDF</span>(x)     { <span class="cf">return</span> (x <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> x <span class="op">&lt;</span> <span class="dv">1</span>) <span class="op">?</span> <span class="dv">1</span> <span class="op">:</span> <span class="dv">0</span><span class="op">;</span> }</span>
+<span id="cb10-594"><a href="#cb10-594" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">posteriorPDF</span>(x) { <span class="cf">return</span> (x <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> x <span class="op">&lt;</span> <span class="dv">1</span>) <span class="op">?</span> <span class="dv">30</span> <span class="op">*</span> x <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> x) <span class="op">**</span> <span class="dv">4</span> <span class="op">:</span> <span class="dv">0</span><span class="op">;</span> }</span>
+<span id="cb10-595"><a href="#cb10-595" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-596"><a href="#cb10-596" aria-hidden="true" tabindex="-1"></a><span class="co">// Data (use the scalar x from map!)</span></span>
+<span id="cb10-597"><a href="#cb10-597" aria-hidden="true" tabindex="-1"></a>prior <span class="op">=</span> pdfXs<span class="op">.</span><span class="fu">map</span>(x <span class="kw">=&gt;</span> ({ x<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">priorPDF</span>(x)<span class="op">,</span> <span class="dt">which</span><span class="op">:</span> <span class="st">"Prior  Beta(1,1)"</span> }))</span>
+<span id="cb10-598"><a href="#cb10-598" aria-hidden="true" tabindex="-1"></a>post  <span class="op">=</span> pdfXs<span class="op">.</span><span class="fu">map</span>(x <span class="kw">=&gt;</span> ({ x<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">posteriorPDF</span>(x)<span class="op">,</span> <span class="dt">which</span><span class="op">:</span> <span class="st">"Posterior  Beta(2,5)"</span> }))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-8-1" data-nodetype="declaration">
@@ -1475,39 +1462,39 @@ f(x=1) &amp;=\int_\Theta\pi(\theta)f(x=1\, |\,\theta)\,d\theta = \int_0^1 1\time
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb11" data-startfrom="597" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 596;"><span id="cb11-597"><a href="#cb11-597" aria-hidden="true" tabindex="-1"></a><span class="co">// Create the plot directly without viewof</span></span>
-<span id="cb11-598"><a href="#cb11-598" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb11-599"><a href="#cb11-599" aria-hidden="true" tabindex="-1"></a>  <span class="co">// omit width to let it be responsive</span></span>
-<span id="cb11-600"><a href="#cb11-600" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">320</span><span class="op">,</span></span>
-<span id="cb11-601"><a href="#cb11-601" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">48</span><span class="op">,</span></span>
-<span id="cb11-602"><a href="#cb11-602" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">45</span><span class="op">,</span></span>
-<span id="cb11-603"><a href="#cb11-603" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">"θ"</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>] }<span class="op">,</span></span>
-<span id="cb11-604"><a href="#cb11-604" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">"Density"</span> }<span class="op">,</span></span>
-<span id="cb11-605"><a href="#cb11-605" aria-hidden="true" tabindex="-1"></a>  <span class="dt">style</span><span class="op">:</span> {</span>
-<span id="cb11-606"><a href="#cb11-606" aria-hidden="true" tabindex="-1"></a>    <span class="dt">width</span><span class="op">:</span> <span class="st">"100%"</span><span class="op">,</span></span>
-<span id="cb11-607"><a href="#cb11-607" aria-hidden="true" tabindex="-1"></a>    <span class="dt">display</span><span class="op">:</span> <span class="st">"block"</span><span class="op">,</span> </span>
-<span id="cb11-608"><a href="#cb11-608" aria-hidden="true" tabindex="-1"></a>    <span class="dt">margin</span><span class="op">:</span> <span class="st">"0 auto"</span><span class="op">,</span> </span>
-<span id="cb11-609"><a href="#cb11-609" aria-hidden="true" tabindex="-1"></a>    <span class="dt">maxWidth</span><span class="op">:</span> <span class="st">"960px"</span><span class="op">,</span></span>
-<span id="cb11-610"><a href="#cb11-610" aria-hidden="true" tabindex="-1"></a>    <span class="dt">background</span><span class="op">:</span> <span class="st">"var(--brand-bg)"</span><span class="op">,</span></span>
-<span id="cb11-611"><a href="#cb11-611" aria-hidden="true" tabindex="-1"></a>    <span class="dt">color</span><span class="op">:</span> <span class="st">"var(--brand-fg)"</span><span class="op">,</span></span>
-<span id="cb11-612"><a href="#cb11-612" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fontFamily</span><span class="op">:</span> bodyFont<span class="op">,</span> </span>
-<span id="cb11-613"><a href="#cb11-613" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fontSize</span><span class="op">:</span> <span class="dv">14</span></span>
-<span id="cb11-614"><a href="#cb11-614" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
-<span id="cb11-615"><a href="#cb11-615" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb11-616"><a href="#cb11-616" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>]<span class="op">,</span> { <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--border)"</span><span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.6</span> })<span class="op">,</span></span>
-<span id="cb11-617"><a href="#cb11-617" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">lineY</span>(prior<span class="op">,</span> { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--brand-red)"</span><span class="op">,</span>  <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.85</span> })<span class="op">,</span></span>
-<span id="cb11-618"><a href="#cb11-618" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">areaY</span>(prior<span class="op">,</span> { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"var(--brand-red)"</span><span class="op">,</span> <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.05</span> })<span class="op">,</span></span>
-<span id="cb11-619"><a href="#cb11-619" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">lineY</span>(post<span class="op">,</span>  { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--brand-teal)"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span> })<span class="op">,</span></span>
-<span id="cb11-620"><a href="#cb11-620" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">areaY</span>(post<span class="op">,</span>  { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"var(--brand-teal)"</span><span class="op">,</span> <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.2</span> })<span class="op">,</span></span>
-<span id="cb11-621"><a href="#cb11-621" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">text</span>(</span>
-<span id="cb11-622"><a href="#cb11-622" aria-hidden="true" tabindex="-1"></a>      [</span>
-<span id="cb11-623"><a href="#cb11-623" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">x</span><span class="op">:</span> <span class="fl">0.8</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">priorPDF</span>(<span class="fl">0.8</span>)<span class="op">,</span>     <span class="dt">label</span><span class="op">:</span> <span class="st">"Prior"</span> }<span class="op">,</span></span>
-<span id="cb11-624"><a href="#cb11-624" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">x</span><span class="op">:</span> <span class="fl">0.35</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">posteriorPDF</span>(<span class="fl">0.3</span>)<span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Posterior"</span> }</span>
-<span id="cb11-625"><a href="#cb11-625" aria-hidden="true" tabindex="-1"></a>      ]<span class="op">,</span></span>
-<span id="cb11-626"><a href="#cb11-626" aria-hidden="true" tabindex="-1"></a>      { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">text</span><span class="op">:</span> <span class="st">"label"</span><span class="op">,</span> <span class="dt">dy</span><span class="op">:</span> <span class="op">-</span><span class="dv">8</span> }</span>
-<span id="cb11-627"><a href="#cb11-627" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb11-628"><a href="#cb11-628" aria-hidden="true" tabindex="-1"></a>  ]</span>
-<span id="cb11-629"><a href="#cb11-629" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb11" data-startfrom="605" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 604;"><span id="cb11-605"><a href="#cb11-605" aria-hidden="true" tabindex="-1"></a><span class="co">// Create the plot directly without viewof</span></span>
+<span id="cb11-606"><a href="#cb11-606" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb11-607"><a href="#cb11-607" aria-hidden="true" tabindex="-1"></a>  <span class="co">// omit width to let it be responsive</span></span>
+<span id="cb11-608"><a href="#cb11-608" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">320</span><span class="op">,</span></span>
+<span id="cb11-609"><a href="#cb11-609" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">48</span><span class="op">,</span></span>
+<span id="cb11-610"><a href="#cb11-610" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">45</span><span class="op">,</span></span>
+<span id="cb11-611"><a href="#cb11-611" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">"θ"</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>] }<span class="op">,</span></span>
+<span id="cb11-612"><a href="#cb11-612" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">"Density"</span> }<span class="op">,</span></span>
+<span id="cb11-613"><a href="#cb11-613" aria-hidden="true" tabindex="-1"></a>  <span class="dt">style</span><span class="op">:</span> {</span>
+<span id="cb11-614"><a href="#cb11-614" aria-hidden="true" tabindex="-1"></a>    <span class="dt">width</span><span class="op">:</span> <span class="st">"100%"</span><span class="op">,</span></span>
+<span id="cb11-615"><a href="#cb11-615" aria-hidden="true" tabindex="-1"></a>    <span class="dt">display</span><span class="op">:</span> <span class="st">"block"</span><span class="op">,</span> </span>
+<span id="cb11-616"><a href="#cb11-616" aria-hidden="true" tabindex="-1"></a>    <span class="dt">margin</span><span class="op">:</span> <span class="st">"0 auto"</span><span class="op">,</span> </span>
+<span id="cb11-617"><a href="#cb11-617" aria-hidden="true" tabindex="-1"></a>    <span class="dt">maxWidth</span><span class="op">:</span> <span class="st">"960px"</span><span class="op">,</span></span>
+<span id="cb11-618"><a href="#cb11-618" aria-hidden="true" tabindex="-1"></a>    <span class="dt">background</span><span class="op">:</span> <span class="st">"var(--brand-bg)"</span><span class="op">,</span></span>
+<span id="cb11-619"><a href="#cb11-619" aria-hidden="true" tabindex="-1"></a>    <span class="dt">color</span><span class="op">:</span> <span class="st">"var(--brand-fg)"</span><span class="op">,</span></span>
+<span id="cb11-620"><a href="#cb11-620" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fontFamily</span><span class="op">:</span> bodyFont<span class="op">,</span> </span>
+<span id="cb11-621"><a href="#cb11-621" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fontSize</span><span class="op">:</span> <span class="dv">14</span></span>
+<span id="cb11-622"><a href="#cb11-622" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb11-623"><a href="#cb11-623" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb11-624"><a href="#cb11-624" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>]<span class="op">,</span> { <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--border)"</span><span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.6</span> })<span class="op">,</span></span>
+<span id="cb11-625"><a href="#cb11-625" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">lineY</span>(prior<span class="op">,</span> { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--brand-red)"</span><span class="op">,</span>  <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.85</span> })<span class="op">,</span></span>
+<span id="cb11-626"><a href="#cb11-626" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">areaY</span>(prior<span class="op">,</span> { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"var(--brand-red)"</span><span class="op">,</span> <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.05</span> })<span class="op">,</span></span>
+<span id="cb11-627"><a href="#cb11-627" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">lineY</span>(post<span class="op">,</span>  { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--brand-teal)"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span> })<span class="op">,</span></span>
+<span id="cb11-628"><a href="#cb11-628" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">areaY</span>(post<span class="op">,</span>  { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"var(--brand-teal)"</span><span class="op">,</span> <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.2</span> })<span class="op">,</span></span>
+<span id="cb11-629"><a href="#cb11-629" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">text</span>(</span>
+<span id="cb11-630"><a href="#cb11-630" aria-hidden="true" tabindex="-1"></a>      [</span>
+<span id="cb11-631"><a href="#cb11-631" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">x</span><span class="op">:</span> <span class="fl">0.8</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">priorPDF</span>(<span class="fl">0.8</span>)<span class="op">,</span>     <span class="dt">label</span><span class="op">:</span> <span class="st">"Prior"</span> }<span class="op">,</span></span>
+<span id="cb11-632"><a href="#cb11-632" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">x</span><span class="op">:</span> <span class="fl">0.35</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">posteriorPDF</span>(<span class="fl">0.3</span>)<span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Posterior"</span> }</span>
+<span id="cb11-633"><a href="#cb11-633" aria-hidden="true" tabindex="-1"></a>      ]<span class="op">,</span></span>
+<span id="cb11-634"><a href="#cb11-634" aria-hidden="true" tabindex="-1"></a>      { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">text</span><span class="op">:</span> <span class="st">"label"</span><span class="op">,</span> <span class="dt">dy</span><span class="op">:</span> <span class="op">-</span><span class="dv">8</span> }</span>
+<span id="cb11-635"><a href="#cb11-635" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb11-636"><a href="#cb11-636" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb11-637"><a href="#cb11-637" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div id="fig-beta-posterior" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-beta-posterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1600,16 +1587,271 @@ Figure&nbsp;6.4: Prior and posterior distributions for the coin bias parameter <
 </div>
 </div>
 </div>
+<details>
+  <summary><strong> Solution </strong></summary>
+</details>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exm-instagram-bin" class="theorem example">
+<p><span class="theorem-title"><strong>Example 6.6</strong></span> Software engineers at <strong>Instagram</strong> are interested in the click-through rate <span class="math inline">\theta</span> of their advertisement recommender.</p>
+<p>The <strong>click-through rate</strong> is the proportion of clicks out of the total number of impressions of an online advertisement.</p>
+<p>The engineers assess the click-through rate by testing their recommender on users of Instagram. They obtain a total of <span class="math inline">n</span> impressions.</p>
+<ol type="a">
+<li>Using a <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-beta" class="quarto-xref">Beta prior&nbsp;<span>2.9</span></a></span>, quantify your prior beliefs about <span class="math inline">\theta</span>.</li>
+<li>After running the test, the engineers obtained a total of <span class="math inline">X=47</span> successful clicks out of a total of <span class="math inline">n=10,000</span> impressions. Using a <strong>Binomial</strong> model and your prior specified in part (a), obtain the posterior distribution for <span class="math inline">\theta</span>.</li>
+</ol>
+<details>
+  <summary><strong> Solution </strong></summary>
+<p><strong>a.</strong></p>
+<p>I personally never click on adverts, apart from on accident. I don’t think many people do. So, I believe that the click-through rate <span class="math inline">\theta</span> should be close to <span class="math inline">0</span>.</p>
+<p>I am not very confident, so I will pick:</p>
+<p><span class="math display">
+\theta \sim \text{Beta}(5,\,100).
+</span></p>
+<p>This prior has mean</p>
+<p><span class="math display">
+\frac{5}{5+100} \approx 0.047,
+</span></p>
+<p>and places the vast majority of its probability mass on values <span class="math inline">\theta &lt; 0.1</span>.</p>
+<hr>
+<p><strong>b.</strong></p>
+<p>The data model is</p>
+<p><span class="math display">
+X \mid \theta \sim \text{Binomial}(n=10000,\, \theta), \qquad X = 47,
+</span></p>
+<p>which has PMF</p>
+<p><span class="math display">
+f(x=47 \mid \theta)
+= \binom{10000}{47} \theta^{47}(1-\theta)^{9953}.
+</span></p>
+<p>Using Bayes’ theorem:</p>
+<p><span class="math display">
+\pi(\theta \mid x)
+\;\propto\; f(x \mid \theta)\,\pi(\theta).
+</span></p>
+<p>From part (a) the prior is</p>
+<p><span class="math display">
+\pi(\theta) \;\propto\; \theta^{\alpha-1}(1-\theta)^{\beta-1},
+\qquad \alpha=5, \;\beta=100.
+</span></p>
+<p>Therefore,</p>
+<p><span class="math display">
+\pi(\theta \mid x)
+\;\propto\; \theta^{47}(1-\theta)^{9953}\;\cdot\;\theta^{\alpha-1}(1-\theta)^{\beta-1}.
+</span></p>
+<p>Simplifying exponents:</p>
+<p><span class="math display">
+\pi(\theta \mid x)
+\;\propto\; \theta^{(\alpha+47)-1}(1-\theta)^{(\beta+9953)-1}.
+</span></p>
+<p>Thus, the posterior distribution is</p>
+<p><span class="math display">
+\theta \mid x \sim \text{Beta}(\alpha+47, \; \beta + 9953).
+</span></p>
+<p>Substituting <span class="math inline">\alpha=5</span>, <span class="math inline">\beta=100</span>:</p>
+<p><span class="math display">
+\theta \mid X \sim \text{Beta}(5+47, \; 100 + 9953) = \text{Beta}(52, \; 10053).
+</span></p>
+<hr>
+<p><strong>Interpretation.</strong></p>
+<ul>
+<li>The posterior mean is</li>
+</ul>
+<p><span class="math display">
+\mathrm{E}[\theta \mid X] = \frac{52}{52+10053} \approx 0.0052,
+</span></p>
+<p>which is about <strong>0.52% click-through rate</strong>.</p>
+<ul>
+<li>The posterior variance is very small because <span class="math inline">n=10{,}000</span> is large, so the engineers can be quite confident that <span class="math inline">\theta</span> is very close to <span class="math inline">0.5%</span>.</li>
+</ul>
+<details>
+  <summary><strong> Show Plot </strong></summary>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/prior_post_instagram.png" class="img-fluid figure-img"></p>
+<figcaption>Beta prior and posterior for the Instagram click-through rate parameter <span class="math inline">\theta</span> after observing <span class="math inline">X=47</span> clicks out of <span class="math inline">n=10{,}000</span> impressions. The posterior is sharply concentrated near ~0.5%</figcaption>
+</figure>
+</div>
+</details>
+</details>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exm-particle-speed" class="example theorem">
+<p><span class="theorem-title"><strong>Example 6.7 (Measuring a particle’s speed)</strong></span> You are attempting to measure the <strong>speed of a particle</strong> <span class="math inline">\theta</span> and quantify the uncertainty in the measurement. The experiment is set up such that the particle <strong>travels</strong> <span class="math inline">1</span> km and the measurements are the speeds <span class="math inline">X_i \mid \theta</span> for <span class="math inline">i=1,\ldots,n</span> in kilometres per second (km/s).</p>
+<p>There are a <strong>multitude of factors</strong> that additively result in <strong>measurement error</strong> for the speed of the particle.</p>
+<p><strong>(a)</strong> Using a <strong>normal prior</strong>, quantify <strong>your prior beliefs</strong> about <span class="math inline">\theta</span>.</p>
+<details>
+  <summary><strong>Solution (a)</strong></summary>
+<p>Since speed is physically constrained, a normal prior is imperfect because it places mass on the whole real line. For speed we should have <span class="math inline">0&lt; \theta &lt; c</span>, where <span class="math inline">c=299{,}792 \text{km/s}</span> (speed of light).</p>
+<p>Nonetheless, if we are asked to use a normal prior and have little prior knowledge about the particle type, a weakly informative prior is reasonable, e.g.</p>
+<p><span class="math display">
+\theta \sim \mathcal{N}\!\big(1.5\times 10^5,\ (4\times 10^4)^2\big).
+</span></p>
+<p>This concentrates most mass in the physically plausible range while remaining diffuse.</p>
+</details>
+<hr>
+<p><strong>(b)</strong> Why is a <strong>normal distribution</strong> appropriate for the likelihood? Write down the likelihood.</p>
+<details>
+  <summary><strong>Solution (b)</strong></summary>
+<p>Because many small, additive, independent sources of error contribute to each measurement, the <span class="xref-no-num"><a href="4-freq-point-estimation.html#thm-clt" class="quarto-xref">Central Limit Theorem&nbsp;<span>4.1</span></a></span> motivates</p>
+<p><span class="math display">
+X_i \mid \theta \stackrel{\text{iid}}{\sim} \mathcal{N}(\theta,\sigma^2).
+</span></p>
+<p>Hence the likelihood is</p>
+<p><span class="math display">\begin{align*}
+f(\underline{x}\mid \theta,\sigma)
+&amp;= (2\pi)^{-n/2}\sigma^{-n}
+\exp\!\left\{-\frac{1}{2\sigma^2}
+\sum_{i=1}^n (x_i-\theta)^2\right\} \\
+&amp;= (2\pi)^{-n/2}\sigma^{-n}
+\exp\!\left\{-\frac{1}{2\sigma^2}
+\Big(\sum_{i=1}^n x_i^2 - 2\theta \sum_{i=1}^n x_i + n\theta^2\Big)\right\}.
+\end{align*}</span></p>
+</details>
+<hr>
+<p><strong>(c)</strong> Assuming the <strong>standard deviation</strong> <span class="math inline">\sigma</span> of the measurements is known, derive the posterior under a prior <span class="math inline">\theta \sim \mathcal{N}(\mu_0,\sigma_0^2)</span>.</p>
+<details>
+  <summary><strong>Solution (c)</strong></summary>
+<p>Up to proportionality,</p>
+<p><span class="math display">
+f(\underline{x}\mid\theta,\sigma)\ \propto\
+\exp\!\left\{-\frac{1}{2\sigma^2}\big(n\theta^2-2n\bar{x}\,\theta\big)\right\},\qquad
+\pi(\theta)\ \propto\
+\exp\!\left\{-\frac{1}{2\sigma_0^2}\big(\theta^2-2\mu_0\theta\big)\right\}.
+</span></p>
+<p>Multiplying and completing the square, the posterior is normal with precision (inverse variance)</p>
+<p><span class="math display">
+\frac{1}{V}=\frac{n}{\sigma^2}+\frac{1}{\sigma_0^2},
+\qquad
+M = V\left(\frac{n\bar{x}}{\sigma^2}+\frac{\mu_0}{\sigma_0^2}\right).
+</span></p>
+<p>Therefore,</p>
+<p><span class="math display">
+\boxed{\ \theta\mid \underline{x}\ \sim\ \mathcal{N}(M,V)\ }.
+</span></p>
+</details>
+<hr>
+<p><strong>(d)</strong> Suppose you measured the speed <span class="math inline">4</span> times and obtained (km/s): <span class="math inline">306135,\ 293227,\ 307985,\ 301298</span>. Using the prior from (a), set <span class="math inline">\sigma=5000</span> and derive your <strong>posterior distribution</strong>.</p>
+<details>
+  <summary><strong>Solution (d)</strong></summary>
+<p>Compute <span class="math inline">\bar{x}=(306135+293227+307985+301298)/4=302{,}161.25</span>. With <span class="math inline">\mu_0=150{,}000</span>, <span class="math inline">\sigma_0^2=(40{,}000)^2</span>, <span class="math inline">\sigma^2=(5{,}000)^2</span>, <span class="math inline">n=4</span>:</p>
+<p><span class="math display">
+\frac{1}{V}=\frac{n}{\sigma^2}+\frac{1}{\sigma_0^2}
+=\frac{4}{25{,}000{,}000}+\frac{1}{1{,}600{,}000{,}000}
+=1.60625\times 10^{-7},
+\quad
+V=\frac{1}{1.60625\times 10^{-7}}\approx 6{,}225{,}681.
+</span></p>
+<p><span class="math display">
+M = V\left(\frac{n\bar{x}}{\sigma^2}+\frac{\mu_0}{\sigma_0^2}\right)
+\approx 6{,}225{,}681\left(\frac{4\cdot 302{,}161.25}{25{,}000{,}000}+\frac{150{,}000}{1{,}600{,}000{,}000}\right)
+\approx 301{,}569.18.
+</span></p>
+<p>Thus,</p>
+<p><span class="math display">
+\boxed{\ \theta\mid \underline{x}\ \sim\ \mathcal{N}\!\big(301{,}569.2,\ 6{,}225{,}681\big)\ }
+\quad \text{(i.e., SD } \approx 2{,}495.1\text{ km/s)}.
+</span></p>
+</details>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="conjugacy" class="level3" data-number="6.3.3">
-<h3 data-number="6.3.3" class="anchored" data-anchor-id="conjugacy"><span class="header-section-number">6.3.3</span> Conjugacy</h3>
-
-
+<section id="sec-conjugacy" class="level3" data-number="6.3.3">
+<h3 data-number="6.3.3" class="anchored" data-anchor-id="sec-conjugacy"><span class="header-section-number">6.3.3</span> Conjugacy</h3>
+<p>In all the examples in <span class="xref-no-num"><a href="#sec-posteriors-in-practice" class="quarto-xref">Posteriors in Practice&nbsp;<span>6.3.2</span></a></span>, a notable phenomenon occurred:</p>
+<ol type="1">
+<li>The <strong>prior</strong> distribution <span class="math inline">\pi(\theta)</span></li>
+<li>The resulting <strong>posterior</strong> distribution <span class="math inline">\pi(\theta \mid \underline{x})</span></li>
+</ol>
+<p>belonged to the same <em>family of distributions</em>.</p>
+<p>In Bayesian inference, this property is called <strong>conjugacy</strong>, and it allows us to derive posterior distributions in closed form without approximation.</p>
+<div class="callout callout-style-simple callout-note no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-conjugacy" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 6.3 (Conjugate Prior)</strong></span> Suppose <span class="math inline">f(\underline{x} \mid \theta)</span> is the joint PDF/PMF of the observations.</p>
+<p>A prior distribution for <span class="math inline">\theta</span> is said to be <strong>conjugate</strong> if, after updating with the data, the posterior distribution <span class="math inline">\pi(\theta \mid \underline{x})</span> remains in the same family as the prior <span class="math inline">\pi(\theta)</span>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Remark (Why is conjugacy useful?)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="rem-conjugcay" class="proof remark">
+<p><span class="proof-title"><em>Remark 6.1</em> (Why is conjugacy useful?). </span></p>
+<ul>
+<li>Conjugacy makes Bayesian updating <em>algebraically simple</em>: posterior parameters can often be obtained by just “updating counts” or “adding observations”.</li>
+<li>This provides intuition for how prior information and data combine, and gives closed-form formulas that are easy to compute.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
 </section>
+</section>
+<section id="asymptotic-posterior-distribution" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="asymptotic-posterior-distribution"><span class="header-section-number">6.4</span> Asymptotic Posterior Distribution</h2>
+<p>In <strong>frequentist statistics</strong>, we saw two important results about the <span class="xref-no-num"><a href="4-freq-point-estimation.html#imp-term-asymptotic" class="quarto-xref">asymptotic&nbsp;<span>4.2</span></a></span> sampling distribution of estimators:</p>
+<ol type="1">
+<li>The <span class="xref-no-num"><a href="4-freq-point-estimation.html#thm-clt" class="quarto-xref">Central Limit Theorem&nbsp;<span>4.1</span></a></span> showed that the sampling distribution of the <span class="xref-no-num"><a href="4-freq-point-estimation.html#def-sample-mean" class="quarto-xref">sample mean&nbsp;<span>4.1</span></a></span> is approximately Normal for large <span class="math inline">n</span>.</li>
+<li>The <span class="xref-no-num"><a href="5-likelihood.html#thm-asymp-mle" class="quarto-xref">Asymptotic Distribution of the MLE&nbsp;<span>5.3</span></a></span> showed that the sampling distribution of the maximum likelihood estimator is approximately Normal for large <span class="math inline">n</span>.</li>
+</ol>
+<p>A similar phenomenon occurs in <strong>Bayesian inference</strong>: for large samples, the <strong>posterior distribution</strong> itself becomes approximately Normal, regardless of the prior (as long as it is not too extreme).</p>
+<div class="callout callout-style-simple callout-note no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="thm-bernstein-von-mises" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 6.2 (Bernstein–von Mises)</strong></span> Suppose we have an i.i.d. sample <span class="math inline">X_1,\ldots,X_n</span> drawn from the same distribution with PDF/PMF <span class="math inline">f(x \mid \theta)</span> and let <span class="math inline">\pi(\theta \mid \underline{X}^{(n)})</span> denote the posterior distribution for <span class="math inline">\theta</span>.</p>
+<p>Under <em>regularity conditions</em>, as <span class="math inline">n \to \infty</span> the posterior distribution satisfies</p>
+<p><span class="math display">
+\theta \mid \underline{X}^{(n)} \;\overset{\text{approx.}}{\sim}
+\mathcal{N}\!\Big(\hat{\theta}_n,\, \mathcal{I}_n(\theta)^{-1}\Big),
+</span></p>
+<p>where</p>
+<ul>
+<li><span class="math inline">\hat{\theta}_n</span> is the MLE,</li>
+<li><span class="math inline">\mathcal{I}_n(\theta)</span> is the <span class="xref-no-num"><a href="5-likelihood.html#prp-fisher-one-obs" class="quarto-xref">Fisher information&nbsp;<span>5.1</span></a></span> for the <strong>whole sample</strong>.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
