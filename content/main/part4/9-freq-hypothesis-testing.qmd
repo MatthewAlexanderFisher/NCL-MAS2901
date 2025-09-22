@@ -977,9 +977,13 @@ $$
 Therefore, since
 
 \begin{align*}
-\Pr\left( \frac{T - \mu_0}{\sigma / \sqrt{n}} \geq z_{1-\alpha/2}  \mid \mu = \mu_0 \right) + \Pr\left( \frac{T - \mu_0}{\sigma / \sqrt{n}} \leq -z_{1-\alpha/2}  \mid \mu &= \mu_0 \right) = 1-\alpha \\
-\Pr\left( |T - \mu_0| \geq \frac{z_{1-\alpha/2} \sigma}{\sqrt{n}} \mid \mu &= \mu_0 \right) = 1-\alpha.
+\Pr\left( \frac{T - \mu_0}{\sigma / \sqrt{n}} \geq z_{1-\alpha/2}  \;\middle|\; \mu = \mu_0 \right) 
++ \Pr\left( \frac{T - \mu_0}{\sigma / \sqrt{n}} \leq -z_{1-\alpha/2}  \;\middle|\; \mu = \mu_0 \right) 
+&= 1-\alpha \\
+\Pr\left( \,|T - \mu_0| \geq \frac{z_{1-\alpha/2} \sigma}{\sqrt{n}} \;\middle|\; \mu = \mu_0 \right) 
+&= 1-\alpha.
 \end{align*}
+
 Therefore, a valid two-sided $1-\alpha$ rejection region takes the form:
 $$
 R_\alpha = \left\{ T \mid \; |T - \mu_0| > \frac{\sigma \, z_{1-\alpha/2}}{\sqrt{n}} \right\}.

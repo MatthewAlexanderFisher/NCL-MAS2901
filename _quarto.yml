@@ -7,10 +7,12 @@ project:
     - pwa/offline.html
     - pwa/icons/*
 
-# execute:
-#   engine: jupyter
+execute:
+  engine: jupyter
+  debug: true
+  error: true
 
-# jupyter: mas2901
+jupyter: mas2901
 
 book:
   title: "MAS2901: Statistical Inference"
@@ -93,29 +95,38 @@ format:
       # - theming/favicons.html
       - pwa/pwa-head.html
 
-  # pdf:
-  #   documentclass: scrreprt
-  #   include-in-header:
-  #     text: |
-  #       \usepackage{newunicodechar}
-  #       \usepackage{emoji}
-  #       \newunicodechar{✨}{\emoji{sparkles}}
-  #       \usepackage{amsthm}
-  #       \usepackage{mathtools} 
-  #       \usepackage{hyperref}
-  #       \usepackage{cleveref}
-  #       \makeatletter
-  #       \newenvironment{refproof}[1][]%
-  #         {\if\relax\detokenize{#1}\relax
-  #            \begin{proof}
-  #          \else
-  #            % With cleveref:
-  #            %\begin{proof}[Proof of \cref{#1}]
-  #            % Without cleveref:
-  #            \begin{proof}[Proof of \ref{#1}]
-  #          \fi}%
-  #         {\end{proof}}
-  #       \makeatother
+  pdf:
+    documentclass: scrreprt
+    echo: false           # Hide all code
+    warning: false        # Hide warnings  
+    message: false        # Hide messages
+    output: true         # Hide computational output (if you want)
+    include-in-header:
+      text: |
+        \usepackage{newunicodechar}
+        \usepackage{emoji}
+        \newunicodechar{✨}{\emoji{sparkles}}
+        \usepackage{amsthm}
+        \usepackage{mathtools} 
+        \usepackage{hyperref}
+        \usepackage{cleveref}
+        
+        % Define argmax and argmin
+        \DeclareMathOperator*{\argmax}{arg\,max}
+        \DeclareMathOperator*{\argmin}{arg\,min}
+        
+        \makeatletter
+        \newenvironment{refproof}[1][]%
+          {\if\relax\detokenize{#1}\relax
+            \begin{proof}
+          \else
+            % With cleveref:
+            %\begin{proof}[Proof of \cref{#1}]
+            % Without cleveref:
+            \begin{proof}[Proof of \ref{#1}]
+          \fi}%
+          {\end{proof}}
+        \makeatother
 
 
 callouty-theorem:
