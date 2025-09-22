@@ -11,18 +11,38 @@ jupyter: mas2901
 
 import matplotlib.pyplot as plt
 
-plot_bg = "#f8f8f8"
+def set_plot_theme(mode="light"):
+    """Switch matplotlib colours between light and dark themes."""
+    
+    if mode == "light":
+        plot_bg, plot_fg = "#f8f8f8", "#333333"
+    elif mode == "dark":
+        plot_bg, plot_fg = "#151515", "#EAEAEA"
+    else:
+        raise ValueError("mode must be 'light' or 'dark'")
 
-plt.rcParams["figure.facecolor"] = plot_bg
-plt.rcParams["axes.facecolor"]   = plot_bg
+    # Backgrounds
+    plt.rcParams["figure.facecolor"] = plot_bg
+    plt.rcParams["axes.facecolor"]   = plot_bg
+    plt.rcParams["savefig.facecolor"] = plot_bg
 
-dark_plot_bg = "#151515"
+    # Foregrounds
+    plt.rcParams["text.color"]       = plot_fg
+    plt.rcParams["axes.labelcolor"]  = plot_fg
+    plt.rcParams["axes.edgecolor"]   = plot_fg
+    plt.rcParams["xtick.color"]      = plot_fg
+    plt.rcParams["ytick.color"]      = plot_fg
+    plt.rcParams["legend.edgecolor"] = plot_fg
+    plt.rcParams["legend.labelcolor"] = plot_fg
+    plt.rcParams["grid.color"]       = plot_fg
 
 ```
 
+::: {.content-visible unless-format="pdf"}
 ```{ojs}
 bodyFont = getComputedStyle(document.body).fontFamily
 ```
+:::
 
 
 ## Introduction to the Bayesian Approach
@@ -50,6 +70,8 @@ Imagine the weather forecast says there is a $70\%$ chance of rain tomorrow.
 * The sky doesn’t “rain in $70\%$ of parallel universes.”
 
 * Instead, the number $70\%$ reflects our uncertainty given current information (satellite data, forecasts, etc.).
+
+::: {.content-visible unless-format="pdf"}
 
 ```{=html}
 <details>
@@ -121,6 +143,8 @@ Plot.plot({
 
 :::
 
+:::
+
 ::: {#exm-bayes-exam-marks}
 #### Exam Marks
 
@@ -132,11 +156,12 @@ Suppose $\theta$ is the average exam mark of a module. From past years, we belie
 
 We could represent this belief as a Normal prior distribution centred at $60$ with standard deviation $10$.
 
+::: {.content-visible unless-format="pdf"}
+
 ```{=html}
 <details>
   <summary><strong> Show Plot </strong></summary>
 ```
-
 
 ```{ojs}
 // === (B) Exam-mark prior: Normal(μ=60, σ=10) ===
@@ -211,6 +236,8 @@ Plot.plot({
 
 :::
 
+:::
+
 ::: {#exm-bayes-disease}
 #### Disease Prevalance
 Let $\theta$ be the proportion of people with a rare condition.
@@ -219,6 +246,7 @@ Before collecting data, experts might believe $\theta$ is “probably around $2\
 
 We could express this with a <span class="xref-no-num">[Beta distribution @sec-beta]</span> prior.
 
+::: {.content-visible unless-format="pdf"}
 
 ```{=html}
 <details>
@@ -297,6 +325,8 @@ Plot.plot({
 ```{=html}
 </details>
 ```
+
+:::
 
 :::
 
@@ -512,10 +542,13 @@ If we plot this:
 #| code-fold: true
 #| code-summary: "Show code"
 #| fig-align: center
+#| renderings: [light, dark]
 
 import matplotlib.pyplot as plt
 import numpy as np
 import math
+
+set_plot_theme("light")
 
 def binom_lik(theta):
     return 5 * theta * (1 - theta) ** 4
@@ -531,6 +564,17 @@ plt.ylabel("Likelihood")
 plt.title("Binomial Likelihood (with $n=5$ and $X=1$)")
 plt.tight_layout()
 plt.show()  
+
+set_plot_theme("dark")
+
+plt.figure(figsize=(5,3))
+plt.plot(theta_grid, binom_lik_vals)
+plt.xlabel(r"$\theta$")
+plt.ylabel("Likelihood")
+plt.title("Binomial Likelihood (with $n=5$ and $X=1$)")
+plt.tight_layout()
+plt.show()  
+
 ```
 
 we see that this favours $\theta$ around $0.2$. In fact, in @exm-binom-mle-single, we saw that the MLE is $\hat{\theta} = 0.2$.
@@ -586,6 +630,8 @@ As $\theta$ is a continuous quantity, what we would like to know is what continu
 * **Uncertainty reduced:** the posterior standard deviation shrinks from $0.289$ (prior) to $0.160$ (posterior).
 
 So, after seeing the data, our beliefs about $\theta$ have been updated: we now think small values of $\theta$ are more plausible, but not as extremely as the raw data alone would suggest.
+
+::: {.content-visible unless-format="pdf"}
 
 ```{=html}
 <details>
@@ -651,6 +697,7 @@ Plot.plot({
 </details>
 ```
 
+:::
 
 ---
 
@@ -671,10 +718,13 @@ A graph of this prior density is given as follows:
 #| code-fold: true
 #| code-summary: "Show code"
 #| fig-align: center
-
+#| renderings: [light, dark]
+#| 
 import numpy as np
 import math
 import matplotlib.pyplot as plt
+
+set_plot_theme("light")
 
 # Beta(α, β) with α=77, β=5  →  π(θ) ∝ θ^(76) (1-θ)^(4)
 alpha, beta = 77, 5
@@ -694,9 +744,19 @@ plt.plot(theta_grid, pdf_values)
 plt.xlabel(r"$\theta$")
 plt.ylabel("Density")
 plt.title(rf"Beta PDF: $\alpha={alpha}$, $\beta={beta}$")
-# plt.xlim(0, 1)
 plt.tight_layout()
 plt.show()
+
+set_plot_theme("dark")
+
+plt.figure(figsize=(7,4))
+plt.plot(theta_grid, pdf_values)
+plt.xlabel(r"$\theta$")
+plt.ylabel("Density")
+plt.title(rf"Beta PDF: $\alpha={alpha}$, $\beta={beta}$")
+plt.tight_layout()
+plt.show()
+
 ```
 
 ### R

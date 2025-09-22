@@ -8,9 +8,13 @@ tbl-cap-location: bottom
 
 # Frequentist Hypothesis Testing {#sec-freq-hypothesis-test}
 
+::: {.content-visible unless-format="pdf"}
+
 ```{ojs}
 bodyFont = getComputedStyle(document.body).fontFamily
 ```
+
+:::
 
 Recalling the <span class="xref-no-num">[main inference tasks @sec-inference-tasks]</span>, we now move from *interval estimation* to *hypothesis testing*.
 
@@ -39,6 +43,8 @@ i.e. the parameter values in $\Theta$ which are not in $\Theta_0$.
 
 So every hypothesis test is really just a <span class="xref-no-num">[partition @def-excl-exh-part]</span> of the parameter space into two regions: one where the null holds, and one where it does not.
 
+
+::: {.content-visible unless-format="pdf"}
 
 ::: {.panel-tabset}
 ### One-Dimensional Parameter Space
@@ -196,6 +202,8 @@ thetaBox = {
 
 :::
 
+:::
+
 We then use the observed data $\underline{x}$ to evaluate whether $H_0$ is plausible. The frequentist reasoning is:
 
 1. **Assume $H_0$ is true.**
@@ -215,6 +223,7 @@ Neither outcome proves anything about the *truth* of $H_0$. These terms simply d
 In this course we will use **“fail to reject”**, since it emphasises that not rejecting is weaker than proving $H_0$ true. But you should be aware that “accept” is often used informally in practice to mean the same decision.
 :::
 
+::: {.content-visible unless-format="pdf"}
 
 ---
 
@@ -287,6 +296,8 @@ Plot.plot({
 ```
 
 ---
+
+:::
 
 ## The Testing Procedure
 
@@ -621,6 +632,8 @@ Both expressions reduce to $\beta(0) = \alpha$ when $\mu=0$, as required.
 :::
 
 
+::: {.content-visible unless-format="pdf"}
+
 ---
 
 ```{=html}
@@ -930,14 +943,13 @@ input[type="range"]::-moz-range-progress {
 </style>`
 ```
 
-
-
 ```{=html}
 </details>
 ```
 
 ---
 
+:::
 
 ## Exact Hypothesis Tests
 
