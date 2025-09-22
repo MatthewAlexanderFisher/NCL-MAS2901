@@ -722,25 +722,25 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../content/appendix/formula-sheet.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Formula Sheet</span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Formula Sheet</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../content/appendix/revision-sheet.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Revision Sheet</span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Revision Sheet</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../content/appendix/distribution-explorer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Distribution Explorer</span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Distribution Explorer</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../content/appendix/question-bank.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Question Bank</span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Question Bank</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -761,10 +761,13 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#the-bayesian-setup" id="toc-the-bayesian-setup" class="nav-link active" data-scroll-target="#the-bayesian-setup"><span class="header-section-number">10.1</span> The Bayesian Setup</a>
+  <li><a href="#sec-bayes-hypothesis-test" id="toc-sec-bayes-hypothesis-test" class="nav-link active" data-scroll-target="#sec-bayes-hypothesis-test"><span class="header-section-number">11</span> Bayesian Hypothesis Testing</a>
   <ul class="collapse">
-  <li><a href="#posterior-probabilities-of-hypotheses" id="toc-posterior-probabilities-of-hypotheses" class="nav-link" data-scroll-target="#posterior-probabilities-of-hypotheses"><span class="header-section-number">10.1.1</span> Posterior Probabilities of Hypotheses</a></li>
-  <li><a href="#bayes-factor" id="toc-bayes-factor" class="nav-link" data-scroll-target="#bayes-factor"><span class="header-section-number">10.1.2</span> Bayes Factor</a></li>
+  <li><a href="#the-bayesian-setup" id="toc-the-bayesian-setup" class="nav-link" data-scroll-target="#the-bayesian-setup"><span class="header-section-number">11.1</span> The Bayesian Setup</a>
+  <ul class="collapse">
+  <li><a href="#posterior-probabilities-of-hypotheses" id="toc-posterior-probabilities-of-hypotheses" class="nav-link" data-scroll-target="#posterior-probabilities-of-hypotheses"><span class="header-section-number">11.1.1</span> Posterior Probabilities of Hypotheses</a></li>
+  <li><a href="#bayes-factor" id="toc-bayes-factor" class="nav-link" data-scroll-target="#bayes-factor"><span class="header-section-number">11.1.2</span> Bayes Factor</a></li>
+  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -775,7 +778,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../content/main/part4/9-freq-hypothesis-testing.html">Part IV — Hypothesis Testing</a></li><li class="breadcrumb-item"><a href="../../../content/main/part4/10-bayes-hypothesis-testing.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian Hypothesis Testing</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-bayes-hypothesis-test" class="quarto-section-identifier"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian Hypothesis Testing</span></span></h1>
+<h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian Hypothesis Testing</span></h1>
 </div>
 
 
@@ -792,14 +795,16 @@ window.Quarto = {
 </header>
 
 
-<p>Recalling the <span class="xref-no-num"><a href="../part1/3-types-of-inference.html#sec-inference-tasks" class="quarto-xref">main inference tasks&nbsp;<span>3.2</span></a></span>, we now move from <em>interval estimation</em> to <em>hypothesis testing</em> in the <strong>Bayesian</strong> framework, and consider the Bayesian analogue of frequentist hypothesis testing..</p>
+<section id="sec-bayes-hypothesis-test" class="level1" data-number="11">
+<h1 data-number="11"><span class="header-section-number">11</span> Bayesian Hypothesis Testing</h1>
+<p>Recalling the <span class="xref-no-num"><a href="../part1/3-types-of-inference.html#sec-inference-tasks" class="quarto-xref">main inference tasks&nbsp;<span>4.2</span></a></span>, we now move from <em>interval estimation</em> to <em>hypothesis testing</em> in the <strong>Bayesian</strong> framework, and consider the Bayesian analogue of frequentist hypothesis testing..</p>
 <p>The Bayesian perspective is slightly different from the frequentist one: instead of asking whether data look <em>unlikely</em> under a hypothesis, we ask:</p>
 <blockquote class="blockquote">
 <p><strong>How probable is each hypothesis given the observed data?</strong></p>
 </blockquote>
-<section id="the-bayesian-setup" class="level2" data-number="10.1">
-<h2 data-number="10.1" class="anchored" data-anchor-id="the-bayesian-setup"><span class="header-section-number">10.1</span> The Bayesian Setup</h2>
-<p>Just like in <span class="xref-no-num"><a href="9-freq-hypothesis-testing.html" class="quarto-xref">frequentist hypothesis testing&nbsp;<span>9</span></a></span>, the Bayesian approach compares two hypotheses:</p>
+<section id="the-bayesian-setup" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="the-bayesian-setup"><span class="header-section-number">11.1</span> The Bayesian Setup</h2>
+<p>Just like in <span class="xref-no-num"><a href="9-freq-hypothesis-testing.html" class="quarto-xref">frequentist hypothesis testing&nbsp;<span>10</span></a></span>, the Bayesian approach compares two hypotheses:</p>
 <p><span class="math display">
 H_0 : \theta \in \Theta_0,
 \qquad
@@ -816,8 +821,8 @@ This involves two ingredients:</p>
 \pi(\theta \mid H_0) \quad \text{and} \quad \pi(\theta \mid H_1).
 </span></p></li>
 </ol>
-<section id="posterior-probabilities-of-hypotheses" class="level3" data-number="10.1.1">
-<h3 data-number="10.1.1" class="anchored" data-anchor-id="posterior-probabilities-of-hypotheses"><span class="header-section-number">10.1.1</span> Posterior Probabilities of Hypotheses</h3>
+<section id="posterior-probabilities-of-hypotheses" class="level3" data-number="11.1.1">
+<h3 data-number="11.1.1" class="anchored" data-anchor-id="posterior-probabilities-of-hypotheses"><span class="header-section-number">11.1.1</span> Posterior Probabilities of Hypotheses</h3>
 <p>After observing data <span class="math inline">\underline{x}</span>, Bayes’ theorem gives <span class="math display">
 \Pr(H_0 \mid \underline{x})
 = \frac{f(\underline{x}\mid H_0)\,\Pr(H_0)}{f(\underline{x})}.
@@ -840,8 +845,8 @@ f(\underline{x} \mid H_0)
 </ul>
 <p>Thus the Bayesian procedure directly yields the posterior probabilities <span class="math inline">\Pr(H_0 \mid \underline{x})</span> and <span class="math inline">\Pr(H_1 \mid \underline{x})</span> for the competing hypotheses.</p>
 </section>
-<section id="bayes-factor" class="level3" data-number="10.1.2">
-<h3 data-number="10.1.2" class="anchored" data-anchor-id="bayes-factor"><span class="header-section-number">10.1.2</span> Bayes Factor</h3>
+<section id="bayes-factor" class="level3" data-number="11.1.2">
+<h3 data-number="11.1.2" class="anchored" data-anchor-id="bayes-factor"><span class="header-section-number">11.1.2</span> Bayes Factor</h3>
 <p>The <strong>Bayes factor</strong> summarises how strongly the data update our beliefs:</p>
 <p><span class="math display">
 B_{10} = \frac{m_1(\underline{x})}{m_0(\underline{x})}.
@@ -872,31 +877,31 @@ X_i \mid \mu \sim \mathcal{N}(\mu, 10),
 </ul>
 <p>We compare the <em>likelihood of the observed sample mean</em> under each hypothesis.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="107" data-source-offset="-15"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 106;"><span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">30</span></span>
-<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>sigma <span class="op">=</span> <span class="dv">10</span></span>
-<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>mu0 <span class="op">=</span> <span class="dv">200</span></span>
-<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a><span class="co">// Slider for observed sample mean</span></span>
-<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>viewof xbar_obs <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([mu0 <span class="op">-</span> <span class="dv">3</span><span class="op">*</span>sigma<span class="op">,</span> mu0 <span class="op">+</span> <span class="dv">3</span><span class="op">*</span>sigma]<span class="op">,</span> </span>
-<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> mu0<span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="fu">md</span><span class="vs">`Observed sample mean </span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`</span><span class="sc">\b</span><span class="vs">ar{x}_{obs}`</span><span class="sc">}</span><span class="vs">`</span>} )</span>
-<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a><span class="co">// Likelihood under H0 (point null)</span></span>
-<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>m0 <span class="op">=</span> <span class="dv">1</span><span class="op">/</span>(sigma<span class="op">/</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(n)<span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="dv">2</span><span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span>)) <span class="op">*</span></span>
-<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>     <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(<span class="op">-</span><span class="fl">0.5</span><span class="op">*</span>((xbar_obs <span class="op">-</span> mu0)<span class="op">/</span>(sigma<span class="op">/</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(n)))<span class="op">**</span><span class="dv">2</span>)</span>
-<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a><span class="co">// Marginal likelihood under H1 (normal prior on mu)</span></span>
-<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>tau <span class="op">=</span> <span class="dv">25</span>        <span class="co">// prior variance for H1</span></span>
-<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a>post_var <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> (<span class="dv">1</span><span class="op">/</span>tau <span class="op">+</span> n<span class="op">/</span>sigma<span class="op">**</span><span class="dv">2</span>)</span>
-<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a>post_mean <span class="op">=</span> post_var <span class="op">*</span> (mu0<span class="op">/</span>tau <span class="op">+</span> n<span class="op">*</span>xbar_obs<span class="op">/</span>sigma<span class="op">**</span><span class="dv">2</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="116" data-source-offset="-14"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 115;"><span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">30</span></span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>sigma <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a>mu0 <span class="op">=</span> <span class="dv">200</span></span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a><span class="co">// Slider for observed sample mean</span></span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a>viewof xbar_obs <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([mu0 <span class="op">-</span> <span class="dv">3</span><span class="op">*</span>sigma<span class="op">,</span> mu0 <span class="op">+</span> <span class="dv">3</span><span class="op">*</span>sigma]<span class="op">,</span> </span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> mu0<span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="fu">md</span><span class="vs">`Observed sample mean </span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`</span><span class="sc">\b</span><span class="vs">ar{x}_{obs}`</span><span class="sc">}</span><span class="vs">`</span>} )</span>
 <span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a><span class="co">// Under H1, the marginal distribution of xbar is Normal(mu0, sigma^2/n + tau)</span></span>
-<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a>m1 <span class="op">=</span> <span class="dv">1</span><span class="op">/</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="dv">2</span><span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span><span class="op">*</span>(sigma<span class="op">**</span><span class="dv">2</span><span class="op">/</span>n <span class="op">+</span> tau)) <span class="op">*</span></span>
-<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a>     <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(<span class="op">-</span><span class="fl">0.5</span><span class="op">*</span>((xbar_obs <span class="op">-</span> mu0)<span class="op">**</span><span class="dv">2</span>)<span class="op">/</span>(sigma<span class="op">**</span><span class="dv">2</span><span class="op">/</span>n <span class="op">+</span> tau))</span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a><span class="co">// Likelihood under H0 (point null)</span></span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a>m0 <span class="op">=</span> <span class="dv">1</span><span class="op">/</span>(sigma<span class="op">/</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(n)<span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="dv">2</span><span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span>)) <span class="op">*</span></span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a>     <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(<span class="op">-</span><span class="fl">0.5</span><span class="op">*</span>((xbar_obs <span class="op">-</span> mu0)<span class="op">/</span>(sigma<span class="op">/</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(n)))<span class="op">**</span><span class="dv">2</span>)</span>
 <span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a><span class="co">// Bayes factor</span></span>
-<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a>B10 <span class="op">=</span> m1<span class="op">/</span>m0</span>
-<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a><span class="fu">md</span><span class="vs">`**Bayes factor** </span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`B_{10}`</span><span class="sc">}</span><span class="vs"> = </span><span class="sc">${</span>B10<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="vs">`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a><span class="co">// Marginal likelihood under H1 (normal prior on mu)</span></span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a>tau <span class="op">=</span> <span class="dv">25</span>        <span class="co">// prior variance for H1</span></span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a>post_var <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> (<span class="dv">1</span><span class="op">/</span>tau <span class="op">+</span> n<span class="op">/</span>sigma<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a>post_mean <span class="op">=</span> post_var <span class="op">*</span> (mu0<span class="op">/</span>tau <span class="op">+</span> n<span class="op">*</span>xbar_obs<span class="op">/</span>sigma<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a><span class="co">// Under H1, the marginal distribution of xbar is Normal(mu0, sigma^2/n + tau)</span></span>
+<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a>m1 <span class="op">=</span> <span class="dv">1</span><span class="op">/</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="dv">2</span><span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span><span class="op">*</span>(sigma<span class="op">**</span><span class="dv">2</span><span class="op">/</span>n <span class="op">+</span> tau)) <span class="op">*</span></span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a>     <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(<span class="op">-</span><span class="fl">0.5</span><span class="op">*</span>((xbar_obs <span class="op">-</span> mu0)<span class="op">**</span><span class="dv">2</span>)<span class="op">/</span>(sigma<span class="op">**</span><span class="dv">2</span><span class="op">/</span>n <span class="op">+</span> tau))</span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a><span class="co">// Bayes factor</span></span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a>B10 <span class="op">=</span> m1<span class="op">/</span>m0</span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a><span class="fu">md</span><span class="vs">`**Bayes factor** </span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`B_{10}`</span><span class="sc">}</span><span class="vs"> = </span><span class="sc">${</span>B10<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="vs">`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-1" data-nodetype="declaration">
@@ -979,6 +984,7 @@ X_i \mid \mu \sim \mathcal{N}(\mu, 10),
 <hr>
 
 
+</section>
 </section>
 </section>
 
@@ -1652,7 +1658,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </script>
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldExlbmllbnQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTEiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiIvLyBQYXJhbWV0ZXJzXHJcbm4gPSAzMFxyXG5zaWdtYSA9IDEwXHJcbm11MCA9IDIwMFxyXG5cclxuLy8gU2xpZGVyIGZvciBvYnNlcnZlZCBzYW1wbGUgbWVhblxyXG52aWV3b2YgeGJhcl9vYnMgPSBJbnB1dHMucmFuZ2UoW211MCAtIDMqc2lnbWEsIG11MCArIDMqc2lnbWFdLCBcclxuICB7c3RlcDogMC41LCB2YWx1ZTogbXUwLCBsYWJlbDogbWRgT2JzZXJ2ZWQgc2FtcGxlIG1lYW4gJHt0ZXhgXFxiYXJ7eH1fe29ic31gfWB9IClcclxuXHJcbi8vIExpa2VsaWhvb2QgdW5kZXIgSDAgKHBvaW50IG51bGwpXHJcbm0wID0gMS8oc2lnbWEvTWF0aC5zcXJ0KG4pKk1hdGguc3FydCgyKk1hdGguUEkpKSAqXHJcbiAgICAgTWF0aC5leHAoLTAuNSooKHhiYXJfb2JzIC0gbXUwKS8oc2lnbWEvTWF0aC5zcXJ0KG4pKSkqKjIpXHJcblxyXG4vLyBNYXJnaW5hbCBsaWtlbGlob29kIHVuZGVyIEgxIChub3JtYWwgcHJpb3Igb24gbXUpXHJcbnRhdSA9IDI1ICAgICAgICAvLyBwcmlvciB2YXJpYW5jZSBmb3IgSDFcclxucG9zdF92YXIgPSAxIC8gKDEvdGF1ICsgbi9zaWdtYSoqMilcclxucG9zdF9tZWFuID0gcG9zdF92YXIgKiAobXUwL3RhdSArIG4qeGJhcl9vYnMvc2lnbWEqKjIpXHJcblxyXG4vLyBVbmRlciBIMSwgdGhlIG1hcmdpbmFsIGRpc3RyaWJ1dGlvbiBvZiB4YmFyIGlzIE5vcm1hbChtdTAsIHNpZ21hXjIvbiArIHRhdSlcclxubTEgPSAxL01hdGguc3FydCgyKk1hdGguUEkqKHNpZ21hKioyL24gKyB0YXUpKSAqXHJcbiAgICAgTWF0aC5leHAoLTAuNSooKHhiYXJfb2JzIC0gbXUwKSoqMikvKHNpZ21hKioyL24gKyB0YXUpKVxyXG5cclxuLy8gQmF5ZXMgZmFjdG9yXHJcbkIxMCA9IG0xL20wXHJcblxyXG5tZGAqKkJheWVzIGZhY3RvcioqICR7dGV4YEJfezEwfWB9ID0gJHtCMTAudG9GaXhlZCgzKX1gXHJcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgneGJhcl9vYnMnKSJ9XX0=
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldExlbmllbnQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTEiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiIvLyBQYXJhbWV0ZXJzXG5uID0gMzBcbnNpZ21hID0gMTBcbm11MCA9IDIwMFxuXG4vLyBTbGlkZXIgZm9yIG9ic2VydmVkIHNhbXBsZSBtZWFuXG52aWV3b2YgeGJhcl9vYnMgPSBJbnB1dHMucmFuZ2UoW211MCAtIDMqc2lnbWEsIG11MCArIDMqc2lnbWFdLCBcbiAge3N0ZXA6IDAuNSwgdmFsdWU6IG11MCwgbGFiZWw6IG1kYE9ic2VydmVkIHNhbXBsZSBtZWFuICR7dGV4YFxcYmFye3h9X3tvYnN9YH1gfSApXG5cbi8vIExpa2VsaWhvb2QgdW5kZXIgSDAgKHBvaW50IG51bGwpXG5tMCA9IDEvKHNpZ21hL01hdGguc3FydChuKSpNYXRoLnNxcnQoMipNYXRoLlBJKSkgKlxuICAgICBNYXRoLmV4cCgtMC41KigoeGJhcl9vYnMgLSBtdTApLyhzaWdtYS9NYXRoLnNxcnQobikpKSoqMilcblxuLy8gTWFyZ2luYWwgbGlrZWxpaG9vZCB1bmRlciBIMSAobm9ybWFsIHByaW9yIG9uIG11KVxudGF1ID0gMjUgICAgICAgIC8vIHByaW9yIHZhcmlhbmNlIGZvciBIMVxucG9zdF92YXIgPSAxIC8gKDEvdGF1ICsgbi9zaWdtYSoqMilcbnBvc3RfbWVhbiA9IHBvc3RfdmFyICogKG11MC90YXUgKyBuKnhiYXJfb2JzL3NpZ21hKioyKVxuXG4vLyBVbmRlciBIMSwgdGhlIG1hcmdpbmFsIGRpc3RyaWJ1dGlvbiBvZiB4YmFyIGlzIE5vcm1hbChtdTAsIHNpZ21hXjIvbiArIHRhdSlcbm0xID0gMS9NYXRoLnNxcnQoMipNYXRoLlBJKihzaWdtYSoqMi9uICsgdGF1KSkgKlxuICAgICBNYXRoLmV4cCgtMC41KigoeGJhcl9vYnMgLSBtdTApKioyKS8oc2lnbWEqKjIvbiArIHRhdSkpXG5cbi8vIEJheWVzIGZhY3RvclxuQjEwID0gbTEvbTBcblxubWRgKipCYXllcyBmYWN0b3IqKiAke3RleGBCX3sxMH1gfSA9ICR7QjEwLnRvRml4ZWQoMyl9YFxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCd4YmFyX29icycpIn1dfQ==
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
@@ -2082,7 +2088,7 @@ window._ojs.runtime.interpretFromScriptTags();
   </div>
   <div class="nav-page nav-page-next">
       <a href="../../../content/appendix/formula-sheet.html" class="pagination-link" aria-label="Formula Sheet">
-        <span class="nav-page-text">Formula Sheet</span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Formula Sheet</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
