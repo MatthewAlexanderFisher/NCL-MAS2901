@@ -1,53 +1,66 @@
-# Bayesian Hypothesis Testing
+# Bayesian Hypothesis Testing {#sec-bayes-hypothesis-test}
 
-Recalling the <span class="xref-no-num">[main inference tasks @sec-inference-tasks]</span>, we now move from *interval estimation* to *hypothesis testing* in the **Bayesian** framework.
+
+Recalling the <span class="xref-no-num">[main inference tasks @sec-inference-tasks]</span>, we now move from *interval estimation* to *hypothesis testing* in the **Bayesian** framework, and consider the Bayesian analogue of frequentist hypothesis testing.. 
 
 The Bayesian perspective is slightly different from the frequentist one: instead of asking whether data look *unlikely* under a hypothesis, we ask:
 
 > **How probable is each hypothesis given the observed data?**
 
-## Formal Setup
+## The Bayesian Setup
 
-We consider two competing hypotheses:
+Just like in <span class="xref-no-num">[frequentist hypothesis testing @sec-freq-hypothesis-test]</span>, the Bayesian approach compares two hypotheses:
 
 $$
 H_0 : \theta \in \Theta_0, 
 \qquad
 H_1 : \theta \in \Theta_1,
 $$
+where $\Theta_1 = \Theta \setminus \Theta_0$.
 
-with prior probabilities $\mathrm{Pr}(H_0)$ and $\mathrm{Pr}(H_1)$.
+The **Bayesian perspective** is to assign probabilities to hypotheses and to parameter values.  
+This involves two ingredients:
 
-After observing data $\underline{x}$, we are interested in the **posterior probabilities**:
+1. **Prior probabilities of the hypotheses:**
+   $$
+   \Pr(H_0) \quad \text{and} \quad \Pr(H_1),
+   $$
 
+     such that $\Pr(H_0) + \Pr(H_1) = 1$.
+
+2. **Conditional priors for the parameter under each hypothesis:**
+   $$
+   \pi(\theta \mid H_0) \quad \text{and} \quad \pi(\theta \mid H_1).
+   $$
+
+### Posterior Probabilities of Hypotheses
+
+After observing data $\underline{x}$, Bayes’ theorem gives
 $$
-\mathrm{Pr}(H_0 \mid \underline{x}) 
-\quad \text{vs.} \quad 
-\mathrm{Pr}(H_1 \mid \underline{x}).
+\Pr(H_0 \mid \underline{x}) 
+= \frac{f(\underline{x}\mid H_0)\,\Pr(H_0)}{f(\underline{x})}.
 $$
 
----
+If $H_0$ is not simple, the likelihood $f(\underline{x}\mid H_0)$ is obtained by averaging over $\theta \in \Theta_0$ with the conditional prior:
+$$
+f(\underline{x} \mid H_0) 
+= \int_{\Theta_0} f(\underline{x}\mid\theta)\,\pi(\theta \mid H_0)\,\mathrm{d}\theta.
+$$
 
-### Computing Posterior Probabilities
-
-By Bayes’ theorem,
-
-\begin{align*}
-\mathrm{Pr}(H_0 \mid \underline{x}) 
-&= \frac{m_0(\underline{x}) \, \mathrm{Pr}(H_0)}{m(\underline{x})}, \\[6pt]
-\mathrm{Pr}(H_1 \mid \underline{x}) 
-&= \frac{m_1(\underline{x}) \, \mathrm{Pr}(H_1)}{m(\underline{x})},
-\end{align*}
+So we can write
+$$
+\Pr(H_0 \mid \underline{x}) 
+= \frac{m_0(\underline{x}) \,\Pr(H_0)}{m(\underline{x})},
+$$
 
 where
 
-- $m(\underline{x}) = m_0(\underline{x})\mathrm{Pr}(H_0) + m_1(\underline{x})\mathrm{Pr}(H_1)$ is the **overall marginal likelihood**,  
-- $m_0(\underline{x}) = \int_{\Theta_0} f(\underline{x} \mid \theta)\,\pi_0(\theta)\,d\theta$ is the **marginal likelihood under $H_0$**,  
-- $m_1(\underline{x}) = \int_{\Theta_1} f(\underline{x} \mid \theta)\,\pi_1(\theta)\,d\theta$ is the **marginal likelihood under $H_1$**.  
+- $m_0(\underline{x}) = \int_{\Theta_0} f(\underline{x}\mid\theta)\,\pi(\theta\mid H_0)\,\mathrm{d}\theta$ is the **marginal likelihood under $H_0$,**  
+- $m_1(\underline{x}) = \int_{\Theta_1} f(\underline{x}\mid\theta)\,\pi(\theta\mid H_1)\,\mathrm{d}\theta$ is the **marginal likelihood under $H_1$,**  
+- $m(\underline{x}) = m_0(\underline{x})\Pr(H_0) + m_1(\underline{x})\Pr(H_1)$ is the **overall marginal likelihood.**
 
-Thus the Bayesian procedure directly gives the probabilities of $H_0$ and $H_1$ after seeing data.
 
----
+Thus the Bayesian procedure directly yields the posterior probabilities $\Pr(H_0 \mid \underline{x})$ and $\Pr(H_1 \mid \underline{x})$ for the competing hypotheses.
 
 ### Bayes Factor
 
@@ -69,14 +82,6 @@ $$
 - If $B_{10} > 1$: the data increase belief in $H_1$.  
 - If $B_{10} < 1$: the data increase belief in $H_0$.  
 
----
-
-### Key Contrast with Frequentist Testing
-
-- **Frequentist**: $H_0$ is either rejected or not, based on a $p$-value.  
-- **Bayesian**: we compute actual probabilities $\mathrm{Pr}(H_0 \mid \underline{x})$ and $\mathrm{Pr}(H_1 \mid \underline{x})$, and report the strength of evidence via the Bayes factor.  
-
-This makes Bayesian testing especially appealing when we want to quantify *relative support* for competing models, rather than just rejecting one.
 
 ---
 
@@ -129,3 +134,7 @@ md`**Bayes factor** ${tex`B_{10}`} = ${B10.toFixed(3)}`
 ```{=html}
 </details>
 ```
+
+---
+
+

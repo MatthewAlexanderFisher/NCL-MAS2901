@@ -16,12 +16,177 @@ If the data are consistent, this provides **support** for the hypothesis (though
 
 Unlike **interval estimation** (which gives a range of plausible values), hypothesis testing asks a **yes/no question** about the parameter $\theta$.
 
-We formalise this by specifying a **null hypothesis** $H_0$, a concrete *mathematical statement* about $\theta$:
+To make this precise, we specify a **null hypothesis** $H_0$, a concrete mathematical statement about $\theta$:
 $$
 H_0 : \theta \in \Theta_0,
 $$
 
 where $\Theta_0 \subseteq \Theta$ is part of the parameter space.
+
+The **alternative hypothesis** is simply the complement set:
+$$
+H_1 : \theta \in \Theta \setminus \Theta_0,
+$$
+i.e. the parameter values in $\Theta$ which are not in $\Theta_0$.
+
+So every hypothesis test is really just a <span class="xref-no-num">[partition @def-excl-exh-part]</span> of the parameter space into two regions: one where the null holds, and one where it does not.
+
+
+::: {.panel-tabset}
+### One-Dimensional Parameter Space
+```{ojs}
+//| label: fig-theta-partition
+//| fig-cap: Partition of the parameter space $\Theta$ into $\Theta_0$ (null) and $H_1=\Theta\setminus\Theta_0$. Example shown is a one-sided null $H_0\colon\,\mu \le \mu_0$.
+
+thetaPartition = {
+  const width = 540, height = 120, pad = 28;
+
+  // Axis and μ0 location (tweak the 0.58 to move μ0)
+  const mu0x = width * 0.58;
+
+  // Colors (CSS variables with sensible fallbacks)
+  const colH0   = "var(--brand-teal, #14b8a6)";
+  const colH1   = "var(--brand-red,  #ef4444)";
+  const grid    = "var(--plot-grid,  #94a3b8)";
+  const fgMuted = "var(--fg-muted,   #64748b)";
+
+  const svg = d3.create("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("viewBox", [0, 0, width, height]);
+
+  // Axis
+  const y = height/2;
+  svg.append("line")
+    .attr("x1", pad).attr("x2", width - pad)
+    .attr("y1", y).attr("y2", y)
+    .attr("stroke", grid).attr("stroke-opacity", 0.6);
+
+  // Arrowheads
+  svg.append("path")
+    .attr("d", `M ${width-pad} ${y} l -8 -5 l 0 10 z`)
+    .attr("fill", grid).attr("fill-opacity", 0.6);
+
+  // Shade Θ0 (left of μ0)
+  svg.append("rect")
+    .attr("x", pad).attr("y", y - 16)
+    .attr("width", mu0x - pad).attr("height", 32)
+    .attr("fill", colH0).attr("fill-opacity", 0.22)
+    .attr("rx", 6);
+
+  // Shade H1 (right of μ0)
+  svg.append("rect")
+    .attr("x", mu0x).attr("y", y - 16)
+    .attr("width", width - pad - mu0x).attr("height", 32)
+    .attr("fill", colH1).attr("fill-opacity", 0.18)
+    .attr("rx", 6);
+
+  // μ0 tick
+  svg.append("line")
+    .attr("x1", mu0x).attr("x2", mu0x)
+    .attr("y1", y - 24).attr("y2", y + 24)
+    .attr("stroke", grid).attr("stroke-width", 1.1);
+
+  // Labels
+  svg.append("text")
+    .attr("x", pad - 8).attr("y", y - 22)
+    .text("Parameter space Θ")
+    .attr("text-anchor", "start")
+    .style("font-size", "12px")
+    .style("fill", fgMuted);
+
+  svg.append("text")
+    .attr("x", mu0x - 6).attr("y", y - 30)
+    .text("μ₀")
+    .attr("text-anchor", "end")
+    .style("font-size", "13px")
+    .style("font-weight", 600)
+    .style("fill", fgMuted);
+
+  svg.append("text")
+    .attr("x", (pad + mu0x)/2).attr("y", y + 34)
+    .text("Θ₀  (null: μ ≤ μ₀)")
+    .attr("text-anchor", "middle")
+    .style("font-size", "13px")
+    .style("fill", fgMuted);
+
+  svg.append("text")
+    .attr("x", (mu0x + (width - pad))/2).attr("y", y + 34)
+    .text("H₁ = Θ \\ Θ₀")
+    .attr("text-anchor", "middle")
+    .style("font-size", "13px")
+    .style("fill", fgMuted);
+
+  return svg.node();
+}
+```
+
+### Multidimensional Parameter Space
+
+```{ojs}
+//| label: fig-theta-box
+//| fig-cap: Hypothesis as a partition of $\Theta$, a subset $\Theta_0$ (null) and its complement $H_1$.
+
+thetaBox = {
+  const width = 460, height = 200, pad = 20;
+
+  const colH0   = "var(--brand-teal, #14b8a6)";
+  const colH1   = "var(--brand-red,  #ef4444)";
+  const grid    = "var(--plot-grid,  #94a3b8)";
+  const fgMuted = "var(--fg-muted,   #64748b)";
+
+  const svg = d3.create("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("viewBox", [0, 0, width, height]);
+
+  // Big Θ box
+  svg.append("rect")
+    .attr("x", pad).attr("y", pad)
+    .attr("width", width - 2*pad).attr("height", height - 2*pad)
+    .attr("rx", 12)
+    .attr("fill", "none")
+    .attr("stroke", grid).attr("stroke-opacity", 0.6);
+
+  // Label Θ
+  svg.append("text")
+    .attr("x", pad + 10).attr("y", pad + 18)
+    .text("Θ")
+    .style("font-size", "16px")
+    .style("fill", fgMuted);
+
+  // Θ0 subregion (null) – left rectangle inside Θ
+  const innerPad = 14;
+  const w0 = (width - 2*pad) * 0.48;
+  const h0 = (height - 2*pad) - 2*innerPad;
+
+  svg.append("rect")
+    .attr("x", pad + innerPad).attr("y", pad + innerPad)
+    .attr("width", w0).attr("height", h0)
+    .attr("rx", 10)
+    .attr("fill", colH0).attr("fill-opacity", 0.22)
+    .attr("stroke", colH0).attr("stroke-opacity", 0.6);
+
+  svg.append("text")
+    .attr("x", pad + innerPad + w0/2).attr("y", pad + innerPad + h0/2)
+    .text("Θ₀ (null)")
+    .attr("text-anchor", "middle")
+    .style("font-size", "14px")
+    .style("font-weight", 600)
+    .style("fill", fgMuted);
+
+  // H1 label (complement)
+  svg.append("text")
+    .attr("x", pad + innerPad + w0 + 16).attr("y", pad + innerPad + 18)
+    .text("H₁ = Θ \\ Θ₀")
+    .style("font-size", "14px")
+    .style("fill", fgMuted);
+
+  return svg.node();
+}
+```
+
+:::
 
 We then use the observed data $\underline{x}$ to evaluate whether $H_0$ is plausible. The frequentist reasoning is:
 
@@ -119,14 +284,6 @@ Plot.plot({
 
 To make this comparison practical, we do not usually work with the full data distribution. Instead, we reduce the sample to a **test statistic** $T(\underline{X})$ that captures the evidence relevant to $H_0$.
 
-At this stage we also specify an **alternative hypothesis** $H_1$:
-
-Formally, $H_1$ is just the complement of $H_0$ (all parameter values not in $\Theta_0$). But writing it down makes clear what kinds of departures we are trying to detect:
-
-- **Two-sided:** $H_0:\mu=\mu_0$ vs $H_1:\mu\neq \mu_0$.  
-- **One-sided:** $H_0:\mu=\mu_0$ vs $H_1:\mu>\mu_0$.
-
-
 ### General Recipe {#sec-general-testing-strategy}
 
 1. **Specify the hypotheses.**  
@@ -141,13 +298,13 @@ Formally, $H_1$ is just the complement of $H_0$ (all parameter values not in $\T
 
 4. **Define a rejection region $R_\alpha$.**  
    For a chosen significance level $\alpha$, determine a set $R_\alpha$ of “extreme” values of $T(\underline{X})$ such that  
-   $$
-   \Pr(T \in R_\alpha \mid H_0) = \alpha.
-   $$  
+    $$
+    \max_{\theta \in H_0} \, \mathrm{Pr} \big(T \in R_\alpha \mid \theta \big) \;\leq\; \alpha.
+    $$
 
-   - For a **two-sided test**, $R_\alpha$ usually consists of both tails of the distribution (e.g. $T$ very large or very small).  
-   - For a **one-sided test**, $R_\alpha$ is just one tail (e.g. only large values if $H_1:\theta>\theta_0$).
-
+   
+   * If $H_0$ is a **single value** (simple null) and $T$ is a **continuous random variable**, this maximum occurs exactly at that value, so we can choose $R_\alpha$ so that the probability equals $\alpha$.
+   * If $H_0$ is **composite** or $T$ is **discrete**, the test may be **conservative**: the probability is strictly less than $\alpha$ for some $\theta \in H_0$.
 
 5. **Compute the observed statistic.**  
    From the data, calculate $T_{\text{obs}} = T(\underline{x})$.
@@ -185,14 +342,19 @@ In addition, the <span class="xref-no-num">[sampling distribution @def-sampling-
 Given a test statistic $T(\underline{X})$ and significance level $\alpha$, a **rejection region** is a subset $R_\alpha$ of the sample space of $T$ such that  
 
 $$
-\Pr(T \in R_\alpha \mid H_0) = \alpha.
+\max_{\theta \in H_0} \, \mathrm{Pr} \big(T \in R_\alpha \mid \theta \big) \;\leq\; \alpha.
 $$
 
-- For a **two-sided test**, $R_\alpha$ is typically chosen as the two tails of the distribution of $T$ under $H_0$.  
-- For a **one-sided test**, $R_\alpha$ is typically one tail (upper or lower) according to the alternative $H_1$.  
+This ensures that, no matter which parameter value in $H_0$ is true, the probability of a false rejection (Type I error) never exceeds $\alpha$.
 
-Other choices of $R_\alpha$ are mathematically possible, but by convention we use the **most extreme** values of $T$ since this maximises power.
-  
+- For a **simple null** with a continuous test statistic, the maximum occurs at the null value itself, and we can usually choose $R_\alpha$ so that the probability equals $\alpha$.  
+- For a **composite null** or a **discrete statistic**, the maximum may be strictly less than $\alpha$, making the test *conservative*.  
+
+In practice:  
+- For a **two-sided test**, $R_\alpha$ is typically chosen as both tails of the distribution of $T$ under $H_0$.  
+- For a **one-sided test**, $R_\alpha$ is typically one tail (upper or lower), depending on the alternative $H_1$.  
+
+Other choices of $R_\alpha$ are mathematically possible, but by convention we use the **most extreme** values of $T$, since this usually maximises power.  
 :::
 
 As our first example of a hypothesis test, we will pick a **bad** choice of test statistic $T$ and a couple of choices of rejection region $R$.
@@ -349,20 +511,20 @@ By the definition of the <span class="xref-no-num">[rejection region @def-reject
 
 ### Power of a Test
 
-The error framework above connects directly to common performance measures:
+To describe both types of error within a single framework, we define the **power function**:
 
 ::: {#def-power}
-#### Power of a Test
+#### Power Function
 
-- **Sensitivity (Power):** The probability of correctly rejecting $H_0$ when the alternative $H_1$ is true.  
-  $$
-  \text{Power} = 1 - \Pr(\text{Type II Error}).
-  $$
+The **power function** of a test is
+$$
+\beta(\theta) = \Pr\!\big(T \in R_\alpha \mid \theta\big), \qquad \theta \in \Theta.
+$$
 
-- **Specificity:** The probability of correctly failing to reject $H_0$ when it is true.  
-  $$
-  \text{Specificity} = 1 - \Pr(\text{Type I Error}) = 1-\alpha.
-  $$
+- If $\theta \in H_0$, this is the **type I error probability**, which by design is at most $\alpha$.  
+- If $\theta \in H_1$, this is the probability of **correctly rejecting $H_0$** at that parameter value.
+
+Thus the power function unifies the error probabilities: it is small on $H_0$, and we hope it is large on $H_1$.
 
 :::
 
@@ -376,13 +538,13 @@ Computing the **power** of a test depends on the true value of the parameter $\t
 ::: {#exm-bad-test-statistic-power}
 #### The Power of a Terrible Hypothesis Test
 
-Continuing from @exm-bad-test-statistic, for both the *rejection regions*:
+Continuing from @exm-bad-test-statistic, for each of the *rejection regions*
 
 1. $R_\alpha^{(1)} = \{\,|T| > z_{1-\alpha/2}\,\}$, and
 
 2. $R_\alpha^{(2)} = \{\,T > z_{1-\alpha}\,\},$
 
-compute the **power** of the test as a function of $\mu$.
+derive the **power functions** of the test as a function of $\mu$.
 
 
 ```{=html}
@@ -426,7 +588,7 @@ where $Z \sim \mathcal{N}(0,1)$ and $\Phi$ is its CDF.
 * For the **two-sided test**
 
   $$
-  \mathrm{Power}(\mu) 
+  \beta(\mu) 
   = \Pr(|T| > z_{1-\alpha/2} \mid \mu) 
   = 1 - \Big[ \Phi(z_{1-\alpha/2} - \mu) - \Phi(-z_{1-\alpha/2} - \mu)\Big].
   $$
@@ -436,15 +598,12 @@ where $Z \sim \mathcal{N}(0,1)$ and $\Phi$ is its CDF.
 * For the **one-sided test**
 
   $$
-  \mathrm{Power}(\mu) 
+  \beta(\mu) 
   = \Pr(T > z_{1-\alpha} \mid \mu) 
   = 1 - \Phi(z_{1-\alpha} - \mu).
   $$
 
-Both expressions reduce to $\mathrm{Power}(0) = \alpha$ when $\mu=0$, as required.
-
-
-
+Both expressions reduce to $\beta(0) = \alpha$ when $\mu=0$, as required.
 
 
 ```{=html}
@@ -787,9 +946,15 @@ to test $H_0: \mu = \mu_0$ vs. either a one-sided or two-sided alternative. Let'
 ::: {#exm-one-sample-normal-known-var-test}
 ### One-Sample Normal Test (known variance)
 
-Suppose we have i.i.d. data $X_i \sim \mathcal{N}(\mu, \sigma^2)$. Using the test statistic:
+Suppose we have i.i.d. data $X_i \sim \mathcal{N}(\mu, \sigma^2)$. Suppose we wish to test:
+
+1. $H_0: \mu = \mu_0$, $H_1: \mu \neq \mu_0$.
+1. $H_0: \mu \leq \mu_0$, $H_1: \mu > \mu_0$.
+2. $H_0: \mu \geq \mu_0$, $H_1: \mu < \mu_0$.
+
+Using the test statistic:
 $$
-T = \bar{X},
+T = \bar{X} = \frac{1}{n}\sum_{i=1}^n X_i,
 $$
 
 derive the **one-sided** and **two-sided** rejection regions at significance level $\alpha$.
@@ -799,12 +964,40 @@ derive the **one-sided** and **two-sided** rejection regions at significance lev
 <summary><strong>Solution</strong></summary>
 ```
 
+**1.**
+
+Under the null hypothesis, the test statistic $T$ has distribution:
+$$
+T \mid \mu = \mu_0 \sim \mathcal{N}\left(\mu_0, \frac{\sigma^2}{n}\right).
+$$
+Since the alternative is two-sided, we want power in both directions and so pick a two-sided rejection region. We have
+$$
+\frac{T - \mu_0}{\sigma / \sqrt{n}} \sim \mathcal{N}(0,1).
+$$
+Therefore, since
+
+\begin{align*}
+\Pr\left( \frac{T - \mu_0}{\sigma / \sqrt{n}} \geq z_{1-\alpha/2}  \mid \mu = \mu_0 \right) + \Pr\left( \frac{T - \mu_0}{\sigma / \sqrt{n}} \leq -z_{1-\alpha/2}  \mid \mu &= \mu_0 \right) = 1-\alpha \\
+\Pr\left( |T - \mu_0| \geq \frac{z_{1-\alpha/2} \sigma}{\sqrt{n}} \mid \mu &= \mu_0 \right) = 1-\alpha.
+\end{align*}
+Therefore, a valid two-sided $1-\alpha$ rejection region takes the form:
+$$
+R_\alpha = \left\{ T \mid \; |T - \mu_0| > \frac{\sigma \, z_{1-\alpha/2}}{\sqrt{n}} \right\}.
+$$
+
+**2.**
+
+Under the null hypothesis, the test statistic $T$ has distribution:
+$$
+T \mid \mu \sim \mathcal{N}\left(\mu, \frac{\sigma^2}{n}\right), \quad \text{for } \mu \leq \mu_0. 
+$$
+
+The null hypothesis does not fully specify the distribution of the null.
+
 
 ```{=html}
 </details>
 ```
-
-
 
 :::
 
@@ -817,13 +1010,17 @@ derive the **one-sided** and **two-sided** rejection regions at significance lev
 So far, we have only ever considered a **single sample**
 
 
-### Test of Proportions
-
-
 
 ## Approximate Hypothesis Tests
 
 ### CLT: Approximate Hypothesis Tests
+
+::: {#exm-test-of-proportions}
+#### Test of Proportions
+
+
+
+:::
 
 ### Asymptotic MLE: Approximate Hypothesis Tests
 

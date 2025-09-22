@@ -2379,6 +2379,253 @@ f_T(t) = \frac{\Gamma\!\left(\frac{\nu+1}{2}\right)}{\sqrt{\nu\pi}\,\Gamma\!\lef
 </details>
 </div>
 </div>
+<div class="question callout callout-style-simple callout-important no-icon callout-titled" data-tags="statistics" data-difficulty="0">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Sample Mean and Standard Deviation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Emergency admissions to <span class="math inline">10</span> hospitals were recorded on a particular day.</p>
+<p>The summary statistics were:</p>
+<ul>
+<li><span class="math inline">n = 10</span><br>
+</li>
+<li><span class="math inline">\sum_{i=1}^n x_i = 207</span><br>
+</li>
+<li><span class="math inline">\sum_{i=1}^n x_i^2 = 4501</span></li>
+</ul>
+<p>Find the <strong>sample mean</strong> <span class="math inline">\bar{x}</span> and the <strong>sample standard deviation</strong> <span class="math inline">s</span>.</p>
+<details class="solution">
+<summary>
+Solution
+</summary>
+<p>The sample mean is <span class="math display">
+\bar{x} = \frac{1}{n}\sum_{i=1}^n x_i = \frac{207}{10} = 20.7.
+</span></p>
+<p>To find the sample variance, <span class="math display">
+s^2 = \frac{1}{n-1}\left(\sum_{i=1}^n x_i^2 - n \bar{x}^2\right).
+</span></p>
+<p>Substituting the values: <span class="math display">
+s^2 = \frac{1}{9}\left(4501 - 10 \times (20.7)^2\right)
+= \frac{1}{9}(4501 - 4284.9)
+= 24.011.
+</span></p>
+<p>Taking the square root gives the sample standard deviation: <span class="math display">
+s = \sqrt{24.011} \approx 4.900.
+</span></p>
+</details>
+</div>
+</div>
+<div class="question callout callout-style-simple callout-important no-icon callout-titled" data-tags="clt probability week-4" data-difficulty="1">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Central Limit Theorem Approximation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The scores that responders give on a questionnaire can be assumed to be independent random variables, each with the following probability distribution:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Score</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+<th style="text-align: center;">4</th>
+<th style="text-align: center;">5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Probability</td>
+<td style="text-align: center;">0.3</td>
+<td style="text-align: center;">0.1</td>
+<td style="text-align: center;">0.2</td>
+<td style="text-align: center;">0.1</td>
+<td style="text-align: center;">0.3</td>
+</tr>
+</tbody>
+</table>
+<p>Use the <span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#thm-clt" class="quarto-xref">Central Limit Theorem&nbsp;<span>4.1</span></a></span> to approximate the probability that the average score from <span class="math inline">n = 100</span> responders lies in the range <span class="math inline">(2.8,\,3.2)</span>.</p>
+<details class="solution">
+<summary>
+Solution
+</summary>
+<p>Let <span class="math inline">X</span> be the score for a randomly selected responder.<br>
+We first compute the moments.</p>
+<p><strong>Expected value:</strong> <span class="math display">
+\mathrm{E}[X] = \sum_{i=1}^5 i \Pr(X=i)
+= 1(0.3) + 2(0.1) + 3(0.2) + 4(0.1) + 5(0.3) = 3.
+</span></p>
+<p><strong>Second moment:</strong> <span class="math display">
+\mathrm{E}[X^2] = \sum_{i=1}^5 i^2 \Pr(X=i)
+= 1^2(0.3) + 2^2(0.1) + 3^2(0.2) + 4^2(0.1) + 5^2(0.3) = 11.6.
+</span></p>
+<p><strong>Variance:</strong> <span class="math display">
+\operatorname{Var}(X) = \mathrm{E}[X^2] - (\mathrm{E}[X])^2 = 11.6 - 9 = 2.6.
+</span></p>
+<hr>
+<p>Let <span class="math inline">\bar{X}</span> be the sample mean. By the Central Limit Theorem, <span class="math display">
+\bar{X} \overset{\text{approx.}}{\sim} \mathcal{N}\!\left(3,\; \frac{2.6}{100}\right).
+</span></p>
+<p>We want: <span class="math display">
+\Pr(2.8 &lt; \bar{X} &lt; 3.2)
+= \Pr\!\left(\frac{2.8-3}{\sqrt{2.6/100}} &lt; Z &lt; \frac{3.2-3}{\sqrt{2.6/100}}\right),
+</span> where <span class="math inline">Z \sim N(0,1)</span>.</p>
+<p>Compute the bounds: <span class="math display">
+\frac{2.8-3}{\sqrt{0.026}} = -1.24,
+\qquad
+\frac{3.2-3}{\sqrt{0.026}} = 1.24.
+</span></p>
+<p>Thus, <span class="math display">
+\Pr(-1.24 &lt; Z &lt; 1.24)
+= \Pr(Z &lt; 1.24) - \Pr(Z &lt; -1.24).
+</span></p>
+<p>Using R, Python or referring to the standard normal tables: <span class="math display">
+\Pr(Z &lt; 1.24) = 0.8925, \qquad \Pr(Z &lt; -1.24) = 0.1075.
+</span></p>
+<p>So, <span class="math display">
+\Pr(2.8 &lt; \bar{X} &lt; 3.2) \approx 0.8925 - 0.1075 = 0.785.
+</span></p>
+</details>
+</div>
+</div>
+<div class="question callout callout-style-simple callout-important no-icon callout-titled" data-tags="clt binomial week-4" data-difficulty="1">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Normal Approximation to the Binomial
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Use the <span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#thm-clt" class="quarto-xref">Central Limit Theorem&nbsp;<span>4.1</span></a></span> to justify the Normal approximation to the <span class="xref-no-num"><a href="formula-sheet.html#sec-binom" class="quarto-xref">Binomial&nbsp;<span>Binomial</span></a></span>.</p>
+<p>That is, if <span class="math inline">X \sim \mathrm{Bin}(n,p)</span>, show that for large <span class="math inline">n</span> (with <span class="math inline">p \neq 0,1</span>), <span class="math display">
+X \overset{\text{approx.}}{\sim} \mathcal{N} \big(np,\; np(1-p)\big).
+</span></p>
+<details class="solution">
+<summary>
+Solution
+</summary>
+<p>The Binomial distribution counts the number of successes in <span class="math inline">n</span> independent Bernoulli trials.</p>
+<p>For trial <span class="math inline">i</span>, define the indicator <span class="math display">
+I_i =
+\begin{cases}
+1, &amp; \text{if success}, \\
+0, &amp; \text{if failure}.
+\end{cases}
+</span></p>
+<p>Each <span class="math inline">I_i</span> has <span class="math display">
+\mathrm{E}[I_i] = p, \qquad \operatorname{Var}(I_i) = p(1-p).
+</span></p>
+<p>The total number of successes is <span class="math display">
+X = \sum_{i=1}^n I_i.
+</span></p>
+<p>By the Central Limit Theorem, the sum of independent, identically distributed random variables is approximately Normal when <span class="math inline">n</span> is large. Therefore, <span class="math display">
+X \overset{\text{approx.}}{\sim} \mathcal{N} \big(np,\; np(1-p)\big).
+</span></p>
+</details>
+</div>
+</div>
+<div class="question callout callout-style-simple callout-important no-icon callout-titled" data-tags="estimator bias variance" data-difficulty="1">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Properties of an Estimator I
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suppose <span class="math inline">X_1, X_2, X_3</span> are independent random variables, each with expectation<br>
+<span class="math inline">\mathrm{E}[X] = 2\theta + 1</span> and variance <span class="math inline">\operatorname{Var}(X) = \theta^2/12</span>, where <span class="math inline">\theta</span> is an unknown parameter.</p>
+<p>Consider the estimator <span class="math inline">\hat{\theta}</span> of <span class="math inline">\theta</span>, where <span class="math display">
+\hat{\theta} = 2X_1 - X_2 + X_3.
+</span></p>
+<ol type="1">
+<li>Find the expectation of <span class="math inline">\hat{\theta}</span>.<br>
+</li>
+<li>Find the variance of <span class="math inline">\hat{\theta}</span>.<br>
+</li>
+<li>What is the bias of <span class="math inline">\hat{\theta}</span>?</li>
+</ol>
+<details class="solution">
+<summary>
+Solution
+</summary>
+<p><strong>(a) Expectation</strong> <span class="math display">
+\mathrm{E}[\hat{\theta}] = \mathrm{E}[2X_1 - X_2 + X_3]
+= 2\mathrm{E}[X_1] - \mathrm{E}[X_2] + \mathrm{E}[X_3].
+</span> Since each <span class="math inline">X_i</span> has the same mean <span class="math inline">\mathrm{E}[X] = 2\theta + 1</span>, <span class="math display">
+\mathrm{E}[\hat{\theta}] = 2(2\theta+1) - (2\theta+1) + (2\theta+1) = 4\theta + 2.
+</span></p>
+<hr>
+<p><strong>(b) Variance</strong> <span class="math display">
+\operatorname{Var}(\hat{\theta}) = \operatorname{Var}(2X_1 - X_2 + X_3).
+</span> Since the <span class="math inline">X_i</span> are independent, <span class="math display">
+\operatorname{Var}(\hat{\theta}) = 4\operatorname{Var}(X_1) + \operatorname{Var}(X_2) + \operatorname{Var}(X_3).
+</span> Each has variance <span class="math inline">\theta^2/12</span>, so <span class="math display">
+\operatorname{Var}(\hat{\theta}) = (4+1+1)\frac{\theta^2}{12} = \frac{\theta^2}{2}.
+</span></p>
+<hr>
+<p><strong>(c) Bias</strong> <span class="math display">
+\operatorname{Bias}(\hat{\theta}) = \mathrm{E}[\hat{\theta}] - \theta = (4\theta + 2) - \theta = 3\theta + 2.
+</span></p>
+</details>
+</div>
+</div>
+<div class="question callout callout-style-simple callout-important no-icon callout-titled" data-tags="estimation bias variance" data-difficulty="1">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Properties of an Estimator II
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suppose <span class="math inline">X_1, X_2, X_3, X_4</span> are independent random variables, each with<br>
+<span class="math inline">\mathrm{E}[X] = 3\theta</span> and <span class="math inline">\operatorname{Var}(X) = \theta^2/9</span>, where <span class="math inline">\theta</span> is an unknown parameter.</p>
+<p>Consider the estimator <span class="math display">
+\hat{\theta} = X_1 + 2X_2 - X_3 + X_4.
+</span></p>
+<ol type="1">
+<li>Find the expectation of <span class="math inline">\hat{\theta}</span>.<br>
+</li>
+<li>Find the variance of <span class="math inline">\hat{\theta}</span>.<br>
+</li>
+<li>What is the bias of <span class="math inline">\hat{\theta}</span>?</li>
+</ol>
+<details class="solution">
+<summary>
+Solution
+</summary>
+<p><strong>(a) Expectation</strong> <span class="math display">
+\mathrm{E}[\hat{\theta}] = \mathrm{E}[X_1] + 2\mathrm{E}[X_2] - \mathrm{E}[X_3] + \mathrm{E}[X_4].
+</span> Each has mean <span class="math inline">3\theta</span>, so <span class="math display">
+\mathrm{E}[\hat{\theta}] = 3\theta + 2(3\theta) - 3\theta + 3\theta = 9\theta.
+</span></p>
+<hr>
+<p><strong>(b) Variance</strong> <span class="math display">
+\operatorname{Var}(\hat{\theta}) = \operatorname{Var}(X_1) + 4\operatorname{Var}(X_2) + \operatorname{Var}(X_3) + \operatorname{Var}(X_4).
+</span> Each has variance <span class="math inline">\theta^2/9</span>, so <span class="math display">
+\operatorname{Var}(\hat{\theta}) = (1+4+1+1)\frac{\theta^2}{9} = \frac{7\theta^2}{9}.
+</span></p>
+<hr>
+<p><strong>(c) Bias</strong> <span class="math display">
+\operatorname{Bias}(\hat{\theta}) = \mathrm{E}[\hat{\theta}] - \theta = 9\theta - \theta = 8\theta.
+</span></p>
+</details>
+</div>
+</div>
 
 
 
