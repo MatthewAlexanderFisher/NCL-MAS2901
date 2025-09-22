@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   btn.type = 'button';
   btn.setAttribute('aria-pressed', 'false');
   btn.setAttribute('aria-label', 'Lecture zoom');
-  btn.setAttribute('title', 'Lecture zoom (Z)');
+  btn.setAttribute('title', 'Lecture zoom (X)');
 
   // svg icon
   btn.innerHTML = `
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Keyboard shortcut (Z)
   document.addEventListener('keydown', (e) => {
-    if (e.key.toLowerCase() === 'z' && !/input|textarea|select/i.test(e.target.tagName)) {
+    if (e.key.toLowerCase() === 'x' && !/input|textarea|select/i.test(e.target.tagName)) {
       apply(!isLectureZoom());
     }
   });

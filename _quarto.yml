@@ -89,41 +89,43 @@ format:
       - theming/header.html
       - theming/callout-prefix-removal.html
       - theming/zoom-button.html
-      # - js/inkpad.html
+      - theming/print-button.html
+      - js/inkpad.html
+      - theming/ink-button.html
     include-in-header: 
       # - theming/favicons.html
       - pwa/pwa-head.html
 
-  pdf:
-    documentclass: scrreprt
-    include-in-header:
-      text: |
-        \usepackage{newunicodechar}
-        \usepackage{emoji}
-        \newunicodechar{✨}{\emoji{sparkles}}
-        \usepackage{amsthm}
-        \usepackage{mathtools}
-        \usepackage{hyperref}
-        \usepackage{cleveref}
-        \DeclareMathOperator*{\argmax}{arg\,max}
-        \DeclareMathOperator*{\argmin}{arg\,min}
-        \makeatletter
-        \newenvironment{refproof}[1][]%
-          {\if\relax\detokenize{#1}\relax
-            \begin{proof}
-          \else
-            \begin{proof}[Proof of \ref{#1}]
-          \fi}%
-          {\end{proof}}
-        \makeatother
-    execute:
-      engine: jupyter
-      jupyter: mas2901
-      echo: false      # hide all code cells
-      warning: false   # hide warnings (knitr)
-      message: false   # hide messages (knitr)
-      output: false
-      error: false    # hide errors (knitr)
+  # pdf:
+  #   documentclass: scrreprt
+  #   include-in-header:
+  #     text: |
+  #       \usepackage{newunicodechar}
+  #       \usepackage{emoji}
+  #       \newunicodechar{✨}{\emoji{sparkles}}
+  #       \usepackage{amsthm}
+  #       \usepackage{mathtools}
+  #       \usepackage{hyperref}
+  #       \usepackage{cleveref}
+  #       \DeclareMathOperator*{\argmax}{arg\,max}
+  #       \DeclareMathOperator*{\argmin}{arg\,min}
+  #       \makeatletter
+  #       \newenvironment{refproof}[1][]%
+  #         {\if\relax\detokenize{#1}\relax
+  #           \begin{proof}
+  #         \else
+  #           \begin{proof}[Proof of \ref{#1}]
+  #         \fi}%
+  #         {\end{proof}}
+  #       \makeatother
+  #   execute:
+  #     engine: jupyter
+  #     jupyter: mas2901
+  #     echo: false      # hide all code cells
+  #     warning: false   # hide warnings (knitr)
+  #     message: false   # hide messages (knitr)
+  #     output: false
+  #     error: false    # hide errors (knitr)
 
 callouty-theorem:
   thm:

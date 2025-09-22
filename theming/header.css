@@ -2,6 +2,9 @@
    Header layout + sizing
    ============================ */
 
+#quarto-header { z-index: 3000; }
+
+
 /* Thicker top navbar */
 #quarto-header nav.navbar {
   padding-top: 0.8rem;
@@ -15,10 +18,9 @@
 
 /* Brand container spans full width; kill centring from mx-auto */
 #quarto-header .navbar-brand-container {
-  position: relative;
-  width: 100%;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
+  /* position: relative; */
+  width: auto;
+  margin: 0 auto;          /* preserve centring if you still want it */
   min-height: 42px; /* matches logo height */
 }
 

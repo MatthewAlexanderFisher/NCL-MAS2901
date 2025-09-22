@@ -1,0 +1,804 @@
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const tools = document.querySelector('#quarto-header .quarto-navbar-tools');
+  if (!tools) return;
+
+  // Create the ink button with dropdown
+  const inkContainer = document.createElement('div');
+  inkContainer.className = 'ink-tool-container';
+  inkContainer.innerHTML = `
+    <button id="ink-tool-toggle" class="btn-ink-tool" type="button" 
+            aria-label="Ink annotations" title="Ink annotations (I)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+        <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+        <path d="M2 2l7.586 7.586"/>
+        <circle cx="11" cy="11" r="2"/>
+      </svg>
+    </button>
+    
+    <div id="ink-dropdown" class="ink-dropdown">
+      <div class="ink-controls">
+        <div class="ink-section">
+          <label>Mode</label>
+          <div class="ink-button-group">
+            <button class="ink-mode-btn active" data-mode="pen" title="Pen (P)">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                <path d="M12.5 2.5l5 5L6 19H1v-5L12.5 2.5z"/>
+              </svg>
+            </button>
+            <button class="ink-mode-btn" data-mode="eraser" title="Eraser (E)">
+              <svg viewBox="0 0 20 20" fill="currentColor">
+                <path d="M8 2l8 8-6 6H4l-2-2 6-6-6-6 6-6zm0 2.8L4.8 8l4.2 4.2L12.2 8 8 4.8z"/>
+              </svg>
+            </button>
+            <button class="ink-mode-btn" data-mode="highlight" title="Highlighter (H)">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                <rect x="3" y="3" width="14" height="10" rx="1" opacity="0.5" fill="currentColor"/>
+                <path d="M7 13l6 0"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <div class="ink-section">
+          <label>Color</label>
+          <div class="ink-colors">
+            <button class="ink-color active" data-color="#ff0055" style="background:#ff0055"></button>
+            <button class="ink-color" data-color="#0066ff" style="background:#0066ff"></button>
+            <button class="ink-color" data-color="#00cc88" style="background:#00cc88"></button>
+            <button class="ink-color" data-color="#ffaa00" style="background:#ffaa00"></button>
+            <button class="ink-color" data-color="#000000" style="background:#000000"></button>
+            <button class="ink-color" data-color="#666666" style="background:#666666"></button>
+          </div>
+        </div>
+        
+        <div class="ink-section">
+          <label>Size</label>
+          <input type="range" id="ink-size" min="1" max="10" value="3" step="0.5">
+          <span id="ink-size-display">3</span>
+        </div>
+        
+        <div class="ink-section ink-actions">
+          <button id="ink-undo" class="ink-action-btn" title="Undo (Ctrl+Z)">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor">
+              <path d="M3 10a7 7 0 1 0 7-7v4M3 3l4 4-4 4"/>
+            </svg>
+            Undo
+          </button>
+          <button id="ink-clear" class="ink-action-btn" title="Clear page">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor">
+              <path d="M6 2l2 2m0 0l2 2m-2-2l2-2m-2 2L6 6m7 2v10H7V8"/>
+            </svg>
+            Clear
+          </button>
+          <button id="ink-save" class="ink-action-btn" title="Save as image">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor">
+              <path d="M3 17v-2a4 4 0 014-4h6a4 4 0 014 4v2M10 3v8m0 0l3-3m-3 3L7 8"/>
+            </svg>
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Place it before other buttons
+  const firstButton = tools.querySelector('button');
+  if (firstButton) {
+    tools.insertBefore(inkContainer, firstButton);
+  } else {
+    tools.appendChild(inkContainer);
+  }
+
+  // Create canvas container
+  const canvasContainer = document.createElement('div');
+  canvasContainer.id = 'ink-canvas-container';
+  canvasContainer.innerHTML = `
+    <canvas id="ink-canvas" aria-hidden="true"></canvas>
+    <div id="ink-status" class="ink-status">Ink mode: OFF</div>
+  `;
+  document.body.appendChild(canvasContainer);
+
+  // Initialize ink system
+  const canvas = document.getElementById('ink-canvas');
+  const ctx = canvas.getContext('2d');
+  const dropdown = document.getElementById('ink-dropdown');
+  const toggleBtn = document.getElementById('ink-tool-toggle');
+  const status = document.getElementById('ink-status');
+  
+  let inkEnabled = false;
+  let dropdownOpen = false;
+  let currentTool = 'pen';
+  let currentColor = '#ff0055';
+  let currentSize = 3;
+  let strokes = new Map(); // Map of element ID to strokes
+  let activeElementId = 'global'; // Track which element we're drawing on
+  let currentStroke = null;
+  let isDrawing = false;
+
+  // Canvas sizing
+  function updateCanvasSize() {
+    const dpr = window.devicePixelRatio || 1;
+
+    // Use the full page size
+    const width  = Math.max(document.documentElement.scrollWidth,  window.innerWidth);
+    const height = Math.max(document.documentElement.scrollHeight, window.innerHeight);
+
+    // Set backing store size in device pixels
+    canvas.width  = Math.floor(width  * dpr);
+    canvas.height = Math.floor(height * dpr);
+
+    // Set CSS size in CSS pixels
+    canvas.style.width  = width  + 'px';
+    canvas.style.height = height + 'px';
+
+    // IMPORTANT: reset transform, then apply DPR exactly once
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    redrawAll();
+  }
+
+  // Track collapsible elements
+  function setupCollapsibleTracking() {
+    // Generate unique IDs for elements without them
+    let idCounter = 0;
+    
+    document.querySelectorAll('details, .callout.collapse, .collapse').forEach(el => {
+      if (!el.id) {
+        el.id = `ink-trackable-${idCounter++}`;
+      }
+      
+      // Initialize stroke storage for this element
+      if (!strokes.has(el.id)) {
+        strokes.set(el.id, []);
+      }
+    });
+
+    // Listen for state changes
+    document.addEventListener('toggle', handleCollapsibleChange);
+    
+    // Bootstrap collapse events
+    document.addEventListener('show.bs.collapse', handleCollapsibleChange);
+    document.addEventListener('hide.bs.collapse', handleCollapsibleChange);
+    
+    // Quarto callout mutations
+    const observer = new MutationObserver(mutations => {
+      mutations.forEach(mutation => {
+        if (mutation.target.classList && mutation.target.classList.contains('callout')) {
+          handleCollapsibleChange({ target: mutation.target });
+        }
+      });
+    });
+    
+    document.querySelectorAll('.callout.collapse').forEach(el => {
+      observer.observe(el, { attributes: true, attributeFilter: ['class'] });
+    });
+  }
+
+  function handleCollapsibleChange(event) {
+    setTimeout(() => {
+      updateCanvasSize();
+      redrawAll();
+    }, 300); // Wait for animation
+  }
+
+  // Drawing functions
+  function getElementAtPoint(x, y) {
+    // Find which tracked element contains this point
+    const point = document.elementFromPoint(x, y);
+    if (!point) return 'global';
+    
+    const tracked = point.closest('details, .callout.collapse, .collapse');
+    return tracked?.id || 'global';
+  }
+
+  function isPointInElement(x, y, elementId) {
+    if (elementId === 'global') return true;
+    
+    const element = document.getElementById(elementId);
+    if (!element) return false;
+    
+    // Check if element is visible and expanded
+    const isVisible = element.offsetParent !== null;
+    const isExpanded = element.open || 
+                      element.classList.contains('show') || 
+                      !element.classList.contains('collapse');
+    
+    if (!isVisible || !isExpanded) return false;
+    
+    const rect = element.getBoundingClientRect();
+    const scrollX = window.pageXOffset;
+    const scrollY = window.pageYOffset;
+    
+    return x >= rect.left + scrollX && 
+           x <= rect.right + scrollX && 
+           y >= rect.top + scrollY && 
+           y <= rect.bottom + scrollY;
+  }
+
+  function redrawAll() {
+    const dpr = window.devicePixelRatio || 1;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);           // ensure consistent scale
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // clear in device px
+    
+    // Draw strokes for each tracked element
+    strokes.forEach((elementStrokes, elementId) => {
+      elementStrokes.forEach(stroke => {
+        // Only draw if all points are visible
+        const shouldDraw = stroke.points.every(p => 
+          isPointInElement(p.x, p.y, elementId)
+        );
+        
+        if (shouldDraw) {
+          drawStroke(stroke);
+        }
+      });
+    });
+    
+    // Draw current stroke
+    if (currentStroke) {
+      drawStroke(currentStroke);
+    }
+  }
+
+  function drawStroke(stroke) {
+    if (!stroke.points || stroke.points.length < 2) return;
+    
+    ctx.save();
+    
+    if (stroke.tool === 'eraser') {
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.strokeStyle = 'rgba(0,0,0,1)';
+      ctx.lineWidth = stroke.size * 3;
+    } else if (stroke.tool === 'highlight') {
+      ctx.globalCompositeOperation = 'multiply';
+      ctx.strokeStyle = stroke.color + '33'; // Add transparency
+      ctx.lineWidth = stroke.size * 5;
+    } else {
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.strokeStyle = stroke.color;
+      ctx.lineWidth = stroke.size;
+    }
+    
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    
+    ctx.beginPath();
+    ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
+    
+    for (let i = 1; i < stroke.points.length; i++) {
+      const p1 = stroke.points[i - 1];
+      const p2 = stroke.points[i];
+      
+      // Use quadratic curve for smoother lines
+      const midX = (p1.x + p2.x) / 2;
+      const midY = (p1.y + p2.y) / 2;
+      ctx.quadraticCurveTo(p1.x, p1.y, midX, midY);
+    }
+    
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // Save/Load
+  function saveStrokes() {
+    const data = {};
+    strokes.forEach((value, key) => {
+      if (value.length > 0) {
+        data[key] = value;
+      }
+    });
+    
+    try {
+      localStorage.setItem('ink:' + location.pathname, JSON.stringify(data));
+    } catch (e) {
+      console.warn('Failed to save ink data:', e);
+    }
+  }
+
+  function loadStrokes() {
+    try {
+      const data = localStorage.getItem('ink:' + location.pathname);
+      if (data) {
+        const parsed = JSON.parse(data);
+        strokes = new Map(Object.entries(parsed));
+      }
+    } catch (e) {
+      console.warn('Failed to load ink data:', e);
+      strokes = new Map();
+    }
+  }
+
+  // UI Controls
+  function toggleInk() {
+    inkEnabled = !inkEnabled;
+    toggleBtn.classList.toggle('active', inkEnabled);
+    canvas.style.pointerEvents = inkEnabled ? 'auto' : 'none';
+    canvasContainer.classList.toggle('active', inkEnabled);
+    status.textContent = `Ink mode: ${inkEnabled ? 'ON' : 'OFF'}`;
+    status.classList.toggle('visible', inkEnabled);
+    
+    if (!inkEnabled && dropdownOpen) {
+      closeDropdown();
+    }
+  }
+
+  function toggleDropdown(e) {
+    e.stopPropagation();
+    dropdownOpen = !dropdownOpen;
+    dropdown.classList.toggle('open', dropdownOpen);
+    
+    if (!inkEnabled && dropdownOpen) {
+      toggleInk();
+    }
+  }
+
+  function closeDropdown() {
+    dropdownOpen = false;
+    dropdown.classList.remove('open');
+  }
+
+  // Event handlers
+  toggleBtn.addEventListener('click', (e) => {
+    if (e.shiftKey || e.ctrlKey) {
+      toggleDropdown(e);
+    } else {
+      toggleInk();
+      if (dropdownOpen) closeDropdown();
+    }
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!inkContainer.contains(e.target)) {
+      closeDropdown();
+    }
+  });
+
+  // Tool selection
+  document.querySelectorAll('.ink-mode-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.ink-mode-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentTool = btn.dataset.mode;
+    });
+  });
+
+  // Color selection
+  document.querySelectorAll('.ink-color').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.ink-color').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentColor = btn.dataset.color;
+    });
+  });
+
+  // Size control
+  const sizeSlider = document.getElementById('ink-size');
+  const sizeDisplay = document.getElementById('ink-size-display');
+  sizeSlider.addEventListener('input', (e) => {
+    currentSize = parseFloat(e.target.value);
+    sizeDisplay.textContent = currentSize;
+  });
+
+  // Action buttons
+  document.getElementById('ink-undo').addEventListener('click', () => {
+    const elementStrokes = strokes.get(activeElementId) || [];
+    if (elementStrokes.length > 0) {
+      elementStrokes.pop();
+      saveStrokes();
+      redrawAll();
+    }
+  });
+
+  document.getElementById('ink-clear').addEventListener('click', () => {
+    if (confirm('Clear all ink on this page?')) {
+      strokes.clear();
+      strokes.set('global', []);
+      saveStrokes();
+      redrawAll();
+    }
+  });
+
+  document.getElementById('ink-save').addEventListener('click', () => {
+    const link = document.createElement('a');
+    link.download = `${document.title || 'ink-notes'}.png`;
+    link.href = canvas.toDataURL();
+    link.click();
+  });
+
+  // Drawing events
+  canvas.addEventListener('pointerdown', (e) => {
+    if (!inkEnabled) return;
+    
+    isDrawing = true;
+    const rect = canvas.getBoundingClientRect();
+    const x = e.pageX;
+    const y = e.pageY;
+    
+    activeElementId = getElementAtPoint(e.clientX, e.clientY);
+    
+    currentStroke = {
+      tool: currentTool,
+      color: currentColor,
+      size: currentSize,
+      points: [{ x, y, pressure: e.pressure || 0.5 }]
+    };
+    
+    canvas.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  });
+
+  canvas.addEventListener('pointermove', (e) => {
+    if (!isDrawing || !currentStroke) return;
+    
+    const x = e.pageX;
+    const y = e.pageY;
+    
+    currentStroke.points.push({ x, y, pressure: e.pressure || 0.5 });
+    redrawAll();
+    e.preventDefault();
+  });
+
+  function endDrawing(e) {
+    if (!isDrawing || !currentStroke) return;
+    
+    isDrawing = false;
+    
+    // Add stroke to the appropriate element's stroke list
+    if (!strokes.has(activeElementId)) {
+      strokes.set(activeElementId, []);
+    }
+    strokes.get(activeElementId).push(currentStroke);
+    
+    currentStroke = null;
+    saveStrokes();
+    redrawAll();
+    
+    canvas.releasePointerCapture(e.pointerId);
+  }
+
+  canvas.addEventListener('pointerup', endDrawing);
+  canvas.addEventListener('pointercancel', endDrawing);
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    if (e.target.matches('input, textarea, select')) return;
+    
+    const key = e.key.toLowerCase();
+    
+    if (key === 'i' && !e.ctrlKey && !e.metaKey) {
+      toggleInk();
+    } else if (inkEnabled) {
+      switch(key) {
+        case 'p': currentTool = 'pen'; break;
+        case 'e': currentTool = 'eraser'; break;
+        case 'h': currentTool = 'highlight'; break;
+        case 'z': 
+          if (e.ctrlKey || e.metaKey) {
+            document.getElementById('ink-undo').click();
+          }
+          break;
+      }
+      
+      // Update UI to reflect keyboard changes
+      document.querySelectorAll('.ink-mode-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.mode === currentTool);
+      });
+    }
+  });
+
+  // Initialize
+  loadStrokes();
+  setupCollapsibleTracking();
+  updateCanvasSize();
+  
+  // Handle window resize
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(updateCanvasSize, 100);
+  });
+});
+</script>
+
+<style>
+/* Ink tool container */
+.ink-tool-container {
+  position: relative;
+  display: inline-block;
+}
+
+/* Main button styling */
+.btn-ink-tool {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.375rem;
+  margin: 0 0.25rem;
+  border-radius: 0.25rem;
+  color: var(--bs-navbar-color, #333);
+  transition: all 0.15s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-ink-tool:hover {
+  opacity: 0.7;
+}
+
+.btn-ink-tool.active {
+  background: var(--bs-primary, #007bff);
+  color: white;
+}
+
+.btn-ink-tool svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+/* Dropdown panel */
+.ink-dropdown {
+  position: fixed;
+  top: 100%;
+  left: 50%;
+  margin-top: 0.5rem;
+  background: var(--bs-body-bg, white);
+  border: 1px solid var(--bs-border-color, #dee2e6);
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  min-width: 240px;
+  opacity: 0;
+  visibility: hidden;
+  transform: none !important;
+  transition: all 0.2s ease;
+  z-index: 4000;
+}
+
+
+.ink-dropdown.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.ink-controls {
+  padding: 1rem;
+}
+
+.ink-section {
+  margin-bottom: 1rem;
+}
+
+.ink-section:last-child {
+  margin-bottom: 0;
+}
+
+.ink-section label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--bs-secondary, #6c757d);
+  margin-bottom: 0.5rem;
+}
+
+/* Mode buttons */
+.ink-button-group {
+  display: flex;
+  gap: 0.25rem;
+  background: var(--bs-gray-100, #f8f9fa);
+  padding: 0.25rem;
+  border-radius: 0.375rem;
+}
+
+.ink-mode-btn {
+  flex: 1;
+  padding: 0.5rem;
+  border: none;
+  background: transparent;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  color: var(--bs-body-color, #212529);
+}
+
+.ink-mode-btn:hover {
+  background: var(--bs-gray-200, #e9ecef);
+}
+
+.ink-mode-btn.active {
+  background: var(--bs-body-bg, white);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.ink-mode-btn svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Color picker */
+.ink-colors {
+  display: flex;
+  gap: 0.375rem;
+  flex-wrap: wrap;
+}
+
+.ink-color {
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid transparent;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+.ink-color:hover {
+  transform: scale(1.1);
+}
+
+.ink-color.active {
+  border-color: var(--bs-primary, #007bff);
+}
+
+.ink-color.active::after {
+  content: '✓';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  text-shadow: 0 0 2px rgba(0,0,0,0.5);
+}
+
+/* Size slider */
+#ink-size {
+  flex: 1;
+  margin-right: 0.5rem;
+}
+
+#ink-size-display {
+  min-width: 2rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.ink-section:has(#ink-size) {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ink-section:has(#ink-size) label {
+  margin-bottom: 0;
+  margin-right: 0.5rem;
+}
+
+/* Action buttons */
+.ink-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.ink-action-btn {
+  flex: 1;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid var(--bs-border-color, #dee2e6);
+  background: var(--bs-body-bg, white);
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--bs-body-color, #212529);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  transition: all 0.15s ease;
+}
+
+.ink-action-btn:hover {
+  background: var(--bs-gray-100, #f8f9fa);
+}
+
+.ink-action-btn svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Canvas container */
+#ink-canvas-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2000;
+}
+
+
+
+#ink-canvas-container.active {
+  pointer-events: none; /* Container stays non-interactive */
+}
+
+#ink-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  touch-action: none;
+  pointer-events: auto;
+  mask: linear-gradient(to bottom, transparent 0, transparent 71px, black 71px); 
+  -webkit-mask: linear-gradient(to bottom, transparent 0, transparent 71px, black 71px);
+}
+
+#ink-canvas-container.active #ink-canvas {
+  pointer-events: auto;
+}
+
+/* Status indicator */
+.ink-status {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.ink-status.visible {
+  opacity: 1;
+}
+
+/* Dark mode support */
+.quarto-dark .btn-ink-tool {
+  color: var(--bs-navbar-dark-color, #fff);
+}
+
+.quarto-dark .btn-ink-tool.active {
+  background: var(--bs-primary, #007bff);
+}
+
+.quarto-dark .ink-dropdown {
+  background: var(--bs-dark, #212529);
+  border-color: var(--bs-gray-700, #495057);
+}
+
+.quarto-dark .ink-button-group {
+  background: var(--bs-gray-800, #343a40);
+}
+
+.quarto-dark .ink-mode-btn.active {
+  background: var(--bs-gray-700, #495057);
+}
+
+.quarto-dark .ink-action-btn {
+  background: var(--bs-dark, #212529);
+  border-color: var(--bs-gray-700, #495057);
+}
+
+.quarto-dark .ink-action-btn:hover {
+  background: var(--bs-gray-800, #343a40);
+}
+
+/* Hide from print */
+@media print {
+  .ink-tool-container,
+  #ink-canvas-container {
+    display: none !important;
+  }
+}
+</style>

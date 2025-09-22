@@ -1,7 +1,11 @@
 // Bump this to invalidate old caches after content updates
-const CACHE_VERSION = 'v1.0.4';
+const CACHE_VERSION = 'v1.0.5'; // Bumped version
 const STATIC_CACHE = `static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `runtime-${CACHE_VERSION}`;
+
+// Cache size limits
+const MAX_RUNTIME_ITEMS = 50;
+const MAX_STATIC_ITEMS = 100;
 
 // Use relative URLs so it works at /repo/ subpaths
 const OFFLINE_URL = './pwa/offline.html';
@@ -17,6 +21,17 @@ const PRECACHE = [
   './pwa/icons/icon-192.png',
   './pwa/icons/icon-512.png',
 ].filter(url => url); // Remove any undefined entries
+
+// Helper to limit cache size
+async function limitCacheSize(cacheName, maxItems) {
+  const cache = await caches.open(cacheName);
+  const keys = await cache.keys();
+  if (keys.length > maxItems) {
+    // Remove oldest entries (FIFO)
+    const keysToDelete = keys.slice(0, keys.length - maxItems);
+    await Promise.all(keysToDelete.map(key => cache.delete(key)));
+  }
+}
 
 self.addEventListener('install', event => {
   event.waitUntil(
@@ -55,11 +70,25 @@ self.addEventListener('fetch', event => {
   // Only handle same-origin requests
   if (url.origin !== self.location.origin) return;
 
-  // Special handling for critical directories - cache aggressively
-  // This includes theming, site_libs (Quarto/Bootstrap files)
+  // Skip caching for print-related functionality
+  if (url.pathname.includes('print') || 
+      url.search.includes('print') ||
+      req.headers.get('Sec-Fetch-Dest') === 'empty' && req.mode === 'cors') {
+    event.respondWith(fetch(req));
+    return;
+  }
+
+  // Always fetch fresh for print mode
+  if (req.mode === 'print' || 
+      (req.destination === 'document' && req.headers.get('Sec-Fetch-Dest') === 'document')) {
+    event.respondWith(fetch(req));
+    return;
+  }
+
+  // Use stale-while-revalidate for theming and site_libs (instead of aggressive caching)
   if (url.pathname.includes('/theming/') || 
       url.pathname.includes('/site_libs/')) {
-    event.respondWith(cacheFirstWithFallback(req));
+    event.respondWith(staleWhileRevalidate(req));
     return;
   }
 
@@ -84,48 +113,6 @@ self.addEventListener('fetch', event => {
   // Default strategy for everything else
   event.respondWith(staleWhileRevalidate(req));
 });
-
-// Cache-first strategy for critical assets (theming, site_libs)
-async function cacheFirstWithFallback(req) {
-  const cache = await caches.open(STATIC_CACHE);
-  
-  // Check cache first
-  const cached = await cache.match(req);
-  if (cached) {
-    // Return cached version immediately
-    return cached;
-  }
-  
-  // Not in cache, try to fetch and cache it
-  try {
-    const netRes = await fetch(req);
-    if (netRes.ok) {
-      // Cache it for next time
-      await cache.put(req, netRes.clone());
-      console.log(`Cached critical file: ${req.url}`);
-    }
-    return netRes;
-  } catch (err) {
-    console.error(`Failed to fetch critical file: ${req.url}`, err);
-    
-    // Return appropriate fallback based on file type
-    const url = req.url;
-    if (url.includes('.woff') || url.includes('.woff2') || url.includes('.ttf')) {
-      return new Response('', { status: 404 });
-    }
-    if (url.includes('.css')) {
-      return new Response('/* Fallback styles */', {
-        headers: { 'Content-Type': 'text/css' }
-      });
-    }
-    if (url.includes('.js')) {
-      return new Response('// Fallback script', {
-        headers: { 'Content-Type': 'application/javascript' }
-      });
-    }
-    return new Response('Resource not found', { status: 404 });
-  }
-}
 
 // Navigation strategy: Try cache first for offline-first experience
 async function handleNavigation(req) {
@@ -152,7 +139,8 @@ async function handleNavigation(req) {
     // Cache successful responses
     if (netRes.ok) {
       const cache = await caches.open(RUNTIME_CACHE);
-      cache.put(req, netRes.clone());
+      await cache.put(req, netRes.clone());
+      limitCacheSize(RUNTIME_CACHE, MAX_RUNTIME_ITEMS);
     }
     return netRes;
   } catch (err) {
@@ -180,7 +168,8 @@ async function cacheFirst(req) {
     const netRes = await fetch(req);
     if (netRes.ok) {
       const cache = await caches.open(STATIC_CACHE);
-      cache.put(req, netRes.clone());
+      await cache.put(req, netRes.clone());
+      limitCacheSize(STATIC_CACHE, MAX_STATIC_ITEMS);
     }
     return netRes;
   } catch (err) {
@@ -195,7 +184,8 @@ async function networkFirst(req) {
     const netRes = await fetch(req);
     if (netRes.ok) {
       const cache = await caches.open(RUNTIME_CACHE);
-      cache.put(req, netRes.clone());
+      await cache.put(req, netRes.clone());
+      limitCacheSize(RUNTIME_CACHE, MAX_RUNTIME_ITEMS);
     }
     return netRes;
   } catch (err) {
@@ -207,15 +197,16 @@ async function networkFirst(req) {
   }
 }
 
-// Stale-while-revalidate strategy
+// Stale-while-revalidate strategy (improved)
 async function staleWhileRevalidate(req) {
   const cache = await caches.open(RUNTIME_CACHE);
   const cached = await cache.match(req);
 
   const fetchPromise = fetch(req)
-    .then(res => {
+    .then(async res => {
       if (res.ok) {
-        cache.put(req, res.clone());
+        await cache.put(req, res.clone());
+        limitCacheSize(RUNTIME_CACHE, MAX_RUNTIME_ITEMS);
       }
       return res;
     })
