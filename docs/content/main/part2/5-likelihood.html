@@ -4216,12 +4216,41 @@ document.addEventListener('DOMContentLoaded', () => {
     const existingDialog = document.getElementById('print-options-dialog');
     if (existingDialog) existingDialog.remove();
 
+    // Get chapter list from sidebar
+    const chapters = getChapterList();
+    const currentChapter = getCurrentChapterInfo();
+
     const dialog = document.createElement('div');
     dialog.id = 'print-options-dialog';
     dialog.className = 'print-dialog-overlay';
     dialog.innerHTML = `
       <div class="print-dialog">
         <h3>Print Options</h3>
+        
+        <div class="print-option">
+          <label>
+            Print scope:
+            <select id="print-scope">
+              <option value="current">Current page only</option>
+              <option value="chapter">Current chapter (${currentChapter.name})</option>
+              <option value="part">Current part (${currentChapter.partName})</option>
+              <option value="selected">Selected chapters...</option>
+              <option value="all">Entire book</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="print-option" id="chapter-selection" style="display: none;">
+          <label>Select chapters to print:</label>
+          <div class="chapter-list">
+            ${chapters.map(ch => `
+              <label class="chapter-item">
+                <input type="checkbox" value="${ch.href}" data-title="${ch.title}">
+                ${ch.part ? `<strong>${ch.part}</strong>` : ''} ${ch.title}
+              </label>
+            `).join('')}
+          </div>
+        </div>
         
         <div class="print-option">
           <label>
@@ -4255,6 +4284,13 @@ document.addEventListener('DOMContentLoaded', () => {
           </label>
         </div>
         
+        <div class="print-progress" id="print-progress" style="display: none;">
+          <div class="progress-bar">
+            <div class="progress-fill"></div>
+          </div>
+          <div class="progress-text">Preparing pages...</div>
+        </div>
+        
         <div class="print-actions">
           <button class="btn-print-cancel">Cancel</button>
           <button class="btn-print-confirm">Print</button>
@@ -4264,20 +4300,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.body.appendChild(dialog);
 
+    // Handle scope change
+    const scopeSelect = dialog.querySelector('#print-scope');
+    const chapterSelection = dialog.querySelector('#chapter-selection');
+    
+    scopeSelect.addEventListener('change', () => {
+      chapterSelection.style.display = scopeSelect.value === 'selected' ? 'block' : 'none';
+    });
+
     // Handle dialog actions
     const confirmBtn = dialog.querySelector('.btn-print-confirm');
     const cancelBtn = dialog.querySelector('.btn-print-cancel');
 
     confirmBtn.addEventListener('click', () => {
+      const scope = dialog.querySelector('#print-scope').value;
       const options = {
         expandAll: dialog.querySelector('#print-expand-all').checked,
         pageNumbers: dialog.querySelector('#print-page-numbers').checked,
         chapterInfo: dialog.querySelector('#print-chapter-info').checked,
-        layout: dialog.querySelector('#print-layout').value
+        layout: dialog.querySelector('#print-layout').value,
+        scope: scope
       };
       
+      // Get selected chapters if scope is 'selected'
+      if (scope === 'selected') {
+        options.chapters = Array.from(dialog.querySelectorAll('.chapter-item input:checked'))
+          .map(cb => ({ href: cb.value, title: cb.dataset.title }));
+      }
+      
       dialog.remove();
-      triggerPrint(options);
+      
+      // Handle different scopes
+      if (scope === 'current') {
+        triggerPrint(options);
+      } else {
+        triggerMultiPagePrint(options);
+      }
     });
 
     cancelBtn.addEventListener('click', () => {
@@ -4297,6 +4355,230 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
     document.addEventListener('keydown', escHandler);
+  };
+
+  // Get chapter list from sidebar
+  const getChapterList = () => {
+    const chapters = [];
+    const sidebar = document.querySelector('.sidebar-navigation');
+    if (!sidebar) return chapters;
+    
+    let currentPart = '';
+    sidebar.querySelectorAll('.sidebar-item').forEach(item => {
+      if (item.querySelector('.sidebar-item-text')?.classList.contains('sidebar-part')) {
+        currentPart = item.textContent.trim();
+      } else if (item.querySelector('a')) {
+        const link = item.querySelector('a');
+        chapters.push({
+          href: link.getAttribute('href'),
+          title: link.textContent.trim(),
+          part: currentPart,
+          element: item
+        });
+      }
+    });
+    
+    return chapters;
+  };
+
+  // Get current chapter info
+  const getCurrentChapterInfo = () => {
+    const active = document.querySelector('.sidebar-item.active');
+    const title = active?.textContent.trim() || 'Unknown';
+    
+    // Find part name by traversing up
+    let partName = '';
+    let sibling = active?.previousElementSibling;
+    while (sibling) {
+      if (sibling.querySelector('.sidebar-part')) {
+        partName = sibling.textContent.trim();
+        break;
+      }
+      sibling = sibling.previousElementSibling;
+    }
+    
+    return { name: title, partName: partName || 'No part' };
+  };
+
+  // Get chapters for current part
+  const getChaptersInPart = (partName) => {
+    const chapters = getChapterList();
+    const inPart = [];
+    let foundPart = false;
+    
+    for (const ch of chapters) {
+      if (ch.part === partName) {
+        foundPart = true;
+        inPart.push(ch);
+      } else if (foundPart && ch.part !== partName) {
+        break; // Moved to next part
+      }
+    }
+    
+    return inPart;
+  };
+
+  // Multi-page print handler
+  const triggerMultiPagePrint = async (options) => {
+    const progressEl = document.getElementById('print-progress');
+    const progressBar = progressEl?.querySelector('.progress-fill');
+    const progressText = progressEl?.querySelector('.progress-text');
+    
+    if (progressEl) progressEl.style.display = 'block';
+    
+    // Determine which chapters to print
+    let chaptersToPrint = [];
+    
+    switch (options.scope) {
+      case 'all':
+        chaptersToPrint = getChapterList();
+        break;
+      case 'part':
+        const currentInfo = getCurrentChapterInfo();
+        chaptersToPrint = getChaptersInPart(currentInfo.partName);
+        break;
+      case 'chapter':
+        // For current chapter, just use single page print
+        triggerPrint(options);
+        return;
+      case 'selected':
+        chaptersToPrint = options.chapters || [];
+        break;
+    }
+    
+    if (chaptersToPrint.length === 0) {
+      alert('No chapters selected for printing');
+      return;
+    }
+    
+    // Create iframe for loading pages
+    const iframe = document.createElement('iframe');
+    iframe.style.position = 'absolute';
+    iframe.style.left = '-9999px';
+    iframe.style.width = '1000px';
+    iframe.style.height = '1000px';
+    document.body.appendChild(iframe);
+    
+    // Collect all pages
+    const printPages = [];
+    
+    for (let i = 0; i < chaptersToPrint.length; i++) {
+      const chapter = chaptersToPrint[i];
+      const progress = ((i + 1) / chaptersToPrint.length) * 100;
+      
+      if (progressBar) progressBar.style.width = progress + '%';
+      if (progressText) progressText.textContent = `Loading ${chapter.title}...`;
+      
+      try {
+        // Load page in iframe
+        const pageContent = await loadPageInIframe(iframe, chapter.href);
+        
+        // Process the page
+        if (options.expandAll) {
+          expandAllContentInDocument(iframe.contentDocument);
+        }
+        
+        // Extract and store the content
+        const content = iframe.contentDocument.querySelector('.content, main, article')?.innerHTML || '';
+        printPages.push({
+          title: chapter.title,
+          content: content
+        });
+        
+      } catch (err) {
+        console.error(`Failed to load ${chapter.title}:`, err);
+      }
+    }
+    
+    // Clean up
+    iframe.remove();
+    if (progressEl) progressEl.style.display = 'none';
+    
+    // Create combined print document
+    createCombinedPrintDocument(printPages, options);
+  };
+
+  // Load page in iframe
+  const loadPageInIframe = (iframe, href) => {
+    return new Promise((resolve, reject) => {
+      const timeout = setTimeout(() => {
+        reject(new Error('Page load timeout'));
+      }, 10000);
+      
+      iframe.onload = () => {
+        clearTimeout(timeout);
+        // Wait a bit for JS to run
+        setTimeout(() => resolve(iframe.contentDocument), 500);
+      };
+      
+      iframe.src = href;
+    });
+  };
+
+  // Expand content in a document
+  const expandAllContentInDocument = (doc) => {
+    // Quarto callout blocks
+    doc.querySelectorAll('.callout.collapse').forEach(callout => {
+      callout.classList.add('show');
+    });
+
+    // Details elements
+    doc.querySelectorAll('details').forEach(details => {
+      details.setAttribute('open', '');
+    });
+
+    // Bootstrap collapse
+    doc.querySelectorAll('.collapse').forEach(collapse => {
+      collapse.classList.add('show');
+    });
+  };
+
+  // Create combined document for printing
+  const createCombinedPrintDocument = (pages, options) => {
+    // Create new window for printing
+    const printWindow = window.open('', '_blank');
+    
+    // Build HTML
+    const html = `
+      <!DOCTYPE html>
+      <html class="${document.documentElement.className}">
+      <head>
+        <meta charset="UTF-8">
+        <title>MAS2901 Statistical Inference - Print</title>
+        ${Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
+          .map(link => link.outerHTML).join('\n')}
+        <style>
+          @media print {
+            .chapter-break { page-break-before: always; }
+            body { ${options.layout === 'compact' ? 'font-size: 10pt;' : ''} }
+          }
+          ${document.querySelector('style')?.innerHTML || ''}
+        </style>
+      </head>
+      <body class="${document.body.className} printing print-layout-${options.layout} ${options.pageNumbers ? 'print-page-numbers' : ''} ${options.chapterInfo ? 'print-chapter-info' : ''}">
+        ${pages.map((page, i) => `
+          <div class="${i > 0 ? 'chapter-break' : ''}">
+            <h1>${page.title}</h1>
+            ${page.content}
+          </div>
+        `).join('\n')}
+      </body>
+      </html>
+    `;
+    
+    printWindow.document.write(html);
+    printWindow.document.close();
+    
+    // Wait for content to render
+    printWindow.onload = () => {
+      setTimeout(() => {
+        printWindow.print();
+        // Close after print dialog
+        printWindow.onafterprint = () => {
+          printWindow.close();
+        };
+      }, 500);
+    };
   };
 
   // Print handler with options
@@ -4405,8 +4687,10 @@ document.addEventListener('DOMContentLoaded', () => {
   color: var(--bs-body-color, black);
   padding: 2rem;
   border-radius: 0.5rem;
-  max-width: 400px;
+  max-width: 500px;
   width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
@@ -4437,6 +4721,52 @@ document.addEventListener('DOMContentLoaded', () => {
   border-radius: 0.25rem;
   background: var(--bs-body-bg, white);
   color: var(--bs-body-color, black);
+}
+
+/* Chapter selection list */
+.chapter-list {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--bs-border-color, #ddd);
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-item {
+  display: block;
+  padding: 0.25rem 0;
+  margin: 0;
+}
+
+.chapter-item input {
+  margin-right: 0.5rem;
+}
+
+/* Progress bar */
+.print-progress {
+  margin-top: 1rem;
+}
+
+.progress-bar {
+  height: 20px;
+  background: var(--bs-gray-200, #e9ecef);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--bs-primary, #007bff);
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--bs-secondary, #6c757d);
 }
 
 .print-actions {
