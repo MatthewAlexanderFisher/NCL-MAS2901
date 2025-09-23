@@ -2002,6 +2002,11 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.setAttribute('data-chapter-title', chapterTitle);
     document.body.setAttribute('data-course-title', courseTitle);
     
+    // Force dark mode styles to be applied to documentElement too
+    if (document.body.classList.contains('quarto-dark')) {
+      document.documentElement.classList.add('printing-dark');
+    }
+    
     // Expand content if requested
     if (options.expandAll) {
       expandedElements = expandAllContent();
@@ -2015,6 +2020,7 @@ document.addEventListener('DOMContentLoaded', () => {
       window.addEventListener('afterprint', function cleanup() {
         document.body.classList.remove('printing', 'print-page-numbers', 
           'print-chapter-info', `print-layout-${options.layout}`);
+        document.documentElement.classList.remove('printing-dark');
         
         // Restore collapsed state
         if (expandedElements.length > 0) {
@@ -2060,7 +2066,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 .btn-print-pdf:hover {
   opacity: 0.7;
-  color: var(--brand-teal);
 }
 
 .btn-print-pdf svg {
@@ -2155,7 +2160,7 @@ document.addEventListener('DOMContentLoaded', () => {
   color: var(--bs-navbar-dark-color, #fff);
 }
 
-/* Print-specific styles */
+  /* Print-specific styles */
 @media print {
   /* Hide UI elements */
   #quarto-header,
@@ -2164,13 +2169,114 @@ document.addEventListener('DOMContentLoaded', () => {
   .btn-print-pdf,
   .btn-zoom-toggle,
   .quarto-color-scheme-toggle,
-  .print-dialog-overlay {
+  .print-dialog-overlay,
+  .ink-tool-container,
+  #ink-canvas-container {
     display: none !important;
+  }
+  
+  /* Force background colors and proper color adjustments */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+  
+  /* Apply dark mode to both html and body for first page fix */
+  html.printing-dark,
+  html.printing-dark body,
+  .quarto-dark,
+  .quarto-dark body {
+    background-color: #1a1a1a !important;
+    color: #e9ecef !important;
+  }
+  
+  /* Ensure the root and all containers have dark background */
+  html.printing-dark *,
+  .quarto-dark * {
+    background-color: inherit;
+    color: inherit;
+  }
+  
+  /* Specific dark mode overrides */
+  html.printing-dark .content,
+  html.printing-dark .quarto-container-default,
+  html.printing-dark main,
+  html.printing-dark article,
+  .quarto-dark .content,
+  .quarto-dark .quarto-container-default,
+  .quarto-dark main,
+  .quarto-dark article {
+    background-color: #1a1a1a !important;
+    color: #e9ecef !important;
+  }
+  
+  /* Dark mode code blocks */
+  html.printing-dark pre,
+  html.printing-dark code,
+  .quarto-dark pre,
+  .quarto-dark code {
+    background-color: #2d2d2d !important;
+    color: #e9ecef !important;
+    border-color: #444 !important;
+  }
+  
+  /* Dark mode callouts */
+  html.printing-dark .callout,
+  .quarto-dark .callout {
+    background-color: #2d2d2d !important;
+    border: 1px solid #444 !important;
+    color: #e9ecef !important;
+  }
+  
+  html.printing-dark .callout-title,
+  .quarto-dark .callout-title {
+    color: #e9ecef !important;
+  }
+  
+  /* Dark mode tables */
+  html.printing-dark table,
+  .quarto-dark table {
+    background-color: transparent !important;
+    color: #e9ecef !important;
+  }
+  
+  html.printing-dark th,
+  .quarto-dark th {
+    background-color: #2d2d2d !important;
+    border-color: #444 !important;
+  }
+  
+  html.printing-dark td,
+  .quarto-dark td {
+    background-color: transparent !important;
+    border-color: #444 !important;
+  }
+  
+  /* Dark mode links */
+  html.printing-dark a,
+  .quarto-dark a {
+    color: #66b3ff !important;
+  }
+  
+  /* Page setup with dark background */
+  @page {
+    margin: 0.75in;
+    
+    @bottom-right {
+      content: counter(page);
+    }
+  }
+  
+  /* First page specific fix */
+  @page :first {
+    margin-top: 0.5in;
   }
   
   /* Default layout */
   .quarto-container-default {
     max-width: 100% !important;
+    padding: 0 !important;
   }
   
   /* Compact layout */
@@ -2201,6 +2307,11 @@ document.addEventListener('DOMContentLoaded', () => {
     margin-top: 1rem;
   }
   
+  html.printing-dark .tab-pane.printing-expanded,
+  .quarto-dark.printing .tab-pane.printing-expanded {
+    border-top-color: #444 !important;
+  }
+  
   body.printing .tab-pane.printing-expanded::before {
     content: attr(aria-labelledby);
     font-weight: bold;
@@ -2213,12 +2324,6 @@ document.addEventListener('DOMContentLoaded', () => {
     counter-reset: page;
   }
   
-  @page {
-    @bottom-right {
-      content: counter(page);
-    }
-  }
-  
   /* Chapter info header */
   body.print-chapter-info::before {
     content: attr(data-course-title) " - " attr(data-chapter-title);
@@ -2228,12 +2333,13 @@ document.addEventListener('DOMContentLoaded', () => {
     font-size: 10pt;
     color: #666;
     padding: 0.5rem;
+    z-index: 10000;
+    background-color: transparent !important;
   }
   
-  /* Force background colors/images to print */
-  body {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
+  html.printing-dark .print-chapter-info::before,
+  .quarto-dark.print-chapter-info::before {
+    color: #aaa !important;
   }
   
   /* Page breaks */
@@ -2251,6 +2357,28 @@ document.addEventListener('DOMContentLoaded', () => {
   .callout {
     border: 1px solid #ddd !important;
     padding: 0.5rem !important;
+  }
+  
+  /* Mathematics in dark mode */
+  html.printing-dark .katex,
+  html.printing-dark .MathJax,
+  .quarto-dark .katex,
+  .quarto-dark .MathJax {
+    color: #e9ecef !important;
+  }
+  
+  /* Images and figures */
+  html.printing-dark img,
+  .quarto-dark img {
+    opacity: 0.9;
+  }
+  
+  /* Blockquotes */
+  html.printing-dark blockquote,
+  .quarto-dark blockquote {
+    border-left-color: #444 !important;
+    color: #adb5bd !important;
+    background-color: transparent !important;
   }
 }
 </style>
@@ -2294,13 +2422,29 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 
   /* Canvas overlay (document-sized, scrolls with page) */
+#inkpad-canvas {
+  position: fixed; 
+  top: 0; 
+  left: 0;
+  z-index: 9998;
+  touch-action: none;
+  padding: 0 !important; 
+  margin: 0; 
+  display: block; 
+  box-sizing: content-box;
+  pointer-events: none; /* You're already toggling this in JS */
+}
+
+/*  Hide during print */
+@media print {
   #inkpad-canvas {
-    position: fixed; top: 0; left: 0;
-    z-index: 9998;
-    touch-action: none;
-    /* width/height are set by JS; no padding/margins ever */
-    padding: 0 !important; margin: 0; display: block; box-sizing: content-box;
+    display: none !important;
+    position: absolute !important; /* fallback */
+    width: 0 !important;
+    height: 0 !important;
   }
+}
+
 
 /* ----- Popover ----- */
 .inkpad-popover {

@@ -38,13 +38,29 @@
 }
 
   /* Canvas overlay (document-sized, scrolls with page) */
+#inkpad-canvas {
+  position: fixed; 
+  top: 0; 
+  left: 0;
+  z-index: 9998;
+  touch-action: none;
+  padding: 0 !important; 
+  margin: 0; 
+  display: block; 
+  box-sizing: content-box;
+  pointer-events: none; /* You're already toggling this in JS */
+}
+
+/*  Hide during print */
+@media print {
   #inkpad-canvas {
-    position: fixed; top: 0; left: 0;
-    z-index: 9998;
-    touch-action: none;
-    /* width/height are set by JS; no padding/margins ever */
-    padding: 0 !important; margin: 0; display: block; box-sizing: content-box;
+    display: none !important;
+    position: absolute !important; /* fallback */
+    width: 0 !important;
+    height: 0 !important;
   }
+}
+
 
 /* ----- Popover ----- */
 .inkpad-popover {
