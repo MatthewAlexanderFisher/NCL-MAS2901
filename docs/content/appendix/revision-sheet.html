@@ -1193,23 +1193,41 @@ document.addEventListener('DOMContentLoaded', () => {
     return chapters;
   };
 
-  // Get current chapter info
+  // Get current chapter info - FIXED version
   const getCurrentChapterInfo = () => {
-    const active = document.querySelector('.sidebar-item.active');
-    const title = active?.textContent.trim() || 'Unknown';
-    
-    // Find part name by traversing up
-    let partName = '';
-    let sibling = active?.previousElementSibling;
-    while (sibling) {
-      if (sibling.querySelector('.sidebar-part')) {
-        partName = sibling.textContent.trim();
-        break;
-      }
-      sibling = sibling.previousElementSibling;
+    // Try to find the active sidebar item
+    let active = document.querySelector('.sidebar-item.active a');
+    if (!active) {
+      // Fallback: check if we're on a chapter page
+      const chapterTitle = document.querySelector('h1.chapter-title, .title')?.textContent?.trim();
+      return { name: chapterTitle || 'Current Page', partName: 'No part' };
     }
     
-    return { name: title, partName: partName || 'No part' };
+    const title = active.textContent.trim();
+    
+    // Find part name by traversing up from the active item
+    let partName = '';
+    let currentEl = active.closest('.sidebar-item');
+    
+    // Go up through previous siblings until we find a part
+    while (currentEl) {
+      currentEl = currentEl.previousElementSibling;
+      if (currentEl && currentEl.querySelector('.sidebar-part, .chapter-part')) {
+        partName = currentEl.textContent.trim();
+        break;
+      }
+    }
+    
+    // If not found, check parent sections
+    if (!partName) {
+      const parentSection = active.closest('.chapter-section');
+      if (parentSection) {
+        const partEl = parentSection.querySelector('.sidebar-part, .chapter-part');
+        if (partEl) partName = partEl.textContent.trim();
+      }
+    }
+    
+    return { name: title, partName: partName || 'Main Content' };
   };
 
   // Get chapters for current part
@@ -1345,10 +1363,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  // Create combined document for printing
+  // Create combined document for printing - FIXED version
   const createCombinedPrintDocument = (pages, options) => {
     // Create new window for printing
     const printWindow = window.open('', '_blank');
+    
+    // Collect all stylesheets except those that might interfere
+    const stylesheets = Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
+      .filter(link => !link.href.includes('quarto-html'))
+      .map(link => link.outerHTML).join('\n');
     
     // Build HTML
     const html = `
@@ -1357,20 +1380,116 @@ document.addEventListener('DOMContentLoaded', () => {
       <head>
         <meta charset="UTF-8">
         <title>MAS2901 Statistical Inference - Print</title>
-        ${Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
-          .map(link => link.outerHTML).join('\n')}
+        ${stylesheets}
         <style>
+          /* Reset background for light mode printing */
           @media print {
-            .chapter-break { page-break-before: always; }
-            body { ${options.layout === 'compact' ? 'font-size: 10pt;' : ''} }
+            body:not(.quarto-dark) {
+              background-color: white !important;
+              color: black !important;
+            }
+            
+            body:not(.quarto-dark) .content,
+            body:not(.quarto-dark) .quarto-container-default,
+            body:not(.quarto-dark) main,
+            body:not(.quarto-dark) article {
+              background-color: white !important;
+              color: black !important;
+            }
+            
+            /* Fix math rendering in dark mode */
+            .quarto-dark .katex,
+            .quarto-dark .MathJax,
+            .quarto-dark .MathJax *,
+            .quarto-dark .katex * {
+              color: #e9ecef !important;
+              background-color: transparent !important;
+              fill: #e9ecef !important;
+            }
+            
+            /* Ensure OJS figures fit within page */
+            .ojs-cell,
+            .cell-output-display,
+            figure,
+            .figure {
+              max-width: 100% !important;
+              overflow: hidden !important;
+              page-break-inside: avoid;
+            }
+            
+            .ojs-cell svg,
+            figure svg,
+            .cell-output-display svg {
+              max-width: 100% !important;
+              height: auto !important;
+            }
+            
+            /* Scale down large images/plots */
+            img, svg {
+              max-width: 100% !important;
+              height: auto !important;
+            }
+            
+            /* Hide overflow indicators */
+            * {
+              overflow: visible !important;
+            }
+            
+            pre {
+              overflow-wrap: break-word !important;
+              white-space: pre-wrap !important;
+            }
+            
+            /* Page breaks */
+            .chapter-break { 
+              page-break-before: always;
+              margin-top: 0 !important;
+            }
+            
+            /* Remove section headers that duplicate */
+            .sidebar-title,
+            .navbar-title,
+            .quarto-title-meta {
+              display: none !important;
+            }
+            
+            /* Compact layout adjustments */
+            body.print-layout-compact {
+              font-size: 10pt;
+              line-height: 1.4;
+            }
+            
+            body.print-layout-compact h1 { font-size: 1.4em; }
+            body.print-layout-compact h2 { font-size: 1.2em; }
+            body.print-layout-compact h3 { font-size: 1.1em; }
+            
+            /* Wide layout */
+            body.print-layout-wide .content {
+              max-width: 100% !important;
+              margin: 0.5in !important;
+            }
+            
+            /* Hide navigation elements */
+            .quarto-title-breadcrumbs,
+            .page-navigation,
+            .nav-footer {
+              display: none !important;
+            }
           }
-          ${document.querySelector('style')?.innerHTML || ''}
+          
+          /* Dark mode specific fixes */
+          ${document.body.classList.contains('quarto-dark') ? `
+          html, body {
+            background-color: #1a1a1a !important;
+            color: #e9ecef !important;
+          }
+          ` : ''}
         </style>
       </head>
       <body class="${document.body.className} printing print-layout-${options.layout} ${options.pageNumbers ? 'print-page-numbers' : ''} ${options.chapterInfo ? 'print-chapter-info' : ''}">
         ${pages.map((page, i) => `
           <div class="${i > 0 ? 'chapter-break' : ''}">
-            <h1>${page.title}</h1>
+            <h1 class="chapter-title">${page.title}</h1>
             ${page.content}
           </div>
         `).join('\n')}
@@ -1384,12 +1503,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // Wait for content to render
     printWindow.onload = () => {
       setTimeout(() => {
+        // Final cleanup before printing
+        const doc = printWindow.document;
+        
+        // Remove duplicate headers
+        doc.querySelectorAll('.quarto-title, .title-block-banner').forEach((el, idx) => {
+          if (idx > 0) el.remove();
+        });
+        
+        // Scale OJS content
+        doc.querySelectorAll('.ojs-cell').forEach(cell => {
+          cell.style.maxWidth = '100%';
+          cell.style.overflow = 'hidden';
+        });
+        
         printWindow.print();
+        
         // Close after print dialog
         printWindow.onafterprint = () => {
           printWindow.close();
         };
-      }, 500);
+      }, 1000); // Give more time for math to render
     };
   };
 
@@ -1626,7 +1760,9 @@ document.addEventListener('DOMContentLoaded', () => {
   .quarto-color-scheme-toggle,
   .print-dialog-overlay,
   .ink-tool-container,
-  #ink-canvas-container {
+  #ink-canvas-container,
+  #inkpad-canvas,
+  .inkpad-toolbar {
     display: none !important;
   }
   
@@ -1635,6 +1771,18 @@ document.addEventListener('DOMContentLoaded', () => {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
     color-adjust: exact !important;
+  }
+  
+  /* Light mode: force pure white background */
+  body:not(.quarto-dark),
+  body:not(.quarto-dark) .content,
+  body:not(.quarto-dark) .quarto-container-default,
+  body:not(.quarto-dark) main,
+  body:not(.quarto-dark) article,
+  body:not(.quarto-dark) pre,
+  body:not(.quarto-dark) code {
+    background-color: white !important;
+    background: white !important;
   }
   
   /* Apply dark mode to both html and body for first page fix */
@@ -1674,6 +1822,74 @@ document.addEventListener('DOMContentLoaded', () => {
     background-color: #2d2d2d !important;
     color: #e9ecef !important;
     border-color: #444 !important;
+  }
+  
+  /* Fix math rendering - remove backgrounds */
+  .katex,
+  .MathJax,
+  .katex *,
+  .MathJax *,
+  .MathJax_Display,
+  .MathJax_Preview,
+  mjx-container,
+  mjx-container *,
+  .katex-display,
+  .katex-html {
+    background-color: transparent !important;
+    background: transparent !important;
+  }
+  
+  /* Dark mode math text color */
+  .quarto-dark .katex,
+  .quarto-dark .MathJax,
+  .quarto-dark mjx-container,
+  html.printing-dark .katex,
+  html.printing-dark .MathJax,
+  html.printing-dark mjx-container {
+    color: #e9ecef !important;
+  }
+  
+  /* OJS and figure scaling */
+  .ojs-cell,
+  .cell-output-display,
+  .cell-output,
+  .figure,
+  figure {
+    max-width: 100% !important;
+    width: auto !important;
+    overflow: visible !important;
+    page-break-inside: avoid;
+  }
+  
+  .ojs-cell > *,
+  .cell-output-display > * {
+    max-width: 100% !important;
+  }
+  
+  /* Scale SVGs and images */
+  svg, img {
+    max-width: 100% !important;
+    height: auto !important;
+    width: auto !important;
+    display: block;
+  }
+  
+  /* Handle wide tables */
+  table {
+    font-size: 0.9em;
+    max-width: 100% !important;
+  }
+  
+  .table-responsive {
+    overflow: visible !important;
+  }
+  
+  /* Code blocks shouldn't overflow */
+  pre {
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
   }
   
   /* Dark mode callouts */
@@ -1717,6 +1933,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* Page setup with dark background */
   @page {
     margin: 0.75in;
+    size: letter;
     
     @bottom-right {
       content: counter(page);
