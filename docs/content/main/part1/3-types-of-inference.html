@@ -1550,6 +1550,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* Nice visual cue when drawing */
   #inkpad-canvas.drawing { cursor: crosshair !important; }
+  #quarto-content > #inkpad-canvas { padding-top: 0 !important; }
+
+/* And make sure the canvas itself never has padding/margins */
+  #inkpad-canvas { padding: 0 !important; margin: 0; display: block; box-sizing: content-box; }
 
   /* Floating toolbar */
   .inkpad-toolbar {
@@ -1568,9 +1572,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   /* Canvas overlay (document-sized, scrolls with page) */
   #inkpad-canvas {
-    position: absolute; top: 0; left: 0;
+    position: fixed; top: 0; left: 0;
     z-index: 9998;
-    touch-action: none; /* disabled while drawing; we toggle pointer-events in JS */
+    touch-action: none;
+    /* width/height are set by JS; no padding/margins ever */
+    padding: 0 !important; margin: 0; display: block; box-sizing: content-box;
   }
 </style>
 
@@ -1617,17 +1623,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const h = Math.max(d.scrollHeight, b ? b.scrollHeight : 0, d.clientHeight);
     return {w: Math.ceil(w), h: Math.ceil(h)};
   }
+
   function fitCanvas() {
-    const {w, h} = docSize();
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = w * dpr;
-    canvas.height = h * dpr;
-    canvas.style.width = w + 'px';
+    const dpr = currentDpr();
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+
+    canvas.width  = Math.ceil(w * dpr);
+    canvas.height = Math.ceil(h * dpr);
+    canvas.style.width  = w + 'px';
     canvas.style.height = h + 'px';
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    redraw();
+
+    // Set transform in redraw().
+    scheduleRedraw();
   }
+
+
   window.addEventListener('resize', fitCanvas, {passive:true});
+    // repaint when the viewport moves
+  window.addEventListener('scroll', scheduleRedraw, { passive: true });
+    // also when tab becomes visible again
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) scheduleRedraw(); });
+
   // Re-measure shortly after load to catch late reflows (math/images)
   setTimeout(fitCanvas, 500);
   // Re-measure whenever any <details> opens/closes
@@ -1640,34 +1657,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Load/save
   function save() { try { localStorage.setItem(key, JSON.stringify(strokes)); } catch(e){} }
-  function load() {
+  function load(){
     try {
-      const s = localStorage.getItem(key);
-      if (s) strokes = JSON.parse(s) || [];
-    } catch(e) { strokes = []; }
+        const s = localStorage.getItem(key);
+        strokes = s ? (JSON.parse(s) || []) : [];
+        for (const st of strokes) recomputeMeta(st);   // <— add this
+    } catch { strokes = []; }
   }
-
   // Drawing
-  function redraw() {
+  function redraw(){
+    const dpr = currentDpr();
+
+    // 1 CSS px == dpr device px; translate by -scroll so page coords appear in view
+    const sx = window.scrollX, sy = window.scrollY;
+    // Clear whole viewport buffer quickly
+    ctx.setTransform(1,0,0,1,0,0);
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    for (const s of strokes) drawStroke(s);
-    if (current) drawStroke(current);
+
+    // Draw in page space with a -scroll translation
+    ctx.setTransform(dpr, 0, 0, dpr, -sx * dpr, -sy * dpr);
+
+    const vx0 = sx, vy0 = sy, vx1 = sx + window.innerWidth, vy1 = sy + window.innerHeight;
+
+    // Visible committed strokes
+    for (const s of strokes) {
+        if (!s.bbox || intersects(s.bbox, vx0,vy0,vx1,vy1)) drawStroke(s);
+    }
+    // Current stroke
+    if (current && (!current.bbox || intersects(current.bbox, vx0,vy0,vx1,vy1))) {
+        drawStroke(current);
+    }
   }
-  
-  function drawStroke(stroke) {
-    const pts = stroke.points || [];
-    if (pts.length === 0) return;
 
-    ctx.save();
 
-    // Compositing + style
+  function styleFor(stroke){
     if (stroke.tool === 'eraser') {
         ctx.globalCompositeOperation = 'destination-out';
         ctx.strokeStyle = '#000';
         ctx.lineWidth = (stroke.size || 3) * 3;
     } else if (stroke.tool === 'highlight') {
-        ctx.globalCompositeOperation = 'multiply';   // or 'source-over' if you prefer
-        ctx.strokeStyle = (stroke.color || '#ff0') + '33'; // ~20% alpha
+        ctx.globalCompositeOperation = 'multiply';
+        ctx.strokeStyle = (stroke.color || '#ff0') + '33';
         ctx.lineWidth = (stroke.size || 3) * 5;
     } else {
         ctx.globalCompositeOperation = 'source-over';
@@ -1676,44 +1706,39 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
+  }
 
-    if (pts.length === 1) {
-        // Draw a dot
-        const r = ctx.lineWidth / 2;
-        ctx.beginPath();
-        ctx.arc(pts[0].x, pts[0].y, Math.max(1, r), 0, Math.PI * 2);
-        // For eraser we still want destination-out
-        if (stroke.tool === 'eraser') { ctx.fillStyle = '#000'; } else { ctx.fillStyle = ctx.strokeStyle; }
-        ctx.fill();
+  function drawStroke(stroke){
+    // committed stroke with cached path
+    if (stroke._path) {
+        ctx.save();
+        styleFor(stroke);
+        ctx.stroke(stroke._path);
         ctx.restore();
         return;
     }
-
-    // Quadratic smoothing: control point at p[i], end at midpoint(p[i], p[i+1])
-    ctx.beginPath();
-    ctx.moveTo(pts[0].x, pts[0].y);
-    for (let i = 1; i < pts.length - 1; i++) {
-        const c = pts[i];
-        const n = pts[i + 1];
-        const mx = (c.x + n.x) / 2;
-        const my = (c.y + n.y) / 2;
-        ctx.quadraticCurveTo(c.x, c.y, mx, my);
+    // current stroke (no cached path yet)
+    const pts = stroke.points || [];
+    if (!pts.length) return;
+    ctx.save();
+    styleFor(stroke);
+    if (pts.length === 1) {
+        const r = ctx.lineWidth/2;
+        ctx.beginPath(); ctx.arc(pts[0].x, pts[0].y, Math.max(1,r), 0, Math.PI*2);
+        ctx.fillStyle = (stroke.tool==='eraser') ? '#000' : ctx.strokeStyle;
+        ctx.fill();
+    } else {
+        ctx.beginPath();
+        ctx.moveTo(pts[0].x, pts[0].y);
+        for (let i=1;i<pts.length-1;i++){
+        const c=pts[i], n=pts[i+1];
+        ctx.quadraticCurveTo(c.x, c.y, (c.x+n.x)/2, (c.y+n.y)/2);
+        }
+        const last = pts[pts.length-1];
+        ctx.lineTo(last.x, last.y);
+        ctx.stroke();
     }
-    // Finish the tail to the final point to avoid a flat cutoff
-    const last = pts[pts.length - 1];
-    ctx.lineTo(last.x, last.y);
-
-    ctx.stroke();
     ctx.restore();
-}
-
-  // Use page coordinates so ink stays aligned when you scroll
-  function pointerPos(e){
-    return {
-      x: e.pageX,
-      y: e.pageY,
-      p: typeof e.pressure === 'number' && e.pressure > 0 ? e.pressure : 0.5
-    };
   }
 
   // Forward non-pen clicks through the canvas so <details> etc. still work.
@@ -1732,18 +1757,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function setDrawing(enabled){
     drawingEnabled = enabled;
-
-    // pointer events for the overlay
     canvas.style.pointerEvents = enabled ? 'auto' : 'none';
-
-    // canvas cursor
     canvas.classList.toggle('drawing', enabled);
-
-    // toolbar button visuals
     const drawBtn = tb('inkpad-toggle');
     drawBtn.classList.toggle('active', enabled);
     drawBtn.setAttribute('aria-pressed', String(enabled));
     drawBtn.textContent = enabled ? '🛑 Stop' : '✍️ Draw';
+    scheduleRedraw(); // <— repaint immediately
   }
 
   function setTool(t){
@@ -1752,39 +1772,100 @@ document.addEventListener('DOMContentLoaded', () => {
     tb('inkpad-eraser').classList.toggle('active', t==='eraser');
   }
 
+  // performance: cap dpr to avoid excessive sizes on high-dpi screens
+  const DPR_CAP = 1.5;                           // tune if you like
+  function currentDpr(){ return Math.min(window.devicePixelRatio || 1, DPR_CAP); }
+
+  // Throttle redraws to once per frame
+  let raf = 0;
+  function scheduleRedraw(){
+    if (raf) return;
+    raf = requestAnimationFrame(() => { raf = 0; redraw(); });
+  }
+
+  function buildPath2D(stroke){
+    const pts = stroke.points || [];
+    const path = new Path2D();
+    if (!pts.length) return path;
+    if (pts.length === 1) {
+        // tiny dot path (as a circle path)
+        const size = stroke.size || 3;
+        path.arc(pts[0].x, pts[0].y, Math.max(1, size/2), 0, Math.PI*2);
+        return path;
+    }
+    path.moveTo(pts[0].x, pts[0].y);
+    for (let i=1; i<pts.length-1; i++){
+        const c = pts[i], n = pts[i+1];
+        const mx = (c.x + n.x)/2, my = (c.y + n.y)/2;
+        path.quadraticCurveTo(c.x, c.y, mx, my);
+    }
+    const last = pts[pts.length-1];
+    path.lineTo(last.x, last.y);
+    return path;
+  }
+
+    // after loading saved strokes, compute bbox + path once
+  function recomputeMeta(s){
+    if (!s.points || !s.points.length) return;
+    let b = {x0:s.points[0].x,y0:s.points[0].y,x1:s.points[0].x,y1:s.points[0].y};
+    for (const p of s.points){ if (p.x<b.x0) b.x0=p.x; if (p.y<b.y0) b.y0=p.y; if (p.x>b.x1) b.x1=p.x; if (p.y>b.y1) b.y1=p.y; }
+    s.bbox = b;
+    s._path = buildPath2D(s);
+  }
+
+
+  function pushPointDecimated(arr, p, minDist=0.75){ // CSS px
+    const last = arr[arr.length-1];
+    if (!last) { arr.push(p); return true; }
+    const dx = p.x - last.x, dy = p.y - last.y;
+    if (dx*dx + dy*dy < minDist*minDist) return false;
+    arr.push(p); return true;
+  }
+  function expandBBox(b, p){
+    b.x0 = Math.min(b.x0, p.x); b.y0 = Math.min(b.y0, p.y);
+    b.x1 = Math.max(b.x1, p.x); b.y1 = Math.max(b.y1, p.y);
+  }
+  function newBBox(p){ return {x0:p.x, y0:p.y, x1:p.x, y1:p.y}; }
+  function intersects(b, x0,y0,x1,y1){ return !(b.x1 < x0 || b.x0 > x1 || b.y1 < y0 || b.y0 > y1); }
+
+
+  function pointerPos(e){  // page space (CSS px)
+    return { x: e.pageX, y: e.pageY, p: (e.pressure>0 ? e.pressure : 0.5) };
+  }
 
   canvas.addEventListener('pointerdown', (e)=>{
     if (!drawingEnabled) return;
-    const isPen = e.pointerType === 'pen';
-    const allowMouseDraw = e.shiftKey; // hold Shift to draw with mouse/trackpad
-    if (!isPen && !allowMouseDraw) {
-      // Pass interaction (e.g., opening <details>) to the page.
-      forwardClickToUnderlying(e);
-      return;
-    }
-    canvas.setPointerCapture?.(e.pointerId);
-    current = { tool, color: '#ff0055', size: baseSize, points: [pointerPos(e)] };
+    try { canvas.setPointerCapture?.(e.pointerId); } catch {}
+    const p = pointerPos(e);
+    current = { tool, color: '#ff0055', size: baseSize, points: [p], bbox: newBBox(p) };
     e.preventDefault();
-    redraw();
-  });
+    scheduleRedraw();
+  }, {passive:false});
 
   canvas.addEventListener('pointermove', (e)=>{
     if (!current) return;
-    current.points.push(pointerPos(e));
+    const p = pointerPos(e);
+    if (pushPointDecimated(current.points, p)) expandBBox(current.bbox, p);
     e.preventDefault();
-    redraw();
-  });
+    scheduleRedraw();
+  }, {passive:false});
 
   function endStroke(e){
     if (!current) return;
-    current.points.push(pointerPos(e));
+    const p = pointerPos(e);
+    if (pushPointDecimated(current.points, p)) expandBBox(current.bbox, p);
+    current._path = buildPath2D(current);  // <— cache path
     strokes.push(current);
     current = null;
-    redraw(); save();
+    try { canvas.releasePointerCapture?.(e.pointerId); } catch {}
+    save();
+    scheduleRedraw();
   }
+
   canvas.addEventListener('pointerup', endStroke);
   canvas.addEventListener('pointercancel', endStroke);
   canvas.addEventListener('pointerleave', endStroke);
+
 
   // --- hook up the toolbar buttons so clicks always “register” ---
   onButton('inkpad-toggle', () => setDrawing(!drawingEnabled));
@@ -1817,6 +1898,13 @@ document.addEventListener('DOMContentLoaded', () => {
     else if (k === 'z' && (e.ctrlKey || e.metaKey)) { strokes.pop(); save(); redraw(); e.preventDefault(); }
   });
 
+  let lastSX = -1, lastSY = -1;
+  function watchScroll(){
+    const sx = window.scrollX, sy = window.scrollY;
+    if (sx !== lastSX || sy !== lastSY) { lastSX = sx; lastSY = sy; scheduleRedraw(); }
+    requestAnimationFrame(watchScroll);
+  }
+  watchScroll();
 
   // --- initialise ---
   load(); fitCanvas();
