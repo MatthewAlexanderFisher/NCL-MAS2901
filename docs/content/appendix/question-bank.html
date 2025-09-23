@@ -1551,7 +1551,7 @@ Since <span class="math inline">X</span> is integer-valued, this corresponds to 
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="32a4878d" class="cell" data-execution_count="1">
+<div id="62b6fb32" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> comb</span>
@@ -2252,7 +2252,7 @@ L(b;\underline{x}) = \prod_{i=1}^n f(x_i;b)
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="d4f5447d" class="cell" data-execution_count="2">
+<div id="efa48691" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -3519,57 +3519,55 @@ document.addEventListener('DOMContentLoaded', () => {
     scheduleRedraw();
   }
 
-
-  window.addEventListener('resize', fitCanvas, {passive:true});
-    // repaint when the viewport moves
-  window.addEventListener('scroll', scheduleRedraw, { passive: true });
-    // also when tab becomes visible again
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) scheduleRedraw(); });
-
   // Re-measure shortly after load to catch late reflows (math/images)
   setTimeout(fitCanvas, 500);
-  // Re-measure whenever any <details> opens/closes
-  document.addEventListener('toggle', (e) => {
-    if (e.target.tagName && e.target.tagName.toLowerCase() === 'details') {
-      // let layout settle first
-      requestAnimationFrame(() => { fitCanvas(); });
-    }
-  }, true);
 
-  // Load/save
-  function save() { try { localStorage.setItem(key, JSON.stringify(strokes)); } catch(e){} }
+
+  // save only serializable fields
+  function save(){
+    try {
+        const lean = strokes.map(({anchorId, tool, color, size, points}) => ({anchorId, tool, color, size, points}));
+        localStorage.setItem(key, JSON.stringify(lean));
+    } catch {}
+  }
+
   function load(){
     try {
         const s = localStorage.getItem(key);
         strokes = s ? (JSON.parse(s) || []) : [];
-        for (const st of strokes) recomputeMeta(st);   // <— add this
+        for (const st of strokes) recomputeMeta(st);
     } catch { strokes = []; }
   }
-  // Drawing
+
   function redraw(){
     const dpr = currentDpr();
-
-    // 1 CSS px == dpr device px; translate by -scroll so page coords appear in view
     const sx = window.scrollX, sy = window.scrollY;
-    // Clear whole viewport buffer quickly
+
     ctx.setTransform(1,0,0,1,0,0);
     ctx.clearRect(0,0,canvas.width,canvas.height);
-
-    // Draw in page space with a -scroll translation
     ctx.setTransform(dpr, 0, 0, dpr, -sx * dpr, -sy * dpr);
 
     const vx0 = sx, vy0 = sy, vx1 = sx + window.innerWidth, vy1 = sy + window.innerHeight;
 
-    // Visible committed strokes
+    // Cache anchor offsets this frame
+    const anchorCache = new Map();
+    const infoFor = (id) => {
+        if (!anchorCache.has(id)) anchorCache.set(id, anchorInfo(id));
+        return anchorCache.get(id);
+    };
+
     for (const s of strokes) {
-        if (!s.bbox || intersects(s.bbox, vx0,vy0,vx1,vy1)) drawStroke(s);
+        const info = infoFor(s.anchorId || 'global');
+        if (!info.visible) continue;
+        const B = s.localBBox;
+        const absBox = { x0: B.x0 + info.left, y0: B.y0 + info.top, x1: B.x1 + info.left, y1: B.y1 + info.top };
+        if (intersects(absBox, vx0, vy0, vx1, vy1)) drawStrokeAnchored(s, info);
     }
-    // Current stroke
-    if (current && (!current.bbox || intersects(current.bbox, vx0,vy0,vx1,vy1))) {
-        drawStroke(current);
+    if (current) {
+        const info = infoFor(current.anchorId || 'global');
+        if (info.visible) drawStrokeAnchored(current, info);
     }
   }
-
 
   function styleFor(stroke){
     if (stroke.tool === 'eraser') {
@@ -3589,51 +3587,36 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.lineJoin = 'round';
   }
 
-  function drawStroke(stroke){
-    // committed stroke with cached path
-    if (stroke._path) {
-        ctx.save();
-        styleFor(stroke);
-        ctx.stroke(stroke._path);
-        ctx.restore();
-        return;
-    }
-    // current stroke (no cached path yet)
-    const pts = stroke.points || [];
-    if (!pts.length) return;
+  function drawStrokeAnchored(stroke, info){
     ctx.save();
     styleFor(stroke);
-    if (pts.length === 1) {
+    // shift local -> page by current anchor offset
+    ctx.translate(info.left, info.top);
+
+    if (stroke._localPath) {
+        ctx.stroke(stroke._localPath);       // committed stroke: cheap
+    } else {
+        // current stroke: build on the fly (local coords)
+        const pts = stroke.points || [];
+        if (!pts.length) { ctx.restore(); return; }
+        if (pts.length === 1) {
         const r = ctx.lineWidth/2;
         ctx.beginPath(); ctx.arc(pts[0].x, pts[0].y, Math.max(1,r), 0, Math.PI*2);
         ctx.fillStyle = (stroke.tool==='eraser') ? '#000' : ctx.strokeStyle;
         ctx.fill();
-    } else {
+        } else {
         ctx.beginPath();
         ctx.moveTo(pts[0].x, pts[0].y);
         for (let i=1;i<pts.length-1;i++){
-        const c=pts[i], n=pts[i+1];
-        ctx.quadraticCurveTo(c.x, c.y, (c.x+n.x)/2, (c.y+n.y)/2);
+            const c=pts[i], n=pts[i+1];
+            ctx.quadraticCurveTo(c.x, c.y, (c.x+n.x)/2, (c.y+n.y)/2);
         }
         const last = pts[pts.length-1];
         ctx.lineTo(last.x, last.y);
         ctx.stroke();
+        }
     }
     ctx.restore();
-  }
-
-  // Forward non-pen clicks through the canvas so <details> etc. still work.
-  function forwardClickToUnderlying(e){
-    // Temporarily ignore hits on the canvas to find the real target beneath.
-    canvas.style.pointerEvents = 'none';
-    const el = document.elementFromPoint(e.clientX, e.clientY);
-    canvas.style.pointerEvents = drawingEnabled ? 'auto' : 'none';
-    if (!el) return;
-    // Synthesize a click on the underlying element.
-    el.dispatchEvent(new MouseEvent('click', {
-      view: window, bubbles: true, cancelable: true,
-      clientX: e.clientX, clientY: e.clientY
-    }));
   }
 
   function setDrawing(enabled){
@@ -3664,12 +3647,11 @@ document.addEventListener('DOMContentLoaded', () => {
     raf = requestAnimationFrame(() => { raf = 0; redraw(); });
   }
 
-  function buildPath2D(stroke){
+  function buildPath2DLocal(stroke){
     const pts = stroke.points || [];
     const path = new Path2D();
     if (!pts.length) return path;
     if (pts.length === 1) {
-        // tiny dot path (as a circle path)
         const size = stroke.size || 3;
         path.arc(pts[0].x, pts[0].y, Math.max(1, size/2), 0, Math.PI*2);
         return path;
@@ -3677,21 +3659,21 @@ document.addEventListener('DOMContentLoaded', () => {
     path.moveTo(pts[0].x, pts[0].y);
     for (let i=1; i<pts.length-1; i++){
         const c = pts[i], n = pts[i+1];
-        const mx = (c.x + n.x)/2, my = (c.y + n.y)/2;
-        path.quadraticCurveTo(c.x, c.y, mx, my);
+        path.quadraticCurveTo(c.x, c.y, (c.x+n.x)/2, (c.y+n.y)/2);
     }
     const last = pts[pts.length-1];
     path.lineTo(last.x, last.y);
     return path;
   }
 
-    // after loading saved strokes, compute bbox + path once
   function recomputeMeta(s){
-    if (!s.points || !s.points.length) return;
+    if (!s.points?.length) return;
+    // local bbox in anchor space
     let b = {x0:s.points[0].x,y0:s.points[0].y,x1:s.points[0].x,y1:s.points[0].y};
     for (const p of s.points){ if (p.x<b.x0) b.x0=p.x; if (p.y<b.y0) b.y0=p.y; if (p.x>b.x1) b.x1=p.x; if (p.y>b.y1) b.y1=p.y; }
-    s.bbox = b;
-    s._path = buildPath2D(s);
+    s.localBBox = b;
+    // cache local path (non-serializable)
+    Object.defineProperty(s, '_localPath', { value: buildPath2DLocal(s), enumerable: false, writable: true });
   }
 
 
@@ -3710,32 +3692,91 @@ document.addEventListener('DOMContentLoaded', () => {
   function intersects(b, x0,y0,x1,y1){ return !(b.x1 < x0 || b.x0 > x1 || b.y1 < y0 || b.y0 > y1); }
 
 
+  function getAnchorAtPoint(clientX, clientY) {
+    // Temporarily let the page receive the hit
+    const prev = canvas.style.pointerEvents;
+    canvas.style.pointerEvents = 'none';
+    const hit = document.elementFromPoint(clientX, clientY);
+    canvas.style.pointerEvents = prev || (drawingEnabled ? 'auto' : 'none');
+
+    const el = hit?.closest('details, .collapse, .callout, [data-ink-surface]');
+    if (!el) return { id: 'global', el: null };
+    if (!el.id) el.id = 'ink-surface-' + Math.random().toString(36).slice(2,9);
+    return { id: el.id, el };
+  }
+
+
+  function anchorInfo(anchorId) {
+    if (anchorId === 'global') return { left: 0, top: 0, visible: true };
+    const el = document.getElementById(anchorId);
+    if (!el) return { left: 0, top: 0, visible: false };
+
+    const cs = getComputedStyle(el);
+    const visible = cs.display !== 'none' && cs.visibility !== 'hidden';
+    const expanded =
+        (el.tagName.toLowerCase() !== 'details' || el.open) &&
+        (!el.classList.contains('collapse') || el.classList.contains('show'));
+    if (!visible || !expanded) return { left: 0, top: 0, visible: false };
+
+    const r = el.getBoundingClientRect();
+    return { left: r.left + window.scrollX, top: r.top + window.scrollY, visible: true };
+  }
+
+    // pointer in LOCAL anchor coords
+  function pointerPosLocal(e, anchorEl) {
+    if (!anchorEl) return { x: e.pageX, y: e.pageY, p: e.pressure>0?e.pressure:0.5 };
+    const r = anchorEl.getBoundingClientRect();
+    return { x: e.clientX - r.left, y: e.clientY - r.top, p: e.pressure>0?e.pressure:0.5 };
+  }
+
+
+
   function pointerPos(e){  // page space (CSS px)
     return { x: e.pageX, y: e.pageY, p: (e.pressure>0 ? e.pressure : 0.5) };
   }
 
+
+  let currentAnchor = { id: 'global', el: null };
+
   canvas.addEventListener('pointerdown', (e)=>{
     if (!drawingEnabled) return;
     try { canvas.setPointerCapture?.(e.pointerId); } catch {}
-    const p = pointerPos(e);
-    current = { tool, color: '#ff0055', size: baseSize, points: [p], bbox: newBBox(p) };
+    currentAnchor = getAnchorAtPoint(e.clientX, e.clientY);
+
+    const p = pointerPosLocal(e, currentAnchor.el);
+    current = {
+        anchorId: currentAnchor.id,
+        tool, color: '#ff0055', size: baseSize,
+        points: [p],
+        localBBox: {x0:p.x,y0:p.y,x1:p.x,y1:p.y}
+    };
     e.preventDefault();
     scheduleRedraw();
   }, {passive:false});
 
   canvas.addEventListener('pointermove', (e)=>{
     if (!current) return;
-    const p = pointerPos(e);
-    if (pushPointDecimated(current.points, p)) expandBBox(current.bbox, p);
+    const p = pointerPosLocal(e, currentAnchor.el);
+    if (pushPointDecimated(current.points, p)) {
+        current.localBBox.x0 = Math.min(current.localBBox.x0, p.x);
+        current.localBBox.y0 = Math.min(current.localBBox.y0, p.y);
+        current.localBBox.x1 = Math.max(current.localBBox.x1, p.x);
+        current.localBBox.y1 = Math.max(current.localBBox.y1, p.y);
+    }
     e.preventDefault();
     scheduleRedraw();
   }, {passive:false});
 
   function endStroke(e){
     if (!current) return;
-    const p = pointerPos(e);
-    if (pushPointDecimated(current.points, p)) expandBBox(current.bbox, p);
-    current._path = buildPath2D(current);  // <— cache path
+    const p = pointerPosLocal(e, currentAnchor.el);
+    if (pushPointDecimated(current.points, p)) {
+        current.localBBox.x0 = Math.min(current.localBBox.x0, p.x);
+        current.localBBox.y0 = Math.min(current.localBBox.y0, p.y);
+        current.localBBox.x1 = Math.max(current.localBBox.x1, p.x);
+        current.localBBox.y1 = Math.max(current.localBBox.y1, p.y);
+    }
+    recomputeMeta(current);                      // builds _localPath
     strokes.push(current);
     current = null;
     try { canvas.releasePointerCapture?.(e.pointerId); } catch {}
@@ -3743,10 +3784,10 @@ document.addEventListener('DOMContentLoaded', () => {
     scheduleRedraw();
   }
 
+
   canvas.addEventListener('pointerup', endStroke);
   canvas.addEventListener('pointercancel', endStroke);
   canvas.addEventListener('pointerleave', endStroke);
-
 
   // --- hook up the toolbar buttons so clicks always “register” ---
   onButton('inkpad-toggle', () => setDrawing(!drawingEnabled));
@@ -3779,13 +3820,50 @@ document.addEventListener('DOMContentLoaded', () => {
     else if (k === 'z' && (e.ctrlKey || e.metaKey)) { strokes.pop(); save(); redraw(); e.preventDefault(); }
   });
 
-  let lastSX = -1, lastSY = -1;
-  function watchScroll(){
-    const sx = window.scrollX, sy = window.scrollY;
-    if (sx !== lastSX || sy !== lastSY) { lastSX = sx; lastSY = sy; scheduleRedraw(); }
-    requestAnimationFrame(watchScroll);
+  window.addEventListener('resize', fitCanvas, {passive:true});
+
+  // redraw when viewport scrolls
+  window.addEventListener('scroll', scheduleRedraw, { passive: true });
+
+  // redraw for nested scrollable containers (capture phase catches them)
+  document.addEventListener('scroll', scheduleRedraw, { passive: true, capture: true });
+
+  // stay smooth during touch scrolling
+  window.addEventListener('touchmove', scheduleRedraw, { passive: true });
+
+  // handle rotation and tab visibility
+  window.addEventListener('orientationchange', scheduleRedraw, { passive: true });
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) scheduleRedraw();
+  }, { passive: true });
+
+    // respond to DPR changes (pinch-zoom)
+  if (window.matchMedia) {
+    const dppx = Math.round((window.devicePixelRatio || 1) * 10) / 10;
+    const mq = matchMedia(`(resolution: ${dppx}dppx)`);
+    mq.addEventListener?.('change', () => { fitCanvas(); }); // Safari/iOS
   }
-  watchScroll();
+
+  document.addEventListener('toggle', (e) => {
+    if (e.target.tagName?.toLowerCase() === 'details') requestAnimationFrame(scheduleRedraw);
+  }, true);
+  document.addEventListener('show.bs.collapse', () => scheduleRedraw());
+  document.addEventListener('hide.bs.collapse', () => scheduleRedraw());
+
+  // If a details/collapse uses CSS height transitions, redraw after it ends.
+  document.addEventListener('transitionend', (e) => {
+    const t = e.target;
+    if (!t) return;
+    // common containers that change height
+    if (t.matches?.('details, .collapse, .callout, [data-ink-surface]')) {
+        scheduleRedraw();
+    }
+  }, { passive: true, capture: true });
+
+  // Bootstrap’s final state events 
+  document.addEventListener('shown.bs.collapse',  () => scheduleRedraw());
+  document.addEventListener('hidden.bs.collapse', () => scheduleRedraw());
+
 
   // --- initialise ---
   load(); fitCanvas();
