@@ -2054,3 +2054,109 @@ $$
 </details>
 
 :::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="poisson estimator bias variance week-2" data-difficulty="1"}
+## Properties of the Poisson distribution
+
+A hospital records the **number of patients arriving at the emergency department per hour**.  
+
+Suppose $X \sim \mathrm{Poisson}(\lambda)$, where $\lambda$ is the (unknown) mean arrival rate.
+
+1. Compute $\mathrm{E}[X]$ and $\mathrm{Var}(X)$.
+2. We estimate $\lambda$ by the **sample mean** $\hat{\lambda} = \tfrac{1}{n}\sum_{i=1}^n X_i$ from $n$ independent hours of observation.  
+   Show that $\mathrm{E}[\hat{\lambda}] = \lambda$ and compute $\mathrm{Var}(\hat{\lambda})$.
+3. Suppose in one hour you observe $x=7$ arrivals.  
+   
+   (i) Compute the estimate $\hat{\lambda}_{\text{obs}}$.  
+   (ii) Using $\hat{\lambda}_{\text{obs}}$ as $\lambda$, compute the pmf value $p(X=7 \mid \hat{\lambda}_{\text{obs}})$.  
+   (iii) Compute $F(7 \mid \lambda = \hat{\lambda}_\text{obs} = \mathrm{Pr}(X \leq 7 \mid \hat{\lambda}_\text{\text{obs}})$ using $\hat{\lambda}_{\text{obs}}$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+1. For $X \sim \mathrm{Poisson}(\lambda)$,
+   $$
+   \mathrm{E}[X] = \lambda, \quad \mathrm{Var}(X) = \lambda.
+   $$
+
+2. If $\hat{\lambda} = \tfrac{1}{n}\sum_{i=1}^n X_i$, then
+   $$
+   \mathrm{E}[\hat{\lambda}] = \frac{1}{n}\sum_{i=1}^n \mathrm{E}[X_i] = \lambda,
+   $$
+   so $\hat{\lambda}$ is unbiased.  
+   Since $\mathrm{Var}(X_i) = \lambda$ and the $X_i$ are independent,
+   $$
+   \mathrm{Var}(\hat{\lambda}) = \frac{\lambda}{n}.
+   $$
+
+3. With $x=7$,  
+   (i) $\hat{\lambda}_{\text{obs}} = 7$.  
+   (ii) The pmf value is
+   $$
+   \mathrm{Pr}(X=7 \mid \lambda=7) = \frac{7^7 e^{-7}}{7!}.
+   $$
+   (iii) The cdf value is
+   $$
+   \mathrm{Pr}(X \leq 7 \mid \lambda=7) = \sum_{k=0}^7 \frac{7^k e^{-7}}{k!}.
+   $$
+
+In Python:
+
+```{python}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show code"
+
+from scipy.stats import poisson
+
+lambd_hat = 7
+part_ii = poisson.pmf(k = 7, mu=lambd_hat) # pmf value at x = 7
+part_iii = poisson.cdf(k = 7, mu=lambd_hat) # cdf value at x = 7
+
+print(f"Part (ii) answer: {part_ii} \nPart (iii) answer: {part_iii}")
+
+```
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="estimator variance covariance" data-difficulty="2"}
+
+## Variance of an Estimator (with dependence)
+
+Let $X_1,\dots,X_n$ be random variables with the **same variance** and **same pairwise covariance**:
+$$
+\operatorname{Var}(X_i)=\sigma^2,\qquad
+\operatorname{Cov}(X_i,X_j)=\tau\quad (i\neq j),
+$$
+where $\sigma^2>0$ and $\tau$ are known constants (no independence is assumed).
+
+For fixed weights $a_1,\dots,a_n\in\mathbb{R}$, consider the linear estimator
+$$
+\hat{\theta}=\sum_{i=1}^n a_i X_i.
+$$
+
+Compute $\operatorname{Var}(\hat{\theta})$ in terms of ${a_i}$, $\sigma^2$, and $\tau$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+Using $\operatorname{Var}\left(\sum_i a_i X_i\right)=\sum_i\sum_j a_i a_j\operatorname{Cov}(X_i,X_j)$ and the structure of the covariances:
+$$
+\operatorname{Var}(\hat{\theta})
+= \sum_{i=1}^n a_i^2 \sigma^2 + \sum_{i\neq j} a_i a_j \tau
+= \sigma^2\sum_{i=1}^n a_i^2 + \tau \left[\Big(\sum_{i=1}^n a_i\Big)^2-\sum_{i=1}^n a_i^2\right].
+$$
+Hence a compact form is
+$$
+\boxed{\operatorname{Var}(\hat{\theta})=(\sigma^2-\tau)\sum_{i=1}^n a_i^2 + \tau\Big(\sum_{i=1}^n a_i\Big)^2.}
+$$
+
+If the $X_i$ were independent, then $\tau=0$ and we recover $\operatorname{Var}(\hat{\theta})=\sigma^2\sum_i a_i^2$.
+
+</details>
+
+:::

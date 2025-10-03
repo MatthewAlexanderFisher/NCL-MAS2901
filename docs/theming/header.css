@@ -61,6 +61,11 @@
   white-space: nowrap;
 }
 
+/* === MOBILE TITLE SHORTENING === */
+/* Hide the full title on mobile, show shortened version */
+#quarto-header .navbar-title .title-full { display: inline; }
+#quarto-header .navbar-title .title-short { display: none; }
+
 /* === Tools (toggle/search): FAR RIGHT === */
 #quarto-header .quarto-navbar-tools {
   position: absolute;
@@ -127,23 +132,36 @@
 /* #quarto-header nav[data-bs-theme="dark"] .navbar-logo { color: var(--brand-fg); } */ 
 
 
+/* ============================
+   MOBILE RESPONSIVE ADJUSTMENTS
+   ============================ */
 @media (max-width: 720px) {
   /* Hide only the image; the anchor is already display: contents */
   #quarto-header .navbar-logo {
     display: none !important;
   }
 
-  /* Let the title flow normally and centre it */
+  /* Left-align title and use CSS to show shortened version */
   #quarto-header .navbar-title {
-    position: static;
-    transform: none;
-    display: block;
-    margin: 0.2rem auto;
-    text-align: center;
-    padding: 0 0rem;        /* keep clear of tools on the right */
+    position: absolute;
+    left: 0.75rem;  /* Same position as logo was */
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0;
+    text-align: left;
     font-size: 0.95rem;
     line-height: 1.2;
-    word-break: break-word;
+    
+    /* Hide original text */
+    font-size: 0;
+    white-space: nowrap;
+  }
+  
+  /* Show shortened title using CSS pseudo-element */
+  #quarto-header .navbar-title::after {
+    content: "MAS2901";
+    font-size: 0.95rem;
+    font-weight: 500;
   }
 
   /* Keep tools at the far right */
@@ -152,6 +170,13 @@
     right: 0.5rem;
     top: 50%;
     transform: translateY(-50%);
+  }
+}
+
+/* For very narrow screens with 4 buttons, make title even smaller if needed */
+@media (max-width: 480px) {
+  #quarto-header .navbar-title::after {
+    font-size: 0.85rem;
   }
 }
 
