@@ -628,12 +628,14 @@ window.Quarto = {
   <li><a href="#sec-unif" id="toc-sec-unif" class="nav-link" data-scroll-target="#sec-unif">Uniform (continuous)</a></li>
   <li><a href="#sec-exp" id="toc-sec-exp" class="nav-link" data-scroll-target="#sec-exp">Exponential</a></li>
   <li><a href="#sec-gamma" id="toc-sec-gamma" class="nav-link" data-scroll-target="#sec-gamma">Gamma</a></li>
+  <li><a href="#sec-inv-gamma" id="toc-sec-inv-gamma" class="nav-link" data-scroll-target="#sec-inv-gamma">Inverse Gamma</a></li>
   <li><a href="#sec-normal" id="toc-sec-normal" class="nav-link" data-scroll-target="#sec-normal">Normal</a></li>
   <li><a href="#sec-lognormal" id="toc-sec-lognormal" class="nav-link" data-scroll-target="#sec-lognormal">Lognormal</a></li>
   <li><a href="#sec-chisq" id="toc-sec-chisq" class="nav-link" data-scroll-target="#sec-chisq">Chi-squared</a></li>
   <li><a href="#sec-t" id="toc-sec-t" class="nav-link" data-scroll-target="#sec-t">Student-<span class="math inline">t</span></a></li>
   <li><a href="#sec-f" id="toc-sec-f" class="nav-link" data-scroll-target="#sec-f"><span class="math inline">F</span> distribution</a></li>
   <li><a href="#sec-beta" id="toc-sec-beta" class="nav-link" data-scroll-target="#sec-beta">Beta</a></li>
+  <li><a href="#sec-weibull" id="toc-sec-weibull" class="nav-link" data-scroll-target="#sec-weibull">Weibull</a></li>
   </ul></li>
   <li><a href="#multivariate-distributions" id="toc-multivariate-distributions" class="nav-link" data-scroll-target="#multivariate-distributions">Multivariate Distributions</a>
   <ul class="collapse">
@@ -802,6 +804,15 @@ f_X(x;a,b)=\frac{b^a}{\Gamma(a)} x^{a-1} e^{-bx}.
 </div>
 <hr>
 </section>
+<section id="sec-inv-gamma" class="level3">
+<h3 class="anchored" data-anchor-id="sec-inv-gamma">Inverse Gamma</h3>
+<p><strong>Model.</strong> <span class="math inline">X \sim \operatorname{InvGamma}(a,b)</span>, with <span class="math inline">a&gt;0</span>, <span class="math inline">b&gt;0</span>.<br>
+<strong>Support.</strong> <span class="math inline">x&gt;0</span>.<br>
+<strong>PDF.</strong> <span class="math display">
+f_X(x;a,b)=\frac{b^a}{\Gamma(a)} x^{-(a-1)} e^{-bx^{-1}}.
+</span> <strong>Statistics.</strong> <span class="math inline">\operatorname{E}[X]=\frac{b}{a-1},\quad \operatorname{Var}(X)=\frac{b^2}{(a-1)^2(a-2)}</span> and <span class="math inline">\text{Mode}(X) = \frac{b}{a+1}</span> if <span class="math inline">a &gt; 2</span>.</p>
+<hr>
+</section>
 <section id="sec-normal" class="level3">
 <h3 class="anchored" data-anchor-id="sec-normal">Normal</h3>
 <p><strong>Model.</strong> <span class="math inline">X \sim \mathcal{N}(\mu,\sigma^2)</span> with <span class="math inline">\sigma&gt;0</span>.<br>
@@ -877,6 +888,15 @@ f_X(x;d_1,d_2)=\frac{\Gamma\!\left(\frac{d_1+d_2}{2}\right)}{\Gamma\!\left(\frac
 <strong>PDF.</strong> <span class="math display">
 f_X(x;a,b)=\frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}\,x^{a-1}(1-x)^{b-1}.
 </span> <strong>Mean/Var.</strong> <span class="math inline">\operatorname{E}[X]=\frac{a}{a+b},\quad \operatorname{Var}(X)=\frac{ab}{(a+b)^2(a+b+1)}.</span></p>
+<hr>
+</section>
+<section id="sec-weibull" class="level3">
+<h3 class="anchored" data-anchor-id="sec-weibull">Weibull</h3>
+<p><strong>Model.</strong> <span class="math inline">X \sim \operatorname{Weibull}(\beta,\theta)</span>, <span class="math inline">\beta&gt;0, \theta&gt;0</span>.<br>
+<strong>Support.</strong> <span class="math inline">x &gt; 0</span>.<br>
+<strong>PDF.</strong> <span class="math display">
+f_X(x) = \frac{\beta}{\theta}x^{\beta - 1} \exp\left(-\frac{x^\beta}{\theta}\right)
+</span></p>
 <hr>
 </section>
 </section>

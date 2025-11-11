@@ -75,7 +75,7 @@ The form of the likelihood depends crucially on whether our observations are ind
 Suppose $X_1, \ldots, X_n$ are **independent and identically distributed ([i.i.d.]{title="Independent and Identically Distributed"})** random variables:
 
 $$
-X_i \overset{\text{iid}}{\sim} \mathrm{Distribution}(\theta),
+X_i \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\theta),
 \quad i = 1, \ldots, n.
 $$
 
@@ -872,7 +872,7 @@ By factorisation, $T(\underline{X})=\sum_{i=1}^n X_i$ is sufficient for $p$.
 
 ::: {#exm-sufficient-pois}
 ### Sufficiency: Poisson model
-If $X_i \sim \mathrm{Poisson}(\lambda)$ iid and $y=\sum_{i=1}^n x_i$, then
+If $X_i \sim \mathrm{Poisson}(\lambda)$ i.i.d. and $y=\sum_{i=1}^n x_i$, then
 $$
 L(\lambda;\underline{x})=f_{\underline{X}}(\underline{x}\mid \lambda)
 =\prod_{i=1}^n \frac{e^{-\lambda}\lambda^{x_i}}{x_i!}
@@ -884,7 +884,7 @@ so $T(\underline{X})=\sum_{i=1}^n X_i$ is sufficient for $\lambda$.
 
 ::: {#exm-sufficient-norm}
 ### Sufficiency: Normal model
-If $X_i \sim \mathcal N(\mu,\sigma^2)$ iid:
+If $X_i \sim \mathcal N(\mu,\sigma^2)$ i.i.d.:
 
 - **Known $\sigma^2$.** With $\bar{x}=\frac{1}{n}\sum x_i$,
 $$
@@ -1925,7 +1925,7 @@ $$
 
 **Step 2: Mean and Variance of $\hat\alpha$**
 
-Recall $\hat\alpha=\bar V=\frac{1}{n}\sum_{i=1}^n V_i$ with $V_i \stackrel{\text{iid}}{\sim} \mathrm{Poisson}(\alpha)$.
+Recall $\hat\alpha=\bar V=\frac{1}{n}\sum_{i=1}^n V_i$ with $V_i \stackrel{\text{i.i.d.}}{\sim} \mathrm{Poisson}(\alpha)$.
 
 *Mean*:
 $$
@@ -2199,27 +2199,27 @@ $$
 
 #### Fisher Information for i.i.d. Data
 
-Suppose we have an i.i.d. sample $X_1,\ldots,X_n$ drawn from the same distribution with PDF/PMF $f(x \mid \theta)$. Define:
+Suppose we have an i.i.d. sample $\underline{X}^{(n)} = (X_1,\ldots,X_n)$ drawn from the same distribution with PDF/PMF $f(x \mid \theta)$. Define:
 
 * The Fisher information from **one observation**: 
   $$
-  \mathcal{I}(\theta) = -\mathrm{E}\left [\tfrac{\partial^2}{\partial \theta^2}\log f(X\mid \theta)\right]
+  \mathcal{I}_1(\theta) = -\mathrm{E}\left [\tfrac{\partial^2}{\partial \theta^2}\log f(X\mid \theta)\right]
   $$
-* The Fisher information from the **whole sample**: 
+* The Fisher information from the **whole sample** (i.e. @def-fisher-information): 
   $$
-  \mathcal{I}_n(\theta) = -\mathrm{E}\left [\tfrac{\partial^2}{\partial \theta^2}\ell(\theta;\underline{X}^{(n)})\right]
+  \mathcal{I}_n(\theta) = \mathcal{I}(\theta; \underline{X}^{(n)}) = -\mathrm{E}\left [\tfrac{\partial^2}{\partial \theta^2}\ell(\theta;\underline{X}^{(n)})\right]
   $$
 
 Then
 
 $$
-\mathcal{I}_n(\theta) = n\,\mathcal{I}(\theta).
+\mathcal{I}_n(\theta) = n\,\mathcal{I}_1(\theta).
 $$
 
 :::
 
 ::: {#prf-fisher-one-obs}
-For $n$ IID observations, the log-likelihood is
+For $n$ i.i.d. observations, the log-likelihood is
 
 $$
 \ell(\theta;\underline{X}) \;=\; \sum_{i=1}^n \log f(X_i \mid \theta).
@@ -2651,23 +2651,18 @@ A much more general and powerful result is that maximum likelihood estimators al
 Let $\hat{\theta}_n$ denote the <span class="xref-no-num">[maximum likelihood estimator @def-mle]</span> based on $n$ i.i.d. samples $X_1,\ldots, X_n$ drawn from the same distribution with PDF/PMF $f(x \mid \theta)$.
 
 Under *regularity conditions*, the MLE has the following asymptotic distribution:
-
 $$
-\sqrt{n}\,(\hat{\theta}_n - \theta) \;\xrightarrow{\,d\,}\; \mathcal{N} \big(0, \mathcal{I}(\theta)^{-1}\big),
+\sqrt{n}\,(\hat{\theta}_n - \theta) \;\xrightarrow{\,d\,}\; \mathcal{N} \big(0, \mathcal{I}_1(\theta)^{-1}\big),
 $$
 
-where $\mathcal{I}(\theta) \;=\; -\,\mathrm{E}\!\left[ \frac{\partial^2}{\partial \theta^2} \log f(X \mid \theta) \right]$ is the <span class="xref-no-num">[Fisher Information @prp-fisher-one-obs]</span> for **a single observation**.
+where $\mathcal{I}_1(\theta) \;=\; -\,\mathrm{E}\!\left[ \frac{\partial^2}{\partial \theta^2} \log f(X \mid \theta) \right]$ is the <span class="xref-no-num">[Fisher Information @prp-fisher-one-obs]</span> for **a single observation**.
 
 :::
 
 ::: {#prf-asymp-mle}
 ### Not Examinable
 
-The full proof uses advanced tools such as Taylor expansions of the score function and the Central Limit Theorem for sums of random variables.
-
-**Rough sketch:**
-
-
+The full proof uses tools such as Taylor expansions of the score function and the Central Limit Theorem for sums of random variables.
 
 :::
 
@@ -2682,24 +2677,43 @@ In this course, the main use of the @thm-asymp-mle will be to approximate the ML
 #### Approximate Sampling Distribution of the MLE
 
 From the <span class="xref-no-num">[asymptotic distribution of the MLE @thm-asymp-mle]</span>, we obtain the following approximation:
-
 $$
 \hat{\theta}_n \;\overset{\text{approx.}}{\sim}\; 
-\mathcal N\!\left(\theta,\; \tfrac{1}{n}\,\mathcal{I}(\theta)^{-1}\right),
+\mathcal N\!\left(\theta,\; \tfrac{1}{n}\,\mathcal{I}_1(\theta)^{-1}\right),
 \qquad \text{for large } n.
 $$
-
-In practice, since the true parameter $\theta$ is unknown, we replace $\theta$ by the observed MLE $\hat{\theta}_{\text{obs}}$.
-This gives the practical approximation
-
+Equivalently, using the <span class="xref-no-num">[Fisher Information @prp-fisher-one-obs]</span> for the whole sample $\mathcal{I}_n(\theta)$, and using $\mathcal{I}_n(\theta) = n\mathcal{I}_1(\theta)$, we have the approximation
 $$
 \hat{\theta}_n \;\overset{\text{approx.}}{\sim}\; 
-\mathcal N \left(\theta,\; \tfrac{1}{n}\,\mathcal{I}(\hat{\theta}_{\text{obs}})^{-1}\right).
+\mathcal N\!\left(\theta,\; \mathcal{I}_n(\theta)^{-1}\right),
+\qquad \text{for large } n.
+$$
+In practice, since the true parameter $\theta$ is unknown, we replace $\theta$ by the observed MLE $\hat{\theta}_{\text{obs}}$.
+This gives the practical approximation
+$$
+\hat{\theta}_n \;\overset{\text{approx.}}{\sim}\; 
+\mathcal N \left(\theta,\; \mathcal{I}_n(\hat{\theta}_{\text{obs}})^{-1}\right).
 $$
 
 This Normal distribution serves as an **approximate sampling distribution** of the MLE and underpins methods such as constructing confidence intervals and hypothesis tests.
 :::
 
+The quantity $\mathcal{I}_n(\hat{\theta}_{\text{obs}})$ is called the **observed Fisher information**.
+
+::: {#def-observed-fisher}
+#### Observed Fisher Information
+
+Let $\hat{\theta}$ denote the <span class="xref-no-num">[maximum likelihood estimator @def-mle]</span> based on $n$ i.i.d. samples $X_1, \ldots, X_n$ drawn from a distribution with density or mass function $f(x \mid \theta)$.
+
+The **observed Fisher information** is the <span class="xref-no-num">[Fisher information @def-fisher-information]</span> evaluated at the **observed value** of the MLE, $\hat{\theta}_{\text{obs}}$, obtained from the observed data $x_1, \ldots, x_n$:
+$$
+\mathcal{I}_n(\hat{\theta}_{\text{obs}}) = \mathcal{I}(\hat{\theta}_{\text{obs}}; \underline{X}).
+$$
+Similarly, the observed Fisher information for **a single observation** is the quantity
+$$
+\mathcal{I}_1(\hat{\theta}_{\text{obs}}).
+$$
+:::
 
 ::: {#exm-asymp-mle-pois}
 
@@ -2723,7 +2737,7 @@ What is the asymptotic distribution of $\hat{\lambda} = \bar{X}$ as $n \to \inft
 In @exm-poisson-fisher, we saw the Fisher information for one Poisson observation is  
 
 $$
-\mathcal{I}(\lambda) = \frac{1}{\lambda}.
+\mathcal{I}_1(\lambda) = \frac{1}{\lambda}.
 $$
 
 For $n$ independent observations this scales to  

@@ -1541,7 +1541,7 @@ S^2 = \frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X})^2.
 <section id="aside-the-students-t-distribution" class="level4 unnumbered">
 <h4 class="unnumbered anchored" data-anchor-id="aside-the-students-t-distribution">Aside: The Student’s <span class="math inline">t</span> Distribution</h4>
 <ul>
-<li><p>The <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-t" class="quarto-xref">Student-t&nbsp;<span>2.7</span></a></span> distribution was discovered in 1908 by William Sealy Gosset, who published under the pseudonym <em>“Student”</em>.</p></li>
+<li><p>The <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-t" class="quarto-xref">Student-t&nbsp;<span>2.8</span></a></span> distribution was discovered in 1908 by William Sealy Gosset, who published under the pseudonym <em>“Student”</em>.</p></li>
 <li><p>It arises when we replace the (unknown) variance <span class="math inline">\sigma^2</span> in a Normal problem with its estimate from the data. Formally,</p>
 <p><span class="math display">
 T = \frac{Z}{\sqrt{U/\nu}},
@@ -2180,14 +2180,14 @@ S^2 \approx 3.956.
 <p>Suppose <span class="math inline">\hat{\theta}_n</span> is the maximum likelihood estimator of <span class="math inline">\theta</span> based on <span class="math inline">n</span> IID observations.</p>
 <p>From the <span class="xref-no-num"><a href="../part2/5-likelihood.html#thm-asymp-mle" class="quarto-xref">Asymptotic Distribution of the MLE&nbsp;<span>5.3</span></a></span>,</p>
 <p><span class="math display">
-\hat{\theta}_n \;\overset{\text{approx.}}{\sim} \; \mathcal{N} \Big(\theta,\; \tfrac{1}{n}\,\mathcal{I}(\theta)^{-1}\Big),
+\hat{\theta}_n \;\overset{\text{approx.}}{\sim} \; \mathcal{N} \Big(\theta,\; \mathcal{I}_n(\theta)^{-1}\Big),
 </span></p>
-<p>where <span class="math inline">\mathcal{I}(\theta)</span> is the <span class="xref-no-num"><a href="../part2/5-likelihood.html#prp-fisher-one-obs" class="quarto-xref">Fisher information&nbsp;<span>5.1</span></a></span> for a <strong>single observation</strong>.</p>
-<p>But in practice, <span class="math inline">\theta</span> is unknown - that’s the very reason we’re estimating it! So we cannot evaluate <span class="math inline">\mathcal{I}(\theta)</span> directly.</p>
-<p>Just as in the <span class="xref-no-num"><a href="#def-approx-ci-clt" class="quarto-xref">CLT confidence interval&nbsp;<span>7.4</span></a></span> we replaced the unknown <span class="math inline">\sigma</span> with its estimator <span class="math inline">S</span>, here we replace the unknown <span class="math inline">\theta</span> inside <span class="math inline">\mathcal{I}(\theta)</span> with the estimator <span class="math inline">\hat{\theta}_n</span>.</p>
+<p>where <span class="math inline">\mathcal{I}_n(\theta)</span> is the <span class="xref-no-num"><a href="../part2/5-likelihood.html#prp-fisher-one-obs" class="quarto-xref">Fisher information&nbsp;<span>5.1</span></a></span> for the <strong>whole sample</strong>.</p>
+<p>But in practice, <span class="math inline">\theta</span> is unknown - that’s the very reason we’re estimating it! So we cannot evaluate <span class="math inline">\mathcal{I}_n(\theta)</span> directly.</p>
+<p>Just as in the <span class="xref-no-num"><a href="#def-approx-ci-clt" class="quarto-xref">CLT confidence interval&nbsp;<span>7.4</span></a></span> we replaced the unknown <span class="math inline">\sigma</span> with its estimator <span class="math inline">S</span>, here we replace the unknown <span class="math inline">\theta</span> inside <span class="math inline">\mathcal{I}_n(\theta)</span> with the maximum likelihood estimate <span class="math inline">\hat{\theta}_n</span>.</p>
 <ul>
-<li>This gives a <strong>computable</strong> estimate of the Fisher information: <span class="math display">
-\mathcal{I}(\theta) \;\approx\; \mathcal{I}(\hat{\theta}_n).
+<li>This gives a <strong>computable</strong> estimate of the Fisher information, called the <span class="xref-no-num"><a href="../part2/5-likelihood.html#def-observed-fisher" class="quarto-xref">observed Fisher information&nbsp;<span>5.10</span></a></span>: <span class="math display">
+\mathcal{I}_n(\theta) \;\approx\; \mathcal{I}_n(\hat{\theta}_n).
 </span></li>
 <li>Since <span class="math inline">\hat{\theta}_n \to \theta</span> as <span class="math inline">n \to \infty</span> (consistency of the MLE), this substitution is asymptotically valid.</li>
 </ul>
@@ -2203,18 +2203,18 @@ S^2 \approx 3.956.
 <p><span class="math display">
 \theta \;\in\;
 \left[
-\hat{\theta}_n - z_{1-\alpha/2}\,\sqrt{\tfrac{1}{n}\,\mathcal{I}(\hat{\theta}_n)^{-1}}, \;\;
-\hat{\theta}_n + z_{1-\alpha/2}\,\sqrt{\tfrac{1}{n}\,\mathcal{I}(\hat{\theta}_n)^{-1}}
+\hat{\theta}_n - z_{1-\alpha/2}\,\sqrt{\mathcal{I}_n(\hat{\theta}_n)^{-1}}, \;\;
+\hat{\theta}_n + z_{1-\alpha/2}\,\sqrt{\mathcal{I}_n(\hat{\theta}_n)^{-1}}
 \right],
 </span></p>
 <p>or equivalently</p>
 <p><span class="math display">
-\hat{\theta}_n \;\pm\; z_{1-\alpha/2}\,\sqrt{\tfrac{1}{n}\,\mathcal{I}(\hat{\theta}_n)^{-1}},
+\hat{\theta}_n \;\pm\; z_{1-\alpha/2}\,\sqrt{\mathcal{I}_n(\hat{\theta}_n)^{-1}},
 </span></p>
 <p>where</p>
 <ul>
 <li><span class="math inline">\hat{\theta}_n</span> is the maximum likelihood estimator,</li>
-<li><span class="math inline">\mathcal{I}(\theta)</span> is the <span class="xref-no-num"><a href="../part2/5-likelihood.html#prp-fisher-one-obs" class="quarto-xref">Fisher information&nbsp;<span>5.1</span></a></span> for a single observation, evaluated at <span class="math inline">\hat{\theta}_n</span>, and</li>
+<li><span class="math inline">\mathcal{I}_n(\theta)</span> is the <span class="xref-no-num"><a href="../part2/5-likelihood.html#prp-fisher-one-obs" class="quarto-xref">Fisher information&nbsp;<span>5.1</span></a></span> for the whole sample, evaluated at <span class="math inline">\hat{\theta}_n</span>, and</li>
 <li><span class="math inline">z_{1-\alpha/2}</span> is the <span class="math inline">(1-\alpha/2)</span> quantile of the standard Normal distribution <span class="math inline">\mathcal{N}(0,1)</span>.</li>
 </ul>
 </div>
@@ -2236,14 +2236,14 @@ S^2 \approx 3.956.
 <p><span class="math display">
 \hat{\lambda}=\bar{X}.
 </span></p>
-<p>From <span class="xref-no-num"><a href="../part2/5-likelihood.html#exm-poisson-fisher" class="quarto-xref">Poisson Fisher Information&nbsp;<span>5.14</span></a></span>, the Fisher information for <strong>one observation</strong> is</p>
+<p>From <span class="xref-no-num"><a href="../part2/5-likelihood.html#exm-poisson-fisher" class="quarto-xref">Poisson Fisher Information&nbsp;<span>5.14</span></a></span>, the Fisher information for the <strong>whole sample</strong> is</p>
 <p><span class="math display">
-\mathcal{I}(\lambda)=\frac{1}{\lambda}.
+\mathcal{I}_n(\lambda)=\frac{n}{\lambda}.
 </span></p>
 <p><strong>Step 2: Asymptotic MLE distribution and CI</strong></p>
 <p>By <span class="xref-no-num"><a href="../part2/5-likelihood.html#thm-asymp-mle" class="quarto-xref">Asymptotic MLE&nbsp;<span>5.3</span></a></span>,</p>
 <p><span class="math display">
-\hat{\lambda}\ \overset{\text{approx.}}{\sim}\ \mathcal{N}\!\Big(\lambda,\ \tfrac{1}{n}\,\mathcal{I}(\lambda)^{-1}\Big)
+\hat{\lambda}\ \overset{\text{approx.}}{\sim}\ \mathcal{N}\!\Big(\lambda,\ \mathcal{I}_n(\lambda)^{-1}\Big)
 = \mathcal{N}\!\Big(\lambda,\ \tfrac{\lambda}{n}\Big).
 </span></p>
 <p>Since the variance involves the unknown <span class="math inline">\lambda</span>, we follow <a href="#def-approx-ci-mle" class="quarto-xref">Definition&nbsp;<span>7.5</span></a> by plugging-in the MLE <span class="math inline">\hat{\lambda}</span> into <span class="math inline">\lambda</span>:</p>

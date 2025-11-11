@@ -1268,18 +1268,18 @@ Suppose $\hat{\theta}_n$ is the maximum likelihood estimator of $\theta$ based o
 From the <span class="xref-no-num">[Asymptotic Distribution of the MLE @thm-asymp-mle]</span>,
 
 $$
-\hat{\theta}_n \;\overset{\text{approx.}}{\sim} \; \mathcal{N} \Big(\theta,\; \tfrac{1}{n}\,\mathcal{I}(\theta)^{-1}\Big),
+\hat{\theta}_n \;\overset{\text{approx.}}{\sim} \; \mathcal{N} \Big(\theta,\; \mathcal{I}_n(\theta)^{-1}\Big),
 $$
 
-where $\mathcal{I}(\theta)$ is the <span class="xref-no-num">[Fisher information @prp-fisher-one-obs]</span> for a **single observation**.
+where $\mathcal{I}_n(\theta)$ is the <span class="xref-no-num">[Fisher information @prp-fisher-one-obs]</span> for the **whole sample**.
 
-But in practice, $\theta$ is unknown - that’s the very reason we’re estimating it! So we cannot evaluate $\mathcal{I}(\theta)$ directly.
+But in practice, $\theta$ is unknown - that’s the very reason we’re estimating it! So we cannot evaluate $\mathcal{I}_n(\theta)$ directly.
 
-Just as in the <span class="xref-no-num">[CLT confidence interval @def-approx-ci-clt]</span> we replaced the unknown $\sigma$ with its estimator $S$, here we replace the unknown $\theta$ inside $\mathcal{I}(\theta)$ with the estimator $\hat{\theta}_n$.
+Just as in the <span class="xref-no-num">[CLT confidence interval @def-approx-ci-clt]</span> we replaced the unknown $\sigma$ with its estimator $S$, here we replace the unknown $\theta$ inside $\mathcal{I}_n(\theta)$ with the maximum likelihood estimate $\hat{\theta}_n$.
 
-* This gives a **computable** estimate of the Fisher information:
+* This gives a **computable** estimate of the Fisher information, called the <span class="xref-no-num">[observed Fisher information @def-observed-fisher]</span>:
   $$
-  \mathcal{I}(\theta) \;\approx\; \mathcal{I}(\hat{\theta}_n).
+  \mathcal{I}_n(\theta) \;\approx\; \mathcal{I}_n(\hat{\theta}_n).
   $$
 * Since $\hat{\theta}_n \to \theta$ as $n \to \infty$ (consistency of the MLE), this substitution is asymptotically valid.
 
@@ -1295,21 +1295,21 @@ Then an **approximate** $(1-\alpha)$ confidence interval for $\theta$ is
 $$
 \theta \;\in\;
 \left[
-\hat{\theta}_n - z_{1-\alpha/2}\,\sqrt{\tfrac{1}{n}\,\mathcal{I}(\hat{\theta}_n)^{-1}}, \;\;
-\hat{\theta}_n + z_{1-\alpha/2}\,\sqrt{\tfrac{1}{n}\,\mathcal{I}(\hat{\theta}_n)^{-1}}
+\hat{\theta}_n - z_{1-\alpha/2}\,\sqrt{\mathcal{I}_n(\hat{\theta}_n)^{-1}}, \;\;
+\hat{\theta}_n + z_{1-\alpha/2}\,\sqrt{\mathcal{I}_n(\hat{\theta}_n)^{-1}}
 \right],
 $$
 
 or equivalently
 
 $$
-\hat{\theta}_n \;\pm\; z_{1-\alpha/2}\,\sqrt{\tfrac{1}{n}\,\mathcal{I}(\hat{\theta}_n)^{-1}},
+\hat{\theta}_n \;\pm\; z_{1-\alpha/2}\,\sqrt{\mathcal{I}_n(\hat{\theta}_n)^{-1}},
 $$
 
 where
 
 * $\hat{\theta}_n$ is the maximum likelihood estimator,
-* $\mathcal{I}(\theta)$ is the <span class="xref-no-num">[Fisher information @prp-fisher-one-obs]</span> for a single observation, evaluated at $\hat{\theta}_n$, and
+* $\mathcal{I}_n(\theta)$ is the <span class="xref-no-num">[Fisher information @prp-fisher-one-obs]</span> for the whole sample, evaluated at $\hat{\theta}_n$, and
 * $z_{1-\alpha/2}$ is the $(1-\alpha/2)$ quantile of the standard Normal distribution $\mathcal{N}(0,1)$.
 
 :::
@@ -1333,10 +1333,10 @@ $$
 \hat{\lambda}=\bar{X}.
 $$
 
-From <span class="xref-no-num">[Poisson Fisher Information @exm-poisson-fisher]</span>, the Fisher information for **one observation** is
+From <span class="xref-no-num">[Poisson Fisher Information @exm-poisson-fisher]</span>, the Fisher information for the **whole sample** is
 
 $$
-\mathcal{I}(\lambda)=\frac{1}{\lambda}.
+\mathcal{I}_n(\lambda)=\frac{n}{\lambda}.
 $$
 
 **Step 2: Asymptotic MLE distribution and CI**
@@ -1344,7 +1344,7 @@ $$
 By <span class="xref-no-num">[Asymptotic MLE @thm-asymp-mle]</span>,
 
 $$
-\hat{\lambda}\ \overset{\text{approx.}}{\sim}\ \mathcal{N}\!\Big(\lambda,\ \tfrac{1}{n}\,\mathcal{I}(\lambda)^{-1}\Big)
+\hat{\lambda}\ \overset{\text{approx.}}{\sim}\ \mathcal{N}\!\Big(\lambda,\ \mathcal{I}_n(\lambda)^{-1}\Big)
 = \mathcal{N}\!\Big(\lambda,\ \tfrac{\lambda}{n}\Big).
 $$
 

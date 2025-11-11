@@ -838,7 +838,7 @@ X_i \mid \theta \sim \mathrm{Distribution}(\theta),
 <p><strong>This is the default case in most of this course.</strong></p>
 <p>Suppose <span class="math inline">X_1, \ldots, X_n</span> are <strong>independent and identically distributed (<span title="Independent and Identically Distributed">i.i.d.</span>)</strong> random variables:</p>
 <p><span class="math display">
-X_i \overset{\text{iid}}{\sim} \mathrm{Distribution}(\theta),
+X_i \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\theta),
 \quad i = 1, \ldots, n.
 </span></p>
 <p>Each <span class="math inline">X_i</span> has density (or PMF)</p>
@@ -1477,7 +1477,7 @@ L(p ; \underline{x}) = p^3 (1-p)^2.
 </div>
 <div class="callout-body-container">
 <div id="exm-normal-likelihood" class="theorem example">
-<p><span class="theorem-title"><strong>Example 5.3 (Normal Likelihood)</strong></span> Suppose we have <span class="math inline">n</span> <span title="Independent and Identically Distributed">i.i.d.</span> data distributed according to the <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-normal" class="quarto-xref">Normal distribution&nbsp;<span>2.4</span></a></span>:</p>
+<p><span class="theorem-title"><strong>Example 5.3 (Normal Likelihood)</strong></span> Suppose we have <span class="math inline">n</span> <span title="Independent and Identically Distributed">i.i.d.</span> data distributed according to the <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-normal" class="quarto-xref">Normal distribution&nbsp;<span>2.5</span></a></span>:</p>
 <p><span class="math display">
   T_i \sim \mathcal{N}(\mu, \gamma).
 </span></p>
@@ -1601,7 +1601,7 @@ L(p;\underline{x})=f_{\underline{X}}(\underline{x}\mid p)
 </div>
 <div class="callout-body-container">
 <div id="exm-sufficient-pois" class="theorem example">
-<p><span class="theorem-title"><strong>Example 5.6 (Sufficiency: Poisson model)</strong></span> If <span class="math inline">X_i \sim \mathrm{Poisson}(\lambda)</span> iid and <span class="math inline">y=\sum_{i=1}^n x_i</span>, then <span class="math display">
+<p><span class="theorem-title"><strong>Example 5.6 (Sufficiency: Poisson model)</strong></span> If <span class="math inline">X_i \sim \mathrm{Poisson}(\lambda)</span> i.i.d. and <span class="math inline">y=\sum_{i=1}^n x_i</span>, then <span class="math display">
 L(\lambda;\underline{x})=f_{\underline{X}}(\underline{x}\mid \lambda)
 =\prod_{i=1}^n \frac{e^{-\lambda}\lambda^{x_i}}{x_i!}
 =\underbrace{e^{-n\lambda}\lambda^{\sum x_i}}_{g(\lambda,\,y)}
@@ -1618,7 +1618,7 @@ L(\lambda;\underline{x})=f_{\underline{X}}(\underline{x}\mid \lambda)
 </div>
 <div class="callout-body-container">
 <div id="exm-sufficient-norm" class="theorem example">
-<p><span class="theorem-title"><strong>Example 5.7 (Sufficiency: Normal model)</strong></span> If <span class="math inline">X_i \sim \mathcal N(\mu,\sigma^2)</span> iid:</p>
+<p><span class="theorem-title"><strong>Example 5.7 (Sufficiency: Normal model)</strong></span> If <span class="math inline">X_i \sim \mathcal N(\mu,\sigma^2)</span> i.i.d.:</p>
 <ul>
 <li><p><strong>Known <span class="math inline">\sigma^2</span>.</strong> With <span class="math inline">\bar{x}=\frac{1}{n}\sum x_i</span>, <span class="math display">
 f_{\underline{X}}(\underline{x}\mid \mu)
@@ -3037,7 +3037,7 @@ L(\alpha ;\underline{v}) = \alpha^{n\bar{v}} e^{-n\alpha} \prod_{i=1}^n \frac{1}
 </span></p>
 <hr>
 <p><strong>Step 2: Mean and Variance of <span class="math inline">\hat\alpha</span></strong></p>
-<p>Recall <span class="math inline">\hat\alpha=\bar V=\frac{1}{n}\sum_{i=1}^n V_i</span> with <span class="math inline">V_i \stackrel{\text{iid}}{\sim} \mathrm{Poisson}(\alpha)</span>.</p>
+<p>Recall <span class="math inline">\hat\alpha=\bar V=\frac{1}{n}\sum_{i=1}^n V_i</span> with <span class="math inline">V_i \stackrel{\text{i.i.d.}}{\sim} \mathrm{Poisson}(\alpha)</span>.</p>
 <p><em>Mean</em>: <span class="math display">
 \mathrm{E}[\hat\alpha]
 = \frac{1}{n}\sum_{i=1}^n \mathrm{E}[V_i]
@@ -3280,18 +3280,18 @@ U(\theta;\underline{X}) \;=\; \frac{\partial}{\partial \theta}\,\ell(\theta;\und
 </div>
 <div class="callout-body-container">
 <div id="prp-fisher-one-obs" class="theorem proposition">
-<p><span class="theorem-title"><strong>Proposition 5.1 (Fisher Information for i.i.d. Data)</strong></span> Suppose we have an i.i.d. sample <span class="math inline">X_1,\ldots,X_n</span> drawn from the same distribution with PDF/PMF <span class="math inline">f(x \mid \theta)</span>. Define:</p>
+<p><span class="theorem-title"><strong>Proposition 5.1 (Fisher Information for i.i.d. Data)</strong></span> Suppose we have an i.i.d. sample <span class="math inline">\underline{X}^{(n)} = (X_1,\ldots,X_n)</span> drawn from the same distribution with PDF/PMF <span class="math inline">f(x \mid \theta)</span>. Define:</p>
 <ul>
 <li>The Fisher information from <strong>one observation</strong>: <span class="math display">
-\mathcal{I}(\theta) = -\mathrm{E}\left [\tfrac{\partial^2}{\partial \theta^2}\log f(X\mid \theta)\right]
+\mathcal{I}_1(\theta) = -\mathrm{E}\left [\tfrac{\partial^2}{\partial \theta^2}\log f(X\mid \theta)\right]
 </span></li>
-<li>The Fisher information from the <strong>whole sample</strong>: <span class="math display">
-\mathcal{I}_n(\theta) = -\mathrm{E}\left [\tfrac{\partial^2}{\partial \theta^2}\ell(\theta;\underline{X}^{(n)})\right]
+<li>The Fisher information from the <strong>whole sample</strong> (i.e. <a href="#def-fisher-information" class="quarto-xref">Definition&nbsp;<span>5.7</span></a>): <span class="math display">
+\mathcal{I}_n(\theta) = \mathcal{I}(\theta; \underline{X}^{(n)}) = -\mathrm{E}\left [\tfrac{\partial^2}{\partial \theta^2}\ell(\theta;\underline{X}^{(n)})\right]
 </span></li>
 </ul>
 <p>Then</p>
 <p><span class="math display">
-\mathcal{I}_n(\theta) = n\,\mathcal{I}(\theta).
+\mathcal{I}_n(\theta) = n\,\mathcal{I}_1(\theta).
 </span></p>
 </div>
 </div>
@@ -3310,7 +3310,7 @@ U(\theta;\underline{X}) \;=\; \frac{\partial}{\partial \theta}\,\ell(\theta;\und
 <div id="callout-10" class="callout-10-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="prf-fisher-one-obs" class="proof">
-<p><span class="proof-title"><em>Proof 5.1</em>. </span>For <span class="math inline">n</span> IID observations, the log-likelihood is</p>
+<p><span class="proof-title"><em>Proof 5.1</em>. </span>For <span class="math inline">n</span> i.i.d. observations, the log-likelihood is</p>
 <p><span class="math display">
 \ell(\theta;\underline{X}) \;=\; \sum_{i=1}^n \log f(X_i \mid \theta).
 </span></p>
@@ -3672,11 +3672,10 @@ Note
 <div class="callout-body-container">
 <div id="thm-asymp-mle" class="theorem">
 <p><span class="theorem-title"><strong>Theorem 5.3 (Asymptotic Distribution of the MLE)</strong></span> Let <span class="math inline">\hat{\theta}_n</span> denote the <span class="xref-no-num"><a href="#def-mle" class="quarto-xref">maximum likelihood estimator&nbsp;<span>5.3</span></a></span> based on <span class="math inline">n</span> i.i.d. samples <span class="math inline">X_1,\ldots, X_n</span> drawn from the same distribution with PDF/PMF <span class="math inline">f(x \mid \theta)</span>.</p>
-<p>Under <em>regularity conditions</em>, the MLE has the following asymptotic distribution:</p>
-<p><span class="math display">
-\sqrt{n}\,(\hat{\theta}_n - \theta) \;\xrightarrow{\,d\,}\; \mathcal{N} \big(0, \mathcal{I}(\theta)^{-1}\big),
+<p>Under <em>regularity conditions</em>, the MLE has the following asymptotic distribution: <span class="math display">
+\sqrt{n}\,(\hat{\theta}_n - \theta) \;\xrightarrow{\,d\,}\; \mathcal{N} \big(0, \mathcal{I}_1(\theta)^{-1}\big),
 </span></p>
-<p>where <span class="math inline">\mathcal{I}(\theta) \;=\; -\,\mathrm{E}\!\left[ \frac{\partial^2}{\partial \theta^2} \log f(X \mid \theta) \right]</span> is the <span class="xref-no-num"><a href="#prp-fisher-one-obs" class="quarto-xref">Fisher Information&nbsp;<span>5.1</span></a></span> for <strong>a single observation</strong>.</p>
+<p>where <span class="math inline">\mathcal{I}_1(\theta) \;=\; -\,\mathrm{E}\!\left[ \frac{\partial^2}{\partial \theta^2} \log f(X \mid \theta) \right]</span> is the <span class="xref-no-num"><a href="#prp-fisher-one-obs" class="quarto-xref">Fisher Information&nbsp;<span>5.1</span></a></span> for <strong>a single observation</strong>.</p>
 </div>
 </div>
 </div>
@@ -3694,8 +3693,7 @@ Note
 <div id="callout-15" class="callout-15-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="prf-asymp-mle" class="proof">
-<p><span class="proof-title"><em>Proof 5.3</em> (Not Examinable). </span>The full proof uses advanced tools such as Taylor expansions of the score function and the Central Limit Theorem for sums of random variables.</p>
-<p><strong>Rough sketch:</strong></p>
+<p><span class="proof-title"><em>Proof 5.3</em> (Not Examinable). </span>The full proof uses tools such as Taylor expansions of the score function and the Central Limit Theorem for sums of random variables.</p>
 </div>
 </div>
 </div>
@@ -3721,18 +3719,37 @@ Note
 </div>
 <div class="callout-body-container">
 <div id="def-asymp-mle-approx" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 5.9 (Approximate Sampling Distribution of the MLE)</strong></span> From the <span class="xref-no-num"><a href="#thm-asymp-mle" class="quarto-xref">asymptotic distribution of the MLE&nbsp;<span>5.3</span></a></span>, we obtain the following approximation:</p>
-<p><span class="math display">
+<p><span class="theorem-title"><strong>Definition 5.9 (Approximate Sampling Distribution of the MLE)</strong></span> From the <span class="xref-no-num"><a href="#thm-asymp-mle" class="quarto-xref">asymptotic distribution of the MLE&nbsp;<span>5.3</span></a></span>, we obtain the following approximation: <span class="math display">
 \hat{\theta}_n \;\overset{\text{approx.}}{\sim}\;
-\mathcal N\!\left(\theta,\; \tfrac{1}{n}\,\mathcal{I}(\theta)^{-1}\right),
+\mathcal N\!\left(\theta,\; \tfrac{1}{n}\,\mathcal{I}_1(\theta)^{-1}\right),
 \qquad \text{for large } n.
-</span></p>
-<p>In practice, since the true parameter <span class="math inline">\theta</span> is unknown, we replace <span class="math inline">\theta</span> by the observed MLE <span class="math inline">\hat{\theta}_{\text{obs}}</span>. This gives the practical approximation</p>
-<p><span class="math display">
+</span> Equivalently, using the <span class="xref-no-num"><a href="#prp-fisher-one-obs" class="quarto-xref">Fisher Information&nbsp;<span>5.1</span></a></span> for the whole sample <span class="math inline">\mathcal{I}_n(\theta)</span>, and using <span class="math inline">\mathcal{I}_n(\theta) = n\mathcal{I}_1(\theta)</span>, we have the approximation <span class="math display">
 \hat{\theta}_n \;\overset{\text{approx.}}{\sim}\;
-\mathcal N \left(\theta,\; \tfrac{1}{n}\,\mathcal{I}(\hat{\theta}_{\text{obs}})^{-1}\right).
+\mathcal N\!\left(\theta,\; \mathcal{I}_n(\theta)^{-1}\right),
+\qquad \text{for large } n.
+</span> In practice, since the true parameter <span class="math inline">\theta</span> is unknown, we replace <span class="math inline">\theta</span> by the observed MLE <span class="math inline">\hat{\theta}_{\text{obs}}</span>. This gives the practical approximation <span class="math display">
+\hat{\theta}_n \;\overset{\text{approx.}}{\sim}\;
+\mathcal N \left(\theta,\; \mathcal{I}_n(\hat{\theta}_{\text{obs}})^{-1}\right).
 </span></p>
 <p>This Normal distribution serves as an <strong>approximate sampling distribution</strong> of the MLE and underpins methods such as constructing confidence intervals and hypothesis tests.</p>
+</div>
+</div>
+</div>
+</div>
+<p>The quantity <span class="math inline">\mathcal{I}_n(\hat{\theta}_{\text{obs}})</span> is called the <strong>observed Fisher information</strong>.</p>
+<div class="callout callout-style-simple callout-note no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-observed-fisher" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 5.10 (Observed Fisher Information)</strong></span> Let <span class="math inline">\hat{\theta}</span> denote the <span class="xref-no-num"><a href="#def-mle" class="quarto-xref">maximum likelihood estimator&nbsp;<span>5.3</span></a></span> based on <span class="math inline">n</span> i.i.d. samples <span class="math inline">X_1, \ldots, X_n</span> drawn from a distribution with density or mass function <span class="math inline">f(x \mid \theta)</span>.</p>
+<p>The <strong>observed Fisher information</strong> is the <span class="xref-no-num"><a href="#def-fisher-information" class="quarto-xref">Fisher information&nbsp;<span>5.7</span></a></span> evaluated at the <strong>observed value</strong> of the MLE, <span class="math inline">\hat{\theta}_{\text{obs}}</span>, obtained from the observed data <span class="math inline">x_1, \ldots, x_n</span>: <span class="math display">
+\mathcal{I}_n(\hat{\theta}_{\text{obs}}) = \mathcal{I}(\hat{\theta}_{\text{obs}}; \underline{X}).
+</span> Similarly, the observed Fisher information for <strong>a single observation</strong> is the quantity <span class="math display">
+\mathcal{I}_1(\hat{\theta}_{\text{obs}}).
+</span></p>
 </div>
 </div>
 </div>
@@ -3754,7 +3771,7 @@ Note
 <summary><strong>Solution</strong></summary>
 <p>In <a href="#exm-poisson-fisher" class="quarto-xref">Example&nbsp;<span>5.14</span></a>, we saw the Fisher information for one Poisson observation is</p>
 <p><span class="math display">
-\mathcal{I}(\lambda) = \frac{1}{\lambda}.
+\mathcal{I}_1(\lambda) = \frac{1}{\lambda}.
 </span></p>
 <p>For <span class="math inline">n</span> independent observations this scales to</p>
 <p><span class="math display">

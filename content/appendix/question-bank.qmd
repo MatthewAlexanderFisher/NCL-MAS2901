@@ -9,6 +9,39 @@ tbl-cap-location: bottom
 
 # Question Bank {.unnumbered}
 
+```{python}
+#| echo: false
+
+import matplotlib.pyplot as plt
+
+def set_plot_theme(mode="light"):
+    """Switch matplotlib colours between light and dark themes."""
+    
+    if mode == "light":
+        plot_bg, plot_fg = "#f8f8f8", "#333333"
+    elif mode == "dark":
+        plot_bg, plot_fg = "#151515", "#EAEAEA"
+    else:
+        raise ValueError("mode must be 'light' or 'dark'")
+
+    # Backgrounds
+    plt.rcParams["figure.facecolor"] = plot_bg
+    plt.rcParams["axes.facecolor"]   = plot_bg
+    plt.rcParams["savefig.facecolor"] = plot_bg
+
+    # Foregrounds
+    plt.rcParams["text.color"]       = plot_fg
+    plt.rcParams["axes.labelcolor"]  = plot_fg
+    plt.rcParams["axes.edgecolor"]   = plot_fg
+    plt.rcParams["xtick.color"]      = plot_fg
+    plt.rcParams["ytick.color"]      = plot_fg
+    plt.rcParams["legend.edgecolor"] = plot_fg
+    plt.rcParams["legend.labelcolor"] = plot_fg
+    plt.rcParams["grid.color"]       = plot_fg
+
+```
+
+
 ::: {.content-visible unless-format="pdf"}
 
 ```{ojs}
@@ -288,7 +321,7 @@ $$
 
 :::
 
-::: {.callout-important .question appearance="minimal" data-tags="probability week-1" data-difficulty="0"}
+::: {.callout-important .question appearance="minimal" data-tags="probability" data-difficulty="0"}
 ## Newspaper subscriptions
 In a certain city, $50\%$ of families subscribe to the morning newspaper, $65\%$ subscribe to the afternoon newspaper, and $30\%$ subscribe to both.  
 
@@ -359,7 +392,7 @@ So the MLE of $\mu$ is the **sample mean** $\bar X$.
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="probability expectation week-1" data-difficulty="0"}
+::: {.callout-important .question appearance="minimal" data-tags="probability expectation" data-difficulty="0"}
 ## Converting mean and standard deviation
 October temperatures in Newcastle (daily maximum) have population mean $13^\circ$C and population standard deviation $3^\circ$C.  
 
@@ -387,7 +420,7 @@ $$
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="probability expectation week-1" data-difficulty="1"}
+::: {.callout-important .question appearance="minimal" data-tags="probability expectation" data-difficulty="1"}
 ## PDF, normalisation constant, and CDF
 The random variable $X$ has PDF
 $$
@@ -486,7 +519,7 @@ viewof chart = Plot.plot({
 
 :::
 
-::: {.callout-important .question appearance="minimal" data-tags="probability expectation covariance correlation week-1" data-difficulty="1"}
+::: {.callout-important .question appearance="minimal" data-tags="probability expectation covariance correlation" data-difficulty="1"}
 ## Linear combinations of independent random variables
 Suppose that $X_1$ and $X_2$ are **independent** random variables with  
 $$
@@ -553,7 +586,7 @@ $$
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="probability expectation covariance correlation week-1" data-difficulty="2"}
+::: {.callout-important .question appearance="minimal" data-tags="probability expectation covariance correlation" data-difficulty="2"}
 ## Linear combinations of dependent random variables
 Suppose that $X_1$ and $X_2$ are **dependent** random variables with  
 $$
@@ -623,7 +656,7 @@ $$
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="probability expectation week-1" data-difficulty="2"}
+::: {.callout-important .question appearance="minimal" data-tags="probability expectation" data-difficulty="2"}
 ## Minimiser of $\mathrm{E}[(X-c)^2]$
 Suppose that $X$ is a continuous random variable. Show that $\mathrm{E}[(X-c)^2]$ is minimised when $c$ is the population **mean**. State any assumptions.
 
@@ -657,7 +690,7 @@ The second derivative is positive, so this is indeed a minimum.
 
 :::
 
-::: {.callout-important .question appearance="minimal" data-tags="probability expectation week-1" data-difficulty="3"}
+::: {.callout-important .question appearance="minimal" data-tags="probability expectation" data-difficulty="3"}
 ## Minimiser of $\mathrm{E}[|X-c|]$
 Suppose that $X$ is a continuous random variable. Show that $\mathrm{E}[|X-c|]$ is minimised when $c$ is the population **median**. State any assumptions.  
 
@@ -734,7 +767,7 @@ $$
 
 :::
 
-::: {.callout-important .question appearance="minimal" data-tags="binomial probability coding week-2" data-difficulty="0"}
+::: {.callout-important .question appearance="minimal" data-tags="binomial probability coding" data-difficulty="0"}
 ## Binomial Probabilities
 
 Suppose $X \sim \mathrm{Bin}(n,p)$.
@@ -889,7 +922,7 @@ cat(
 
 :::
 
-::: {.callout-important .question appearance="minimal" data-tags="normal expectation variance probability week-2" data-difficulty="0"}
+::: {.callout-important .question appearance="minimal" data-tags="normal expectation variance probability" data-difficulty="0"}
 ## Mean and Standard Deviation of Linear Combinations
 
 Suppose $X \sim \mathcal{N}(3,2)$ and, independently, $Y \sim \mathcal{N}(-2,7)$.  
@@ -958,7 +991,7 @@ $$
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="poisson expectation variance week-2" data-difficulty="1"}
+::: {.callout-important .question appearance="minimal" data-tags="poisson expectation variance" data-difficulty="1"}
 ## Expectation with a Poisson Distribution
 
 The number of breakdowns per week in a computer cluster is a random variable $Y$ having a **Poisson distribution** with population mean $\mu$.  
@@ -997,7 +1030,7 @@ $$
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="normal probability chi-squared week-2" data-difficulty="2"}
+::: {.callout-important .question appearance="minimal" data-tags="normal probability chi-squared" data-difficulty="2"}
 ## Distribution of a Squared Normal Variable
 
 Suppose $Z \sim \mathcal{N}(0,1)$. 
@@ -1058,7 +1091,7 @@ This is exactly the PDF of a $\chi^2_1$ distribution.
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="gamma coding distribution probability week-2" data-difficulty="2"}
+::: {.callout-important .question appearance="minimal" data-tags="gamma coding distribution probability" data-difficulty="2"}
 ## Customer Waiting Times
 
 Customer waiting times at a call centre can be assumed to be <span class="xref-no-num">[Gamma @sec-gamma]</span> random variables with mean $3$ minutes and standard deviation $2$ minutes.  
@@ -1181,7 +1214,7 @@ We obtain the **Clopper–Pearson interval** $[p_L,\,p_U]$, which is an exact (c
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="probability uniform week-2" data-difficulty="2"}
+::: {.callout-important .question appearance="minimal" data-tags="probability uniform" data-difficulty="2"}
 ## Probability Integral Transform
 
 Suppose $X$ is a continuous random variable with CDF $F(x)$.  
@@ -1248,7 +1281,7 @@ $$
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="exponential-distribution expectation probability week-2" data-difficulty="2"}
+::: {.callout-important .question appearance="minimal" data-tags="exponential-distribution expectation probability" data-difficulty="2"}
 ## Moment Generating Function of the Exponential
 
 We have seen that properties of a random variable $X$ can be described by the CDF, PMF, or PDF.  
@@ -1303,7 +1336,7 @@ $$
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="poisson bias mse estimator statistics week-3" data-difficulty="1"}
+::: {.callout-important .question appearance="minimal" data-tags="poisson bias mse estimator statistics" data-difficulty="1"}
 ## Estimating $\lambda$ from Independent Poisson Samples
 
 Suppose $X \sim \mathrm{Poisson}(\lambda)$ and, independently, $Y \sim \mathrm{Poisson}(2\lambda)$.
@@ -1400,7 +1433,7 @@ matching part (b).
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="bias mse estimator week-3" data-difficulty="2"}
+::: {.callout-important .question appearance="minimal" data-tags="bias mse estimator" data-difficulty="2"}
 ## Bias, Variance, and MSE of Estimators
 
 A random variable $X$ has expected value $\mathrm{E}[X] = 2\theta + 6$ and variance $\mathrm{Var}(X) = 2\theta^2$.  
@@ -1509,7 +1542,7 @@ $$
 
 :::
 
-::: {.callout-important .question appearance="minimal" data-tags="poisson estimator variance consistency week-2" data-difficulty="1"}
+::: {.callout-important .question appearance="minimal" data-tags="poisson estimator variance consistency" data-difficulty="1"}
 ## Properties of Poisson Estimators
 
 Suppose that $X_1, X_2, \ldots, X_n$, for $n \geq 1$, are independent $\mathrm{Poisson}(\lambda)$ random variables.  
@@ -1581,7 +1614,7 @@ $$
 </details>
 :::
 
-::: {.callout-important .question appearance="minimal" data-tags="gamma distribution mle coding likelihood week-3" data-difficulty="2"}
+::: {.callout-important .question appearance="minimal" data-tags="gamma distribution mle coding likelihood" data-difficulty="2"}
 ## MLE for the Gamma Distribution
 
 Suppose that $X_1,\ldots,X_n$ is random sample from a $\mathrm{Gamma}(1, b)$ distribution.  
@@ -1707,7 +1740,7 @@ So the MLE is $\hat{b} = 1/\bar{x}$.
 ::: {.callout-important .question appearance="minimal" data-tags="probability normal student-t chi-squared" data-difficulty="3"}
 ## Deriving the Student-$t$ distribution
 
-Let $X_1,\ldots, X_n \overset{\text{iid}}{\sim} \mathcal{N}(\mu,\sigma^2)$. From @prp-normal-sample-mean and @prp-normal-sample-variance, we saw that
+Let $X_1,\ldots, X_n \stackrel{\text{i.i.d.}}{\sim} \mathcal{N}(\mu,\sigma^2)$. From @prp-normal-sample-mean and @prp-normal-sample-variance, we saw that
 
 1. $\bar{X} \sim \mathcal{N}(\mu, \sigma^2/n)$,
 2. $\dfrac{(n-1)S^2}{\sigma^2} \;\sim\; \chi^2_{\,n-1}$, and
@@ -1832,7 +1865,7 @@ $$
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="clt probability week-4" data-difficulty="1"}
+::: {.callout-important .question appearance="minimal" data-tags="clt probability" data-difficulty="1"}
 ## Central Limit Theorem Approximation
 
 The scores that responders give on a questionnaire can be assumed to be independent random variables, each with the following probability distribution:
@@ -1908,7 +1941,7 @@ $$
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="clt binomial week-4" data-difficulty="1"}
+::: {.callout-important .question appearance="minimal" data-tags="clt binomial" data-difficulty="1"}
 ## Normal Approximation to the Binomial
 
 Use the <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span> to justify the Normal approximation to the <span class="xref-no-num">[Binomial @sec-binom]</span>.  
@@ -1963,9 +1996,11 @@ $$
 \hat{\theta} = 2X_1 - X_2 + X_3.
 $$
 
-1. Find the expectation of $\hat{\theta}$.  
-2. Find the variance of $\hat{\theta}$.  
-3. What is the bias of $\hat{\theta}$?
+Answer the following:
+
+(a) Find the **expectation** of the estimator $\hat{\theta}$.  
+(b) Find the **variance** of the estimator $\hat{\theta}$.  
+(c) Determine the **bias** of the estimator $\hat{\theta}$.
 
 <details class="solution">
   <summary>Solution</summary>
@@ -2017,9 +2052,11 @@ $$
 \hat{\theta} = X_1 + 2X_2 - X_3 + X_4.
 $$
 
-1. Find the expectation of $\hat{\theta}$.  
-2. Find the variance of $\hat{\theta}$.  
-3. What is the bias of $\hat{\theta}$?
+Answer the following:
+
+(a) Find the **expectation** of the estimator $\hat{\theta}$.  
+(b) Find the **variance** of the estimator $\hat{\theta}$.  
+(c) Determine the **bias** of the estimator $\hat{\theta}$.
 
 <details class="solution">
   <summary>Solution</summary>
@@ -2055,8 +2092,76 @@ $$
 
 :::
 
+::: {.callout-important .question appearance="minimal" data-tags="estimator bias variance expectation" data-difficulty="1"}
 
-::: {.callout-important .question appearance="minimal" data-tags="poisson estimator bias variance week-2" data-difficulty="1"}
+## Properties of an Estimator III
+
+Suppose $X_1, X_2, X_3$ are independent random variables, each with  
+$$
+\mathrm{E}[X_i] = \theta - 5, 
+\qquad 
+\mathrm{Var}(X_i) = 2\theta^2,
+$$
+where $\theta$ is an unknown parameter.  
+
+Consider the estimator
+$$
+\hat{\theta} = X_1 + 2X_2 - 4X_3.
+$$
+
+Answer the following:
+
+(a) Find the **expectation** of the estimator $\hat{\theta}$.  
+(b) Find the **variance** of the estimator $\hat{\theta}$.  
+(c) Determine the **bias** of the estimator $\hat{\theta}$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a) Expectation**
+
+Using linearity of expectation:
+$$
+\mathrm{E}[\hat{\theta}]
+= \mathrm{E}[X_1] + 2\,\mathrm{E}[X_2] - 4\,\mathrm{E}[X_3]
+= (\theta - 5) + 2(\theta - 5) - 4(\theta - 5)
+= -\,(\theta - 5)
+= 5 - \theta.
+$$
+
+---
+
+**(b) Variance**
+
+Because $X_1, X_2, X_3$ are independent,
+$$
+\mathrm{Var}(\hat{\theta})
+= \mathrm{Var}(X_1) + 4\,\mathrm{Var}(X_2) + 16\,\mathrm{Var}(X_3)
+= (1 + 4 + 16)\,2\theta^2
+= 42\theta^2.
+$$
+
+---
+
+**(c) Bias**
+
+The bias is
+$$
+\mathrm{Bias}(\hat{\theta})
+= \mathrm{E}[\hat{\theta}] - \theta
+= (5 - \theta) - \theta
+= 5 - 2\theta.
+$$
+
+Hence the estimator is **biased**, and the bias depends linearly on $\theta$.
+
+</details>
+
+:::
+
+
+
+::: {.callout-important .question appearance="minimal" data-tags="poisson estimator bias variance" data-difficulty="1"}
 ## Properties of the Poisson distribution
 
 A hospital records the **number of patients arriving at the emergency department per hour**.  
@@ -2092,11 +2197,11 @@ Suppose $X \sim \mathrm{Poisson}(\lambda)$, where $\lambda$ is the (unknown) mea
 
 3. With $x=7$,  
    (i) $\hat{\lambda}_{\text{obs}} = 7$.  
-   (ii) The pmf value is
+   (ii) The PMF value is
    $$
    \mathrm{Pr}(X=7 \mid \lambda=7) = \frac{7^7 e^{-7}}{7!}.
    $$
-   (iii) The cdf value is
+   (iii) The CDF value is
    $$
    \mathrm{Pr}(X \leq 7 \mid \lambda=7) = \sum_{k=0}^7 \frac{7^k e^{-7}}{k!}.
    $$
@@ -2156,6 +2261,1645 @@ $$
 $$
 
 If the $X_i$ were independent, then $\tau=0$ and we recover $\operatorname{Var}(\hat{\theta})=\sigma^2\sum_i a_i^2$.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="consistency bias variance" data-difficulty="2"}
+
+## Proving Consistency I
+
+Let $X_1,\dots,X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\mu, \sigma^2)$ be a random sample such that each
+$$
+\operatorname{E}[X_i]=\mu,\qquad
+\operatorname{Var}(X_i)=\sigma^2.
+$$
+Consider the following family of estimators of the mean $\mu$:
+$$
+\hat{\mu}_n = \frac{1}{n + c} \sum_{i=1}^n X_i,
+$$
+where $c\in\mathbb{R}$ is a constant.
+
+Show that $\hat{\mu}_n$ is a consistent estimator of $\mu$ for all $c\in\mathbb{R}$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**Bias:** We have
+
+\begin{align*}
+\mathrm{E}[\hat{\mu}_n] &= \mathrm{E}\left[\frac{1}{n + c} \sum_{i=1}^n X_i\right] \\
+&= \frac{1}{n+c} \sum_{i=1}^n \mathrm{E}[X_i] \\
+&= \frac{1}{n+c} \sum_{i=1}^n \mu \\
+&= \frac{n \mu }{n + c}.
+\end{align*}
+
+Therefore, the bias is
+$$
+\mathrm{Bias}(\hat{\mu}_n) = \frac{n \mu }{n + c} - \mu = \frac{n\mu}{n+c} - \frac{(n+c)\mu}{n+c} = -\frac{c \mu}{n + c}.
+$$
+
+**Variance:** Due to independence of the $X_i$, we have
+
+\begin{align*}
+\mathrm{Var}[\hat{\mu}_n] &= \mathrm{Var}\left[\frac{1}{n + c} \sum_{i=1}^n X_i\right] \\
+&= \frac{1}{(n+c)^2} \sum_{i=1}^n \mathrm{Var}[X_i] \\
+&= \frac{1}{(n+c)^2} \sum_{i=1}^n \sigma^2 \\
+&= \frac{n \sigma^2 }{(n + c)^2}.
+\end{align*}
+
+**Consistency:** To show consistency, we use @prp-sufficient-consistency. From the computed bias, we have (for any value of $c\in\mathbb{R}$):
+$$
+\mathrm{Bias}(\hat{\mu}_n) = -\frac{c \mu}{n + c} \rightarrow 0, \quad \text{as } n\rightarrow \infty.
+$$
+Therefore, the estimator is *asymptotically unbiased*. Similarly, the variance converges to $0$ for all $c\in\mathbb{R}$:
+$$
+\mathrm{Var}(\hat{\mu}_n) = \frac{n \sigma^2 }{(n + c)^2} \rightarrow 0, \quad \text{as } n\rightarrow \infty.
+$$
+Therefore, $\hat{\mu}_n$ is a consistent estimator of $\mu$ for all $c\in\mathbb{R}$.
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="likelihood geometric" data-difficulty="1"}
+
+## Computing Likelihood I
+
+Let $X_1,\dots,X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Geometric}(p)$ be a random sample.
+
+Derive the **likelihood function**.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+For independent and identically distributed data, the <span class="xref-no-num">[likelihood function @def-likelihood]</span> takes the form
+$$
+L(p ; \underline{x}) = f(\underline{x} \mid p) = \prod_{i=1}^n f(x_i \mid p),
+$$
+where $f(x_i\mid p)$ is PMF of the <span class="xref-no-num">[geometric distribution @sec-geom]</span>:
+$$
+f(x_i \mid p) = p(1-p)^{x_i - 1}.
+$$
+Therefore, the likelihood takes the form
+\begin{align*}
+L(p; \underline{x}) &= \prod_{i=1}^n p(1-p)^{x_i - 1} \\
+&= p(1-p)^{x_1-1}\times p(1-p)^{x_2-1}\times \ldots \times p(1-p)^{x_n-1} \\
+&= p^n(1-p)^{\sum_{i=1}^n (x_i - 1)} \\
+&= p^n(1-p)^{n(\bar{x} - 1)},
+\end{align*}
+where $\bar{x}$ is the <span class="xref-no-num">[sample mean @def-sample-mean]</span>.
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="likelihood normal" data-difficulty="1"}
+
+## Computing Likelihood II
+
+Let $X_1,\dots,X_n \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu, 1)$ be a random sample.
+
+Derive the **likelihood function**.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+For independent and identically distributed data, the <span class="xref-no-num">[likelihood function @def-likelihood]</span> takes the form
+$$
+L(\mu ; \underline{x}) = f(\underline{x} \mid \mu) = \prod_{i=1}^n f(x_i \mid \mu),
+$$
+where $f(x_i\mid \mu)$ is PDF of the <span class="xref-no-num">[normal distribution @sec-normal]</span> (with variance $\sigma^2=1$):
+$$
+f(x_i \mid \mu) = \frac{1}{\sqrt{2\pi}} \exp\left\{ -\frac{(x_i - \mu)^2}{2} \right\}.
+$$
+Therefore, the likelihood takes the form
+\begin{align*}
+L(\mu; \underline{x}) &= \prod_{i=1}^n \frac{1}{\sqrt{2\pi}} \exp\left\{ -\frac{(x_i - \mu)^2}{2} \right\} \\
+&= \frac{1}{\sqrt{2\pi}} \exp\left\{ -\frac{(x_1 - \mu)^2}{2} \right\} \times \ldots \times \frac{1}{\sqrt{2\pi}} \exp\left\{ -\frac{(x_n - \mu)^2}{2} \right\} \\
+&= (2\pi)^{-n/2} \exp\left\{ \sum_{i=1}^n -\frac{(x_i - \mu)^2}{2}  \right\} \\
+&= (2\pi)^{-n/2} \exp\left\{ -\frac{1}{2 }\sum_{i=1}^n (x_i - \mu)^2 \right\}.
+\end{align*}
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="fisher-information binomial" data-difficulty="2"}
+
+## Fisher Information for a Binomial Observation
+
+Suppose we have a single <span class="xref-no-num">[Binomial @sec-binom]</span> observation:
+$$
+X \sim \mathrm{Binomial}(n, \theta),
+$$
+Derive the <span class="xref-no-num">[Fisher information @def-fisher-information]</span> and the <span class="xref-no-num">[observed Fisher information @def-observed-fisher]</span>.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+Note: We want to compute $\mathcal{I}(\theta) = -\mathrm{E}\left[\frac{\partial^2}{\partial\theta^2} \ell(\theta; X)\right]$ for the Fisher information and $\hat{\theta}_{\mathrm{MLE}}$ for the observed Fisher information.
+
+**Step 1: Compute log-likelihood**
+
+Since we have a single observation, the likelihood is just the Binomial PMF:
+$$
+L(\theta ; x) = \binom{n}{x} \theta^x(1-\theta)^{n-x}.
+$$
+Therefore, the log-likelihood takes the form
+$$
+\ell(\theta; x) = \log L(\theta ; x) = \log\left(\binom{n}{x}\right) + x \log \theta + (n-x)\log(1-\theta).
+$$
+
+**Step 2: Compute Derivatives**
+
+We compute the first and second derivatives of the log-likelihood with respect to $\theta$:
+\begin{align*}
+\frac{\partial}{\partial \theta} \ell(\theta; x) &= \frac{x}{\theta} - \frac{n-x}{1-\theta} \\
+\frac{\partial^2}{\partial \theta^2} \ell(\theta; x) &= -\frac{x}{\theta^2} - \frac{n-x}{(1-\theta)^2}.
+\end{align*}
+
+**Step 3: Compute Fisher Information**
+
+We have
+$$
+\mathcal{I}(\theta) = -\mathrm{E}\left[\frac{\partial^2}{\partial\theta^2} \ell(\theta; X)\right] = -\mathrm{E}\left[-\frac{X}{\theta^2} - \frac{n-X}{(1-\theta)^2}\right],
+$$
+where the **random** component of the expectation is $X\sim\mathrm{Binomial}(n, \theta)$. Therefore, manipulating the expectation:
+\begin{align*}
+\mathcal{I}(\theta) &= \mathrm{E}\left[\frac{X}{\theta^2} + \frac{n-X}{(1-\theta)^2}\right] \\
+&= \frac{1}{\theta^2}\mathrm{E}[X] + \frac{1}{(1-\theta)^2} \mathrm{E}[n - X] \\
+&= \frac{n\theta}{\theta^2} + \frac{n - n\theta}{(1-\theta)^2},
+\end{align*}
+using the fact that $\mathrm{E}[X] = n\theta$. Continuing:
+\begin{align*}
+\mathcal{I}(\theta) &= \frac{n}{\theta} + \frac{n}{1-\theta} \\
+&= \frac{n(1-\theta) + n\theta}{\theta(1-\theta)} \\
+&= \frac{n}{\theta(1-\theta)}.
+\end{align*}
+
+**Step 4: Compute MLE**
+
+We require the MLE for the observed Fisher information. We solve:
+\begin{align*}
+\frac{\partial}{\partial \theta} \ell(\theta; x) &= 0 \\
+\frac{x}{\theta} - \frac{n-x}{1-\theta} &= 0 \\
+x(1-\theta) &= \theta(n-x) \\
+x &= n\theta \\
+\Rightarrow \hat{\theta}_{\mathrm{MLE}} &= \frac{x}{n}.
+\end{align*}
+
+**Step 5: Compute observed Fisher information**
+
+Given the MLE $\hat{\theta}_{\mathrm{MLE}} = \frac{x}{n}$ and the derived Fisher information, we have
+\begin{align*}
+\mathcal{I}(\hat{\theta}_{\mathrm{MLE}}) &=  \frac{n}{\hat{\theta}_{\mathrm{MLE}}(1-\hat{\theta}_{\mathrm{MLE}})} \\
+&= \frac{n}{x/n(1-x/n)} \\
+&= \frac{n^3}{x(n - x)}.
+\end{align*}
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="fisher-information geometric" data-difficulty="2"}
+
+## Fisher Information for Geometric Data
+
+Suppose we have a random <span class="xref-no-num">[Geometric @sec-geom]</span> sample:
+$$
+X_1,\ldots, X_n \stackrel{\text{i.i.d.}}{\sim} \mathrm{Geom}(\theta).
+$$
+Derive the <span class="xref-no-num">[Fisher information @def-fisher-information]</span> and the <span class="xref-no-num">[observed Fisher information @def-observed-fisher]</span> for both a **single observation** and the **whole random sample**.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+Since we have i.i.d. observations, we can use @prp-fisher-one-obs to compute the Fisher information for the **whole random sample** by computing $\mathcal{I}_1(\theta)$ for a single observation. However, the observed information requires the MLE using all $n$ data points $x_1,\ldots,x_n$. So, let's compute $\mathcal{I}_n(\theta)$ using the **whole sample** $X_1,\ldots, X_n$:
+
+**Step 1: Compute log-likelihood**
+
+For i.i.d. Geometric data, we have
+\begin{align*}
+L(\theta; \underline{x}) &= \prod_{i=1}^n \theta(1-\theta)^{x_i - 1} \\
+&= \theta^n(1-\theta)^{\sum_{i=1}^n (x_i - 1)} \\
+&= \theta^n(1-\theta)^{n(\bar{x} - 1)}.
+\end{align*}
+Therefore, the log-likelihood takes the form
+$$
+\ell(\theta; \underline{x}) = \log L(\theta ; \underline{x}) = n\log(\theta) + n(\bar{x}-1)\log(1-\theta).
+$$
+
+**Step 2: Compute Derivatives**
+
+We compute the first and second derivatives of the log-likelihood with respect to $\theta$:
+\begin{align*}
+\frac{\partial}{\partial \theta} \ell(\theta; \underline{x}) &= \frac{n}{\theta} - \frac{n(\bar{x} - 1)}{1-\theta} \\
+\frac{\partial^2}{\partial \theta^2} \ell(\theta; \underline{x}) &= -\frac{n}{\theta^2} - \frac{n(\bar{x} - 1)}{(1-\theta)^2}.
+\end{align*}
+
+**Step 3: Compute Fisher Information**
+
+We have
+$$
+\mathcal{I}_n(\theta) = -\mathrm{E}\left[\frac{\partial^2}{\partial\theta^2} \ell(\theta; \underline{X})\right] = -\mathrm{E}\left[-\frac{n}{\theta^2} - \frac{n(\bar{X} - 1)}{(1-\theta)^2}\right],
+$$
+where the **random** component of the expectation is $X_i\sim\mathrm{Geom}(\theta)$. Therefore, manipulating the expectation:
+\begin{align*}
+\mathcal{I}_n(\theta) &= \mathrm{E}\left[\frac{n}{\theta^2} + \frac{n(\bar{X} - 1)}{(1-\theta)^2}\right] \\
+&= \frac{n}{\theta^2} + \frac{n}{(1-\theta)^2} \mathrm{E}[\bar{X}] - \frac{n}{(1-\theta)^2} \\
+&= \frac{n}{\theta^2} + \frac{n}{(1-\theta)^2} \frac{1}{\theta} - \frac{n}{(1-\theta)^2},
+\end{align*}
+where we used the fact that 
+$$
+\mathrm{E}[\bar{X}] = \frac{1}{n}\sum_{i=1}^n \mathrm{E}[X_i] = \frac{1}{n}\sum_{i=1}^n \frac{1}{\theta} = \frac{1}{\theta},
+$$
+and $\mathrm{E}[X_i] = \tfrac{1}{\theta}$. Continuing:
+\begin{align*}
+\mathcal{I}_n(\theta) &= \frac{n (1-\theta)^2}{\theta^2(1-\theta)^2} + \frac{n\theta}{\theta^2(1-\theta)^2}  - \frac{n\theta^2}{\theta^2(1-\theta)^2}\\
+&= \frac{n(1-\theta) +n\theta}{\theta^2(1-\theta)} \\
+&= \frac{n}{\theta^2(1-\theta)}.
+\end{align*}
+This immediately implies the Fisher information for a single observation is
+$$
+\mathcal{I}_1(\theta) = \frac{1}{\theta^2(1-\theta)}.
+$$
+
+**Step 4: Compute MLE**
+
+We require the MLE for the observed Fisher information. We solve:
+\begin{align*}
+\frac{\partial}{\partial \theta} \ell(\theta; \underline{x}) &= 0 \\
+\frac{n}{\theta} - \frac{n(\bar{x} - 1)}{1-\theta} &= 0 \\
+n(1-\theta) &= n \theta (\bar{x} - 1) \\
+1 &= \theta \bar{x} \\
+\Rightarrow \hat{\theta}_{\mathrm{MLE}} &= \frac{1}{\bar{x}}.
+\end{align*}
+
+**Step 5: Compute observed Fisher information**
+
+Given the MLE $\hat{\theta}_{\mathrm{MLE}} = \frac{1}{\bar{x}}$ and the derived Fisher information, we have
+\begin{align*}
+\mathcal{I}_n(\hat{\theta}_{\mathrm{MLE}}) &=  \frac{n}{\hat{\theta}_{\mathrm{MLE}}^2(1-\hat{\theta}_{\mathrm{MLE}})} \\
+&= \frac{n}{\bar{x}^{-2}(1-\bar{x}^{-1})}. \\
+&= \frac{n \bar{x}^3}{\bar{x} - 1}.
+\end{align*}
+This immediately implies the observed Fisher information for a single observation is
+$$
+\mathcal{I}_1(\hat{\theta}_{\mathrm{MLE}}) = \frac{\bar{x}^3}{\bar{x} - 1}.
+$$
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="bayes asymptotic-posterior exam-style" data-difficulty="2"}
+
+## Asymptotic Posterior for the Variance Parameter
+
+Suppose we have an independent and identically distributed sample
+$$
+\underline{x} = (x_1, x_2, \ldots, x_n)^\top
+$$
+from a distribution with PDF
+$$
+f(x \mid \gamma) = \frac{1}{\sqrt{2\pi \gamma}}\exp\!\left[-\frac{x^2}{2\gamma}\right], 
+\qquad \gamma > 0.
+$$
+
+Determine the **asymptotic posterior distribution** for $\gamma$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**Step 1: Likelihood**
+
+$$
+f(\underline{x} \mid \gamma)
+= \prod_{i=1}^n \frac{1}{\sqrt{2\pi \gamma}} \exp\!\left[-\frac{x_i^2}{2\gamma}\right]
+= (2\pi \gamma)^{-n/2} \exp\!\left[-\frac{1}{2\gamma}\sum_{i=1}^n x_i^2\right].
+$$
+
+**Step 2: Log-likelihood**
+
+$$
+\ell(\gamma; \underline{x})
+= \log f(\underline{x} \mid \gamma)
+= -\frac{n}{2}\log(2\pi) - \frac{n}{2}\log(\gamma) 
+  - \frac{1}{2\gamma}\sum_{i=1}^n x_i^2.
+$$
+
+**Step 3: Derivatives**
+
+$$
+\frac{\partial \ell}{\partial \gamma}
+= -\frac{n}{2\gamma} + \frac{1}{2\gamma^2}\sum_{i=1}^n x_i^2,
+\qquad
+\frac{\partial^2 \ell}{\partial \gamma^2}
+= \frac{n}{2\gamma^2} - \frac{1}{\gamma^3}\sum_{i=1}^n x_i^2.
+$$
+
+Let $a = \sum_{i=1}^n x_i^2.$
+
+**Step 4: MLE**
+
+Setting the first derivative to zero:
+$$
+-\frac{n}{2\gamma} + \frac{a}{2\gamma^2} = 0 
+\quad \Rightarrow \quad 
+\hat{\gamma} = \frac{a}{n} = \frac{1}{n}\sum_{i=1}^n x_i^2.
+$$
+
+**Step 5: Observed information**
+
+$$
+J(\gamma) = -\frac{\partial^2 \ell}{\partial \gamma^2}
+= -\left(\frac{n}{2\gamma^2} - \frac{a}{\gamma^3}\right)
+= -\frac{n}{2\gamma^2} + \frac{a}{\gamma^3}.
+$$
+
+Evaluating at the MLE:
+$$
+J(\hat{\gamma}) 
+= -\frac{n^3}{2a^2} + \frac{n^3}{a^2} 
+= \frac{n^3}{2a^2}.
+$$
+
+**Step 6: Asymptotic posterior**
+
+By the asymptotic normality of the MLE,
+$$
+\gamma \mid \underline{x} 
+\approx \mathcal{N}\!\left(\hat{\gamma},\, J(\hat{\gamma})^{-1}\right)
+= \mathcal{N}\!\left(
+\frac{1}{n}\sum_{i=1}^n x_i^2,\;
+\frac{2}{n^3}\left(\sum_{i=1}^n x_i^2\right)^2
+\right).
+$$
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="bayes hdi beta binomial exam-style" data-difficulty="2"}
+
+## Bayesian Inference for the Click-through Rate on Instagram
+
+Software engineers at *Meta* are interested in the click-through rate $\theta$ of a new method of displaying advertisements on *Instagram*. The click-through rate is the proportion of clicks out of the total number of impressions of an online advertisement.
+
+They test the new method on users of their website, obtaining a total of $20$ impressions. From prior experience, they specify $\theta \sim \mathrm{Beta}(1,200)$.
+
+1. Let $X \mid \theta$ denote the number of clicks out of the total number of impressions. What is an appropriate model for $X \mid \theta$?  
+2. After running the test, the posterior obtained was
+   $$
+   \theta \mid x \sim \mathrm{Beta}(1,220).
+   $$
+   Determine the number of successful clicks $x$.  
+3. Construct a $90\%$ highest density interval (HDI) for $\theta$.
+
+*Hint:* The following plot may be helpful.
+
+```{python}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show code"
+#| fig-align: center
+#| renderings: [light, dark]
+
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.stats import beta
+
+set_plot_theme("light")
+
+theta_grid = np.linspace(0, 0.03, 100)
+beta_pdf = beta.pdf(theta_grid, 1, 220)
+
+plt.figure(figsize=(5,3))
+plt.plot(theta_grid, beta_pdf)
+plt.xlabel(r"$\theta$")
+plt.ylabel("Density")
+plt.title(r"PDF of $\theta \mid x \sim \mathrm{Beta}(1,220)$")
+plt.xlim(0, 0.03)
+plt.tight_layout()
+plt.show()  
+
+set_plot_theme("dark")
+
+plt.figure(figsize=(5,3))
+plt.plot(theta_grid, beta_pdf)
+plt.xlabel(r"$\theta$")
+plt.ylabel("Density")
+plt.title(r"PDF of $\theta \mid x \sim \mathrm{Beta}(1,220)$")
+plt.xlim(0, 0.03)
+plt.tight_layout()
+plt.show()  
+
+
+```
+
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**1. Likelihood model**
+
+An appropriate model is the Binomial:
+$$
+X \mid \theta \sim \mathrm{Binomial}(n=20,\ \theta).
+$$
+
+---
+
+**2. Recovering $x$ from the posterior**
+
+We have
+\begin{align*}
+    \pi(\theta|x) &\propto \theta^x(1-\theta)^{20-x} \times \theta^0 (1-\theta)^{199} \\
+    &\propto \theta^{x + 1 -1}(1-\theta)^{220-x - 1}.
+\end{align*}
+The posterior being $\theta \mid x \sim \textrm{Beta}(1, 220)$ implies $x = 0$.
+
+---
+
+**3. A $90\%$ highest density interval for $\theta$**
+
+From the provided plot, a $90\%$ highest density interval would be of the form $0 < \theta < c$, where $c$ is the solution of the equation
+$$ 
+\int_0^c \pi(\theta|x)\,\mathrm{d}\theta = 0.9. 
+$$
+Note that
+$$ \frac{\Gamma(220 + 1)}{\Gamma(1) \Gamma(220)} = \frac{220!}{219!} = 220. $$
+Therefore,
+\begin{align*}
+    \int_0^c \pi(\theta|x)\,\mathrm{d}\theta &= \int_0^c 220(1-\theta)^{219}\,\mathrm{d}\theta \\
+    &= \left[-(1-\theta)^{220}\right]_{0}^c \\
+    &= 1-(1-c)^{220}.
+\end{align*}
+Therefore, we seek $c$ such that
+\begin{align*}
+    1-(1-c)^{220} &= 0.9 \\
+    (1-c)^{220} &= 0.1 \\
+    c  &= 1 - 0.1^{1/220} = 0.01041 \text{ (4 s.f.)}.
+\end{align*}
+So, the $90\%$ highest density interval is $\theta \in (0, 0.01041)$.
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="binomial clt confidence-interval" data-difficulty="1"}
+
+## Large-Sample Approximate Confidence Interval for a Proportion
+
+A university careers office surveys a random sample of $n = 200$ graduates to estimate the proportion who found full-time employment within 3 months of graduation. Out of the $200$ respondents, $146$ report being in full-time employment.
+
+Assuming a <span class="xref-no-num">[Binomial model @sec-binom]</span> 
+$$
+X \sim \mathrm{Binomial}(n = 200,\, p),
+$$
+where $p$ is the true employment rate, use the <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span>  to construct an **approximate 95% confidence interval** for $p$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**Step 1: Model and estimator**
+
+The sample proportion is
+$$
+\hat{p} = \frac{X}{n} = \frac{146}{200} = 0.73.
+$$
+
+**Step 2: Approximate distribution (CLT)**
+
+For large $n$,
+$$
+\hat{p} \overset{\text{approx.}}{\sim} \mathcal{N}\!\left(p,\, \frac{p(1-p)}{n}\right).
+$$
+Replacing $p$ by $\hat{p}$ gives the estimated standard error
+$$
+\mathrm{SE}(\hat{p}) = \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}
+= \sqrt{\frac{0.73(0.27)}{200}} \approx 0.0317.
+$$
+
+**Step 3: Construct 95% confidence interval**
+
+Using the Normal quantile $z_{0.975} = 1.96$,
+$$
+\hat{p} \pm z_{0.975}\,\mathrm{SE}(\hat{p})
+= 0.73 \pm 1.96(0.0317)
+= (0.668,\, 0.792).
+$$
+
+**Step 4: Interpretation**
+
+We are approximately 95% confident that the true proportion of graduates in full-time employment within 3 months lies between **66.8% and 79.2%**.
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="estimator bias variance mse fisher-information cramer-rao normal exam-style" data-difficulty="3"}
+
+## Unbiased Estimation and Efficiency in the Normal Model
+
+Suppose that $X_1, \ldots, X_n$ are independent $\mathcal{N}(\mu, \theta)$ random variables, where $\mu$ is a **known constant** and $\theta$ is the **unknown parameter of interest**. Let $\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i$.
+
+1. Let
+   $$
+   \hat{\theta} = \frac{1}{c}\sum_{i=1}^n (X_i - \bar{X})^2
+   $$
+   be an estimator of $\theta$.
+
+   (a) Determine the distribution of $\bar{X}$ and hence show that  
+   $\mathrm{E}[\bar{X}] = \mu$ and $\mathrm{E}[\bar{X}^2] = \theta/n + \mu^2.$  
+
+   (b) Show that $\mathrm{E}[X_i^2] = \theta + \mu^2$ for any $i = 1, \ldots, n.$  
+   
+   (c) Using the fact that $\mathrm{E}[X_i\bar{X}] = \theta/n + \mu^2$ for any $i$, or by another method,  
+   derive the value of $c$ that ensures $\hat{\theta}$ is unbiased.  
+
+2. Show that for **any** unbiased estimator $\hat{\theta}$ of $\theta$, it holds that
+   $$
+   \mathrm{Var}[\hat{\theta}] \geq \frac{2\theta^2}{n}.
+   $$
+
+3. Let
+   $$
+   \hat{\theta}' = \frac{1}{n+2}\sum_{i=1}^n (X_i - \mu)^2
+   $$
+   be another estimator of $\theta$.
+
+   Determine whether $\hat{\theta}'$ has a **lower mean-squared error (MSE)** than any unbiased estimator of $\theta$.
+
+   *Hint:* If $X \sim \mathcal{N}(\mu, \theta)$, then $\mathrm{Var}[(X-\mu)^2] = 2\theta^2.$  
+
+<details class="solution">
+<summary>Solution</summary>
+
+
+**(1a)**  
+Since $\bar{X}$ is the sample mean of i.i.d. normals, it follows that  
+$\bar{X} \sim \mathcal{N}(\mu, \theta/n)$.  
+Hence:
+$$
+\mathrm{E}[\bar{X}] = \mu, 
+\qquad
+\mathrm{E}[\bar{X}^2] = \mathrm{Var}[\bar{X}] + \mathrm{E}[\bar{X}]^2 
+= \frac{\theta}{n} + \mu^2.
+$$
+
+---
+
+**(1b)**  
+For any $i$,
+$$
+\mathrm{E}[X_i^2] = \mathrm{Var}[X_i] + \mathrm{E}[X_i]^2 = \theta + \mu^2.
+$$
+
+---
+
+**(1c)**  
+We have:
+$$
+\mathrm{E}[\hat{\theta}] 
+= \frac{1}{c}\sum_{i=1}^n \mathrm{E}[(X_i - \bar{X})^2]
+= \frac{1}{c}\sum_{i=1}^n \Big(\mathrm{E}[X_i^2] - 2\mathrm{E}[X_i\bar{X}] + \mathrm{E}[\bar{X}^2]\Big).
+$$
+
+Substituting known expectations:
+$$
+\mathrm{E}[\hat{\theta}] 
+= \frac{1}{c}\sum_{i=1}^n \big(\theta+\mu^2 - 2(\theta/n+\mu^2) + \theta/n + \mu^2\big)
+= \frac{n-1}{c}\theta.
+$$
+
+Thus, $\hat{\theta}$ is unbiased if and only if $c = n-1.$
+
+---
+
+**(2)**
+
+The likelihood is:
+$$
+L(\theta) = (2\pi\theta)^{-n/2} 
+\exp\!\left[-\frac{1}{2\theta}\sum_{i=1}^n (x_i-\mu)^2\right].
+$$
+
+Hence the log-likelihood:
+$$
+\ell(\theta) = -\frac{n}{2}\log(2\pi) - \frac{n}{2}\log(\theta) 
+- \frac{1}{2\theta}\sum_{i=1}^n (x_i-\mu)^2.
+$$
+
+Differentiating twice:
+$$
+\frac{\partial^2 \ell}{\partial \theta^2}
+= \frac{n}{2\theta^2} - \frac{1}{\theta^3}\sum_{i=1}^n (x_i - \mu)^2.
+$$
+
+The Fisher information is:
+$$
+\mathcal{I}(\theta) 
+= -\mathrm{E}\!\left[\frac{\partial^2 \ell}{\partial \theta^2}\right]
+= \frac{n}{2\theta^2}.
+$$
+
+By the **Cramér–Rao inequality**:
+$$
+\mathrm{Var}[\hat{\theta}] \ge \frac{1}{\mathcal{I}(\theta)} = \frac{2\theta^2}{n}.
+$$
+
+---
+
+**(3)**
+
+Compute the bias:
+$$
+\mathrm{E}[\hat{\theta}'] 
+= \frac{1}{n+2}\sum_{i=1}^n \mathrm{E}[(X_i - \mu)^2]
+= \frac{n\theta}{n+2},
+\qquad
+\text{Bias}(\hat{\theta}') = -\frac{2\theta}{n+2}.
+$$
+
+Variance:
+$$
+\mathrm{Var}[\hat{\theta}'] 
+= \frac{1}{(n+2)^2}\sum_{i=1}^n \mathrm{Var}[(X_i - \mu)^2]
+= \frac{2n\theta^2}{(n+2)^2}.
+$$
+
+Hence:
+$$
+\mathrm{MSE}(\hat{\theta}') 
+= \mathrm{Var}[\hat{\theta}'] + \mathrm{Bias}(\hat{\theta}')^2
+= \frac{2n\theta^2}{(n+2)^2} + \frac{4\theta^2}{(n+2)^2}
+= \frac{2\theta^2}{n+2}.
+$$
+
+Since
+$$
+\frac{2\theta^2}{n+2} < \frac{2\theta^2}{n}
+$$
+for all $n > 0$,  
+$\hat{\theta}'$ has a **smaller mean-squared error** than any unbiased estimator of $\theta.$
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="poisson lrt hypothesis-testing exam-style" data-difficulty="2"}
+
+## Likelihood Ratio Test for Extreme Weather Events
+
+The number of extreme weather events observed over a year is denoted by $x$,  
+modelled as a Poisson random variable $X \sim \mathrm{Poisson}(\theta)$.
+
+We wish to test the hypothesis $H_0: \theta = 10$,  
+where $\theta = 10$ represents “standard weather conditions.”
+
+1. Write down the parameter space $\Theta$ for the parameter $\theta$, and the set $\Omega$ of possible $\theta$ values under $H_0.$  
+
+2. Show that the maximum likelihood estimate for $\theta$ is $\hat{\theta} = x.$  
+   (You may assume that any local optimum is a global maximum.)  
+
+3. Suppose $x = 15$ extreme weather events are observed. Show that
+   $$
+   \max_{\theta \in \Theta} L(\theta) = \frac{15^{15} e^{-15}}{15!}, 
+   \qquad
+   \max_{\theta \in \Omega} L(\theta) = \frac{10^{15} e^{-10}}{15!},
+   $$
+   where $L(\theta)$ is the likelihood for $\theta$ given $x = 15.$  
+
+4. Show that the likelihood ratio test statistic is
+   $$
+   \lambda = e^5 \left(\tfrac{2}{3}\right)^{15},
+   $$
+   and compute $w = -2\log \lambda$ to 3 significant figures.  
+
+5. Is there sufficient evidence to reject $H_0$ at the $10\%$ significance level?  
+
+<details class="solution">
+<summary>Solution</summary>
+
+**1. Parameter space**
+
+$$
+\Theta = (0, \infty), 
+\qquad 
+\Omega = \{ 10 \}.
+$$
+
+---
+
+**2. Maximum likelihood estimate**
+
+The likelihood is:
+$$
+L(\theta) = \frac{\theta^x e^{-\theta}}{x!}.
+$$
+The log-likelihood:
+$$
+\ell(\theta) = x \log \theta - \theta - \log(x!).
+$$
+Differentiating:
+$$
+\frac{\partial \ell}{\partial \theta} = \frac{x}{\theta} - 1 = 0 
+\quad \Rightarrow \quad \hat{\theta} = x.
+$$
+Hence, the MLE is $\hat{\theta} = x.$
+
+---
+
+**3. Evaluate the likelihoods**
+
+Given $x = 15$:
+$$
+\max_{\theta \in \Theta} L(\theta) = L(15) = \frac{15^{15} e^{-15}}{15!},
+\qquad
+\max_{\theta \in \Omega} L(\theta) = L(10) = \frac{10^{15} e^{-10}}{15!}.
+$$
+
+---
+
+**4. Likelihood ratio statistic**
+
+$$
+\lambda = \frac{L(10)}{L(15)} 
+= \frac{10^{15} e^{-10}}{15^{15} e^{-15}} 
+= e^5 \left(\frac{2}{3}\right)^{15}.
+$$
+Hence:
+$$
+w = -2 \log \lambda 
+= -2[15 \log(2/3) + 5] 
+= 2.16 \quad (\text{3 s.f.}).
+$$
+
+---
+
+**5. Hypothesis decision**
+
+Under $H_0$, $w \sim \chi^2_1.$  
+
+The 10% upper-tail critical value is $2.71.$
+
+Since $w = 2.16 < 2.71,$
+there is **insufficient evidence to reject $H_0$** at the 10% level.
+
+Therefore, we do **not** reject the hypothesis of standard weather conditions.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="bias variance mse exam-style" data-difficulty="1"}
+
+## Bias, Variance, and Mean Squared Error
+
+1. Let $\hat{\theta}$ be an estimator of a parameter $\theta$. Provide definitions for the following:
+   - The bias of $\hat{\theta}$.
+   - The variance of $\hat{\theta}$.
+   - The mean squared error (MSE) of $\hat{\theta}$.
+
+2. Is an unbiased estimator always preferred to a biased estimator? Justify your answer.
+
+3. Prove that the mean squared error of $\hat{\theta}$ is equal to its variance plus its squared bias:
+   $$
+   \mathrm{MSE}(\hat{\theta}) = \mathrm{Var}(\hat{\theta}) + \mathrm{Bias}(\hat{\theta})^2.
+   $$
+
+<details class="solution">
+<summary>Solution</summary>
+
+**(1)**
+
+- $\mathrm{Bias}(\hat{\theta}) = \mathrm{E}[\hat{\theta}] - \theta$  
+- $\mathrm{Var}[\hat{\theta}] = \mathrm{E}[(\hat{\theta} - \mathrm{E}[\hat{\theta}])^2]$  
+- $\mathrm{MSE}(\hat{\theta}) = \mathrm{E}[(\hat{\theta} - \theta)^2]$
+
+---
+
+**(2)**
+
+An unbiased estimator is **not always preferred**.  
+If a biased estimator has a smaller MSE than an unbiased one, the biased estimator may be preferable because MSE accounts for both variance and bias.
+
+---
+
+**(3)**
+
+Let $\bar{\theta} = \mathrm{E}[\hat{\theta}]$. Then:
+\begin{align*}
+\mathrm{E}[(\hat{\theta} - \theta)^2]
+&= \mathrm{E}[(\hat{\theta} - \bar{\theta} + \bar{\theta} - \theta)^2] \\
+&= \mathrm{E}[(\hat{\theta} - \bar{\theta})^2] 
++ 2(\bar{\theta} - \theta)\mathrm{E}[\hat{\theta} - \bar{\theta}]
++ (\bar{\theta} - \theta)^2.
+\end{align*}
+
+Since $\mathrm{E}[\hat{\theta} - \bar{\theta}] = 0$, this simplifies to:
+$$
+\mathrm{E}[(\hat{\theta} - \theta)^2]
+= \mathrm{Var}[\hat{\theta}] + (\bar{\theta} - \theta)^2
+= \mathrm{Var}[\hat{\theta}] + \mathrm{Bias}(\hat{\theta})^2.
+$$
+
+Thus,
+$$
+\boxed{\mathrm{MSE}(\hat{\theta}) = \mathrm{Var}(\hat{\theta}) + \mathrm{Bias}(\hat{\theta})^2.}
+$$
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="maximum-likelihood bias consistency exam-style" data-difficulty="2"}
+
+## Properties of the Maximum Likelihood Estimator
+
+Let $\underline{X} = (X_1, X_2, \ldots, X_n)$ be a random sample from a continuous random variable $X$ whose probability density function is given by
+$$
+f(x \mid \theta) =
+\begin{cases}
+\big(\theta(1 + x)^{\frac{1+\theta}{\theta}} \big)^{-1}, & x \ge 0, \\
+0, & \text{otherwise},
+\end{cases}
+$$
+where $0 < \theta < 1$.
+
+Answer the following:
+
+(a) Show that the **log-likelihood** can be written as  
+$$
+\ell(\theta \mid \underline{x}) = -n \log \theta - \frac{1+\theta}{\theta}\sum_{i=1}^n \log(1 + x_i).
+$$
+
+(b) Show that the **maximum likelihood estimator** (MLE) of $\theta$ is  
+$$
+\hat{\theta} = 
+\frac{1}{n}\sum_{i=1}^n \log(1 + x_i).
+$$
+
+(c) Using the fact that $\mathrm{E}[\log(1 + X)] = \theta$, show that $\hat{\theta}$ is an **unbiased** estimator for $\theta$.
+
+(d) Is $\hat{\theta}$ also an **asymptotically unbiased** estimator for $\theta$?
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a) Derivation of the log-likelihood**
+
+The likelihood function is  
+$$
+L(\theta; \underline{x}) = \prod_{i=1}^n f(x_i \mid \theta) = \theta^{-n} \prod_{i=1}^n (1 + x_i)^{-\frac{1+\theta}{\theta}}.
+$$
+Taking logs gives  
+$$
+\ell(\theta \mid \underline{x}) = -n \log \theta - \frac{1+\theta}{\theta}\sum_{i=1}^n \log(1 + x_i).
+$$
+
+---
+
+**(b) Finding the MLE**
+
+Differentiate with respect to $\theta$:  
+$$
+\frac{\partial \ell}{\partial \theta} = -\frac{n}{\theta} + \frac{1}{\theta^2}\sum_{i=1}^n \log(1 + x_i).
+$$
+Setting this equal to zero:  
+$$
+-\frac{n}{\hat{\theta}} + \frac{1}{\hat{\theta}^2}\sum_{i=1}^n \log(1 + x_i) = 0 \quad \Rightarrow \quad \hat{\theta} = \frac{1}{n}\sum_{i=1}^n \log(1 + x_i).
+$$
+
+---
+
+**(c) Unbiasedness**
+
+Given $\mathrm{E}[\log(1 + X)] = \theta$,  
+$$
+\mathrm{E}[\hat{\theta}]
+= \frac{1}{n}\sum_{i=1}^n \mathrm{E}[\log(1 + X_i)]
+= \frac{1}{n} \cdot n\theta
+= \theta.
+$$
+Hence, $\hat{\theta}$ is **unbiased**.
+
+---
+
+**(d) Asymptotic unbiasedness**
+
+Since $\hat{\theta}$ is unbiased for every finite $n$,  
+$$
+\lim_{n \to \infty} \mathrm{E}[\hat{\theta}] = \theta.
+$$
+Therefore, $\hat{\theta}$ is also **asymptotically unbiased**.  
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="uniform estimator consistency exam-style" data-difficulty="3"}
+
+## Estimation from a Uniform Distribution
+
+Suppose that $X_1, \ldots, X_n$ are independent random variables with $X_i \sim U(\theta, 1)$, where $\theta$ is an unknown parameter of interest.  
+
+Consider the estimator
+$$
+\hat{\theta} = \min(X_1, \ldots, X_n).
+$$
+
+1. Suppose $X \sim U(\theta, 1)$. Write down the CDF of $X$.
+
+2. Show that the CDF of $\hat{\theta}$ is given by
+   $$
+   F_{\hat{\theta}}(x) =
+   \begin{cases}
+   0, & x < \theta, \\
+   1 - \left( \dfrac{1 - x}{1 - \theta} \right)^n, & \theta \le x \le 1, \\
+   1, & x > 1.
+   \end{cases}
+   $$
+
+3. Derive the pdf $f_{\hat{\theta}}(x)$ of $\hat{\theta}$.
+
+4. Let $Y \sim \mathrm{Beta}(1, n)$.  
+   Show that for $Z = (1 - \theta)Y + \theta$, the pdf of $Z$ is, for $\theta < z < 1$,
+   $$
+   f_Z(z) = n \frac{(1 - z)^{n - 1}}{(1 - \theta)^n},
+   $$
+   and hence conclude that $f_{\hat{\theta}}(x) = f_Z(x)$ for all $x \in \mathbb{R}$.
+
+5. Is $\hat{\theta}$ a consistent estimator of $\theta$? Justify your answer.
+
+<details class="solution">
+<summary>Solution</summary>
+
+**(1)**
+
+The CDF of $X \sim U(\theta, 1)$ is
+$$
+F_X(x) =
+\begin{cases}
+0, & x < \theta, \\
+\dfrac{x - \theta}{1 - \theta}, & \theta \le x \le 1, \\
+1, & x > 1.
+\end{cases}
+$$
+
+---
+
+**(2)**
+
+\begin{align*}
+P(\hat{\theta} \le x)
+&= 1 - P(\hat{\theta} > x)
+= 1 - P(X_1 > x, \ldots, X_n > x) \\
+&= 1 - (1 - F_X(x))^n.
+\end{align*}
+
+For $x \in (\theta, 1)$:
+$$
+P(\hat{\theta} \le x)
+= 1 - \left( \frac{1 - x}{1 - \theta} \right)^n.
+$$
+
+Hence,
+$$
+F_{\hat{\theta}}(x) =
+\begin{cases}
+0, & x < \theta, \\
+1 - \left( \dfrac{1 - x}{1 - \theta} \right)^n, & \theta \le x \le 1, \\
+1, & x > 1.
+\end{cases}
+$$
+
+---
+
+**(3)**
+
+Differentiating the CDF for $x \in (\theta, 1)$:
+\begin{align*}
+f_{\hat{\theta}}(x)
+&= \frac{\partial}{\partial x} F_{\hat{\theta}}(x)
+= n \frac{(1 - x)^{n - 1}}{(1 - \theta)^n}.
+\end{align*}
+
+---
+
+**(4)**
+
+Let $Y \sim \mathrm{Beta}(1, n)$, and define $Z = (1 - \theta)Y + \theta$.  
+Then for $z \in (\theta, 1)$:
+\begin{align*}
+F_Z(z) &= P(Z \le z) = P(Y \le (z - \theta)/(1 - \theta)), \\
+f_Z(z) &= \frac{1}{1 - \theta} f_Y\left( \frac{z - \theta}{1 - \theta} \right).
+\end{align*}
+
+Since $f_Y(y) = n(1 - y)^{n - 1}$ for $0 < y < 1$,
+\begin{align*}
+f_Z(z)
+&= \frac{1}{1 - \theta} n \left( 1 - \frac{z - \theta}{1 - \theta} \right)^{n - 1} \\
+&= n \frac{(1 - z)^{n - 1}}{(1 - \theta)^n}.
+\end{align*}
+
+Thus, $f_Z(z) = f_{\hat{\theta}}(z)$ for all $z \in \mathbb{R}$, so $\hat{\theta}$ has the same distribution as $Z$.
+
+---
+
+**(5)**
+
+Since $Z \overset{d}{=} \hat{\theta}$, we have $\mathrm{E}[Z] = \mathrm{E}[\hat{\theta}]$ and $\mathrm{Var}[Z] = \mathrm{Var}[\hat{\theta}]$.
+
+**Bias:**
+\begin{align*}
+\mathrm{E}[\hat{\theta}]
+&= \mathrm{E}[Z]
+= \mathrm{E}[(1 - \theta)Y + \theta]
+= (1 - \theta)\mathrm{E}[Y] + \theta \\
+&= (1 - \theta)\frac{1}{n + 1} + \theta.
+\end{align*}
+
+Hence,
+$$
+\mathrm{Bias}(\hat{\theta}) = (1 - \theta)\frac{1}{n + 1}.
+$$
+
+**Variance:**
+\begin{align*}
+\mathrm{Var}[\hat{\theta}]
+&= \mathrm{Var}[Z]
+= (1 - \theta)^2 \mathrm{Var}[Y]
+= (1 - \theta)^2 \frac{n}{(n + 1)^2 (n + 2)}.
+\end{align*}
+
+As $n \to \infty$, both the bias and variance tend to $0$:
+$$
+\lim_{n \to \infty} \mathrm{Bias}(\hat{\theta}) = 0,
+\qquad
+\lim_{n \to \infty} \mathrm{Var}[\hat{\theta}] = 0.
+$$
+
+Therefore, $\hat{\theta}$ is a **consistent estimator** of $\theta$.
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="t-test hypothesis-testing" data-difficulty="2"}
+
+## Two-Sample $t$-Test for Difference in Means
+
+Two regions in a country have taken different approaches to promoting healthy lifestyles.  
+We are interested in comparing the **mean systolic blood pressure** (in mm Hg) of adult females in the two regions, denoted by $\mu_1$ and $\mu_2$.
+
+Data from small independent random samples of adult females yield the following summary statistics:
+
+| Region | $n_i$ | $\bar{x}_i$ | $s_i^2$ |
+|:-------|:------:|:------------:|:--------:|
+| 1 |$9$ | $130.222$ | $23.944$ |
+| 2 | $8$ | $125.000$ | $45.429$ |
+
+Conduct a **two-sample $t$-test** (assuming equal variances) with a **two-tailed alternative hypothesis** to test  
+$$
+H_0: \mu_1 = \mu_2 \quad \text{against} \quad H_1: \mu_1 \neq \mu_2.
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**Step 1: Pooled variance**
+
+The pooled variance is  
+$$
+s_{\text{pooled}}^2 =
+\frac{(n_1 - 1)s_1^2 + (n_2 - 1)s_2^2}{n_1 + n_2 - 2}
+= \frac{(9 - 1)(23.944) + (8 - 1)(45.429)}{9 + 8 - 2}
+= 33.9704.
+$$
+
+---
+
+**Step 2: Test statistic**
+
+The test statistic is  
+$$
+t =
+\frac{\bar{x}_1 - \bar{x}_2}
+{s_{\text{pooled}}\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}
+=
+\frac{130.222 - 125.000}
+{\sqrt{33.9704}\sqrt{\frac{1}{9} + \frac{1}{8}}}
+= 1.844.
+$$
+
+---
+
+**Step 3: Degrees of freedom**
+
+The degrees of freedom are  
+$$
+\nu = n_1 + n_2 - 2 = 15.
+$$
+
+---
+
+**Step 4: Decision and conclusion**
+
+From $t$-tables with $\nu = 15$,
+$$
+0.05 < p < 0.10.
+$$
+Thus, we **fail to reject** $H_0$ at the 5% significance level.
+
+There is **insufficient evidence** to conclude that the mean systolic blood pressure differs between the two regions.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="bayes weibull inverse-gamma likelihood conjugacy exam-style" data-difficulty="3"}
+
+## Bayesian Reliability Analysis with a Weibull Model
+
+A reliability engineer is studying the lifespan of a machine part under varying stress conditions.  
+
+The engineer collects data from a random sample of $5$ machine parts. Each data point $T_i$ represents the **time to failure** (in hours) of part $i$ under stress level $d_i$.
+
+The time to failure is assumed to follow a <span class="xref-no-num">[Weibull distribution @sec-weibull]</span>:
+$$
+T_i \mid \theta \sim \mathrm{Weibull}(\lambda, \theta / d_i), \quad \lambda > 0, \, \theta > 0,
+$$
+where $d_i$ is the known stress level for the $i$th part, $\lambda = 1$ is the known scale parameter, and $\theta$ is the unknown shape parameter of interest.
+
+1. Derive the likelihood function for $n$ independent observations.
+
+2. Suppose the prior for $\theta$ is <span class="xref-no-num">[Inverse Gamma @sec-inv-gamma]</span>, that is $\theta \sim \mathrm{InvGamma}(a, b)$.  
+   
+   Show that this prior is **conjugate** within the Inverse Gamma family.
+
+3. The engineer records the following time-to-failure data (in hours) and stress levels:
+
+   | **Stress level** $(d_i)$ | $1$ | $5$ | $10$ | $15$ | $20$ |
+   |:-----|:-:|:-:|:-:|:-:|:-:|
+   | **Time to failure** $(T_i)$ | $3.1$ | $1.4$ | $0.8$ | $0.6$ | $0.7$ |
+
+   Using $a = 20$ and $b = 3$, determine the posterior distribution for $\theta$.
+
+4. Using the prior and posterior parameters obtained above, complete the following table to summarise the engineer’s updated beliefs about $\theta$:
+
+   | Quantity | Prior | Posterior |
+   |-----------|:------:|:----------:|
+   | $\mathrm{Mode}(\theta)$ | ? | ? |
+   | $\mathrm{E}[\theta]$ | ? | ? |
+   | $\mathrm{SD}(\theta)$ | ? | ? |
+
+<details class="solution">
+<summary>Solution</summary>
+
+**(1)**
+
+For $n$ independent observations,
+\begin{align*}
+f(\underline{t} \mid \theta)
+&= \prod_{i=1}^n \frac{\lambda}{\theta / d_i} t_i^{\lambda - 1}
+    \exp\!\left(-\frac{t_i^\lambda}{\theta / d_i}\right) \\
+&= \frac{\lambda^n}{\theta^n}
+   \left( \prod_{i=1}^n d_i t_i^{\lambda - 1} \right)
+   \exp\!\left( -\frac{1}{\theta} \sum_{i=1}^n d_i t_i^\lambda \right).
+\end{align*}
+
+---
+
+**(2)**
+
+The prior is
+$$
+\pi(\theta) \propto \theta^{-(a+1)} e^{-b / \theta}.
+$$
+
+Combining with the likelihood:
+\begin{align*}
+\pi(\theta \mid \underline{t})
+&\propto \theta^{-n} 
+   \exp\!\left(-\frac{1}{\theta}\sum_{i=1}^n d_i t_i^\lambda\right)
+   \times \theta^{-(a+1)} e^{-b / \theta} \\
+&\propto \theta^{-(a + n + 1)} 
+   \exp\!\left(-\frac{1}{\theta}\bigg[b + \sum_{i=1}^n d_i t_i^\lambda\bigg]\right).
+\end{align*}
+
+Hence,
+$$
+\theta \mid \underline{t} \sim \mathrm{InvGamma}\!\left(a + n,\, b + \sum_{i=1}^n d_i t_i^\lambda\right).
+$$
+
+Since the posterior is also an Inverse Gamma, the prior is **conjugate**.
+
+---
+
+**(3)**
+
+For the given data:
+\begin{align*}
+\sum_{i=1}^n d_i t_i
+&= 1(3.1) + 5(1.4) + 10(0.8) + 15(0.6) + 20(0.7) = 41.1.
+\end{align*}
+
+With $a = 20$ and $b = 3$, we have
+$$
+\theta \mid \underline{t} \sim \mathrm{InvGamma}(25, 44.1).
+$$
+
+---
+
+**(4)**
+
+For $\theta \sim \mathrm{InvGamma}(a, b)$:
+$$
+\mathrm{Mode}(\theta) = \frac{b}{a + 1}, \quad
+\mathrm{E}[\theta] = \frac{b}{a - 1}, \quad
+\mathrm{SD}(\theta) = \frac{b}{a - 1}\sqrt{\frac{1}{a - 2}}.
+$$
+
+Thus:
+
+| Quantity | Prior $(a=20,b=3)$ | Posterior $(a=25,b=44.1)$ |
+|-----------|:-----------------:|:---------------------------:|
+| $\mathrm{Mode}(\theta)$ | $3/21 \approx 0.143$ | $44.1/26 \approx 1.696$ |
+| $\mathrm{E}[\theta]$ | $3/19 \approx 0.158$ | $44.1/24 \approx 1.838$ |
+| $\mathrm{SD}(\theta)$ | $\approx 0.037$ | $\approx 0.383$ |
+
+After observing the data, the engineer’s belief shifts toward a larger value of $\theta$, reflecting an increase in the estimated shape parameter, while uncertainty also grows due to the relatively small sample size.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="mle uniform" data-difficulty="2"}
+
+## MLE for the Uniform Distribution $U(\theta, 2\theta)$
+
+Let $X_1, X_2, \ldots, X_n$ be independent and identically distributed random variables from the <span class="xref-no-num">[Uniform distribution @sec-unif]</span>:
+$$
+X_i \sim U(\theta, 2\theta), \qquad \theta > 0.
+$$
+
+Obtain the **maximum likelihood estimator** $\hat{\theta}$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**Step 1: Write down the PDF**
+
+The probability density function is  
+$$
+f(x \mid \theta) =
+\begin{cases}
+\dfrac{1}{\theta}, & \theta \le x \le 2\theta, \$$6pt]
+0, & \text{otherwise.}
+\end{cases}
+$$
+
+---
+
+**Step 2: Construct the likelihood**
+
+For a random sample $x_1, x_2, \ldots, x_n$,  
+$$
+L(\theta; \underline{x})
+= \prod_{i=1}^n f(x_i \mid \theta)
+= 
+\begin{cases}
+\theta^{-n}, & \theta \le \min(x_i), \; 2\theta \ge \max(x_i), \$$4pt]
+0, & \text{otherwise.}
+\end{cases}
+$$
+
+This condition can be rewritten as  
+$$
+\frac{1}{2}\max(x_i) \le \theta \le \min(x_i).
+$$
+
+---
+
+**Step 3: Identify the MLE**
+
+Within this interval, $L(\theta) = \theta^{-n}$, which is a **decreasing** function of $\theta$.  
+Hence, the likelihood is maximized by taking the **smallest allowable** value of $\theta$:
+$$
+\hat{\theta} = \frac{1}{2}\max(X_i).
+$$
+
+---
+
+**Step 4: Conclusion**
+
+The maximum likelihood estimator is  
+$$
+\boxed{\hat{\theta} = \tfrac{1}{2}\max(X_1, X_2, \ldots, X_n).}
+$$
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="estimator bias variance mse exam-style" data-difficulty="1"}
+
+## Bias, Mean Squared Error, and Estimator Comparison
+
+(a) Define the **bias** and **mean squared error (MSE)** of an estimator $\hat{\theta}$ of a parameter $\theta$. Given the bias and variance of an estimator, explain how you would find the mean squared error.
+
+(b) Suppose a random variable $X$ has  
+$$
+\mathrm{E}[X] = 2\theta + 1, \quad \mathrm{Var}(X) = 2\theta^2 + 1,
+$$
+    and another independent random variable $Y$ has  
+$$
+\mathrm{E}[Y] = 3\theta - 2, \quad \mathrm{Var}(Y) = 3\theta^2.
+$$
+    Two estimators of $\theta$ are proposed:
+$$
+\hat{\theta}_1 = \frac{3X - Y - 5}{3}, \qquad
+\hat{\theta}_2 = \frac{2Y - X + 4}{4}.
+$$
+    Which of these estimators would you recommend? Justify your answer.
+
+<details class="solution">
+<summary>Solution</summary>
+
+**(a) Definitions**
+
+- **Bias:**  
+  $$
+  \mathrm{Bias}(\hat{\theta}) = \mathrm{E}[\hat{\theta}] - \theta
+  $$
+
+- **Mean Squared Error (MSE):**  
+  $$
+  \mathrm{MSE}(\hat{\theta}) = \mathrm{E}[(\hat{\theta} - \theta)^2]
+  $$
+
+- **Relationship:**  
+  $$
+  \mathrm{MSE}(\hat{\theta}) = \mathrm{Var}(\hat{\theta}) + \mathrm{Bias}(\hat{\theta})^2
+  $$
+
+---
+
+**(b) Computation of properties**
+
+| Estimator | $\mathrm{E}[\hat{\theta}]$ | $\mathrm{Var}(\hat{\theta})$ | Bias | MSE |
+|:-----------|:---------------------------:|:------------------------------:|:-----:|:----:|
+| $\hat{\theta}_1 = \dfrac{3X - Y - 5}{3}$ | $\theta$ | $\dfrac{21\theta^2 + 9}{9}$ | $0$ | $\dfrac{21\theta^2 + 9}{9}$ |
+| $\hat{\theta}_2 = \dfrac{2Y - X + 4}{4}$ | $\theta - \tfrac{1}{4}$ | $\dfrac{14\theta^2 + 1}{16}$ | $-\tfrac{1}{4}$ | $\dfrac{14\theta^2 + 2}{16}$ |
+
+---
+
+**(c) Recommendation**
+
+Comparing the MSEs:
+$$
+\frac{14}{16} < \frac{21}{9}, \qquad \frac{2}{16} < 1,
+$$
+so $\hat{\theta}_2$ has the smaller MSE **for all values of $\theta$**.
+
+Therefore, $\hat{\theta}_2$ is preferred.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="estimator bias t-test hypothesis-testing exam-style" data-difficulty="3"}
+
+## Unbiasedness of the Sample Variance and Pooled Variance; Hypothesis Test for Means
+
+1. The sample variance for a random sample $X_1, X_2, \ldots, X_n$ can be written as  
+   $$
+   S^2 = \frac{1}{n-1} \left( \sum_{i=1}^n X_i^2 - n\bar{X}^2 \right).
+   $$
+   Show that $S^2$ is **unbiased** for the population variance $\sigma^2$.  
+   
+
+2. Suppose we have two Normal random samples, of sizes $n_1$ and $n_2$, with the same population variance $\sigma^2$. The pooled variance estimator is
+   $$
+   S^2_{\text{pooled}} = \frac{(n_1 - 1)S_1^2 + (n_2 - 1)S_2^2}{n_1 + n_2 - 2},
+   $$
+   where $S_1^2$ and $S_2^2$ are the two sample variances.  
+   Show that $S^2_{\text{pooled}}$ is unbiased for $\sigma^2$.  
+   
+
+3. Download speeds (in megabits per second) were measured for customers of two internet providers. The summary statistics were:  
+   $$
+   n_1 = 20, \; \bar{x}_1 = 289.3, \; s_1 = 10.8, \qquad
+   n_2 = 10, \; \bar{x}_2 = 298.1, \; s_2 = 15.7.
+   $$
+   Assuming Normal random samples and equal population variances, test the hypothesis that the two providers have the same average download speed.  
+   
+<details class="solution">
+<summary>Solution</summary>
+
+1. **Unbiasedness of the sample variance**
+
+   For any random variable $X$,
+   $$
+   \mathrm{Var}(X) = \mathrm{E}[X^2] - (\mathrm{E}[X])^2 \quad \Rightarrow \quad \mathrm{E}[X^2] = \mathrm{Var}(X) + (\mathrm{E}[X])^2.
+   $$
+   Then,
+   \begin{align*}
+   \mathrm{E}[S^2] &= \frac{1}{n-1}\left(\sum_{i=1}^n \mathrm{E}[X_i^2] - n \mathrm{E}[\bar{X}^2]\right) \\
+   &= \frac{1}{n-1}\left(\sum_{i=1}^n (\sigma^2 + \mu^2) - n\left(\frac{\sigma^2}{n} + \mu^2\right)\right) \\
+   &= \sigma^2.
+   \end{align*}
+   Hence, $S^2$ is **unbiased** for $\sigma^2$.
+
+2. **Unbiasedness of the pooled variance**
+
+   Since each sample variance is unbiased:
+   $$
+   \mathrm{E}[S_1^2] = \sigma^2 \quad \text{and} \quad \mathrm{E}[S_2^2] = \sigma^2.
+   $$
+   Thus,
+   $$
+   \mathrm{E}[(n_1 - 1)S_1^2 + (n_2 - 1)S_2^2] = (n_1 + n_2 - 2)\sigma^2,
+   $$
+   and dividing both sides by $(n_1 + n_2 - 2)$ gives
+   $$
+   \mathrm{E}[S^2_{\text{pooled}}] = \sigma^2.
+   $$
+   Therefore, $S^2_{\text{pooled}}$ is unbiased.
+
+3. **Hypothesis test for equality of means**
+
+   Compute the pooled variance:
+   $$
+   s^2_{\text{pooled}} = \frac{(n_1 - 1)s_1^2 + (n_2 - 1)s_2^2}{n_1 + n_2 - 2}
+   = \frac{19(10.8)^2 + 9(15.7)^2}{28} = 158.38.
+   $$
+
+   The test statistic is:
+   $$
+   t = \frac{\bar{x}_1 - \bar{x}_2}{\sqrt{s^2_{\text{pooled}}\left(\frac{1}{n_1} + \frac{1}{n_2}\right)}}
+   = \frac{289.3 - 298.1}{\sqrt{158.38\left(\frac{1}{20} + \frac{1}{10}\right)}} = -1.805.
+   $$
+
+   Degrees of freedom: $n_1 + n_2 - 2 = 28$.
+
+   Since the question does not specify an alternative, use the **two-sided** test:
+   $$
+   H_0: \mu_1 = \mu_2, \qquad H_1: \mu_1 \neq \mu_2.
+   $$
+
+   From the $t$-table:
+   $$
+   t_{0.9, 28} = 1.701, \quad t_{0.95, 28} = 2.048.
+   $$
+
+   As $|t| = 1.805$ lies between these values, the difference is significant at the 10% level but not at 5%.  
+   Therefore, there is **insufficient evidence at the 5% level** to conclude that the providers have different mean download speeds.
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="bernoulli mle fisher-information lrt exam-style" data-difficulty="3"}
+
+## Bernoulli Likelihood, Fisher Information, and Inference
+
+1. Suppose $\underline{X} = (X_1, X_2, \ldots, X_n)$ is a random sample from a Bernoulli distribution with probability mass function  
+   $$
+   \Pr(X = x \mid \theta) = \theta^x (1 - \theta)^{1 - x}, \quad x = 0, 1, \; 0 < \theta < 1.
+   $$
+   Write down the log-likelihood function $\ell(\theta ; \underline{x})$ and derive the maximum likelihood estimator (MLE) $\hat{\theta}$ for $\theta$.  
+
+2. Obtain the Fisher information $\mathcal{I}_n(\theta)$ and hence find the asymptotic variance $\mathrm{Var}(\hat{\theta})$.  
+
+3. Out of a random sample of $200$ people from a population, $30$ were found to be left-handed.  
+   
+   Assuming the probability of being left-handed is $\theta$, obtain an approximate 95% confidence interval for $\theta$ using the asymptotic distribution of the MLE.  
+
+4. Use a likelihood ratio test to assess whether there is evidence against the null hypothesis $H_0 : \theta = 0.1$.  
+
+5. The *odds parameter* $\pi$ is a monotonic transformation of $\theta$, given by  
+   $$
+   \pi = \frac{\theta}{1 - \theta}.
+   $$
+    (i) What is the MLE of $\pi$ for the data in part (c)?  
+      (You do not need to consider the likelihood of $\pi$, but you should state any property of MLEs used.)  
+    (ii) Give an approximate 95% confidence interval for $\pi$.  
+
+<details class="solution">
+<summary>Solution</summary>
+
+1. **Log-likelihood and MLE**
+
+   The likelihood is
+   $$
+   L(\theta ; \underline{x}) = \prod_{i=1}^n \theta^{x_i}(1 - \theta)^{1 - x_i}
+   = \theta^{\sum x_i}(1 - \theta)^{n - \sum x_i}
+   = \theta^{n\bar{x}}(1 - \theta)^{n(1 - \bar{x})}.
+   $$
+
+   Hence the log-likelihood:
+   $$
+   \ell(\theta ; \underline{x}) = n\bar{x}\log\theta + n(1 - \bar{x})\log(1 - \theta).
+   $$
+
+   Differentiate:
+   $$
+   \frac{\partial}{\partial \theta} \ell(\theta;\underline{x}) = \frac{n\bar{x}}{\theta} - \frac{n(1 - \bar{x})}{1 - \theta}.
+   $$
+   Setting $\frac{\partial \ell}{\partial \theta} = 0$ gives
+   $$
+   \hat{\theta} = \bar{x}.
+   $$
+   The second derivative:
+   $$
+   \frac{\partial^2}{\partial \theta^2} \ell(\theta;\underline{x}) = -\frac{n\bar{x}}{\theta^2} - \frac{n(1 - \bar{x})}{(1 - \theta)^2}.
+   $$
+    is negative, so this is indeed a maximum.
+
+---
+
+2. **Fisher Information and Asymptotic Variance**
+
+   We have
+
+   \begin{align*}
+   \mathcal{I}_n(\theta) &=  -\mathbb{E}\!\left[\frac{\partial^2}{\partial \theta^2} \ell(\theta;\underline{x})\right] \\
+   &= \mathbb{E}\left[\frac{n\bar{x}}{\theta^2} + \frac{n(1 - \bar{x})}{(1 - \theta)^2}\right] \\
+   &= \frac{n\theta}{\theta^2} + \frac{n(1-\theta)}{(1-\theta)^2} \\
+   &= \frac{n}{\theta(1-\theta)}.
+   \end{align*}
+
+   Hence the asymptotic variance:
+   $$
+   \mathrm{Var}(\hat{\theta}) = \frac{\theta(1 - \theta)}{n}.
+   $$
+
+---
+
+3. **Approximate 95% confidence interval**
+
+   From the data: $\hat{\theta} = \bar{x} = 30/200 = 0.15.$  
+   Estimated variance:
+   $$
+   \widehat{\mathrm{Var}}(\hat{\theta}) = \frac{0.15(0.85)}{200} = 0.0006375.
+   $$
+   Standard error: $\mathrm{SE} = \sqrt{0.0006375} = 0.0253.$  
+   Approximate 95% CI:
+   $$
+   0.15 \pm 1.96(0.0253) = (0.1005, 0.1995).
+   $$
+
+---
+
+4. **Likelihood ratio test**
+
+   Log-likelihood function:
+   $$
+   \ell(\theta \mid x) = n\bar{x}\log\theta + n(1 - \bar{x})\log(1 - \theta)
+   = 30\log\theta + 170\log(1 - \theta).
+   $$
+
+   Compute:
+   $$
+   \ell_A = \ell(\hat{\theta} \mid x) = 30\log(0.15) + 170\log(0.85) = -84.542, \\
+   \ell_B = \ell(0.1 \mid x) = 30\log(0.1) + 170\log(0.9) = -86.989.
+   $$
+   Test statistic:
+   $$
+   D = 2(\ell_A - \ell_B) = 4.894.
+   $$
+   Under $H_0$, $D \sim \chi^2_1$.  
+   Since $4.894 > 3.841$ (the 5% critical value), we reject $H_0$ at the 5% level.  
+   There is evidence that the proportion of left-handed people differs from 0.1.
+
+---
+
+5. **Odds parameter**
+
+   (i) By the *invariance property* of MLEs:
+   $$
+   \hat{\pi} = \frac{\hat{\theta}}{1 - \hat{\theta}} = \frac{0.15}{0.85} = 0.176.
+   $$
+
+   (ii) Since the transformation is monotonic, transform the CI for $\theta$:
+   $$
+   (0.1005, 0.1995) \mapsto \left( \frac{0.1005}{0.8995}, \frac{0.1995}{0.8005} \right) = (0.112, 0.249).
+   $$
+
+   Thus, the 95% CI for $\pi$ is **(0.112, 0.249)**.
 
 </details>
 
