@@ -1338,7 +1338,7 @@ X_i \mid \theta \sim \mathrm{Distribution}(\theta),
 </span> Note that there is only a <strong>single observation</strong> here: one experiment is “tossing the coin <span class="math inline">5</span> times and seeing how many come up heads”. The probability of observing <span class="math inline">X=1</span> is <span class="math display">
     f(x = 1 \mid \theta) = 5\theta(1-\theta)^4
 </span> If we plot this:</p>
-<div id="69bcae8f" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="2">
+<div id="6de0e835" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="2">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -1542,7 +1542,7 @@ Figure&nbsp;6.4: Prior and posterior distributions for the coin bias parameter <
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="0344b8ad" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="3">
+<div id="d819ebec" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="3">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1623,8 +1623,110 @@ plot(theta_grid, pdf_values, type = "l",
 </div>
 </div>
 </div>
+<ol type="a">
+<li>Derive the general posterior distribution assuming <span class="math inline">\theta \sim \mathrm{Beta}(a,b)</span> and <span class="math inline">X\mid \theta \sim \mathrm{Binomial}(n, \theta)</span>.</li>
+<li>Compute the posterior distribution when the observed data consist of <span class="math inline">x = 5</span> correct responses out of <span class="math inline">n = 10</span> questions.</li>
+</ol>
 <details>
   <summary><strong> Solution </strong></summary>
+<ol type="a">
+<li>We have <span class="math display">
+  \pi(\theta) =  \frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}\theta^{a-1} (1-\theta)^{b-1} \propto  \theta^{a-1} (1-\theta)^{b-1}
+  </span> and <span class="math display">
+  f(x \mid \theta) = \binom{n}{x} \theta^x(1-\theta)^{n-x} \propto \theta^x(1-\theta)^{n-x}
+  </span> Therefore <span class="math display">
+  \pi(\theta \mid x) \propto \theta^{a + x - 1} (1-\theta)^{b + n - x - 1}
+  </span> which takes the form of a <span class="math inline">\theta \mid x \sim \mathrm{Beta}(a + x, b+n-x)</span> distribution.</li>
+<li>For this example, we have the prior parameters <span class="math inline">a = 77</span> and <span class="math inline">b=5</span>, for the data we have <span class="math inline">x=5</span> and <span class="math inline">n=10</span>. Therefore, the posterior is <span class="math display">
+  \theta \mid x=5 \sim \mathrm{Beta}(82, 10).
+  </span></li>
+</ol>
+<p>A graph of the posterior density is given as follows:</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">R</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div id="e717c94e" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="4">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>set_plot_theme(<span class="st">"light"</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Beta(α, β) with α=77, β=5  →  π(θ) ∝ θ^(76) (1-θ)^(4)</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>alpha, beta <span class="op">=</span> <span class="dv">82</span>, <span class="dv">10</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co"># B(α,β) = Γ(α)Γ(β)/Γ(α+β)  ⇒  1/B = exp(lgamma(α+β) - lgamma(α) - lgamma(β))</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Note the lgamma function computes the logarithm of the Gamma function.</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>beta_const_inv <span class="op">=</span> math.exp(math.lgamma(alpha <span class="op">+</span> beta) <span class="op">-</span> math.lgamma(alpha) <span class="op">-</span> math.lgamma(beta))</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> beta_pdf(theta):</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> beta_const_inv <span class="op">*</span> np.power(theta, alpha <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> np.power(<span class="dv">1</span> <span class="op">-</span> theta, beta <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>theta_grid <span class="op">=</span> np.linspace(<span class="fl">0.0</span>, <span class="fl">1.0</span>, <span class="dv">500</span>)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>pdf_values <span class="op">=</span> beta_pdf(theta_grid)</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>,<span class="dv">4</span>))</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>plt.plot(theta_grid, pdf_values)</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="ch">\t</span><span class="vs">heta</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Density"</span>)</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="vs">rf"Beta PDF: </span><span class="dv">$</span><span class="ch">\a</span><span class="vs">lpha=</span><span class="sc">{</span>alpha<span class="sc">}</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$\b</span><span class="vs">eta=</span><span class="sc">{</span>beta<span class="sc">}</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>set_plot_theme(<span class="st">"dark"</span>)</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>,<span class="dv">4</span>))</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>plt.plot(theta_grid, pdf_values)</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="ch">\t</span><span class="vs">heta</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Density"</span>)</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="vs">rf"Beta PDF: </span><span class="dv">$</span><span class="ch">\a</span><span class="vs">lpha=</span><span class="sc">{</span>alpha<span class="sc">}</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$\b</span><span class="vs">eta=</span><span class="sc">{</span>beta<span class="sc">}</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="light-content">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="6-bayes-inference_files/figure-html/cell-5-output-1.png" class="quarto-figure quarto-figure-center figure-img" width="662" height="372"></p>
+</figure>
+</div>
+</div>
+<div class="dark-content">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="6-bayes-inference_files/figure-html/cell-5-output-2.png" class="quarto-figure quarto-figure-center figure-img" width="662" height="372"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<pre class="{r}"><code>#| echo: true
+#| code-fold: true
+#| code-summary: "Show code"
+#| fig-align: center
+
+alpha &lt;- 82
+beta  &lt;- 10
+
+# Normalising constant via log-gamma (works like Python's lgamma)
+beta_const_inv &lt;- exp(lgamma(alpha + beta) - lgamma(alpha) - lgamma(beta))
+
+beta_pdf &lt;- function(theta) {
+  beta_const_inv * theta^(alpha - 1) * (1 - theta)^(beta - 1)
+}
+
+theta_grid &lt;- seq(0, 1, length.out = 500)
+pdf_values &lt;- beta_pdf(theta_grid)
+
+plot(theta_grid, pdf_values, type = "l",
+     xlab = expression(theta), ylab = "Density",
+     main = bquote("Beta PDF: " ~ alpha == .(alpha) ~ "," ~ beta == .(beta)))</code></pre>
+</div>
+</div>
+</div>
 </details>
 </div>
 </div>

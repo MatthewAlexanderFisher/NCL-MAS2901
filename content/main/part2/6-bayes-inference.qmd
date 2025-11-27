@@ -787,10 +787,113 @@ plot(theta_grid, pdf_values, type = "l",
 
 :::
 
+(a) Derive the general posterior distribution assuming $\theta \sim \mathrm{Beta}(a,b)$ and $X\mid \theta \sim \mathrm{Binomial}(n, \theta)$.
+(b) Compute the posterior distribution when the observed data consist of $x = 5$ correct responses out of $n = 10$ questions.
+
+
 ```{=html}
 <details>
   <summary><strong> Solution </strong></summary>
 ```
+
+(a) We have
+  $$
+  \pi(\theta) =  \frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}\theta^{a-1} (1-\theta)^{b-1} \propto  \theta^{a-1} (1-\theta)^{b-1}
+  $$
+  and
+  $$
+  f(x \mid \theta) = \binom{n}{x} \theta^x(1-\theta)^{n-x} \propto \theta^x(1-\theta)^{n-x}
+  $$
+  Therefore
+  $$
+  \pi(\theta \mid x) \propto \theta^{a + x - 1} (1-\theta)^{b + n - x - 1}
+  $$
+  which takes the form of a $\theta \mid x \sim \mathrm{Beta}(a + x, b+n-x)$ distribution.
+(b) For this example, we have the prior parameters $a = 77$ and $b=5$, for the data we have $x=5$ and $n=10$. Therefore, the posterior is
+  $$
+  \theta \mid x=5 \sim \mathrm{Beta}(82, 10).
+  $$
+
+A graph of the posterior density is given as follows:
+
+::: {.panel-tabset}
+
+### Python
+
+
+```{python}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show code"
+#| fig-align: center
+#| renderings: [light, dark]
+#| 
+import numpy as np
+import math
+import matplotlib.pyplot as plt
+
+set_plot_theme("light")
+
+# Beta(α, β) with α=77, β=5  →  π(θ) ∝ θ^(76) (1-θ)^(4)
+alpha, beta = 82, 10
+
+# B(α,β) = Γ(α)Γ(β)/Γ(α+β)  ⇒  1/B = exp(lgamma(α+β) - lgamma(α) - lgamma(β))
+# Note the lgamma function computes the logarithm of the Gamma function.
+beta_const_inv = math.exp(math.lgamma(alpha + beta) - math.lgamma(alpha) - math.lgamma(beta))
+
+def beta_pdf(theta):
+    return beta_const_inv * np.power(theta, alpha - 1) * np.power(1 - theta, beta - 1)
+
+theta_grid = np.linspace(0.0, 1.0, 500)
+pdf_values = beta_pdf(theta_grid)
+
+plt.figure(figsize=(7,4))
+plt.plot(theta_grid, pdf_values)
+plt.xlabel(r"$\theta$")
+plt.ylabel("Density")
+plt.title(rf"Beta PDF: $\alpha={alpha}$, $\beta={beta}$")
+plt.tight_layout()
+plt.show()
+
+set_plot_theme("dark")
+
+plt.figure(figsize=(7,4))
+plt.plot(theta_grid, pdf_values)
+plt.xlabel(r"$\theta$")
+plt.ylabel("Density")
+plt.title(rf"Beta PDF: $\alpha={alpha}$, $\beta={beta}$")
+plt.tight_layout()
+plt.show()
+
+```
+
+### R
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show code"
+#| fig-align: center
+
+alpha <- 82
+beta  <- 10
+
+# Normalising constant via log-gamma (works like Python's lgamma)
+beta_const_inv <- exp(lgamma(alpha + beta) - lgamma(alpha) - lgamma(beta))
+
+beta_pdf <- function(theta) {
+  beta_const_inv * theta^(alpha - 1) * (1 - theta)^(beta - 1)
+}
+
+theta_grid <- seq(0, 1, length.out = 500)
+pdf_values <- beta_pdf(theta_grid)
+
+plot(theta_grid, pdf_values, type = "l",
+     xlab = expression(theta), ylab = "Density",
+     main = bquote("Beta PDF: " ~ alpha == .(alpha) ~ "," ~ beta == .(beta)))
+```
+
+:::
 
 ```{=html}
 </details>
