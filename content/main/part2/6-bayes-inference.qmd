@@ -1165,9 +1165,6 @@ $$
 :::
 
 
-
-
-
 ### Conjugacy {#sec-conjugacy}
 
 
@@ -1199,6 +1196,15 @@ A prior distribution for $\theta$ is said to be **conjugate** if, after updating
 
 :::
 
+### Summary of Conjugate Priors and Posterior Updates
+
+| Likelihood Model | Prior | Posterior | Link |
+|------------------|--------|------------|-------|
+| $X \mid p \sim \mathrm{Binomial}(n,p)$ | $p \sim \mathrm{Beta}(a,b)$ | $p \mid x \sim \mathrm{Beta}(a + x,\; b + n - x)$ | @q-beta-binom |
+| $X_i \mid \lambda \sim \mathrm{Poisson}(\lambda)$ (i.i.d.) | $\lambda \sim \mathrm{Gamma}(a,b)$ | $\lambda \mid \underline{x} \sim \mathrm{Gamma}(a + n\bar{x},\; b + n)$ | @q-gamma-pois |
+| $X_i \mid p \sim \mathrm{Geom}(p)$ (i.i.d.) | $p \sim \mathrm{Beta}(a,b)$ | $p \mid \underline{x} \sim \mathrm{Beta}(a + n,\; b + n(\bar{x}-1))$ | @q-beta-geom |
+| $X_i \mid \mu \sim \mathcal{N}(\mu,\sigma^2)$ (known $\sigma^2$) | $\mu \sim \mathcal{N}(\mu_0,\sigma_0^2)$ | $\mu \mid \underline{x} \sim \mathcal{N}(M,V)$ | @q-normal-normal |
+| $X_i \mid \gamma \sim \mathcal{N}(\mu,\gamma)$ (known $\mu$) | $\gamma \sim \operatorname{InvGamma}(a,b)$ | $\gamma \mid \underline{x} \sim \mathrm{InvGamma}\!\left(a + n/2,\; b + \tfrac12 \sum (x_i - \mu)^2\right)$ | @q-normal-invgamma |
 
 
 

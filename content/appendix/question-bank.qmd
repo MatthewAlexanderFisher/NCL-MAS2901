@@ -730,43 +730,6 @@ This derivative is zero when $\mathrm{Pr}(X \leq c) = \tfrac{1}{2}$, i.e. when $
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="bayes exam-style" data-difficulty="1"}
-## Beta Conjugacy
-With a Beta prior $p\sim \mathrm{Beta}(\alpha,\beta)$ and $X \mid p \sim\mathrm{Bin}(n,p)$, show the posterior is $p \mid x\sim \mathrm{Beta}(\alpha+x,\beta+n-x)$.
-
-<details class="solution">
-  <summary>Solution</summary>
-
-**Intuition.**  
-The Beta prior has the same algebraic form as the Binomial likelihood in $p$: powers of $p$ and $(1-p)$. Multiplying them keeps the form, so the posterior is also Beta (this is *conjugacy*).
-
-**Formal derivation.**  
-Prior: 
-$$
-\pi(p)=\mathrm{Beta}(p\mid \alpha,\beta)
-=\frac{1}{B(\alpha,\beta)}\,p^{\alpha-1}(1-p)^{\beta-1},\qquad 0<p<1.
-$$
-
-Likelihood (for $x$ successes in $n$ trials):
-$$
-L(p; x)\mathrm{Pr}opto p^{x}(1-p)^{\,n-x}.
-$$
-
-Posterior (up to proportionality):
-$$
-\pi(p\mid x)\ \mathrm{Pr}opto\ \pi(p)\,L(p\mid x)
-\ \mathrm{Pr}opto\ p^{\alpha-1+x}\,(1-p)^{\beta-1+(n-x)}.
-$$
-
-This is in the form of the Beta distribution with updated parameters:
-$$
-p\mid x \sim \mathrm{Beta}\big(\alpha+x,\ \beta+n-x\big).
-$$
-
-</details>
-
-:::
-
 ::: {.callout-important .question appearance="minimal" data-tags="binomial probability coding" data-difficulty="0"}
 ## Binomial Probabilities
 
@@ -3900,6 +3863,392 @@ Therefore, $\hat{\theta}_2$ is preferred.
    $$
 
    Thus, the 95% CI for $\pi$ is **(0.112, 0.249)**.
+
+</details>
+
+:::
+
+
+
+::: {.callout-important .question appearance="minimal" data-tags="bayes conjugacy beta binomial" data-difficulty="1" #q-beta-binom}
+## Conjugacy: Binomial Model, Beta Prior
+
+Suppose that we observe a single <span class="xref-no-num">[Binomial @sec-binom]</span> observation
+$$
+X \mid p \sim \mathrm{Binomial}(n,p)
+$$
+Show that choosing a <span class="xref-no-num">[Beta @sec-beta]</span> prior
+$$
+p \sim \mathrm{Beta}(a,b)
+$$
+yields the posterior distribution 
+$$
+p \mid x \sim \mathrm{Beta}(a + x, b + n - x).
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+We compute the posterior using Bayes theorem:
+$$
+\pi(p \mid x) \propto \pi(p) f(x\mid p).
+$$
+
+1. **Prior PDF:**
+  Since $p \sim \mathrm{Beta}(a,b)$, its probability density function is
+  $$
+  \pi(p) = \frac{\Gamma(a+b)}{\Gamma(a) \Gamma(b)} p^{a-1}(1-p)^{b-1}.
+  $$
+  Ignoring the normalisation constant, this is proportional to
+  $$
+  \pi(p) \propto p^{a-1}(1-p)^{b-1}.
+  $$
+2. **Likelihood:** 
+   Since $X\mid p \sim \mathrm{Binomial}(n, p)$, the likelihood is
+   $$
+   f(x \mid p) = \binom{n}{x} p^{x}(1-p)^{n-x}.
+   $$
+   Dropping the factors that do not depend on $p$, this is proportional to
+   $$
+   f(x \mid p) \propto p^{x}(1-p)^{n-x}.
+   $$
+3. **Posterior:**
+   Using the prior and likelihood derived above, we have
+   $$
+   \pi(p \mid x) \propto p^{a-1}(1-p)^{b-1} \times p^{x}(1-p)^{n-x} \propto p^{a + x - 1} (1-p)^{b + n - x}.
+   $$
+   This takes the form of a Beta density function and thus
+   $$
+   p \mid x \sim \mathrm{Beta}(a + x, b + n - x),
+   $$
+   and so the Beta distribution is <span class="xref-no-num">[conjugate @def-conjugacy]</span>.
+
+</details>
+:::
+
+::: {#q-gamma-pois .callout-important}
+## Conjugacy: Poisson Model, Gamma Prior
+
+Suppose that we observe $n$ i.i.d. <span class="xref-no-num">[Poisson @sec-pois]</span> observations
+$$
+X_i \mid \lambda \; \overset{\text{i.i.d.}}{\sim} \; \mathrm{Poisson}(\lambda)
+$$
+Show that choosing a <span class="xref-no-num">[Gamma @sec-gamma]</span> prior
+$$
+\lambda \sim \mathrm{Gamma}(a,b)
+$$
+yields the posterior distribution 
+$$
+\lambda \mid \underline{x} \sim \mathrm{Gamma}(a + n\bar{x}, b + n).
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+We compute the posterior using Bayes theorem:
+$$
+\pi(\lambda \mid \underline{x}) \propto \pi(\lambda) f(\underline{x}\mid\lambda).
+$$
+
+1. **Prior PDF:**
+  Since $\lambda \sim \mathrm{Gamma}(a,b)$, its probability density function is
+  $$
+  \pi(\lambda) = \frac{b^a}{\Gamma(a)} \lambda^{a-1} e^{-b\lambda}.
+  $$
+  Ignoring the normalisation constant, this is proportional to
+  $$
+  \pi(\lambda) \propto \lambda^{a-1} e^{-b\lambda}.
+  $$
+2. **Likelihood:** 
+   Since we have $n$ i.i.d. observations $X_i \mid \lambda \; \overset{\text{i.i.d.}}{\sim} \; \mathrm{Poisson}(\lambda)$, the likelihood is
+   $$
+   \begin{align*}
+   f(\underline{x} \mid \lambda) &= \prod_{i=1}^n \frac{\lambda^{x_i} e^{-\lambda}}{x_i!} \\
+   &= \lambda^{n\bar{x}} e^{-n\lambda} \left(\prod_{i=1}^n x_i!\right)^{-1}.
+   \end{align*}
+   $$
+   Dropping the factors that do not depend on $\lambda$, this is proportional to
+   $$
+   f(\underline{x} \mid \lambda) \propto \lambda^{n\bar{x}} e^{-n\lambda}.
+   $$
+3. **Posterior:**
+   Using the prior and likelihood derived above, we have
+   $$
+   \begin{align*}
+   \pi(\lambda \mid \underline{x}) &\propto \lambda^{a-1} e^{-b\lambda} \times \lambda^{n\bar{x}} e^{-n\lambda} \\
+   &\propto \lambda^{a + n\bar{x} - 1} e^{-(b + n)\lambda}.
+   \end{align*}
+   $$
+   This takes the form of a Gamma density function and thus
+   $$
+   \lambda \mid \underline{x} \sim \mathrm{Gamma}(a + n\bar{x}, b + n),
+   $$
+   and so the Gamma distribution is <span class="xref-no-num">[conjugate @def-conjugacy]</span>.
+
+</details>
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="bayes conjugacy geometric beta" data-difficulty="1" #q-beta-geom}
+## Conjugacy: Geometric Model, Beta Prior
+
+Suppose that we observe $n$ i.i.d. <span class="xref-no-num">[Geometric @sec-geom]</span> observations
+$$
+X_i \mid p \; \overset{\text{i.i.d.}}{\sim} \; \mathrm{Geom}(p)
+$$
+Show that choosing a <span class="xref-no-num">[Beta @sec-beta]</span> prior
+$$
+p \sim \mathrm{Beta}(a,b)
+$$
+yields the posterior distribution 
+$$
+p \mid \underline{x} \sim \mathrm{Beta}(a + n, b + n(\bar{x} - 1)).
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+We compute the posterior using Bayes theorem:
+$$
+\pi(p \mid \underline{x}) \propto \pi(p) f(\underline{x}\mid p).
+$$
+
+1. **Prior PDF:**
+  Since $p \sim \mathrm{Beta}(a,b)$, its probability density function is
+  $$
+  \pi(p) = \frac{\Gamma(a+b)}{\Gamma(a) \Gamma(b)} p^{a-1}(1-p)^{b-1}.
+  $$
+  Ignoring the normalisation constant, this is proportional to
+  $$
+  \pi(p) \propto p^{a-1}(1-p)^{b-1}.
+  $$
+2. **Likelihood:** 
+   Since we have $n$ i.i.d. observations $X_i \mid p \; \overset{\text{i.i.d.}}{\sim} \; \mathrm{Geom}(p)$, the likelihood is
+   $$
+   \begin{align*}
+   f(\underline{x} \mid p) &= \prod_{i=1}^n p(1-p)^{x_i-1}\\
+   &= p^n (1-p)^{n(\bar{x} - 1)}.
+   \end{align*}
+   $$
+   Note that there are *no factors* that do not depend on $p$.
+3. **Posterior:**
+   Using the prior and likelihood derived above, we have
+   $$
+   \begin{align*}
+   \pi(p \mid \underline{x}) &\propto p^{a-1}(1-p)^{b-1} \times p^n (1-p)^{n(\bar{x} - 1)} \\
+   &\propto p^{a + n - 1} (1-p)^{b + n(\bar{x} - 1) - 1}.
+   \end{align*}
+   $$
+   This takes the form of a Beta density function and thus
+   $$
+   p \mid \underline{x} \sim \mathrm{Beta}(a + n, b + n(\bar{x} - 1)),
+   $$
+   and so the Beta distribution is <span class="xref-no-num">[conjugate @def-conjugacy]</span>.
+
+</details>
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="bayes conjugacy normal" data-difficulty="2" #q-normal-normal}
+## Conjugacy: Normal Model with known variance, Normal Prior for mean
+
+Suppose that we observe $n$ i.i.d. <span class="xref-no-num">[Normal @sec-normal]</span> observations
+$$
+X_i \mid \mu \; \overset{\text{i.i.d.}}{\sim} \; \mathcal{N}(\mu, \sigma^2),
+$$
+where the observation variance $\sigma^2$ is a known quantity. Show that choosing a <span class="xref-no-num">[Normal @sec-normal]</span> prior
+$$
+\mu \sim \mathcal{N}(\mu_0, \sigma^2_0)
+$$
+yields the posterior distribution 
+$$
+\mu \mid \underline{x} \sim \mathrm{Normal}(M, V),
+$$
+where
+$$
+M = \frac{\frac{\mu_0}{\sigma^2_0} + \frac{n\bar{x}}{\sigma^2}}{ \frac{1}{\sigma^2_0} + \frac{n}{\sigma^2}}, \qquad V = \frac{1}{\frac{1}{\sigma^2_0} + \frac{n}{\sigma^2}}.
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+We compute the posterior using Bayes theorem:
+$$
+\pi(\mu \mid \underline{x}) \propto \pi(\mu) f(\underline{x}\mid \mu).
+$$
+
+1. **Prior PDF:**
+  Since $\mu \sim \mathcal{N}(\mu_0, \sigma^2_0)$, its probability density function is
+  $$
+  \pi(\mu) = \frac{1}{\sqrt{2 \pi \sigma^2_0}} \exp\left\{ -\frac{1}{2\sigma^2_0}(\mu - \mu_0)^2 \right\}
+  $$
+  Ignoring the factors which do not depend on $\mu$, this is proportional to
+  $$
+  \begin{align*}
+  \pi(\mu) &\propto \exp\left\{ -\frac{1}{2\sigma^2_0}(\mu - \mu_0)^2 \right\} \\
+  &\propto \exp\left\{ -\frac{1}{2\sigma^2_0}(\mu^2 - 2\mu \mu_0 + \mu_0^2) \right\} \\
+  &\propto \exp\left\{ -\frac{1}{2\sigma^2_0}(\mu^2 - 2\mu \mu_0) \right\} \exp\left\{ -\frac{1}{2\sigma^2_0}( \mu_0^2) \right\} \\
+  &\propto \exp\left\{ -\frac{1}{2\sigma^2_0}(\mu^2 - 2\mu \mu_0) \right\}.
+  \end{align*}
+  $$
+1. **Likelihood:** 
+   Since we have $n$ i.i.d. observations $X_i \mid \mu \; \overset{\text{i.i.d.}}{\sim} \; \mathcal{N}(\mu, \sigma^2)$, the likelihood is
+   $$
+   \begin{align*}
+   f(\underline{x} \mid \mu) &= \prod_{i=1}^n  \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left\{-\frac{1}{2\sigma^2}(x_i - \mu)^2\right\}  \\
+   &= (2\pi\sigma^2)^{-n/2} \exp\left\{-\frac{1}{2\sigma^2}\sum_{i=1}^n (x_i - \mu)^2\right\}
+   \end{align*}
+   $$
+   Dropping the factors that do not depend on $\mu$, this is proportional to
+   $$
+   \begin{align*}
+   f(\underline{x} \mid \mu) &\propto \exp\left\{-\frac{1}{2\sigma^2}\sum_{i=1}^n (x_i - \mu)^2\right\} \\
+   &\propto \exp\left\{-\frac{1}{2\sigma^2}\sum_{i=1}^n (x_i^2 - 2\mu x_i + \mu^2)\right\} \\
+   &\propto \exp\left\{-\frac{1}{2\sigma^2}\left[ \sum_{i=1}^n \mu^2 - 2\mu \sum_{i=1}^n x_i + \sum_{i=1}^n x_i^2 \right]\right\} \\
+   &\propto \exp\left\{-\frac{1}{2\sigma^2}\left[ n\mu^2 - 2 \, \mu \, n\bar{x}  \right]\right\} \exp\left\{-\frac{1}{2\sigma^2}\left[ \sum_{i=1}^n x_i^2 \right]\right\} \\
+   &\propto \exp\left\{-\frac{1}{2\sigma^2}\left[ n\mu^2 - 2 \, \mu \, n\bar{x} \right]\right\}.
+   \end{align*}
+   $$
+2. **Posterior:**
+   Using the prior and likelihood derived above, we have
+   $$
+   \begin{align*}
+   \pi(\mu \mid \underline{x}) &\propto \exp\left\{ -\frac{1}{2\sigma^2_0}(\mu^2 - 2\mu \mu_0) \right\} \exp\left\{-\frac{1}{2\sigma^2}\left[ n\mu^2 - 2 \, \mu \, n\bar{x} \right]\right\}  \\
+   &\propto \exp\left\{ -\frac{1}{2}\left[ \frac{\mu^2}{\sigma^2_0} - 2\mu \frac{\mu_0}{\sigma^2_0} + \mu^2 \frac{n}{\sigma^2} - 2 \mu \frac{n\bar{x}}{\sigma^2} \right] \right\} \\
+   &\propto \exp\left\{ -\frac{1}{2}\left[ \mu^2\left( \frac{1}{\sigma^2_0} + \frac{n}{\sigma^2}\right) - 2\mu\left(\frac{\mu_0}{\sigma^2_0} + \frac{n\bar{x}}{\sigma^2}\right)  \right] \right\} \\
+   &\propto \exp\left\{ -\frac{1}{2\left( \frac{1}{\sigma^2_0} + \frac{n}{\sigma^2}\right)^{-1}}\left[ \mu^2 - 2\mu \frac{\left(\frac{\mu_0}{\sigma^2_0} + \frac{n\bar{x}}{\sigma^2}\right)}{\left( \frac{1}{\sigma^2_0} + \frac{n}{\sigma^2}\right)}  \right] \right\}.
+   \end{align*}
+   $$
+   This takes the form of a Normal density function and thus
+   $$
+   \mu \mid \underline{x} \sim \mathcal{N}(M,V), 
+   $$
+   where
+   $$
+   \begin{align*}
+   M &= \frac{\frac{\mu_0}{\sigma^2_0} + \frac{n\bar{x}}{\sigma^2}}{ \frac{1}{\sigma^2_0} + \frac{n}{\sigma^2}}, \\
+   V &= \frac{1}{\frac{1}{\sigma^2_0} + \frac{n}{\sigma^2}}.
+   \end{align*}
+   $$
+   So the Normal distribution is <span class="xref-no-num">[conjugate @def-conjugacy]</span>.
+
+</details>
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="bayes conjugacy normal inv-gamma" data-difficulty="1" #q-normal-invgamma}
+## Conjugacy: Normal Model with known mean, Inverse Gamma Prior for variance
+
+Suppose that we observe $n$ i.i.d. <span class="xref-no-num">[Normal @sec-normal]</span> observations
+$$
+X_i \mid \gamma \; \overset{\text{i.i.d.}}{\sim} \; \mathcal{N}(\mu, \gamma),
+$$
+where the observation mean $\mu$ is a known quantity. Show that choosing a <span class="xref-no-num">[Inverse Gamma @sec-inv-gamma]</span> prior
+$$
+\gamma \sim \operatorname{InvGamma}(a,b)
+$$
+yields the posterior distribution 
+$$
+\gamma \mid \underline{x} \sim  \mathrm{InvGamma}\left(a + n/2,\; b + \frac{1}{2}\sum_{i=1}^n (x_i - \mu)^2  \right).
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+We compute the posterior using Bayes theorem:
+$$
+\pi(\gamma \mid \underline{x}) \propto \pi(\gamma) f(\underline{x}\mid \gamma).
+$$
+
+1. **Prior PDF:**
+   Since $\gamma \sim \operatorname{InvGamma}(a,b)$, its probability density function is
+   $$
+   \pi(\gamma) = \frac{b^a}{\Gamma(a)}  \gamma^{-(a+1)} \exp\left(-\frac{b}{\gamma}\right), \qquad \gamma>0.
+   $$
+   Ignoring the factors which do not depend on $\gamma$, this is proportional to
+   $$
+   \pi(\gamma) \propto  \gamma^{-(a+1)} \exp\left\{-\frac{b}{\gamma}\right\}.
+   $$
+
+2. **Likelihood:** 
+   Since we have $n$ i.i.d. observations $X_i \mid \gamma \; \overset{\text{i.i.d.}}{\sim} \; \mathcal{N}(\mu, \gamma)$, the likelihood is
+   $$
+   \begin{align*}
+   f(\underline{x} \mid \gamma) 
+     &= \prod_{i=1}^n  \frac{1}{\sqrt{2\pi\gamma}} 
+        \exp\left\{-\frac{1}{2\gamma}(x_i - \mu)^2\right\}  \\
+     &= (2\pi\gamma)^{-n/2} 
+        \exp\left\{-\frac{1}{2\gamma}\sum_{i=1}^n (x_i - \mu)^2\right\}.
+   \end{align*}
+   $$
+   Dropping the factors that do not depend on $\gamma$, this is proportional to
+   $$
+   f(\underline{x} \mid \gamma) \propto \gamma^{-n/2} 
+   \exp\left\{-\frac{1}{2\gamma}\sum_{i=1}^n (x_i - \mu)^2\right\}. 
+   $$
+
+3. **Posterior:**
+   Using the prior and likelihood derived above, we have
+   $$
+   \begin{align*}
+   \pi(\gamma \mid \underline{x}) 
+   &\propto  \gamma^{-(a+1)} \exp\left\{-\frac{b}{\gamma}\right\} \;
+               \gamma^{-n/2} \exp\left\{-\frac{1}{2\gamma}\sum_{i=1}^n (x_i - \mu)^2\right\} \\
+   &\propto \gamma^{-(a + n/2 + 1)} 
+            \exp\left\{ -\frac{1}{\gamma}\left( b + \frac{1}{2}\sum_{i=1}^n (x_i - \mu)^2 \right) \right\}.
+   \end{align*}
+   $$
+   This takes the form of an Inverse Gamma density function and thus
+   $$
+   \gamma \mid \underline{x} \sim \mathrm{InvGamma}\left(a + \frac{n}{2},\; 
+   b + \frac{1}{2}\sum_{i=1}^n (x_i - \mu)^2  \right),
+   $$
+   so the Inverse Gamma distribution is <span class="xref-no-num">[conjugate @def-conjugacy]</span>.
+
+</details>
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="bayes conjugacy normal" data-difficulty="1" #q-normal-normal-update}
+## Posterior calculation: Normal likelihood, Normal prior
+
+Consider the setup of <span class="xref-no-num">[Conjugacy: Normal Model, Normal Prior @q-normal-normal]</span>.  
+Suppose the observation variance is known and equal to
+$$
+\sigma^2 = 4,
+$$
+and the prior for the mean is
+$$
+\mu \sim \mathcal{N}(\mu_0, \sigma_0^2),
+\qquad
+\mu_0 = 0, \ \sigma_0^2 = 1.
+$$
+
+We observe $n = 10$ i.i.d. observations with sample mean
+$$
+\bar{x} = 1.5.
+$$
+
+Using the closed-form update
+$$
+M = \frac{\frac{\mu_0}{\sigma_0^2} + \frac{n\bar{x}}{\sigma^2}}{ \frac{1}{\sigma_0^2} + \frac{n}{\sigma^2}},
+\qquad
+V = \frac{1}{\frac{1}{\sigma_0^2} + \frac{n}{\sigma^2}},
+$$
+compute the posterior distribution
+$$
+\mu \mid \underline{x} \sim \mathcal{N}(M, V).
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+The prior parameters are $\mu_0 = 0$ and $\sigma^2_0 = 1$, the data terms are $\sigma^2 = 4$, $n=10$ and $\bar{x} = 1.5$.
+
+Therefore, we have
+$$
+\begin{align*}
+M &= \frac{\frac{0}{1} + \frac{10\times 1.5}{4}}{ \frac{1}{1} + \frac{10}{4}} = \frac{15}{14} \\
+V &= \frac{1}{ \frac{1}{1} + \frac{10}{4}} = \frac{4}{14}.
+\end{align*}
+$$
 
 </details>
 

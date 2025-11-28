@@ -683,7 +683,7 @@ window.Quarto = {
 </section>
 <section id="sec-binom" class="level3">
 <h3 class="anchored" data-anchor-id="sec-binom">Binomial</h3>
-<p><strong>Model.</strong> <span class="math inline">X \sim \operatorname{Bin}(n,p)</span>, <span class="math inline">n\in \mathbb{N}</span>, <span class="math inline">0&lt;p&lt;1</span>.<br>
+<p><strong>Model.</strong> <span class="math inline">X \sim \operatorname{Binomial}(n,p)</span>, <span class="math inline">n\in \mathbb{N}</span>, <span class="math inline">0&lt;p&lt;1</span>.<br>
 <strong>Support.</strong> <span class="math inline">x=0,1,\ldots,n</span>.<br>
 <strong>PMF.</strong> <span class="math display">
 \operatorname{Pr}(X=x) = \binom{n}{x} p^x (1-p)^{n-x}.
@@ -809,7 +809,7 @@ f_X(x;a,b)=\frac{b^a}{\Gamma(a)} x^{a-1} e^{-bx}.
 <p><strong>Model.</strong> <span class="math inline">X \sim \operatorname{InvGamma}(a,b)</span>, with <span class="math inline">a&gt;0</span>, <span class="math inline">b&gt;0</span>.<br>
 <strong>Support.</strong> <span class="math inline">x&gt;0</span>.<br>
 <strong>PDF.</strong> <span class="math display">
-f_X(x;a,b)=\frac{b^a}{\Gamma(a)} x^{-(a-1)} e^{-bx^{-1}}.
+f_X(x;a,b)=\frac{b^a}{\Gamma(a)} x^{-(a+1)} e^{-bx^{-1}}.
 </span> <strong>Statistics.</strong> <span class="math inline">\operatorname{E}[X]=\frac{b}{a-1},\quad \operatorname{Var}(X)=\frac{b^2}{(a-1)^2(a-2)}</span> and <span class="math inline">\text{Mode}(X) = \frac{b}{a+1}</span> if <span class="math inline">a &gt; 2</span>.</p>
 <hr>
 </section>

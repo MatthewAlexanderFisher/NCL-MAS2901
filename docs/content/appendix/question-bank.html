@@ -1433,41 +1433,6 @@ Solution
 </details>
 </div>
 </div>
-<div class="question callout callout-style-simple callout-important no-icon callout-titled" data-tags="bayes exam-style" data-difficulty="1">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Beta Conjugacy
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>With a Beta prior <span class="math inline">p\sim \mathrm{Beta}(\alpha,\beta)</span> and <span class="math inline">X \mid p \sim\mathrm{Bin}(n,p)</span>, show the posterior is <span class="math inline">p \mid x\sim \mathrm{Beta}(\alpha+x,\beta+n-x)</span>.</p>
-<details class="solution">
-<summary>
-Solution
-</summary>
-<p><strong>Intuition.</strong><br>
-The Beta prior has the same algebraic form as the Binomial likelihood in <span class="math inline">p</span>: powers of <span class="math inline">p</span> and <span class="math inline">(1-p)</span>. Multiplying them keeps the form, so the posterior is also Beta (this is <em>conjugacy</em>).</p>
-<p><strong>Formal derivation.</strong><br>
-Prior: <span class="math display">
-\pi(p)=\mathrm{Beta}(p\mid \alpha,\beta)
-=\frac{1}{B(\alpha,\beta)}\,p^{\alpha-1}(1-p)^{\beta-1},\qquad 0&lt;p&lt;1.
-</span></p>
-<p>Likelihood (for <span class="math inline">x</span> successes in <span class="math inline">n</span> trials): <span class="math display">
-L(p; x)\mathrm{Pr}opto p^{x}(1-p)^{\,n-x}.
-</span></p>
-<p>Posterior (up to proportionality): <span class="math display">
-\pi(p\mid x)\ \mathrm{Pr}opto\ \pi(p)\,L(p\mid x)
-\ \mathrm{Pr}opto\ p^{\alpha-1+x}\,(1-p)^{\beta-1+(n-x)}.
-</span></p>
-<p>This is in the form of the Beta distribution with updated parameters: <span class="math display">
-p\mid x \sim \mathrm{Beta}\big(\alpha+x,\ \beta+n-x\big).
-</span></p>
-</details>
-</div>
-</div>
 <div class="question callout callout-style-simple callout-important no-icon callout-titled" data-tags="binomial probability coding" data-difficulty="0">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1551,7 +1516,7 @@ Since <span class="math inline">X</span> is integer-valued, this corresponds to 
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="31768df8" class="cell" data-execution_count="2">
+<div id="b0742bdb" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> comb</span>
@@ -2252,7 +2217,7 @@ L(b;\underline{x}) = \prod_{i=1}^n f(x_i;b)
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="8046dea3" class="cell" data-execution_count="3">
+<div id="0c316cd8" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -2746,7 +2711,7 @@ Since <span class="math inline">\mathrm{Var}(X_i) = \lambda</span> and the <span
 </ol></li>
 </ol>
 <p>In Python:</p>
-<div id="e46c0d2b" class="cell" data-execution_count="4">
+<div id="ad12f1e1" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> poisson</span>
@@ -3120,7 +3085,7 @@ J(\hat{\gamma})
 <li>Construct a <span class="math inline">90\%</span> highest density interval (HDI) for <span class="math inline">\theta</span>.</li>
 </ol>
 <p><em>Hint:</em> The following plot may be helpful.</p>
-<div id="e5d64e1c" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="5">
+<div id="1c09eca4" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="5">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -4209,6 +4174,318 @@ There is evidence that the proportion of left-handed people differs from 0.1.</p
 </ol>
 <p>Thus, the 95% CI for <span class="math inline">\pi</span> is <strong>(0.112, 0.249)</strong>.</p></li>
 </ol>
+</details>
+</div>
+</div>
+<div id="q-beta-binom" class="question callout callout-style-simple callout-important no-icon callout-titled" data-tags="bayes conjugacy beta binomial" data-difficulty="1">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Conjugacy: Binomial Model, Beta Prior
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suppose that we observe a single <span class="xref-no-num"><a href="formula-sheet.html#sec-binom" class="quarto-xref">Binomial&nbsp;<span>Binomial</span></a></span> observation <span class="math display">
+X \mid p \sim \mathrm{Binomial}(n,p)
+</span> Show that choosing a <span class="xref-no-num"><a href="formula-sheet.html#sec-beta" class="quarto-xref">Beta&nbsp;<span>Beta</span></a></span> prior <span class="math display">
+p \sim \mathrm{Beta}(a,b)
+</span> yields the posterior distribution <span class="math display">
+p \mid x \sim \mathrm{Beta}(a + x, b + n - x).
+</span></p>
+<details class="solution">
+<summary>
+Solution
+</summary>
+<p>We compute the posterior using Bayes theorem: <span class="math display">
+\pi(p \mid x) \propto \pi(p) f(x\mid p).
+</span></p>
+<ol type="1">
+<li><strong>Prior PDF:</strong> Since <span class="math inline">p \sim \mathrm{Beta}(a,b)</span>, its probability density function is <span class="math display">
+  \pi(p) = \frac{\Gamma(a+b)}{\Gamma(a) \Gamma(b)} p^{a-1}(1-p)^{b-1}.
+  </span> Ignoring the normalisation constant, this is proportional to <span class="math display">
+  \pi(p) \propto p^{a-1}(1-p)^{b-1}.
+  </span></li>
+<li><strong>Likelihood:</strong> Since <span class="math inline">X\mid p \sim \mathrm{Binomial}(n, p)</span>, the likelihood is <span class="math display">
+f(x \mid p) = \binom{n}{x} p^{x}(1-p)^{n-x}.
+</span> Dropping the factors that do not depend on <span class="math inline">p</span>, this is proportional to <span class="math display">
+f(x \mid p) \propto p^{x}(1-p)^{n-x}.
+</span></li>
+<li><strong>Posterior:</strong> Using the prior and likelihood derived above, we have <span class="math display">
+\pi(p \mid x) \propto p^{a-1}(1-p)^{b-1} \times p^{x}(1-p)^{n-x} \propto p^{a + x - 1} (1-p)^{b + n - x}.
+</span> This takes the form of a Beta density function and thus <span class="math display">
+p \mid x \sim \mathrm{Beta}(a + x, b + n - x),
+</span> and so the Beta distribution is <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#def-conjugacy" class="quarto-xref">conjugate&nbsp;<span>6.3</span></a></span>.</li>
+</ol>
+</details>
+</div>
+</div>
+<div id="q-gamma-pois" class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Conjugacy: Poisson Model, Gamma Prior
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suppose that we observe <span class="math inline">n</span> i.i.d. <span class="xref-no-num"><a href="formula-sheet.html#sec-pois" class="quarto-xref">Poisson&nbsp;<span>Poisson</span></a></span> observations <span class="math display">
+X_i \mid \lambda \; \overset{\text{i.i.d.}}{\sim} \; \mathrm{Poisson}(\lambda)
+</span> Show that choosing a <span class="xref-no-num"><a href="formula-sheet.html#sec-gamma" class="quarto-xref">Gamma&nbsp;<span>Gamma</span></a></span> prior <span class="math display">
+\lambda \sim \mathrm{Gamma}(a,b)
+</span> yields the posterior distribution <span class="math display">
+\lambda \mid \underline{x} \sim \mathrm{Gamma}(a + n\bar{x}, b + n).
+</span></p>
+<details class="solution">
+<summary>
+Solution
+</summary>
+<p>We compute the posterior using Bayes theorem: <span class="math display">
+\pi(\lambda \mid \underline{x}) \propto \pi(\lambda) f(\underline{x}\mid\lambda).
+</span></p>
+<ol type="1">
+<li><strong>Prior PDF:</strong> Since <span class="math inline">\lambda \sim \mathrm{Gamma}(a,b)</span>, its probability density function is <span class="math display">
+  \pi(\lambda) = \frac{b^a}{\Gamma(a)} \lambda^{a-1} e^{-b\lambda}.
+  </span> Ignoring the normalisation constant, this is proportional to <span class="math display">
+  \pi(\lambda) \propto \lambda^{a-1} e^{-b\lambda}.
+  </span></li>
+<li><strong>Likelihood:</strong> Since we have <span class="math inline">n</span> i.i.d. observations <span class="math inline">X_i \mid \lambda \; \overset{\text{i.i.d.}}{\sim} \; \mathrm{Poisson}(\lambda)</span>, the likelihood is <span class="math display">
+\begin{align*}
+f(\underline{x} \mid \lambda) &amp;= \prod_{i=1}^n \frac{\lambda^{x_i} e^{-\lambda}}{x_i!} \\
+&amp;= \lambda^{n\bar{x}} e^{-n\lambda} \left(\prod_{i=1}^n x_i!\right)^{-1}.
+\end{align*}
+</span> Dropping the factors that do not depend on <span class="math inline">\lambda</span>, this is proportional to <span class="math display">
+f(\underline{x} \mid \lambda) \propto \lambda^{n\bar{x}} e^{-n\lambda}.
+</span></li>
+<li><strong>Posterior:</strong> Using the prior and likelihood derived above, we have <span class="math display">
+\begin{align*}
+\pi(\lambda \mid \underline{x}) &amp;\propto \lambda^{a-1} e^{-b\lambda} \times \lambda^{n\bar{x}} e^{-n\lambda} \\
+&amp;\propto \lambda^{a + n\bar{x} - 1} e^{-(b + n)\lambda}.
+\end{align*}
+</span> This takes the form of a Gamma density function and thus <span class="math display">
+\lambda \mid \underline{x} \sim \mathrm{Gamma}(a + n\bar{x}, b + n),
+</span> and so the Gamma distribution is <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#def-conjugacy" class="quarto-xref">conjugate&nbsp;<span>6.3</span></a></span>.</li>
+</ol>
+</details>
+</div>
+</div>
+<div id="q-beta-geom" class="question callout callout-style-simple callout-important no-icon callout-titled" data-tags="bayes conjugacy geometric beta" data-difficulty="1">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Conjugacy: Geometric Model, Beta Prior
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suppose that we observe <span class="math inline">n</span> i.i.d. <span class="xref-no-num"><a href="formula-sheet.html#sec-geom" class="quarto-xref">Geometric&nbsp;<span>Geometric</span></a></span> observations <span class="math display">
+X_i \mid p \; \overset{\text{i.i.d.}}{\sim} \; \mathrm{Geom}(p)
+</span> Show that choosing a <span class="xref-no-num"><a href="formula-sheet.html#sec-beta" class="quarto-xref">Beta&nbsp;<span>Beta</span></a></span> prior <span class="math display">
+p \sim \mathrm{Beta}(a,b)
+</span> yields the posterior distribution <span class="math display">
+p \mid \underline{x} \sim \mathrm{Beta}(a + n, b + n(\bar{x} - 1)).
+</span></p>
+<details class="solution">
+<summary>
+Solution
+</summary>
+<p>We compute the posterior using Bayes theorem: <span class="math display">
+\pi(p \mid \underline{x}) \propto \pi(p) f(\underline{x}\mid p).
+</span></p>
+<ol type="1">
+<li><strong>Prior PDF:</strong> Since <span class="math inline">p \sim \mathrm{Beta}(a,b)</span>, its probability density function is <span class="math display">
+  \pi(p) = \frac{\Gamma(a+b)}{\Gamma(a) \Gamma(b)} p^{a-1}(1-p)^{b-1}.
+  </span> Ignoring the normalisation constant, this is proportional to <span class="math display">
+  \pi(p) \propto p^{a-1}(1-p)^{b-1}.
+  </span></li>
+<li><strong>Likelihood:</strong> Since we have <span class="math inline">n</span> i.i.d. observations <span class="math inline">X_i \mid p \; \overset{\text{i.i.d.}}{\sim} \; \mathrm{Geom}(p)</span>, the likelihood is <span class="math display">
+\begin{align*}
+f(\underline{x} \mid p) &amp;= \prod_{i=1}^n p(1-p)^{x_i-1}\\
+&amp;= p^n (1-p)^{n(\bar{x} - 1)}.
+\end{align*}
+</span> Note that there are <em>no factors</em> that do not depend on <span class="math inline">p</span>.</li>
+<li><strong>Posterior:</strong> Using the prior and likelihood derived above, we have <span class="math display">
+\begin{align*}
+\pi(p \mid \underline{x}) &amp;\propto p^{a-1}(1-p)^{b-1} \times p^n (1-p)^{n(\bar{x} - 1)} \\
+&amp;\propto p^{a + n - 1} (1-p)^{b + n(\bar{x} - 1) - 1}.
+\end{align*}
+</span> This takes the form of a Beta density function and thus <span class="math display">
+p \mid \underline{x} \sim \mathrm{Beta}(a + n, b + n(\bar{x} - 1)),
+</span> and so the Beta distribution is <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#def-conjugacy" class="quarto-xref">conjugate&nbsp;<span>6.3</span></a></span>.</li>
+</ol>
+</details>
+</div>
+</div>
+<div id="q-normal-normal" class="question callout callout-style-simple callout-important no-icon callout-titled" data-tags="bayes conjugacy normal" data-difficulty="2">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Conjugacy: Normal Model with known variance, Normal Prior for mean
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suppose that we observe <span class="math inline">n</span> i.i.d. <span class="xref-no-num"><a href="formula-sheet.html#sec-normal" class="quarto-xref">Normal&nbsp;<span>Normal</span></a></span> observations <span class="math display">
+X_i \mid \mu \; \overset{\text{i.i.d.}}{\sim} \; \mathcal{N}(\mu, \sigma^2),
+</span> where the observation variance <span class="math inline">\sigma^2</span> is a known quantity. Show that choosing a <span class="xref-no-num"><a href="formula-sheet.html#sec-normal" class="quarto-xref">Normal&nbsp;<span>Normal</span></a></span> prior <span class="math display">
+\mu \sim \mathcal{N}(\mu_0, \sigma^2_0)
+</span> yields the posterior distribution <span class="math display">
+\mu \mid \underline{x} \sim \mathrm{Normal}(M, V),
+</span> where <span class="math display">
+M = \frac{\frac{\mu_0}{\sigma^2_0} + \frac{n\bar{x}}{\sigma^2}}{ \frac{1}{\sigma^2_0} + \frac{n}{\sigma^2}}, \qquad V = \frac{1}{\frac{1}{\sigma^2_0} + \frac{n}{\sigma^2}}.
+</span></p>
+<details class="solution">
+<summary>
+Solution
+</summary>
+<p>We compute the posterior using Bayes theorem: <span class="math display">
+\pi(\mu \mid \underline{x}) \propto \pi(\mu) f(\underline{x}\mid \mu).
+</span></p>
+<ol type="1">
+<li><strong>Prior PDF:</strong> Since <span class="math inline">\mu \sim \mathcal{N}(\mu_0, \sigma^2_0)</span>, its probability density function is <span class="math display">
+  \pi(\mu) = \frac{1}{\sqrt{2 \pi \sigma^2_0}} \exp\left\{ -\frac{1}{2\sigma^2_0}(\mu - \mu_0)^2 \right\}
+  </span> Ignoring the factors which do not depend on <span class="math inline">\mu</span>, this is proportional to <span class="math display">
+  \begin{align*}
+  \pi(\mu) &amp;\propto \exp\left\{ -\frac{1}{2\sigma^2_0}(\mu - \mu_0)^2 \right\} \\
+  &amp;\propto \exp\left\{ -\frac{1}{2\sigma^2_0}(\mu^2 - 2\mu \mu_0 + \mu_0^2) \right\} \\
+  &amp;\propto \exp\left\{ -\frac{1}{2\sigma^2_0}(\mu^2 - 2\mu \mu_0) \right\} \exp\left\{ -\frac{1}{2\sigma^2_0}( \mu_0^2) \right\} \\
+  &amp;\propto \exp\left\{ -\frac{1}{2\sigma^2_0}(\mu^2 - 2\mu \mu_0) \right\}.
+  \end{align*}
+  </span></li>
+<li><strong>Likelihood:</strong> Since we have <span class="math inline">n</span> i.i.d. observations <span class="math inline">X_i \mid \mu \; \overset{\text{i.i.d.}}{\sim} \; \mathcal{N}(\mu, \sigma^2)</span>, the likelihood is <span class="math display">
+\begin{align*}
+f(\underline{x} \mid \mu) &amp;= \prod_{i=1}^n  \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left\{-\frac{1}{2\sigma^2}(x_i - \mu)^2\right\}  \\
+&amp;= (2\pi\sigma^2)^{-n/2} \exp\left\{-\frac{1}{2\sigma^2}\sum_{i=1}^n (x_i - \mu)^2\right\}
+\end{align*}
+</span> Dropping the factors that do not depend on <span class="math inline">\mu</span>, this is proportional to <span class="math display">
+\begin{align*}
+f(\underline{x} \mid \mu) &amp;\propto \exp\left\{-\frac{1}{2\sigma^2}\sum_{i=1}^n (x_i - \mu)^2\right\} \\
+&amp;\propto \exp\left\{-\frac{1}{2\sigma^2}\sum_{i=1}^n (x_i^2 - 2\mu x_i + \mu^2)\right\} \\
+&amp;\propto \exp\left\{-\frac{1}{2\sigma^2}\left[ \sum_{i=1}^n \mu^2 - 2\mu \sum_{i=1}^n x_i + \sum_{i=1}^n x_i^2 \right]\right\} \\
+&amp;\propto \exp\left\{-\frac{1}{2\sigma^2}\left[ n\mu^2 - 2 \, \mu \, n\bar{x}  \right]\right\} \exp\left\{-\frac{1}{2\sigma^2}\left[ \sum_{i=1}^n x_i^2 \right]\right\} \\
+&amp;\propto \exp\left\{-\frac{1}{2\sigma^2}\left[ n\mu^2 - 2 \, \mu \, n\bar{x} \right]\right\}.
+\end{align*}
+</span></li>
+<li><strong>Posterior:</strong> Using the prior and likelihood derived above, we have <span class="math display">
+\begin{align*}
+\pi(\mu \mid \underline{x}) &amp;\propto \exp\left\{ -\frac{1}{2\sigma^2_0}(\mu^2 - 2\mu \mu_0) \right\} \exp\left\{-\frac{1}{2\sigma^2}\left[ n\mu^2 - 2 \, \mu \, n\bar{x} \right]\right\}  \\
+&amp;\propto \exp\left\{ -\frac{1}{2}\left[ \frac{\mu^2}{\sigma^2_0} - 2\mu \frac{\mu_0}{\sigma^2_0} + \mu^2 \frac{n}{\sigma^2} - 2 \mu \frac{n\bar{x}}{\sigma^2} \right] \right\} \\
+&amp;\propto \exp\left\{ -\frac{1}{2}\left[ \mu^2\left( \frac{1}{\sigma^2_0} + \frac{n}{\sigma^2}\right) - 2\mu\left(\frac{\mu_0}{\sigma^2_0} + \frac{n\bar{x}}{\sigma^2}\right)  \right] \right\} \\
+&amp;\propto \exp\left\{ -\frac{1}{2\left( \frac{1}{\sigma^2_0} + \frac{n}{\sigma^2}\right)^{-1}}\left[ \mu^2 - 2\mu \frac{\left(\frac{\mu_0}{\sigma^2_0} + \frac{n\bar{x}}{\sigma^2}\right)}{\left( \frac{1}{\sigma^2_0} + \frac{n}{\sigma^2}\right)}  \right] \right\}.
+\end{align*}
+</span> This takes the form of a Normal density function and thus <span class="math display">
+\mu \mid \underline{x} \sim \mathcal{N}(M,V),
+</span> where <span class="math display">
+\begin{align*}
+M &amp;= \frac{\frac{\mu_0}{\sigma^2_0} + \frac{n\bar{x}}{\sigma^2}}{ \frac{1}{\sigma^2_0} + \frac{n}{\sigma^2}}, \\
+V &amp;= \frac{1}{\frac{1}{\sigma^2_0} + \frac{n}{\sigma^2}}.
+\end{align*}
+</span> So the Normal distribution is <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#def-conjugacy" class="quarto-xref">conjugate&nbsp;<span>6.3</span></a></span>.</li>
+</ol>
+</details>
+</div>
+</div>
+<div id="q-normal-invgamma" class="question callout callout-style-simple callout-important no-icon callout-titled" data-tags="bayes conjugacy normal inv-gamma" data-difficulty="1">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Conjugacy: Normal Model with known mean, Inverse Gamma Prior for variance
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suppose that we observe <span class="math inline">n</span> i.i.d. <span class="xref-no-num"><a href="formula-sheet.html#sec-normal" class="quarto-xref">Normal&nbsp;<span>Normal</span></a></span> observations <span class="math display">
+X_i \mid \gamma \; \overset{\text{i.i.d.}}{\sim} \; \mathcal{N}(\mu, \gamma),
+</span> where the observation mean <span class="math inline">\mu</span> is a known quantity. Show that choosing a <span class="xref-no-num"><a href="formula-sheet.html#sec-inv-gamma" class="quarto-xref">Inverse Gamma&nbsp;<span>Inverse Gamma</span></a></span> prior <span class="math display">
+\gamma \sim \operatorname{InvGamma}(a,b)
+</span> yields the posterior distribution <span class="math display">
+\gamma \mid \underline{x} \sim  \mathrm{InvGamma}\left(a + n/2,\; b + \frac{1}{2}\sum_{i=1}^n (x_i - \mu)^2  \right).
+</span></p>
+<details class="solution">
+<summary>
+Solution
+</summary>
+<p>We compute the posterior using Bayes theorem: <span class="math display">
+\pi(\gamma \mid \underline{x}) \propto \pi(\gamma) f(\underline{x}\mid \gamma).
+</span></p>
+<ol type="1">
+<li><p><strong>Prior PDF:</strong> Since <span class="math inline">\gamma \sim \operatorname{InvGamma}(a,b)</span>, its probability density function is <span class="math display">
+\pi(\gamma) = \frac{b^a}{\Gamma(a)}  \gamma^{-(a+1)} \exp\left(-\frac{b}{\gamma}\right), \qquad \gamma&gt;0.
+</span> Ignoring the factors which do not depend on <span class="math inline">\gamma</span>, this is proportional to <span class="math display">
+\pi(\gamma) \propto  \gamma^{-(a+1)} \exp\left\{-\frac{b}{\gamma}\right\}.
+</span></p></li>
+<li><p><strong>Likelihood:</strong> Since we have <span class="math inline">n</span> i.i.d. observations <span class="math inline">X_i \mid \gamma \; \overset{\text{i.i.d.}}{\sim} \; \mathcal{N}(\mu, \gamma)</span>, the likelihood is <span class="math display">
+\begin{align*}
+f(\underline{x} \mid \gamma)
+  &amp;= \prod_{i=1}^n  \frac{1}{\sqrt{2\pi\gamma}}
+     \exp\left\{-\frac{1}{2\gamma}(x_i - \mu)^2\right\}  \\
+  &amp;= (2\pi\gamma)^{-n/2}
+     \exp\left\{-\frac{1}{2\gamma}\sum_{i=1}^n (x_i - \mu)^2\right\}.
+\end{align*}
+</span> Dropping the factors that do not depend on <span class="math inline">\gamma</span>, this is proportional to <span class="math display">
+f(\underline{x} \mid \gamma) \propto \gamma^{-n/2}
+\exp\left\{-\frac{1}{2\gamma}\sum_{i=1}^n (x_i - \mu)^2\right\}.
+</span></p></li>
+<li><p><strong>Posterior:</strong> Using the prior and likelihood derived above, we have <span class="math display">
+\begin{align*}
+\pi(\gamma \mid \underline{x})
+&amp;\propto  \gamma^{-(a+1)} \exp\left\{-\frac{b}{\gamma}\right\} \;
+            \gamma^{-n/2} \exp\left\{-\frac{1}{2\gamma}\sum_{i=1}^n (x_i - \mu)^2\right\} \\
+&amp;\propto \gamma^{-(a + n/2 + 1)}
+         \exp\left\{ -\frac{1}{\gamma}\left( b + \frac{1}{2}\sum_{i=1}^n (x_i - \mu)^2 \right) \right\}.
+\end{align*}
+</span> This takes the form of an Inverse Gamma density function and thus <span class="math display">
+\gamma \mid \underline{x} \sim \mathrm{InvGamma}\left(a + \frac{n}{2},\;
+b + \frac{1}{2}\sum_{i=1}^n (x_i - \mu)^2  \right),
+</span> so the Inverse Gamma distribution is <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#def-conjugacy" class="quarto-xref">conjugate&nbsp;<span>6.3</span></a></span>.</p></li>
+</ol>
+</details>
+</div>
+</div>
+<div id="q-normal-normal-update" class="question callout callout-style-simple callout-important no-icon callout-titled" data-tags="bayes conjugacy normal" data-difficulty="1">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Posterior calculation: Normal likelihood, Normal prior
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Consider the setup of <span class="xref-no-num"><span class="citation" data-cites="q-normal-normal">[Conjugacy: Normal Model, Normal Prior @q-normal-normal]</span></span>.<br>
+Suppose the observation variance is known and equal to <span class="math display">
+\sigma^2 = 4,
+</span> and the prior for the mean is <span class="math display">
+\mu \sim \mathcal{N}(\mu_0, \sigma_0^2),
+\qquad
+\mu_0 = 0, \ \sigma_0^2 = 1.
+</span></p>
+<p>We observe <span class="math inline">n = 10</span> i.i.d. observations with sample mean <span class="math display">
+\bar{x} = 1.5.
+</span></p>
+<p>Using the closed-form update <span class="math display">
+M = \frac{\frac{\mu_0}{\sigma_0^2} + \frac{n\bar{x}}{\sigma^2}}{ \frac{1}{\sigma_0^2} + \frac{n}{\sigma^2}},
+\qquad
+V = \frac{1}{\frac{1}{\sigma_0^2} + \frac{n}{\sigma^2}},
+</span> compute the posterior distribution <span class="math display">
+\mu \mid \underline{x} \sim \mathcal{N}(M, V).
+</span></p>
+<details class="solution">
+<summary>
+Solution
+</summary>
+<p>The prior parameters are <span class="math inline">\mu_0 = 0</span> and <span class="math inline">\sigma^2_0 = 1</span>, the data terms are <span class="math inline">\sigma^2 = 4</span>, <span class="math inline">n=10</span> and <span class="math inline">\bar{x} = 1.5</span>.</p>
+<p>Therefore, we have <span class="math display">
+\begin{align*}
+M &amp;= \frac{\frac{0}{1} + \frac{10\times 1.5}{4}}{ \frac{1}{1} + \frac{10}{4}} = \frac{15}{14} \\
+V &amp;= \frac{1}{ \frac{1}{1} + \frac{10}{4}} = \frac{4}{14}.
+\end{align*}
+</span></p>
 </details>
 </div>
 </div>
