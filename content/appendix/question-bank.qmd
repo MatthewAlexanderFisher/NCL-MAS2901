@@ -3986,6 +3986,7 @@ $$
    and so the Gamma distribution is <span class="xref-no-num">[conjugate @def-conjugacy]</span>.
 
 </details>
+
 :::
 
 ::: {.callout-important .question appearance="minimal" data-tags="bayes conjugacy geometric beta" data-difficulty="1" #q-beta-geom}
@@ -4060,7 +4061,7 @@ $$
 $$
 yields the posterior distribution 
 $$
-\mu \mid \underline{x} \sim \mathrm{Normal}(M, V),
+\mu \mid \underline{x} \sim \mathcal{N}(M, V),
 $$
 where
 $$
@@ -4205,6 +4206,72 @@ $$
 
 </details>
 :::
+
+::: {.callout-important .question appearance="minimal" data-tags="bayes conjugacy exponential gamma" data-difficulty="1" #q-exp-gamma}
+## Conjugacy: Exponential Model, Gamma Prior
+
+Suppose that we observe $n$ i.i.d. <span class="xref-no-num">[Exponential @sec-exp]</span> observations
+$$
+X_i \mid \lambda \; \overset{\text{i.i.d.}}{\sim} \; \mathrm{Exponential}(\lambda).
+$$
+Show that choosing a <span class="xref-no-num">[Gamma @sec-inv-gamma]</span> prior
+$$
+\lambda \sim \operatorname{Gamma}(a,b)
+$$
+yields the posterior distribution 
+$$
+\lambda \mid \underline{x} \sim \mathrm{Gamma}\left(a + n,\; 
+   b + n\bar{x}  \right).
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+We compute the posterior using Bayes theorem:
+$$
+\pi(\lambda \mid \underline{x}) \propto \pi(\lambda) \, f(\underline{x}\mid \lambda).
+$$
+
+1. **Prior PDF:**
+   Since $\lambda \sim \operatorname{Gamma}(a,b)$, its probability density function is
+   $$
+   \pi(\lambda) =  \frac{b^a}{\Gamma(a)} \lambda^{a-1} e^{-b\lambda}
+   $$
+   Ignoring the factors which do not depend on $\lambda$, this is proportional to
+   $$
+   \pi(\lambda) \propto  \lambda^{a-1} e^{-b\lambda}.
+   $$
+
+2. **Likelihood:** 
+   Since we have $n$ i.i.d. observations $X_i \mid \lambda \; \overset{\text{i.i.d.}}{\sim} \; \mathrm{Exponential}(\lambda)$, the likelihood is
+   $$
+   \begin{align*}
+   f(\underline{x} \mid \lambda) 
+     &= \prod_{i=1}^n  \lambda \, e^{-\lambda x_i} \\
+     &= \lambda^n \, \exp\left\{-\lambda \, n\bar{x}\right\}
+   \end{align*}
+   $$
+   Note that there are *no factors* that do not depend on $\lambda$.
+
+3. **Posterior:**
+   Using the prior and likelihood derived above, we have
+   $$
+   \begin{align*}
+   \pi(\lambda \mid \underline{x}) 
+   &\propto   \lambda^{a-1} e^{-b\lambda} \; \lambda^n \, \exp\left\{-\lambda \, n\bar{x}\right\} \\
+   &\propto \lambda^{a + n - 1} \exp\left\{ -\lambda(b + n\bar{x}) \right\}
+   \end{align*}
+   $$
+   This takes the form of an Gamma density function and thus
+   $$
+   \lambda \mid \underline{x} \sim \mathrm{Gamma}\left(a + n,\; 
+   b + n\bar{x}  \right),
+   $$
+   so the Gamma distribution is <span class="xref-no-num">[conjugate @def-conjugacy]</span>.
+
+</details>
+:::
+
 
 ::: {.callout-important .question appearance="minimal" data-tags="bayes conjugacy normal" data-difficulty="1" #q-normal-normal-update}
 ## Posterior calculation: Normal likelihood, Normal prior
