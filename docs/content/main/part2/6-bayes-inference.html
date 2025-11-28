@@ -1339,7 +1339,7 @@ X_i \mid \theta \sim \mathrm{Distribution}(\theta),
 </span> Note that there is only a <strong>single observation</strong> here: one experiment is “tossing the coin <span class="math inline">5</span> times and seeing how many come up heads”. The probability of observing <span class="math inline">X=1</span> is <span class="math display">
     f(x = 1 \mid \theta) = 5\theta(1-\theta)^4
 </span> If we plot this:</p>
-<div id="442b100f" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="2">
+<div id="863a4bf7" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="2">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -1543,7 +1543,7 @@ Figure&nbsp;6.4: Prior and posterior distributions for the coin bias parameter <
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="d9d8fc2f" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="3">
+<div id="ec65c763" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="3">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1647,7 +1647,7 @@ plot(theta_grid, pdf_values, type = "l",
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="e76f1a63" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="4">
+<div id="46f91e5f" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="4">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1961,12 +1961,6 @@ M = V\left(\frac{n\bar{x}}{\sigma^2}+\frac{\mu_0}{\sigma_0^2}\right)
 <section id="summary-of-conjugate-priors-and-posterior-updates" class="level3" data-number="6.3.4">
 <h3 data-number="6.3.4" class="anchored" data-anchor-id="summary-of-conjugate-priors-and-posterior-updates"><span class="header-section-number">6.3.4</span> Summary of Conjugate Priors and Posterior Updates</h3>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 40%">
-<col style="width: 17%">
-<col style="width: 26%">
-<col style="width: 15%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Likelihood Model</th>
@@ -1980,31 +1974,31 @@ M = V\left(\frac{n\bar{x}}{\sigma^2}+\frac{\mu_0}{\sigma_0^2}\right)
 <td><span class="math inline">X \mid p \sim \mathrm{Binomial}(n,p)</span></td>
 <td><span class="math inline">p \sim \mathrm{Beta}(a,b)</span></td>
 <td><span class="math inline">p \mid x \sim \mathrm{Beta}(a + x,\; b + n - x)</span></td>
-<td><span class="citation" data-cites="q-beta-binom">@q-beta-binom</span></td>
+<td><a href="../appendix/question-bank.qmd#q-beta-binom">Link</a></td>
 </tr>
 <tr class="even">
 <td><span class="math inline">X_i \mid \lambda \sim \mathrm{Poisson}(\lambda)</span> (i.i.d.)</td>
 <td><span class="math inline">\lambda \sim \mathrm{Gamma}(a,b)</span></td>
 <td><span class="math inline">\lambda \mid \underline{x} \sim \mathrm{Gamma}(a + n\bar{x},\; b + n)</span></td>
-<td><span class="citation" data-cites="q-gamma-pois">@q-gamma-pois</span></td>
+<td><a href="../appendix/question-bank.qmd#q-gamma-pois">Link</a></td>
 </tr>
 <tr class="odd">
 <td><span class="math inline">X_i \mid p \sim \mathrm{Geom}(p)</span> (i.i.d.)</td>
 <td><span class="math inline">p \sim \mathrm{Beta}(a,b)</span></td>
 <td><span class="math inline">p \mid \underline{x} \sim \mathrm{Beta}(a + n,\; b + n(\bar{x}-1))</span></td>
-<td><span class="citation" data-cites="q-beta-geom">@q-beta-geom</span></td>
+<td><a href="../appendix/question-bank.qmd#q-beta-geom">Link</a></td>
 </tr>
 <tr class="even">
 <td><span class="math inline">X_i \mid \mu \sim \mathcal{N}(\mu,\sigma^2)</span> (known <span class="math inline">\sigma^2</span>)</td>
 <td><span class="math inline">\mu \sim \mathcal{N}(\mu_0,\sigma_0^2)</span></td>
 <td><span class="math inline">\mu \mid \underline{x} \sim \mathcal{N}(M,V)</span></td>
-<td><span class="citation" data-cites="q-normal-normal">@q-normal-normal</span></td>
+<td><a href="../appendix/question-bank.qmd#q-normal-normal">Link</a></td>
 </tr>
 <tr class="odd">
 <td><span class="math inline">X_i \mid \gamma \sim \mathcal{N}(\mu,\gamma)</span> (known <span class="math inline">\mu</span>)</td>
 <td><span class="math inline">\gamma \sim \operatorname{InvGamma}(a,b)</span></td>
 <td><span class="math inline">\gamma \mid \underline{x} \sim \mathrm{InvGamma}\!\left(a + n/2,\; b + \tfrac12 \sum (x_i - \mu)^2\right)</span></td>
-<td><span class="citation" data-cites="q-normal-invgamma">@q-normal-invgamma</span></td>
+<td><a href="../appendix/question-bank.qmd#q-normal-invgamma">Link</a></td>
 </tr>
 </tbody>
 </table>
