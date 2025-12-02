@@ -673,6 +673,7 @@ window.Quarto = {
   <li><a href="#two-sample-t-test" id="toc-two-sample-t-test" class="nav-link" data-scroll-target="#two-sample-t-test"><span class="header-section-number">9.3.1</span> Two-sample <span class="math inline">t</span>-test</a></li>
   <li><a href="#chi2-contingency-table-tests" id="toc-chi2-contingency-table-tests" class="nav-link" data-scroll-target="#chi2-contingency-table-tests"><span class="header-section-number">9.3.2</span> <span class="math inline">\chi^2</span> Contingency Table Tests</a></li>
   <li><a href="#sec-mle-approx-test" id="toc-sec-mle-approx-test" class="nav-link" data-scroll-target="#sec-mle-approx-test"><span class="header-section-number">9.3.3</span> Asymptotic MLE Tests</a></li>
+  <li><a href="#sec-lrt-general" id="toc-sec-lrt-general" class="nav-link" data-scroll-target="#sec-lrt-general"><span class="header-section-number">9.3.4</span> Likelihood Ratio Test (Composite Null)</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -1831,8 +1832,8 @@ Figure&nbsp;9.1: Power curves for one-sided and two-sided z-tests, testing <span
 <p>So far we have described hypothesis tests in general: size, power, rejection regions, and the power function.</p>
 <p>We now turn to <strong>concrete examples</strong> where the distribution of the test statistic under <span class="math inline">H_0</span> is known exactly.</p>
 <p>In this subsection we focus on <strong>exact tests</strong> that are <strong>examinable</strong> in this module.</p>
-<section id="one-sample-normal-known-variance" class="level4" data-number="9.2.1.1">
-<h4 data-number="9.2.1.1" class="anchored" data-anchor-id="one-sample-normal-known-variance"><span class="header-section-number">9.2.1.1</span> One-Sample Normal (known variance)</h4>
+<section id="sec-one-sample-normal-known-var" class="level4" data-number="9.2.1.1">
+<h4 data-number="9.2.1.1" class="anchored" data-anchor-id="sec-one-sample-normal-known-var"><span class="header-section-number">9.2.1.1</span> One-Sample Normal (known variance)</h4>
 <p>In <a href="#exm-bad-test-statistic" class="quarto-xref">Example&nbsp;<span>9.1</span></a>, we considered i.i.d. normally distributed data with known variance but chose a <strong>bad</strong> test statistic. For general i.i.d. <span class="math inline">X_i \sim \mathcal{N}(\mu, \sigma^2)</span>, it is much more natural to use the <span class="xref-no-num"><a href="../part2/4-freq-point-estimation.html#def-sample-mean" class="quarto-xref">sample mean&nbsp;<span>4.1</span></a></span>, <span class="math display">
 \bar{X} = \frac{1}{n}\sum_{i=1}^n X_i
 \sim \mathcal{N}\!\left(\mu, \frac{\sigma^2}{n}\right),
@@ -1989,8 +1990,8 @@ By convention, a test rejects <strong>only when the statistic exceeds</strong> t
 </div>
 </div>
 </section>
-<section id="one-sample-normal-unknown-variance" class="level4" data-number="9.2.1.2">
-<h4 data-number="9.2.1.2" class="anchored" data-anchor-id="one-sample-normal-unknown-variance"><span class="header-section-number">9.2.1.2</span> One-Sample Normal (unknown variance)</h4>
+<section id="sec-one-sample-normal-unknown-var" class="level4" data-number="9.2.1.2">
+<h4 data-number="9.2.1.2" class="anchored" data-anchor-id="sec-one-sample-normal-unknown-var"><span class="header-section-number">9.2.1.2</span> One-Sample Normal (unknown variance)</h4>
 <p>In the confidence interval section (<a href="../part3/7-freq-interval-estimation.html#def-normal-ci-unknown-var" class="quarto-xref">Definition&nbsp;<span>7.3</span></a>) we saw that replacing the unknown variance <span class="math inline">\sigma^2</span> with the sample variance <span class="math inline">S^2</span> leads to a <strong>Student–<span class="math inline">t</span> distribution</strong>.<br>
 The same idea gives an <strong>exact hypothesis test</strong> for <span class="math inline">\mu</span> when <span class="math inline">\sigma^2</span> is unknown.</p>
 <div class="callout callout-style-simple callout-note no-icon">
@@ -2070,31 +2071,73 @@ t_{1-\alpha/2,\,23} = t_{0.975,\,23} \approx 2.069.
 <h3 data-number="9.2.2" class="anchored" data-anchor-id="approximate-hypothesis-tests"><span class="header-section-number">9.2.2</span> Approximate Hypothesis Tests</h3>
 <section id="sec-clt-approx-test" class="level4" data-number="9.2.2.1">
 <h4 data-number="9.2.2.1" class="anchored" data-anchor-id="sec-clt-approx-test"><span class="header-section-number">9.2.2.1</span> CLT based tests of the mean</h4>
-<p>The <span class="xref-no-num"><a href="../part2/4-freq-point-estimation.html#thm-clt" class="quarto-xref">Central Limit Theorem&nbsp;<span>4.1</span></a></span> tells us that for an i.i.d. sample <span class="math display">
+<p>Recall that the <span class="xref-no-num"><a href="../part2/4-freq-point-estimation.html#thm-clt" class="quarto-xref">Central Limit Theorem&nbsp;<span>4.1</span></a></span> tells us that for an i.i.d. sample <span class="math display">
 X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \text{Distribution}(\underline{\theta}),
-</span> with population mean <span class="math inline">\mathrm{E}[X_i] = \mu</span> and finite variance <span class="math inline">\mathrm{Var}(X_i) = \sigma^2</span>, the sample mean satisfies <span class="math display">
+</span> with population mean <span class="math inline">\mathrm{E}[X_i] = \mu</span> and finite variance <span class="math inline">\mathrm{Var}(X_i) = \sigma^2 &lt; \infty</span>, the sample mean satisfies <span class="math display">
 \bar{X} \;\overset{\text{approx.}}{\sim}\;
 \mathcal{N}\!\left(\mu,\; \frac{\sigma^2}{n}\right)
 \qquad \text{for large } n.
 </span></p>
-<p>This implies that for testing <span class="math display">
+<p>Therefore, we can perform an <strong>approximate hypothesis test for the population mean</strong> of <em>any</em> distribution: <span class="math display">
 H_0 : \mu = \mu_0,
-</span> we may use the <strong>CLT-based test statistic</strong> <span class="math display">
-T
-= \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}}.
+</span> against either one-sided or two-sided alternatives.</p>
+<p>There are two practically important cases, mirroring the <span class="xref-no-num"><a href="#def-one-sample-z-test" class="quarto-xref">One-Sample Z-test&nbsp;<span>9.6</span></a></span> and the <span class="xref-no-num"><a href="#def-one-sample-t-test" class="quarto-xref">One-Sample <span class="math inline">t</span>-test&nbsp;<span>9.7</span></a></span>.</p>
+</section>
+<section id="case-1-known-variance" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="case-1-known-variance">Case 1: Known Variance</h4>
+<p>If the population variance <span class="math inline">\sigma^2</span> is <strong>known</strong>, the CLT gives the test statistic <span class="math display">
+T = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}}.
 </span></p>
 <p>Under <span class="math inline">H_0</span>, and for sufficiently large <span class="math inline">n</span>, <span class="math display">
 T \;\overset{\text{approx.}}{\sim}\; \mathcal{N}(0,1),
-</span> so we may apply the <span class="xref-no-num"><a href="#def-one-sample-z-test" class="quarto-xref">one-sample Z-test&nbsp;<span>9.6</span></a></span> against either a one-sided or two-sided alternative.</p>
-<p>On the other hand, if the <strong>population variance is unknown</strong>, we replace <span class="math inline">\sigma</span> with the sample standard deviation <span class="math inline">S</span>: <span class="math display">
-S^2 = \frac{1}{n-1}\sum_{i=1}^{n} (X_i - \bar{X})^2,
-</span> and use the statistic <span class="math display">
+</span> so we may directly apply the <span class="xref-no-num"><a href="#def-one-sample-z-test" class="quarto-xref">one-sample Z-test&nbsp;<span>9.6</span></a></span>.</p>
+</section>
+<section id="case-2-unknown-variance" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="case-2-unknown-variance">Case 2: Unknown Variance</h4>
+<p>If the population variance <span class="math inline">\sigma^2</span> is <strong>unknown</strong>, we replace it with the <span class="xref-no-num"><a href="../part2/4-freq-point-estimation.html#def-sample-variance" class="quarto-xref">sample variance&nbsp;<span>4.2</span></a></span>: <span class="math display">
+S^2 = \frac{1}{n-1}\sum_{i=1}^{n} (X_i - \bar{X})^2.
+</span></p>
+<p>This gives the statistic <span class="math display">
 T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}}.
 </span></p>
-<p>For large <span class="math inline">n</span>, this again has an approximate standard normal distribution: <span class="math display">
-T \;\overset{\text{approx.}}{\sim}\; \mathcal{N}(0,1),
-</span> even though for small samples the exact distribution is <span class="math inline">t_{n-1}</span>.</p>
-<p>This leads to the following definition.</p>
+<p>For large <span class="math inline">n</span>, two approximations are valid:</p>
+<ol type="1">
+<li><p><strong>Normal Approximation:</strong> <span class="math display">
+T \;\overset{\text{approx.}}{\sim}\; \mathcal{N}(0,1).
+</span> so we may directly apply the <span class="xref-no-num"><a href="#def-one-sample-z-test" class="quarto-xref">one-sample Z-test&nbsp;<span>9.6</span></a></span>.</p></li>
+<li><p><strong>Student-<span class="math inline">t</span> Approximation:</strong><br>
+<span class="math display">
+T \;\overset{\text{approx.}}{\sim}\; t_{n-1}.
+</span> so we may directly apply the <span class="xref-no-num"><a href="#def-one-sample-t-test" class="quarto-xref">one-sample t-test&nbsp;<span>9.7</span></a></span>.</p></li>
+</ol>
+<p>Both approximations become accurate as <span class="math inline">n</span> grows. In practice, using the <strong>Student-<span class="math inline">t</span> critical values</strong> is slightly more conservative and is the conventional choice, although both are valid.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Remark (Why do both approximations hold?)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="rem-student-t-normal" class="proof remark">
+<p><span class="proof-title"><em>Remark 9.3</em> (Why do both approximations hold?). </span></p>
+<ul>
+<li><p>The CLT ensures that <span class="math inline">\displaystyle \frac{\bar{X}-\mu_0}{\sigma/\sqrt{n}}</span> is approximately normal.</p></li>
+<li><p>The sample variance <span class="math inline">S^2</span> is a <span class="xref-no-num"><a href="../part2/4-freq-point-estimation.html#prp-consistency-samplevariance" class="quarto-xref">consistent estimator&nbsp;<span>4.6</span></a></span> of <span class="math inline">\sigma^2</span>, so replacing <span class="math inline">\sigma</span> with <span class="math inline">S</span> does not change the asymptotic distribution.</p></li>
+<li><p>The Student-<span class="math inline">t</span> distribution converges to the standard normal distribution as <span class="math inline">n \to \infty</span>, so using <span class="math inline">t_{n-1}</span> critical values remains valid and is often preferred.</p></li>
+</ul>
+<p>Thus, <span class="math display">
+\frac{\bar{X} - \mu_0}{S/\sqrt{n}}
+\;\overset{d}{\longrightarrow}\; \mathcal{N}(0,1),
+</span> regardless of the underlying population distribution (provided it has finite variance).</p>
+</div>
+</div>
+</div>
+</div>
 <div class="callout callout-style-simple callout-note no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -2102,7 +2145,7 @@ T \;\overset{\text{approx.}}{\sim}\; \mathcal{N}(0,1),
 </div>
 <div class="callout-body-container">
 <div id="def-clt-test" class="definition theorem">
-<p><span class="theorem-title"><strong>Definition 9.8 (CLT Approximate Tests for the Mean)</strong></span> Let <span class="math inline">X_1,\ldots,X_n</span> be i.i.d. with unknown mean <span class="math inline">\mu</span> and finite variance.</p>
+<p><span class="theorem-title"><strong>Definition 9.8 (CLT Approximate Tests for the Mean)</strong></span> Let <span class="math inline">X_1,\ldots,X_n</span> be i.i.d. with unknown mean <span class="math inline">\mu</span> and finite variance <span class="math inline">\mathrm{Var}[X_i] = \sigma^2 &lt; \infty</span>.</p>
 <ul>
 <li><p><strong>If the population variance <span class="math inline">\sigma^2</span> is known</strong>, use the Z-statistic<br>
 <span class="math display">
@@ -2113,9 +2156,13 @@ with <span class="math inline">T \overset{\text{approx.}}{\sim} \mathcal{N}(0,1)
 <span class="math display">
 T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}},
 </span><br>
-which satisfies <span class="math inline">T \overset{\text{approx.}}{\sim} \mathcal{N}(0,1)</span> for large <span class="math inline">n</span>.</p></li>
+which satisfies both</p>
+<ol type="1">
+<li><span class="math inline">T \overset{\text{approx.}}{\sim} \mathcal{N}(0,1)</span> for large <span class="math inline">n</span>.</li>
+<li><span class="math inline">T \overset{\text{approx.}}{\sim} t_{n-1}</span> for large <span class="math inline">n</span>.</li>
+</ol></li>
 </ul>
-<p>In both cases, one-sided or two-sided rejection regions are defined exactly as in the <span class="xref-no-num"><a href="#def-one-sample-z-test" class="quarto-xref">one-sample Z-test&nbsp;<span>9.6</span></a></span> or <span class="xref-no-num"><a href="#def-one-sample-t-test" class="quarto-xref">one-sample <span class="math inline">t</span>-test&nbsp;<span>9.7</span></a></span>.</p>
+<p>In both cases, one-sided or two-sided rejection regions are defined exactly as in the <span class="xref-no-num"><a href="#def-one-sample-z-test" class="quarto-xref">one-sample Z-test&nbsp;<span>9.6</span></a></span> or <span class="xref-no-num"><a href="#def-one-sample-t-test" class="quarto-xref">one-sample t-test&nbsp;<span>9.7</span></a></span>.</p>
 </div>
 </div>
 </div>
@@ -2127,14 +2174,292 @@ which satisfies <span class="math inline">T \overset{\text{approx.}}{\sim} \math
 </div>
 <div class="callout-body-container">
 <div id="exm-test-of-proportions" class="theorem example">
-<p><span class="theorem-title"><strong>Example 9.6 (Test of Proportions)</strong></span> &nbsp;</p>
+<p><span class="theorem-title"><strong>Example 9.6 (Binomial Test of Proportions (CLT Approximation))</strong></span> A conservation biologist is studying a population of a rare frog species. From previous long-term monitoring, it is believed that the proportion of frogs carrying a particular beneficial genetic marker is</p>
+<p><span class="math display">
+p_0 = 0.30.
+</span></p>
+<p>After a new conservation intervention, the biologist captures a random sample of <span class="math inline">n = 200</span> frogs and finds that <span class="math inline">x = 76</span> of them carry the marker.</p>
+<p>Assuming the observation <span class="math inline">X = x</span> arose from a <span class="math inline">\mathrm{Binomial}(n, p)</span> distribution, perform the test</p>
+<p><span class="math display">
+H_0 : p = 0.30,
+\qquad
+H_1 : p &gt; 0.30,
+</span></p>
+<p>using an <strong>approximate CLT-based test</strong> of size <span class="math inline">\alpha = 0.05</span>.</p>
+<details>
+<summary><strong>Solution</strong></summary>
+<p>For a Binomial sample,<br>
+<span class="math display">
+X \sim \mathrm{Binomial}(n,p), \qquad \hat{p} = X/n.
+</span></p>
+<hr>
+<p><strong>Note:</strong> The <span class="xref-no-num"><a href="../part2/4-freq-point-estimation.html#thm-clt" class="quarto-xref">CLT&nbsp;<span>4.1</span></a></span> applies directly to this setting because a Binomial random variable can be written as a sum of i.i.d. Bernoulli trials: <span class="math display">
+X = \sum_{i=1}^n X_i,
+\qquad
+X_i \sim \mathrm{Bernoulli}(p).
+</span></p>
+<p>So, the sample proportion <span class="math inline">\hat{p}</span> is simply the <strong>sample mean</strong>, <span class="math display">
+\hat{p} = \frac{1}{n}\sum_{i=1}^n X_i,
+</span> and the true proportion <span class="math inline">p</span> is the <strong>population mean</strong> of the Bernoulli distribution.</p>
+<p>Therefore, by the CLT, <span class="math display">
+\hat{p}
+\;\overset{\text{approx.}}{\sim}\;
+\mathcal{N}\!\left(p,\; \frac{p(1-p)}{n}\right)
+\qquad \text{for large } n,
+</span> and this approximation forms the basis of the <strong>approximate Binomial test</strong>.</p>
+<hr>
+<p>The sample proportion <span class="math inline">\hat{p}</span> has mean <span class="math inline">p</span> and variance <span class="math inline">p(1-p)/n</span>. The CLT tells us that, <strong>for large <span class="math inline">n</span></strong>, <span class="math display">
+\hat{p}
+\;\overset{\text{approx.}}{\sim}\;
+\mathcal{N}\!\left(p,\; \frac{p(1-p)}{n}\right).
+</span></p>
+<p>Under <span class="math inline">H_0 : p = p_0</span>, the <strong>CLT Z-statistic</strong> is <span class="math display">
+T
+= \frac{\hat{p} - p_0}{\sqrt{\,p_0(1-p_0)/n\,}}
+= \frac{\tfrac{76}{200} - 0.30}{\sqrt{0.30 \cdot 0.70 / 200}}.
+</span></p>
+<p>Compute the numerator: <span class="math display">
+\hat{p} - p_0 = 0.38 - 0.30 = 0.08.
+</span></p>
+<p>Compute the denominator: <span class="math display">
+\sqrt{\frac{0.30 \cdot 0.70}{200}}
+= \sqrt{0.00105}
+\approx 0.0324.
+</span></p>
+<p>Thus the observed statistic is <span class="math display">
+T_{\text{obs}}
+= \frac{0.08}{0.0324}
+\approx 2.47.
+</span></p>
+<p>Under <span class="math inline">H_0</span>, and for large <span class="math inline">n</span>,<br>
+<span class="math display">
+T_{\text{obs}} \overset{\text{approx.}}{\sim} \mathcal{N}(0,1).
+</span></p>
+<p><strong>Decision</strong></p>
+<p>For a one-sided test with <span class="math inline">\alpha = 0.05</span>, the rejection region is <span class="math display">
+T &gt; z_{0.95} \approx 1.645.
+</span></p>
+<p>Since <span class="math display">
+|T_{\text{obs}}| \approx 2.47 &gt; 1.645.
+</span> we <strong>reject</strong> <span class="math inline">H_0</span> at the 5% level.</p>
+<p><strong>Conclusion</strong></p>
+<p>There is statistically significant evidence that the true proportion of frogs with the beneficial genetic marker is greater than the historical value <span class="math inline">p_0 = 0.30</span> after the conservation intervention.</p>
+</details>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="likelihood-ratio-test" class="level4" data-number="9.2.2.2">
-<h4 data-number="9.2.2.2" class="anchored" data-anchor-id="likelihood-ratio-test"><span class="header-section-number">9.2.2.2</span> Likelihood Ratio Test</h4>
+<section id="sec-lrt" class="level4" data-number="9.2.2.2">
+<h4 data-number="9.2.2.2" class="anchored" data-anchor-id="sec-lrt"><span class="header-section-number">9.2.2.2</span> Likelihood Ratio Test (Simple Null)</h4>
+<p>Previous tests (Z-tests, <span class="math inline">t</span>-tests, CLT tests) required choosing a test statistic by hand. The <strong>Likelihood Ratio Test</strong> (LRT) instead gives a general rule for building hypothesis tests for parameter values directly from <strong>any statistical model</strong>.</p>
+<p>Suppose we observe data <span class="math inline">\underline{x}</span> from a statistical model with likelihood <span class="math display">
+L(\theta ; \underline{x}) = f(\underline{x} \mid \theta),
+</span> and we wish to test<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> <span class="math display">
+H_0 : \theta = \theta_0, \qquad H_1: \theta \neq \theta_0.
+</span></p>
+<p>The guiding idea is intuitive:</p>
+<blockquote class="blockquote">
+<p><strong>If <span class="math inline">H_0</span> is true, then the likelihood at <span class="math inline">\theta_0</span> should be close to the maximum likelihood achievable over all <span class="math inline">\theta</span>.</strong></p>
+<p><strong>If the likelihood at <span class="math inline">\theta_0</span> is <em>much smaller</em>, the data are inconsistent with <span class="math inline">H_0</span>.</strong></p>
+</blockquote>
+<p>We formalise this using the <strong>likelihood ratio statistic</strong> <span class="math display">
+\lambda(\underline{x})=\frac{L(\theta_0 ; \underline{x})}{\displaystyle \max_{\theta \in \Theta} L(\theta ; \underline{x})}.
+</span> Here:</p>
+<ul>
+<li>The numerator is the likelihood under the null.</li>
+<li>The denominator is the <strong>maximum likelihood</strong>, achieved at the <strong>MLE</strong> <span class="math inline">\hat{\theta}_{\mathrm{MLE}}</span>.</li>
+</ul>
+<p>Thus we may write <span class="math display">
+\lambda(\underline{x}) = \frac{L(\theta_0 ; \underline{x})}{L(\hat{\theta}_{\mathrm{MLE}} ; \underline{x})}, \qquad 0 \le \lambda(\underline{x}) \le 1.
+</span></p>
+<p>Small values of <span class="math inline">\lambda(\underline{x})</span> indicate that the data fit <em>much better</em> under some parameter value <span class="math inline">\hat{\theta} \neq \theta_0</span> than under the null. Thus, small <span class="math inline">\lambda</span> provides evidence against <span class="math inline">H_0</span>.</p>
+<p>In practice, it is more convenient to work with the transformed statistic <span class="math display">
+T = -2 \log \lambda(\underline{X}),
+</span> because this has a simple <strong>asymptotic distribution</strong> under the null hypothesis:</p>
+<div class="callout callout-style-simple callout-note no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="thm-wilks" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 9.1 (Wilks’ Theorem (large-sample behaviour, simple case))</strong></span> Under mild regularity conditions and assuming the null hypothesis<br>
+<span class="math display">
+H_0 : \theta = \theta_0
+</span> is true, the likelihood ratio test statistic <span class="math display">
+T = -2 \log \lambda(\underline{x})
+</span> satisfies, for large sample size <span class="math inline">n</span>, <span class="math display">
+T \;\overset{\text{approx.}}{\sim}\; \chi^2_{1}.
+</span></p>
+<p>That is, when testing a <strong>single parameter value</strong>, the LRT statistic has an approximate chi-squared distribution with <strong>1 degree of freedom</strong>, regardless of the underlying parametric model.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-lrt-simple" class="definition theorem">
+<p><span class="theorem-title"><strong>Definition 9.9 (Likelihood Ratio Test (simple null))</strong></span> Define the likelihood ratio statistic <span class="math display">
+\lambda(\underline{x})
+= \frac{L(\theta_0 ; \underline{x})}{L(\hat{\theta}_{\mathrm{MLE}} ; \underline{x})},
+</span> where the numerator is the likelihood under the null hypothesis and the denominator is the maximum likelihood over all parameter values.</p>
+<p>We work with the transformed statistic <span class="math display">
+T = -2 \log \lambda(\underline{x}).
+</span></p>
+<p>Under the simple null hypothesis <span class="math inline">H_0 : \theta = \theta_0</span>, <span class="xref-no-num"><a href="#thm-wilks" class="quarto-xref">Wilks’ theorem&nbsp;<span>9.1</span></a></span> states that, for large <span class="math inline">n</span>: <span class="math display">
+T \;\overset{\text{approx.}}{\sim}\; \chi^2_{1}.
+</span></p>
+<p>For a test of size <span class="math inline">\alpha</span>, we <strong>reject</strong> <span class="math inline">H_0</span> whenever <span class="math display">
+-2 \log \lambda(\underline{x}) &gt; \chi^2_{1,\,1-\alpha},
+</span> where <span class="math inline">\chi^2_{1,\,1-\alpha}</span> is the <span class="math inline">(1-\alpha)</span> quantile of the <span class="math inline">\chi^2_1</span> distribution.</p>
+</div>
+</div>
+</div>
+</div>
+<p>When performing a <strong>LRT</strong>, it is often convenient to use the following form of the test statistic:</p>
+<div class="callout callout-style-simple callout-note no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="prp-lrt-test-statistic" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposition 9.1 (Alternative Form of LRT Test Statistic)</strong></span> Under <span class="math inline">H_0</span>, it can be shown that the LRT test statistic <span class="math inline">T = -2 \log \lambda(\underline{x})</span> can be written as <span class="math display">
+T = 2\left( \ell(\hat{\theta}_{\mathrm{MLE}} \,; \underline{x}) - \ell(\theta_0\, ; \underline{x})\right),
+</span> where <span class="math inline">\ell(\theta \,; \underline{x}) = \log L(\theta ; \underline{x})</span> is the log-likelihood.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="prf-lrt-test-statistic" class="proof">
+<p><span class="proof-title"><em>Proof 9.1</em>. </span>We start from the definition of the likelihood ratio statistic <span class="math display">
+\lambda(\underline{x})
+= \frac{L(\theta_0 ; \underline{x})}{L(\hat{\theta}_{\mathrm{MLE}} ; \underline{x})},
+</span> where:</p>
+<ul>
+<li><span class="math inline">L(\theta_0 ; \underline{x})</span> is the likelihood under the null hypothesis <span class="math inline">H_0 : \theta = \theta_0</span>;</li>
+<li><span class="math inline">L(\hat{\theta}_{\mathrm{MLE}} ; \underline{x})</span> is the maximum likelihood over all <span class="math inline">\theta \in \Theta</span>.</li>
+</ul>
+<p>The LRT test statistic is defined as <span class="math display">
+T = -2 \log \lambda(\underline{x}).
+</span></p>
+<p>Substitute the expression for <span class="math inline">\lambda(\underline{x})</span>: <span class="math display">
+\begin{align*}
+T
+&amp;= -2 \log \left(
+\frac{L(\theta_0 ; \underline{x})}{L(\hat{\theta}_{\mathrm{MLE}} ; \underline{x})}
+\right) \\
+&amp;= -2 \left[
+\log L(\theta_0 ; \underline{x})
+- \log L(\hat{\theta}_{\mathrm{MLE}} ; \underline{x})
+\right].
+\end{align*}
+</span> Now define the <strong>log-likelihood</strong> <span class="math display">
+\ell(\theta \,; \underline{x}) = \log L(\theta ; \underline{x}).
+</span></p>
+<p>In terms of <span class="math inline">\ell</span>, we can rewrite <span class="math inline">T</span> as <span class="math display">
+\begin{align*}
+T
+&amp;= -2 \left[
+\ell(\theta_0 \,; \underline{x}) - \ell(\hat{\theta}_{\mathrm{MLE}} \,; \underline{x})
+\right] \\
+&amp;= 2 \left[
+\ell(\hat{\theta}_{\mathrm{MLE}} \,; \underline{x}) - \ell(\theta_0 \,; \underline{x})
+\right].
+\end{align*}
+</span> This is exactly the claimed alternative form: <span class="math display">
+T = 2\left( \ell(\hat{\theta}_{\mathrm{MLE}} \,; \underline{x}) - \ell(\theta_0\, ; \underline{x})\right).
+</span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exm-lrt-normal-mean" class="theorem example">
+<p><span class="theorem-title"><strong>Example 9.7 (LRT for a Normal Mean (known variance))</strong></span> Suppose <span class="math inline">X_1,\ldots,X_n</span> are i.i.d. <span class="math display">
+X_i \sim \mathcal{N}(\mu, \sigma^2),
+</span> with <strong>known</strong> variance <span class="math inline">\sigma^2</span>.</p>
+<p>We observe a sample with <span class="math display">
+\bar{x} = 5.3, \qquad n = 20, \qquad \sigma^2 = 4.
+</span></p>
+<p>We wish to test <span class="math display">
+H_0 : \mu = 5
+\qquad \text{vs.} \qquad
+H_1 : \mu \neq 5,
+</span> using the <strong>likelihood ratio test</strong> at size <span class="math inline">\alpha = 0.05</span>.</p>
+<details>
+<summary><strong>Solution</strong></summary>
+<p>The likelihood for <span class="math inline">\mu</span> is <span class="math display">
+L(\mu ; \underline{x})
+= \prod_{i=1}^n
+\frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(
+-\frac{(x_i - \mu)^2}{2\sigma^2}
+\right),
+</span> and the log-likelihood is <span class="math display">
+\ell(\mu ; \underline{x}) = -\frac{n}{2} \log (2\pi \sigma^2) - \sum_{i=1}^n\frac{(x_i - \mu)^2}{2\sigma^2}.
+</span> Expanding the quadratic, we have <span class="math display">
+\ell(\mu ; \underline{x}) = -\frac{n}{2} \log (2\pi \sigma^2) - \frac{1}{2\sigma^2}\left(\sum_{i=1}^n x_i ^2  - 2 \mu n\bar{x} + n\mu^2 \right).
+</span></p>
+<p>The MLE is <span class="math inline">\hat{\mu} = \bar{x}</span>, so <span class="math display">
+L(\hat{\mu} ; \underline{x}) = L(\bar{x} ; \underline{x}),
+\qquad
+L(\theta_0 ; \underline{x}) = L(5 ; \underline{x}).
+</span></p>
+<p>The likelihood ratio statistic is <span class="math display">
+\lambda(\underline{x})
+= \frac{L(5 ; \underline{x})}{L(\bar{x} ; \underline{x})}.
+</span></p>
+<p>For the normal model with known variance and using <a href="#prp-lrt-test-statistic" class="quarto-xref">Proposition&nbsp;<span>9.1</span></a>, we have <span class="math display">
+\begin{align*}
+T &amp;= 2\left( \ell( \bar{x} \,; \underline{x}) - \ell(5\, ; \underline{x})\right) \\
+&amp;= 2\left( -\frac{1}{2\sigma^2}(- 2 n \bar{x}^2 + n \bar{x}^2) + \frac{1}{2\sigma^2}(- 10 n \bar{x} + 25n) \right) \\
+&amp;= \frac{n}{\sigma^2} \left( \bar{x}^2 - 10\bar{x} + 25 \right) \\
+&amp;= \frac{n}{\sigma^2}(\bar{x} - 5)^2.
+\end{align*}
+</span> Substitute the observed values: <span class="math display">
+T_{\text{obs}}
+= \frac{20}{4}(5.3 - 5)^2
+= 5 \times 0.3^2
+= 5 \times 0.09
+= 0.45.
+</span></p>
+<p>Under <span class="math inline">H_0</span>, and for large <span class="math inline">n</span>, Wilks’ theorem gives <span class="math display">
+T \;\overset{\text{approx.}}{\sim}\; \chi^2_1.
+</span></p>
+<p>For a two-sided test of size <span class="math inline">\alpha = 0.05</span>, the rejection region is <span class="math display">
+T &gt; \chi^2_{1,\,0.95} \approx 3.84.
+</span></p>
+<p>Since <span class="math display">
+T_{\text{obs}} = 0.45 &lt; 3.84,
+</span> we <strong>fail to reject</strong> <span class="math inline">H_0</span> at the 5% level.</p>
+<p><strong>Conclusion.</strong> There is no statistically significant evidence that the mean <span class="math inline">\mu</span> differs from <span class="math inline">5</span>.</p>
+</details>
+</div>
+</div>
+</div>
+</div>
 </section>
 </section>
 </section>
@@ -2154,14 +2479,14 @@ which satisfies <span class="math inline">T \overset{\text{approx.}}{\sim} \math
 <p>From <a href="../part2/5-likelihood.html#thm-asymp-mle" class="quarto-xref">Theorem&nbsp;<span>5.3</span></a>, under standard regularity conditions, <span class="math display">
 \sqrt{n}\,(\hat{\theta}_n - \theta_0)
 \;\overset{d}{\longrightarrow}\;
-\mathcal{N}\big(0,\; \mathcal{I}_n(\theta_0)^{-1}\big),
-</span> where <span class="math inline">\mathcal{I}_n(\theta_0)</span> is the <strong>Fisher information</strong> of the whole-sample at the true parameter value.</p>
+\mathcal{N}\big(0,\; \mathcal{I}_1(\theta_0)^{-1}\big),
+</span> where <span class="math inline">\mathcal{I}_1(\theta_0)</span> is the <strong>Fisher information</strong> of a single observation at the true parameter value.</p>
 <p>This yields an approximate hypothesis test for <span class="math display">
 H_0 : \theta = \theta_0
 </span> that closely parallels the CLT Z-test.</p>
 <p>Rewriting the asymptotic normality statement, <span class="math display">
 \frac{\hat{\theta}_n - \theta_0}
-{\sqrt{\,\mathcal{I}(\theta_0)^{-1}/n\,}}
+{\sqrt{\,\mathcal{I}_n(\theta_0)^{-1}\,}}
 \;\overset{\text{approx.}}{\sim}\;
 \mathcal{N}(0,1),
 </span> which motivates the <strong>Wald statistic</strong> <span class="math display">
@@ -2174,7 +2499,7 @@ T \;=\;\frac{\hat{\theta}_n - \theta_0}{\sqrt{\mathcal{I}_n(\hat{\theta}_n)^{-1}
 </div>
 <div class="callout-body-container">
 <div id="def-wald-test" class="definition theorem">
-<p><span class="theorem-title"><strong>Definition 9.9 (Wald Test)</strong></span> Let <span class="math display">
+<p><span class="theorem-title"><strong>Definition 9.10 (Wald Test)</strong></span> Let <span class="math display">
 T \;=\;\frac{\hat{\theta}_n - \theta_0}{\sqrt{\mathcal{I}_n(\hat{\theta}_n)^{-1}}}.
 </span> be the <strong>Wald statistic</strong>.</p>
 <ul>
@@ -2196,11 +2521,14 @@ T &lt; z_{\alpha}.
 </div>
 </div>
 <p>The Wald test is <strong>asymptotically valid</strong>, meaning that its size approaches <span class="math inline">\alpha</span> as <span class="math inline">n \to \infty</span>.</p>
-<p>The Wald test extends the one-sample Z-test to <strong>any parametric model</strong> where:</p>
+<p>The Wald test extends the <span class="xref-no-num"><a href="#def-one-sample-z-test" class="quarto-xref">one-sample Z-test&nbsp;<span>9.6</span></a></span> to <strong>any parametric model</strong> where:</p>
 <ol type="1">
 <li>you can compute the MLE <span class="math inline">\hat{\theta}_n</span>,</li>
 <li>you can compute (or approximate) the Fisher information.</li>
 </ol>
+</section>
+<section id="sec-lrt-general" class="level3" data-number="9.3.4">
+<h3 data-number="9.3.4" class="anchored" data-anchor-id="sec-lrt-general"><span class="header-section-number">9.3.4</span> Likelihood Ratio Test (Composite Null)</h3>
 
 
 </section>
@@ -2210,6 +2538,10 @@ T &lt; z_{\alpha}.
 <ol>
 <li id="fn1"><p>In general, we can consider <strong>hypothesis tests</strong> of the form <span class="math inline">H_0: \theta \in \Theta_0</span>, for some subset <span class="math inline">\Theta_0 \subseteq \Theta</span> of the parameter space <span class="math inline">\Theta</span>. The alternative hypothesis is that <span class="math inline">\theta</span> belongs to the relative complement <span class="math inline">H_1: \theta \in \Theta\setminus \Theta_0</span>. A test is called a <strong>composite test</strong> if <span class="math inline">\Theta_0</span> includes more than a single point.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>It is common to say “reject <span class="math inline">H_0</span>” when the <span class="math inline">p</span>-value is small, and “fail to reject <span class="math inline">H_0</span>” otherwise. Both phrases should be interpreted with care: rejecting <span class="math inline">H_0</span> does <strong>not</strong> prove it is false, and failing to reject <span class="math inline">H_0</span> does <strong>not</strong> prove it is true. Instead, hypothesis testing provides a decision rule about whether the data are sufficiently inconsistent with <span class="math inline">H_0</span> at a chosen significance level.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>In general, the LRT allows testing a <strong>composite null</strong> <span class="math inline">H_0 : \theta \in \Theta_0</span> against a composite alternative <span class="math inline">H_1 : \theta \in \Theta \setminus \Theta_0</span>. Wilks’ theorem states that, under suitable regularity conditions, the statistic <span class="math display">
+-2 \log \lambda
+</span> is <strong>asymptotically</strong> <span class="math inline">\chi^2_{D - d}</span>, where <span class="math inline">D = \dim(\Theta)</span> is the dimension of the full parameter space and <span class="math inline">d = \dim(\Theta_0)</span> is the dimension of the null parameter space.</p>
+<p>In this course, we consider only the <strong>simple null</strong> <span class="math inline">H_0 : \theta = \theta_0</span>, which corresponds to <span class="math inline">\dim(\Theta_0) = 0</span>. If the model has <span class="math inline">D</span> parameters, then the LRT statistic is therefore <strong>asymptotically</strong> <span class="math inline">\chi^2_D</span> under <span class="math inline">H_0</span>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 

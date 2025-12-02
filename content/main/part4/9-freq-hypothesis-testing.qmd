@@ -864,7 +864,7 @@ We now turn to **concrete examples** where the distribution of the test statisti
 
 In this subsection we focus on **exact tests** that are **examinable** in this module.
 
-#### One-Sample Normal (known variance)
+#### One-Sample Normal (known variance) {#sec-one-sample-normal-known-var}
 
 In @exm-bad-test-statistic, we considered i.i.d. normally distributed data with known variance but chose a **bad** test statistic. For general i.i.d. $X_i \sim \mathcal{N}(\mu, \sigma^2)$, it is much more natural to use the <span class="xref-no-num">[sample mean @def-sample-mean]</span>,
 $$
@@ -1088,7 +1088,7 @@ $2.0$ mm in this dinosaur population.
 
 :::
 
-#### One-Sample Normal (unknown variance)
+#### One-Sample Normal (unknown variance) {#sec-one-sample-normal-unknown-var}
 
 In the confidence interval section (@def-normal-ci-unknown-var) we saw that replacing the unknown variance $\sigma^2$ with the sample variance $S^2$ leads to a **Student–$t$ distribution**.  
 The same idea gives an **exact hypothesis test** for $\mu$ when $\sigma^2$ is unknown.
@@ -1184,54 +1184,89 @@ $2.0\text{ mm}$ in this dinosaur population.
 
 #### CLT based tests of the mean {#sec-clt-approx-test}
 
-The <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span> tells us that for an i.i.d. sample
+Recall that the <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span> tells us that for an i.i.d. sample
 $$
 X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \text{Distribution}(\underline{\theta}),
 $$
-with population mean $\mathrm{E}[X_i] = \mu$ and finite variance $\mathrm{Var}(X_i) = \sigma^2$, the sample mean satisfies
+with population mean $\mathrm{E}[X_i] = \mu$ and finite variance $\mathrm{Var}(X_i) = \sigma^2 < \infty$, the sample mean satisfies
 $$
-\bar{X} \;\overset{\text{approx.}}{\sim}\; 
+\bar{X} \;\overset{\text{approx.}}{\sim}\;
 \mathcal{N}\!\left(\mu,\; \frac{\sigma^2}{n}\right)
 \qquad \text{for large } n.
 $$
 
-This implies that for testing
+Therefore, we can perform an **approximate hypothesis test for the population mean** of *any* distribution:
 $$
 H_0 : \mu = \mu_0,
 $$
-we may use the **CLT-based test statistic**
+against either one-sided or two-sided alternatives.
+
+There are two practically important cases, mirroring the <span class="xref-no-num">[One-Sample Z-test @def-one-sample-z-test]</span> and the <span class="xref-no-num">[One-Sample $t$-test @def-one-sample-t-test]</span>.
+
+#### Case 1: Known Variance {.unnumbered}
+
+If the population variance $\sigma^2$ is **known**, the CLT gives the test statistic
 $$
-T
-= \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}}.
+T = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}}.
 $$
 
 Under $H_0$, and for sufficiently large $n$,
 $$
 T \;\overset{\text{approx.}}{\sim}\; \mathcal{N}(0,1),
 $$
-so we may apply the <span class="xref-no-num">[one-sample Z-test @def-one-sample-z-test]</span> against either a one-sided or two-sided alternative.
+so we may directly apply the <span class="xref-no-num">[one-sample Z-test @def-one-sample-z-test]</span>.
 
-On the other hand, if the **population variance is unknown**, we replace $\sigma$ with the sample standard deviation $S$:
+#### Case 2: Unknown Variance {.unnumbered}
+
+If the population variance $\sigma^2$ is **unknown**, we replace it with the <span class="xref-no-num">[sample variance @def-sample-variance]</span>:
 $$
-S^2 = \frac{1}{n-1}\sum_{i=1}^{n} (X_i - \bar{X})^2,
+S^2 = \frac{1}{n-1}\sum_{i=1}^{n} (X_i - \bar{X})^2.
 $$
-and use the statistic
+
+This gives the statistic
 $$
 T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}}.
 $$
 
-For large $n$, this again has an approximate standard normal distribution:
-$$
-T \;\overset{\text{approx.}}{\sim}\; \mathcal{N}(0,1),
-$$
-even though for small samples the exact distribution is $t_{n-1}$.  
+For large $n$, two approximations are valid:
 
-This leads to the following definition.
+1. **Normal Approximation:**
+   $$
+   T \;\overset{\text{approx.}}{\sim}\; \mathcal{N}(0,1).
+   $$
+   so we may directly apply the <span class="xref-no-num">[one-sample Z-test @def-one-sample-z-test]</span>.
+
+2. **Student-$t$ Approximation:**  
+   $$
+   T \;\overset{\text{approx.}}{\sim}\; t_{n-1}.
+   $$
+   so we may directly apply the <span class="xref-no-num">[one-sample t-test @def-one-sample-t-test]</span>.
+
+Both approximations become accurate as $n$ grows. In practice, using the **Student-$t$ critical values** is slightly more conservative and is the conventional choice, although both are valid.
+
+::: {.remark #rem-student-t-normal}
+#### Why do both approximations hold?
+
+- The CLT ensures that $\displaystyle \frac{\bar{X}-\mu_0}{\sigma/\sqrt{n}}$ is approximately normal.
+
+- The sample variance $S^2$ is a <span class="xref-no-num">[consistent estimator @prp-consistency-samplevariance]</span> of $\sigma^2$, so replacing $\sigma$ with $S$ does not change the asymptotic distribution.
+
+- The Student-$t$ distribution converges to the standard normal distribution as $n \to \infty$, so using $t_{n-1}$ critical values remains valid and is often preferred.
+
+Thus,
+$$
+\frac{\bar{X} - \mu_0}{S/\sqrt{n}}
+\;\overset{d}{\longrightarrow}\; \mathcal{N}(0,1),
+$$
+regardless of the underlying population distribution (provided it has finite variance).
+:::
+
+
 
 ::: {.definition #def-clt-test}
 ### CLT Approximate Tests for the Mean
 
-Let $X_1,\ldots,X_n$ be i.i.d. with unknown mean $\mu$ and finite variance.
+Let $X_1,\ldots,X_n$ be i.i.d. with unknown mean $\mu$ and finite variance $\mathrm{Var}[X_i] = \sigma^2 < \infty$.
 
 - **If the population variance $\sigma^2$ is known**, use the Z-statistic  
   $$
@@ -1243,22 +1278,394 @@ Let $X_1,\ldots,X_n$ be i.i.d. with unknown mean $\mu$ and finite variance.
   $$
   T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}},
   $$  
-  which satisfies $T \overset{\text{approx.}}{\sim} \mathcal{N}(0,1)$ for large $n$.
+  which satisfies both 
+  1. $T \overset{\text{approx.}}{\sim} \mathcal{N}(0,1)$ for large $n$.
+  2. $T \overset{\text{approx.}}{\sim} t_{n-1}$ for large $n$.
 
-In both cases, one-sided or two-sided rejection regions are defined exactly as in the <span class="xref-no-num">[one-sample Z-test @def-one-sample-z-test]</span> or <span class="xref-no-num">[one-sample $t$-test @def-one-sample-t-test]</span>.
+In both cases, one-sided or two-sided rejection regions are defined exactly as in the <span class="xref-no-num">[one-sample Z-test @def-one-sample-z-test]</span> or <span class="xref-no-num">[one-sample t-test @def-one-sample-t-test]</span>.
 :::
 
 
 
 ::: {#exm-test-of-proportions}
-#### Test of Proportions
+#### Binomial Test of Proportions (CLT Approximation)
+
+A conservation biologist is studying a population of a rare frog species. From previous long-term monitoring, it is believed that the proportion of frogs carrying a particular beneficial genetic marker is
+
+$$
+p_0 = 0.30.
+$$
+
+After a new conservation intervention, the biologist captures a random sample of $n = 200$ frogs and finds that $x = 76$ of them carry the marker.
+
+Assuming the observation $X = x$ arose from a $\mathrm{Binomial}(n, p)$ distribution, perform the test
+
+$$
+H_0 : p = 0.30,
+\qquad
+H_1 : p > 0.30,
+$$
+
+using an **approximate CLT-based test** of size $\alpha = 0.05$.
+
+```{=html}
+<details>
+<summary><strong>Solution</strong></summary>
+```
+For a Binomial sample,  
+$$
+X \sim \mathrm{Binomial}(n,p), \qquad \hat{p} = X/n.
+$$
+
+---
+
+**Note:** The <span class="xref-no-num">[CLT @thm-clt]</span> applies directly to this setting because a Binomial random variable can be written as a sum of i.i.d. Bernoulli trials:
+$$
+X = \sum_{i=1}^n X_i, 
+\qquad 
+X_i \sim \mathrm{Bernoulli}(p).
+$$
+
+So, the sample proportion $\hat{p}$ is simply the **sample mean**,
+$$
+\hat{p} = \frac{1}{n}\sum_{i=1}^n X_i,
+$$
+and the true proportion $p$ is the **population mean** of the Bernoulli distribution.
+
+Therefore, by the CLT,
+$$
+\hat{p} 
+\;\overset{\text{approx.}}{\sim}\;
+\mathcal{N}\!\left(p,\; \frac{p(1-p)}{n}\right)
+\qquad \text{for large } n,
+$$
+and this approximation forms the basis of the **approximate Binomial test**.
+
+---
+
+The sample proportion $\hat{p}$ has mean $p$ and variance $p(1-p)/n$. The CLT tells us that, **for large $n$**,
+$$
+\hat{p} 
+\;\overset{\text{approx.}}{\sim}\;
+\mathcal{N}\!\left(p,\; \frac{p(1-p)}{n}\right).
+$$
+
+Under $H_0 : p = p_0$, the **CLT Z-statistic** is
+$$
+T
+= \frac{\hat{p} - p_0}{\sqrt{\,p_0(1-p_0)/n\,}}
+= \frac{\tfrac{76}{200} - 0.30}{\sqrt{0.30 \cdot 0.70 / 200}}.
+$$
+
+Compute the numerator:
+$$
+\hat{p} - p_0 = 0.38 - 0.30 = 0.08.
+$$
+
+Compute the denominator:
+$$
+\sqrt{\frac{0.30 \cdot 0.70}{200}}
+= \sqrt{0.00105}
+\approx 0.0324.
+$$
+
+Thus the observed statistic is
+$$
+T_{\text{obs}}
+= \frac{0.08}{0.0324}
+\approx 2.47.
+$$
+
+Under $H_0$, and for large $n$,  
+$$
+T_{\text{obs}} \overset{\text{approx.}}{\sim} \mathcal{N}(0,1).
+$$
+
+**Decision**
+
+For a one-sided test with $\alpha = 0.05$, the rejection region is
+$$
+T > z_{0.95} \approx 1.645.
+$$
+
+Since
+$$
+|T_{\text{obs}}| \approx 2.47 > 1.645.
+$$
+we **reject** $H_0$ at the 5% level.
+
+**Conclusion**
+
+There is statistically significant evidence that the true proportion of frogs with the beneficial genetic marker is greater than the historical value $p_0 = 0.30$ after the conservation intervention.
+
+```{=html}
+</details>
+```
+
+:::
+
+#### Likelihood Ratio Test (Simple Null) {#sec-lrt}
 
 
+Previous tests (Z-tests, $t$-tests, CLT tests) required choosing a test statistic by hand. The **Likelihood Ratio Test** (LRT) instead gives a general rule for building hypothesis tests for parameter values directly from **any statistical model**.
+
+Suppose we observe data $\underline{x}$ from a statistical model with likelihood
+$$
+L(\theta ; \underline{x}) = f(\underline{x} \mid \theta),
+$$
+and we wish to test[^lrt]
+$$
+H_0 : \theta = \theta_0, \qquad H_1: \theta \neq \theta_0.
+$$
+
+The guiding idea is intuitive:
+
+> **If $H_0$ is true, then the likelihood at $\theta_0$ should be close to the maximum likelihood achievable over all $\theta$.**
+> 
+> **If the likelihood at $\theta_0$ is *much smaller*, the data are inconsistent with $H_0$.**
+
+We formalise this using the **likelihood ratio statistic**
+$$
+\lambda(\underline{x})=\frac{L(\theta_0 ; \underline{x})}{\displaystyle \max_{\theta \in \Theta} L(\theta ; \underline{x})}.
+$$
+Here:
+
+* The numerator is the likelihood under the null.
+* The denominator is the **maximum likelihood**, achieved at the **MLE** $\hat{\theta}_{\mathrm{MLE}}$.
+
+Thus we may write
+$$
+\lambda(\underline{x}) = \frac{L(\theta_0 ; \underline{x})}{L(\hat{\theta}_{\mathrm{MLE}} ; \underline{x})}, \qquad 0 \le \lambda(\underline{x}) \le 1.
+$$
+
+Small values of $\lambda(\underline{x})$ indicate that the data fit *much better* under some parameter value $\hat{\theta} \neq \theta_0$ than under the null. Thus, small $\lambda$ provides evidence against $H_0$.
+
+In practice, it is more convenient to work with the transformed statistic
+$$
+T = -2 \log \lambda(\underline{X}),
+$$
+because this has a simple **asymptotic distribution** under the null hypothesis:
+
+::: {#thm-wilks}
+
+### Wilks’ Theorem (large-sample behaviour, simple case)
+
+Under mild regularity conditions and assuming the null hypothesis  
+$$
+H_0 : \theta = \theta_0
+$$
+is true, the likelihood ratio test statistic
+$$
+T = -2 \log \lambda(\underline{x})
+$$
+satisfies, for large sample size $n$,
+$$
+T \;\overset{\text{approx.}}{\sim}\; \chi^2_{1}.
+$$
+
+That is, when testing a **single parameter value**, the LRT statistic has an
+approximate chi-squared distribution with **1 degree of freedom**, regardless
+of the underlying parametric model.
 
 :::
 
 
-#### Likelihood Ratio Test
+::: {#def-lrt-simple .definition}
+
+#### Likelihood Ratio Test (simple null)
+
+Define the likelihood ratio statistic
+$$
+\lambda(\underline{x})
+= \frac{L(\theta_0 ; \underline{x})}{L(\hat{\theta}_{\mathrm{MLE}} ; \underline{x})},
+$$
+where the numerator is the likelihood under the null hypothesis and the denominator is 
+the maximum likelihood over all parameter values.
+
+We work with the transformed statistic
+$$
+T = -2 \log \lambda(\underline{x}).
+$$
+
+Under the simple null hypothesis $H_0 : \theta = \theta_0$, <span class="xref-no-num">[Wilks' theorem @thm-wilks]</span> states that, for large $n$:
+$$
+T \;\overset{\text{approx.}}{\sim}\; \chi^2_{1}.
+$$
+
+For a test of size $\alpha$, we **reject** $H_0$ whenever
+$$
+-2 \log \lambda(\underline{x}) > \chi^2_{1,\,1-\alpha},
+$$
+where $\chi^2_{1,\,1-\alpha}$ is the $(1-\alpha)$ quantile of the $\chi^2_1$ distribution.
+
+:::
+
+When performing a **LRT**, it is often convenient to use the following form of the test statistic:
+
+::: {#prp-lrt-test-statistic}
+#### Alternative Form of LRT Test Statistic
+
+Under $H_0$, it can be shown that the LRT test statistic $T = -2 \log \lambda(\underline{x})$ can be written as
+$$
+T = 2\left( \ell(\hat{\theta}_{\mathrm{MLE}} \,; \underline{x}) - \ell(\theta_0\, ; \underline{x})\right),
+$$
+where $\ell(\theta \,; \underline{x}) = \log L(\theta ; \underline{x})$ is the log-likelihood.
+:::
+
+::: {#prf-lrt-test-statistic}
+We start from the definition of the likelihood ratio statistic
+$$
+\lambda(\underline{x})
+= \frac{L(\theta_0 ; \underline{x})}{L(\hat{\theta}_{\mathrm{MLE}} ; \underline{x})},
+$$
+where:
+
+- $L(\theta_0 ; \underline{x})$ is the likelihood under the null hypothesis $H_0 : \theta = \theta_0$;
+- $L(\hat{\theta}_{\mathrm{MLE}} ; \underline{x})$ is the maximum likelihood over all $\theta \in \Theta$.
+
+The LRT test statistic is defined as
+$$
+T = -2 \log \lambda(\underline{x}).
+$$
+
+Substitute the expression for $\lambda(\underline{x})$:
+$$
+\begin{align*}
+T
+&= -2 \log \left(
+\frac{L(\theta_0 ; \underline{x})}{L(\hat{\theta}_{\mathrm{MLE}} ; \underline{x})}
+\right) \\
+&= -2 \left[
+\log L(\theta_0 ; \underline{x})
+- \log L(\hat{\theta}_{\mathrm{MLE}} ; \underline{x})
+\right].
+\end{align*}
+$$
+Now define the **log-likelihood**
+$$
+\ell(\theta \,; \underline{x}) = \log L(\theta ; \underline{x}).
+$$
+
+In terms of $\ell$, we can rewrite $T$ as
+$$
+\begin{align*}
+T
+&= -2 \left[
+\ell(\theta_0 \,; \underline{x}) - \ell(\hat{\theta}_{\mathrm{MLE}} \,; \underline{x})
+\right] \\
+&= 2 \left[
+\ell(\hat{\theta}_{\mathrm{MLE}} \,; \underline{x}) - \ell(\theta_0 \,; \underline{x})
+\right].
+\end{align*}
+$$
+This is exactly the claimed alternative form:
+$$
+T = 2\left( \ell(\hat{\theta}_{\mathrm{MLE}} \,; \underline{x}) - \ell(\theta_0\, ; \underline{x})\right).
+$$
+
+:::
+
+
+::: {#exm-lrt-normal-mean}
+#### LRT for a Normal Mean (known variance)
+
+Suppose $X_1,\ldots,X_n$ are i.i.d.
+$$
+X_i \sim \mathcal{N}(\mu, \sigma^2),
+$$
+with **known** variance $\sigma^2$.
+
+We observe a sample with
+$$
+\bar{x} = 5.3, \qquad n = 20, \qquad \sigma^2 = 4.
+$$
+
+We wish to test
+$$
+H_0 : \mu = 5
+\qquad \text{vs.} \qquad
+H_1 : \mu \neq 5,
+$$
+using the **likelihood ratio test** at size $\alpha = 0.05$.
+
+```{=html}
+<details>
+<summary><strong>Solution</strong></summary>
+```
+
+The likelihood for $\mu$ is
+$$
+L(\mu ; \underline{x})
+= \prod_{i=1}^n
+\frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(
+-\frac{(x_i - \mu)^2}{2\sigma^2}
+\right),
+$$
+and the log-likelihood is
+$$
+\ell(\mu ; \underline{x}) = -\frac{n}{2} \log (2\pi \sigma^2) - \sum_{i=1}^n\frac{(x_i - \mu)^2}{2\sigma^2}.
+$$
+Expanding the quadratic, we have
+$$
+\ell(\mu ; \underline{x}) = -\frac{n}{2} \log (2\pi \sigma^2) - \frac{1}{2\sigma^2}\left(\sum_{i=1}^n x_i ^2  - 2 \mu n\bar{x} + n\mu^2 \right).
+$$
+
+The MLE is $\hat{\mu} = \bar{x}$, so
+$$
+L(\hat{\mu} ; \underline{x}) = L(\bar{x} ; \underline{x}),
+\qquad
+L(\theta_0 ; \underline{x}) = L(5 ; \underline{x}).
+$$
+
+The likelihood ratio statistic is
+$$
+\lambda(\underline{x})
+= \frac{L(5 ; \underline{x})}{L(\bar{x} ; \underline{x})}.
+$$
+
+For the normal model with known variance and using @prp-lrt-test-statistic, we have
+$$
+\begin{align*}
+T &= 2\left( \ell( \bar{x} \,; \underline{x}) - \ell(5\, ; \underline{x})\right) \\ 
+&= 2\left( -\frac{1}{2\sigma^2}(- 2 n \bar{x}^2 + n \bar{x}^2) + \frac{1}{2\sigma^2}(- 10 n \bar{x} + 25n) \right) \\
+&= \frac{n}{\sigma^2} \left( \bar{x}^2 - 10\bar{x} + 25 \right) \\
+&= \frac{n}{\sigma^2}(\bar{x} - 5)^2.
+\end{align*}
+$$
+Substitute the observed values:
+$$
+T_{\text{obs}}
+= \frac{20}{4}(5.3 - 5)^2
+= 5 \times 0.3^2
+= 5 \times 0.09
+= 0.45.
+$$
+
+Under $H_0$, and for large $n$, Wilks’ theorem gives
+$$
+T \;\overset{\text{approx.}}{\sim}\; \chi^2_1.
+$$
+
+For a two-sided test of size $\alpha = 0.05$, the rejection region is
+$$
+T > \chi^2_{1,\,0.95} \approx 3.84.
+$$
+
+Since
+$$
+T_{\text{obs}} = 0.45 < 3.84,
+$$
+we **fail to reject** $H_0$ at the 5% level.
+
+**Conclusion.**
+There is no statistically significant evidence that the mean $\mu$ differs from $5$.
+
+```{=html}
+</details>
+```
+
+:::
+
 
 ## Non-Examinable Hypothesis Tests
 
@@ -1266,11 +1673,6 @@ In both cases, one-sided or two-sided rejection regions are defined exactly as i
 
 ### $\chi^2$ Contingency Table Tests
 
-
-[^general-hypothesis-testing]: In general, we can consider **hypothesis tests** of the form $H_0: \theta \in \Theta_0$, for some subset $\Theta_0 \subseteq \Theta$ of the parameter space $\Theta$. The alternative hypothesis is that $\theta$ belongs to the relative complement $H_1: \theta \in \Theta\setminus \Theta_0$. A test is called a **composite test** if $\Theta_0$ includes more than a single point.
-
-
-[^accept-vs-fail-to-reject]: It is common to say “reject $H_0$” when the $p$-value is small, and “fail to reject $H_0$” otherwise. Both phrases should be interpreted with care: rejecting $H_0$ does **not** prove it is false, and failing to reject $H_0$ does **not** prove it is true. Instead, hypothesis testing provides a decision rule about whether the data are sufficiently inconsistent with $H_0$ at a chosen significance level.
 
 ### Asymptotic MLE Tests {#sec-mle-approx-test}
 
@@ -1284,9 +1686,9 @@ From @thm-asymp-mle, under standard regularity conditions,
 $$
 \sqrt{n}\,(\hat{\theta}_n - \theta_0)
 \;\overset{d}{\longrightarrow}\;
-\mathcal{N}\big(0,\; \mathcal{I}_n(\theta_0)^{-1}\big),
+\mathcal{N}\big(0,\; \mathcal{I}_1(\theta_0)^{-1}\big),
 $$
-where $\mathcal{I}_n(\theta_0)$ is the **Fisher information** of the whole-sample at the true parameter value.
+where $\mathcal{I}_1(\theta_0)$ is the **Fisher information** of a single observation at the true parameter value.
 
 This yields an approximate hypothesis test for
 $$
@@ -1297,7 +1699,7 @@ that closely parallels the CLT Z-test.
 Rewriting the asymptotic normality statement,
 $$
 \frac{\hat{\theta}_n - \theta_0}
-{\sqrt{\,\mathcal{I}(\theta_0)^{-1}/n\,}}
+{\sqrt{\,\mathcal{I}_n(\theta_0)^{-1}\,}}
 \;\overset{\text{approx.}}{\sim}\;
 \mathcal{N}(0,1),
 $$
@@ -1336,7 +1738,31 @@ be the **Wald statistic**.
 
 The Wald test is **asymptotically valid**, meaning that its size approaches $\alpha$ as $n \to \infty$.
 
-The Wald test extends the one-sample Z-test to **any parametric model** where:
+The Wald test extends the <span class="xref-no-num">[one-sample Z-test @def-one-sample-z-test]</span> to **any parametric model** where:
 
 1. you can compute the MLE $\hat{\theta}_n$,
 2. you can compute (or approximate) the Fisher information.
+
+
+### Likelihood Ratio Test (Composite Null) {#sec-lrt-general}
+
+
+
+
+[^general-hypothesis-testing]: In general, we can consider **hypothesis tests** of the form $H_0: \theta \in \Theta_0$, for some subset $\Theta_0 \subseteq \Theta$ of the parameter space $\Theta$. The alternative hypothesis is that $\theta$ belongs to the relative complement $H_1: \theta \in \Theta\setminus \Theta_0$. A test is called a **composite test** if $\Theta_0$ includes more than a single point.
+
+
+[^accept-vs-fail-to-reject]: It is common to say “reject $H_0$” when the $p$-value is small, and “fail to reject $H_0$” otherwise. Both phrases should be interpreted with care: rejecting $H_0$ does **not** prove it is false, and failing to reject $H_0$ does **not** prove it is true. Instead, hypothesis testing provides a decision rule about whether the data are sufficiently inconsistent with $H_0$ at a chosen significance level.
+
+[^lrt]: In general, the LRT allows testing a **composite null**
+    $H_0 : \theta \in \Theta_0$
+    against a composite alternative
+    $H_1 : \theta \in \Theta \setminus \Theta_0$.
+    Wilks’ theorem states that, under suitable regularity conditions, the statistic
+    $$
+    -2 \log \lambda
+    $$
+    is **asymptotically** $\chi^2_{D - d}$, where $D = \dim(\Theta)$ is the dimension of the full parameter space and $d = \dim(\Theta_0)$ is the dimension of the null parameter space.
+
+    In this course, we consider only the **simple null** $H_0 : \theta = \theta_0$, which corresponds to $\dim(\Theta_0) = 0$.
+    If the model has $D$ parameters, then the LRT statistic is therefore **asymptotically** $\chi^2_D$ under $H_0$.
