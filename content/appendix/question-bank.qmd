@@ -4214,7 +4214,7 @@ Suppose that we observe $n$ i.i.d. <span class="xref-no-num">[Exponential @sec-e
 $$
 X_i \mid \lambda \; \overset{\text{i.i.d.}}{\sim} \; \mathrm{Exponential}(\lambda).
 $$
-Show that choosing a <span class="xref-no-num">[Gamma @sec-inv-gamma]</span> prior
+Show that choosing a <span class="xref-no-num">[Gamma @sec-gamma]</span> prior
 $$
 \lambda \sim \operatorname{Gamma}(a,b)
 $$
@@ -4262,7 +4262,7 @@ $$
    &\propto \lambda^{a + n - 1} \exp\left\{ -\lambda(b + n\bar{x}) \right\}
    \end{align*}
    $$
-   This takes the form of an Gamma density function and thus
+   This takes the form of a Gamma density function and thus
    $$
    \lambda \mid \underline{x} \sim \mathrm{Gamma}\left(a + n,\; 
    b + n\bar{x}  \right),
@@ -4271,6 +4271,76 @@ $$
 
 </details>
 :::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="bayes conjugacy weibull inv-gamma" data-difficulty="1" #q-weib-invgamma}
+## Conjugacy: Weibull Model with known rate, Inverse Gamma Prior
+
+Suppose that we observe $n$ i.i.d. <span class="xref-no-num">[Weibull @sec-weibull]</span> observations
+$$
+X_i \mid \theta \; \overset{\text{i.i.d.}}{\sim} \; \operatorname{Weibull}(\beta,\theta),
+$$
+where the parameter $\beta$ is a **known quantity**. Show that choosing a <span class="xref-no-num">[Inverse Gamma @sec-inv-gamma]</span> prior
+$$
+\theta \sim \operatorname{InvGamma}(a,b)
+$$
+yields the posterior distribution 
+$$
+\theta \mid \underline{x} \sim \mathrm{InvGamma}\left(a + n,\; 
+b + \sum_{i=1}^n x_i^\beta  \right).
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+We compute the posterior using Bayes theorem:
+$$
+\pi(\theta \mid \underline{x}) \propto \pi(\theta) \, f(\underline{x}\mid \theta).
+$$
+
+1. **Prior PDF:**
+   Since $\theta \sim \operatorname{InvGamma}(a,b)$, its probability density function is
+   $$
+   \pi(\theta) = \frac{b^a}{\Gamma(a)} \theta^{-(a+1)} e^{-b\theta^{-1}}.
+   $$
+   Ignoring the factors which do not depend on $\theta$, this is proportional to
+   $$
+   \pi(\theta) \propto   \theta^{-(a+1)} \exp\left\{-\frac{b}{\theta}\right\}.
+   $$
+
+2. **Likelihood:** 
+   Since we have $n$ i.i.d. observations $X_i \mid \theta \; \overset{\text{i.i.d.}}{\sim} \; \mathrm{Weibull}(\beta, \theta)$, the likelihood is
+   $$
+   \begin{align*}
+   f(\underline{x} \mid \theta) 
+     &= \prod_{i=1}^n  \frac{\beta}{\theta}x_i^{\beta - 1} \exp\left(-\frac{x_i^\beta}{\theta}\right) \\
+     &=  \frac{\beta^n}{\theta^n} \exp\left\{- \frac{1}{\theta}\sum_{i=1}^n x_i^\beta\right\} \left(\prod_{i=1}^n x_i \right)^{\beta - 1}
+   \end{align*}
+   $$
+   Ignoring the factors which do not depend on $\theta$, this is proportional to
+   $$
+   f(\underline{x} \mid \theta) \propto \theta^{-n} \exp\left\{- \frac{1}{\theta}\sum_{i=1}^n x_i^\beta\right\} .
+   $$
+
+3. **Posterior:**
+   Using the prior and likelihood derived above, we have
+   $$
+   \begin{align*}
+   \pi(\theta \mid \underline{x}) 
+   &\propto  \theta^{-(a+1)} \exp\left\{-\frac{b}{\theta}\right\} \; \theta^{-n} \exp\left\{- \frac{1}{\theta}\sum_{i=1}^n x_i^\beta\right\}\\
+   &\propto  \theta^{-(a + n + 1)}  \exp\left\{-\frac{1}{\theta}\left(b + \sum_{i=1}^n x_i^\beta \right)\right\}.
+   \end{align*}
+   $$
+   This takes the form of an Inverse Gamma density function and thus
+   $$
+   \theta \mid \underline{x} \sim \mathrm{InvGamma}\left(a + n,\; 
+   b + \sum_{i=1}^n x_i^\beta  \right),
+   $$
+   so the Inverse Gamma distribution is <span class="xref-no-num">[conjugate @def-conjugacy]</span>.
+
+</details>
+:::
+
 
 
 ::: {.callout-important .question appearance="minimal" data-tags="bayes conjugacy normal" data-difficulty="1" #q-normal-normal-update}

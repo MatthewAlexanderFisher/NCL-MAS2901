@@ -472,6 +472,8 @@ $$
 = \frac{f(\underline{x} \mid \theta)\,\pi(\theta)}{f(\underline{x})}.
 $$
 
+
+
 ::: {.definition #def-prior}
 ### Prior Distribution.
 The **prior distribution** represents our uncertainty about $\theta$ *before observing the data*.
@@ -499,6 +501,8 @@ $$
 - The **prior** $\pi(\theta)$ reflects what we believed about $\theta$ before seeing the data.
 - The denominator $f(\underline{x})$ is a normalising constant ensuring the posterior integrates to $1$.
 :::
+
+
 
 ### Posteriors in Practice {#sec-posteriors-in-practice}
 
@@ -603,24 +607,6 @@ and so the posterior distribution is $\theta|x=1\sim \textrm{Beta}(2,5)$. This d
 $\theta=0.2$, and mean at $\mathrm{E}[\theta|x=1]=2/7=0.286$.
 
 
-```{=html}
-</details>
-```
-
-:::
-
-
-The main difficulty in calculating the posterior distribution was in obtaining the $f(x)$ term. However, in many cases we can recognise the posterior distribution without the need to calculate this constant term (constant with respect to $\theta$). In this example, we can calculate the posterior distribution as
-
-\begin{align*}
-\pi(\theta|\underline{x})&\propto\pi(\theta)f(x=1|\theta) \\
-&\propto 1\times 5\theta(1-\theta)^4,\quad\quad 0<\theta<1  \\
-&=k\theta(1-\theta)^4,\quad\quad 0<\theta<1.
-\end{align*}
-
-
-As $\theta$ is a continuous quantity, what we would like to know is what continuous distribution defined on $(0,1)$ has a probability density function which takes the form $k\theta^{g-1}(1-\theta)^{h-1}$. The answer is the $\textrm{Beta}(g,h)$ distribution. Therefore, choosing $g$ and $h$ appropriately, we can see that the posterior distribution is $\theta|x=1\sim \textrm{Beta}(2,5)$.
-
 ---
 
 **Interpretation:**
@@ -700,6 +686,76 @@ Plot.plot({
 :::
 
 ---
+
+
+```{=html}
+</details>
+```
+
+:::
+
+
+
+
+The main difficulty in calculating the posterior distribution was in obtaining the $f(x)$ term. However, in many cases we can recognise the posterior distribution without the need to calculate this constant term (constant with respect to $\theta$). In this example, we can calculate the posterior distribution as
+
+\begin{align*}
+\pi(\theta|\underline{x})&\propto\pi(\theta)f(x=1|\theta) \\
+&\propto 1\times 5\theta(1-\theta)^4,\quad\quad 0<\theta<1  \\
+&=k\theta(1-\theta)^4,\quad\quad 0<\theta<1.
+\end{align*}
+
+
+As $\theta$ is a continuous quantity, what we would like to know is what continuous distribution defined on $(0,1)$ has a probability density function which takes the form $k\theta^{g-1}(1-\theta)^{h-1}$. The answer is the $\textrm{Beta}(g,h)$ distribution. Therefore, choosing $g$ and $h$ appropriately, we can see that the posterior distribution is $\theta|x=1\sim \textrm{Beta}(2,5)$.
+
+This leads us to following method of computing posteriors:
+
+::: {#bayes-proportionality .callout-important appearance="simple"}
+
+#### Posterior Density Up to a Constant of Proportionality
+
+In **practice**, when deriving Bayesian posteriors, we only need to identify the posterior density **up to a constant of proportionality**:
+$$
+\pi(\theta \mid \underline{x}) \;\propto\; f(\underline{x}\mid \theta)\,\pi(\theta).
+$$
+
+The proportionality symbol $\propto$ literally means that
+$$
+\pi(\theta \mid \underline{x})
+= k\, f(\underline{x}\mid \theta)\,\pi(\theta),
+$$
+for some constant $k \in \mathbb{R}$ that does **not** depend on $\theta$.
+
+This works because:
+
+1. The posterior density must integrate to 1:
+   $$
+   1 = \int \pi(\theta \mid \underline{x})\, d\theta
+     = k \int f(\underline{x}\mid \theta)\,\pi(\theta)\, d\theta,
+   $$
+   which determines the *normalisation constant*:
+   $$
+   k = \left( \int f(\underline{x}\mid \theta)\,\pi(\theta)\, d\theta \right)^{-1} = (f(\underline{x}))^{-1}.
+   $$
+
+2. Since $k$ does **not** depend on $\theta$, we may ignore it when identifying how the posterior depends on $\theta$.  
+   Therefore, we work with
+   $$
+   \pi(\theta\mid \underline{x}) \propto f(\underline{x}\mid \theta)\,\pi(\theta),
+   $$
+   and only include the normalising constant at the very end.
+
+3. When the expression on the right-hand side matches the functional form of a known distribution family (e.g., Normal, Gamma, Inverse Gamma), we can immediately identify the posterior distribution by comparing exponents, powers of $\theta$, and exponential terms.
+
+4. Once the form of the distribution is identified, the normalising constant is automatically supplied by the standard formula for that distribution.
+
+**TLDR:** Working “up to proportionality” allows us to avoid directly computing the integral
+$$
+f(\underline{x}) = \int f(\underline{x}\mid \theta)\,\pi(\theta)\, d\theta,
+$$
+which is often difficult or impossible to evaluate analytically.  Instead, we focus only on the parts of the expression that involve $\theta$.  
+
+:::
 
 ::: {#exm-music-expert}
 Consider an experiment to determine how good a music expert is at distinguishing between pages from Haydn and Mozart scores. Let $\theta=\mathrm{Pr}(\text{correct choice})$. Suppose that, before conducting the experiment, we have been told that the expert is very competent. In fact, it is suggested that we should have a prior distribution which has a mode around $\theta=0.95$ and for which $\mathrm{Pr}(\theta<0.8)$ is very small. We choose $\theta\sim \textrm{Beta}(77,5)$, with probability density function
@@ -1196,16 +1252,202 @@ A prior distribution for $\theta$ is said to be **conjugate** if, after updating
 
 :::
 
-### Summary of Conjugate Priors and Posterior Updates
+#### Summary of Conjugate Priors and Posterior Updates {.unnumbered}
 
+::: {.small-table}
 | Likelihood Model | Prior | Posterior | Link |
 |------------------|--------|------------|-------|
-| $X \mid p \sim \mathrm{Binomial}(n,p)$ | $p \sim \mathrm{Beta}(a,b)$ | $p \mid x \sim \mathrm{Beta}(a + x,\; b + n - x)$ | <span class="xref-no-num">[Link @q-beta-binom]</span> |
-| $X_i \mid \lambda \sim \mathrm{Poisson}(\lambda)$ (i.i.d.) | $\lambda \sim \mathrm{Gamma}(a,b)$ | $\lambda \mid \underline{x} \sim \mathrm{Gamma}(a + n\bar{x},\; b + n)$ | <span class="xref-no-num">[Link @q-gamma-pois]</span> |
-| $X_i \mid p \sim \mathrm{Geom}(p)$ (i.i.d.) | $p \sim \mathrm{Beta}(a,b)$ | $p \mid \underline{x} \sim \mathrm{Beta}(a + n,\; b + n(\bar{x}-1))$ | <span class="xref-no-num">[Link @q-beta-geom]</span> |
-| $X_i \mid \mu \sim \mathcal{N}(\mu,\sigma^2)$ (known $\sigma^2$) | $\mu \sim \mathcal{N}(\mu_0,\sigma_0^2)$ | $\mu \mid \underline{x} \sim \mathcal{N}(M,V)$ |  <span class="xref-no-num">[Link @q-normal-normal]</span> |
-| $X_i \mid \gamma \sim \mathcal{N}(\mu,\gamma)$ (known $\mu$) | $\gamma \sim \operatorname{InvGamma}(a,b)$ | $\gamma \mid \underline{x} \sim \mathrm{InvGamma}\!\left(a + n/2,\; b + \tfrac12 \sum (x_i - \mu)^2\right)$ | <span class="xref-no-num">[Link @q-normal-invgamma]</span> |
-| $X_i \mid \lambda \sim \mathrm{Exponential}(\lambda)$ (i.i.d.) | $\lambda \sim \mathrm{Gamma}(a,b)$ | $\lambda \mid \underline{x} \sim \mathrm{Gamma}\left(a + n,\; b + n\bar{x}  \right)$ | <span class="xref-no-num">[Link @q-exp-gamma]</span> |
+| $X \mid p \sim \;  \mathrm{Binomial}(n,p)$ | $p \sim \mathrm{Beta}(a,b)$ | $p \mid x \sim \mathrm{Beta}(a + x,\; b + n - x)$ | <span class="xref-no-num">[Link @q-beta-binom]</span> |
+| $X_i \mid \lambda \; \overset{\text{i.i.d.}}{\sim} \;  \mathrm{Poisson}(\lambda)$  | $\lambda \sim \mathrm{Gamma}(a,b)$ | $\lambda \mid \underline{x} \sim \mathrm{Gamma}(a + n\bar{x},\; b + n)$ | <span class="xref-no-num">[Link @q-gamma-pois]</span> |
+| $X_i \mid p \; \overset{\text{i.i.d.}}{\sim} \;  \mathrm{Geom}(p)$  | $p \sim \mathrm{Beta}(a,b)$ | $p \mid \underline{x} \sim \mathrm{Beta}(a + n,\; b + n(\bar{x}-1))$ | <span class="xref-no-num">[Link @q-beta-geom]</span> |
+| $X_i \mid \mu \; \overset{\text{i.i.d.}}{\sim} \;  \mathcal{N}(\mu,\sigma^2)$ (known $\sigma^2$) | $\mu \sim \mathcal{N}(\mu_0,\sigma_0^2)$ | $\mu \mid \underline{x} \sim \mathcal{N}(M,V)$ |  <span class="xref-no-num">[Link @q-normal-normal]</span> |
+| $X \mid \gamma \; \overset{\text{i.i.d.}}{\sim} \; \mathcal{N}(\mu,\gamma)$ (known $\mu$) | $\gamma \sim \operatorname{InvGamma}(a,b)$ | $\gamma \mid \underline{x} \sim \mathrm{InvGamma}\!\left(a + n/2,\; b + \tfrac12 \sum (x_i - \mu)^2\right)$ | <span class="xref-no-num">[Link @q-normal-invgamma]</span> |
+| $X_i \mid \lambda \; \overset{\text{i.i.d.}}{\sim} \;  \mathrm{Exponential}(\lambda)$  | $\lambda \sim \mathrm{Gamma}(a,b)$ | $\lambda \mid \underline{x} \sim \mathrm{Gamma}\left(a + n,\; b + n\bar{x}  \right)$ | <span class="xref-no-num">[Link @q-exp-gamma]</span> |
+| $X_i \mid \theta \; \overset{\text{i.i.d.}}{\sim} \;  \mathrm{Weibull}(\beta, \theta)$ (known $\beta$) | $\theta \sim \mathrm{InvGamma}(a,b)$ | $\theta \mid \underline{x} \sim \mathrm{InvGamma}\left(a + n,\; b + \sum_{i=1}^n x_i^\beta  \right)$ | <span class="xref-no-num">[Link @q-weib-invgamma]</span> |
+
+: {tbl-colwidths="[30,30,30,10]"}
+:::
+
+## Bayesian Estimators
+
+In Bayesian inference, **estimators** are obtained by summarising the **posterior distribution**
+$$
+\pi(\theta \mid \underline{x})
+= \frac{f(\underline{x}\mid\theta)\, \pi(\theta)}{f(\underline{x})}.
+$$
+
+We often choose a single value to represent our updated belief about the parameter.  
+Different summaries of the posterior lead to different Bayesian estimators.  
+Three common examples are:
+
+1. **Maximum a Posteriori (MAP) Estimator:**  
+   Estimate $\theta$ using the *mode* of the posterior:
+   $$
+   \hat{\theta}_{\mathrm{MAP}}
+   = \arg\max_{\theta}\, \pi(\theta \mid \underline{x}).
+   $$
+
+2. **Posterior Mean:**  
+   Estimate $\theta$ using the **average** of the posterior:
+   $$
+   \hat{\theta}_{\mathrm{mean}}
+   = \mathrm{E}[\theta \mid \underline{x}].
+   $$
+
+3. **Posterior Median:**  
+   Estimate $\theta$ using the **middle** of the posterior distribution - the point at which the posterior assigns equal probability to being below or above:
+   $$
+   \mathrm{Pr}(\theta \le \hat{\theta}_{\mathrm{median}} \mid \underline{x}) = \tfrac{1}{2}.
+   $$
+
+Among these, the **MAP estimator** is particularly important and is given its own formal definition below.
+
+::: {#def-map .definition}
+
+### Maximum a Posteriori (MAP) Estimator
+
+The **MAP estimator** is the value of $\theta$ that **maximises the posterior density**:
+$$
+\hat{\theta}_{\mathrm{MAP}}
+= \arg\max_{\theta}\, \pi(\theta \mid \underline{x}).
+$$
+
+Since the denominator $f(\underline{x})$ does not depend on $\theta$, we may equivalently write:
+$$
+\hat{\theta}_{\mathrm{MAP}}
+= \arg\max_{\theta}\, f(\underline{x}\mid \theta)\,\pi(\theta).
+$$
+
+Thus, the MAP estimator is the value of $\theta$ that is **most plausible** after observing the data.
+
+:::
+
+---
+
+```{=html}
+<details>
+  <summary><strong> Show Visualisation </strong></summary>
+```
+
+```{ojs}
+//| label: fig-normal-map
+//| fig-cap: A Normal posterior density $\pi(\theta\mid\underline{x})$ with its MAP estimate indicated by the vertical line at the mode. For a Normal posterior, the MAP coincides with the mean. In this case, the MAP estimate is $\hat{\theta} = 1$.
+//| fig-align: center
+//| echo: false
+
+// Parameters for the (posterior) Normal distribution
+mu_post = 1        // posterior mean (and MAP)
+sigma_post = 0.4   // posterior standard deviation
+
+// Grid over the real line (about ±3σ around the mean)
+normalXs = d3.range(mu_post - 3 * sigma_post, mu_post + 3 * sigma_post, (6 * sigma_post) / 200)
+
+
+
+// Data for plotting
+posteriorNormal = normalXs.map(x => ({ x, y: normalPDF(x, mu_post, sigma_post) }))
+
+// MAP point (mode of the posterior)
+mapPoint = ({ x: mu_post, y: normalPDF(mu_post, mu_post, sigma_post) })
+
+Plot.plot({
+  height: 320,
+  marginLeft: 48,
+  marginBottom: 45,
+  x: { label: "θ", nice: true },
+  y: { label: "Posterior density" },
+  style: {
+    width: "100%",
+    display: "block",
+    margin: "0 auto",
+    maxWidth: "960px",
+    background: "var(--brand-bg)",
+    color: "var(--brand-fg)",
+    fontFamily: bodyFont,
+    fontSize: 14
+  },
+  marks: [
+    Plot.ruleY([0], { stroke: "var(--border)", strokeOpacity: 0.6 }),
+    Plot.lineY(posteriorNormal, { 
+      x: "x", 
+      y: "y", 
+      stroke: "var(--brand-teal)", 
+      strokeWidth: 2 
+    }),
+    Plot.areaY(posteriorNormal, { 
+      x: "x", 
+      y: "y", 
+      fill: "var(--brand-teal)", 
+      fillOpacity: 0.15 
+    }),
+    Plot.ruleX([mapPoint.x], { 
+      stroke: "var(--brand-red)", 
+      strokeWidth: 2, 
+      strokeDasharray: "4,2" 
+    }),
+    Plot.text(
+      [{ x: mapPoint.x, y: mapPoint.y, label: "MAP" }],
+      { 
+        x: "x", 
+        y: "y", 
+        text: "label", 
+        dy: -10, 
+        fill: "var(--brand-red)", 
+        fontWeight: "bold" 
+      }
+    )
+  ]
+})
+```
+
+```{=html}
+</details>
+```
+
+---
+
+::: {#imp-compute-map .callout-important collapse="true" appearance="simple"}
+
+### Computing the MAP estimator
+
+To compute a MAP estimator, we follow almost exactly the same steps used to compute an MLE.  
+The only difference is that the likelihood is replaced by the **posterior**.
+
+1. **Write the posterior (up to proportionality):**  
+   Since the normalising constant does not depend on $\theta$, we work with
+   $$
+   \pi(\theta \mid \underline{x}) \propto f(\underline{x}\mid\theta)\,\pi(\theta).
+   $$
+
+2. **Take logarithms:**  
+   The logarithm turns products into sums, simplifying differentiation:
+   $$
+   \log \pi(\theta \mid \underline{x})
+   = C + \log f(\underline{x}\mid\theta) + \log \pi(\theta),
+   $$
+   where \(C\) is a constant not depending on \(\theta\).
+
+3. **Differentiate and solve:**  
+   We differentiate with respect to $\theta$ and set the derivative equal to zero:
+   $$
+   \frac{\partial}{\partial\theta}\,\log \pi(\theta \mid \underline{x}) = 0.
+   $$
+   Solving this equation yields the MAP estimator:
+   $$
+   \hat{\theta}_{\mathrm{MAP}}
+   = \arg\max_{\theta}\, \pi(\theta \mid \underline{x}).
+   $$
+
+In short:
+
+- compute the posterior up to proportionality,  
+- take logs,  
+- differentiate,  
+- solve for the maximiser.
+
+This is **identical** to the MLE procedure — except the prior contributes an extra term.
+
+:::
 
 
 ## Asymptotic Posterior Distribution
@@ -1215,26 +1457,33 @@ In **frequentist statistics**, we saw two important results about the <span clas
 1. The <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span> showed that the sampling distribution of the <span class="xref-no-num">[sample mean @def-sample-mean]</span> is approximately Normal for large $n$.
 2. The <span class="xref-no-num">[Asymptotic Distribution of the MLE @thm-asymp-mle]</span> showed that the sampling distribution of the maximum likelihood estimator is approximately Normal for large $n$.
 
-A similar phenomenon occurs in **Bayesian inference**: for large samples, the **posterior distribution** itself becomes approximately Normal, regardless of the prior (as long as it is not too extreme).
+A similar phenomenon occurs in **Bayesian inference**: for large samples, the **posterior distribution** itself becomes approximately Normal, regardless of the prior (as long as it is not too extreme). 
+
+This important result is known as the **Bernstein–von Mises theorem**. However, we will refer to it simply as the **asymptotic posterior distribution**:
 
 ::: {#thm-bernstein-von-mises}
 
-### Bernstein–von Mises
+### Asymptotic Posterior Distribution
 
 Suppose we have an i.i.d. sample $X_1,\ldots,X_n$ drawn from the same distribution with PDF/PMF $f(x \mid \theta)$ and let $\pi(\theta \mid \underline{X}^{(n)})$ denote the posterior distribution for $\theta$.
 
 Under *regularity conditions*, as $n \to \infty$ the posterior distribution satisfies
-
 $$
 \theta \mid \underline{X}^{(n)} \;\overset{\text{approx.}}{\sim}
-\mathcal{N}\!\Big(\hat{\theta}_n,\, \mathcal{I}_n(\theta)^{-1}\Big),
+\mathcal{N}\Big(\hat{\theta}_n,\, \mathcal{I}_n(\theta_0)^{-1}\Big),
 $$
-
 where
 
 * $\hat{\theta}_n$ is the MLE,
-* $\mathcal{I}_n(\theta)$ is the <span class="xref-no-num">[Fisher information @prp-fisher-one-obs]</span> for the **whole sample**.
- 
+* $\theta_0$ is the true parameter value,
+* $\mathcal{I}_n(\theta_0)$ is the <span class="xref-no-num">[Fisher information @prp-fisher-one-obs]</span> for the **whole sample**, evaluated at $\theta_0$.
+
+Since $\theta_0$ is unknown, in practice we use the plug-in approximation
+$$
+\theta \mid \underline{X}^{(n)} \;\overset{\text{approx.}}{\sim}
+\mathcal{N}\Big(\hat{\theta}_n,\, \mathcal{I}_n(\hat{\theta}_n)^{-1}\Big),
+$$
+obtained by replacing $\theta_0$ with $\hat{\theta}_n$ in the Fisher information. 
 :::
 
 

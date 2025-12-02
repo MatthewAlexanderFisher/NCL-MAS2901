@@ -8,220 +8,93 @@ tbl-cap-location: bottom
 
 # Frequentist Hypothesis Testing {#sec-freq-hypothesis-test}
 
-::: {.content-visible unless-format="pdf"}
-
 ```{ojs}
+gap = 20
+containerW = width
+plotW = Math.round(Math.max(240, Math.min(600, (containerW - gap) / 2 - 15)))
+plotH = Math.round(plotW * 0.8)
+
+marginTop = 20
+marginRight = 35
+marginBottom = 35
+marginLeft = 35
+innerW = plotW - marginLeft - marginRight
+innerH = plotH - marginTop - marginBottom
+
 bodyFont = getComputedStyle(document.body).fontFamily
 ```
-
-:::
-
 Recalling the <span class="xref-no-num">[main inference tasks @sec-inference-tasks]</span>, we now move from *interval estimation* to *hypothesis testing*.
 
-The name **hypothesis testing** comes from the **scientific method**:
+The term **hypothesis testing** reflects the logic of the scientific method:
 
-1. Propose a hypothesis about the world.
-2. Collect data through experiment or observation.
-3. Assess whether the data are consistent with the hypothesis.
+1. Propose a hypothesis about the world.  
+2. Collect data through experiment or observation.  
+3. Assess whether the data are consistent with that hypothesis.
 
-If the data are consistent, this provides **support** for the hypothesis (though never proof). If the data look very unlikely under the hypothesis, this is evidence *against* it.
+If the data look typical of what the hypothesis predicts, this provides some **support** (though never proof). If the data would be very unlikely were the hypothesis true, this is evidence *against* it.
 
-Unlike **interval estimation** (which gives a range of plausible values), hypothesis testing asks a **yes/no question** about the parameter $\theta$.
+Whereas **interval estimation** gives a range of plausible parameter values, hypothesis testing poses a **yes/no question** about a specific value of the parameter $\theta$.
 
-To make this precise, we specify a **null hypothesis** $H_0$, a concrete mathematical statement about $\theta$:
+To make this concrete, we will in this chapter work with **simple hypotheses**[^general-hypothesis-testing], where the null specifies a single value of the parameter.
+
+::: {#def-simple-hypothesis .definition}
+### Simple Hypothesis
+
+A **simple null hypothesis** asserts that the parameter takes one specific value:
 $$
-H_0 : \theta \in \Theta_0,
+H_0 : \theta = \theta_0.
 $$
 
-where $\Theta_0 \subseteq \Theta$ is part of the parameter space.
+The alternative hypothesis specifies which values of $\theta$ would count as evidence against the null.  
+In practice we consider two standard forms:
 
-The **alternative hypothesis** is simply the complement set:
-$$
-H_1 : \theta \in \Theta \setminus \Theta_0,
-$$
-i.e. the parameter values in $\Theta$ which are not in $\Theta_0$.
+- **Two-sided alternative** (departure in either direction):
+  $$
+  H_1 : \theta \neq \theta_0.
+  $$
 
-So every hypothesis test is really just a <span class="xref-no-num">[partition @def-excl-exh-part]</span> of the parameter space into two regions: one where the null holds, and one where it does not.
-
-
-::: {.content-visible unless-format="pdf"}
-
-::: {.panel-tabset}
-### One-Dimensional Parameter Space
-```{ojs}
-//| label: fig-theta-partition
-//| fig-cap: Partition of the parameter space $\Theta$ into $\Theta_0$ (null) and $H_1=\Theta\setminus\Theta_0$. Example shown is a one-sided null $H_0\colon\,\mu \le \mu_0$.
-
-thetaPartition = {
-  const width = 540, height = 120, pad = 28;
-
-  // Axis and μ0 location (tweak the 0.58 to move μ0)
-  const mu0x = width * 0.58;
-
-  // Colors (CSS variables with sensible fallbacks)
-  const colH0   = "var(--brand-teal, #14b8a6)";
-  const colH1   = "var(--brand-red,  #ef4444)";
-  const grid    = "var(--plot-grid,  #94a3b8)";
-  const fgMuted = "var(--fg-muted,   #64748b)";
-
-  const svg = d3.create("svg")
-    .attr("width", width)
-    .attr("height", height)
-    .attr("viewBox", [0, 0, width, height]);
-
-  // Axis
-  const y = height/2;
-  svg.append("line")
-    .attr("x1", pad).attr("x2", width - pad)
-    .attr("y1", y).attr("y2", y)
-    .attr("stroke", grid).attr("stroke-opacity", 0.6);
-
-  // Arrowheads
-  svg.append("path")
-    .attr("d", `M ${width-pad} ${y} l -8 -5 l 0 10 z`)
-    .attr("fill", grid).attr("fill-opacity", 0.6);
-
-  // Shade Θ0 (left of μ0)
-  svg.append("rect")
-    .attr("x", pad).attr("y", y - 16)
-    .attr("width", mu0x - pad).attr("height", 32)
-    .attr("fill", colH0).attr("fill-opacity", 0.22)
-    .attr("rx", 6);
-
-  // Shade H1 (right of μ0)
-  svg.append("rect")
-    .attr("x", mu0x).attr("y", y - 16)
-    .attr("width", width - pad - mu0x).attr("height", 32)
-    .attr("fill", colH1).attr("fill-opacity", 0.18)
-    .attr("rx", 6);
-
-  // μ0 tick
-  svg.append("line")
-    .attr("x1", mu0x).attr("x2", mu0x)
-    .attr("y1", y - 24).attr("y2", y + 24)
-    .attr("stroke", grid).attr("stroke-width", 1.1);
-
-  // Labels
-  svg.append("text")
-    .attr("x", pad - 8).attr("y", y - 22)
-    .text("Parameter space Θ")
-    .attr("text-anchor", "start")
-    .style("font-size", "12px")
-    .style("fill", fgMuted);
-
-  svg.append("text")
-    .attr("x", mu0x - 6).attr("y", y - 30)
-    .text("μ₀")
-    .attr("text-anchor", "end")
-    .style("font-size", "13px")
-    .style("font-weight", 600)
-    .style("fill", fgMuted);
-
-  svg.append("text")
-    .attr("x", (pad + mu0x)/2).attr("y", y + 34)
-    .text("Θ₀  (null: μ ≤ μ₀)")
-    .attr("text-anchor", "middle")
-    .style("font-size", "13px")
-    .style("fill", fgMuted);
-
-  svg.append("text")
-    .attr("x", (mu0x + (width - pad))/2).attr("y", y + 34)
-    .text("H₁ = Θ \\ Θ₀")
-    .attr("text-anchor", "middle")
-    .style("font-size", "13px")
-    .style("fill", fgMuted);
-
-  return svg.node();
-}
-```
-
-### Multidimensional Parameter Space
-
-```{ojs}
-//| label: fig-theta-box
-//| fig-cap: Hypothesis as a partition of $\Theta$, a subset $\Theta_0$ (null) and its complement $H_1$.
-
-thetaBox = {
-  const width = 460, height = 200, pad = 20;
-
-  const colH0   = "var(--brand-teal, #14b8a6)";
-  const colH1   = "var(--brand-red,  #ef4444)";
-  const grid    = "var(--plot-grid,  #94a3b8)";
-  const fgMuted = "var(--fg-muted,   #64748b)";
-
-  const svg = d3.create("svg")
-    .attr("width", width)
-    .attr("height", height)
-    .attr("viewBox", [0, 0, width, height]);
-
-  // Big Θ box
-  svg.append("rect")
-    .attr("x", pad).attr("y", pad)
-    .attr("width", width - 2*pad).attr("height", height - 2*pad)
-    .attr("rx", 12)
-    .attr("fill", "none")
-    .attr("stroke", grid).attr("stroke-opacity", 0.6);
-
-  // Label Θ
-  svg.append("text")
-    .attr("x", pad + 10).attr("y", pad + 18)
-    .text("Θ")
-    .style("font-size", "16px")
-    .style("fill", fgMuted);
-
-  // Θ0 subregion (null) – left rectangle inside Θ
-  const innerPad = 14;
-  const w0 = (width - 2*pad) * 0.48;
-  const h0 = (height - 2*pad) - 2*innerPad;
-
-  svg.append("rect")
-    .attr("x", pad + innerPad).attr("y", pad + innerPad)
-    .attr("width", w0).attr("height", h0)
-    .attr("rx", 10)
-    .attr("fill", colH0).attr("fill-opacity", 0.22)
-    .attr("stroke", colH0).attr("stroke-opacity", 0.6);
-
-  svg.append("text")
-    .attr("x", pad + innerPad + w0/2).attr("y", pad + innerPad + h0/2)
-    .text("Θ₀ (null)")
-    .attr("text-anchor", "middle")
-    .style("font-size", "14px")
-    .style("font-weight", 600)
-    .style("fill", fgMuted);
-
-  // H1 label (complement)
-  svg.append("text")
-    .attr("x", pad + innerPad + w0 + 16).attr("y", pad + innerPad + 18)
-    .text("H₁ = Θ \\ Θ₀")
-    .style("font-size", "14px")
-    .style("fill", fgMuted);
-
-  return svg.node();
-}
-```
+- **One-sided alternative** (departure in a specified direction):
+  $$
+  H_1 : \theta > \theta_0
+  \qquad \text{or} \qquad
+  H_1 : \theta < \theta_0.
+  $$
+  These express the belief that only increases (or only decreases) in $\theta$ are relevant alternatives.
 
 :::
 
+::: {.remark #rem-composite}
+### Relation to Composite One-Sided Nulls
+
+In more advanced treatments, one-sided tests are often written with a **composite** null hypothesis, e.g.
+$$
+H_0 : \theta \le \theta_0, \qquad H_1 : \theta > \theta_0.
+$$
+For the models considered in this course, the probability of a Type I error is maximised at the **boundary value** $\theta_0$.  
+Thus we may work with the simpler formulation $H_0 : \theta = \theta_0$ without loss of generality.
 :::
 
-We then use the observed data $\underline{x}$ to evaluate whether $H_0$ is plausible. The frequentist reasoning is:
+At a conceptual level, any hypothesis test creates a <span class="xref-no-num">[partition @def-excl-exh-part]</span> of the parameter space into two regions: one in which the null holds and one in which it does not. The purpose of the test is to decide, using the observed data, which side of this partition is more consistent with the evidence.
 
-1. **Assume $H_0$ is true.**
-2. Use the statistical model to work out what kinds of data would be typical under $H_0$.
-3. Compare the actual data with this prediction. If the data look very unusual under $H_0$, this counts against the hypothesis.
+We proceed by examining the observed data $\underline{x}$ and asking whether $H_0$ is a plausible explanation. The frequentist reasoning is:
+
+1. **Assume $H_0$ is true.**  
+2. Use the statistical model to describe what data would typically look like under $H_0$.  
+3. Compare the actual data with this prediction. If the data appear highly unusual under $H_0$, this counts against the hypothesis.
 
 ::: {.callout-important collapse="true" appearance="simple"}
 ### Terminology: Reject vs. Accept
 
-A hypothesis test produces a **decision rule**, not a logical proof:
+A hypothesis test yields a **decision rule**, not a logical proof:
 
-- **Reject $H_0$**: the data look very unlikely under $H_0$, so we treat this as evidence against $H_0$.  
-- **Fail to reject $H_0$** (sometimes phrased as “accept $H_0$”): the data did not provide strong enough evidence against $H_0$.
+- **Reject $H_0$**: the data are very unlikely under $H_0$ and so we treat this as evidence against it.  
+- **Fail to reject $H_0$** (sometimes informally called “accept $H_0$”): the data do not provide sufficiently strong evidence against the null.
 
-Neither outcome proves anything about the *truth* of $H_0$. These terms simply describe which side of the rejection rule the observed data fall on.
+Neither outcome establishes the *truth* of the hypothesis; the terms merely indicate which side of the decision rule the observed data fall on.
 
-In this course we will use **“fail to reject”**, since it emphasises that not rejecting is weaker than proving $H_0$ true. But you should be aware that “accept” is often used informally in practice to mean the same decision.
+In this course we will use **“fail to reject”**, because it emphasises that not rejecting the null does not confirm it.
 :::
+
 
 ::: {.content-visible unless-format="pdf"}
 
@@ -299,84 +172,113 @@ Plot.plot({
 
 :::
 
+
 ## The Testing Procedure
 
-To make this comparison practical, we do not usually work with the full data distribution. Instead, we reduce the sample to a **test statistic** $T(\underline{X})$ that captures the evidence relevant to $H_0$.
+A hypothesis test makes a decision based on random data, so mistakes are unavoidable. The possible outcomes are:
+
+| **Decision**             | **Truth: $H_0$ true**                 | **Truth: $H_0$ false**                    |
+|--------------------------|----------------------------------------|-------------------------------------------|
+| **Reject $H_0$**         | Type I error *(false alarm)*           | Correct detection                         |
+| **Fail to reject $H_0$** | Correct decision                       | Type II error *(missed detection)*        |
+
+: **Outcomes of a hypothesis test.** Rows represent the decision made; columns represent the true state of nature. {#tbl-decision-table}
+
+The **size** (also called the **significance level**) of a test is the probability of a Type I error:
+$$
+\alpha = \Pr(\text{reject } H_0 \mid H_0 \text{ true}).
+$$
+
+A good test keeps this probability small, while aiming for a high probability of rejecting $H_0$ when $H_1$ is true. This probability is called the <span class="xref-no-num">[power @def-power]</span> of the test.
+
+To construct such a test, we summarise the sample with a **test statistic**
+$$
+T(\underline{X}),
+$$
+chosen so that its values tend to move in a predictable way when $H_0$ is false. The test statistic is the quantity we compare against the null hypothesis.
 
 ### General Recipe {#sec-general-testing-strategy}
 
+To construct a test of **size** $\alpha$ for $H_0 : \theta = \theta_0$, we proceed as follows.
+
 1. **Specify the hypotheses.**  
-   Write down the null hypothesis $H_0$ and (optionally) an alternative $H_1$.  
-   $H_1$ is not always needed at this stage, but it helps to define what counts as “extreme.”
+   Write down the simple null hypothesis
+   $$
+   H_0 : \theta = \theta_0,
+   $$
+   and choose an appropriate one-sided or two-sided alternative $H_1$.
 
 2. **Choose a test statistic.**  
-   Select a statistic $T(\underline{X})$ that would tend to take unusually large or small values if $H_0$ were false.
+   Select a statistic $T(\underline{X})$ whose values tend to move in a predictable way when $H_0$ is false (for example, becoming large or small under $H_1$).
 
 3. **Find its distribution under $H_0$.**  
-   Work out (exactly or approximately) the sampling distribution of $T(\underline{X})$ assuming $H_0$ is true.
+   Determine (exactly or approximately) the sampling distribution of $T(\underline{X})$ assuming $H_0$ is true.
 
 4. **Define a rejection region $R_\alpha$.**  
-   For a chosen significance level $\alpha$, determine a set $R_\alpha$ of “extreme” values of $T(\underline{X})$ such that  
-    $$
-    \max_{\theta \in H_0} \, \mathrm{Pr} \big(T \in R_\alpha \mid \theta \big) \;\leq\; \alpha.
-    $$
+   For the chosen size $\alpha$, choose a set $R_\alpha$ of “extreme” values of $T$ such that
+   $$
+   \Pr\big(T \in R_\alpha \mid H_0\big) = \alpha,
+   $$
+   when possible.  
 
-   
-   * If $H_0$ is a **single value** (simple null) and $T$ is a **continuous random variable**, this maximum occurs exactly at that value, so we can choose $R_\alpha$ so that the probability equals $\alpha$.
-   * If $H_0$ is **composite** or $T$ is **discrete**, the test may be **conservative**: the probability is strictly less than $\alpha$ for some $\theta \in H_0$.
+   With a continuous test statistic and a simple null, this is usually straightforward:  
+   - a **one-sided test** uses one tail of the distribution of $T$ under $H_0$,  
+   - a **two-sided test** uses both tails.
+
+   If $T$ is discrete, the probability may be strictly less than $\alpha$, making the test *conservative* — although discrete test statistics are **not examinable**.
 
 5. **Compute the observed statistic.**  
-   From the data, calculate $T_{\text{obs}} = T(\underline{x})$.
+   From the data, calculate  
+   $$
+   T_{\text{obs}} = T(\underline{x}).
+   $$
 
-6. **Decision.**  
-   - If $T_{\text{obs}} \in R_\alpha$, reject $H_0$.  
-   - If $T_{\text{obs}} \notin R_\alpha$, fail to reject[^accept-vs-fail-to-reject] $H_0$.
-
+6. **Decision rule.**  
+   - If $T_{\text{obs}} \in R_\alpha$, **reject** $H_0$.  
+   - If $T_{\text{obs}} \notin R_\alpha$, **fail to reject**[^accept-vs-fail-to-reject] $H_0$.
 
 ::: {#imp-ing-hypothesis .callout-important collapse="true" appearance="simple"}
 ### Ingredients of a Hypothesis Test
 
-To define a hypothesis test we need **two choices**:
+A hypothesis test is fully determined by two choices:
 
 1. A **test statistic** $T(\underline{X})$ that captures evidence against $H_0$.  
-2. A method of constructing the **rejection region** $R_\alpha$ for $T$ at level $\alpha$.
+2. A **rejection region** $R_\alpha$ describing which values of $T$ count as “too inconsistent” with $H_0$.
 
-Together, $(T, R_\alpha)$ specify the test completely.
+There are usually many possible test statistics.  
+We prefer ones that are **sensitive to departures from $H_0$** — that is, statistics that give high **power**.
 
-However: 
+Even once $T$ is chosen, different rejection regions are possible.  
+By convention we choose regions containing the **most extreme** values of $T$ in the direction specified by the alternative $H_1$, since this usually maximises power.
 
-- There are usually several possible choices of test statistic $T(\underline{X})$.  
-  We prefer ones that are **powerful** - i.e. they give a high chance of detecting departures from $H_0$.
-
-- Even once $T$ is chosen, there can be different possible **rejection regions** $R$.  
-  By convention we use regions that capture the most extreme values of $T$ in the direction(s) specified by $H_1$.
-
-In addition, the <span class="xref-no-num">[sampling distribution @def-sampling-distribution]</span> the test statistic $T(\underline{X})$ under $H_0$ must be computed. However, it may be obtained *exactly*, or *approximately* by using <span class="xref-no-num">[asymptotic distributions @imp-term-asymptotic]</span>.
-
+To construct $R_\alpha$, we need the <span class="xref-no-num">[sampling distribution @def-sampling-distribution]</span> of $T(\underline{X})$ under $H_0$.  
+This distribution may be obtained exactly or approximated using <span class="xref-no-num">[asymptotic distributions @imp-term-asymptotic]</span>.
 :::
 
 ::: {.definition #def-rejection-region}
 ### Rejection Region
 
-Given a test statistic $T(\underline{X})$ and significance level $\alpha$, a **rejection region** is a subset $R_\alpha$ of the sample space of $T$ such that  
-
+Given a test statistic $T(\underline{X})$ and a chosen **size** $\alpha$, a **rejection region** is a subset $R_\alpha$ of the possible values of $T$ such that
 $$
-\max_{\theta \in H_0} \, \mathrm{Pr} \big(T \in R_\alpha \mid \theta \big) \;\leq\; \alpha.
+\Pr\big(T \in R_\alpha \mid H_0\big) = \alpha,
 $$
+whenever this is possible.
 
-This ensures that, no matter which parameter value in $H_0$ is true, the probability of a false rejection (Type I error) never exceeds $\alpha$.
+This ensures that the probability of a Type I error (rejecting a true $H_0$) is exactly $\alpha$.
 
-- For a **simple null** with a continuous test statistic, the maximum occurs at the null value itself, and we can usually choose $R_\alpha$ so that the probability equals $\alpha$.  
-- For a **composite null** or a **discrete statistic**, the maximum may be strictly less than $\alpha$, making the test *conservative*.  
+- With a **simple null** and a **continuous** test statistic, the equality above is usually achievable.  
+- With a **discrete** statistic, the probability may be strictly less than $\alpha$, making the test *conservative* — although discrete test statistics are **not examinable** in this module.
 
-In practice:  
-- For a **two-sided test**, $R_\alpha$ is typically chosen as both tails of the distribution of $T$ under $H_0$.  
-- For a **one-sided test**, $R_\alpha$ is typically one tail (upper or lower), depending on the alternative $H_1$.  
+In practice:
 
-Other choices of $R_\alpha$ are mathematically possible, but by convention we use the **most extreme** values of $T$, since this usually maximises power.  
+- For a **two-sided test**, $R_\alpha$ consists of both tails of the distribution of $T$ under $H_0$.  
+- For a **one-sided test**, $R_\alpha$ is a single tail (upper or lower), depending on the direction of $H_1$.
+
+Other choices of $R_\alpha$ are mathematically possible, but by convention we use the **most extreme** values of $T$, because this typically maximises power.
 :::
 
-As our first example of a hypothesis test, we will pick a **bad** choice of test statistic $T$ and a couple of choices of rejection region $R$.
+
+As our first example of a hypothesis test, we will deliberately pick a **bad** choice of test statistic $T$ and a couple of different rejection regions $R_\alpha$.
 
 ::: {#exm-bad-test-statistic}
 #### A Terrible Hypothesis Test
@@ -386,15 +288,14 @@ Suppose $X_1,\dots,X_n \overset{\text{iid}}{\sim} \mathcal{N}(\mu, 1)$ and we wi
 1. $H_0: \mu = 0$.
 2. $H_1: \mu \neq 0$.
 
-We choose $T = X_1$ as our **test statistic**. 
+We choose $T = X_1$ as our **test statistic**.
 
-(a) For a chosen $\alpha$, determine *two different* rejection regions.
+(a) For a chosen $\alpha$, determine *two different* rejection regions.  
 (b) With the observed sample
-  $$
-  x_1=0.4,\; x_2=3.2,\; x_3=2.1,\; x_4=2.3,\; x_5=1.8.
-  $$
-  For which $\alpha$ would you **reject** $H_0$?
-
+$$
+x_1=0.4,\; x_2=3.2,\; x_3=2.1,\; x_4=2.3,\; x_5=1.8,
+$$
+for which $\alpha$ would you **reject** $H_0$?
 
 ```{=html}
 <details>
@@ -403,27 +304,22 @@ We choose $T = X_1$ as our **test statistic**.
 
 **a. Two possible rejection regions**
 
-Under $H_0$, $T \sim \mathcal{N}(0,1)$.
+Under $H_0$ note that $T \sim \mathcal{N}(0,1)$.
 
 * **Conventional two-sided test:**
   Reject if $T$ is very large in magnitude:
-
   $$
-  R_\alpha^{(1)} = \{\,|T| > z_{1-\alpha/2}\,\}.
+  R_\alpha^{(1)} = \{\, |T| > z_{1-\alpha/2} \,\}.
   $$
 
 * **Unconventional one-sided test:**
   Reject if $T$ is very large and positive only:
-
   $$
   R_\alpha^{(2)} = \{\,T > z_{1-\alpha}\,\}.
   $$
-
   This region also has probability $\alpha$ under $H_0$, but it only detects positive departures from $0$.
 
-Other choices are mathematically possible (e.g. a left-tail test, or even a symmetric band around $0$ with total mass $\alpha$), but these would be poor at detecting the alternatives we care about.
-
----
+There are an infinite number choices are mathematically possible (e.g. a left-tail test, or even a symmetric band around $0$ with total mass $\alpha$), but these would be poor at detecting the alternatives we care about.
 
 **b. Observed value**
 
@@ -431,11 +327,11 @@ Here $T_{\text{obs}} = x_1 = 0.4$.
 
 * For the two-sided region $R_\alpha^{(1)}$:
   Reject if $|0.4| > z_{1-\alpha/2}$.
-  This happens only if $\alpha \gtrsim 0.689$.
+  This happens only if $\alpha \geq 0.689$.
 
 * For the one-sided region $R_\alpha^{(2)}$:
   Reject if $0.4 > z_{1-\alpha}$.
-  This requires $\alpha \gtrsim 0.345$.
+  This requires $\alpha \geq 0.345$.
 
 So in both cases you would only reject $H_0$ at extremely large (non-standard) significance levels. At any usual choice like $\alpha=0.05$ or $0.01$, you fail to reject.
 
@@ -444,8 +340,10 @@ So in both cases you would only reject $H_0$ at extremely large (non-standard) s
 **Why this test is terrible (and instructive):**
 
 * It **ignores $n-1$ observations**, so the *power* is extremely poor (see @exm-bad-test-statistic-power).
-* Different $R_\alpha$ give different answers, showing that both $T$ *and* $R$ matter.
-* The statistic $X_1$ is a very unstable indicator of $\mu$.
+* Different $R_\alpha$ give different answers, showing that both $T$ *and* $R_\alpha$ matter.
+* The statistic $X_1$ is a high variance indicator of $\mu$ it does not use the information in the full sample.
+
+---
 
 ```{=html}
 </details>
@@ -453,176 +351,180 @@ So in both cases you would only reject $H_0$ at extremely large (non-standard) s
 
 :::
 
-In @exm-bad-test-statistic we effectively solved for the smallest significance level $\alpha$ at which the observed test statistic would fall in the rejection region.  
+In @exm-bad-test-statistic we were essentially asking:
 
-This motivates the formal definition of the **$p$-value**:
+> *“How small would the size (significance level) $\alpha$ have to be for the observed test statistic to fall inside the rejection region?”*
+
+This leads naturally to the definition of the **$p$-value**.
 
 ::: {.definition #def-p-value}
 ### $p$-value
 
-Given an observed test statistic $T_{\text{obs}}$, the **$p$-value** is the smallest significance level $\alpha$ for which $T_{\text{obs}} \in R_\alpha$.  
+Given an observed test statistic $T_{\text{obs}}$, the **$p$-value** is the smallest size $\alpha$ for which $T_{\text{obs}}$ would lie in the rejection region $R_\alpha$.
 
-Equivalently, it is the probability, under $H_0$, of observing a test statistic at least as extreme as $T_{\text{obs}}$:  
-
+Equivalently, it is the probability, under $H_0$, of obtaining a test statistic at least as extreme as $T_{\text{obs}}$:
 $$
 p = \Pr \big( T \text{ is at least as extreme as } T_{\text{obs}} \mid H_0 \big).
 $$
 
-- For a **two-sided test**, “extreme” means either very large or very small values of $T$.  
-- For a **one-sided test**, “extreme” means only one direction, determined by $H_1$.  
+- For a **two-sided** test, “extreme” means very large or very small values of $T$.  
+- For a **one-sided** test, “extreme” refers only to the tail specified by $H_1$.
 :::
 
-Almost all tests in practice are either **one-sided** or **two-sided**. Restricting to these two cases fixes the form of the rejection region:
+Almost all tests in practice are either **one-sided** or **two-sided**.  
+Restricting to these two cases fixes the *shape* of the rejection region.
 
 ::: {#def-one-two-sided-tests}
-
 ### One-Sided and Two-Sided Tests
 
-* In a **one-sided test**, the alternative hypothesis $H_1$ specifies a direction.
+* In a **one-sided test**, the alternative hypothesis $H_1$ specifies a direction.  
 
-  * Example: $H_0: \mu \leq \mu_0$ vs. $H_1: \mu > \mu_0$.
-  * The rejection region is of the form
-
+  * Example: $H_0 : \mu = \mu_0$ vs. $H_1 : \mu > \mu_0$.
+    The rejection region then takes the form
     $$
-    R_\alpha = \{ T \mid T \geq c_\alpha \},
+    R_\alpha = \{\, T \mid T \ge c_\alpha \,\},
+    $$
+    so we only reject for *large* values of $T$.
+
+  * If the alternative is $H_1 : \mu < \mu_0$, the rejection region is
+    $$
+    R_\alpha = \{\, T \mid T \le c_\alpha \,\},
+    $$
+    so we only reject for *small* values of $T$.
+
+* In a **two-sided test**, the alternative hypothesis does not specify a direction  
+  (e.g. $H_1 : \mu \neq \mu_0$).
+
+  * The rejection region lies in both tails:
+    $$
+    R_\alpha = \{\, T \mid |T| \ge c_\alpha \,\}.
     $$
 
-    i.e. we only reject for *large* values of $T$.
-  * Similarly, if $H_1$ is in the other direction, $H_1:\mu < \mu_0$, then
-
-    $$
-    R_\alpha = \{ T \mid T \leq c_\alpha \}.
-    $$
-
-* In a **two-sided test**, the alternative hypothesis $H_1$ does not specify a direction (e.g. $H_1: \mu \neq \mu_0$).
-
-  * The rejection region is then in both tails:
-
-    $$
-    R_\alpha = \{ T \mid |T| \geq c_\alpha \}.
-    $$
-  * Here, the $\alpha$ level is usually split between the two tails, so each tail has probability $\alpha/2$ under $H_0$.
+  * The total size $\alpha$ is usually split between the two tails, giving probability $\alpha/2$ to each under $H_0$.
 
 :::
 
+::: {.remark #rem-rejec-regs}
+#### Why these regions? 
 
+For a given test statistic, there are infinitely many possible rejection regions of size $\alpha$.  
+In practice we choose the regions above because:
 
-### Types of Errors
+- they contain the **most extreme values** of $T$ in the direction(s) where $H_1$ differs from $H_0$;  
+- such regions typically give the test the **highest power** against the alternatives we care about.
 
-Because decisions are based on data (which vary by chance), mistakes are inevitable.  
-
-A hypothesis test produces a yes/no decision about $H_0$. Comparing this decision with the true state of $H_0$ gives four logical possibilities.
-
-| Decision                    | Reality: $H_0$ true                               | Reality: $H_0$ false                      |
-| --------------------------- | ---------------------------------------------------- | -------------------------------------------- |
-| **Reject $H_0$**         | **Type I Error** (wrongly rejecting a true $H_0$) | Correct decision                             |
-| **Fail to reject $H_0$** | Correct decision                                     | **Type II Error** (missing a false $H_0$) |
-
-
-::: {#def-test-errors}
-#### Errors in Hypothesis Tests
-
-- **Type I Error (False Positive):** Rejecting $H_0$ when it is actually true.  
-- **Type II Error (False Negative):** Failing to reject $H_0$ when the alternative is true.
-
-By the definition of the <span class="xref-no-num">[rejection region @def-rejection-region]</span>, the probability of a Type I Error is exactly the **significance level** $\alpha$.
+So these rejection regions arise not from necessity, but because they are the most effective.
 :::
-
 ### Power of a Test
 
-To describe both types of error within a single framework, we define the **power function**:
+Recall from @tbl-decision-table that a hypothesis test may commit two types of error:
+
+- a **Type I error** (rejecting a true $H_0$),  
+- a **Type II error** (failing to reject a false $H_0$).
+
+To study both errors within a single framework, we introduce the **power function**, which records the probability that the test rejects $H_0$ at each possible parameter value.
 
 ::: {#def-power}
 #### Power Function
 
 The **power function** of a test is
 $$
-\beta(\theta) = \Pr\!\big(T \in R_\alpha \mid \theta\big), \qquad \theta \in \Theta.
+\beta(\theta) = \Pr\big(T \in R_\alpha \mid \theta\big), \qquad \theta \in \Theta.
 $$
 
-- If $\theta \in H_0$, this is the **type I error probability**, which by design is at most $\alpha$.  
-- If $\theta \in H_1$, this is the probability of **correctly rejecting $H_0$** at that parameter value.
+- If $\theta \in H_0$, this equals the **Type I error probability**, which by construction is at most $\alpha$.  
+- If $\theta \in H_1$, it is the probability of **correctly rejecting $H_0$** at that value of $\theta$.
 
-Thus the power function unifies the error probabilities: it is small on $H_0$, and we hope it is large on $H_1$.
-
+Thus the power function links both types of error in a single quantity:  it should be small on $H_0$ and (ideally) large on $H_1$.
 :::
 
-- **High power** means the test is good at detecting departures from $H_0$.  
-- **High specificity** means the test is good at not raising false alarms.  
+* **High power** means the test is good at detecting departures from $H_0$.  
+* **High specificity** means the test avoids false alarms (low Type I error).
 
-In practice, there is a **trade-off**: lowering $\alpha$ reduces false positives but usually reduces power too.
-
-Computing the **power** of a test depends on the true value of the parameter $\theta$:
+In practice there is a **trade-off**: reducing $\alpha$ lowers the chance of a Type I error but usually decreases power.
 
 ::: {#exm-bad-test-statistic-power}
 #### The Power of a Terrible Hypothesis Test
 
-Continuing from @exm-bad-test-statistic, for each of the *rejection regions*
+Continuing from @exm-bad-test-statistic, for each of the rejection regions
 
-1. $R_\alpha^{(1)} = \{\,|T| > z_{1-\alpha/2}\,\}$, and
-
-2. $R_\alpha^{(2)} = \{\,T > z_{1-\alpha}\,\},$
+1. $R_\alpha^{(1)} = \{\, |T| > z_{1-\alpha/2} \,\}$,  
+2. $R_\alpha^{(2)} = \{\, T > z_{1-\alpha} \,\}$,
 
 derive the **power functions** of the test as a function of $\mu$.
-
 
 ```{=html}
 <details>
 <summary><strong>Solution</strong></summary>
 ```
-
-The *alternative* hypothesis is $H_1: \mu \neq 0$. If $H_1$ were true, then our test statistic would have distribution
+The alternative hypothesis is $H_1 : \mu \neq 0$.  
+Under this alternative, the test statistic has distribution
 $$
-T = X_1 \sim \mathcal{N}(\mu, 1), \quad \mu \neq 0.
+T = X_1 \sim \mathcal{N}(\mu, 1).
 $$
 
-**1. $R_\alpha^{(1)}$**
+---
 
-For $R_\alpha^{(1)}$, we reject if the test statistic $T$ satisfies $|T| > z_{1-\alpha/2}$, we can compute this as:
+**1. Two-sided region**
 
-\begin{align*}
-\Pr(|T| > z_{1-\alpha/2}) &= \Pr(T > z_{1-\alpha/2}) + \Pr(T < - z_{1-\alpha/2}) \\
-&= \Pr\left( \frac{T - \mu}{1} > z_{1-\alpha/2} \right) + \Pr\left( \frac{T - \mu}{1} < - z_{1-\alpha/2} \right) \\
-&= \Pr\left(Z > \mu + z_{1-\alpha/2} \right) + \Pr\left(Z < \mu - z_{1-\alpha/2}\right) \\
-&= 1 - \Phi(\mu +  z_{1-\alpha/2}) + \Phi(\mu - z_{1-\alpha/2}),
-\end{align*}
-where $Z \sim \mathcal{N}(0,1)$ and $\Phi$ is its CDF.
+$$
+R_\alpha^{(1)} = \{\, |T| > z_{1-\alpha/2} \,\}.
+$$
 
-**2. $R_\alpha^{(2)}$**
+We reject when the absolute value of the statistic is large. The power is  
+$$
+\Pr(|T| > z_{1-\alpha/2})
+= \Pr(T > z_{1-\alpha/2}) + \Pr(T < -z_{1-\alpha/2}).
+$$
 
-For $R_\alpha^{(2)}$, we reject if the test statistic $T$ satisfies $T > z_{1-\alpha}$, we can compute this as:
+Standardise using $Z = T - \mu$, where $Z \sim \mathcal{N}(0,1)$:
+$$
+\Pr(T > z_{1-\alpha/2}) = \Pr(Z > z_{1-\alpha/2} - \mu),
+$$
+$$
+\Pr(T < -z_{1-\alpha/2}) = \Pr(Z < -z_{1-\alpha/2} - \mu).
+$$
 
-\begin{align*}
-\Pr(T > z_{1-\alpha}) &= \Pr\left(\frac{Z - \mu}{1} > z_{1-\alpha}\right) \\
-&= \Pr(Z > z_{1-\alpha} + \mu) \\
-&= 1 - \Phi(z_{1-\alpha} + \mu),
-\end{align*}
-where $Z \sim \mathcal{N}(0,1)$ and $\Phi$ is its CDF.
+Hence the power function is
+$$
+\Pr(|T| > z_{1-\alpha/2})
+= 1 - \Phi(z_{1-\alpha/2} - \mu)
+  + \Phi(-z_{1-\alpha/2} - \mu).
+$$
 
+---
+
+**2. One-sided region**
+
+$$
+R_\alpha^{(2)} = \{\, T > z_{1-\alpha} \,\}.
+$$
+
+Here we reject only for large positive values of the statistic. The power is  
+$$
+\Pr(T > z_{1-\alpha})
+  = \Pr(Z > z_{1-\alpha} - \mu)
+  = 1 - \Phi(z_{1-\alpha} - \mu).
+$$
 
 ---
 
 **Summary**
 
-* For the **two-sided test**
+For the **two-sided test**,
+$$
+\beta(\mu)
+= 1 - \big[ \Phi(z_{1-\alpha/2} - \mu)
+            - \Phi(-z_{1-\alpha/2} - \mu) \big].
+$$
 
-  $$
-  \beta(\mu) 
-  = \Pr(|T| > z_{1-\alpha/2} \mid \mu) 
-  = 1 - \Big[ \Phi(z_{1-\alpha/2} - \mu) - \Phi(-z_{1-\alpha/2} - \mu)\Big].
-  $$
+For the **one-sided test**,
+$$
+\beta(\mu)
+= 1 - \Phi(z_{1-\alpha} - \mu).
+$$
 
-  This is one minus the probability that $T$ falls inside the acceptance region.
-
-* For the **one-sided test**
-
-  $$
-  \beta(\mu) 
-  = \Pr(T > z_{1-\alpha} \mid \mu) 
-  = 1 - \Phi(z_{1-\alpha} - \mu).
-  $$
-
-Both expressions reduce to $\beta(0) = \alpha$ when $\mu=0$, as required.
+Both satisfy $\beta(0) = \alpha$ when $\mu = 0$, as required for a test of size $\alpha$.
 
 
 ```{=html}
@@ -630,6 +532,7 @@ Both expressions reduce to $\beta(0) = \alpha$ when $\mu=0$, as required.
 ```
 
 :::
+
 
 
 ::: {.content-visible unless-format="pdf"}
@@ -951,72 +854,232 @@ input[type="range"]::-moz-range-progress {
 
 :::
 
-## Exact Hypothesis Tests
+## Examinable Hypothesis Tests
 
-In this section, we derive commonly used hypothesis tests and consider their power.
+### Exact Hypothesis Tests
 
-### One-Sample Normal (known variance)
+So far we have described hypothesis tests in general: size, power, rejection regions, and the power function.  
 
-In @exm-bad-test-statistic, we considered i.i.d. normally distributed data with known variance. However, we considered a **bad** test statistic. For general i.i.d. $X_i \sim \mathcal{N}(\mu, \sigma^2)$, it is much more natural to use the <span class="xref-no-num">[sample mean @def-sample-mean]</span>,
+We now turn to **concrete examples** where the distribution of the test statistic under $H_0$ is known exactly.
+
+In this subsection we focus on **exact tests** that are **examinable** in this module.
+
+#### One-Sample Normal (known variance)
+
+In @exm-bad-test-statistic, we considered i.i.d. normally distributed data with known variance but chose a **bad** test statistic. For general i.i.d. $X_i \sim \mathcal{N}(\mu, \sigma^2)$, it is much more natural to use the <span class="xref-no-num">[sample mean @def-sample-mean]</span>,
 $$
-\bar{X} \sim \mathcal{N}\left(\mu, \frac{\sigma^2}{n}\right),
+\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i
+\sim \mathcal{N}\!\left(\mu, \frac{\sigma^2}{n}\right),
 $$
-to test $H_0: \mu = \mu_0$ vs. either a one-sided or two-sided alternative. Let's do this:
+to test $H_0 : \mu = \mu_0$ against a one-sided or two-sided alternative. Let us formalise this.
 
 ::: {#exm-one-sample-normal-known-var-test}
 ### One-Sample Normal Test (known variance)
 
-Suppose we have i.i.d. data $X_i \sim \mathcal{N}(\mu, \sigma^2)$. Suppose we wish to test:
+Suppose we have i.i.d. data $X_i \sim \mathcal{N}(\mu, \sigma^2)$ with $\sigma^2$ known. We wish to test one of the following:
 
-1. $H_0: \mu = \mu_0$, $H_1: \mu \neq \mu_0$.
-1. $H_0: \mu \leq \mu_0$, $H_1: \mu > \mu_0$.
-2. $H_0: \mu \geq \mu_0$, $H_1: \mu < \mu_0$.
+1. Two-sided:
+   $$
+   H_0 : \mu = \mu_0, \qquad H_1 : \mu \neq \mu_0.
+   $$
+2. Upper one-sided:
+   $$
+   H_0 : \mu = \mu_0, \qquad H_1 : \mu > \mu_0.
+   $$
+3. Lower one-sided:
+   $$
+   H_0 : \mu = \mu_0, \qquad H_1 : \mu < \mu_0.
+   $$
 
-Using the test statistic:
+Using the test statistic
 $$
 T = \bar{X} = \frac{1}{n}\sum_{i=1}^n X_i,
 $$
+and the fact that under $H_0$ we have
+$$
+\bar{X} \sim \mathcal{N}\!\left(\mu_0, \frac{\sigma^2}{n}\right),
+$$
+derive the **one-sided** and **two-sided** rejection regions for a test of size $\alpha$.
 
-derive the **one-sided** and **two-sided** rejection regions at significance level $\alpha$.
+*(Hint: standardise $\bar{X}$ to obtain a $\mathcal{N}(0,1)$ test statistic.)*
 
 ```{=html}
 <details>
 <summary><strong>Solution</strong></summary>
 ```
+**1. Two-sided test: $H_0 : \mu = \mu_0$ vs. $H_1 : \mu \neq \mu_0$.**
 
-**1.**
-
-Under the null hypothesis, the test statistic $T$ has distribution:
+Under the null hypothesis,
 $$
-T \mid \mu = \mu_0 \sim \mathcal{N}\left(\mu_0, \frac{\sigma^2}{n}\right).
-$$
-Since the alternative is two-sided, we want power in both directions and so pick a two-sided rejection region. We have
-$$
-\frac{T - \mu_0}{\sigma / \sqrt{n}} \sim \mathcal{N}(0,1).
-$$
-Therefore, since
-
-\begin{align*}
-\Pr\left( \frac{T - \mu_0}{\sigma / \sqrt{n}} \geq z_{1-\alpha/2}  \;\middle|\; \mu = \mu_0 \right) 
-+ \Pr\left( \frac{T - \mu_0}{\sigma / \sqrt{n}} \leq -z_{1-\alpha/2}  \;\middle|\; \mu = \mu_0 \right) 
-&= 1-\alpha \\
-\Pr\left( \,|T - \mu_0| \geq \frac{z_{1-\alpha/2} \sigma}{\sqrt{n}} \;\middle|\; \mu = \mu_0 \right) 
-&= 1-\alpha.
-\end{align*}
-
-Therefore, a valid two-sided $1-\alpha$ rejection region takes the form:
-$$
-R_\alpha = \left\{ T \mid \; |T - \mu_0| > \frac{\sigma \, z_{1-\alpha/2}}{\sqrt{n}} \right\}.
+T = \bar{X} \sim \mathcal{N}\left(\mu_0,\; \frac{\sigma^2}{n}\right).
 $$
 
-**2.**
-
-Under the null hypothesis, the test statistic $T$ has distribution:
+Standardise the statistic:
 $$
-T \mid \mu \sim \mathcal{N}\left(\mu, \frac{\sigma^2}{n}\right), \quad \text{for } \mu \leq \mu_0. 
+Z = \frac{T - \mu_0}{\sigma/\sqrt{n}} \sim \mathcal{N}(0,1).
 $$
 
-The null hypothesis does not fully specify the distribution of the null.
+A two-sided test of size $\alpha$ rejects when $|Z|$ is too large:
+$$
+\Pr(|Z| > z_{1-\alpha/2}) = \alpha.
+$$
+
+Translating back to $T$, the rejection region is
+$$
+R_\alpha
+= \left\{\, T \;\middle|\; |T - \mu_0| > \frac{\sigma}{\sqrt{n}}\, z_{1-\alpha/2} \right\}.
+$$
+
+---
+
+**2. Upper one-sided test: $H_0 : \mu = \mu_0$ vs. $H_1 : \mu > \mu_0$.**
+
+Under the null,
+$$
+T \sim \mathcal{N}\left(\mu_0, \frac{\sigma^2}{n}\right),
+$$
+so the standardised statistic is
+$$
+Z = \frac{T - \mu_0}{\sigma/\sqrt{n}} \sim \mathcal{N}(0,1).
+$$
+
+A size–$\alpha$ upper-tail test rejects when
+$$
+Z > z_{1-\alpha}.
+$$
+
+Thus the rejection region for $T$ is
+$$
+R_\alpha
+= \left\{\, T \;\middle|\; T > \mu_0 + \frac{\sigma}{\sqrt{n}}\, z_{1-\alpha} \right\}.
+$$
+
+---
+
+**3. Lower one-sided test: $H_0 : \mu = \mu_0$ vs. $H_1 : \mu < \mu_0$.**
+
+Using the same standardised statistic
+$$
+Z = \frac{T - \mu_0}{\sigma/\sqrt{n}} \sim \mathcal{N}(0,1),
+$$
+a size–$\alpha$ lower-tail test rejects when
+$$
+Z < z_{\alpha}.
+$$
+
+Therefore the rejection region in terms of $T$ is
+$$
+R_\alpha
+= \left\{\, T \;\middle|\; T < \mu_0 + \frac{\sigma}{\sqrt{n}}\, z_{\alpha} \right\}.
+$$
+
+
+```{=html}
+</details>
+```
+:::
+
+ The test in @exm-one-sample-normal-known-var-test is fundamental: it is the basis for the **approximate hypothesis tests** derived later in
+@sec-clt-approx-test (CLT-based tests) and @sec-mle-approx-test (MLE-based tests).
+
+::: {.definition #def-one-sample-z-test}
+
+### One-Sample Normal Test (known variance)
+
+Let $X_i \sim \mathcal{N}(\mu,\sigma^2)$ with $\sigma^2$ known, and let $\bar{X}$ be the sample mean.
+
+A size–$\alpha$ test of $H_0 : \mu = \mu_0$ uses the statistic
+$$
+Z = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}},
+$$
+which satisfies $Z \sim \mathcal{N}(0,1)$ under $H_0$.
+
+- **Two-sided test ($H_0 : \mu = \mu_0$ vs. $H_1 : \mu \neq \mu_0$):**
+  Reject $H_0$ if
+  $$
+  |Z| > z_{1-\alpha/2}.
+  $$
+
+- **Upper one-sided test ($H_0 : \mu = \mu_0$ vs. $H_1 : \mu > \mu_0$):**
+  Reject $H_0$ if
+  $$
+  Z > z_{1-\alpha}.
+  $$
+
+- **Lower one-sided test ($H_0 : \mu = \mu_0$ vs. $H_1 : \mu < \mu_0$):**
+  Reject $H_0$ if
+  $$
+  Z < z_{\alpha}.
+  $$
+
+:::
+
+::: {.example #exm-dino-egg-z-test-known-var}
+### Dinosaur Eggshell Thickness: Z-Test with Known Variance
+
+Dr. Ian Malcolm, a palaeontologist, is studying a clutch of fossilised dinosaur eggs from a single Late Cretaceous nesting site.  
+From 24 intact eggs, he measures the eggshell thickness (in mm) and obtains a sample mean of  
+$$
+\bar{x} = 2.08 \text{ mm}.
+$$
+
+Comparative data from closely related modern bird species suggest that, for this clade, eggshell thickness can be modelled as
+$$
+X \sim \mathcal{N}(\mu, \sigma^2),
+$$
+with a **known** variance of $\sigma^2 = 0.04 \text{ mm}^2$,
+so the standard deviation is $\sigma = 0.2 \text{ mm}$.
+
+Some researchers claim that this dinosaur species had eggshell thickness similar to its modern relatives, with mean $\mu_0 = 2.0 \text{ mm}.$
+
+We want to test whether the fossil evidence is consistent with this claim. Perform a **two-sided Z-test** of size $\alpha = 0.05$:
+$$
+H_0 : \mu = 2.0,
+\qquad
+H_1 : \mu \neq 2.0.
+$$
+
+```{=html}
+<details>
+<summary><strong>Solution</strong></summary>
+```
+Under $H_0 : \mu = 2.0$,
+$$
+Z 
+= \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}}
+= \frac{2.08 - 2.0}{0.2 / \sqrt{24}}.
+$$
+
+Compute the denominator:
+$$
+\frac{0.2}{\sqrt{24}}
+= \frac{0.2}{4.89898}
+\approx 0.0408.
+$$
+
+Thus the observed statistic is
+$$
+Z_{\text{obs}}
+= \frac{0.08}{0.0408}
+\approx 1.96.
+$$
+
+For a two-sided test with $\alpha = 0.05$, the rejection region is
+$$
+|Z| > z_{1-\alpha/2} = 1.96.
+$$
+
+Since
+$$
+|Z_{\text{obs}}| \approx 1.96,
+$$
+the observed value lies **exactly on the boundary** of the rejection region.  
+By convention, a test rejects **only when the statistic exceeds** the critical value (not when it equals it).  
+
+Therefore we **fail to reject** $H_0$ at the 5% level.
+
+There is not enough statistical evidence to conclude that the mean eggshell thickness differs from  
+$2.0$ mm in this dinosaur population.
 
 
 ```{=html}
@@ -1025,19 +1088,167 @@ The null hypothesis does not fully specify the distribution of the null.
 
 :::
 
+#### One-Sample Normal (unknown variance)
+
+In the confidence interval section (@def-normal-ci-unknown-var) we saw that replacing the unknown variance $\sigma^2$ with the sample variance $S^2$ leads to a **Student–$t$ distribution**.  
+The same idea gives an **exact hypothesis test** for $\mu$ when $\sigma^2$ is unknown.
+
+::: {.definition #def-one-sample-t-test}
+### One-Sample $t$-Test (unknown variance)
+
+Let $X_i \sim \mathcal{N}(\mu,\sigma^2)$ with $\sigma^2$ unknown.
+
+Use the test statistic  
+$$
+T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}},
+$$
+where $S^2$ is the sample variance. Under $H_0 : \mu = \mu_0$,
+$$
+T \sim t_{n-1}.
+$$
+
+- **Two-sided test ($H_0 : \mu = \mu_0$ vs. $H_1 : \mu \neq \mu_0$):**
+  Reject $H_0$ if  
+  $$
+  |T| > t_{1-\alpha/2,\,n-1}.
+  $$
+
+- **Upper one-sided test ($H_0 : \mu = \mu_0$ vs. $H_1 : \mu > \mu_0$):**
+  Reject $H_0$ if  
+  $$
+  T > t_{1-\alpha,\,n-1}.
+  $$
+
+- **Lower one-sided test ($H_0 : \mu = \mu_0$ vs. $H_1 : \mu < \mu_0$):**
+  Reject $H_0$ if  
+  $$
+  T < t_{\alpha,\,n-1}.
+  $$
+
+:::
 
 
-### One-Sample Normal (unknown variance)
+::: {.example #exm-dino-egg-z-test-unknown-var}
+### Dinosaur Eggshell Thickness: $t$-Test with Unknown Variance
+Continuing from @exm-dino-egg-z-test-known-var, Dr. Ian Malcolm now realises that the variance in eggshell thickness is **not** reliably known for this extinct species. We therefore treat both $\mu$ and $\sigma^2$ as unknown.
 
-### Two-Sample Normal (unknown variances)
+We now perform a **two-sided $t$-test** of size $\alpha = 0.05$:
+$$
+H_0 : \mu = 2.0, \qquad H_1 : \mu \neq 2.0.
+$$
 
-So far, we have only ever considered a **single sample**
+Dr Malcolm measures the thicknesses of **24** intact eggs, obtaining a sample mean $\bar{x} = 2.08\text{ mm}$ and sample variance  
+$$
+s^2 = 0.0441\text{ mm}^2 \qquad (s = 0.21\text{ mm}).
+$$
+
+```{=html}
+<details>
+<summary><strong>Solution</strong></summary>
+```
+The $t$-statistic is
+$$
+T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}}
+  = \frac{2.08 - 2.0}{0.21/\sqrt{24}}
+  \approx \frac{0.08}{0.0429}
+  \approx 1.86.
+$$
+
+Under $H_0$, this statistic follows a $t$-distribution with $n-1 = 23$ degrees of freedom:
+$$
+T \sim t_{23}.
+$$
+
+For a two-sided test at significance level $\alpha = 0.05$, the critical value is
+$$
+t_{1-\alpha/2,\,23} = t_{0.975,\,23} \approx 2.069.
+$$
+
+Since
+$$
+|T_{\text{obs}}| \approx 1.86 \;<\; 2.069,
+$$
+we **fail to reject** the null hypothesis at the 5% level.
+
+There is insufficient statistical evidence to conclude that the mean eggshell thickness differs from  
+$2.0\text{ mm}$ in this dinosaur population.
+
+```{=html}
+</details>
+```
+
+:::
 
 
+### Approximate Hypothesis Tests
 
-## Approximate Hypothesis Tests
+#### CLT based tests of the mean {#sec-clt-approx-test}
 
-### CLT: Approximate Hypothesis Tests
+The <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span> tells us that for an i.i.d. sample
+$$
+X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \text{Distribution}(\underline{\theta}),
+$$
+with population mean $\mathrm{E}[X_i] = \mu$ and finite variance $\mathrm{Var}(X_i) = \sigma^2$, the sample mean satisfies
+$$
+\bar{X} \;\overset{\text{approx.}}{\sim}\; 
+\mathcal{N}\!\left(\mu,\; \frac{\sigma^2}{n}\right)
+\qquad \text{for large } n.
+$$
+
+This implies that for testing
+$$
+H_0 : \mu = \mu_0,
+$$
+we may use the **CLT-based test statistic**
+$$
+T
+= \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}}.
+$$
+
+Under $H_0$, and for sufficiently large $n$,
+$$
+T \;\overset{\text{approx.}}{\sim}\; \mathcal{N}(0,1),
+$$
+so we may apply the <span class="xref-no-num">[one-sample Z-test @def-one-sample-z-test]</span> against either a one-sided or two-sided alternative.
+
+On the other hand, if the **population variance is unknown**, we replace $\sigma$ with the sample standard deviation $S$:
+$$
+S^2 = \frac{1}{n-1}\sum_{i=1}^{n} (X_i - \bar{X})^2,
+$$
+and use the statistic
+$$
+T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}}.
+$$
+
+For large $n$, this again has an approximate standard normal distribution:
+$$
+T \;\overset{\text{approx.}}{\sim}\; \mathcal{N}(0,1),
+$$
+even though for small samples the exact distribution is $t_{n-1}$.  
+
+This leads to the following definition.
+
+::: {.definition #def-clt-test}
+### CLT Approximate Tests for the Mean
+
+Let $X_1,\ldots,X_n$ be i.i.d. with unknown mean $\mu$ and finite variance.
+
+- **If the population variance $\sigma^2$ is known**, use the Z-statistic  
+  $$
+  T = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}}
+  $$  
+  with $T \overset{\text{approx.}}{\sim} \mathcal{N}(0,1)$ under $H_0$.
+
+- **If the population variance is unknown**, use the plug-in statistic  
+  $$
+  T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}},
+  $$  
+  which satisfies $T \overset{\text{approx.}}{\sim} \mathcal{N}(0,1)$ for large $n$.
+
+In both cases, one-sided or two-sided rejection regions are defined exactly as in the <span class="xref-no-num">[one-sample Z-test @def-one-sample-z-test]</span> or <span class="xref-no-num">[one-sample $t$-test @def-one-sample-t-test]</span>.
+:::
+
+
 
 ::: {#exm-test-of-proportions}
 #### Test of Proportions
@@ -1046,11 +1257,86 @@ So far, we have only ever considered a **single sample**
 
 :::
 
-### Asymptotic MLE: Approximate Hypothesis Tests
 
-## Likelihood Ratio Test
+#### Likelihood Ratio Test
+
+## Non-Examinable Hypothesis Tests
+
+### Two-sample $t$-test
+
+### $\chi^2$ Contingency Table Tests
+
+
+[^general-hypothesis-testing]: In general, we can consider **hypothesis tests** of the form $H_0: \theta \in \Theta_0$, for some subset $\Theta_0 \subseteq \Theta$ of the parameter space $\Theta$. The alternative hypothesis is that $\theta$ belongs to the relative complement $H_1: \theta \in \Theta\setminus \Theta_0$. A test is called a **composite test** if $\Theta_0$ includes more than a single point.
 
 
 [^accept-vs-fail-to-reject]: It is common to say “reject $H_0$” when the $p$-value is small, and “fail to reject $H_0$” otherwise. Both phrases should be interpreted with care: rejecting $H_0$ does **not** prove it is false, and failing to reject $H_0$ does **not** prove it is true. Instead, hypothesis testing provides a decision rule about whether the data are sufficiently inconsistent with $H_0$ at a chosen significance level.
 
+### Asymptotic MLE Tests {#sec-mle-approx-test}
 
+In many models, the parameter of interest is not the mean of an i.i.d. sample, but rather a general parameter 
+$$
+\theta \in \Theta \subseteq \mathbb{R}.
+$$
+When we estimate $\theta$ using the maximum likelihood estimator (MLE) $\hat{\theta}_n$, the key tool is the **asymptotic normality of the MLE**.
+
+From @thm-asymp-mle, under standard regularity conditions,
+$$
+\sqrt{n}\,(\hat{\theta}_n - \theta_0)
+\;\overset{d}{\longrightarrow}\;
+\mathcal{N}\big(0,\; \mathcal{I}_n(\theta_0)^{-1}\big),
+$$
+where $\mathcal{I}_n(\theta_0)$ is the **Fisher information** of the whole-sample at the true parameter value.
+
+This yields an approximate hypothesis test for
+$$
+H_0 : \theta = \theta_0
+$$
+that closely parallels the CLT Z-test.
+
+Rewriting the asymptotic normality statement,
+$$
+\frac{\hat{\theta}_n - \theta_0}
+{\sqrt{\,\mathcal{I}(\theta_0)^{-1}/n\,}}
+\;\overset{\text{approx.}}{\sim}\;
+\mathcal{N}(0,1),
+$$
+which motivates the **Wald statistic**
+$$
+T \;=\;\frac{\hat{\theta}_n - \theta_0}{\sqrt{\mathcal{I}_n(\hat{\theta}_n)^{-1}}}.
+$$
+Which uses the usual plug-in estimator of the asymptotic variance.
+
+
+::: {#def-wald-test .definition}
+#### Wald Test
+
+Let 
+$$
+T \;=\;\frac{\hat{\theta}_n - \theta_0}{\sqrt{\mathcal{I}_n(\hat{\theta}_n)^{-1}}}.
+$$
+be the **Wald statistic**.
+
+- **Two-sided test ($H_0 : \theta = \theta_0$ vs. $H_1 : \theta \neq \theta_0$):** Reject $H_0$ if  
+  $$
+  |T| > z_{1-\alpha/2}.
+  $$
+
+- **Upper one-sided test ($H_0 : \theta = \theta_0$ vs. $H_1 : \theta > \theta_0$):** Reject $H_0$ if  
+  $$
+  T > z_{1-\alpha}.
+  $$
+
+- **Lower one-sided test ($H_0 : \theta = \theta_0$ vs. $H_1 : \theta < \theta_0$):**   Reject $H_0$ if  
+  $$
+  T < z_{\alpha}.
+  $$
+
+:::
+
+The Wald test is **asymptotically valid**, meaning that its size approaches $\alpha$ as $n \to \infty$.
+
+The Wald test extends the one-sample Z-test to **any parametric model** where:
+
+1. you can compute the MLE $\hat{\theta}_n$,
+2. you can compute (or approximate) the Fisher information.

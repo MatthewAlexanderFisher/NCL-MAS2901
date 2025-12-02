@@ -183,6 +183,49 @@ ul.task-list li input[type="checkbox"] {
   })();
 </script>
 
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../theming/math-scroll.css">
 <link rel="stylesheet" href="../../theming/callout-style.css">
@@ -516,7 +559,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../content/main/part4/10-bayes-hypothesis-testing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian Hypothesis Testing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian Hypothesis Testing (not examinable)</span></span></a>
   </div>
 </li>
       </ul>
@@ -560,6 +603,12 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Python IDE</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/appendix/statistical-tables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Statistical Tables</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -567,8 +616,28 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-exam-details" id="toc-sec-exam-details" class="nav-link active" data-scroll-target="#sec-exam-details">Exam Details</a></li>
+  <li><a href="#sec-examinable-content-summary" id="toc-sec-examinable-content-summary" class="nav-link" data-scroll-target="#sec-examinable-content-summary">Examinable Content Summary</a>
+  <ul class="collapse">
+  <li><a href="#part-i-foundations" id="toc-part-i-foundations" class="nav-link" data-scroll-target="#part-i-foundations">Part I: Foundations</a></li>
+  <li><a href="#part-ii-point-estimation" id="toc-part-ii-point-estimation" class="nav-link" data-scroll-target="#part-ii-point-estimation">Part II: Point Estimation</a></li>
+  <li><a href="#part-iii-interval-estimation" id="toc-part-iii-interval-estimation" class="nav-link" data-scroll-target="#part-iii-interval-estimation">Part III: Interval Estimation</a></li>
+  <li><a href="#part-iv-hypothesis-testing" id="toc-part-iv-hypothesis-testing" class="nav-link" data-scroll-target="#part-iv-hypothesis-testing">Part IV: Hypothesis Testing</a></li>
+  </ul></li>
+  <li><a href="#sec-non-examinable-content" id="toc-sec-non-examinable-content" class="nav-link" data-scroll-target="#sec-non-examinable-content">Non-Examinable Content</a>
+  <ul class="collapse">
+  <li><a href="#part-i-foundations-1" id="toc-part-i-foundations-1" class="nav-link" data-scroll-target="#part-i-foundations-1">Part I: Foundations</a></li>
+  <li><a href="#part-ii-point-estimation-1" id="toc-part-ii-point-estimation-1" class="nav-link" data-scroll-target="#part-ii-point-estimation-1">Part II: Point Estimation</a></li>
+  <li><a href="#part-iii-interval-estimation-1" id="toc-part-iii-interval-estimation-1" class="nav-link" data-scroll-target="#part-iii-interval-estimation-1">Part III: Interval Estimation</a></li>
+  <li><a href="#part-iv-hypothesis-testing-1" id="toc-part-iv-hypothesis-testing-1" class="nav-link" data-scroll-target="#part-iv-hypothesis-testing-1">Part IV: Hypothesis Testing</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -593,9 +662,243 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Under Construction…</p>
+<p>(under construction…)</p>
+<p>This page provides a concise summary of all <strong>examinable material</strong> for the MAS2901 exam. If a topic appears in the main notes <strong>but is not included here</strong>, you may assume it is <strong>not examinable</strong>. A dedicated section at the end lists all <strong>non-examinable</strong> content explicitly.</p>
+<p>The revision sheet is organised as follows:</p>
+<ol type="1">
+<li><a href="#sec-exam-details" class="quarto-xref"><span>Exam Details</span></a>: Addresses common questions about the structure and format of the exam.</li>
+<li><a href="#sec-examinable-content-summary" class="quarto-xref"><span>Examinable Content Summary</span></a>: Summarises all examinable material from the notes and highlights the <strong>essential points</strong> to focus on during revision.</li>
+<li><a href="#sec-non-examinable-content" class="quarto-xref"><span>Non-Examinable Content</span></a>: Lists all material from the main notes that is <strong>not</strong> examinable.</li>
+</ol>
+<section id="sec-exam-details" class="level2">
+<h2 class="anchored" data-anchor-id="sec-exam-details">Exam Details</h2>
+<p>The exam follows the same structure and style as the specimen exam. Key points:</p>
+<ol type="1">
+<li><strong>Formula Sheet</strong>
+<ul>
+<li>Contains <strong>only</strong> the distributional formulae <strong>required for the exam</strong>.</li>
+<li>It <strong>does not</strong> include general results such as Fisher information, confidence interval formulae, or asymptotic approximations.</li>
+</ul></li>
+<li><strong>Statistical Tables</strong>
+<ul>
+<li>Standard statistical tables will be provided where necessary (e.g., Normal, Student-<span class="math inline">t</span>, <span class="math inline">\chi^2</span>).</li>
+</ul></li>
+<li><strong>Exam Structure</strong>
+<ul>
+<li><strong>Section A:</strong> Four compulsory questions worth a total of <strong>40 marks</strong>.</li>
+<li><strong>Section B:</strong> Four questions, each worth <strong>20 marks</strong>.
+<ul>
+<li>You may answer <strong>all four</strong> questions if you wish.<br>
+</li>
+<li>Only your <strong>best three</strong> answers will count towards your final mark.</li>
+</ul></li>
+</ul></li>
+<li><strong>Exam notes</strong>
+<ul>
+<li>When deriving <strong>maximum likelihood estimators</strong>, you are not required to check that your solution is a maximum unless the question explicitly instructs you to do so.</li>
+<li>Clear reasoning and correct use of notation are expected; marks may be deducted for unsupported or incomplete working.</li>
+</ul></li>
+</ol>
+</section>
+<section id="sec-examinable-content-summary" class="level2">
+<h2 class="anchored" data-anchor-id="sec-examinable-content-summary">Examinable Content Summary</h2>
+<section id="part-i-foundations" class="level3">
+<h3 class="anchored" data-anchor-id="part-i-foundations">Part I: Foundations</h3>
+<p><span class="xref-no-num"><a href="../main/part1/1-prob-theory.html" class="quarto-xref">Chapter 1&nbsp;<span>1&nbsp; Probability Theory</span></a></span>, <span class="xref-no-num"><a href="../main/part1/2-what-is-stats-inference.html" class="quarto-xref">Chapter 2&nbsp;<span>2&nbsp; What is Statistical Inference?</span></a></span>, <span class="xref-no-num"><a href="../main/part1/3-types-of-inference.html" class="quarto-xref">Chapter 3&nbsp;<span>3&nbsp; Types of Inference</span></a></span> are all <strong>introductory material</strong>.</p>
+<p>The <strong>most relevant examinable</strong> material are the following:</p>
+<section id="chapter-1---probability-theory-sec-probability-theory" class="level4">
+<h4 class="anchored" data-anchor-id="chapter-1---probability-theory-sec-probability-theory">Chapter 1 - <span class="xref-no-num"><a href="../main/part1/1-prob-theory.html" class="quarto-xref">Probability Theory&nbsp;<span>1&nbsp; Probability Theory</span></a></span></h4>
+<p>Covers basic probability theory, mostly assumed knowledge and thus examinable with some exceptions.</p>
+<section id="summary-of-examinable-material" class="level5">
+<h5 class="anchored" data-anchor-id="summary-of-examinable-material">Summary of Examinable Material</h5>
+<ul>
+<li><span class="xref-no-num"><a href="../main/part1/1-prob-theory.html#thm-bayes" class="quarto-xref">Bayes Theorem&nbsp;<span>1.2</span></a></span> and its <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#prf-bayes" class="quarto-xref">proof&nbsp;<span>6.1</span></a></span>: Be comfortable with using Bayes theorem for events <span class="math display">
+\mathrm{Pr}(A \mid B) = \frac{\mathrm{Pr}(B \mid A)\mathrm{Pr}(A)}{\mathrm{Pr}(B)}.
+</span> The <strong>proof</strong> is unlikely to be examined.</li>
+<li><span class="xref-no-num"><a href="../main/part1/1-prob-theory.html#sec-random-variables" class="quarto-xref">Random Variables&nbsp;<span>Random Variables</span></a></span>: In particular, be comfortable with PDFs, PMFs and CDFs.</li>
+</ul>
+</section>
+<section id="essential-points" class="level5">
+<h5 class="anchored" data-anchor-id="essential-points">Essential Points</h5>
+</section>
+</section>
+<section id="chapter-2---what-is-statistical-inference-sec-what-is-statistics" class="level4">
+<h4 class="anchored" data-anchor-id="chapter-2---what-is-statistical-inference-sec-what-is-statistics">Chapter 2 - <span class="xref-no-num"><a href="../main/part1/2-what-is-stats-inference.html" class="quarto-xref">What is Statistical Inference?&nbsp;<span>2&nbsp; What is Statistical Inference?</span></a></span></h4>
+<section id="summary-of-examinable-material-1" class="level5">
+<h5 class="anchored" data-anchor-id="summary-of-examinable-material-1">Summary of Examinable Material</h5>
+<ul>
+<li>Understanding the <strong>difference</strong> between data <span class="math inline">X_1,\ldots, X_n</span> and parameters <span class="math inline">\theta</span></li>
+<li>Understand the goal of <strong>statistical inference</strong> is to infer the parameter <span class="math inline">\theta</span> from data</li>
+<li>What is a <strong>statistical model</strong></li>
+</ul>
+</section>
+<section id="essential-points-1" class="level5">
+<h5 class="anchored" data-anchor-id="essential-points-1">Essential Points</h5>
+</section>
+</section>
+<section id="chapter-3---types-of-inference-sec-types-of-inference" class="level4">
+<h4 class="anchored" data-anchor-id="chapter-3---types-of-inference-sec-types-of-inference">Chapter 3 - <span class="xref-no-num"><a href="../main/part1/3-types-of-inference.html" class="quarto-xref">Types of Inference&nbsp;<span>3&nbsp; Types of Inference</span></a></span></h4>
+<section id="summary-of-examinable-material-2" class="level5">
+<h5 class="anchored" data-anchor-id="summary-of-examinable-material-2">Summary of Examinable Material</h5>
+<ul>
+<li>There are <span class="xref-no-num"><a href="../main/part1/3-types-of-inference.html#sec-philo-inference" class="quarto-xref">two main approaches&nbsp;<span>Philosophies of Inference</span></a></span> in statistical inference:
+<ol type="1">
+<li><strong>Frequentist Inference:</strong>
+<ul>
+<li>Data <span class="math inline">X_i</span> is <strong>treated as random</strong></li>
+<li>The parameter <span class="math inline">\theta</span> is treated as <strong>fixed</strong> but <strong>unknown</strong>.</li>
+<li>Uncertainty arises from repeated experiments.</li>
+</ul></li>
+<li><strong>Bayesian Inference:</strong>
+<ul>
+<li>The <strong>data</strong> are fixed once observed.</li>
+<li>The <strong>parameter</strong> <span class="math inline">\theta</span> is treated as a random variable, with uncertainty described by a <strong>prior distribution</strong> <span class="math inline">\pi(\theta)</span>.</li>
+<li>Inference updates this prior in light of the data, giving a <strong>posterior distribution</strong> <span class="math inline">\pi(\theta \mid \text{data})</span>.</li>
+</ul></li>
+</ol></li>
+<li>There are <span class="xref-no-num"><a href="../main/part1/3-types-of-inference.html#sec-inference-tasks" class="quarto-xref">four types of task&nbsp;<span>Inference Tasks</span></a></span> in statistical inference:
+<ol type="1">
+<li><strong>Point Estimation:</strong> Give a single “best guess” <span class="math inline">\hat{\theta}</span> for the parameter.</li>
+<li><strong>Interval Estimation:</strong> Quantify uncertainty in <span class="math inline">\theta</span> by reporting a range of values.</li>
+<li><strong>Hypothesis Testing:</strong> Ask a <strong>yes/no question</strong> about the parameter <span class="math inline">\theta</span>. This is done by formalising a claim (the <em>null hypothesis</em>) such as <span class="math display">
+     H_0: \theta \in \Theta_0,
+</span> and then using the data to judge whether this claim is <strong>compatible with the evidence</strong>.</li>
+<li><strong>Prediction:</strong> Use data to predict future or unobserved outcomes. <strong>Prediction is not covered in this course</strong>.</li>
+</ol></li>
+</ul>
+</section>
+<section id="essential-points-2" class="level5">
+<h5 class="anchored" data-anchor-id="essential-points-2">Essential Points</h5>
+</section>
+</section>
+</section>
+<section id="part-ii-point-estimation" class="level3">
+<h3 class="anchored" data-anchor-id="part-ii-point-estimation">Part II: Point Estimation</h3>
+<section id="chapter-4---frequentist-point-estimation-sec-freq-point-estimate" class="level4">
+<h4 class="anchored" data-anchor-id="chapter-4---frequentist-point-estimation-sec-freq-point-estimate">Chapter 4 - <span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html" class="quarto-xref">Frequentist Point Estimation&nbsp;<span>4&nbsp; Frequentist Point Estimation</span></a></span></h4>
+<section id="summary-of-examinable-material-3" class="level5">
+<h5 class="anchored" data-anchor-id="summary-of-examinable-material-3">Summary of Examinable Material</h5>
+</section>
+<section id="essential-points-3" class="level5">
+<h5 class="anchored" data-anchor-id="essential-points-3">Essential Points</h5>
+</section>
+</section>
+<section id="chapter-5---likelihood-sec-likelihood" class="level4">
+<h4 class="anchored" data-anchor-id="chapter-5---likelihood-sec-likelihood">Chapter 5 - <span class="xref-no-num"><a href="../main/part2/5-likelihood.html" class="quarto-xref">Likelihood&nbsp;<span>5&nbsp; Likelihood</span></a></span></h4>
+<section id="summary-of-examinable-material-4" class="level5">
+<h5 class="anchored" data-anchor-id="summary-of-examinable-material-4">Summary of Examinable Material</h5>
+</section>
+<section id="essential-points-4" class="level5">
+<h5 class="anchored" data-anchor-id="essential-points-4">Essential Points</h5>
+</section>
+</section>
+<section id="chapter-6---bayesian-inference-sec-bayes-inference" class="level4">
+<h4 class="anchored" data-anchor-id="chapter-6---bayesian-inference-sec-bayes-inference">Chapter 6 - <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html" class="quarto-xref">Bayesian Inference&nbsp;<span>6&nbsp; Bayesian Inference</span></a></span></h4>
+<section id="summary-of-examinable-material-5" class="level5">
+<h5 class="anchored" data-anchor-id="summary-of-examinable-material-5">Summary of Examinable Material</h5>
+</section>
+<section id="essential-points-5" class="level5">
+<h5 class="anchored" data-anchor-id="essential-points-5">Essential Points</h5>
+</section>
+</section>
+</section>
+<section id="part-iii-interval-estimation" class="level3">
+<h3 class="anchored" data-anchor-id="part-iii-interval-estimation">Part III: Interval Estimation</h3>
+<section id="chapter-7---frequentist-interval-estimation-sec-freq-interval-estimate" class="level4">
+<h4 class="anchored" data-anchor-id="chapter-7---frequentist-interval-estimation-sec-freq-interval-estimate">Chapter 7 - <span class="xref-no-num"><a href="../main/part3/7-freq-interval-estimation.html" class="quarto-xref">Frequentist Interval Estimation&nbsp;<span>7&nbsp; Frequentist Interval Estimation</span></a></span></h4>
+<section id="summary-of-examinable-material-6" class="level5">
+<h5 class="anchored" data-anchor-id="summary-of-examinable-material-6">Summary of Examinable Material</h5>
+</section>
+<section id="essential-points-6" class="level5">
+<h5 class="anchored" data-anchor-id="essential-points-6">Essential Points</h5>
+</section>
+</section>
+<section id="chapter-8---bayesian-intervals-sec-bayesian-intervals" class="level4">
+<h4 class="anchored" data-anchor-id="chapter-8---bayesian-intervals-sec-bayesian-intervals">Chapter 8 - <span class="xref-no-num"><a href="../main/part3/8-bayes-interval-estimation.html" class="quarto-xref">Bayesian Intervals&nbsp;<span>8&nbsp; Bayesian Intervals</span></a></span></h4>
+<section id="summary-of-examinable-material-7" class="level5">
+<h5 class="anchored" data-anchor-id="summary-of-examinable-material-7">Summary of Examinable Material</h5>
+</section>
+<section id="essential-points-7" class="level5">
+<h5 class="anchored" data-anchor-id="essential-points-7">Essential Points</h5>
+</section>
+</section>
+</section>
+<section id="part-iv-hypothesis-testing" class="level3">
+<h3 class="anchored" data-anchor-id="part-iv-hypothesis-testing">Part IV: Hypothesis Testing</h3>
+<section id="chapter-9---frequentist-hypothesis-testing-sec-freq-hypothesis-test" class="level4">
+<h4 class="anchored" data-anchor-id="chapter-9---frequentist-hypothesis-testing-sec-freq-hypothesis-test">Chapter 9 - <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html" class="quarto-xref">Frequentist Hypothesis Testing&nbsp;<span>9&nbsp; Frequentist Hypothesis Testing</span></a></span></h4>
+<section id="summary-of-examinable-material-8" class="level5">
+<h5 class="anchored" data-anchor-id="summary-of-examinable-material-8">Summary of Examinable Material</h5>
+</section>
+<section id="essential-points-8" class="level5">
+<h5 class="anchored" data-anchor-id="essential-points-8">Essential Points</h5>
+</section>
+</section>
+<section id="chapter-10---bayesian-hypothesis-testing-sec-bayes-hypothesis-test" class="level4">
+<h4 class="anchored" data-anchor-id="chapter-10---bayesian-hypothesis-testing-sec-bayes-hypothesis-test">Chapter 10 - <span class="xref-no-num"><a href="../main/part4/10-bayes-hypothesis-testing.html" class="quarto-xref">Bayesian Hypothesis Testing&nbsp;<span>10&nbsp; Bayesian Hypothesis Testing (not examinable)</span></a></span></h4>
+<section id="summary-of-examinable-material-9" class="level5">
+<h5 class="anchored" data-anchor-id="summary-of-examinable-material-9">Summary of Examinable Material</h5>
+</section>
+<section id="essential-points-9" class="level5">
+<h5 class="anchored" data-anchor-id="essential-points-9">Essential Points</h5>
+</section>
+</section>
+</section>
+</section>
+<section id="sec-non-examinable-content" class="level2">
+<h2 class="anchored" data-anchor-id="sec-non-examinable-content">Non-Examinable Content</h2>
+<p>This section covers all the non-examinable content in the course notes.</p>
+<section id="part-i-foundations-1" class="level3">
+<h3 class="anchored" data-anchor-id="part-i-foundations-1">Part I: Foundations</h3>
+<p><span class="xref-no-num"><a href="../main/part1/1-prob-theory.html" class="quarto-xref">Chapter 1&nbsp;<span>1&nbsp; Probability Theory</span></a></span>, <span class="xref-no-num"><a href="../main/part1/2-what-is-stats-inference.html" class="quarto-xref">Chapter 2&nbsp;<span>2&nbsp; What is Statistical Inference?</span></a></span>, <span class="xref-no-num"><a href="../main/part1/3-types-of-inference.html" class="quarto-xref">Chapter 3&nbsp;<span>3&nbsp; Types of Inference</span></a></span> are all <strong>introductory material</strong>.</p>
+<p>The <strong>most relevant examinable</strong> material are the following:</p>
+<section id="chapter-1---probability-theory-sec-probability-theory-1" class="level4">
+<h4 class="anchored" data-anchor-id="chapter-1---probability-theory-sec-probability-theory-1">Chapter 1 - <span class="xref-no-num"><a href="../main/part1/1-prob-theory.html" class="quarto-xref">Probability Theory&nbsp;<span>1&nbsp; Probability Theory</span></a></span></h4>
+</section>
+<section id="chapter-2---what-is-statistical-inference-sec-what-is-statistics-1" class="level4">
+<h4 class="anchored" data-anchor-id="chapter-2---what-is-statistical-inference-sec-what-is-statistics-1">Chapter 2 - <span class="xref-no-num"><a href="../main/part1/2-what-is-stats-inference.html" class="quarto-xref">What is Statistical Inference?&nbsp;<span>2&nbsp; What is Statistical Inference?</span></a></span></h4>
+<ul>
+<li></li>
+</ul>
+</section>
+<section id="chapter-3---types-of-inference-sec-types-of-inference-1" class="level4">
+<h4 class="anchored" data-anchor-id="chapter-3---types-of-inference-sec-types-of-inference-1">Chapter 3 - <span class="xref-no-num"><a href="../main/part1/3-types-of-inference.html" class="quarto-xref">Types of Inference&nbsp;<span>3&nbsp; Types of Inference</span></a></span></h4>
+</section>
+</section>
+<section id="part-ii-point-estimation-1" class="level3">
+<h3 class="anchored" data-anchor-id="part-ii-point-estimation-1">Part II: Point Estimation</h3>
+<section id="chapter-4---frequentist-point-estimation-sec-freq-point-estimate-1" class="level4">
+<h4 class="anchored" data-anchor-id="chapter-4---frequentist-point-estimation-sec-freq-point-estimate-1">Chapter 4 - <span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html" class="quarto-xref">Frequentist Point Estimation&nbsp;<span>4&nbsp; Frequentist Point Estimation</span></a></span></h4>
+</section>
+<section id="chapter-5---likelihood-sec-likelihood-1" class="level4">
+<h4 class="anchored" data-anchor-id="chapter-5---likelihood-sec-likelihood-1">Chapter 5 - <span class="xref-no-num"><a href="../main/part2/5-likelihood.html" class="quarto-xref">Likelihood&nbsp;<span>5&nbsp; Likelihood</span></a></span></h4>
+</section>
+<section id="chapter-6---bayesian-inference-sec-bayes-inference-1" class="level4">
+<h4 class="anchored" data-anchor-id="chapter-6---bayesian-inference-sec-bayes-inference-1">Chapter 6 - <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html" class="quarto-xref">Bayesian Inference&nbsp;<span>6&nbsp; Bayesian Inference</span></a></span></h4>
+</section>
+</section>
+<section id="part-iii-interval-estimation-1" class="level3">
+<h3 class="anchored" data-anchor-id="part-iii-interval-estimation-1">Part III: Interval Estimation</h3>
+<section id="chapter-7---frequentist-interval-estimation-sec-freq-interval-estimate-1" class="level4">
+<h4 class="anchored" data-anchor-id="chapter-7---frequentist-interval-estimation-sec-freq-interval-estimate-1">Chapter 7 - <span class="xref-no-num"><a href="../main/part3/7-freq-interval-estimation.html" class="quarto-xref">Frequentist Interval Estimation&nbsp;<span>7&nbsp; Frequentist Interval Estimation</span></a></span></h4>
+</section>
+<section id="chapter-8---bayesian-intervals-sec-bayesian-intervals-1" class="level4">
+<h4 class="anchored" data-anchor-id="chapter-8---bayesian-intervals-sec-bayesian-intervals-1">Chapter 8 - <span class="xref-no-num"><a href="../main/part3/8-bayes-interval-estimation.html" class="quarto-xref">Bayesian Intervals&nbsp;<span>8&nbsp; Bayesian Intervals</span></a></span></h4>
+</section>
+</section>
+<section id="part-iv-hypothesis-testing-1" class="level3">
+<h3 class="anchored" data-anchor-id="part-iv-hypothesis-testing-1">Part IV: Hypothesis Testing</h3>
+<section id="chapter-9---frequentist-hypothesis-testing-sec-freq-hypothesis-test-1" class="level4">
+<h4 class="anchored" data-anchor-id="chapter-9---frequentist-hypothesis-testing-sec-freq-hypothesis-test-1">Chapter 9 - <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html" class="quarto-xref">Frequentist Hypothesis Testing&nbsp;<span>9&nbsp; Frequentist Hypothesis Testing</span></a></span></h4>
+</section>
+<section id="chapter-10---bayesian-hypothesis-testing-sec-bayes-hypothesis-test-1" class="level4">
+<h4 class="anchored" data-anchor-id="chapter-10---bayesian-hypothesis-testing-sec-bayes-hypothesis-test-1">Chapter 10 - <span class="xref-no-num"><a href="../main/part4/10-bayes-hypothesis-testing.html" class="quarto-xref">Bayesian Hypothesis Testing&nbsp;<span>10&nbsp; Bayesian Hypothesis Testing (not examinable)</span></a></span></h4>
+<p>This entire chapter is <strong>not examinable</strong>.</p>
 
 
+</section>
+</section>
+</section>
 
 </main> <!-- /main -->
 <script>
