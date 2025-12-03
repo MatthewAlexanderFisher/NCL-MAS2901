@@ -1252,6 +1252,42 @@ A prior distribution for $\theta$ is said to be **conjugate** if, after updating
 
 :::
 
+Since **every example in this course uses a conjugate prior**, posterior computation follows a simple and repeatable recipe.  
+Conjugacy guarantees that the posterior has the *same family* as the prior, so once you recognise the form, the calculation becomes mechanical.
+
+::: {#imp-compute-posterior .callout-important collapse="true" appearance="simple"}
+
+#### Computing Posterior Distributions
+
+1. **Compute the Likelihood.**  
+   For data generated from a model $X_i \mid \theta \sim \mathrm{Distribution}(\theta)$, the likelihood in the i.i.d. case is
+   $$
+   f(\underline{x} \mid \theta) = \prod_{i=1}^n f(x_i \mid \theta),
+   $$
+   where $f(x_i \mid \theta)$ is the PDF (or PMF) of each observation.
+
+2. **Write Down the Prior.**  
+   Given a prior $\theta \sim \mathrm{Distribution}(\phi)$, write down its density
+   $$
+   \pi(\theta).
+   $$
+
+3. **Form the Unnormalised Posterior.**  
+   Multiply the prior and likelihood:
+   $$
+   \pi(\theta \mid \underline{x})
+   \propto \pi(\theta)\, f(\underline{x} \mid \theta),
+   $$
+   and **discard any terms that do not depend on $\theta$**.
+
+4. **Identify the Posterior Family.**  
+   Because all priors used in this course are <span class="xref-no-num">[conjugate @def-conjugacy]</span>, the resulting expression will match the same distributional form as the **prior**.  
+
+   Read off the updated parameters to obtain the posterior.
+
+:::
+
+
 #### Summary of Conjugate Priors and Posterior Updates {.unnumbered}
 
 ::: {.small-table}

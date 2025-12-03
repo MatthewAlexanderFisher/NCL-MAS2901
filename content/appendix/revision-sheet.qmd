@@ -141,31 +141,10 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
     I.e. we **condition** upon the observations $\underline{x}$ and apply @thm-bayes-density.
 - In <span class="xref-no-num">[practice @imp-bayes-proportionality]</span>, we **do not need to compute** the normalisation constant $f(\underline{x})$. It is **sufficient** to know the posterior up to a constant of proportionality:
     $$
-    \pi(\theta \mid \underline{x}) \propto \frac{\pi(\theta) \, f(\underline{x}\mid \theta)}{f(\underline{x})}.
+    \pi(\theta \mid \underline{x}) \propto \pi(\theta) \, f(\underline{x}\mid \theta).
     $$
-- Be able to compute the distribution of the posterior $\pi(\theta \mid \underline{x})$
-  using the idea of <span class="xref-no-num">[conjugacy @def-conjugacy]</span>. The steps are:
+- Be able to compute the distribution of the posterior $\pi(\theta \mid \underline{x})$ using the idea of <span class="xref-no-num">[conjugacy @def-conjugacy]</span>. The steps can be found <span class="xref-no-num">[here @imp-compute-posterior]</span>.
   
-  1. **Compute Likelihood:** Given a distribution $X_i \mid \theta \sim \mathrm{Distribution}(\theta)$,
-     we compute $f(\underline{x} \mid \theta)$. In the i.i.d. case:
-     $$
-     f(\underline{x} \mid \theta) = \prod_{i=1}^n f(x_i \mid \theta),
-     $$
-     where $f(x_i \mid \theta)$ is the PDF for each observation.
-  2. **Write down Prior Density:** Given a prior $\theta \sim \mathrm{Distribution}(\phi)$,
-     write down the prior PDF
-     $$
-     \pi(\theta).
-     $$
-  3. **Compute Posterior:** Write
-     $$
-     \pi(\theta \mid \underline{x}) \propto \pi(\theta) f(\underline{x}\mid\theta),
-     $$
-     and drop all **factors that do not depend on $\theta$**.
-  4. **Identify Posterior Distribution:** Everything in this course is
-     <span class="xref-no-num">[conjugate @def-conjugacy]</span>, meaning the posterior distribution
-     will be of the same type of distribution as the prior.
-      
   <details class="practice-questions">
   <summary><em>Computing Posteriors — Practice Questions</em></summary>
 
@@ -267,9 +246,65 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
 
 - **Hypothesis Tests:** Ability to perform
   - <span class="xref-no-num">[One-sample z-tests @def-one-sample-z-test]</span>
+  
+  <details class="practice-questions">
+  <summary><em>One-sample z-tests — Practice Questions</em></summary>
+
+  ::: {.small-table}
+  | Location | Description | Link |
+  |----------|-------------|-------|
+  | Examples | Eggshell thickness, Z-test | @exm-dino-egg-z-test-known-var|
+
+
+  : {tbl-colwidths="[20, 60, 20]"}
+  :::
+
+  </details>
   - <span class="xref-no-num">[One-sample t-tests @def-one-sample-t-test]</span>
+  
+  <details class="practice-questions">
+  <summary><em>One-sample t-tests — Practice Questions</em></summary>
+
+  ::: {.small-table}
+  | Location | Description | Link |
+  |----------|-------------|-------|
+  | Examples | Eggshell thickness, t-test | @exm-dino-egg-t-test-unknown-var|
+
+
+  : {tbl-colwidths="[20, 60, 20]"}
+  :::
+  </details>
+
   - <span class="xref-no-num">[Approximate CLT tests for the mean @def-clt-test]</span>
+  
+  <details class="practice-questions">
+  <summary><em>CLT tests for the mean — Practice Questions</em></summary>
+
+  ::: {.small-table}
+  | Location | Description | Link |
+  |----------|-------------|-------|
+  | Examples | Binomial test of proportions, CLT approximate test | @exm-test-of-proportions|
+
+
+  : {tbl-colwidths="[20, 60, 20]"}
+  :::
+  </details>
+
   - <span class="xref-no-num">[Likelihood Ratio Test (Simple null) @def-lrt-simple]</span>
+  
+  <details class="practice-questions">
+  <summary><em>Likelihood Ratio Test — Practice Questions</em></summary>
+
+  ::: {.small-table}
+  | Location | Description | Link |
+  |----------|-------------|-------|
+  | Examples | Normal model, known variance, LRT | @exm-lrt-normal-mean|
+
+
+  : {tbl-colwidths="[20, 60, 20]"}
+  :::
+  </details>
+
 
 ##### Essential Points
 
