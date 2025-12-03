@@ -265,6 +265,7 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="../../theming/math-scroll.css">
+<link rel="stylesheet" href="../../theming/practice-details.css">
 <link rel="stylesheet" href="../../theming/callout-style.css">
 <link rel="stylesheet" href="../../theming/floating-code.css">
 <link rel="stylesheet" href="../../theming/font.css">
@@ -1523,7 +1524,7 @@ Since <span class="math inline">X</span> is integer-valued, this corresponds to 
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="549f7d45" class="cell" data-execution_count="2">
+<div id="3184d5fc" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> comb</span>
@@ -2224,7 +2225,7 @@ L(b;\underline{x}) = \prod_{i=1}^n f(x_i;b)
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="da85b3c8" class="cell" data-execution_count="3">
+<div id="fe4efc77" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -2718,7 +2719,7 @@ Since <span class="math inline">\mathrm{Var}(X_i) = \lambda</span> and the <span
 </ol></li>
 </ol>
 <p>In Python:</p>
-<div id="b856f574" class="cell" data-execution_count="4">
+<div id="fb80d0a2" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> poisson</span>
@@ -2998,13 +2999,13 @@ n(1-\theta) &amp;= n \theta (\bar{x} - 1) \\
 </details>
 </div>
 </div>
-<div class="question callout callout-style-simple callout-important no-icon callout-titled" data-tags="bayes asymptotic-posterior exam-style" data-difficulty="2">
+<div id="q-asymp-post-variance" class="question callout callout-style-simple callout-important no-icon callout-titled" data-tags="bayes asymptotic-posterior exam-style" data-difficulty="2">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Asymptotic Posterior for the Variance Parameter
+Important&nbsp;1: Asymptotic Posterior for the Variance Parameter
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3022,51 +3023,260 @@ Solution
 <p><strong>Step 1: Likelihood</strong></p>
 <p><span class="math display">
 f(\underline{x} \mid \gamma)
-= \prod_{i=1}^n \frac{1}{\sqrt{2\pi \gamma}} \exp\!\left[-\frac{x_i^2}{2\gamma}\right]
-= (2\pi \gamma)^{-n/2} \exp\!\left[-\frac{1}{2\gamma}\sum_{i=1}^n x_i^2\right].
+= \prod_{i=1}^n \frac{1}{\sqrt{2\pi \gamma}}
+   \exp\!\left[-\frac{x_i^2}{2\gamma}\right]
+= (2\pi \gamma)^{-n/2}
+  \exp\!\left[-\frac{1}{2\gamma}\sum_{i=1}^n x_i^2\right].
 </span></p>
 <p><strong>Step 2: Log-likelihood</strong></p>
 <p><span class="math display">
 \ell(\gamma; \underline{x})
-= \log f(\underline{x} \mid \gamma)
-= -\frac{n}{2}\log(2\pi) - \frac{n}{2}\log(\gamma)
+= -\frac{n}{2}\log(2\pi)
+  - \frac{n}{2}\log(\gamma)
   - \frac{1}{2\gamma}\sum_{i=1}^n x_i^2.
 </span></p>
 <p><strong>Step 3: Derivatives</strong></p>
 <p><span class="math display">
 \frac{\partial \ell}{\partial \gamma}
-= -\frac{n}{2\gamma} + \frac{1}{2\gamma^2}\sum_{i=1}^n x_i^2,
-\qquad
-\frac{\partial^2 \ell}{\partial \gamma^2}
-= \frac{n}{2\gamma^2} - \frac{1}{\gamma^3}\sum_{i=1}^n x_i^2.
+= -\frac{n}{2\gamma}
+  + \frac{1}{2\gamma^2}\sum_{i=1}^n x_i^2,
 </span></p>
-<p>Let <span class="math inline">a = \sum_{i=1}^n x_i^2.</span></p>
-<p><strong>Step 4: MLE</strong></p>
-<p>Setting the first derivative to zero: <span class="math display">
--\frac{n}{2\gamma} + \frac{a}{2\gamma^2} = 0
-\quad \Rightarrow \quad
-\hat{\gamma} = \frac{a}{n} = \frac{1}{n}\sum_{i=1}^n x_i^2.
-</span></p>
-<p><strong>Step 5: Observed information</strong></p>
 <p><span class="math display">
-J(\gamma) = -\frac{\partial^2 \ell}{\partial \gamma^2}
-= -\left(\frac{n}{2\gamma^2} - \frac{a}{\gamma^3}\right)
-= -\frac{n}{2\gamma^2} + \frac{a}{\gamma^3}.
+\frac{\partial^2 \ell}{\partial \gamma^2}
+= \frac{n}{2\gamma^2}
+  - \frac{1}{\gamma^3}\sum_{i=1}^n x_i^2.
 </span></p>
-<p>Evaluating at the MLE: <span class="math display">
-J(\hat{\gamma})
-= -\frac{n^3}{2a^2} + \frac{n^3}{a^2}
-= \frac{n^3}{2a^2}.
+<p>Let<br>
+<span class="math display">
+a = \sum_{i=1}^n x_i^2.
+</span></p>
+<p><strong>Step 4: MLE</strong></p>
+<p>Solving <span class="math inline">\partial \ell / \partial \gamma = 0</span>:</p>
+<p><span class="math display">
+-\frac{n}{2\gamma} + \frac{a}{2\gamma^2} = 0
+\quad\Rightarrow\quad
+\hat{\gamma} = \frac{a}{n}
+= \frac{1}{n}\sum_{i=1}^n x_i^2.
+</span></p>
+<p><strong>Step 5: Fisher Information</strong></p>
+<p>For one observation:</p>
+<p><span class="math display">
+\ell(\gamma)
+= -\tfrac12\log(2\pi\gamma)
+  - \tfrac{x^2}{2\gamma},
+</span> and so <span class="math display">
+\frac{\partial^2 \ell}{\partial \gamma^2}
+= \frac{1}{2\gamma^2} - \frac{x^2}{\gamma^3}.
+</span></p>
+<p>Taking expectation under <span class="math inline">X \sim \mathcal{N}(0,\gamma)</span>:</p>
+<p><span class="math display">
+\mathcal{I}(\gamma)
+= -\mathrm{E}\!\left[\frac{\partial^2 \ell}{\partial \gamma^2}\right]
+= -\left(\frac{1}{2\gamma^2} - \frac{\gamma}{\gamma^3}\right)
+= \frac{1}{2\gamma^2}.
+</span></p>
+<p>Thus for <span class="math inline">n</span> observations:</p>
+<p><span class="math display">
+\mathcal{I}_n(\gamma) = \frac{n}{2\gamma^2}.
+</span></p>
+<p>Evaluated at the MLE:</p>
+<p><span class="math display">
+\mathcal{I}_n(\hat{\gamma})
+= \frac{n}{2\hat{\gamma}^2}.
 </span></p>
 <p><strong>Step 6: Asymptotic posterior</strong></p>
-<p>By the asymptotic normality of the MLE, <span class="math display">
+<p>By <a href="../main/part2/6-bayes-inference.html#thm-bernstein-von-mises" class="quarto-xref">Theorem&nbsp;<span>6.2</span></a></p>
+<p><span class="math display">
 \gamma \mid \underline{x}
-\approx \mathcal{N}\!\left(\hat{\gamma},\, J(\hat{\gamma})^{-1}\right)
-= \mathcal{N}\!\left(
-\frac{1}{n}\sum_{i=1}^n x_i^2,\;
-\frac{2}{n^3}\left(\sum_{i=1}^n x_i^2\right)^2
+\approx
+\mathcal{N}\!\left(
+\hat{\gamma},\;
+I_n(\hat{\gamma})^{-1}
+\right)
+=
+\mathcal{N}\!\left(
+\hat{\gamma},\;
+\frac{2\hat{\gamma}^2}{n}
 \right).
 </span></p>
+<p>That is,</p>
+<p><span class="math display">
+\boxed{
+\gamma \mid \underline{x}
+\overset{\text{approx.}}{\sim}
+\mathcal{N}\!\left(
+\frac{1}{n}\sum_{i=1}^n x_i^2,\;
+\frac{2}{n}\left(\frac{1}{n}\sum_{i=1}^n x_i^2\right)^2
+\right).
+}
+</span></p>
+</details>
+</div>
+</div>
+<div id="q-asymp-post-poisson" class="question callout callout-style-simple callout-important no-icon callout-titled" data-tags="bayes asymptotic-posterior poisson" data-difficulty="2">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important&nbsp;2: Asymptotic Posterior for Poisson Data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suppose we have independent <span class="xref-no-num"><a href="formula-sheet.html#sec-pois" class="quarto-xref">Poisson&nbsp;<span>Poisson</span></a></span> observations <span class="math display">
+X_1,\ldots, X_n \mid \lambda \sim \mathrm{Pois}(\lambda)
+</span></p>
+<ol type="1">
+<li>Determine the general <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#thm-bernstein-von-mises" class="quarto-xref">asymptotic posterior distribution&nbsp;<span>6.2</span></a></span> for <span class="math inline">\lambda</span>.</li>
+<li>Suppose we observe <span class="math inline">n = 100</span> data points with sample mean <span class="math display">
+\bar{x} = 3.21.
+</span> Compute the <strong>asymptotic posterior distribution</strong>.</li>
+</ol>
+<details class="solution">
+<summary>
+Solution
+</summary>
+<ol type="1">
+<li><strong>General Asymptotic Posterior.</strong>
+<ol type="1">
+<li><strong>Log-Likelihood:</strong> Since each observation is independent <span class="math inline">X_i \mid \lambda \sim \mathrm{Pois}(\lambda)</span>, we have <span class="math display">
+\begin{align*}
+f(\underline{x} \mid \lambda) &amp;= \prod_{i=1}^n \frac{\lambda^{x_i} e^{-\lambda}}{x_i!} \\
+&amp;= \lambda^{n\bar{x}} e^{-n\lambda} \left(\prod_{i=1}^n x_i! \right)^{-1}.
+\end{align*}
+</span> Therefore, the log-likelihood is <span class="math display">
+\log f(\underline{x} \mid \lambda) = n\bar{x} \log(\lambda) - n\lambda - \sum_{i=1}^n \log(x_i!).
+</span></li>
+<li><strong>Derivatives:</strong> The derivatives of the log-likelihood are <span class="math display">
+   \begin{align*}
+\frac{\partial}{\partial \lambda} \log f(\underline{x} \mid \lambda) &amp;= \frac{n\bar{x}}{\lambda} - n \\
+\frac{\partial^2}{\partial \lambda^2} \log f(\underline{x} \mid \lambda) &amp;= -\frac{n\bar{x}}{\lambda^2}.
+   \end{align*}
+   </span></li>
+<li><strong>MLE:</strong> Solving <span class="math display">
+   \frac{n\bar{x}}{\lambda} - n = 0
+   </span> yields the maximum likelihood estimator <span class="math display">
+   \hat{\lambda} = \bar{X}.
+   </span></li>
+<li><strong>Fisher Information:</strong> The <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#def-fisher-information" class="quarto-xref">Fisher information&nbsp;<span>5.7</span></a></span> for the <strong>whole sample</strong> is thus <span class="math display">
+   \begin{align*}
+\mathcal{I}_n(\lambda) &amp;= -\mathrm{E}\left[-\frac{n\bar{X}}{\lambda^2}\right] \\
+&amp;= \frac{n}{n\lambda^2}\sum_{i=1}^n\mathrm{E}\left[X_i\right] \\
+&amp;= \frac{n}{\lambda},
+   \end{align*}
+   </span> since each <span class="math inline">\mathrm{E}[X_i] = \lambda</span>.</li>
+<li><strong>Plugging in MLE:</strong> The <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#def-observed-fisher" class="quarto-xref">observed Fisher information&nbsp;<span>5.10</span></a></span> is thus <span class="math display">
+   \mathcal{I}_n(\hat{\lambda}) = \frac{n}{\bar{x}}.
+   </span></li>
+<li><strong>Asymptotic Posterior Distribution:</strong> The <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#thm-bernstein-von-mises" class="quarto-xref">asymptotic posterior distribution&nbsp;<span>6.2</span></a></span> is thus <span class="math display">
+   \lambda \mid \underline{x} \overset{\text{approx.}}{\sim} \mathcal{N}\left(\bar{x}, \frac{\bar{x}}{n}\right)
+   </span></li>
+</ol></li>
+<li><strong>Plug in data.</strong> Using the derived result from the first part and the provided summaries of the data <span class="math inline">n = 100</span> and <span class="math inline">\bar{x} = 3.21</span>, we have <span class="math display">
+\lambda \mid \underline{x} \overset{\text{approx.}}{\sim} \mathcal{N}\left(3.21, 0.0321\right)
+</span></li>
+</ol>
+</details>
+</div>
+</div>
+<div id="q-asymp-post-exponential" class="question callout callout-style-simple callout-important no-icon callout-titled" data-tags="bayes asymptotic-posterior exponential" data-difficulty="2">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important&nbsp;3: Asymptotic Posterior for Exponential Data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suppose we have independent Exponential observations with rate parameter <span class="math inline">\lambda</span>: <span class="math display">
+X_1,\ldots,X_n \mid \lambda \sim \mathrm{Exp}(\lambda).
+</span></p>
+<ol type="1">
+<li>Determine the general <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#thm-bernstein-von-mises" class="quarto-xref">asymptotic posterior distribution&nbsp;<span>6.2</span></a></span> for <span class="math inline">\lambda</span>.</li>
+<li>Suppose we observe <span class="math inline">n = 200</span> data points with sample mean <span class="math display">
+\bar{x} = 7.14.
+</span> Compute the <strong>asymptotic posterior distribution</strong>.</li>
+</ol>
+<details class="solution">
+<summary>
+Solution
+</summary>
+<ol type="1">
+<li><p><strong>General Asymptotic Posterior</strong></p>
+<ol type="1">
+<li><strong>Likelihood and log-likelihood</strong></li>
+</ol>
+<p>The density of each <span class="math inline">X_i</span> is <span class="math display">
+f(x_i \mid \lambda) = \lambda e^{-\lambda x_i}.
+</span></p>
+<p>Thus the likelihood is <span class="math display">
+f(\underline{x} \mid \lambda)
+= \prod_{i=1}^n \lambda e^{-\lambda x_i}
+= \lambda^n \exp\!\left(-\lambda\sum_{i=1}^n x_i\right).
+</span></p>
+<p>The log-likelihood is <span class="math display">
+\ell(\lambda; \underline{x})
+= n\log\lambda - \lambda\sum_{i=1}^n x_i
+= n\log\lambda - n\lambda \bar{x}.
+</span></p>
+<ol start="2" type="1">
+<li><strong>Derivatives</strong></li>
+</ol>
+<p><span class="math display">
+\frac{\partial}{\partial \lambda} \ell(\lambda; \underline{x})
+= \frac{n}{\lambda} - n\bar{x},
+\qquad
+\frac{\partial^2}{\partial \lambda^2} \ell(\lambda; \underline{x})
+= -\frac{n}{\lambda^2}.
+</span></p>
+<ol start="3" type="1">
+<li><strong>MLE</strong></li>
+</ol>
+<p>Solve <span class="math display">
+\frac{n}{\lambda} - n\bar{x} = 0,
+</span> which gives the maximum likelihood estimator <span class="math display">
+\hat{\lambda} = \frac{1}{\bar{X}}.
+</span></p>
+<ol start="4" type="1">
+<li><strong>Fisher information</strong></li>
+</ol>
+<p>The <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#def-fisher-information" class="quarto-xref">Fisher information&nbsp;<span>5.7</span></a></span> for the <strong>whole sample</strong> is thus <span class="math display">
+\mathcal{I}_n(\lambda) = -\mathrm{E}\left[-\frac{n}{\lambda^2}\right] = \frac{n}{\lambda^2}.
+</span></p>
+<p>Evaluated at the MLE, the <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#def-observed-fisher" class="quarto-xref">observed Fisher information&nbsp;<span>5.10</span></a></span> is <span class="math display">
+\mathcal{I}_n(\hat{\lambda})
+= \frac{n}{\hat{\lambda}^2}
+= n\bar{x}^2.
+</span></p>
+<ol start="5" type="1">
+<li><strong>Asymptotic posterior distribution</strong></li>
+</ol>
+<p>By <a href="../main/part2/6-bayes-inference.html#thm-bernstein-von-mises" class="quarto-xref">Theorem&nbsp;<span>6.2</span></a> <span class="math display">
+\lambda \mid \underline{x}
+\overset{\text{approx.}}{\sim} \mathcal{N}\!\left(
+  \hat{\lambda},\;
+  \mathcal{I}_n(\hat{\lambda})^{-1}
+\right)
+= \mathcal{N}\!\left(
+  \frac{1}{\bar{x}},\;
+  \frac{1}{n\bar{x}^{2}}
+\right).
+</span></p></li>
+<li><p><strong>Plugging in data</strong></p>
+<p>For <span class="math inline">n = 200</span> and <span class="math inline">\bar{x} =  7.14</span>, <span class="math display">
+\hat{\lambda} = \frac{1}{ 7.14} \approx 0.14,
+</span> and the variance is <span class="math display">
+\frac{1}{n\bar{x}^2}
+= \frac{1}{200 \cdot 7.14^2}
+\approx 9.807 \times 10^{-5}.
+</span></p>
+<p>Thus the asymptotic posterior is <span class="math display">
+\lambda \mid \underline{x}
+\approx
+\mathcal{N}\!\left(0.14,\; 9.807 \times 10^{-5}\right).
+</span></p></li>
+</ol>
 </details>
 </div>
 </div>
@@ -3092,7 +3302,7 @@ J(\hat{\gamma})
 <li>Construct a <span class="math inline">90\%</span> highest density interval (HDI) for <span class="math inline">\theta</span>.</li>
 </ol>
 <p><em>Hint:</em> The following plot may be helpful.</p>
-<div id="2c9122f9" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="5">
+<div id="4ef431f6" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="5">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -3206,6 +3416,105 @@ Solution
 </span></p>
 <p><strong>Step 4: Interpretation</strong></p>
 <p>We are approximately 95% confident that the true proportion of graduates in full-time employment within 3 months lies between <strong>66.8% and 79.2%</strong>.</p>
+</details>
+</div>
+</div>
+<div id="q-map-factory-defects" class="question callout callout-style-simple callout-important no-icon callout-titled" data-tags="bayes map beta binomial" data-difficulty="2">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important&nbsp;4: MAP Estimation in a Defect-Rate Problem
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A factory produces electronic components, each of which may be defective with some unknown probability <span class="math inline">p</span>.<br>
+To assess the defect rate, engineers inspect a random sample of <span class="math inline">n = 40</span> components and find that<br>
+<span class="math display">
+x = 7
+</span><br>
+are defective.</p>
+<p>To incorporate previous experience, the quality-control team places a prior distribution<br>
+<span class="math display">
+p \sim \mathrm{Beta}(a,b), \qquad a = 2,\; b = 8.
+</span></p>
+<p>You may assume the data follow the model <span class="math display">
+X \mid p \sim \mathrm{Binomial}(n,p).
+</span></p>
+<ol type="1">
+<li><strong>Derive the posterior distribution</strong> <span class="math inline">\pi(p \mid x)</span>.</li>
+<li><strong>Compute the Maximum a Posteriori (MAP) estimator</strong> <span class="math inline">\hat{p}_{\mathrm{MAP}}</span>.</li>
+<li><strong>Interpret your MAP estimate</strong> in the context of the defect-rate problem.</li>
+</ol>
+<details class="solution">
+<summary>
+Solution
+</summary>
+<ol type="1">
+<li><p><strong>Posterior Distribution</strong></p>
+<p>The likelihood is <span class="math display">
+f(x \mid p) = \binom{n}{x} p^{\,x} (1-p)^{\,n-x}.
+</span></p>
+<p>The prior is <span class="math display">
+\pi(p) = \frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)} p^{\,a-1}(1-p)^{\,b-1}.
+</span></p>
+<p>Therefore the posterior (dropping constants not depending on <span class="math inline">p</span>) is <span class="math display">
+\pi(p \mid x) \propto p^{\,x+a-1} (1-p)^{\,n-x+b-1}.
+</span></p>
+<p>This is recognised as a Beta distribution: <span class="math display">
+p \mid x \sim \mathrm{Beta}(a + x,\; b + n - x)
+= \mathrm{Beta}(2 + 7,\; 8 + 40 - 7)
+= \mathrm{Beta}(9,\; 41).
+</span></p></li>
+<li><p><strong>MAP Estimator</strong></p>
+<p>For a <span class="math inline">\mathrm{Beta}(\alpha,\beta)</span> distribution with <span class="math inline">\alpha&gt;1</span> and <span class="math inline">\beta&gt;1</span>, the mode is provided in closed form, yielding the MAP: <span class="math display">
+\hat{p}_{\mathrm{MAP}}
+= \frac{\alpha - 1}{\alpha + \beta - 2}.
+</span></p>
+<p>Here <span class="math inline">\alpha = 9</span> and <span class="math inline">\beta = 41</span>, so <span class="math display">
+\hat{p}_{\mathrm{MAP}}
+= \frac{9 - 1}{9 + 41 - 2}
+= \frac{8}{48}
+= \frac{1}{6}
+\approx 0.1667.
+</span></p>
+<p>Alternatively, we can derive this using the approach outlined <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#imp-compute-map" class="quarto-xref">here&nbsp;<span>6.3</span></a></span>:</p>
+<p>We have <span class="math display">
+\pi(p \mid x) \propto p^{\,x+a-1} (1-p)^{\,n-x+b-1}.
+</span> Taking logs: <span class="math display">
+\log \pi(p \mid x) = (x + a - 1)\log p + (n - x + b - 1)\log(1 - p) + C,
+</span> for some <span class="math inline">p</span>-independent constant <span class="math inline">C</span>.</p>
+<p>Differentiating with respect to <span class="math inline">p</span>: <span class="math display">
+\frac{\partial}{\partial p} \log \pi(p \mid x)
+= \frac{x + a - 1}{p} - \frac{n - x + b - 1}{1 - p}.
+</span></p>
+<p>Setting this equal to <span class="math inline">0</span> and solving for <span class="math inline">p</span>: <span class="math display">
+\begin{align*}
+\frac{x + a - 1}{p} - \frac{n - x + b - 1}{1 - p} &amp;= 0 \\[4pt]
+\frac{x + a - 1}{p} &amp;= \frac{n - x + b - 1}{1 - p} \\[4pt]
+(x + a - 1)(1 - p) &amp;= (n - x + b - 1)p \\[4pt]
+x + a - 1 &amp;= (n - x + b - 1)p + (x + a - 1)p \\[4pt]
+x + a - 1 &amp;= (n + a + b - 2)p \\[4pt]
+\Rightarrow\quad \hat{p}_{\text{MAP}} &amp;= \frac{x + a - 1}{n + a + b - 2}.
+\end{align*}
+</span></p>
+<p>Plugging in <span class="math inline">n = 40,\; x = 7,\; a = 2,\; b = 8</span> gives <span class="math display">
+\hat{p}_{\text{MAP}}
+= \frac{7 + 2 - 1}{40 + 2 + 8 - 2}
+= \frac{8}{48}
+= \frac{1}{6}
+\approx 0.1667.
+</span></p></li>
+<li><p><strong>Interpretation</strong></p>
+<p>Based on both prior information and the observed data, the MAP estimator suggests that the defect probability is approximately <span class="math display">
+\hat{p}_{\mathrm{MAP}} \approx 0.17.
+</span></p>
+<p>This is slightly lower than the raw sample proportion<br>
+<span class="math display">
+\frac{x}{n} = \frac{7}{40} = 0.175,
+</span> reflecting the influence of the prior belief that defects are relatively uncommon.</p></li>
+</ol>
 </details>
 </div>
 </div>
@@ -4132,8 +4441,8 @@ L(\theta ; \underline{x}) = \prod_{i=1}^n \theta^{x_i}(1 - \theta)^{1 - x_i}
 <li><p><strong>Fisher Information and Asymptotic Variance</strong></p>
 <p>We have</p>
 <p><span class="math display">\begin{align*}
-\mathcal{I}_n(\theta) &amp;=  -\mathbb{E}\!\left[\frac{\partial^2}{\partial \theta^2} \ell(\theta;\underline{x})\right] \\
-&amp;= \mathbb{E}\left[\frac{n\bar{x}}{\theta^2} + \frac{n(1 - \bar{x})}{(1 - \theta)^2}\right] \\
+\mathcal{I}_n(\theta) &amp;=  -\mathrm{E}\!\left[\frac{\partial^2}{\partial \theta^2} \ell(\theta;\underline{x})\right] \\
+&amp;= \mathrm{E}\left[\frac{n\bar{x}}{\theta^2} + \frac{n(1 - \bar{x})}{(1 - \theta)^2}\right] \\
 &amp;= \frac{n\theta}{\theta^2} + \frac{n(1-\theta)}{(1-\theta)^2} \\
 &amp;= \frac{n}{\theta(1-\theta)}.
 \end{align*}</span></p>
@@ -4190,7 +4499,7 @@ There is evidence that the proportion of left-handed people differs from 0.1.</p
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;1: Conjugacy: Binomial Model, Beta Prior
+Important&nbsp;5: Conjugacy: Binomial Model, Beta Prior
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4234,7 +4543,7 @@ p \mid x \sim \mathrm{Beta}(a + x, b + n - x),
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;2: Conjugacy: Poisson Model, Gamma Prior
+Important&nbsp;6: Conjugacy: Poisson Model, Gamma Prior
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4284,7 +4593,7 @@ f(\underline{x} \mid \lambda) \propto \lambda^{n\bar{x}} e^{-n\lambda}.
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;3: Conjugacy: Geometric Model, Beta Prior
+Important&nbsp;7: Conjugacy: Geometric Model, Beta Prior
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4332,7 +4641,7 @@ p \mid \underline{x} \sim \mathrm{Beta}(a + n, b + n(\bar{x} - 1)),
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;4: Conjugacy: Normal Model with known variance, Normal Prior for mean
+Important&nbsp;8: Conjugacy: Normal Model with known variance, Normal Prior for mean
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4402,7 +4711,7 @@ V &amp;= \frac{1}{\frac{1}{\sigma^2_0} + \frac{n}{\sigma^2}}.
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;5: Conjugacy: Normal Model with known mean, Inverse Gamma Prior for variance
+Important&nbsp;9: Conjugacy: Normal Model with known mean, Inverse Gamma Prior for variance
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4460,7 +4769,7 @@ b + \frac{1}{2}\sum_{i=1}^n (x_i - \mu)^2  \right),
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;6: Conjugacy: Exponential Model, Gamma Prior
+Important&nbsp;10: Conjugacy: Exponential Model, Gamma Prior
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4512,7 +4821,7 @@ b + n\bar{x}  \right),
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;7: Conjugacy: Weibull Model with known rate, Inverse Gamma Prior
+Important&nbsp;11: Conjugacy: Weibull Model with known rate, Inverse Gamma Prior
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4566,11 +4875,11 @@ b + \sum_{i=1}^n x_i^\beta  \right),
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;8: Posterior calculation: Normal likelihood, Normal prior
+Important&nbsp;12: Posterior calculation: Normal likelihood, Normal prior
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Consider the setup of <span class="xref-no-num"><a href="#q-normal-normal" class="quarto-xref">Conjugacy: Normal Model, Normal Prior&nbsp;<span>4</span></a></span>.<br>
+<p>Consider the setup of <span class="xref-no-num"><a href="#q-normal-normal" class="quarto-xref">Conjugacy: Normal Model, Normal Prior&nbsp;<span>8</span></a></span>.<br>
 Suppose the observation variance is known and equal to <span class="math display">
 \sigma^2 = 4,
 </span> and the prior for the mean is <span class="math display">

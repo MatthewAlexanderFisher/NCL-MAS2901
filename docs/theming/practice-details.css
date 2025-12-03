@@ -1,0 +1,28 @@
+/* Style the summary bar */
+details.practice-questions summary {
+  cursor: pointer;
+  background: var(--brand-purple);   /* background colour */
+  color: #f8f8f8;          /* text colour */
+  padding: 0.3rem 0.4rem;
+  border-radius: 2px;
+  font-weight: 600;
+  margin-top: 0.6rem;
+}
+
+/* Optional: change background on hover/focus */
+details.practice-questions summary:hover {
+  background: color-mix(in srgb, var(--brand-purple) 85%, black);
+}
+
+/* Add spacing above the table */
+details.practice-questions table {
+  margin-top: 0.4rem;
+}
+
+/* Optional: add a border/box around expanded content */
+details.practice-questions[open] {
+  border: 1px solid var(--brand-purple);
+  border-radius: 2px;
+  padding: 0.6rem;
+  padding-top: 0.4rem; /* keeps summary aligned nicely */
+}

@@ -228,6 +228,7 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="../../theming/math-scroll.css">
+<link rel="stylesheet" href="../../theming/practice-details.css">
 <link rel="stylesheet" href="../../theming/callout-style.css">
 <link rel="stylesheet" href="../../theming/floating-code.css">
 <link rel="stylesheet" href="../../theming/font.css">
@@ -696,6 +697,7 @@ window.Quarto = {
 </ul></li>
 <li><strong>Exam notes</strong>
 <ul>
+<li>No exam question will require writing or interpreting Python or R code.</li>
 <li>When deriving <strong>maximum likelihood estimators</strong>, you are not required to check that your solution is a maximum unless the question explicitly instructs you to do so.</li>
 <li>Clear reasoning and correct use of notation are expected; marks may be deducted for unsupported or incomplete working.</li>
 </ul></li>
@@ -797,9 +799,213 @@ window.Quarto = {
 <h4 class="anchored" data-anchor-id="chapter-6---bayesian-inference-sec-bayes-inference">Chapter 6 - <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html" class="quarto-xref">Bayesian Inference&nbsp;<span>6&nbsp; Bayesian Inference</span></a></span></h4>
 <section id="summary-of-examinable-material-5" class="level5">
 <h5 class="anchored" data-anchor-id="summary-of-examinable-material-5">Summary of Examinable Material</h5>
+<ul>
+<li><p><span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#sec-intro-bayes-approach" class="quarto-xref">Understand&nbsp;<span>Introduction to the Bayesian Approach</span></a></span> the core <strong>Bayesian</strong> idea:</p>
+<ul>
+<li>Unlike the frequentist approach, the parameter <span class="math inline">\theta</span> is treated as a <strong>random variable</strong>.</li>
+<li>The randomness captures our <strong>uncertainty</strong> about the value of the parameter.</li>
+</ul></li>
+<li><p><span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#sec-bayes-inference-procedure" class="quarto-xref">Understand&nbsp;<span>The Bayesian Inference Procedure</span></a></span> the <strong>Bayesian</strong> procedure:</p>
+<ul>
+<li><strong>Prior:</strong> Summarises our <em>prior</em> beliefs (before seeing any new data) about the parameter <span class="math inline">\theta</span>. We write <span class="math inline">\pi(\theta)</span> to denote the <strong>PDF</strong> of the prior distribution.</li>
+<li><strong>Likelihood:</strong> We assume a statistical model, by stating <span class="math inline">X_i \mid \theta \sim \mathrm{Distribution}(\theta)</span>. This induces a <em>likelihood</em> <span class="math inline">f(\underline{x} \mid \theta)</span>, the <strong>joint distribution</strong> of observing the data <span class="math inline">\underline{x}</span> for a choice of <span class="math inline">\theta</span>.</li>
+<li><strong>Posterior:</strong> Combines both the <em>prior</em> and <em>likelihood</em> together to summarise our <strong>revised beliefs</strong> about the parameter <span class="math inline">\theta</span> after observing the data. We write <span class="math inline">\pi(\theta \mid \underline{x})</span> to denote the <strong>PDF</strong> of the posterior distribution.</li>
+</ul></li>
+<li><p>Be able to <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#prf-bayes" class="quarto-xref">prove&nbsp;<span>6.1</span></a></span> and recall <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#thm-bayes-density" class="quarto-xref">Bayes theorem for densities&nbsp;<span>6.1</span></a></span> and understand how this yields the <strong>posterior density</strong>: <span class="math display">
+  \pi(\theta \mid \underline{x}) = \frac{\pi(\theta) \, f(\underline{x}\mid \theta)}{f(\underline{x})}.
+  </span> I.e. we <strong>condition</strong> upon the observations <span class="math inline">\underline{x}</span> and apply <a href="../main/part2/6-bayes-inference.html#thm-bayes-density" class="quarto-xref">Theorem&nbsp;<span>6.1</span></a>.</p></li>
+<li><p>In <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#imp-bayes-proportionality" class="quarto-xref">practice&nbsp;<span>6.2</span></a></span>, we <strong>do not need to compute</strong> the normalisation constant <span class="math inline">f(\underline{x})</span>. It is <strong>sufficient</strong> to know the posterior up to a constant of proportionality: <span class="math display">
+  \pi(\theta \mid \underline{x}) \propto \frac{\pi(\theta) \, f(\underline{x}\mid \theta)}{f(\underline{x})}.
+  </span></p></li>
+<li><p>Be able to compute the distribution of the posterior <span class="math inline">\pi(\theta \mid \underline{x})</span> using the idea of <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#def-conjugacy" class="quarto-xref">conjugacy&nbsp;<span>6.3</span></a></span>. The steps are:</p>
+<ol type="1">
+<li><strong>Compute Likelihood:</strong> Given a distribution <span class="math inline">X_i \mid \theta \sim \mathrm{Distribution}(\theta)</span>, we compute <span class="math inline">f(\underline{x} \mid \theta)</span>. In the i.i.d. case: <span class="math display">
+f(\underline{x} \mid \theta) = \prod_{i=1}^n f(x_i \mid \theta),
+</span> where <span class="math inline">f(x_i \mid \theta)</span> is the PDF for each observation.</li>
+<li><strong>Write down Prior Density:</strong> Given a prior <span class="math inline">\theta \sim \mathrm{Distribution}(\phi)</span>, write down the prior PDF <span class="math display">
+\pi(\theta).
+</span></li>
+<li><strong>Compute Posterior:</strong> Write <span class="math display">
+\pi(\theta \mid \underline{x}) \propto \pi(\theta) f(\underline{x}\mid\theta),
+</span> and drop all <strong>factors that do not depend on <span class="math inline">\theta</span></strong>.</li>
+<li><strong>Identify Posterior Distribution:</strong> Everything in this course is <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#def-conjugacy" class="quarto-xref">conjugate&nbsp;<span>6.3</span></a></span>, meaning the posterior distribution will be of the same type of distribution as the prior.</li>
+</ol>
+<details class="practice-questions">
+<summary>
+<p><em>Computing Posteriors — Practice Questions</em></p>
+</summary>
+<div class="small-table">
+<table class="table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 60%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Location</th>
+<th>Description</th>
+<th>Link</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Question Bank</td>
+<td>Beta–Binomial model</td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-beta-binom" class="quarto-xref">Link&nbsp;<span>5</span></a></span></td>
+</tr>
+<tr class="even">
+<td>Question Bank</td>
+<td>Gamma–Poisson model</td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-gamma-pois" class="quarto-xref">Link&nbsp;<span>6</span></a></span></td>
+</tr>
+<tr class="odd">
+<td>Question Bank</td>
+<td>Beta–Geometric model</td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-beta-geom" class="quarto-xref">Link&nbsp;<span>7</span></a></span></td>
+</tr>
+<tr class="even">
+<td>Question Bank</td>
+<td>Normal–Normal mean model (known variance)</td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-normal-normal" class="quarto-xref">Link&nbsp;<span>8</span></a></span></td>
+</tr>
+<tr class="odd">
+<td>Question Bank</td>
+<td>Inverse-Gamma–Normal variance model (known mean)</td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-normal-invgamma" class="quarto-xref">Link&nbsp;<span>9</span></a></span></td>
+</tr>
+<tr class="even">
+<td>Question Bank</td>
+<td>Gamma–Exponential rate model</td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-exp-gamma" class="quarto-xref">Link&nbsp;<span>10</span></a></span></td>
+</tr>
+<tr class="odd">
+<td>Question Bank</td>
+<td>Inverse-Gamma–Weibull scale model (known shape)</td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-weib-invgamma" class="quarto-xref">Link&nbsp;<span>11</span></a></span></td>
+</tr>
+<tr class="even">
+<td>Examples</td>
+<td>Biased coin, Beta-Binomial with data</td>
+<td><a href="../main/part2/6-bayes-inference.html#exm-biased-coin" class="quarto-xref">Example&nbsp;<span>6.4</span></a></td>
+</tr>
+<tr class="odd">
+<td>Examples</td>
+<td>Music expert quiz, Beta-Binomial with data</td>
+<td><a href="../main/part2/6-bayes-inference.html#exm-music-expert" class="quarto-xref">Example&nbsp;<span>6.5</span></a></td>
+</tr>
+<tr class="even">
+<td>Examples</td>
+<td>Click-through rate, Beta-Binomial with data</td>
+<td><a href="../main/part2/6-bayes-inference.html#exm-instagram-bin" class="quarto-xref">Example&nbsp;<span>6.6</span></a></td>
+</tr>
+<tr class="odd">
+<td>Examples</td>
+<td>Particle speed, Normal-Normal mean model with data</td>
+<td><a href="../main/part2/6-bayes-inference.html#exm-particle-speed" class="quarto-xref">Example&nbsp;<span>6.7</span></a></td>
+</tr>
+</tbody>
+</table>
+</div>
+</details></li>
+<li><p>Be able to recall and compute <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#def-map" class="quarto-xref">Maximum a Posteriori (MAP)&nbsp;<span>6.4</span></a></span> estimators from a given posterior distribution. The steps for computing a MAP estimator are outlined <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#imp-compute-map" class="quarto-xref">here&nbsp;<span>6.3</span></a></span>.</p>
+<ul>
+<li><strong>Note:</strong> In some cases, the MAP can be read off directly. For example, if <span class="math display">
+\theta \mid \underline{x} \sim \mathcal{N}(M, V),
+</span> then the posterior is maximised at its mean, so the MAP estimator is <span class="math inline">M</span>.</li>
+</ul>
+<details class="practice-questions">
+<summary>
+<p><em>Computing MAP Estimators — Practice Questions</em></p>
+</summary>
+<div class="small-table">
+<table class="table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 60%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Location</th>
+<th>Description</th>
+<th>Link</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Question Bank</td>
+<td>Beta-Binomial model, MAP with data</td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-map-factory-defects" class="quarto-xref">Link&nbsp;<span>4</span></a></span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</details></li>
+<li><p>Be able to recall and compute the <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#thm-bernstein-von-mises" class="quarto-xref">asymptotic posterior distribution&nbsp;<span>6.2</span></a></span>.</p>
+<ul>
+<li><strong>Note:</strong> The method for computing the asymptotic posterior distribution is <em>exactly the same</em> as the approach for the <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#def-asymp-mle-approx" class="quarto-xref">asymptotic distribution of the MLE&nbsp;<span>5.9</span></a></span>.</li>
+</ul>
+<details class="practice-questions">
+<summary>
+<p><em>Computing Asymptotic Distributions of Posteriors — Practice Questions</em></p>
+</summary>
+<div class="small-table">
+<table class="table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 60%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Location</th>
+<th>Description</th>
+<th>Link</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Question Bank</td>
+<td>Mean-zero Normal model, asymptotic posterior of variance</td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-asymp-post-variance" class="quarto-xref">Link&nbsp;<span>1</span></a></span></td>
+</tr>
+<tr class="even">
+<td>Question Bank</td>
+<td>Poisson model, asymptotic posterior</td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-asymp-post-poisson" class="quarto-xref">Link&nbsp;<span>2</span></a></span></td>
+</tr>
+<tr class="odd">
+<td>Question Bank</td>
+<td>Exponential model, asymptotic posterior</td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-asymp-post-exponential" class="quarto-xref">Link&nbsp;<span>3</span></a></span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</details></li>
+</ul>
 </section>
 <section id="essential-points-5" class="level5">
 <h5 class="anchored" data-anchor-id="essential-points-5">Essential Points</h5>
+<ol type="1">
+<li>You will primarily be assessed on your ability to:
+<ol type="1">
+<li><strong>Compute posterior distributions</strong>, substitute observed data, and interpret the resulting inference.<br>
+</li>
+<li><strong>Assess whether a prior distribution is consistent</strong> with stated prior beliefs.<br>
+</li>
+<li><strong>Interpret and compare</strong> Bayesian and Frequentist approaches to inference.<br>
+</li>
+<li><strong>Compute Maximum a Posteriori (MAP) estimators.</strong><br>
+</li>
+<li><strong>Obtain asymptotic posteriors</strong> using large-sample approximations.</li>
+</ol></li>
+<li>Among all posterior calculations in the course, the most <strong>algebraically involved</strong> is <span class="xref-no-num"><a href="question-bank.html#q-normal-normal" class="quarto-xref">this&nbsp;<span>8</span></a></span> question, where<br>
+<span class="math display">
+X_i \mid \mu \sim \mathcal{N}(\mu, \gamma), \qquad \mu \sim \mathcal{N}(m, v).
+</span> Be prepared to work through this derivation carefully.</li>
+</ol>
 </section>
 </section>
 </section>

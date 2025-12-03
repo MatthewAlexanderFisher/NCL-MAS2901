@@ -2519,7 +2519,7 @@ $$
 
 :::
 
-::: {.callout-important .question appearance="minimal" data-tags="bayes asymptotic-posterior exam-style" data-difficulty="2"}
+::: {.callout-important .question appearance="minimal" data-tags="bayes asymptotic-posterior exam-style" data-difficulty="2" #q-asymp-post-variance}
 
 ## Asymptotic Posterior for the Variance Parameter
 
@@ -2542,16 +2542,18 @@ Determine the **asymptotic posterior distribution** for $\gamma$.
 
 $$
 f(\underline{x} \mid \gamma)
-= \prod_{i=1}^n \frac{1}{\sqrt{2\pi \gamma}} \exp\!\left[-\frac{x_i^2}{2\gamma}\right]
-= (2\pi \gamma)^{-n/2} \exp\!\left[-\frac{1}{2\gamma}\sum_{i=1}^n x_i^2\right].
+= \prod_{i=1}^n \frac{1}{\sqrt{2\pi \gamma}} 
+   \exp\!\left[-\frac{x_i^2}{2\gamma}\right]
+= (2\pi \gamma)^{-n/2} 
+  \exp\!\left[-\frac{1}{2\gamma}\sum_{i=1}^n x_i^2\right].
 $$
 
 **Step 2: Log-likelihood**
 
 $$
 \ell(\gamma; \underline{x})
-= \log f(\underline{x} \mid \gamma)
-= -\frac{n}{2}\log(2\pi) - \frac{n}{2}\log(\gamma) 
+= -\frac{n}{2}\log(2\pi) 
+  - \frac{n}{2}\log(\gamma) 
   - \frac{1}{2\gamma}\sum_{i=1}^n x_i^2.
 $$
 
@@ -2559,53 +2561,294 @@ $$
 
 $$
 \frac{\partial \ell}{\partial \gamma}
-= -\frac{n}{2\gamma} + \frac{1}{2\gamma^2}\sum_{i=1}^n x_i^2,
-\qquad
-\frac{\partial^2 \ell}{\partial \gamma^2}
-= \frac{n}{2\gamma^2} - \frac{1}{\gamma^3}\sum_{i=1}^n x_i^2.
+= -\frac{n}{2\gamma} 
+  + \frac{1}{2\gamma^2}\sum_{i=1}^n x_i^2,
 $$
 
-Let $a = \sum_{i=1}^n x_i^2.$
+$$
+\frac{\partial^2 \ell}{\partial \gamma^2}
+= \frac{n}{2\gamma^2} 
+  - \frac{1}{\gamma^3}\sum_{i=1}^n x_i^2.
+$$
+
+Let  
+$$
+a = \sum_{i=1}^n x_i^2.
+$$
 
 **Step 4: MLE**
 
-Setting the first derivative to zero:
-$$
--\frac{n}{2\gamma} + \frac{a}{2\gamma^2} = 0 
-\quad \Rightarrow \quad 
-\hat{\gamma} = \frac{a}{n} = \frac{1}{n}\sum_{i=1}^n x_i^2.
-$$
-
-**Step 5: Observed information**
+Solving $\partial \ell / \partial \gamma = 0$:
 
 $$
-J(\gamma) = -\frac{\partial^2 \ell}{\partial \gamma^2}
-= -\left(\frac{n}{2\gamma^2} - \frac{a}{\gamma^3}\right)
-= -\frac{n}{2\gamma^2} + \frac{a}{\gamma^3}.
+-\frac{n}{2\gamma} + \frac{a}{2\gamma^2} = 0
+\quad\Rightarrow\quad
+\hat{\gamma} = \frac{a}{n} 
+= \frac{1}{n}\sum_{i=1}^n x_i^2.
 $$
 
-Evaluating at the MLE:
+**Step 5: Fisher Information**
+
+For one observation:
+
 $$
-J(\hat{\gamma}) 
-= -\frac{n^3}{2a^2} + \frac{n^3}{a^2} 
-= \frac{n^3}{2a^2}.
+\ell(\gamma)
+= -\tfrac12\log(2\pi\gamma) 
+  - \tfrac{x^2}{2\gamma},
+$$
+and so
+$$
+\frac{\partial^2 \ell}{\partial \gamma^2}
+= \frac{1}{2\gamma^2} - \frac{x^2}{\gamma^3}.
+$$
+
+Taking expectation under $X \sim \mathcal{N}(0,\gamma)$:
+
+$$
+\mathcal{I}(\gamma) 
+= -\mathrm{E}\!\left[\frac{\partial^2 \ell}{\partial \gamma^2}\right]
+= -\left(\frac{1}{2\gamma^2} - \frac{\gamma}{\gamma^3}\right)
+= \frac{1}{2\gamma^2}.
+$$
+
+Thus for $n$ observations:
+
+$$
+\mathcal{I}_n(\gamma) = \frac{n}{2\gamma^2}.
+$$
+
+Evaluated at the MLE:
+
+$$
+\mathcal{I}_n(\hat{\gamma}) 
+= \frac{n}{2\hat{\gamma}^2}.
 $$
 
 **Step 6: Asymptotic posterior**
 
-By the asymptotic normality of the MLE,
+By @thm-bernstein-von-mises
+
 $$
-\gamma \mid \underline{x} 
-\approx \mathcal{N}\!\left(\hat{\gamma},\, J(\hat{\gamma})^{-1}\right)
-= \mathcal{N}\!\left(
-\frac{1}{n}\sum_{i=1}^n x_i^2,\;
-\frac{2}{n^3}\left(\sum_{i=1}^n x_i^2\right)^2
+\gamma \mid \underline{x}
+\approx 
+\mathcal{N}\!\left(
+\hat{\gamma},\;
+I_n(\hat{\gamma})^{-1}
+\right)
+=
+\mathcal{N}\!\left(
+\hat{\gamma},\;
+\frac{2\hat{\gamma}^2}{n}
 \right).
 $$
+
+That is,
+
+$$
+\boxed{
+\gamma \mid \underline{x}
+\overset{\text{approx.}}{\sim} 
+\mathcal{N}\!\left(
+\frac{1}{n}\sum_{i=1}^n x_i^2,\;
+\frac{2}{n}\left(\frac{1}{n}\sum_{i=1}^n x_i^2\right)^2
+\right).
+}
+$$
+
 
 </details>
 
 :::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="bayes asymptotic-posterior poisson" data-difficulty="2" #q-asymp-post-poisson}
+
+## Asymptotic Posterior for Poisson Data
+
+Suppose we have independent <span class="xref-no-num">[Poisson @sec-pois]</span> observations
+$$
+X_1,\ldots, X_n \mid \lambda \sim \mathrm{Pois}(\lambda)
+$$
+
+1. Determine the general <span class="xref-no-num">[asymptotic posterior distribution @thm-bernstein-von-mises]</span> for $\lambda$.
+2. Suppose we observe $n = 100$ data points with sample mean
+   $$
+   \bar{x} = 3.21.
+   $$
+   Compute the **asymptotic posterior distribution**.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+1. **General Asymptotic Posterior.**
+   1. **Log-Likelihood:** Since each observation is independent $X_i \mid \lambda \sim \mathrm{Pois}(\lambda)$, we have
+      $$
+      \begin{align*}
+       f(\underline{x} \mid \lambda) &= \prod_{i=1}^n \frac{\lambda^{x_i} e^{-\lambda}}{x_i!} \\
+       &= \lambda^{n\bar{x}} e^{-n\lambda} \left(\prod_{i=1}^n x_i! \right)^{-1}.
+      \end{align*}
+      $$
+      Therefore, the log-likelihood is
+      $$
+      \log f(\underline{x} \mid \lambda) = n\bar{x} \log(\lambda) - n\lambda - \sum_{i=1}^n \log(x_i!).
+      $$
+    2. **Derivatives:** The derivatives of the log-likelihood are
+      $$
+      \begin{align*}
+       \frac{\partial}{\partial \lambda} \log f(\underline{x} \mid \lambda) &= \frac{n\bar{x}}{\lambda} - n \\
+       \frac{\partial^2}{\partial \lambda^2} \log f(\underline{x} \mid \lambda) &= -\frac{n\bar{x}}{\lambda^2}.
+      \end{align*}
+      $$
+    3. **MLE:** Solving
+      $$
+      \frac{n\bar{x}}{\lambda} - n = 0
+      $$
+      yields the maximum likelihood estimator
+      $$
+      \hat{\lambda} = \bar{X}.
+      $$
+    4. **Fisher Information:** The <span class="xref-no-num">[Fisher information @def-fisher-information]</span> for the **whole sample** is thus
+      $$
+      \begin{align*}
+       \mathcal{I}_n(\lambda) &= -\mathrm{E}\left[-\frac{n\bar{X}}{\lambda^2}\right] \\
+       &= \frac{n}{n\lambda^2}\sum_{i=1}^n\mathrm{E}\left[X_i\right] \\
+       &= \frac{n}{\lambda},
+      \end{align*}
+      $$ 
+      since each $\mathrm{E}[X_i] = \lambda$.
+    4. **Plugging in MLE:** The <span class="xref-no-num">[observed Fisher information @def-observed-fisher]</span> is thus
+      $$
+      \mathcal{I}_n(\hat{\lambda}) = \frac{n}{\bar{x}}.
+      $$
+    5. **Asymptotic Posterior Distribution:** The <span class="xref-no-num">[asymptotic posterior distribution @thm-bernstein-von-mises]</span> is thus
+      $$
+      \lambda \mid \underline{x} \overset{\text{approx.}}{\sim} \mathcal{N}\left(\bar{x}, \frac{\bar{x}}{n}\right)
+      $$
+2. **Plug in data.**
+   Using the derived result from the first part and the provided summaries of the data $n = 100$ and $\bar{x} = 3.21$, we have
+   $$
+   \lambda \mid \underline{x} \overset{\text{approx.}}{\sim} \mathcal{N}\left(3.21, 0.0321\right)
+   $$
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="bayes asymptotic-posterior exponential" data-difficulty="2" #q-asymp-post-exponential}
+
+## Asymptotic Posterior for Exponential Data
+
+Suppose we have independent Exponential observations with rate parameter $\lambda$:
+$$
+X_1,\ldots,X_n \mid \lambda \sim \mathrm{Exp}(\lambda).
+$$
+
+1. Determine the general <span class="xref-no-num">[asymptotic posterior distribution @thm-bernstein-von-mises]</span> for $\lambda$.
+2. Suppose we observe $n = 200$ data points with sample mean
+   $$
+   \bar{x} = 7.14.
+   $$
+   Compute the **asymptotic posterior distribution**.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+1. **General Asymptotic Posterior**
+
+   1. **Likelihood and log-likelihood**
+
+   The density of each $X_i$ is
+   $$
+   f(x_i \mid \lambda) = \lambda e^{-\lambda x_i}.
+   $$
+
+   Thus the likelihood is
+   $$
+   f(\underline{x} \mid \lambda) 
+   = \prod_{i=1}^n \lambda e^{-\lambda x_i}
+   = \lambda^n \exp\!\left(-\lambda\sum_{i=1}^n x_i\right).
+   $$
+
+   The log-likelihood is
+   $$
+   \ell(\lambda; \underline{x})
+   = n\log\lambda - \lambda\sum_{i=1}^n x_i
+   = n\log\lambda - n\lambda \bar{x}.
+   $$
+
+   2. **Derivatives**
+
+   $$
+   \frac{\partial}{\partial \lambda} \ell(\lambda; \underline{x})
+   = \frac{n}{\lambda} - n\bar{x},
+   \qquad
+   \frac{\partial^2}{\partial \lambda^2} \ell(\lambda; \underline{x})
+   = -\frac{n}{\lambda^2}.
+   $$
+
+   3. **MLE**
+
+   Solve
+   $$
+   \frac{n}{\lambda} - n\bar{x} = 0,
+   $$
+   which gives the maximum likelihood estimator
+   $$
+   \hat{\lambda} = \frac{1}{\bar{X}}.
+   $$
+
+   4. **Fisher information**
+
+   The <span class="xref-no-num">[Fisher information @def-fisher-information]</span> for the **whole sample** is thus
+   $$
+   \mathcal{I}_n(\lambda) = -\mathrm{E}\left[-\frac{n}{\lambda^2}\right] = \frac{n}{\lambda^2}.
+   $$
+
+   Evaluated at the MLE, the <span class="xref-no-num">[observed Fisher information @def-observed-fisher]</span> is
+   $$
+   \mathcal{I}_n(\hat{\lambda})
+   = \frac{n}{\hat{\lambda}^2}
+   = n\bar{x}^2.
+   $$
+
+   5. **Asymptotic posterior distribution**
+
+   By @thm-bernstein-von-mises
+   $$
+   \lambda \mid \underline{x}
+   \overset{\text{approx.}}{\sim} \mathcal{N}\!\left(
+     \hat{\lambda},\;
+     \mathcal{I}_n(\hat{\lambda})^{-1}
+   \right)
+   = \mathcal{N}\!\left(
+     \frac{1}{\bar{x}},\;
+     \frac{1}{n\bar{x}^{2}}
+   \right).
+   $$
+
+2. **Plugging in data**
+
+   For $n = 200$ and $\bar{x} =  7.14$,
+   $$
+   \hat{\lambda} = \frac{1}{ 7.14} \approx 0.14,
+   $$
+   and the variance is
+   $$
+   \frac{1}{n\bar{x}^2}
+   = \frac{1}{200 \cdot 7.14^2}
+   \approx 9.807 \times 10^{-5}.
+   $$
+
+   Thus the asymptotic posterior is
+   $$
+   \lambda \mid \underline{x}
+   \approx 
+   \mathcal{N}\!\left(0.14,\; 9.807 \times 10^{-5}\right).
+   $$
+
+</details>
+
+:::
+
 
 ::: {.callout-important .question appearance="minimal" data-tags="bayes hdi beta binomial exam-style" data-difficulty="2"}
 
@@ -2765,6 +3008,135 @@ We are approximately 95% confident that the true proportion of graduates in full
 </details>
 
 :::
+
+::: {.callout-important .question appearance="minimal" data-tags="bayes map beta binomial" data-difficulty="2" #q-map-factory-defects}
+
+## MAP Estimation in a Defect-Rate Problem
+
+A factory produces electronic components, each of which may be defective with some unknown probability $p$.  
+To assess the defect rate, engineers inspect a random sample of $n = 40$ components and find that  
+$$
+x = 7
+$$  
+are defective.
+
+To incorporate previous experience, the quality-control team places a prior distribution  
+$$
+p \sim \mathrm{Beta}(a,b), \qquad a = 2,\; b = 8.
+$$
+
+You may assume the data follow the model
+$$
+X \mid p \sim \mathrm{Binomial}(n,p).
+$$
+
+1. **Derive the posterior distribution** $\pi(p \mid x)$.
+2. **Compute the Maximum a Posteriori (MAP) estimator** $\hat{p}_{\mathrm{MAP}}$.
+3. **Interpret your MAP estimate** in the context of the defect-rate problem.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+1. **Posterior Distribution**
+
+   The likelihood is
+   $$
+   f(x \mid p) = \binom{n}{x} p^{\,x} (1-p)^{\,n-x}.
+   $$
+
+   The prior is
+   $$
+   \pi(p) = \frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)} p^{\,a-1}(1-p)^{\,b-1}.
+   $$
+
+   Therefore the posterior (dropping constants not depending on $p$) is
+   $$
+   \pi(p \mid x) \propto p^{\,x+a-1} (1-p)^{\,n-x+b-1}.
+   $$
+
+   This is recognised as a Beta distribution:
+   $$
+   p \mid x \sim \mathrm{Beta}(a + x,\; b + n - x)
+   = \mathrm{Beta}(2 + 7,\; 8 + 40 - 7)
+   = \mathrm{Beta}(9,\; 41).
+   $$
+
+2. **MAP Estimator**
+
+   For a $\mathrm{Beta}(\alpha,\beta)$ distribution with $\alpha>1$ and $\beta>1$, the mode is provided in closed form, yielding the MAP:
+   $$
+   \hat{p}_{\mathrm{MAP}} 
+   = \frac{\alpha - 1}{\alpha + \beta - 2}.
+   $$
+
+   Here $\alpha = 9$ and $\beta = 41$, so
+   $$
+   \hat{p}_{\mathrm{MAP}}
+   = \frac{9 - 1}{9 + 41 - 2}
+   = \frac{8}{48}
+   = \frac{1}{6}
+   \approx 0.1667.
+   $$
+
+   Alternatively, we can derive this using the approach outlined <span class="xref-no-num">[here @imp-compute-map]</span>:
+
+    We have
+    $$
+    \pi(p \mid x) \propto p^{\,x+a-1} (1-p)^{\,n-x+b-1}.
+    $$
+    Taking logs:
+    $$
+    \log \pi(p \mid x) = (x + a - 1)\log p + (n - x + b - 1)\log(1 - p) + C,
+    $$
+    for some $p$-independent constant $C$.
+
+    Differentiating with respect to $p$:
+    $$
+    \frac{\partial}{\partial p} \log \pi(p \mid x)
+    = \frac{x + a - 1}{p} - \frac{n - x + b - 1}{1 - p}.
+    $$
+
+    Setting this equal to $0$ and solving for $p$:
+    $$
+    \begin{align*}
+    \frac{x + a - 1}{p} - \frac{n - x + b - 1}{1 - p} &= 0 \\[4pt]
+    \frac{x + a - 1}{p} &= \frac{n - x + b - 1}{1 - p} \\[4pt]
+    (x + a - 1)(1 - p) &= (n - x + b - 1)p \\[4pt]
+    x + a - 1 &= (n - x + b - 1)p + (x + a - 1)p \\[4pt]
+    x + a - 1 &= (n + a + b - 2)p \\[4pt]
+    \Rightarrow\quad \hat{p}_{\text{MAP}} &= \frac{x + a - 1}{n + a + b - 2}.
+    \end{align*}
+    $$
+
+    Plugging in $n = 40,\; x = 7,\; a = 2,\; b = 8$ gives
+    $$
+    \hat{p}_{\text{MAP}}
+    = \frac{7 + 2 - 1}{40 + 2 + 8 - 2}
+    = \frac{8}{48}
+    = \frac{1}{6}
+    \approx 0.1667.
+    $$
+
+
+
+
+3. **Interpretation**
+
+   Based on both prior information and the observed data, the MAP estimator suggests that the defect probability is approximately
+   $$
+   \hat{p}_{\mathrm{MAP}} \approx 0.17.
+   $$
+
+   This is slightly lower than the raw sample proportion  
+   $$
+   \frac{x}{n} = \frac{7}{40} = 0.175,
+   $$
+   reflecting the influence of the prior belief that defects are relatively uncommon.
+
+</details>
+
+:::
+
 
 
 ::: {.callout-important .question appearance="minimal" data-tags="estimator bias variance mse fisher-information cramer-rao normal exam-style" data-difficulty="3"}
@@ -3799,8 +4171,8 @@ Therefore, $\hat{\theta}_2$ is preferred.
    We have
 
    \begin{align*}
-   \mathcal{I}_n(\theta) &=  -\mathbb{E}\!\left[\frac{\partial^2}{\partial \theta^2} \ell(\theta;\underline{x})\right] \\
-   &= \mathbb{E}\left[\frac{n\bar{x}}{\theta^2} + \frac{n(1 - \bar{x})}{(1 - \theta)^2}\right] \\
+   \mathcal{I}_n(\theta) &=  -\mathrm{E}\!\left[\frac{\partial^2}{\partial \theta^2} \ell(\theta;\underline{x})\right] \\
+   &= \mathrm{E}\left[\frac{n\bar{x}}{\theta^2} + \frac{n(1 - \bar{x})}{(1 - \theta)^2}\right] \\
    &= \frac{n\theta}{\theta^2} + \frac{n(1-\theta)}{(1-\theta)^2} \\
    &= \frac{n}{\theta(1-\theta)}.
    \end{align*}

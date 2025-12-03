@@ -45,7 +45,7 @@ bodyFont = getComputedStyle(document.body).fontFamily
 :::
 
 
-## Introduction to the Bayesian Approach
+## Introduction to the Bayesian Approach {#sec-intro-bayes-approach}
 
 So far we have taken a **frequentist perspective**: parameters such as $\theta$ are fixed but unknown, and all randomness comes from the sample.
 
@@ -332,7 +332,7 @@ Plot.plot({
 
 This provides a **language of degrees of belief**: probability distributions describe how plausible different values of $\theta$ are, given what we know.
 
-### The Bayesian Inference Procedure
+### The Bayesian Inference Procedure {#sec-bayes-inference-procedure}
 
 The Bayesian approach to inference has three ingredients:
 
@@ -348,7 +348,7 @@ $$
 
 This equation expresses the central idea: *our beliefs about $\theta$ are revised in light of the observed data*.
 
-## Bayes' Theorem for Densities
+## Bayes' Theorem for Densities 
 
 Bayesian inference is named after <span class="xref-no-num">[Bayes’ Theorem @thm-bayes]</span>, a general identity in probability theory. For two events $A$ and $B$, the conditional probability is given by
 $$
@@ -710,7 +710,7 @@ As $\theta$ is a continuous quantity, what we would like to know is what continu
 
 This leads us to following method of computing posteriors:
 
-::: {#bayes-proportionality .callout-important appearance="simple"}
+::: {#imp-bayes-proportionality .callout-important collapse="true" appearance="simple"}
 
 #### Posterior Density Up to a Constant of Proportionality
 
@@ -1425,7 +1425,7 @@ The only difference is that the likelihood is replaced by the **posterior**.
    \log \pi(\theta \mid \underline{x})
    = C + \log f(\underline{x}\mid\theta) + \log \pi(\theta),
    $$
-   where \(C\) is a constant not depending on \(\theta\).
+   where $C$ is a constant not depending on $\theta$.
 
 3. **Differentiate and solve:**  
    We differentiate with respect to $\theta$ and set the derivative equal to zero:
