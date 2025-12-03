@@ -659,13 +659,13 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#the-frequentist-perspective" id="toc-the-frequentist-perspective" class="nav-link active" data-scroll-target="#the-frequentist-perspective"><span class="header-section-number">7.1</span> The Frequentist Perspective</a></li>
-  <li><a href="#interpreting-confidence-intervals" id="toc-interpreting-confidence-intervals" class="nav-link" data-scroll-target="#interpreting-confidence-intervals"><span class="header-section-number">7.2</span> Interpreting Confidence Intervals</a></li>
+  <li><a href="#sec-freq-persp-interval" id="toc-sec-freq-persp-interval" class="nav-link active" data-scroll-target="#sec-freq-persp-interval"><span class="header-section-number">7.1</span> The Frequentist Perspective</a></li>
+  <li><a href="#sec-interpreting-ci" id="toc-sec-interpreting-ci" class="nav-link" data-scroll-target="#sec-interpreting-ci"><span class="header-section-number">7.2</span> Interpreting Confidence Intervals</a></li>
   <li><a href="#sec-exact-ci" id="toc-sec-exact-ci" class="nav-link" data-scroll-target="#sec-exact-ci"><span class="header-section-number">7.3</span> Exact Confidence Intervals</a>
   <ul class="collapse">
   <li><a href="#sec-general-ci-strategy" id="toc-sec-general-ci-strategy" class="nav-link" data-scroll-target="#sec-general-ci-strategy"><span class="header-section-number">7.3.1</span> General Recipe</a></li>
-  <li><a href="#the-normal-case-known-variance" id="toc-the-normal-case-known-variance" class="nav-link" data-scroll-target="#the-normal-case-known-variance"><span class="header-section-number">7.3.2</span> The Normal Case (Known Variance)</a></li>
-  <li><a href="#the-normal-case-unknown-variance" id="toc-the-normal-case-unknown-variance" class="nav-link" data-scroll-target="#the-normal-case-unknown-variance"><span class="header-section-number">7.3.3</span> The Normal Case (Unknown Variance)</a></li>
+  <li><a href="#sec-normal-ci-known-var" id="toc-sec-normal-ci-known-var" class="nav-link" data-scroll-target="#sec-normal-ci-known-var"><span class="header-section-number">7.3.2</span> The Normal Case (Known Variance)</a></li>
+  <li><a href="#sec-normal-ci-unknown-var" id="toc-sec-normal-ci-unknown-var" class="nav-link" data-scroll-target="#sec-normal-ci-unknown-var"><span class="header-section-number">7.3.3</span> The Normal Case (Unknown Variance)</a></li>
   </ul></li>
   <li><a href="#sec-approx-ci" id="toc-sec-approx-ci" class="nav-link" data-scroll-target="#sec-approx-ci"><span class="header-section-number">7.4</span> Approximate Confidence Intervals</a>
   <ul class="collapse">
@@ -700,8 +700,8 @@ window.Quarto = {
 
 <p>Recalling the <span class="xref-no-num"><a href="../part1/3-types-of-inference.html#sec-inference-tasks" class="quarto-xref">main inference tasks&nbsp;<span>3.2</span></a></span>, we now move from <em>point estimation</em> to <em>interval estimation</em>.</p>
 <p>The key idea is that instead of giving a single “best guess”<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> of a parameter, we want to provide a <strong>range of plausible values</strong>. In other words, an <strong>interval</strong>.</p>
-<section id="the-frequentist-perspective" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="the-frequentist-perspective"><span class="header-section-number">7.1</span> The Frequentist Perspective</h2>
+<section id="sec-freq-persp-interval" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="sec-freq-persp-interval"><span class="header-section-number">7.1</span> The Frequentist Perspective</h2>
 <p>Recall that, for frequentists, the parameter <span class="math inline">\theta</span> is <strong>fixed but unknown</strong>.</p>
 <p>The randomness comes from the data: if we repeated the experiment many times, we would get different samples, different estimates, and hence different intervals.</p>
 <ul>
@@ -1337,8 +1337,8 @@ Important&nbsp;7.1: Terminology: Exact vs.&nbsp;Approximate Confidence Intervals
 </div>
 </div>
 </section>
-<section id="interpreting-confidence-intervals" class="level2" data-number="7.2">
-<h2 data-number="7.2" class="anchored" data-anchor-id="interpreting-confidence-intervals"><span class="header-section-number">7.2</span> Interpreting Confidence Intervals</h2>
+<section id="sec-interpreting-ci" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="sec-interpreting-ci"><span class="header-section-number">7.2</span> Interpreting Confidence Intervals</h2>
 <p>In practice, we only ever <strong>observe one dataset</strong> <span class="math inline">\underline{x}</span>. So we calculate the observed interval: <span class="math display">
 [L_{\text{obs}}, U_{\text{obs}}]
 = \big[L(\underline{x}), U(\underline{x})\big].
@@ -1378,8 +1378,8 @@ Important&nbsp;7.1: Terminology: Exact vs.&nbsp;Approximate Confidence Intervals
 </div>
 </div>
 </section>
-<section id="the-normal-case-known-variance" class="level3" data-number="7.3.2">
-<h3 data-number="7.3.2" class="anchored" data-anchor-id="the-normal-case-known-variance"><span class="header-section-number">7.3.2</span> The Normal Case (Known Variance)</h3>
+<section id="sec-normal-ci-known-var" class="level3" data-number="7.3.2">
+<h3 data-number="7.3.2" class="anchored" data-anchor-id="sec-normal-ci-known-var"><span class="header-section-number">7.3.2</span> The Normal Case (Known Variance)</h3>
 <p>Let’s apply the <span class="xref-no-num"><a href="#sec-general-ci-strategy" class="quarto-xref">general strategy&nbsp;<span>7.3.1</span></a></span> to construct an exact confidence interval for the mean of a normal distribution with known variance.</p>
 <p>Suppose we observe a normal random sample:</p>
 <p><span class="math display">
@@ -1534,8 +1534,8 @@ n \geq (9.8)^2 = 96.04.
 </div>
 </div>
 </section>
-<section id="the-normal-case-unknown-variance" class="level3" data-number="7.3.3">
-<h3 data-number="7.3.3" class="anchored" data-anchor-id="the-normal-case-unknown-variance"><span class="header-section-number">7.3.3</span> The Normal Case (Unknown Variance)</h3>
+<section id="sec-normal-ci-unknown-var" class="level3" data-number="7.3.3">
+<h3 data-number="7.3.3" class="anchored" data-anchor-id="sec-normal-ci-unknown-var"><span class="header-section-number">7.3.3</span> The Normal Case (Unknown Variance)</h3>
 <p>Let’s apply the <span class="xref-no-num"><a href="#sec-general-ci-strategy" class="quarto-xref">general strategy&nbsp;<span>7.3.1</span></a></span> to construct an exact confidence interval for the mean of a normal distribution when the variance is <strong>unknown</strong>.</p>
 <p>Suppose we observe a normal random sample with unknown mean <em>and</em> variance:</p>
 <p><span class="math display">
@@ -2256,7 +2256,7 @@ S^2 \approx 3.956.
 </span></p>
 <p>Since the variance involves the unknown <span class="math inline">\lambda</span>, we follow <a href="#def-approx-ci-mle" class="quarto-xref">Definition&nbsp;<span>7.5</span></a> by plugging-in the MLE <span class="math inline">\hat{\lambda}</span> into <span class="math inline">\lambda</span>:</p>
 <p><span class="math display">
-\tfrac{\lambda}{n} \approx \sqrt{\tfrac{\hat{\lambda}}{n}}.
+\tfrac{\lambda}{n} \approx \tfrac{\hat{\lambda}}{n}.
 </span></p>
 <p>Hence an approximate <span class="math inline">(1-\alpha)</span> CI is</p>
 <p><span class="math display">

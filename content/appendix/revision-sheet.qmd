@@ -48,8 +48,6 @@ The exam follows the same structure and style as the specimen exam. Key points:
 
 <span class="xref-no-num">[Chapter 1 @sec-probability-theory]</span>, <span class="xref-no-num">[Chapter 2 @sec-what-is-statistics]</span>, <span class="xref-no-num">[Chapter 3 @sec-types-of-inference]</span> are all **introductory material**.
 
-The **most relevant examinable** material are the following:
-
 #### Chapter 1 - <span class="xref-no-num">[Probability Theory @sec-probability-theory]</span>
 
 Covers basic probability theory, mostly assumed knowledge and thus examinable (with some exceptions).
@@ -107,13 +105,77 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
 
 ##### Essential Points
 
-
-
 ### Part II: Point Estimation
 
 #### Chapter 4 - <span class="xref-no-num">[Frequentist Point Estimation @sec-freq-point-estimate]</span> 
 
 ##### Summary of Examinable Material
+
+- <span class="xref-no-num">[Understand @sec-freq-point-estimate]</span> the distinction between a **statistic** and an **estimator**.
+  - A **statistic** is any quantity computed from data.  
+    - When computed from random variables $X_1,\ldots,X_n$, it is **random**.  
+    - When computed from observed values $x_1,\ldots,x_n$, it becomes **non-random**.
+  - An **estimator** $\hat{\theta}(\underline{X})$ is a statistic specifically designed to approximate a parameter $\theta$.
+
+- <span class="xref-no-num">[Understand @sec-estimators-vs-estimates]</span> the difference between an **estimator** and an **estimate**.
+  - An **estimator** $\hat{\theta}(\underline{X})$ is a function of the **random sample** and is therefore **random**.
+  - An **estimate** $\hat{\theta}(\underline{x})$ is the numerical value obtained after plugging in the **observed data**, and is therefore **non-random**.
+
+- Be able to recall and use the definitions of:
+  1. <span class="xref-no-num">[Sample Mean @def-sample-mean]</span>  
+  2. <span class="xref-no-num">[Sample Variance @def-sample-variance]</span>  
+
+- Understand the concept of the <span class="xref-no-num">[sampling distribution @def-sampling-distribution]</span> of an estimator $\hat{\theta}$ — that is, the probability distribution of $\hat{\theta}(\underline{X})$ when the data are repeatedly sampled from the model.
+
+- Be able to <span class="xref-no-num">[recall @prp-normal-sample-mean]</span> and <span class="xref-no-num">[prove @prf-normal-sample-mean]</span> the sampling distribution of the sample mean for i.i.d. normal data  
+  $$
+  X_i \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu, \sigma^2),
+  $$
+  namely $\bar{X} \sim \mathcal{N}\!\left(\mu,\, \frac{\sigma^2}{n}\right)$.
+
+- Be able to recall the definitions of, and compute, the key properties of estimators:
+
+  1. <span class="xref-no-num">[Bias @def-bias]</span>  
+  2. <span class="xref-no-num">[Variance @def-variance]</span>  
+  3. <span class="xref-no-num">[Standard error @def-se]</span>  
+  4. <span class="xref-no-num">[Mean-squared error (MSE) @def-mse]</span>  
+
+  **Note:** When computing the MSE, always use the <span class="xref-no-num">[Bias–Variance decomposition @prp-mse-bias-variance]</span>
+
+  <details class="practice-questions">
+  <summary><em>Properties of Estimators — Practice Questions</em></summary>
+
+  ::: {.small-table}
+  | Location | Description | Link |
+  |------|-------------|-------|
+  | Question Bank | Two Poisson observations, bias and MSE | <span class="xref-no-num">[Link @q-poisson-estimator-1]</span> |
+  | Question Bank | Properties of Poisson observations, bias | <span class="xref-no-num">[Link @q-prop-poisson]</span> |
+  | Question Bank | Properties of an Estimators I: bias, variance and MSE | <span class="xref-no-num">[Link @q-prop-of-estimators1]</span> |
+  | Question Bank | Properties of an Estimators II: bias, variance and MSE | <span class="xref-no-num">[Link @q-prop-of-estimators2]</span> |
+  | Question Bank | Properties of an Estimators III: bias, variance and MSE | <span class="xref-no-num">[Link @q-prop-of-estimators3]</span> |
+  | Examples | Bias of sample mean | @exm-bias-sm |
+  | Examples | Variance of sample mean | @exm-variance-sm |
+  | Examples | MSE of sample mean |  @exm-mse1 |
+  | Examples | Bias of sample variance | @exm-bias-sv |
+  | Examples | MSE of three estimators | @exm-mse2 |
+
+  : {tbl-colwidths="[20, 60, 20]"}
+  :::
+
+  </details>
+
+- Be able to **prove** the <span class="xref-no-num">[Bias–Variance decomposition @prp-mse-bias-variance]</span> of the mean-squared error.
+
+- <span class="xref-no-num">[Understand @imp-term-asymptotic]</span> the meaning of **asymptotic** in statistics. An asymptotic result describes the behaviour of an estimator or statistic as the sample size $n$ (in data $X_1,\ldots,X_n$) becomes **very large**.
+
+- Be able to recall and understand the <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span>. The CLT states that for i.i.d. observations $X_1,\ldots,X_n$ from **any distribution** with finite variance $\sigma^2 < \infty$, the **sample mean** is approximately normally distributed for large $n$:
+  $$
+  \bar{X} \;\overset{\text{approx.}}{\sim}\; 
+  \mathcal{N}\!\left(\mu,\, \frac{\sigma^2}{n}\right).
+  $$
+
+- 
+
 
 ##### Essential Points
 
@@ -228,6 +290,83 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
 #### Chapter 7 - <span class="xref-no-num">[Frequentist Interval Estimation @sec-freq-interval-estimate]</span>
 
 ##### Summary of Examinable Material
+
+- <span class="xref-no-num">[Understand @sec-freq-persp-interval]</span> that a **frequentist confidence interval** is defined by two statistics $L(\underline{X})$ and $U(\underline{X})$, which together form a *random interval*.
+
+- Be able to recall the <span class="xref-no-num">[definition @def-confidence-interval]</span> of a $100(1-\alpha)\%$ confidence interval:
+  $$
+  \Pr\big(L(\underline{X}) < \theta < U(\underline{X})\big) = 1 - \alpha.
+  $$
+  Here, the **random quantities** are the statistics $L(\underline{X})$ and $U(\underline{X})$; the parameter $\theta$ is fixed (but unknown).
+
+- Be able to <span class="xref-no-num">[interpret @sec-interpreting-ci]</span> a **confidence interval** correctly. After observing data $\underline{x}$, we compute the realised endpoints
+  $$
+  L_{\mathrm{obs}} = L(\underline{x}), \qquad U_{\mathrm{obs}} = U(\underline{x}).
+  $$
+  At this point it is **incorrect**, from a frequentist perspective, to write
+  $$
+  \Pr\big(L_{\mathrm{obs}} < \theta < U_{\mathrm{obs}}\big) = 1 - \alpha.
+  $$
+  This probability makes no sense because **nothing in the expression is random**: $L_{\mathrm{obs}}$ and $U_{\mathrm{obs}}$ are fixed numbers computed from the data, and $\theta$ is a fixed (non-random) constant.  
+
+- You will **not be examined** on the <span class="xref-no-num">[general procedure @sec-general-ci-strategy]</span> for constructing confidence intervals, nor on the derivations of the confidence intervals for **normally distributed data** with either <span class="xref-no-num">[known @sec-normal-ci-known-var]</span> or <span class="xref-no-num">[unknown @sec-normal-ci-unknown-var]</span> variance.
+
+- Understand a **quantile** and how to obtain them from statistical tables.
+
+- Be able to **recall** and **compute** $100(1-\alpha)\%$ confidence intervals for the mean of normally distributed data $X_i \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu, \sigma^2)$ in the two standard cases:
+
+  1. When the variance $\sigma^2$ is <span class="xref-no-num">[known @def-normal-ci-known-var]</span>.
+  2. When the variance $\sigma^2$ is <span class="xref-no-num">[unknown @def-normal-ci-unknown-var]</span>.
+
+  The only substantive difference is that, in the unknown-variance case, the <span class="xref-no-num">[sample variance @def-sample-variance]</span> is substituted for $\sigma^2$, and the normal quantile $z_{1-\alpha/2}$ is replaced by the **Student $t$ quantile** $t_{n-1,\,1-\alpha/2}$.
+
+  <details class="practice-questions">
+  <summary><em>Computing Exact Confidence Intervals — Practice Questions</em></summary>
+
+  ::: {.small-table}
+  | Location | Description | Link |
+  |----------|-------------|-------|
+  | Examples | Archaeological Skeleton data, confidence interval with known variance | @exm-normal-ci-known-var |
+  | Examples | Archaeological Skeleton data, confidence interval with unknown variance | @exm-normal-ci-unknown-var |
+
+  : {tbl-colwidths="[20, 60, 20]"}
+  :::
+
+  </details>
+
+- Be able to **recall** and **compute** $100(1-\alpha)\%$ <span class="xref-no-num">[approximate @sec-approx-ci]</span> confidence intervals using the following **asymptotic results**:
+
+  1. <span class="xref-no-num">[Confidence intervals based on the Central Limit Theorem @def-approx-ci-clt]</span>: Using the <span class="xref-no-num">[CLT @thm-clt]</span>, we obtain an **approximate** confidence interval for the **mean** of *any* model from
+     $$
+     \bar{X} \,\overset{\text{approx.}}{\sim}\, 
+     \mathcal{N}\!\left(\mu,\, \frac{\sigma^2}{n}\right).
+     $$
+
+  2. <span class="xref-no-num">[Confidence intervals based on the asymptotic distribution of the MLE @def-approx-ci-mle]</span>: Using @def-asymp-mle-approx, we can construct **approximate** confidence intervals for the **parameter** $\theta$ of any model, using
+     $$
+     \hat{\theta}_{\mathrm{MLE}}
+     \,\overset{\text{approx.}}{\sim}\,
+     \mathcal{N}\!\left(
+       \theta,\;
+       \mathcal{I}_n\!\big(\hat{\theta}_{\mathrm{MLE}}\big)^{-1}
+     \right).
+     $$
+  
+
+  <details class="practice-questions">
+  <summary><em>Computing Approximate Confidence Intervals — Practice Questions</em></summary>
+
+  ::: {.small-table}
+  | Location | Description | Link |
+  |----------|-------------|-------|
+  | Examples | Poisson goal data, approximate CLT-based confidence interval | @exm-pois-approx-ci-clt |
+  | Examples | Poisson goal data, approximate MLE-based confidence interval | @exm-pois-approx-ci-mle |
+
+  : {tbl-colwidths="[20, 60, 20]"}
+  :::
+
+  </details>
+
 
 ##### Essential Points
 

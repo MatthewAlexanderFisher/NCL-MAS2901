@@ -12,7 +12,7 @@ Recalling the <span class="xref-no-num">[main inference tasks @sec-inference-tas
 
 The key idea is that instead of giving a single “best guess”[^bayes-exc] of a parameter, we want to provide a **range of plausible values**. In other words, an **interval**.
 
-## The Frequentist Perspective
+## The Frequentist Perspective {#sec-freq-persp-interval}
 
 Recall that, for frequentists, the parameter $\theta$ is **fixed but unknown**.
 
@@ -408,7 +408,7 @@ A **confidence interval (CI)** is a random interval, constructed from the data, 
 * **Approximate CI.** The coverage probability is only guaranteed *asymptotically* (typically as $n \to \infty$). In practice, most commonly used intervals are of this type.
 :::
 
-## Interpreting Confidence Intervals
+## Interpreting Confidence Intervals {#sec-interpreting-ci}
 
 In practice, we only ever **observe one dataset** $\underline{x}$. So we calculate the observed interval:
 $$
@@ -463,7 +463,7 @@ In particular, you do **not** need to remember the term *pivot*.
 
 :::
 
-### The Normal Case (Known Variance)
+### The Normal Case (Known Variance) {#sec-normal-ci-known-var}
 
 Let’s apply the <span class="xref-no-num">[general strategy @sec-general-ci-strategy]</span> to construct an exact confidence interval for the mean of a normal distribution with known variance.
 
@@ -651,7 +651,7 @@ Therefore, at least **97 skeletons** are needed.
 :::
 
 
-### The Normal Case (Unknown Variance)
+### The Normal Case (Unknown Variance) {#sec-normal-ci-unknown-var}
 
 Let’s apply the <span class="xref-no-num">[general strategy @sec-general-ci-strategy]</span> to construct an exact confidence interval for the mean of a normal distribution when the variance is **unknown**.
 
@@ -1351,7 +1351,7 @@ $$
 Since the variance involves the unknown $\lambda$, we follow @def-approx-ci-mle by plugging-in the MLE $\hat{\lambda}$ into $\lambda$:
 
 $$
-\tfrac{\lambda}{n} \approx \sqrt{\tfrac{\hat{\lambda}}{n}}.
+\tfrac{\lambda}{n} \approx \tfrac{\hat{\lambda}}{n}.
 $$
 
 Hence an approximate $(1-\alpha)$ CI is
