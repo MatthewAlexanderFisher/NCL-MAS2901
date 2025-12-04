@@ -351,7 +351,7 @@ So, $85\%$ of families subscribe to at least one newspaper.
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="likelihood mle" data-difficulty="1"}
+::: {.callout-important .question appearance="minimal" data-tags="likelihood mle" data-difficulty="1" #q-normal-data-mle}
 ## Normal Data MLE 
 Let $X_1,\dots,X_n \stackrel{iid}{\sim} \mathcal{N}(\mu,1)$. Find the MLE of $\mu$.
 
@@ -1577,7 +1577,7 @@ $$
 </details>
 :::
 
-::: {.callout-important .question appearance="minimal" data-tags="gamma distribution mle coding likelihood" data-difficulty="2"}
+::: {.callout-important .question appearance="minimal" data-tags="gamma distribution mle coding likelihood" data-difficulty="2" #q-gamma-mle}
 ## MLE for the Gamma Distribution
 
 Suppose that $X_1,\ldots,X_n$ is random sample from a $\mathrm{Gamma}(1, b)$ distribution.  
@@ -1828,7 +1828,7 @@ $$
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="clt probability" data-difficulty="1"}
+::: {.callout-important .question appearance="minimal" data-tags="clt probability" data-difficulty="1" #q-clt-approx1}
 ## Central Limit Theorem Approximation
 
 The scores that responders give on a questionnaire can be assumed to be independent random variables, each with the following probability distribution:
@@ -1904,7 +1904,7 @@ $$
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="clt binomial" data-difficulty="1"}
+::: {.callout-important .question appearance="minimal" data-tags="clt binomial" data-difficulty="1" #q-binom-clt}
 ## Normal Approximation to the Binomial
 
 Use the <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span> to justify the Normal approximation to the <span class="xref-no-num">[Binomial @sec-binom]</span>.  
@@ -2287,9 +2287,9 @@ Therefore, $\hat{\mu}_n$ is a consistent estimator of $\mu$ for all $c\in\mathbb
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="likelihood geometric" data-difficulty="1"}
+::: {.callout-important .question appearance="minimal" data-tags="likelihood geometric" data-difficulty="1" #q-geom-likelihood}
 
-## Computing Likelihood I
+## Computing Likelihoods I
 
 Let $X_1,\dots,X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Geometric}(p)$ be a random sample.
 
@@ -2319,9 +2319,9 @@ where $\bar{x}$ is the <span class="xref-no-num">[sample mean @def-sample-mean]<
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="likelihood normal" data-difficulty="1"}
+::: {.callout-important .question appearance="minimal" data-tags="likelihood normal" data-difficulty="1" #q-normal-var-likelihood}
 
-## Computing Likelihood II
+## Computing Likelihoods II
 
 Let $X_1,\dots,X_n \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu, 1)$ be a random sample.
 
@@ -2349,8 +2349,41 @@ L(\mu; \underline{x}) &= \prod_{i=1}^n \frac{1}{\sqrt{2\pi}} \exp\left\{ -\frac{
 
 :::
 
+::: {.callout-important .question appearance="minimal" data-tags="likelihood lognormal" data-difficulty="1" #q-lognormal-likelihood}
 
-::: {.callout-important .question appearance="minimal" data-tags="fisher-information binomial" data-difficulty="2"}
+## Computing Likelihoods III
+
+Suppose we have $n$ i.i.d. <span class="xref-no-num">[log normal @sec-lognormal]</span> observations
+$$
+X_1,\dots,X_n \overset{\text{i.i.d.}}{\sim} \mathrm{LogNormal}(\mu, \gamma).
+$$
+
+Derive the **likelihood function**.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+For independent and identically distributed data, the <span class="xref-no-num">[likelihood function @def-likelihood]</span> takes the form
+$$
+L(\mu, \gamma ; \underline{x}) = f(\underline{x} \mid \mu, \gamma) = \prod_{i=1}^n f(x_i \mid \mu, \gamma),
+$$
+where $f(x_i\mid \mu, \gamma)$ is PDF of the <span class="xref-no-num">[log normal distribution @sec-lognormal]</span> (with $\sigma^2 = \gamma$):
+$$
+f(x_i \mid \mu, \gamma) = \frac{1}{x_i\sqrt{2\pi\gamma}} \exp\!\left(-\frac{(\log(x_i)-\mu)^2}{2\gamma}\right).
+$$
+Therefore, the likelihood takes the form
+$$
+\begin{align*}
+L(\mu, \gamma; \underline{x}) &= \prod_{i=1}^n \frac{1}{x_i\sqrt{2\pi\gamma}} \exp\!\left(-\frac{(\log(x_i)-\mu)^2}{2\gamma}\right) \\
+&= (2\pi\gamma)^{-n/2} \exp\left\{-\frac{1}{2\gamma}\sum_{i=1}^n (\log(x_i) - \mu)^2\right\} \left(\prod_{i=1}^n x_i\right)^{-1}.
+\end{align*}
+$$
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="fisher-information binomial" data-difficulty="2" #q-fisher-info-binomial}
 
 ## Fisher Information for a Binomial Observation
 
@@ -2428,7 +2461,7 @@ Given the MLE $\hat{\theta}_{\mathrm{MLE}} = \frac{x}{n}$ and the derived Fisher
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="fisher-information geometric" data-difficulty="2"}
+::: {.callout-important .question appearance="minimal" data-tags="fisher-information geometric" data-difficulty="2" #q-fisher-info-geometric}
 
 ## Fisher Information for Geometric Data
 
@@ -2953,6 +2986,100 @@ Therefore, we seek $c$ such that
 \end{align*}
 So, the $90\%$ highest density interval is $\theta \in (0, 0.01041)$.
 
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="likelihood geometric" data-difficulty="2" #q-geom-approx-ci}
+
+## Approximate MLE-based Confidence Interval for Geometric Data
+
+Suppose we have $n$ i.i.d. <span class="xref-no-num">[geometric @sec-geom]</span> observations
+$$
+X_1,\dots,X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Geometric}(p).
+$$
+
+1. Using the <span class="xref-no-num">[asymptotic distribution of the MLE @def-asymp-mle-approx]</span>, construct a general $100(1-\alpha)\%$ <span class="xref-no-num">[approximate CI @def-approx-ci-mle]</span> for $p$.
+2. Suppose we observe a random sample of size $n = 100$ from a geometric distribution, and the sample mean is $\bar{x} = 9.84$. Using the asymptotic normal approximation of the MLE, compute an approximate $95\%$ confidence interval for the parameter $p$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+1. **Approximate CI.**
+  Note that, in order to compute the approximate CI we require both the MLE of $p$ and the Fisher information.
+   * **Step 1: Compute Log Likelihood**
+     For i.i.d. geometric data, the likelihood is
+     $$
+     \begin{align*}
+     L(p; \underline{x}) &= \prod_{i=1}^n p(1-p)^{x_i - 1} \\
+     &= p^n(1-p)^{n(\bar{x} - 1)}.
+     \end{align*}
+     $$
+     The log-likelihood is thus
+     $$
+     \ell(p; \underline{x}) = n \log p + n(\bar{x} - 1) \log(1-p).
+     $$
+   * **Step 2: Compute Derivates of Log-Likelihood**
+     The derivatives of the log-likelihood are
+     $$
+     \begin{align*}
+     \frac{\partial}{\partial p} \ell(p; \underline{x})  &= \frac{n}{p} - \frac{n(\bar{x} - 1)}{1 - p}, \\
+     \frac{\partial^2}{\partial p^2} \ell(p; \underline{x})  &= -\frac{n}{p^2} - \frac{n(\bar{x} - 1)}{(1 - p)^2}.
+     \end{align*}
+     $$
+   * **Step 3: Compute MLE**
+     We compute the MLE by solving 
+     $$
+     \begin{align*}
+     \frac{n}{p} - \frac{n(\bar{x} - 1)}{1 - p} &= 0 \\
+     n(1-p) - n(\bar{x} - 1)p &= 0 \\
+     n\bar{x} p &= n \\
+     \Rightarrow \hat{p}_{\mathrm{MLE}} &= \frac{1}{\bar{x}}.
+     \end{align*}
+     $$
+   * **Step 4: Compute Fisher Information**
+     The Fisher information for the *whole sample* is:
+     $$
+     \begin{align*}
+     \mathcal{I}_n(p) &= -\mathrm{E}\left[-\frac{n}{p^2} - \frac{n(\bar{X} - 1)}{(1 - p)^2}\right] \\
+     &= \frac{n}{p^2} - \frac{n}{(1-p)^2} + \frac{n}{(1-p)^2}\mathrm{E}[\bar{X}] \\
+     &= \frac{n}{p^2} - \frac{n}{(1-p)^2} + \frac{n}{p(1-p)^2},
+     \end{align*}
+     $$
+     since $\mathrm{E}[X_i] = 1/p$ and so $\frac{1}{n}\sum_{i=1}^n \mathrm{E}[X_i] = 1/p$. Simplifying further, we obtain
+     $$
+     \mathcal{I}_n(p) = n\frac{(1-p)^2 - p^2 + p}{p^2(1-p)^2} = \frac{n}{p^2(1-p)}.
+     $$
+     Substituting in $p = \hat{p}_{\mathrm{MLE}} = 1/\bar{x}$, the **observed Fisher information** is
+     $$
+     \mathcal{I}_n(\hat{p}_{\mathrm{MLE}}) = \frac{n \bar{x}^2}{(1-1/\bar{x})} = \frac{n\bar{x}^3}{\bar{x} - 1}.
+     $$
+   * **Step 5: Compute Approximate CI**
+     The <span class="xref-no-num">[asymptotic distribution of the MLE @def-asymp-mle-approx]</span> implies that, for large $n$,
+     $$
+     \hat{p}_{\mathrm{MLE}} \overset{\text{approx.}}{\sim} \mathcal{N}(p, \mathcal{I}_n(\hat{p}_{\mathrm{MLE}})^{-1}).
+     $$
+     Therefore, an approximate $100(1-\alpha)\%$ confidence interval takes the form:
+     $$
+     \frac{1}{\bar{x}} \pm z_{1-\alpha/2} \sqrt{\frac{\bar{x} - 1}{n \bar{x}^3}}.
+     $$
+
+2. **Compute the Approximate CI using data.**
+    Using the derived formula from the first part
+     $$
+     \frac{1}{\bar{x}} \pm z_{1-\alpha/2} \sqrt{\frac{\bar{x} - 1}{n \bar{x}^3}}.
+     $$
+     we plug in the given values $\bar{x} = 9.84$ and $n=100$. The relevant quantile is $z_{0.975} = 1.96$. Therefore, we obtain
+     $$
+     0.1016 \pm 1.96×0.0096≈0.1016±0.0189.
+     $$
+     Therefore, an approximate $95\%$ confidence interval for $p$ is
+     $$
+    \boxed{
+      (0.083, 0.121), \quad \text{(to three decimal places)}.
+    }
+     $$
 </details>
 
 :::
@@ -3879,7 +4006,7 @@ After observing the data, the engineer’s belief shifts toward a larger value o
 
 :::
 
-::: {.callout-important .question appearance="minimal" data-tags="mle uniform" data-difficulty="2"}
+::: {.callout-important .question appearance="minimal" data-tags="mle uniform" data-difficulty="2" #q-unif-mle1}
 
 ## MLE for the Uniform Distribution $U(\theta, 2\theta)$
 

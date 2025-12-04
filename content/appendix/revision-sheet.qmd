@@ -121,9 +121,7 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
   - An **estimator** $\hat{\theta}(\underline{X})$ is a function of the **random sample** and is therefore **random**.
   - An **estimate** $\hat{\theta}(\underline{x})$ is the numerical value obtained after plugging in the **observed data**, and is therefore **non-random**.
 
-- Be able to recall and use the definitions of:
-  1. <span class="xref-no-num">[Sample Mean @def-sample-mean]</span>  
-  2. <span class="xref-no-num">[Sample Variance @def-sample-variance]</span>  
+- Be able to recall and use the definitions of the <span class="xref-no-num">[sample mean @def-sample-mean]</span> and the <span class="xref-no-num">[sample variance @def-sample-variance]</span>.
 
 - Understand the concept of the <span class="xref-no-num">[sampling distribution @def-sampling-distribution]</span> of an estimator $\hat{\theta}$ — that is, the probability distribution of $\hat{\theta}(\underline{X})$ when the data are repeatedly sampled from the model.
 
@@ -140,7 +138,7 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
   3. <span class="xref-no-num">[Standard error @def-se]</span>  
   4. <span class="xref-no-num">[Mean-squared error (MSE) @def-mse]</span>  
 
-  **Note:** When computing the MSE, always use the <span class="xref-no-num">[Bias–Variance decomposition @prp-mse-bias-variance]</span>
+  **Note:** When computing the MSE, always use the <span class="xref-no-num">[Bias–Variance decomposition @prp-mse-bias-variance]</span>.
 
   <details class="practice-questions">
   <summary><em>Properties of Estimators — Practice Questions</em></summary>
@@ -164,15 +162,29 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
 
   </details>
 
-- Be able to **prove** the <span class="xref-no-num">[Bias–Variance decomposition @prp-mse-bias-variance]</span> of the mean-squared error.
+- Be able to <span class="xref-no-num">[prove @prf-mse-bias-variance]</span> the <span class="xref-no-num">[Bias–Variance decomposition @prp-mse-bias-variance]</span> of the mean-squared error.
 
-- <span class="xref-no-num">[Understand @imp-term-asymptotic]</span> the meaning of **asymptotic** in statistics. An asymptotic result describes the behaviour of an estimator or statistic as the sample size $n$ (in data $X_1,\ldots,X_n$) becomes **very large**.
+- Understand the meaning of <span class="xref-no-num">[asymptotic @imp-term-asymptotic]</span> in statistics. An asymptotic result describes the behaviour of an estimator or statistic as the sample size $n$ (in data $X_1,\ldots,X_n$) becomes **very large**.
 
 - Be able to recall and understand the <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span>. The CLT states that for i.i.d. observations $X_1,\ldots,X_n$ from **any distribution** with finite variance $\sigma^2 < \infty$, the **sample mean** is approximately normally distributed for large $n$:
   $$
   \bar{X} \;\overset{\text{approx.}}{\sim}\; 
   \mathcal{N}\!\left(\mu,\, \frac{\sigma^2}{n}\right).
   $$
+
+  <details class="practice-questions">
+  <summary><em>CLT Approximations — Practice Questions</em></summary>
+
+  ::: {.small-table}
+  | Location | Description | Link |
+  |------|-------------|-------|
+  | Question Bank | CLT approximation I | <span class="xref-no-num">[Link @q-clt-approx1]</span> |
+  | Question Bank | CLT approximation of Binomial | <span class="xref-no-num">[Link @q-binom-clt]</span> |
+
+  : {tbl-colwidths="[20, 60, 20]"}
+  :::
+
+  </details>
 
 - 
 
@@ -182,6 +194,130 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
 #### Chapter 5 - <span class="xref-no-num">[Likelihood @sec-likelihood]</span> 
 
 ##### Summary of Examinable Material
+
+- Understand the <span class="xref-no-num">[definition @def-likelihood]</span> of the **likelihood function**. Given a statistical model  
+  $$
+  X_1,\ldots,X_n \sim \mathrm{Distribution}(\theta),
+  $$
+  the **joint density (or PMF)** of the observed data $\underline{x}$, viewed as a function of the parameter $\theta$, is the likelihood:
+  $$
+  L(\theta;\,\underline{x}) = f(\underline{x}\mid\theta).
+  $$
+  The data are treated as fixed, and the likelihood expresses how plausible different values of $\theta$ are in light of those observations.
+
+- <span class="xref-no-num">[Understand @sec-likelihood-dependence]</span> how the likelihood function factorises under different assumptions about the data:
+
+  1. **Independent and identically distributed (i.i.d.):** If the data satisfy
+     $$
+     X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\theta),
+     $$
+     then each observation has the *same* density (or PMF) $f(x_i \mid \theta)$, and independence gives the factorisation
+     $$
+     L(\theta;\underline{x}) = f(\underline{x}\mid\theta) = \prod_{i=1}^n f(x_i \mid \theta).
+     $$
+
+  2. **Independent but not identically distributed:** If the data are independent but may follow different distributions, then
+     $$
+     f(\underline{x}\mid\theta) = \prod_{i=1}^n f_{X_i}(x_i \mid \theta),
+     $$
+     where each $f_{X_i}(x_i \mid \theta)$ is the density (or PMF) for the observation $X_i$.
+
+  3. **Dependent data:** The general case, in which the $X_i$ are *not* independent, is **not examinable** in this module.
+
+- Be able to <span class="xref-no-num">[compute @sec-computing-likelihoods]</span> likelihood functions for general statistical models, under both i.i.d. assumptions and the more general case of independent (but not necessarily identically distributed) data.
+
+  <details class="practice-questions">
+  <summary><em>Computing Likelihoods — Practice Questions</em></summary>
+  The following questions focus solely on **computing likelihood functions**. Many later topics require likelihood computation as a preliminary step, but those applications are covered in their respective sections.
+
+  ::: {.small-table}
+  | Location | Description | Link |
+  |------|-------------|-------|
+  | Question Bank | Computing Likelihoods I: Geometric Likelihood | <span class="xref-no-num">[Link @q-geom-likelihood]</span> |
+  | Question Bank | Computing Likelihoods II: Normal Likelihood ($\sigma^2=1$) | <span class="xref-no-num">[Link @q-normal-var-likelihood]</span> |
+  | Question Bank | Computing Likelihoods III: Log Normal Likelihood | <span class="xref-no-num">[Link @q-lognormal-likelihood]</span> |
+  | Examples | Bernoulli Likelihood | @exm-bern-likelihood |
+  | Examples | Bernoulli Likelihood with data | @exm-bern-likelihood-data |
+  | Examples | Normal Likelihood | @exm-normal-likelihood |
+  | Examples | Poisson Likelihood | @exm-poisson-likelihood |
+
+  : {tbl-colwidths="[20, 60, 20]"}
+  :::
+
+  </details>
+
+- Be able to compute <span class="xref-no-num">[log-likelihood functions @def-log-likelihood]</span> and understand their role in computing MLEs.
+
+- Be able to recall and understand the <span class="xref-no-num">[definition @def-mle]</span> of the   **Maximum Likelihood Estimator (MLE)**. In particular, understand the meaning of <span class="xref-no-num">[the argmax notation @imp-term-argmax-max]</span> in the definition:
+  $$
+  \hat{\theta}_{\mathrm{MLE}}
+  = \argmax_{\theta \in \Theta} L(\theta;\,\underline{X}),
+  $$
+  where $\Theta$ is the **parameter space** over which the likelihood is maximised.
+
+- Be able to compute <span class="xref-no-num">[univariate MLEs @sec-computing-univariate-mles]</span>. 
+  - **Note:** Computing *multivariate MLEs* is **not examinable**.
+
+  <details class="practice-questions">
+  <summary><em>Computing MLEs — Practice Questions</em></summary>
+  The following questions focus solely on **computing MLEs**. Many later topics use MLEs as an intermediate step, but those applications are introduced in their own sections.
+
+  ::: {.small-table}
+  | Location | Description | Link |
+  |------|-------------|-------|
+  | Question Bank | Normal MLE for $\mu$ ($\sigma^2 = 1$) | <span class="xref-no-num">[Link @q-normal-data-mle]</span> |
+  | Question Bank | Gamma MLE for $b$ ($a=1$) | <span class="xref-no-num">[Link @q-gamma-mle]</span> |
+  | Question Bank | Uniform MLE, $U(\theta, 2\theta)$ data | <span class="xref-no-num">[Link @q-unif-mle1]</span>
+  | Examples | Bernoulli MLE | @exm-bern-mle |
+  | Examples | Binomial MLE | @exm-binom-mle-single |
+  | Examples | Another Binomial MLE | @exm-binom-mle |
+  | Examples | Poisson MLE | @exm-pois-mle |
+  | Examples | Normal MLE for $\mu$ | @exm-normal-mu-mle |
+
+  : {tbl-colwidths="[20, 60, 20]"}
+  :::
+
+  </details>
+
+- Be able to <span class="xref-no-num">[compute @imp-compute-fisher-info]</span> and recall the <span class="xref-no-num">[definition of Fisher information @def-fisher-information]</span>. There are two versions to distinguish:
+
+  - **Fisher information for a single observation**
+    $$
+    \mathcal{I}_1(\theta)
+      = -\,\mathrm{E}\!\left[
+          \frac{\partial^2}{\partial\theta^2}
+          \log f(X \mid \theta)
+        \right].
+    $$
+
+  - **Fisher information for the whole sample**
+    $$
+    \mathcal{I}_n(\theta)
+      = -\,\mathrm{E}\!\left[
+          \frac{\partial^2}{\partial\theta^2}
+          \ell(\theta;\underline{X})
+        \right],
+    $$
+    where $\ell(\theta;\underline{X})$ is the log-likelihood of all $n$ observations.
+
+  **Note:** In this module, you will almost always be asked to compute the **Fisher information for the whole sample**. For consistency and simplicity, we recommend using **Approach 1** described <span class="xref-no-num">[here @imp-compute-fisher-info]</span>.
+
+  <details class="practice-questions">
+  <summary><em>Computing the Fisher Information — Practice Questions</em></summary>
+  The following questions focus solely on **computing Fisher Information**. Many later topics use the Fisher Information as an intermediate step, but those applications are introduced in their own sections.
+
+  ::: {.small-table}
+  | Location | Description | Link |
+  |------|-------------|-------|
+  | Question Bank | Fisher Information for a Binomial Observation | <span class="xref-no-num">[Link @q-fisher-info-binomial]</span> |
+  | Question Bank | Fisher Information for Geometric Data | <span class="xref-no-num">[Link @q-fisher-info-geometric]</span> |
+  | Examples | Fisher Information for Poisson Data | @exm-poisson-fisher |
+
+  : {tbl-colwidths="[20, 60, 20]"}
+  :::
+
+  </details>
+
 
 ##### Essential Points
 
@@ -359,6 +495,7 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
   ::: {.small-table}
   | Location | Description | Link |
   |----------|-------------|-------|
+  | Question Bank | Geometric data, approximate MLE-based confidence interval | <span class="xref-no-num">[Link @q-geom-approx-ci]</span> |
   | Examples | Poisson goal data, approximate CLT-based confidence interval | @exm-pois-approx-ci-clt |
   | Examples | Poisson goal data, approximate MLE-based confidence interval | @exm-pois-approx-ci-mle |
 

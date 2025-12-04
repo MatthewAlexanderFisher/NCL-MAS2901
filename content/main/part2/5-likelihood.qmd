@@ -63,7 +63,7 @@ It plays a central role in both **frequentist** and **Bayesian** statistics.
 :::
 
 
-## Likelihoods Under Independence and Dependence
+## Likelihoods Under Independence and Dependence {#sec-likelihood-dependence}
 
 The form of the likelihood depends crucially on whether our observations are independent and identically distributed ([i.i.d.]{title="Independent and Identically Distributed"}), merely independent, or dependent. These three cases look similar but lead to different joint densities. 
 
@@ -530,7 +530,7 @@ In short:
 
 
 
-### Computing Likelihood Functions
+### Computing Likelihood Functions {#sec-computing-likelihoods}
 
 This is a **very important skill** in the course: you will use it often in the *frequentist* parts, and it is **essential** for the *Bayesian* part.
 
@@ -1695,7 +1695,7 @@ resim = controls.resim
 * Later, in Bayesian inference, we will combine the likelihood with a **prior distribution** on $\theta$ to obtain a **posterior distribution**.
 :::
 
-### Computing Univariate MLEs
+### Computing Univariate MLEs {#sec-computing-univariate-mles}
 
 ::: {.example #exm-bern-mle}
 ### Bernoulli MLE
@@ -2255,6 +2255,101 @@ $$
 $$
 
 :::
+
+::: {#imp-compute-fisher-info .callout-important collapse="true" appearance="simple"}
+
+### Computing the Fisher Information of the Whole Sample
+
+In most problems, we work with the **Fisher information for the whole sample**:
+$$
+\mathcal{I}_n(\theta)
+= -\,\mathrm{E}\!\left[\frac{\partial^2}{\partial\theta^2}
+   \,\ell(\theta;\underline{X})\right].
+$$
+
+For i.i.d. data, there are two standard approaches.
+
+---
+
+**Approach 1: Compute $\mathcal{I}_n(\theta)$ directly**
+
+1. **Write down the likelihood**  
+   For $X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim}\mathrm{Distribution}(\theta)$,
+   $$
+   L(\theta;\underline{x}) = \prod_{i=1}^n f(x_i\mid\theta).
+   $$
+
+2. **Compute the log-likelihood**  
+   $$
+   \ell(\theta;\underline{x}) = \log L(\theta;\underline{x}).
+   $$
+
+3. **Differentiate**  
+   Compute the first and second derivatives
+   $$
+   \frac{\partial}{\partial\theta}\ell(\theta;\underline{x}),
+   \qquad
+   \frac{\partial^2}{\partial\theta^2}\ell(\theta;\underline{x}).
+   $$
+
+4. **Take the expectation**  
+   Insert the second derivative into
+   $$
+   \mathcal{I}_n(\theta)
+   = -\,\mathrm{E}\!\left[
+      \frac{\partial^2}{\partial\theta^2}
+      \ell(\theta;\underline{X})
+     \right],
+   $$
+   where the expectation is taken with respect to the model for $\underline{X}$. You will often use known expressions such as $\mathrm{E}[X_i]$ and $\mathrm{Var}(X_i)$, obtainable from the *formula sheet*.
+
+---
+
+**Approach 2: Compute $\mathcal{I}_1(\theta)$ and multiply by $n$**
+
+Using @prp-fisher-one-obs, compute the Fisher information for **one observation** and then multiply by $n$.
+
+1. **Write the PDF/PMF for one observation**  
+   $$
+   f(x\mid\theta).
+   $$
+
+2. **Logarithm**  
+   $$
+   \log f(x\mid\theta).
+   $$
+
+3. **Differentiate**  
+   $$
+   \frac{\partial}{\partial\theta}\log f(x\mid\theta),
+   \qquad
+   \frac{\partial^2}{\partial\theta^2}\log f(x\mid\theta).
+   $$
+
+4. **Compute $\mathcal{I}_1(\theta)$**  
+   $$
+   \mathcal{I}_1(\theta)
+   = -\,\mathrm{E}\!\left[
+      \frac{\partial^2}{\partial\theta^2}
+      \log f(X\mid\theta)
+     \right].
+   $$
+   Then
+   $$
+   \mathcal{I}_n(\theta) = n\,\mathcal{I}_1(\theta).
+   $$
+
+---
+
+**Recommendation**
+
+- If the data are **not identically distributed**, only **Approach 1** applies.  
+- Even in the i.i.d. case, Approach 1 is often just as quick and avoids memorising extra formulas.  
+- For consistency, I therefore recommend **always using Approach 1**.
+
+:::
+
+
 
 ::: {.example #exm-poisson-fisher}
 
