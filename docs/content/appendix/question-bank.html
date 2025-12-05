@@ -1524,7 +1524,7 @@ Since <span class="math inline">X</span> is integer-valued, this corresponds to 
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="b5131acf" class="cell" data-execution_count="2">
+<div id="f8c71d9f" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> comb</span>
@@ -2225,7 +2225,7 @@ L(b;\underline{x}) = \prod_{i=1}^n f(x_i;b)
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="d9328ca1" class="cell" data-execution_count="3">
+<div id="a34f87be" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -2719,7 +2719,7 @@ Since <span class="math inline">\mathrm{Var}(X_i) = \lambda</span> and the <span
 </ol></li>
 </ol>
 <p>In Python:</p>
-<div id="b3136d01" class="cell" data-execution_count="4">
+<div id="bc75376f" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> poisson</span>
@@ -3030,13 +3030,79 @@ n(1-\theta) &amp;= n \theta (\bar{x} - 1) \\
 </details>
 </div>
 </div>
+<div id="q-fisher-info-var-normal" class="question callout callout-style-simple callout-important no-icon callout-titled" data-tags="fisher-information normal" data-difficulty="2">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important&nbsp;17: Fisher Information of the Variance of Normal Data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suppose we have a random <span class="xref-no-num"><a href="formula-sheet.html#sec-normal" class="quarto-xref">Normal&nbsp;<span>Normal</span></a></span> sample: <span class="math display">
+X_1,\ldots, X_n \stackrel{\text{i.i.d.}}{\sim} \mathcal{N}(\mu, \gamma),
+</span> where <span class="math inline">\mu</span> is a <em>known</em> value <span class="math inline">\gamma</span> is <em>unknown</em>.</p>
+<p>Derive the <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#def-fisher-information" class="quarto-xref">Fisher information&nbsp;<span>5.7</span></a></span> and the <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#def-observed-fisher" class="quarto-xref">observed Fisher information&nbsp;<span>5.10</span></a></span> of <span class="math inline">\gamma</span> for the <strong>whole random sample</strong>.</p>
+<details class="solution">
+<summary>
+Solution
+</summary>
+<p>Note: We want to compute <span class="math inline">\mathcal{I}(\gamma) = -\mathrm{E}\left[\frac{\partial^2}{\partial\gamma^2} \ell(\gamma; \underline{X})\right]</span> for the Fisher information and <span class="math inline">\hat{\gamma}_{\mathrm{MLE}}</span> for the observed Fisher information.</p>
+<p><strong>Step 1: Compute log-likelihood</strong></p>
+<p>Since we have <span class="math inline">n</span> i.i.d. <span class="math inline">\mathcal{N}(\mu, \gamma)</span> with <span class="math inline">\mu</span> known, the likelihood function is <span class="math display">
+\begin{align*}
+L(\gamma;\underline{x}) &amp;= \prod_{i=1}^n \frac{1}{\sqrt{2\pi\gamma}} \exp\left\{-\frac{(x_i - \mu)^2}{2\gamma}\right\} \\
+&amp;= (2 \pi)^{-n/2} \gamma^{-n/2} \exp\left\{-\frac{1}{2\gamma}\sum_{i=1}^n (x_i - \mu)^2\right\}.
+\end{align*}
+</span> Therefore, the log-likelihood takes the form <span class="math display">
+\ell(\gamma; \underline{x}) = -\frac{n}{2}\log(2\pi) - \frac{n}{2}\log(\gamma) - \frac{1}{2\gamma}\sum_{i=1}^n (x_i - \mu)^2.
+</span></p>
+<p><strong>Step 2: Compute Derivatives</strong></p>
+<p>We compute the first and second derivatives of the log-likelihood with respect to <span class="math inline">\gamma</span>: <span class="math display">
+\begin{align*}
+\frac{\partial}{\partial \gamma} \ell(\gamma; \underline{x}) &amp;= -\frac{n}{2\gamma} + \frac{1}{2\gamma^2}\sum_{i=1}^n (x_i - \mu)^2,  \\
+\frac{\partial^2}{\partial \gamma^2} \ell(\gamma; \underline{x}) &amp;= \frac{n}{2\gamma^2} - \frac{1}{\gamma^3}\sum_{i=1}^n (x_i - \mu)^2.
+\end{align*}
+</span> <strong>Step 3: Compute Fisher Information</strong></p>
+<p>We have <span class="math display">
+\mathcal{I}(\gamma) = -\mathrm{E}\left[\frac{\partial^2}{\partial\gamma^2} \ell(\gamma; \underline{X})\right] = -\mathrm{E}\left[\frac{n}{2\gamma^2} - \frac{1}{\gamma^3}\sum_{i=1}^n (X_i - \mu)^2\right],
+</span> where the <strong>random</strong> component of the expectation is the <em>random data</em> <span class="math inline">X_i\sim\mathcal{N}(\mu, \gamma)</span>. Therefore, manipulating the expectation: <span class="math display">
+\begin{align*}
+\mathcal{I}(\gamma) &amp;=  -\frac{n}{2\gamma^2} + \frac{1}{\gamma^3}\sum_{i=1}^n \mathrm{E}[(X_i - \mu)^2] \\
+&amp;= -\frac{n}{2\gamma^2} + \frac{1}{\gamma^3}\sum_{i=1}^n \gamma,
+\end{align*}
+</span> using the fact that each <span class="math inline">X_i - \mu \sim \mathcal{N}(0, \gamma)</span> and so <span class="math inline">\mathrm{E}[(X_i - \mu)^2] = \mathrm{Var}(X_i) = \gamma</span>. Continuing: <span class="math display">
+\begin{align*}
+\mathcal{I}(\gamma) &amp;= -\frac{n}{2\gamma^2} + \frac{n\gamma}{\gamma^3} \\
+&amp;= \frac{n}{2\gamma^2}
+\end{align*}
+</span></p>
+<p><strong>Step 4: Compute MLE</strong></p>
+<p>We require the MLE for the observed Fisher information. We solve: <span class="math display">
+\begin{align*}
+\frac{\partial}{\partial \gamma} \ell(\gamma; \underline{x}) &amp;= 0 \\
+-\frac{n}{2\gamma} + \frac{1}{2\gamma^2}\sum_{i=1}^n (x_i - \mu)^2 &amp;= 0 \\
+\Rightarrow \hat{\gamma}_{\mathrm{MLE}} &amp;= \frac{1}{n}\sum_{i=1}^n (x_i - \mu)^2
+\end{align*}
+</span></p>
+<p><strong>Step 5: Compute observed Fisher information</strong></p>
+<p>Given the MLE $<em>{} = </em>{i=1}^n (x_i - )^2 $ and the derived Fisher information, we have <span class="math display">
+\begin{align*}
+\mathcal{I}(\hat{\gamma}_{\mathrm{MLE}}) &amp;= \frac{n}{2\hat{\gamma}_{\mathrm{MLE}}^2} \\
+&amp;= \frac{n^3}{2\left(\sum_{i=1}^n (x_i - \mu)^2\right)^2}.
+\end{align*}
+</span></p>
+</details>
+</div>
+</div>
 <div id="q-asymp-post-variance" class="question callout callout-style-simple callout-important no-icon callout-titled" data-tags="bayes asymptotic-posterior exam-style" data-difficulty="2">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;17: Asymptotic Posterior for the Variance Parameter
+Important&nbsp;18: Asymptotic Posterior for the Variance Parameter
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3150,7 +3216,7 @@ I_n(\hat{\gamma})^{-1}
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;18: Asymptotic Posterior for Poisson Data
+Important&nbsp;19: Asymptotic Posterior for Poisson Data
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3216,7 +3282,7 @@ f(\underline{x} \mid \lambda) &amp;= \prod_{i=1}^n \frac{\lambda^{x_i} e^{-\lamb
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;19: Asymptotic Posterior for Exponential Data
+Important&nbsp;20: Asymptotic Posterior for Exponential Data
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3333,7 +3399,7 @@ f(\underline{x} \mid \lambda)
 <li>Construct a <span class="math inline">90\%</span> highest density interval (HDI) for <span class="math inline">\theta</span>.</li>
 </ol>
 <p><em>Hint:</em> The following plot may be helpful.</p>
-<div id="09bf3352" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="5">
+<div id="470671c7" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="5">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -3416,7 +3482,7 @@ X \mid \theta \sim \mathrm{Binomial}(n=20,\ \theta).
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;20: Approximate MLE-based Confidence Interval for Geometric Data
+Important&nbsp;21: Approximate MLE-based Confidence Interval for Geometric Data
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3492,7 +3558,7 @@ n\bar{x} p &amp;= n \\
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;21: Asymptotic Distribution of the Exponential MLE
+Important&nbsp;22: Asymptotic Distribution of the Exponential MLE
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3603,7 +3669,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;22: MAP Estimation in a Defect-Rate Problem
+Important&nbsp;23: MAP Estimation in a Defect-Rate Problem
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3702,7 +3768,7 @@ x + a - 1 &amp;= (n + a + b - 2)p \\[4pt]
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;23: MAP Estimation for a Call-Arrival Rate
+Important&nbsp;24: MAP Estimation for a Call-Arrival Rate
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3809,7 +3875,7 @@ f(y \mid \lambda)
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;24: Unbiased Estimation and Efficiency in the Normal Model
+Important&nbsp;25: Unbiased Estimation and Efficiency in the Normal Model
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3920,7 +3986,7 @@ L(\theta) = (2\pi\theta)^{-n/2}
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;25: Likelihood Ratio Test for Extreme Weather Events
+Important&nbsp;26: Likelihood Ratio Test for Extreme Weather Events
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4045,7 +4111,7 @@ If a biased estimator has a smaller MSE than an unbiased one, the biased estimat
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;26: Properties of the Maximum Likelihood Estimator
+Important&nbsp;27: Properties of the Maximum Likelihood Estimator
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4115,7 +4181,7 @@ L(\theta; \underline{x}) = \prod_{i=1}^n f(x_i \mid \theta) = \theta^{-n} \prod_
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;27: Estimation from a Uniform Distribution
+Important&nbsp;28: Estimation from a Uniform Distribution
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4460,7 +4526,7 @@ f(\underline{t} \mid \theta)
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;28: MLE for the Uniform Distribution <span class="math inline">U(\theta, 2\theta)</span>
+Important&nbsp;29: MLE for the Uniform Distribution <span class="math inline">U(\theta, 2\theta)</span>
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4776,7 +4842,7 @@ There is evidence that the proportion of left-handed people differs from 0.1.</p
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;29: Conjugacy: Binomial Model, Beta Prior
+Important&nbsp;30: Conjugacy: Binomial Model, Beta Prior
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4820,7 +4886,7 @@ p \mid x \sim \mathrm{Beta}(a + x, b + n - x),
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;30: Conjugacy: Poisson Model, Gamma Prior
+Important&nbsp;31: Conjugacy: Poisson Model, Gamma Prior
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4870,7 +4936,7 @@ f(\underline{x} \mid \lambda) \propto \lambda^{n\bar{x}} e^{-n\lambda}.
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;31: Conjugacy: Geometric Model, Beta Prior
+Important&nbsp;32: Conjugacy: Geometric Model, Beta Prior
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4918,7 +4984,7 @@ p \mid \underline{x} \sim \mathrm{Beta}(a + n, b + n(\bar{x} - 1)),
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;32: Conjugacy: Normal Model with known variance, Normal Prior for mean
+Important&nbsp;33: Conjugacy: Normal Model with known variance, Normal Prior for mean
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4988,7 +5054,7 @@ V &amp;= \frac{1}{\frac{1}{\sigma^2_0} + \frac{n}{\sigma^2}}.
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;33: Conjugacy: Normal Model with known mean, Inverse Gamma Prior for variance
+Important&nbsp;34: Conjugacy: Normal Model with known mean, Inverse Gamma Prior for variance
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -5046,7 +5112,7 @@ b + \frac{1}{2}\sum_{i=1}^n (x_i - \mu)^2  \right),
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;34: Conjugacy: Exponential Model, Gamma Prior
+Important&nbsp;35: Conjugacy: Exponential Model, Gamma Prior
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -5098,7 +5164,7 @@ b + n\bar{x}  \right),
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;35: Conjugacy: Weibull Model with known rate, Inverse Gamma Prior
+Important&nbsp;36: Conjugacy: Weibull Model with known rate, Inverse Gamma Prior
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -5152,11 +5218,11 @@ b + \sum_{i=1}^n x_i^\beta  \right),
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;36: Posterior calculation: Normal likelihood, Normal prior
+Important&nbsp;37: Posterior calculation: Normal likelihood, Normal prior
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Consider the setup of <span class="xref-no-num"><a href="#q-normal-normal" class="quarto-xref">Conjugacy: Normal Model, Normal Prior&nbsp;<span>32</span></a></span>.<br>
+<p>Consider the setup of <span class="xref-no-num"><a href="#q-normal-normal" class="quarto-xref">Conjugacy: Normal Model, Normal Prior&nbsp;<span>33</span></a></span>.<br>
 Suppose the observation variance is known and equal to <span class="math display">
 \sigma^2 = 4,
 </span> and the prior for the mean is <span class="math display">

@@ -42,17 +42,17 @@ The exam follows the same structure and style as the specimen exam. Key points:
    * When deriving **maximum likelihood estimators**, you are not required to check that your solution is a maximum unless the question explicitly instructs you to do so.
    * Clear reasoning and correct use of notation are expected; marks may be deducted for unsupported or incomplete working.
 
-## Examinable Content Summary {#sec-examinable-content-summary}
+# Examinable Content {#sec-examinable-content-summary}
 
-### Part I: Foundations
+## Part I - Foundations
 
-<span class="xref-no-num">[Chapter 1 @sec-probability-theory]</span>, <span class="xref-no-num">[Chapter 2 @sec-what-is-statistics]</span>, <span class="xref-no-num">[Chapter 3 @sec-types-of-inference]</span> are all **introductory material**.
+<span class="xref-no-num">[Chapter 1 @sec-probability-theory]</span>, <span class="xref-no-num">[Chapter 2 @sec-what-is-statistics]</span>, and <span class="xref-no-num">[Chapter 3 @sec-types-of-inference]</span> provide **introductory background**. They contain important revision material, but introduce very little that is *new* for this course.
 
-#### Chapter 1 - <span class="xref-no-num">[Probability Theory @sec-probability-theory]</span>
+### Chapter 1 - Probability Theory
 
-Covers basic probability theory, mostly assumed knowledge and thus examinable (with some exceptions).
+Covers basic probability theory, mostly assumed knowledge and so examinable (with some exceptions).
 
-##### Summary of Examinable Material
+#### Summary of Examinable Material
 
 - <span class="xref-no-num">[Bayes Theorem @thm-bayes]</span> and its <span class="xref-no-num">[proof @prf-bayes]</span>: Be comfortable with using Bayes theorem for events
   $$
@@ -60,25 +60,26 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
   $$
   The **proof** is unlikely to be examined.
 - <span class="xref-no-num">[Random Variables @sec-random-variables]</span>: In particular, be comfortable with PDFs, PMFs and CDFs.
+- Be able to manipulate expectations
 
-##### Essential Points
+#### Essential Points
 
 
-#### Chapter 2 - <span class="xref-no-num">[What is Statistical Inference? @sec-what-is-statistics]</span>
+### Chapter 2 - What is Statistical Inference? 
 
-##### Summary of Examinable Material
+#### Summary of Examinable Material
 
 - Understanding the role played by a <span class="xref-no-num">[statistical model @sec-statistical-models]</span>.
 - Understanding the **difference** between data $X_1,\ldots, X_n$ and parameters $\theta$ within a statistical model.
 - Understand the goal of **statistical inference** is to infer the parameter $\theta$ from data
 
-##### Essential Points
+#### Essential Points
 
 
 
-#### Chapter 3 - <span class="xref-no-num">[Types of Inference @sec-types-of-inference]</span>
+### Chapter 3 - Types of Inference 
 
-##### Summary of Examinable Material
+#### Summary of Examinable Material
 
 - There are <span class="xref-no-num">[two main approaches @sec-philo-inference]</span> in statistical inference:
   1. **Frequentist Inference:** 
@@ -95,21 +96,41 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
   2. **Interval Estimation:**
      Quantify uncertainty in $\theta$ by reporting a range of values.
   3. **Hypothesis Testing:**
-      Ask a **yes/no question** about the parameter $\theta$. This is done by formalising a claim (the *null hypothesis*) such as
-      $$
-          H_0: \theta \in \Theta_0,
-      $$
-      and then using the data to judge whether this claim is **compatible with the evidence**.
+      Ask a **yes/no question** about the parameter $\theta$. This is done by formalising a claim (the *null hypothesis*) and then using the data to judge whether this claim is **compatible with the evidence**.
   4. **Prediction:**
      Use data to predict future or unobserved outcomes. **Prediction is not covered in this course**.
 
-##### Essential Points
+#### Essential Points
 
-### Part II: Point Estimation
+- <span class="xref-no-num">[Chapter 3 @sec-types-of-inference]</span> presents a **framework** for organising statistical inference into two approaches (Frequentist vs. Bayesian) and three core tasks (point estimation, interval estimation, and hypothesis testing).
 
-#### Chapter 4 - <span class="xref-no-num">[Frequentist Point Estimation @sec-freq-point-estimate]</span> 
+- The key skill is to **recognise this structure** when answering a question. In particular, always identify:
 
-##### Summary of Examinable Material
+  1. **Which inferential approach is being used?**  
+     Possible answers: *Frequentist* or *Bayesian*.
+
+  2. **Which inference task is the question asking for?**  
+     Possible answers: *point estimation*, *interval estimation*, or *hypothesis testing*.
+
+  Being clear on these two aspects will help you interpret the question correctly and select the appropriate tools and definitions.
+
+- Finally, you **will be examined** on comparing the **interpretation** of Frequentist and Bayesian procedures. The key differences are summarised in @tbl-bayes-vs-freq. In short:
+
+  - **Frequentist perspective:**  
+    The parameter $\theta$ is **non-random** but **unknown**. Probability statements refer only to the *random data*, never to $\theta$ itself. (Hence: confidence intervals do **not** assign probability to $\theta$.)
+
+  - **Bayesian perspective:**  
+    The parameter $\theta$ is treated as a **random variable**, and its randomness represents *uncertainty about its true value*. Probability statements such as  
+    $$
+    \Pr(a < \theta < b \mid \underline{x})
+    $$  
+    *are meaningful*, because the posterior distribution assigns uncertainty directly to $\theta$.
+
+## Part II - Point Estimation
+
+### Chapter 4 - Frequentist Point Estimation
+
+#### Summary of Examinable Material
 
 - <span class="xref-no-num">[Understand @sec-freq-point-estimate]</span> the distinction between a **statistic** and an **estimator**.
   - A **statistic** is any quantity computed from data.  
@@ -239,11 +260,11 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
   </details>
 
 
-##### Essential Points
+#### Essential Points
 
-#### Chapter 5 - <span class="xref-no-num">[Likelihood @sec-likelihood]</span> 
+### Chapter 5 - Likelihood
 
-##### Summary of Examinable Material
+#### Summary of Examinable Material
 
 - Understand the <span class="xref-no-num">[definition @def-likelihood]</span> of the **likelihood function**. Given a statistical model  
   $$
@@ -358,10 +379,11 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
   The following questions focus solely on **computing Fisher Information**. Many later topics use the Fisher Information as an intermediate step, but those applications are introduced in their own sections.
 
   ::: {.small-table}
-  | Location | Description | Link |
+  | Location | Description | Link | 
   |------|-------------|-------|
   | Question Bank | Fisher Information for a Binomial Observation | <span class="xref-no-num">[Link @q-fisher-info-binomial]</span> |
   | Question Bank | Fisher Information for Geometric Data | <span class="xref-no-num">[Link @q-fisher-info-geometric]</span> |
+  | Question Bank | Fisher Information for the variance of Normal Data | <span class="xref-no-num">[Link @q-fisher-info-var-normal]</span> |
   | Examples | Fisher Information for Poisson Data | @exm-poisson-fisher |
 
   : {tbl-colwidths="[20, 60, 20]"}
@@ -431,11 +453,13 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
   </details>
 
 
-##### Essential Points
+#### Essential Points
 
-#### Chapter 6 - <span class="xref-no-num">[Bayesian Inference @sec-bayes-inference]</span> 
+- The **vast majority** of examinable material involves computing <span class="xref-no-num">[likelihood functions @def-likelihood]</span>. It is therefore **essential** that you are fully confident in computing likelihoods in a range of models.
 
-##### Summary of Examinable Material
+### Chapter 6 - Bayesian Inference
+
+#### Summary of Examinable Material
 
 - <span class="xref-no-num">[Understand @sec-intro-bayes-approach]</span> the core **Bayesian** idea:
   - Unlike the frequentist approach, the parameter $\theta$ is treated as a **random variable**. 
@@ -520,7 +544,7 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
 
   </details>
 
-##### Essential Points
+#### Essential Points
 
 1. You will primarily be assessed on your ability to:
    1. **Compute posterior distributions**, substitute observed data, and interpret the resulting inference.  
@@ -535,11 +559,11 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
    $$
    Be prepared to work through this derivation carefully.
 
-### Part III: Interval Estimation
+## Part III - Interval Estimation
 
-#### Chapter 7 - <span class="xref-no-num">[Frequentist Interval Estimation @sec-freq-interval-estimate]</span>
+### Chapter 7 - Frequentist Interval Estimation
 
-##### Summary of Examinable Material
+#### Summary of Examinable Material
 
 - <span class="xref-no-num">[Understand @sec-freq-persp-interval]</span> that a **frequentist confidence interval** is defined by two statistics $L(\underline{X})$ and $U(\underline{X})$, which together form a *random interval*.
 
@@ -619,20 +643,76 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
   </details>
 
 
-##### Essential Points
+#### Essential Points
 
-#### Chapter 8 - <span class="xref-no-num">[Bayesian Intervals @sec-bayesian-intervals]</span>
+### Chapter 8 - Bayesian Intervals
 
-##### Summary of Examinable Material
+#### Summary of Examinable Material
 
-##### Essential Points
+- Understand that a Bayesian inference outputs the posterior distribution
+  $$
+  \pi(\theta \mid \underline{x}),
+  $$
+  and that all Bayesian estimates, intervals, and summaries are derived from this distribution.
+
+- Understand, and be able to recall, the definition of a <span class="xref-no-num">[Credible Interval @def-credible-interval]</span>.
+  
+  - A $100(1-\alpha)\%$ Bayesian credible interval is **any** region $C_\alpha$ such that
+    $$
+    \Pr(\theta \in C_\alpha \mid \underline{x})
+    = \int_{C_\alpha} \pi(\theta \mid \underline{x})\,\mathrm{d}\theta
+    = 1 - \alpha.
+    $$
+
+- Be able to recall and compute simple examples of <span class="xref-no-num">[Highest Density Intervals (HDI) @def-hdi]</span>.  
+ 
+  - See the visualisation in the <span class="xref-no-num">[definition @def-hdi]</span> for intuition.
+
+  - A $100(1-\alpha)\%$ **Highest Density Interval (HDI)** is the *narrowest* credible interval containing posterior probability $1-\alpha$.
+
+  - It is defined by choosing a constant $\gamma$ such that
+    $$
+    C_\alpha = \{\theta : \pi(\theta \mid \underline{x}) \ge \gamma\}
+    $$
+    and this region satisfies
+    $$
+    \Pr(\theta \in C_\alpha \mid \underline{x})
+    = \int_{C_\alpha} \pi(\theta \mid \underline{x})\,\mathrm{d}\theta
+    = 1 - \alpha.
+    $$
+
+  - If the posterior distribution is normal,
+    $$
+    \theta \mid \underline{x} \sim \mathcal{N}(M, V),
+    $$
+    then the $100(1-\alpha)\%$ HDI coincides with the equal–tailed interval and is given by
+    $$
+    M \pm z_{\alpha/2}\sqrt{V}.
+    $$
 
 
-### Part IV: Hypothesis Testing
+  <details class="practice-questions">
+  <summary><em> Computing HDIs — Practice Questions</em></summary>
 
-#### Chapter 9 - <span class="xref-no-num">[Frequentist Hypothesis Testing @sec-freq-hypothesis-test]</span>
+  ::: {.small-table}
+  | Location | Description | Link |
+  |----------|-------------|-------|
+  | Examples | A simple Beta HDI | @exm-hdi-beta |
+  | Examples | Normal HDI | @exm-hdi-normal |
 
-##### Summary of Examinable Material
+  : {tbl-colwidths="[20, 60, 20]"}
+  :::
+
+  </details>
+
+#### Essential Points
+
+
+## Part IV - Hypothesis Testing
+
+### Chapter 9 - Frequentist Hypothesis Testing 
+
+#### Summary of Examinable Material
 
 - **Hypothesis Tests:** Ability to perform
   - <span class="xref-no-num">[One-sample z-tests @def-one-sample-z-test]</span>
@@ -697,50 +777,62 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
   </details>
 
 
-##### Essential Points
+#### Essential Points
 
 
-## Non-Examinable Content {#sec-non-examinable-content}
+# Non-Examinable Content {#sec-non-examinable-content}
 
 This section covers all the non-examinable content in the course notes.
 
-### Part I: Foundations
+## Part I -Foundations
 
-#### Chapter 1 - <span class="xref-no-num">[Probability Theory @sec-probability-theory]</span>
+### Chapter 1 - Probability Theory
 
-
-#### Chapter 2 - <span class="xref-no-num">[What is Statistical Inference? @sec-what-is-statistics]</span>
-
-- 
-
-#### Chapter 3 - <span class="xref-no-num">[Types of Inference @sec-types-of-inference]</span>
+- Only the material in <span class="xref-no-num">[this @sec-prob-theory-non-examinable]</span> section is **not examinable**.
 
 
-### Part II: Point Estimation
+### Chapter 2 - What is Statistical Inference?
 
-#### Chapter 4 - <span class="xref-no-num">[Frequentist Point Estimation @sec-freq-point-estimate]</span> 
+- You will <span class="xref-no-num">[not be examined @wrn-nonexaminable-specifying-models]</span> on how to *specify a statistical model* (i.e. choosing an appropriate distribution for the data). All exam questions will **explicitly state** the statistical model whenever it is required.
+- You will <span class="xref-no-num">[not be examined @def-model]</span> on the formal definition of a **statistical model**.
 
+### Chapter 3 - Types of Inference
 
-#### Chapter 5 - <span class="xref-no-num">[Likelihood @sec-likelihood]</span> 
+- **Prediction** and predictive distributions are <span class="xref-no-num">[not examinable @wrn-nonexaminable-prediction]</span>.
 
+## Part II - Point Estimation
 
-#### Chapter 6 - <span class="xref-no-num">[Bayesian Inference @sec-bayes-inference]</span> 
-
-
-### Part III: Interval Estimation
-
-#### Chapter 7 - <span class="xref-no-num">[Frequentist Interval Estimation @sec-freq-interval-estimate]</span>
+### Chapter 4 - Frequentist Point Estimation
 
 
-#### Chapter 8 - <span class="xref-no-num">[Bayesian Intervals @sec-bayesian-intervals]</span>
+### Chapter 5 - Likelihood
+
+- You will <span class="xref-no-num">[not be examined @wrn-nonexaminable-dependent-likelihood]</span> on computing likelihood functions for **dependent data**.
+
+### Chapter 6 - Bayesian Inference
+
+
+## Part III - Interval Estimation
+
+### Chapter 7 - Frequentist Interval Estimation
+
+- You will <span class="xref-no-num">[not be examined @wrn-nonexaminable-ci-general-strategy]</span> on the <span class="xref-no-num">[general strategy @sec-general-ci-strategy]</span> of **deriving confidence intervals**.
+- You will **not be examined** on the derivations of the confidence intervals for Normally distributed data with either:
+
+  - <span class="xref-no-num">[Known Variance @sec-normal-ci-known-var]</span>
+  - <span class="xref-no-num">[Unknown Variance @sec-normal-ci-unknown-var]</span>  
+  
+  However, understanding these derivations can be helpful for **remembering and applying** the confidence interval formulae.
+
+### Chapter 8 - Bayesian Intervals
 
 
 
-### Part IV: Hypothesis Testing
+## Part IV - Hypothesis Testing
 
-#### Chapter 9 - <span class="xref-no-num">[Frequentist Hypothesis Testing @sec-freq-hypothesis-test]</span>
+### Chapter 9 - Frequentist Hypothesis Testing
 
 
-#### Chapter 10 - <span class="xref-no-num">[Bayesian Hypothesis Testing @sec-bayes-hypothesis-test]</span>
+### Chapter 10 - Bayesian Hypothesis Testing
 
-This entire chapter is **not examinable**.
+- Chapter 10 is **not examinable**.

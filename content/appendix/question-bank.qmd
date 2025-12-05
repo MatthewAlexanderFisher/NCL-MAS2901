@@ -2552,6 +2552,94 @@ $$
 
 :::
 
+
+::: {.callout-important .question appearance="minimal" data-tags="fisher-information normal" data-difficulty="2" #q-fisher-info-var-normal}
+
+## Fisher Information of the Variance of Normal Data
+
+Suppose we have a random <span class="xref-no-num">[Normal @sec-normal]</span> sample:
+$$
+X_1,\ldots, X_n \stackrel{\text{i.i.d.}}{\sim} \mathcal{N}(\mu, \gamma),
+$$
+where $\mu$ is a *known* value $\gamma$ is *unknown*.
+
+Derive the <span class="xref-no-num">[Fisher information @def-fisher-information]</span> and the <span class="xref-no-num">[observed Fisher information @def-observed-fisher]</span> of $\gamma$ for the **whole random sample**.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+Note: We want to compute $\mathcal{I}(\gamma) = -\mathrm{E}\left[\frac{\partial^2}{\partial\gamma^2} \ell(\gamma; \underline{X})\right]$ for the Fisher information and $\hat{\gamma}_{\mathrm{MLE}}$ for the observed Fisher information.
+
+**Step 1: Compute log-likelihood**
+
+Since we have $n$ i.i.d. $\mathcal{N}(\mu, \gamma)$ with $\mu$ known, the likelihood function is
+$$
+\begin{align*}
+L(\gamma;\underline{x}) &= \prod_{i=1}^n \frac{1}{\sqrt{2\pi\gamma}} \exp\left\{-\frac{(x_i - \mu)^2}{2\gamma}\right\} \\
+&= (2 \pi)^{-n/2} \gamma^{-n/2} \exp\left\{-\frac{1}{2\gamma}\sum_{i=1}^n (x_i - \mu)^2\right\}.
+\end{align*}
+$$
+Therefore, the log-likelihood takes the form
+$$
+\ell(\gamma; \underline{x}) = -\frac{n}{2}\log(2\pi) - \frac{n}{2}\log(\gamma) - \frac{1}{2\gamma}\sum_{i=1}^n (x_i - \mu)^2.
+$$
+
+**Step 2: Compute Derivatives**
+
+We compute the first and second derivatives of the log-likelihood with respect to $\gamma$:
+$$
+\begin{align*}
+\frac{\partial}{\partial \gamma} \ell(\gamma; \underline{x}) &= -\frac{n}{2\gamma} + \frac{1}{2\gamma^2}\sum_{i=1}^n (x_i - \mu)^2,  \\
+\frac{\partial^2}{\partial \gamma^2} \ell(\gamma; \underline{x}) &= \frac{n}{2\gamma^2} - \frac{1}{\gamma^3}\sum_{i=1}^n (x_i - \mu)^2.
+\end{align*}
+$$
+**Step 3: Compute Fisher Information**
+
+We have
+$$
+\mathcal{I}(\gamma) = -\mathrm{E}\left[\frac{\partial^2}{\partial\gamma^2} \ell(\gamma; \underline{X})\right] = -\mathrm{E}\left[\frac{n}{2\gamma^2} - \frac{1}{\gamma^3}\sum_{i=1}^n (X_i - \mu)^2\right],
+$$
+where the **random** component of the expectation is the *random data* $X_i\sim\mathcal{N}(\mu, \gamma)$. Therefore, manipulating the expectation:
+$$
+\begin{align*}
+\mathcal{I}(\gamma) &=  -\frac{n}{2\gamma^2} + \frac{1}{\gamma^3}\sum_{i=1}^n \mathrm{E}[(X_i - \mu)^2] \\
+&= -\frac{n}{2\gamma^2} + \frac{1}{\gamma^3}\sum_{i=1}^n \gamma,
+\end{align*}
+$$
+using the fact that each $X_i - \mu \sim \mathcal{N}(0, \gamma)$ and so $\mathrm{E}[(X_i - \mu)^2] = \mathrm{Var}(X_i) = \gamma$. Continuing:
+$$
+\begin{align*}
+\mathcal{I}(\gamma) &= -\frac{n}{2\gamma^2} + \frac{n\gamma}{\gamma^3} \\
+&= \frac{n}{2\gamma^2}
+\end{align*}
+$$
+
+**Step 4: Compute MLE**
+
+We require the MLE for the observed Fisher information. We solve:
+$$
+\begin{align*}
+\frac{\partial}{\partial \gamma} \ell(\gamma; \underline{x}) &= 0 \\
+-\frac{n}{2\gamma} + \frac{1}{2\gamma^2}\sum_{i=1}^n (x_i - \mu)^2 &= 0 \\
+\Rightarrow \hat{\gamma}_{\mathrm{MLE}} &= \frac{1}{n}\sum_{i=1}^n (x_i - \mu)^2 
+\end{align*}
+$$
+
+**Step 5: Compute observed Fisher information**
+
+Given the MLE $\hat{\gamma}_{\mathrm{MLE}} = \frac{1}{n}\sum_{i=1}^n (x_i - \mu)^2 $ and the derived Fisher information, we have
+$$
+\begin{align*}
+\mathcal{I}(\hat{\gamma}_{\mathrm{MLE}}) &= \frac{n}{2\hat{\gamma}_{\mathrm{MLE}}^2} \\
+&= \frac{n^3}{2\left(\sum_{i=1}^n (x_i - \mu)^2\right)^2}.
+\end{align*}
+$$
+
+</details>
+
+:::
+
+
 ::: {.callout-important .question appearance="minimal" data-tags="bayes asymptotic-posterior exam-style" data-difficulty="2" #q-asymp-post-variance}
 
 ## Asymptotic Posterior for the Variance Parameter

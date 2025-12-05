@@ -32,7 +32,7 @@ We now consider the **Bayesian analogue** of frequentist confidence intervals.
 Recall from @sec-bayes-inference that Bayesian inference returns a *full distribution* over the parameter - the
 <span class="xref-no-num">[posterior @def-posterior]</span>:
 $$
-\pi(\theta \mid \underline{x}) \ \propto\ \pi(\theta)\, f_{\underline{X}}(\underline{x}\mid\theta).
+\pi(\theta \mid \underline{x}) \ \propto\ \pi(\theta)\, f(\underline{x}\mid\theta).
 $$
 
 From this posterior we can construct a **Bayesian credible interval**, which represents a range of parameter values that are *plausible* given the data and prior assumptions.
@@ -436,8 +436,7 @@ Thus, credible intervals are often more natural to interpret, but they depend ex
 
 ::: {#def-hdi}
 ### Highest Density Interval (HDI)
-A $100(1-\alpha)\%$ **highest density interval (HDI)** for
-$\theta$ is the region
+A $100(1-\alpha)\%$ **highest density interval (HDI)** for $\theta$ is the region
 
 $$
 C_\alpha = \{\theta :~ \pi(\theta \mid \underline{x}) \geq \gamma \},
@@ -446,7 +445,349 @@ $$
 where $\gamma$ is chosen so that $\mathrm{Pr}(\theta \in C_\alpha \mid \underline{x}) = 1-\alpha$.  
 
 Among all $(1-\alpha)$ <span class="xref-no-num">[credible intervals @def-credible-interval]</span>, the HDI has **shortest length**.
+
+---
+
+```{=html}
+<details>
+<summary><strong>Show Visualisation</strong></summary>
+```
+
+```{ojs}
+// Find intersection points where betaPDF(x) = gamma using bisection
+function findHDIBounds(gamma, alpha, beta, tol = 1e-6) {
+  // First, find the mode of the distribution
+  const mode = (alpha > 1 && beta > 1) 
+    ? (alpha - 1) / (alpha + beta - 2) 
+    : (alpha >= beta ? 0.99 : 0.01);
+  
+  const maxPDF = betaPDF(mode, alpha, beta);
+  
+  // If gamma is above the max, no valid HDI
+  if (gamma >= maxPDF) {
+    return { lower: mode, upper: mode, valid: false };
+  }
+  
+  // If gamma is very small, return full interval
+  if (gamma <= 1e-10) {
+    return { lower: 0, upper: 1, valid: true };
+  }
+  
+  // Find lower bound: search in [0, mode]
+  let lo = 0, hi = mode;
+  while (hi - lo > tol) {
+    const mid = (lo + hi) / 2;
+    if (betaPDF(mid, alpha, beta) < gamma) {
+      lo = mid;
+    } else {
+      hi = mid;
+    }
+  }
+  const lower = (lo + hi) / 2;
+  
+  // Find upper bound: search in [mode, 1]
+  lo = mode;
+  hi = 1;
+  while (hi - lo > tol) {
+    const mid = (lo + hi) / 2;
+    if (betaPDF(mid, alpha, beta) > gamma) {
+      lo = mid;
+    } else {
+      hi = mid;
+    }
+  }
+  const upper = (lo + hi) / 2;
+  
+  return { lower, upper, valid: true };
+}
+```
+
+
+```{ojs}
+// Main HDI visualization
+{
+  const width = 960;
+  const height = 400;
+  const marginTop = 40;
+  const marginBottom = 60;
+  const marginLeft = 60;
+  const marginRight = 40;
+  
+  // Generate posterior PDF data
+  const nPoints = 500;
+  const xValues = d3.range(nPoints).map(i => i / (nPoints - 1));
+  const pdfData = xValues.map(x => ({
+    x: x,
+    y: betaPDF(x, hdiAlpha, hdiBeta)
+  }));
+  
+  // Calculate mode and max PDF value
+  const mode = (hdiAlpha > 1 && hdiBeta > 1) 
+    ? (hdiAlpha - 1) / (hdiAlpha + hdiBeta - 2) 
+    : (hdiAlpha >= hdiBeta ? 0.99 : 0.01);
+  const maxPDF = betaPDF(mode, hdiAlpha, hdiBeta);
+  
+  // Find HDI bounds for current gamma
+  const hdiBounds = findHDIBounds(gammaLevel, hdiAlpha, hdiBeta);
+  
+  // Calculate the credible level (probability mass in HDI)
+  const hdiProbability = hdiBounds.valid 
+    ? betaCDF(hdiBounds.upper, hdiAlpha, hdiBeta) - betaCDF(hdiBounds.lower, hdiAlpha, hdiBeta)
+    : 0;
+  
+  // Filter data for shaded HDI region
+  const hdiData = pdfData.filter(d => 
+    d.x >= hdiBounds.lower && d.x <= hdiBounds.upper && d.y >= gammaLevel
+  );
+  
+  // Calculate posterior mean
+  const posteriorMean = hdiAlpha / (hdiAlpha + hdiBeta);
+  
+  // Create the plot
+  const plot = Plot.plot({
+    width,
+    height,
+    marginTop,
+    marginBottom,
+    marginLeft,
+    marginRight,
+    style: {
+      background: "var(--brand-bg)",
+      color: "var(--brand-fg)",
+      fontFamily: bodyFont,
+      fontSize: 14
+    },
+    x: {
+      label: "θ",
+      domain: [0, 1],
+      grid: false
+    },
+    y: {
+      label: "Posterior density π(θ|x)",
+      domain: [0, maxPDF * 1.15]
+    },
+    marks: [
+      // Grid baseline
+      Plot.ruleY([0], { stroke: "var(--border)", strokeOpacity: 0.6 }),
+      
+      // HDI shaded region
+      Plot.areaY(hdiData, {
+        x: "x",
+        y: "y",
+        y1: 0,
+        fill: "var(--brand-teal)",
+        fillOpacity: 0.35,
+      }),
+      
+      // Posterior PDF curve
+      Plot.lineY(pdfData, { 
+        x: "x", 
+        y: "y", 
+        stroke: "currentColor", 
+        strokeWidth: 2.5,
+        strokeOpacity: 0.9
+      }),
+      
+      // Horizontal gamma line
+      Plot.ruleY([gammaLevel], {
+        stroke: "var(--brand-orange)",
+        strokeWidth: 2,
+        strokeDasharray: "6,4"
+      }),
+      
+      // Vertical lines at HDI bounds
+      hdiBounds.valid ? Plot.ruleX([hdiBounds.lower], {
+        stroke: "var(--brand-teal)",
+        strokeWidth: 2,
+        y1: 0,
+        y2: gammaLevel
+      }) : null,
+      
+      hdiBounds.valid ? Plot.ruleX([hdiBounds.upper], {
+        stroke: "var(--brand-teal)",
+        strokeWidth: 2,
+        y1: 0,
+        y2: gammaLevel
+      }) : null,
+      
+      // Labels for bounds
+      hdiBounds.valid ? Plot.text([{
+        x: hdiBounds.lower,
+        y: 0,
+        text: hdiBounds.lower.toFixed(3)
+      }], {
+        x: "x",
+        y: "y",
+        text: "text",
+        dy: 20,
+        fontSize: 11,
+        fill: "var(--brand-teal)",
+        fontWeight: "600"
+      }) : null,
+      
+      hdiBounds.valid ? Plot.text([{
+        x: hdiBounds.upper,
+        y: 0,
+        text: hdiBounds.upper.toFixed(3)
+      }], {
+        x: "x",
+        y: "y",
+        text: "text",
+        dy: 20,
+        fontSize: 11,
+        fill: "var(--brand-teal)",
+        fontWeight: "600"
+      }) : null,
+      
+      // Gamma label
+      Plot.text([{
+        x: 0.02,
+        y: gammaLevel,
+        text: `γ = ${gammaLevel.toFixed(2)}`
+      }], {
+        x: "x",
+        y: "y",
+        text: "text",
+        dy: -8,
+        dx: 5,
+        fontSize: 12,
+        fill: "var(--brand-orange)",
+        fontWeight: "600",
+        textAnchor: "start"
+      }),
+      
+      // HDI label
+      hdiBounds.valid ? Plot.text([{
+        x: (hdiBounds.lower + hdiBounds.upper) / 2,
+        y: gammaLevel + (maxPDF - gammaLevel) * 0.5,
+        text: "HDI"
+      }], {
+        x: "x",
+        y: "y",
+        text: "text",
+        fontSize: 14,
+        fontWeight: "bold",
+        fill: "var(--brand-teal)"
+      }) : null
+    ].filter(m => m !== null)
+  });
+  
+  // Stats display
+  const stats = html`
+    <div style="margin-bottom: 15px; padding: 12px; background: var(--header-bg); border-radius: 6px; font-size: 14px;">
+      <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
+        <div>
+          <strong>Posterior:</strong> Beta(${hdiAlpha}, ${hdiBeta})
+        </div>
+        <div>
+          <strong>Mode:</strong> ${mode.toFixed(3)}
+        </div>
+        <div>
+          <strong>γ threshold:</strong> ${gammaLevel.toFixed(3)}
+        </div>
+        <div>
+          <strong style="color: var(--brand-teal);">HDI coverage:</strong> ${(hdiProbability * 100).toFixed(2)}%
+        </div>
+      </div>
+      ${hdiBounds.valid ? html`
+        <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border);">
+          <strong>HDI bounds:</strong> [${hdiBounds.lower.toFixed(4)}, ${hdiBounds.upper.toFixed(4)}]
+          <span style="margin-left: 20px; color: var(--fg-muted);">
+            Width: ${(hdiBounds.upper - hdiBounds.lower).toFixed(4)}
+          </span>
+        </div>
+      ` : html`
+        <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); color: var(--brand-red);">
+          <em>γ exceeds maximum density — no valid HDI region</em>
+        </div>
+      `}
+    </div>
+  `;
+  
+  return html`<div style="width: 100%; max-width: 960px; margin: 0 auto;">
+    ${stats}
+    ${plot}
+  </div>`;
+}
+```
+
+```{ojs}
+// Controls for HDI visualization
+viewof hdiControls = {
+  // Calculate initial max PDF for gamma slider range
+  const initMode = (8 - 1) / (8 + 3 - 2);
+  const initMaxPDF = betaPDF(initMode, 8, 3);
+  
+  const gammaSlider = Inputs.range([0, 4], { 
+    value: 0.5, 
+    step: 0.01, 
+    label: tex`\gamma \text{ (density threshold)}` 
+  });
+  
+  const betaAlphaSlider = Inputs.range([1, 30], { 
+    value: 8, 
+    step: 0.5, 
+    label: tex`\text{Beta } \alpha \text{ parameter}` 
+  });
+  
+  const betaBetaSlider = Inputs.range([1, 30], { 
+    value: 3, 
+    step: 0.5, 
+    label: tex`\text{Beta } \beta \text{ parameter}` 
+  });
+  
+  const root = html`<details class="controls-root" open>
+    <summary style="cursor: pointer; font-weight: 600;">HDI Controls</summary>
+    <div class="controls-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 15px;">
+      <div class="controls-col">
+        <h4 style="margin-bottom: 10px;">Density Threshold</h4>
+        ${gammaSlider}
+        <div style="margin-top: 8px; font-size: 12px; color: var(--fg-muted);">
+          <em>Adjust γ to see how the HDI region changes. The HDI contains all θ where π(θ|x) ≥ γ.</em>
+        </div>
+      </div>
+      <div class="controls-col">
+        <h4 style="margin-bottom: 10px;">Posterior Parameters</h4>
+        ${betaAlphaSlider}
+        <div style="margin-top: 15px;">
+          ${betaBetaSlider}
+        </div>
+      </div>
+    </div>
+  </details>`;
+  
+  root.value = {
+    gamma: gammaSlider.value,
+    alpha: betaAlphaSlider.value,
+    beta: betaBetaSlider.value
+  };
+  
+  root.addEventListener("input", () => {
+    root.value = {
+      gamma: gammaSlider.value,
+      alpha: betaAlphaSlider.value,
+      beta: betaBetaSlider.value
+    };
+    root.dispatchEvent(new CustomEvent("input", { bubbles: true }));
+  });
+  
+  return root;
+}
+
+// Reactive bindings
+gammaLevel = hdiControls.gamma
+hdiAlpha = hdiControls.alpha
+hdiBeta = hdiControls.beta
+```
+
+```{=html}
+</details>
+```
+
+---
+
 ::: 
+
 
 If the posterior distribution has many modes, then it is possible that the HDI will be the union of several disjoint regions. For example,
 
@@ -458,15 +799,14 @@ $$
 ::: {.example #exm-hdi-beta}
 ### Beta HDI
 
-Suppose that the posterior distribution for $\theta$ is a
-$\mathrm{Beta}(1,24)$ distribution, with probability density function
+Suppose that the posterior distribution for $\theta$ is a $\mathrm{Beta}(1,24)$ distribution, with probability density function
 
 $$
 \pi(\theta \mid \underline{x}) = 24(1-\theta)^{23}, \quad 0<\theta<1.
 $$
 
 
-**Task.** Determine the $100(1-\alpha)\%$ HDI for~$\theta$.
+Determine the $100(1-\alpha)\%$ HDI for~$\theta$.
 
 ```{=html}
 <details>
@@ -514,29 +854,21 @@ $$
 ::: {.example #exm-hdi-normal}
 ### Normal HDI 
 
-Suppose we have a random sample $\underline{x}e$ from a $\mathcal{N}(\mu,1/\tau)$
-distribution (where $\tau$ is known).  
+Suppose we have a random sample $\underline{x}$ from a $\mathcal{N}(\mu,1/\tau)$ distribution (where $\tau$ is known).  
 
-We have seen that, assuming vague prior knowledge, the posterior distribution is
+Suppose the posterior distribution is
 
 $$
 \mu \mid \underline{x} \sim \mathcal{N}\!\left(\bar x,\; \tfrac{1}{n\tau}\right).
 $$
 
-**Task.** Determine the $100(1-\alpha)\%$ HDI for~$\mu$.
+Determine the $100(1-\alpha)\%$ HDI for $\mu$.
 
 ```{=html}
 <details>
   <summary><strong> Solution </strong></summary>
 ```
 
-```{=html}
-</details>
-```
-
-:::
-
-::: {#sol-hdi-normal}
 This distribution has a symmetric bell shape and so the HDI takes the
 form $C_\alpha=(a,b)$ with end-points
 
@@ -549,7 +881,7 @@ $$
 where $z_\alpha$ is the upper $\alpha$-quantile of the $\mathcal{N}(0,1)$
 distribution.  
 
-Therefore, the 95\% HDI for~$\mu$ is 
+Therefore, the $95\%$ HDI for $\mu$ is 
 
 $$
 \left(\bar x - \frac{1.96}{\sqrt{n\tau}},\;
@@ -559,34 +891,10 @@ $$
 Note that this interval is numerically identical to the 95\% frequentist confidence interval for the (population) mean of a normal random sample with known variance.  
 
 However, the interpretation is very different.
-:::
 
-<!-- 
-## Worked examples (conjugate, quick)
 
-::: {#ex-betabinomial .example}
-### Beta–Binomial (proportion)
-Model: $X_i\mid \theta \sim \mathrm{Bern}(\theta)$ iid, $i=1,\dots,n$; prior $\theta\sim\mathrm{Beta}(a,b)$.  
-Let $y=\sum_{i=1}^n x_i$. Then
-$$
-\theta \mid \underline{x} \sim \mathrm{Beta}(a+y,\ b+n-y).
-$$
-- **Equal-tailed $95\%$**: $\ [\,q_{0.025},\ q_{0.975}\,]$, the 2.5\% and 97.5\% quantiles of $\mathrm{Beta}(a+y,b+n-y)$.
-- **HDI $95\%$**: the shortest interval under that Beta density (coincides with equal-tailed if the posterior is symmetric enough).
-:::
+```{=html}
+</details>
+```
 
-::: {#ex-normalmean .example}
-### Normal mean, known variance
-Model: $X_i\mid \mu \sim \mathcal{N}(\mu,\sigma^2)$ iid, prior $\mu\sim\mathcal{N}(\mu_0,\tau_0^2)$.  
-Let $\bar{x}$ be the sample mean. Then
-$$
-\mu\mid \underline{x} \sim \mathcal{N}\!\Big(\mu_n,\ \tau_n^2\Big),\quad
-\tau_n^2=\Big(\tfrac{n}{\sigma^2}+\tfrac{1}{\tau_0^2}\Big)^{-1},\quad
-\mu_n=\tau_n^2\Big(\tfrac{n\bar{x}}{\sigma^2}+\tfrac{\mu_0}{\tau_0^2}\Big).
-$$
-- **Equal-tailed/HDI $100(1-\alpha)\%$** (they coincide for Normal):  
-$$
-\big[\ \mu_n - z_{1-\alpha/2}\,\tau_n,\ \ \mu_n + z_{1-\alpha/2}\,\tau_n\ \big].
-$$
-:::
- -->
+
