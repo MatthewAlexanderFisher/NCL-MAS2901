@@ -1505,7 +1505,7 @@ $$
 
 :::
 
-::: {.callout-important .question appearance="minimal" data-tags="poisson estimator variance consistency" data-difficulty="1"}
+::: {.callout-important .question appearance="minimal" data-tags="poisson estimator variance consistency" data-difficulty="1" #q-poisson-consistency1}
 ## Properties of Poisson Estimators
 
 Suppose that $X_1, X_2, \ldots, X_n$, for $n \geq 1$, are independent $\mathrm{Poisson}(\lambda)$ random variables.  
@@ -2229,7 +2229,7 @@ If the $X_i$ were independent, then $\tau=0$ and we recover $\operatorname{Var}(
 
 :::
 
-::: {.callout-important .question appearance="minimal" data-tags="consistency bias variance" data-difficulty="2"}
+::: {.callout-important .question appearance="minimal" data-tags="consistency bias variance" data-difficulty="2" #q-prove-consistency1}
 
 ## Proving Consistency I
 
@@ -3084,6 +3084,96 @@ $$
 
 :::
 
+::: {.callout-important .question appearance="minimal" data-tags="asymptotic-mle exponential" data-difficulty="1" #q-asymp-mle-exp}
+
+### Asymptotic Distribution of the Exponential MLE
+
+Suppose $X_1, X_2, \dots, X_n$ is an i.i.d. random sample from an $\mathrm{Exp}(\lambda)$ distribution, with density
+$$
+f(x \mid \lambda) = \lambda e^{-\lambda x}, \qquad x \ge 0.
+$$
+
+The maximum likelihood estimator for $\lambda$ is known to be
+$$
+\hat{\lambda}_{\mathrm{MLE}} = \frac{1}{\bar{X}}.
+$$
+Compute the approximate <span class="xref-no-num">[sampling distribution @def-asymp-mle-approx]</span> of $\hat{\lambda}_{\mathrm{MLE}}$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**Step 1: Recall the general asymptotic MLE result**
+
+From the asymptotic normality of the MLE, for regular models:
+$$
+\hat{\lambda}_{\mathrm{MLE}}
+\;\overset{\text{approx.}}{\sim}\;
+\mathcal{N}\!\left(
+  \lambda,\;
+  \mathcal{I}_n(\lambda)^{-1}
+\right),
+\quad \text{for large } n,
+$$
+where $\mathcal{I}_n(\lambda)$ is the **Fisher information for the whole sample**.
+
+---
+
+**Step 2: Compute the Fisher information**
+
+The log-likelihood is
+$$
+\ell(\lambda; \underline{x}) = n\log \lambda - n\lambda \bar{x}.
+$$
+
+Differentiate:
+$$
+\frac{\partial}{\partial \lambda} \ell(\lambda; \underline{x}) 
+= \frac{n}{\lambda} - n\bar{x},
+\qquad
+\frac{\partial^2 }{\partial \lambda^2} \ell(\lambda; \underline{x}) 
+= -\frac{n}{\lambda^2}.
+$$
+
+So the Fisher information for **the whole sample** is
+$$
+\mathcal{I}_n(\lambda) = -\mathrm{E}\left[-\frac{n}{\lambda^2}\right] = \frac{n}{\lambda^2}.
+$$
+
+Thus
+$$
+\mathcal{I}_n(\lambda)^{-1}
+= \frac{\lambda^2}{n}.
+$$
+
+---
+
+**Step 3: Asymptotic distribution of the MLE**
+
+Plugging this into the general asymptotic MLE result:
+$$
+\hat{\lambda}_{\mathrm{MLE}}
+\;\overset{\text{approx.}}{\sim}\;
+\mathcal{N}\!\left(
+  \lambda,\;
+  \frac{\lambda^2}{n}
+\right),
+\quad \text{as } n \to \infty.
+$$
+
+In practice, since $\lambda$ is unknown, we use the **plug-in** $\hat{\lambda}_{\mathrm{MLE}} = 1/\bar{x}$ into the Fisher information, resulting in:
+$$
+\hat{\lambda}_{\mathrm{MLE}}
+\;\overset{\text{approx.}}{\sim}\;
+\mathcal{N} \left(
+  \lambda,\;
+  \frac{1}{n\bar{x}^2}
+\right),
+$$
+
+
+</details>
+
+:::
 
 ::: {.callout-important .question appearance="minimal" data-tags="binomial clt confidence-interval" data-difficulty="1"}
 
@@ -3264,9 +3354,151 @@ $$
 
 :::
 
+::: {.callout-important .question appearance="minimal" data-tags="bayes map poisson gamma" data-difficulty="2" #q-map-call-rate}
+
+## MAP Estimation for a Call-Arrival Rate
+
+A customer support centre receives phone calls according to a Poisson process with unknown rate $\lambda$ (calls per hour).  
+
+To model the long-run arrival rate, analysts place a prior distribution
+$$
+\lambda \sim \mathrm{Gamma}(a,b), 
+\qquad a = 3,\; b = 1.5,
+$$
+where we use the **shape–rate** parameterisation:
+$$
+\lambda \sim \mathrm{Gamma}(a,b)
+\quad\Longrightarrow\quad
+\pi(\lambda) \propto \lambda^{a-1} e^{-b\lambda}.
+$$
+
+Over a monitoring period of $T = 10$ hours, they observe a total of $y = 47$ calls.
+
+Assume that, conditional on $\lambda$, the total number of calls in $T$ hours follows
+$$
+Y \mid \lambda \sim \mathrm{Poisson}(T\lambda).
+$$
+
+1. **Derive the posterior distribution** $\pi(\lambda \mid y)$.
+2. **Compute the Maximum a Posteriori (MAP) estimator** $\hat{\lambda}_{\mathrm{MAP}}$.
+3. **Interpret your MAP estimate** in the context of the call-arrival rate (give its units and practical meaning).
+
+<details class="solution">
+  <summary>Solution</summary>
+
+1. **Posterior Distribution**
+
+   The likelihood for the total number of calls $Y$ in $T$ hours, given $\lambda$, is
+   $$
+   f(y \mid \lambda)
+   = \Pr(Y = y \mid \lambda)
+   = \frac{(T\lambda)^y e^{-T\lambda}}{y!}.
+   $$
+
+   The prior is
+   $$
+   \pi(\lambda)
+   = \frac{b^a}{\Gamma(a)} \lambda^{a-1} e^{-b\lambda},
+   \qquad a = 3,\; b = 1.5,
+   $$
+   using the **shape–rate** parameterisation.
+
+   Therefore, the posterior density (dropping constants not depending on $\lambda$) is
+   $$
+   \pi(\lambda \mid y)
+   \propto
+   \lambda^{\,y} e^{-T\lambda} \cdot \lambda^{\,a-1} e^{-b\lambda}
+   = \lambda^{\,y+a-1} e^{-(T+b)\lambda}.
+   $$
+
+   This is recognised as a Gamma distribution with updated shape and rate:
+   $$
+   \lambda \mid y \sim \mathrm{Gamma}(a + y,\; b + T)
+   = \mathrm{Gamma}(3 + 47,\; 1.5 + 10)
+   = \mathrm{Gamma}(50,\; 11.5).
+   $$
+
+2. **MAP Estimator**
+
+   For a $\mathrm{Gamma}(\alpha,\beta)$ distribution (shape–rate) with $\alpha > 1$, the mode is
+   $$
+   \lambda_{\text{mode}}
+   = \frac{\alpha - 1}{\beta},
+   $$
+   which is also the **MAP estimator** in this conjugate setting:
+   $$
+   \hat{\lambda}_{\mathrm{MAP}}
+   = \frac{\alpha - 1}{\beta}.
+   $$
+
+   Here $\alpha = 50$ and $\beta = 11.5$, so
+   $$
+   \hat{\lambda}_{\mathrm{MAP}}
+   = \frac{50 - 1}{11.5}
+   = \frac{49}{11.5}
+   \approx 4.26 \;\text{calls per hour}.
+   $$
+
+   Alternatively, we can derive this by maximising the log-posterior directly (as in <span class="xref-no-num">[the general MAP procedure @imp-compute-map]</span>):
+
+   From above,
+   $$
+   \pi(\lambda \mid y)
+   \propto \lambda^{\,y+a-1} e^{-(T+b)\lambda}.
+   $$
+   Taking logs,
+   $$
+   \log \pi(\lambda \mid y)
+   = (y + a - 1)\log \lambda - (T + b)\lambda + C,
+   $$
+   for some $\lambda$-independent constant $C$.
+
+   Differentiating with respect to $\lambda$:
+   $$
+   \frac{\partial}{\partial \lambda} \log \pi(\lambda \mid y)
+   = \frac{y + a - 1}{\lambda} - (T + b).
+   $$
+
+   Setting this equal to $0$ and solving:
+   $$
+   \begin{align*}
+   \frac{y + a - 1}{\lambda} - (T + b) &= 0 \\[4pt]
+   \frac{y + a - 1}{\lambda} &= T + b \\[4pt]
+   \lambda &= \frac{y + a - 1}{T + b}.
+   \end{align*}
+   $$
+
+   Substituting $y = 47,\; a = 3,\; T = 10,\; b = 1.5$ gives
+   $$
+   \hat{\lambda}_{\mathrm{MAP}}
+   = \frac{47 + 3 - 1}{10 + 1.5}
+   = \frac{49}{11.5}
+   \approx 4.26,
+   $$
+   consistent with the mode formula above.
+
+3. **Interpretation**
+
+   The MAP estimate suggests that the underlying call-arrival rate is approximately
+   $$
+   \hat{\lambda}_{\mathrm{MAP}} \approx 4.26 \;\text{calls per hour}.
+   $$
+
+   For comparison, the **MLE** based only on the data is
+   $$
+   \hat{\lambda}_{\mathrm{MLE}} = \frac{y}{T} = \frac{47}{10} = 4.7 \;\text{calls per hour}.
+   $$
+
+   The MAP estimate is slightly lower than the MLE, reflecting the influence of the prior belief  
+   (encoded by the $\mathrm{Gamma}(3,1.5)$ prior) that the call rate is somewhat smaller than what the current data alone would suggest.
+
+</details>
+
+:::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="estimator bias variance mse fisher-information cramer-rao normal exam-style" data-difficulty="3"}
+
+::: {.callout-important .question appearance="minimal" data-tags="estimator bias variance mse fisher-information cramer-rao normal exam-style" data-difficulty="3" #q-efficiency-hard-normal}
 
 ## Unbiased Estimation and Efficiency in the Normal Model
 
@@ -3416,7 +3648,7 @@ $\hat{\theta}'$ has a **smaller mean-squared error** than any unbiased estimator
 
 :::
 
-::: {.callout-important .question appearance="minimal" data-tags="poisson lrt hypothesis-testing exam-style" data-difficulty="2"}
+::: {.callout-important .question appearance="minimal" data-tags="poisson lrt hypothesis-testing exam-style" data-difficulty="2" #q-lrt-weather}
 
 ## Likelihood Ratio Test for Extreme Weather Events
 
@@ -3426,94 +3658,82 @@ modelled as a Poisson random variable $X \sim \mathrm{Poisson}(\theta)$.
 We wish to test the hypothesis $H_0: \theta = 10$,  
 where $\theta = 10$ represents “standard weather conditions.”
 
-1. Write down the parameter space $\Theta$ for the parameter $\theta$, and the set $\Omega$ of possible $\theta$ values under $H_0.$  
 
-2. Show that the maximum likelihood estimate for $\theta$ is $\hat{\theta} = x.$  
+1. Show that the maximum likelihood estimate for $\theta$ is $\hat{\theta} = x.$  
    (You may assume that any local optimum is a global maximum.)  
 
-3. Suppose $x = 15$ extreme weather events are observed. Show that
+2. Suppose $x = 15$ extreme weather events are observed. Show that
    $$
-   \max_{\theta \in \Theta} L(\theta) = \frac{15^{15} e^{-15}}{15!}, 
+   \max_{\theta \in \Theta} L(\theta; x) = \frac{15^{15} e^{-15}}{15!}, 
    \qquad
-   \max_{\theta \in \Omega} L(\theta) = \frac{10^{15} e^{-10}}{15!},
+   L(\theta = 10; x) = \frac{10^{15} e^{-10}}{15!},
    $$
-   where $L(\theta)$ is the likelihood for $\theta$ given $x = 15.$  
+   where $L(\theta; x)$ is the likelihood for $\theta$ given $x = 15.$  
 
-4. Show that the likelihood ratio test statistic is
+3. Show that the likelihood ratio test statistic is
    $$
-   \lambda = e^5 \left(\tfrac{2}{3}\right)^{15},
+   \lambda(x) = e^5 \left(\tfrac{2}{3}\right)^{15},
    $$
-   and compute $w = -2\log \lambda$ to 3 significant figures.  
+   and compute $T_{\mathrm{obs}} = -2\log \lambda(x)$ to 3 significant figures.  
 
-5. Is there sufficient evidence to reject $H_0$ at the $10\%$ significance level?  
+4. Is there sufficient evidence to reject $H_0$ at the $10\%$ significance level?  
 
 <details class="solution">
 <summary>Solution</summary>
 
-**1. Parameter space**
+**1. Maximum likelihood estimate**
 
+Since we only have a single $\mathrm{Poisson}(\lambda)$ observation, the likelihood is:
 $$
-\Theta = (0, \infty), 
-\qquad 
-\Omega = \{ 10 \}.
-$$
-
----
-
-**2. Maximum likelihood estimate**
-
-The likelihood is:
-$$
-L(\theta) = \frac{\theta^x e^{-\theta}}{x!}.
+L(\theta; x) = \frac{\theta^x e^{-\theta}}{x!}.
 $$
 The log-likelihood:
 $$
-\ell(\theta) = x \log \theta - \theta - \log(x!).
+\ell(\theta; x) = x \log \theta - \theta - \log(x!).
 $$
 Differentiating:
 $$
-\frac{\partial \ell}{\partial \theta} = \frac{x}{\theta} - 1 = 0 
+\frac{\partial }{\partial \theta} \ell(\theta; x) = \frac{x}{\theta} - 1 = 0 
 \quad \Rightarrow \quad \hat{\theta} = x.
 $$
 Hence, the MLE is $\hat{\theta} = x.$
 
 ---
 
-**3. Evaluate the likelihoods**
+**2. Evaluate the likelihoods**
 
 Given $x = 15$:
 $$
-\max_{\theta \in \Theta} L(\theta) = L(15) = \frac{15^{15} e^{-15}}{15!},
+\max_{\theta \in \Theta} L(\theta; x) = L(15; x) = \frac{15^{15} e^{-15}}{15!},
 \qquad
-\max_{\theta \in \Omega} L(\theta) = L(10) = \frac{10^{15} e^{-10}}{15!}.
+L(\theta = 10) = \frac{10^{15} e^{-10}}{15!}.
 $$
 
 ---
 
-**4. Likelihood ratio statistic**
+**3. Likelihood ratio statistic**
 
 $$
-\lambda = \frac{L(10)}{L(15)} 
+\lambda(x) = \frac{L(10; x)}{L(15; x)} 
 = \frac{10^{15} e^{-10}}{15^{15} e^{-15}} 
 = e^5 \left(\frac{2}{3}\right)^{15}.
 $$
 Hence:
 $$
-w = -2 \log \lambda 
+T_{\mathrm{obs}} = -2 \log \lambda 
 = -2[15 \log(2/3) + 5] 
 = 2.16 \quad (\text{3 s.f.}).
 $$
 
 ---
 
-**5. Hypothesis decision**
+**4. Hypothesis decision**
 
-Under $H_0$, $w \sim \chi^2_1.$  
+By Wilk's theorem, under $H_0$, the test statistic is approximately $T \sim \chi^2_1$.  
 
 The 10% upper-tail critical value is $2.71.$
 
-Since $w = 2.16 < 2.71,$
-there is **insufficient evidence to reject $H_0$** at the 10% level.
+Since $T_{\mathrm{obs}} = 2.16 < 2.71,$ there is **insufficient evidence to reject $H_0$** at the 10% level.
 
 Therefore, we do **not** reject the hypothesis of standard weather conditions.
 
@@ -3583,7 +3803,7 @@ $$
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="maximum-likelihood bias consistency exam-style" data-difficulty="2"}
+::: {.callout-important .question appearance="minimal" data-tags="mle bias consistency exam-style" data-difficulty="2" #q-mle-property}
 
 ## Properties of the Maximum Likelihood Estimator
 
@@ -3668,7 +3888,7 @@ Therefore, $\hat{\theta}$ is also **asymptotically unbiased**.
 
 :::
 
-::: {.callout-important .question appearance="minimal" data-tags="uniform estimator consistency exam-style" data-difficulty="3"}
+::: {.callout-important .question appearance="minimal" data-tags="uniform estimator consistency exam-style" data-difficulty="3" #q-uniform-hard-consistent}
 
 ## Estimation from a Uniform Distribution
 

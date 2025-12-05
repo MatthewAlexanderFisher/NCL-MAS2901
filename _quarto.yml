@@ -182,7 +182,13 @@ callouty-theorem:
       collapse: false
 
   # theorems types not specified in the metadata will be rendered as is
-  cor: default # calloutify corollaries with default style
+  cor:
+    override-title: false
+    callout:  # also support default style here
+      appearance: minimal
+      type: note
+      collapse: false
+   
   def:
     override-title: false
     callout:  # also support default style here

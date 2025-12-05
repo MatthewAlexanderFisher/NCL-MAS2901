@@ -133,12 +133,26 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
 
 - Be able to recall the definitions of, and compute, the key properties of estimators:
 
-  1. <span class="xref-no-num">[Bias @def-bias]</span>  
-  2. <span class="xref-no-num">[Variance @def-variance]</span>  
-  3. <span class="xref-no-num">[Standard error @def-se]</span>  
-  4. <span class="xref-no-num">[Mean-squared error (MSE) @def-mse]</span>  
-
-  **Note:** When computing the MSE, always use the <span class="xref-no-num">[Bias–Variance decomposition @prp-mse-bias-variance]</span>.
+  1. <span class="xref-no-num">[Bias @def-bias]</span>: The *bias* of an estimator $\hat{\theta}$ of $\theta$ is
+    $$
+    \mathrm{Bias}(\hat{\theta}) = \mathrm{E}[\hat{\theta}] - \theta.
+    $$  
+  2. <span class="xref-no-num">[Variance @def-variance]</span>: The *variance* of an estimator $\hat{\theta}$ of $\theta$ is the **usual variance**:
+    $$
+    \mathrm{Var}(\hat{\theta}) = \mathrm{E}[(\hat{\theta} - \mathrm{E}[\hat{\theta}])^2] = \mathrm{E}[\hat{\theta}^2] - \mathrm{E}[\hat{\theta}]^2.
+    $$  
+  3. <span class="xref-no-num">[Standard error @def-se]</span>: The *standard error* of an estimator $\hat{\theta}$ of $\theta$ is the *standard deviation* of the estimator:
+    $$
+    \mathrm{S.E.}(\hat{\theta}) = \sqrt{\mathrm{Var}(\hat{\theta})}.
+    $$
+  4. <span class="xref-no-num">[Mean-squared error (MSE) @def-mse]</span>: The *mean-squared error* of an estimator $\hat{\theta}$ of $\theta$ is
+    $$
+    \mathrm{MSE}(\hat{\theta})=\mathrm{E}\!\big[(\hat{\theta}-\theta)^2\big].
+    $$
+    **Note:** When computing the MSE, always use the <span class="xref-no-num">[Bias–Variance decomposition @prp-mse-bias-variance]</span>:
+    $$
+    \mathrm{MSE}(\hat{\theta}) = \mathrm{Bias}(\hat{\theta})^2+\mathrm{Var}(\hat{\theta}).
+    $$ 
 
   <details class="practice-questions">
   <summary><em>Properties of Estimators — Practice Questions</em></summary>
@@ -186,7 +200,43 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
 
   </details>
 
-- 
+* Be able to recall the definitions of <span class="xref-no-num">[asymptotic unbiasedness @def-asymptotic-unbiasedness]</span>
+  and <span class="xref-no-num">[consistency @def-consistency]</span>.
+
+* Be able to show that an estimator is <span class="xref-no-num">[consistent @def-consistency]</span>
+  using the <span class="xref-no-num">[sufficient conditions @prp-sufficient-consistency]</span>:
+
+  Consider an estimator $\hat{\theta}_n$ of a parameter $\theta$, based on a sample of size $n$. A **consistent estimator** must satisfy:
+
+  1. **Asymptotic unbiasedness:**
+     $$
+     \mathrm{Bias}(\hat{\theta}_n) \;\longrightarrow \; 0 \qquad \text{as } n \to \infty,
+     $$
+
+  2. **Vanishing variance:**
+     $$
+     \mathrm{Var}(\hat{\theta}_n) \;\longrightarrow\; 0 \qquad \text{as } n \to \infty.
+     $$
+
+  Together, these conditions imply that $\hat{\theta}_n$ is a **consistent estimator**.
+
+  **Note:** For exam purposes, you can *always* use these sufficient conditions to prove consistency: check the bias tends to $0$ and the variance tends to $0$ as $n$ grows.
+
+  <details class="practice-questions">
+  <summary><em>Showing Consistency — Practice Questions</em></summary>
+
+  ::: {.small-table}
+  | Location | Description | Link | 
+  |------|-------------|-------|
+  | Question Bank | Poisson Data, showing consistency | <span class="xref-no-num">[Link @q-poisson-consistency1]</span> |
+  | Question Bank | Proving Consistency I, adjusted sample mean is consistent  | <span class="xref-no-num">[Link @q-prove-consistency1]</span> |
+  | Question Bank | Uniform Data, hard consistency question  | <span class="xref-no-num">[Link @q-uniform-hard-consistent]</span> |
+  | Examples | Consistency of the Sample Mean | @exm-consistency-samplemean |
+
+  : {tbl-colwidths="[20, 60, 20]"}
+  :::
+
+  </details>
 
 
 ##### Essential Points
@@ -260,7 +310,7 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
 
   <details class="practice-questions">
   <summary><em>Computing MLEs — Practice Questions</em></summary>
-  The following questions focus solely on **computing MLEs**. Many later topics use MLEs as an intermediate step, but those applications are introduced in their own sections.
+  The following questions focus solely on **computing MLEs**. Many later topics use MLEs as an intermediate step, but those applications are introduced in their own sections.  
 
   ::: {.small-table}
   | Location | Description | Link |
@@ -268,6 +318,7 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
   | Question Bank | Normal MLE for $\mu$ ($\sigma^2 = 1$) | <span class="xref-no-num">[Link @q-normal-data-mle]</span> |
   | Question Bank | Gamma MLE for $b$ ($a=1$) | <span class="xref-no-num">[Link @q-gamma-mle]</span> |
   | Question Bank | Uniform MLE, $U(\theta, 2\theta)$ data | <span class="xref-no-num">[Link @q-unif-mle1]</span>
+  | Question Bank | Shifted Pareto MLE | <span class="xref-no-num">[Link @q-mle-property]</span>
   | Examples | Bernoulli MLE | @exm-bern-mle |
   | Examples | Binomial MLE | @exm-binom-mle-single |
   | Examples | Another Binomial MLE | @exm-binom-mle |
@@ -303,7 +354,7 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
   **Note:** In this module, you will almost always be asked to compute the **Fisher information for the whole sample**. For consistency and simplicity, we recommend using **Approach 1** described <span class="xref-no-num">[here @imp-compute-fisher-info]</span>.
 
   <details class="practice-questions">
-  <summary><em>Computing the Fisher Information — Practice Questions</em></summary>
+  <summary><em>Computing Fisher Information — Practice Questions</em></summary>
   The following questions focus solely on **computing Fisher Information**. Many later topics use the Fisher Information as an intermediate step, but those applications are introduced in their own sections.
 
   ::: {.small-table}
@@ -312,6 +363,67 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
   | Question Bank | Fisher Information for a Binomial Observation | <span class="xref-no-num">[Link @q-fisher-info-binomial]</span> |
   | Question Bank | Fisher Information for Geometric Data | <span class="xref-no-num">[Link @q-fisher-info-geometric]</span> |
   | Examples | Fisher Information for Poisson Data | @exm-poisson-fisher |
+
+  : {tbl-colwidths="[20, 60, 20]"}
+  :::
+
+  </details>
+
+- Be able to recall the <span class="xref-no-num">[Cramér–Rao Lower Bound @thm-crlb]</span>.
+
+  - The Cramér–Rao inequality states that for **any unbiased estimator** $\hat{\theta}$ of a parameter $\theta$,
+    $$
+    \mathrm{Var}(\hat{\theta}) \;\ge\; \mathcal{I}_n(\theta)^{-1},
+    $$
+    where $\mathcal{I}_n(\theta)^{-1}$ is the **Cramér–Rao Lower Bound (CRLB)**.
+
+  - This result is extremely important because, for unbiased estimators,
+    $$
+    \mathrm{MSE}(\hat{\theta}) = \mathrm{Var}(\hat{\theta}).
+    $$
+    So, the CRLB provides a theoretical minimum: it tells us the best possible performance an unbiased estimator can achieve.
+  - If an unbiased estimator **achieves** the CRLB, it is called <span class="xref-no-num">[efficient @def-efficiency]</span>, meaning no other unbiased estimator has smaller variance.
+
+- Be able to show whether a given estimator is <span class="xref-no-num">[efficient @def-efficiency]</span>.
+
+  <details class="practice-questions">
+  <summary><em>Proving Efficiency  — Practice Questions</em></summary>
+
+  ::: {.small-table}
+  | Location | Description | Link | 
+  |------|-------------|-------|
+  | Question Bank | Efficiency of sample variance for Normal data  | <span class="xref-no-num">[Link @q-efficiency-hard-normal]</span> |
+
+  : {tbl-colwidths="[20, 60, 20]"}
+  :::
+
+  </details>
+
+- Be able to recall and compute the <span class="xref-no-num">[asymptotic sampling distribution of the MLE @def-asymp-mle-approx]</span>. This result states that for data  
+  $$
+  X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\theta),
+  $$
+  from **any model**, the <span class="xref-no-num">[maximum likelihood estimator @def-mle]</span> satisfies
+  $$
+  \hat{\theta}_{\mathrm{MLE}}
+  \;\overset{\text{approx.}}{\sim}\;
+  \mathcal{N}\!\left(
+     \theta,\;
+     \mathcal{I}_n \big(\theta \big)^{-1}
+  \right),
+  \qquad \text{for large } n.
+  $$
+
+  - **Note:** In practice, we usually replace the unknown parameter $\theta$ with its estimate $\hat{\theta}_{\mathrm{MLE}}$ inside the Fisher information. So, for the exam, it is sufficient to remember the **plug-in form** $\mathcal{I}_n\big(\hat{\theta}_{\mathrm{MLE}}\big)$. This **plug-in form** $\mathcal{I}_n\big(\hat{\theta}_{\mathrm{MLE}}\big)$, is called the <span class="xref-no-num">[observed Fisher information @def-observed-fisher]</span>
+
+  <details class="practice-questions">
+  <summary><em>Asymptotic Distribution of MLE  — Practice Questions</em></summary>
+
+  ::: {.small-table} 
+  | Location | Description | Link |
+  |------|-------------|-------|
+  | Question Bank | Asymptotic Sampling Distribution of MLE, Exponential Data  | <span class="xref-no-num">[Link @q-asymp-mle-exp]</span> |
+  | Examples | Asymptotic Sampling Distribution of MLE, Poisson Data | @exm-asymp-mle-pois |
 
   : {tbl-colwidths="[20, 60, 20]"}
   :::
@@ -345,6 +457,7 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
   
   <details class="practice-questions">
   <summary><em>Computing Posteriors — Practice Questions</em></summary>
+  The following questions focus solely on **computing posterior distributions**. Many later topics use the posterior calculation as an intermediate step, but those applications are introduced in their own sections.
 
   ::: {.small-table}
   | Location | Description | Link |
@@ -378,9 +491,10 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
   <summary><em>Computing MAP Estimators — Practice Questions</em></summary>
 
   ::: {.small-table}
-  | Location | Description | Link |
+  | Location | Description | Link | 
   |----------|-------------|-------|
   | Question Bank | Beta-Binomial model, MAP with data | <span class="xref-no-num">[Link @q-map-factory-defects]</span> |
+  | Question Bank | Gamma-Poisson model, MAP with data | <span class="xref-no-num">[Link @q-map-call-rate]</span> |
 
   : {tbl-colwidths="[20, 60, 20]"}
   :::
@@ -571,9 +685,10 @@ Covers basic probability theory, mostly assumed knowledge and thus examinable (w
   <details class="practice-questions">
   <summary><em>Likelihood Ratio Test — Practice Questions</em></summary>
 
-  ::: {.small-table}
+  ::: {.small-table} 
   | Location | Description | Link |
   |----------|-------------|-------|
+  | Question Bank | Extreme Weather, Poisson Data LRT | <span class="xref-no-num">[Link @q-lrt-weather]</span> |
   | Examples | Normal model, known variance, LRT | @exm-lrt-normal-mean|
 
 

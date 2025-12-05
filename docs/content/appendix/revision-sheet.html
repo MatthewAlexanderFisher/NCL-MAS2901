@@ -804,15 +804,23 @@ X_i \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu, \sigma^2),
 </span> namely <span class="math inline">\bar{X} \sim \mathcal{N}\!\left(\mu,\, \frac{\sigma^2}{n}\right)</span>.</p></li>
 <li><p>Be able to recall the definitions of, and compute, the key properties of estimators:</p>
 <ol type="1">
-<li><span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#def-bias" class="quarto-xref">Bias&nbsp;<span>4.4</span></a></span><br>
+<li><span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#def-bias" class="quarto-xref">Bias&nbsp;<span>4.4</span></a></span>: The <em>bias</em> of an estimator <span class="math inline">\hat{\theta}</span> of <span class="math inline">\theta</span> is <span class="math display">
+  \mathrm{Bias}(\hat{\theta}) = \mathrm{E}[\hat{\theta}] - \theta.
+  </span><br>
 </li>
-<li><span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#def-variance" class="quarto-xref">Variance&nbsp;<span>4.5</span></a></span><br>
+<li><span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#def-variance" class="quarto-xref">Variance&nbsp;<span>4.5</span></a></span>: The <em>variance</em> of an estimator <span class="math inline">\hat{\theta}</span> of <span class="math inline">\theta</span> is the <strong>usual variance</strong>: <span class="math display">
+  \mathrm{Var}(\hat{\theta}) = \mathrm{E}[(\hat{\theta} - \mathrm{E}[\hat{\theta}])^2] = \mathrm{E}[\hat{\theta}^2] - \mathrm{E}[\hat{\theta}]^2.
+  </span><br>
 </li>
-<li><span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#def-se" class="quarto-xref">Standard error&nbsp;<span>4.6</span></a></span><br>
-</li>
-<li><span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#def-mse" class="quarto-xref">Mean-squared error (MSE)&nbsp;<span>4.8</span></a></span></li>
+<li><span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#def-se" class="quarto-xref">Standard error&nbsp;<span>4.6</span></a></span>: The <em>standard error</em> of an estimator <span class="math inline">\hat{\theta}</span> of <span class="math inline">\theta</span> is the <em>standard deviation</em> of the estimator: <span class="math display">
+  \mathrm{S.E.}(\hat{\theta}) = \sqrt{\mathrm{Var}(\hat{\theta})}.
+  </span></li>
+<li><span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#def-mse" class="quarto-xref">Mean-squared error (MSE)&nbsp;<span>4.8</span></a></span>: The <em>mean-squared error</em> of an estimator <span class="math inline">\hat{\theta}</span> of <span class="math inline">\theta</span> is <span class="math display">
+  \mathrm{MSE}(\hat{\theta})=\mathrm{E}\!\big[(\hat{\theta}-\theta)^2\big].
+  </span> <strong>Note:</strong> When computing the MSE, always use the <span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#prp-mse-bias-variance" class="quarto-xref">Bias–Variance decomposition&nbsp;<span>4.4</span></a></span>: <span class="math display">
+  \mathrm{MSE}(\hat{\theta}) = \mathrm{Bias}(\hat{\theta})^2+\mathrm{Var}(\hat{\theta}).
+  </span></li>
 </ol>
-<p><strong>Note:</strong> When computing the MSE, always use the <span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#prp-mse-bias-variance" class="quarto-xref">Bias–Variance decomposition&nbsp;<span>4.4</span></a></span>.</p>
 <details class="practice-questions">
 <summary>
 <p><em>Properties of Estimators — Practice Questions</em></p>
@@ -840,22 +848,22 @@ X_i \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu, \sigma^2),
 <tr class="even">
 <td>Question Bank</td>
 <td>Properties of Poisson observations, bias</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-prop-poisson" class="quarto-xref">Link&nbsp;<span>9</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-prop-poisson" class="quarto-xref">Link&nbsp;<span>10</span></a></span></td>
 </tr>
 <tr class="odd">
 <td>Question Bank</td>
 <td>Properties of an Estimators I: bias, variance and MSE</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-prop-of-estimators1" class="quarto-xref">Link&nbsp;<span>6</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-prop-of-estimators1" class="quarto-xref">Link&nbsp;<span>7</span></a></span></td>
 </tr>
 <tr class="even">
 <td>Question Bank</td>
 <td>Properties of an Estimators II: bias, variance and MSE</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-prop-of-estimators2" class="quarto-xref">Link&nbsp;<span>7</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-prop-of-estimators2" class="quarto-xref">Link&nbsp;<span>8</span></a></span></td>
 </tr>
 <tr class="odd">
 <td>Question Bank</td>
 <td>Properties of an Estimators III: bias, variance and MSE</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-prop-of-estimators3" class="quarto-xref">Link&nbsp;<span>8</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-prop-of-estimators3" class="quarto-xref">Link&nbsp;<span>9</span></a></span></td>
 </tr>
 <tr class="even">
 <td>Examples</td>
@@ -914,18 +922,73 @@ X_i \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu, \sigma^2),
 <tr class="odd">
 <td>Question Bank</td>
 <td>CLT approximation I</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-clt-approx1" class="quarto-xref">Link&nbsp;<span>4</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-clt-approx1" class="quarto-xref">Link&nbsp;<span>5</span></a></span></td>
 </tr>
 <tr class="even">
 <td>Question Bank</td>
 <td>CLT approximation of Binomial</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-binom-clt" class="quarto-xref">Link&nbsp;<span>5</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-binom-clt" class="quarto-xref">Link&nbsp;<span>6</span></a></span></td>
 </tr>
 </tbody>
 </table>
 </div>
 </details></li>
-<li></li>
+<li><p>Be able to recall the definitions of <span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#def-asymptotic-unbiasedness" class="quarto-xref">asymptotic unbiasedness&nbsp;<span>4.9</span></a></span> and <span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#def-consistency" class="quarto-xref">consistency&nbsp;<span>4.10</span></a></span>.</p></li>
+<li><p>Be able to show that an estimator is <span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#def-consistency" class="quarto-xref">consistent&nbsp;<span>4.10</span></a></span> using the <span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#prp-sufficient-consistency" class="quarto-xref">sufficient conditions&nbsp;<span>4.5</span></a></span>:</p>
+<p>Consider an estimator <span class="math inline">\hat{\theta}_n</span> of a parameter <span class="math inline">\theta</span>, based on a sample of size <span class="math inline">n</span>. A <strong>consistent estimator</strong> must satisfy:</p>
+<ol type="1">
+<li><p><strong>Asymptotic unbiasedness:</strong> <span class="math display">
+\mathrm{Bias}(\hat{\theta}_n) \;\longrightarrow \; 0 \qquad \text{as } n \to \infty,
+</span></p></li>
+<li><p><strong>Vanishing variance:</strong> <span class="math display">
+\mathrm{Var}(\hat{\theta}_n) \;\longrightarrow\; 0 \qquad \text{as } n \to \infty.
+</span></p></li>
+</ol>
+<p>Together, these conditions imply that <span class="math inline">\hat{\theta}_n</span> is a <strong>consistent estimator</strong>.</p>
+<p><strong>Note:</strong> For exam purposes, you can <em>always</em> use these sufficient conditions to prove consistency: check the bias tends to <span class="math inline">0</span> and the variance tends to <span class="math inline">0</span> as <span class="math inline">n</span> grows.</p>
+<details class="practice-questions">
+<summary>
+<p><em>Showing Consistency — Practice Questions</em></p>
+</summary>
+<div class="small-table">
+<table class="table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 60%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Location</th>
+<th>Description</th>
+<th>Link</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Question Bank</td>
+<td>Poisson Data, showing consistency</td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-poisson-consistency1" class="quarto-xref">Link&nbsp;<span>3</span></a></span></td>
+</tr>
+<tr class="even">
+<td>Question Bank</td>
+<td>Proving Consistency I, adjusted sample mean is consistent</td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-prove-consistency1" class="quarto-xref">Link&nbsp;<span>11</span></a></span></td>
+</tr>
+<tr class="odd">
+<td>Question Bank</td>
+<td>Uniform Data, hard consistency question</td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-uniform-hard-consistent" class="quarto-xref">Link&nbsp;<span>27</span></a></span></td>
+</tr>
+<tr class="even">
+<td>Examples</td>
+<td>Consistency of the Sample Mean</td>
+<td><a href="../main/part2/4-freq-point-estimation.html#exm-consistency-samplemean" class="quarto-xref">Example&nbsp;<span>4.6</span></a></td>
+</tr>
+</tbody>
+</table>
+</div>
+</details></li>
 </ul>
 </section>
 <section id="essential-points-3" class="level5">
@@ -979,17 +1042,17 @@ f(\underline{x}\mid\theta) = \prod_{i=1}^n f_{X_i}(x_i \mid \theta),
 <tr class="odd">
 <td>Question Bank</td>
 <td>Computing Likelihoods I: Geometric Likelihood</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-geom-likelihood" class="quarto-xref">Link&nbsp;<span>10</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-geom-likelihood" class="quarto-xref">Link&nbsp;<span>12</span></a></span></td>
 </tr>
 <tr class="even">
 <td>Question Bank</td>
 <td>Computing Likelihoods II: Normal Likelihood (<span class="math inline">\sigma^2=1</span>)</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-normal-var-likelihood" class="quarto-xref">Link&nbsp;<span>11</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-normal-var-likelihood" class="quarto-xref">Link&nbsp;<span>13</span></a></span></td>
 </tr>
 <tr class="odd">
 <td>Question Bank</td>
 <td>Computing Likelihoods III: Log Normal Likelihood</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-lognormal-likelihood" class="quarto-xref">Link&nbsp;<span>12</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-lognormal-likelihood" class="quarto-xref">Link&nbsp;<span>14</span></a></span></td>
 </tr>
 <tr class="even">
 <td>Examples</td>
@@ -1052,34 +1115,39 @@ f(\underline{x}\mid\theta) = \prod_{i=1}^n f_{X_i}(x_i \mid \theta),
 <tr class="even">
 <td>Question Bank</td>
 <td>Gamma MLE for <span class="math inline">b</span> (<span class="math inline">a=1</span>)</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-gamma-mle" class="quarto-xref">Link&nbsp;<span>3</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-gamma-mle" class="quarto-xref">Link&nbsp;<span>4</span></a></span></td>
 </tr>
 <tr class="odd">
 <td>Question Bank</td>
 <td>Uniform MLE, <span class="math inline">U(\theta, 2\theta)</span> data</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-unif-mle1" class="quarto-xref">Link&nbsp;<span>20</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-unif-mle1" class="quarto-xref">Link&nbsp;<span>28</span></a></span></td>
 </tr>
 <tr class="even">
+<td>Question Bank</td>
+<td>Shifted Pareto MLE</td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-mle-property" class="quarto-xref">Link&nbsp;<span>26</span></a></span></td>
+</tr>
+<tr class="odd">
 <td>Examples</td>
 <td>Bernoulli MLE</td>
 <td><a href="../main/part2/5-likelihood.html#exm-bern-mle" class="quarto-xref">Example&nbsp;<span>5.8</span></a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Examples</td>
 <td>Binomial MLE</td>
 <td><a href="../main/part2/5-likelihood.html#exm-binom-mle-single" class="quarto-xref">Example&nbsp;<span>5.9</span></a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Examples</td>
 <td>Another Binomial MLE</td>
 <td><a href="../main/part2/5-likelihood.html#exm-binom-mle" class="quarto-xref">Example&nbsp;<span>5.10</span></a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Examples</td>
 <td>Poisson MLE</td>
 <td><a href="../main/part2/5-likelihood.html#exm-pois-mle" class="quarto-xref">Example&nbsp;<span>5.11</span></a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Examples</td>
 <td>Normal MLE for <span class="math inline">\mu</span></td>
 <td><a href="../main/part2/5-likelihood.html#exm-normal-mu-mle" class="quarto-xref">Example&nbsp;<span>5.12</span></a></td>
@@ -1108,7 +1176,7 @@ f(\underline{x}\mid\theta) = \prod_{i=1}^n f_{X_i}(x_i \mid \theta),
 <p><strong>Note:</strong> In this module, you will almost always be asked to compute the <strong>Fisher information for the whole sample</strong>. For consistency and simplicity, we recommend using <strong>Approach 1</strong> described <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#imp-compute-fisher-info" class="quarto-xref">here&nbsp;<span>5.4</span></a></span>.</p>
 <details class="practice-questions">
 <summary>
-<p><em>Computing the Fisher Information — Practice Questions</em></p>
+<p><em>Computing Fisher Information — Practice Questions</em></p>
 </summary>
 <p>The following questions focus solely on <strong>computing Fisher Information</strong>. Many later topics use the Fisher Information as an intermediate step, but those applications are introduced in their own sections.</p>
 <div class="small-table">
@@ -1129,17 +1197,104 @@ f(\underline{x}\mid\theta) = \prod_{i=1}^n f_{X_i}(x_i \mid \theta),
 <tr class="odd">
 <td>Question Bank</td>
 <td>Fisher Information for a Binomial Observation</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-fisher-info-binomial" class="quarto-xref">Link&nbsp;<span>13</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-fisher-info-binomial" class="quarto-xref">Link&nbsp;<span>15</span></a></span></td>
 </tr>
 <tr class="even">
 <td>Question Bank</td>
 <td>Fisher Information for Geometric Data</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-fisher-info-geometric" class="quarto-xref">Link&nbsp;<span>14</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-fisher-info-geometric" class="quarto-xref">Link&nbsp;<span>16</span></a></span></td>
 </tr>
 <tr class="odd">
 <td>Examples</td>
 <td>Fisher Information for Poisson Data</td>
 <td><a href="../main/part2/5-likelihood.html#exm-poisson-fisher" class="quarto-xref">Example&nbsp;<span>5.14</span></a></td>
+</tr>
+</tbody>
+</table>
+</div>
+</details></li>
+<li><p>Be able to recall the <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#thm-crlb" class="quarto-xref">Cramér–Rao Lower Bound&nbsp;<span>5.2</span></a></span>.</p>
+<ul>
+<li><p>The Cramér–Rao inequality states that for <strong>any unbiased estimator</strong> <span class="math inline">\hat{\theta}</span> of a parameter <span class="math inline">\theta</span>, <span class="math display">
+\mathrm{Var}(\hat{\theta}) \;\ge\; \mathcal{I}_n(\theta)^{-1},
+</span> where <span class="math inline">\mathcal{I}_n(\theta)^{-1}</span> is the <strong>Cramér–Rao Lower Bound (CRLB)</strong>.</p></li>
+<li><p>This result is extremely important because, for unbiased estimators, <span class="math display">
+\mathrm{MSE}(\hat{\theta}) = \mathrm{Var}(\hat{\theta}).
+</span> So, the CRLB provides a theoretical minimum: it tells us the best possible performance an unbiased estimator can achieve.</p></li>
+<li><p>If an unbiased estimator <strong>achieves</strong> the CRLB, it is called <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#def-efficiency" class="quarto-xref">efficient&nbsp;<span>5.8</span></a></span>, meaning no other unbiased estimator has smaller variance.</p></li>
+</ul></li>
+<li><p>Be able to show whether a given estimator is <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#def-efficiency" class="quarto-xref">efficient&nbsp;<span>5.8</span></a></span>.</p>
+<details class="practice-questions">
+<summary>
+<p><em>Proving Efficiency — Practice Questions</em></p>
+</summary>
+<div class="small-table">
+<table class="table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 60%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Location</th>
+<th>Description</th>
+<th>Link</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Question Bank</td>
+<td>Efficiency of sample variance for Normal data</td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-efficiency-hard-normal" class="quarto-xref">Link&nbsp;<span>24</span></a></span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</details></li>
+<li><p>Be able to recall and compute the <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#def-asymp-mle-approx" class="quarto-xref">asymptotic sampling distribution of the MLE&nbsp;<span>5.9</span></a></span>. This result states that for data<br>
+<span class="math display">
+X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\theta),
+</span> from <strong>any model</strong>, the <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#def-mle" class="quarto-xref">maximum likelihood estimator&nbsp;<span>5.3</span></a></span> satisfies <span class="math display">
+\hat{\theta}_{\mathrm{MLE}}
+\;\overset{\text{approx.}}{\sim}\;
+\mathcal{N}\!\left(
+   \theta,\;
+   \mathcal{I}_n \big(\theta \big)^{-1}
+\right),
+\qquad \text{for large } n.
+</span></p>
+<ul>
+<li><strong>Note:</strong> In practice, we usually replace the unknown parameter <span class="math inline">\theta</span> with its estimate <span class="math inline">\hat{\theta}_{\mathrm{MLE}}</span> inside the Fisher information. So, for the exam, it is sufficient to remember the <strong>plug-in form</strong> <span class="math inline">\mathcal{I}_n\big(\hat{\theta}_{\mathrm{MLE}}\big)</span>. This <strong>plug-in form</strong> <span class="math inline">\mathcal{I}_n\big(\hat{\theta}_{\mathrm{MLE}}\big)</span>, is called the <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#def-observed-fisher" class="quarto-xref">observed Fisher information&nbsp;<span>5.10</span></a></span></li>
+</ul>
+<details class="practice-questions">
+<summary>
+<p><em>Asymptotic Distribution of MLE — Practice Questions</em></p>
+</summary>
+<div class="small-table">
+<table class="table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 60%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Location</th>
+<th>Description</th>
+<th>Link</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Question Bank</td>
+<td>Asymptotic Sampling Distribution of MLE, Exponential Data</td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-asymp-mle-exp" class="quarto-xref">Link&nbsp;<span>21</span></a></span></td>
+</tr>
+<tr class="even">
+<td>Examples</td>
+<td>Asymptotic Sampling Distribution of MLE, Poisson Data</td>
+<td><a href="../main/part2/5-likelihood.html#exm-asymp-mle-pois" class="quarto-xref">Example&nbsp;<span>5.15</span></a></td>
 </tr>
 </tbody>
 </table>
@@ -1178,6 +1333,7 @@ f(\underline{x}\mid\theta) = \prod_{i=1}^n f_{X_i}(x_i \mid \theta),
 <summary>
 <p><em>Computing Posteriors — Practice Questions</em></p>
 </summary>
+<p>The following questions focus solely on <strong>computing posterior distributions</strong>. Many later topics use the posterior calculation as an intermediate step, but those applications are introduced in their own sections.</p>
 <div class="small-table">
 <table class="table">
 <colgroup>
@@ -1196,37 +1352,37 @@ f(\underline{x}\mid\theta) = \prod_{i=1}^n f_{X_i}(x_i \mid \theta),
 <tr class="odd">
 <td>Question Bank</td>
 <td>Beta–Binomial model</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-beta-binom" class="quarto-xref">Link&nbsp;<span>21</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-beta-binom" class="quarto-xref">Link&nbsp;<span>29</span></a></span></td>
 </tr>
 <tr class="even">
 <td>Question Bank</td>
 <td>Gamma–Poisson model</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-gamma-pois" class="quarto-xref">Link&nbsp;<span>22</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-gamma-pois" class="quarto-xref">Link&nbsp;<span>30</span></a></span></td>
 </tr>
 <tr class="odd">
 <td>Question Bank</td>
 <td>Beta–Geometric model</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-beta-geom" class="quarto-xref">Link&nbsp;<span>23</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-beta-geom" class="quarto-xref">Link&nbsp;<span>31</span></a></span></td>
 </tr>
 <tr class="even">
 <td>Question Bank</td>
 <td>Normal–Normal mean model (known variance)</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-normal-normal" class="quarto-xref">Link&nbsp;<span>24</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-normal-normal" class="quarto-xref">Link&nbsp;<span>32</span></a></span></td>
 </tr>
 <tr class="odd">
 <td>Question Bank</td>
 <td>Inverse-Gamma–Normal variance model (known mean)</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-normal-invgamma" class="quarto-xref">Link&nbsp;<span>25</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-normal-invgamma" class="quarto-xref">Link&nbsp;<span>33</span></a></span></td>
 </tr>
 <tr class="even">
 <td>Question Bank</td>
 <td>Gamma–Exponential rate model</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-exp-gamma" class="quarto-xref">Link&nbsp;<span>26</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-exp-gamma" class="quarto-xref">Link&nbsp;<span>34</span></a></span></td>
 </tr>
 <tr class="odd">
 <td>Question Bank</td>
 <td>Inverse-Gamma–Weibull scale model (known shape)</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-weib-invgamma" class="quarto-xref">Link&nbsp;<span>27</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-weib-invgamma" class="quarto-xref">Link&nbsp;<span>35</span></a></span></td>
 </tr>
 <tr class="even">
 <td>Examples</td>
@@ -1280,7 +1436,12 @@ f(\underline{x}\mid\theta) = \prod_{i=1}^n f_{X_i}(x_i \mid \theta),
 <tr class="odd">
 <td>Question Bank</td>
 <td>Beta-Binomial model, MAP with data</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-map-factory-defects" class="quarto-xref">Link&nbsp;<span>19</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-map-factory-defects" class="quarto-xref">Link&nbsp;<span>22</span></a></span></td>
+</tr>
+<tr class="even">
+<td>Question Bank</td>
+<td>Gamma-Poisson model, MAP with data</td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-map-call-rate" class="quarto-xref">Link&nbsp;<span>23</span></a></span></td>
 </tr>
 </tbody>
 </table>
@@ -1312,17 +1473,17 @@ f(\underline{x}\mid\theta) = \prod_{i=1}^n f_{X_i}(x_i \mid \theta),
 <tr class="odd">
 <td>Question Bank</td>
 <td>Mean-zero Normal model, asymptotic posterior of variance</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-asymp-post-variance" class="quarto-xref">Link&nbsp;<span>15</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-asymp-post-variance" class="quarto-xref">Link&nbsp;<span>17</span></a></span></td>
 </tr>
 <tr class="even">
 <td>Question Bank</td>
 <td>Poisson model, asymptotic posterior</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-asymp-post-poisson" class="quarto-xref">Link&nbsp;<span>16</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-asymp-post-poisson" class="quarto-xref">Link&nbsp;<span>18</span></a></span></td>
 </tr>
 <tr class="odd">
 <td>Question Bank</td>
 <td>Exponential model, asymptotic posterior</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-asymp-post-exponential" class="quarto-xref">Link&nbsp;<span>17</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-asymp-post-exponential" class="quarto-xref">Link&nbsp;<span>19</span></a></span></td>
 </tr>
 </tbody>
 </table>
@@ -1345,7 +1506,7 @@ f(\underline{x}\mid\theta) = \prod_{i=1}^n f_{X_i}(x_i \mid \theta),
 </li>
 <li><strong>Obtain asymptotic posteriors</strong> using large-sample approximations.</li>
 </ol></li>
-<li>Among all posterior calculations in the course, the most <strong>algebraically involved</strong> is <span class="xref-no-num"><a href="question-bank.html#q-normal-normal" class="quarto-xref">this&nbsp;<span>24</span></a></span> question, where<br>
+<li>Among all posterior calculations in the course, the most <strong>algebraically involved</strong> is <span class="xref-no-num"><a href="question-bank.html#q-normal-normal" class="quarto-xref">this&nbsp;<span>32</span></a></span> question, where<br>
 <span class="math display">
 X_i \mid \mu \sim \mathcal{N}(\mu, \gamma), \qquad \mu \sim \mathcal{N}(m, v).
 </span> Be prepared to work through this derivation carefully.</li>
@@ -1447,7 +1608,7 @@ L_{\mathrm{obs}} = L(\underline{x}), \qquad U_{\mathrm{obs}} = U(\underline{x}).
 <tr class="odd">
 <td>Question Bank</td>
 <td>Geometric data, approximate MLE-based confidence interval</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-geom-approx-ci" class="quarto-xref">Link&nbsp;<span>18</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-geom-approx-ci" class="quarto-xref">Link&nbsp;<span>20</span></a></span></td>
 </tr>
 <tr class="even">
 <td>Examples</td>
@@ -1603,6 +1764,11 @@ L_{\mathrm{obs}} = L(\underline{x}), \qquad U_{\mathrm{obs}} = U(\underline{x}).
 </thead>
 <tbody>
 <tr class="odd">
+<td>Question Bank</td>
+<td>Extreme Weather, Poisson Data LRT</td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-lrt-weather" class="quarto-xref">Link&nbsp;<span>25</span></a></span></td>
+</tr>
+<tr class="even">
 <td>Examples</td>
 <td>Normal model, known variance, LRT</td>
 <td><a href="../main/part4/9-freq-hypothesis-testing.html#exm-lrt-normal-mean" class="quarto-xref">Example&nbsp;<span>9.7</span></a></td>
