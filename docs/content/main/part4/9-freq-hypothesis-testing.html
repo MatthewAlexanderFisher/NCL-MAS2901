@@ -659,7 +659,7 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#the-testing-procedure" id="toc-the-testing-procedure" class="nav-link active" data-scroll-target="#the-testing-procedure"><span class="header-section-number">9.1</span> The Testing Procedure</a>
+  <li><a href="#sec-testing-procedure" id="toc-sec-testing-procedure" class="nav-link active" data-scroll-target="#sec-testing-procedure"><span class="header-section-number">9.1</span> The Testing Procedure</a>
   <ul class="collapse">
   <li><a href="#sec-general-testing-strategy" id="toc-sec-general-testing-strategy" class="nav-link" data-scroll-target="#sec-general-testing-strategy"><span class="header-section-number">9.1.1</span> General Recipe</a></li>
   <li><a href="#power-of-a-test" id="toc-power-of-a-test" class="nav-link" data-scroll-target="#power-of-a-test"><span class="header-section-number">9.1.2</span> Power of a Test</a></li>
@@ -853,7 +853,7 @@ Thus we may work with the simpler formulation <span class="math inline">H_0 : \t
 </div>
 </div>
 </div>
-<p>At a conceptual level, any hypothesis test creates a <span class="xref-no-num"><a href="../part1/1-prob-theory.html#def-excl-exh-part" class="quarto-xref">partition&nbsp;<span>1.3</span></a></span> of the parameter space into two regions: one in which the null holds and one in which it does not. The purpose of the test is to decide, using the observed data, which side of this partition is more consistent with the evidence.</p>
+<!-- At a conceptual level, any hypothesis test creates a <span class="xref-no-num">[partition @def-excl-exh-part]</span> of the parameter space into two regions: one in which the null holds and one in which it does not. The purpose of the test is to decide, using the observed data, which side of this partition is more consistent with the evidence. -->
 <p>We proceed by examining the observed data <span class="math inline">\underline{x}</span> and asking whether <span class="math inline">H_0</span> is a plausible explanation. The frequentist reasoning is:</p>
 <ol type="1">
 <li><strong>Assume <span class="math inline">H_0</span> is true.</strong><br>
@@ -1018,43 +1018,99 @@ H_0: \gamma = 10.
 </div>
 </details>
 <hr>
-<section id="the-testing-procedure" class="level2" data-number="9.1">
-<h2 data-number="9.1" class="anchored" data-anchor-id="the-testing-procedure"><span class="header-section-number">9.1</span> The Testing Procedure</h2>
-<p>A hypothesis test makes a decision based on random data, so mistakes are unavoidable. The possible outcomes are:</p>
+<section id="sec-testing-procedure" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="sec-testing-procedure"><span class="header-section-number">9.1</span> The Testing Procedure</h2>
+<div id="imp-test-outcomes" class="callout callout-style-simple callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important&nbsp;9.1: Outcomes of a Hypothesis Test
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Because hypothesis tests use <strong>random sample data</strong>, there is always a chance of reaching the wrong conclusion. A helpful way to understand this is to view the test as a <strong>diagnostic system</strong> — much like a fire alarm.</p>
+<ol type="1">
+<li><p><strong>Starting Assumption:</strong><br>
+A hypothesis test always begins by assuming the null hypothesis <span class="math inline">H_0</span> is <strong>true</strong>.</p></li>
+<li><p><strong>Triggering the Alarm:</strong><br>
+We <strong>reject <span class="math inline">H_0</span></strong> only when the data provide strong evidence against this assumption.</p>
+<ul>
+<li><em>Analogy:</em> Rejecting <span class="math inline">H_0</span> corresponds to <strong>“sounding the alarm”</strong>.</li>
+</ul></li>
+</ol>
+<p>Given this interpretation, the interaction between the <strong>true state of nature</strong> and our <strong>decision</strong> leads to two kinds of errors.</p>
+<section id="the-two-errors" class="level5 unnumbered">
+<h5 class="unnumbered anchored" data-anchor-id="the-two-errors">The Two Errors</h5>
+<hr>
+<section id="type-i-error-the-false-alarm" class="level6 unnumbered">
+<h6 class="unnumbered anchored" data-anchor-id="type-i-error-the-false-alarm"><strong>Type I Error: The False Alarm</strong></h6>
+<ul>
+<li><strong>Scenario:</strong> <span class="math inline">H_0</span> is actually <strong>true</strong>, but we decide to <strong>reject</strong> it.<br>
+</li>
+<li><strong>Analogy:</strong> The fire alarm goes off, but there is <strong>no fire</strong>.<br>
+</li>
+<li><strong>Consequence:</strong> We incorrectly claim evidence of an effect when none exists.</li>
+</ul>
+<p>This error is controlled by the <strong>size</strong> (or <strong>significance level</strong>) <span class="math inline">\alpha</span> of the test:</p>
+<p><span class="math display">
+\alpha = \Pr(\text{reject } H_0 \mid H_0 \text{ true}).
+</span></p>
+<hr>
+</section>
+<section id="type-ii-error-the-missed-detection" class="level6 unnumbered">
+<h6 class="unnumbered anchored" data-anchor-id="type-ii-error-the-missed-detection"><strong>Type II Error: The Missed Detection</strong></h6>
+<ul>
+<li><strong>Scenario:</strong> <span class="math inline">H_0</span> is actually <strong>false</strong>, but we <strong>fail to reject</strong> it.<br>
+</li>
+<li><strong>Analogy:</strong> A fire <strong>is happening</strong>, but the alarm <strong>stays silent</strong>.<br>
+</li>
+<li><strong>Consequence:</strong> We fail to detect a real effect.</li>
+</ul>
+<hr>
+</section>
+<section id="summary-of-outcomes" class="level6 unnumbered">
+<h6 class="unnumbered anchored" data-anchor-id="summary-of-outcomes">Summary of Outcomes</h6>
+<p>The relationship between reality (the truth) and our decision is summarised below:</p>
 <div id="tbl-decision-table" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <div aria-describedby="tbl-decision-table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="table">
 <colgroup>
-<col style="width: 23%">
-<col style="width: 36%">
-<col style="width: 39%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
-<th><strong>Decision</strong></th>
-<th><strong>Truth: <span class="math inline">H_0</span> true</strong></th>
-<th><strong>Truth: <span class="math inline">H_0</span> false</strong></th>
+<th style="text-align: left;"></th>
+<th style="text-align: left;"><strong>Truth: <span class="math inline">H_0</span> is True</strong> <br><em>(Nothing is happening)</em></th>
+<th style="text-align: left;"><strong>Truth: <span class="math inline">H_0</span> is False</strong> <br><em>(Something is happening)</em></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Reject <span class="math inline">H_0</span></strong></td>
-<td>Type I error <em>(false alarm)</em></td>
-<td>Correct detection</td>
+<td style="text-align: left;"><strong>Decision: Reject <span class="math inline">H_0</span></strong> <br><em>(Sound Alarm)</em></td>
+<td style="text-align: left;"><strong>Type I Error</strong> <br><em>(False Alarm)</em></td>
+<td style="text-align: left;"><strong>Correct Decision</strong> <br><em>(Valid Detection)</em></td>
 </tr>
 <tr class="even">
-<td><strong>Fail to reject <span class="math inline">H_0</span></strong></td>
-<td>Correct decision</td>
-<td>Type II error <em>(missed detection)</em></td>
+<td style="text-align: left;"><strong>Decision: Fail to Reject <span class="math inline">H_0</span></strong> <br><em>(Stay Quiet)</em></td>
+<td style="text-align: left;"><strong>Correct Decision</strong> <br><em>(Correctly ignored)</em></td>
+<td style="text-align: left;"><strong>Type II Error</strong> <br><em>(Missed Detection)</em></td>
 </tr>
 </tbody>
 </table>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-tbl" id="tbl-decision-table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;9.1: <strong>Outcomes of a hypothesis test.</strong> Rows represent the decision made; columns represent the true state of nature.
+Table&nbsp;9.1: <strong>Outcomes of a hypothesis test.</strong> The columns represent reality; the rows represent the statistical decision.
 </figcaption>
 </figure>
+</div>
+</section>
+</section>
+</div>
 </div>
 <p>The <strong>size</strong> (also called the <strong>significance level</strong>) of a test is the probability of a Type I error: <span class="math display">
 \alpha = \Pr(\text{reject } H_0 \mid H_0 \text{ true}).
@@ -1099,16 +1155,16 @@ T_{\text{obs}} = T(\underline{x}).
 </ul></li>
 </ol>
 <div id="imp-ing-hypothesis" class="callout callout-style-simple callout-important callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;9.1: Ingredients of a Hypothesis Test
+Important&nbsp;9.2: Ingredients of a Hypothesis Test
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>A hypothesis test is fully determined by two choices:</p>
 <ol type="1">
@@ -1265,7 +1321,7 @@ R_\alpha = \{\, T \mid |T| \ge c_\alpha \,\}.
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1274,7 +1330,7 @@ R_\alpha = \{\, T \mid |T| \ge c_\alpha \,\}.
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="rem-rejec-regs" class="proof remark">
 <p><span class="proof-title"><em>Remark 9.2</em> (Why these regions?). </span>For a given test statistic, there are infinitely many possible rejection regions of size <span class="math inline">\alpha</span>.<br>
@@ -1399,12 +1455,12 @@ R_\alpha^{(2)} = \{\, T &gt; z_{1-\alpha} \,\}.
 <p>The following plot displays the two power curves in <a href="#exm-bad-test-statistic-power" class="quarto-xref">Example&nbsp;<span>9.2</span></a>.</p>
 <p>The blue line plots <span class="math inline">\mathrm{Power}(\mu) = 1 - \Big[ \Phi(z_{1-\alpha/2} - \mu) - \Phi(-z_{1-\alpha/2} - \mu)\Big]</span> and the red line plots <span class="math inline">\mathrm{Power}(\mu)  = 1 - \Phi(z_{1-\alpha} - \mu)</span>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="552" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 551;"><span id="cb3-552"><a href="#cb3-552" aria-hidden="true" tabindex="-1"></a><span class="co">// Alpha slider</span></span>
-<span id="cb3-553"><a href="#cb3-553" aria-hidden="true" tabindex="-1"></a>viewof alphaValue <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.01</span><span class="op">,</span> <span class="fl">0.8</span>]<span class="op">,</span> {</span>
-<span id="cb3-554"><a href="#cb3-554" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="fl">0.05</span><span class="op">,</span></span>
-<span id="cb3-555"><a href="#cb3-555" aria-hidden="true" tabindex="-1"></a>  <span class="dt">step</span><span class="op">:</span> <span class="fl">0.005</span><span class="op">,</span></span>
-<span id="cb3-556"><a href="#cb3-556" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">''</span></span>
-<span id="cb3-557"><a href="#cb3-557" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="595" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 594;"><span id="cb3-595"><a href="#cb3-595" aria-hidden="true" tabindex="-1"></a><span class="co">// Alpha slider</span></span>
+<span id="cb3-596"><a href="#cb3-596" aria-hidden="true" tabindex="-1"></a>viewof alphaValue <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.01</span><span class="op">,</span> <span class="fl">0.8</span>]<span class="op">,</span> {</span>
+<span id="cb3-597"><a href="#cb3-597" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="fl">0.05</span><span class="op">,</span></span>
+<span id="cb3-598"><a href="#cb3-598" aria-hidden="true" tabindex="-1"></a>  <span class="dt">step</span><span class="op">:</span> <span class="fl">0.005</span><span class="op">,</span></span>
+<span id="cb3-599"><a href="#cb3-599" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">''</span></span>
+<span id="cb3-600"><a href="#cb3-600" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-3" data-nodetype="declaration">
 
@@ -1412,91 +1468,91 @@ R_\alpha^{(2)} = \{\, T &gt; z_{1-\alpha} \,\}.
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="565" data-source-offset="-78"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 564;"><span id="cb4-565"><a href="#cb4-565" aria-hidden="true" tabindex="-1"></a>muDomain <span class="op">=</span> [<span class="op">-</span><span class="dv">4</span><span class="op">,</span> <span class="dv">4</span>]</span>
-<span id="cb4-566"><a href="#cb4-566" aria-hidden="true" tabindex="-1"></a>muXs <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleLinear</span>()<span class="op">.</span><span class="fu">domain</span>(muDomain)<span class="op">.</span><span class="fu">ticks</span>(<span class="dv">401</span>)</span>
-<span id="cb4-567"><a href="#cb4-567" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-568"><a href="#cb4-568" aria-hidden="true" tabindex="-1"></a><span class="co">// Standard normal PDF/CDF helpers</span></span>
-<span id="cb4-569"><a href="#cb4-569" aria-hidden="true" tabindex="-1"></a><span class="cn">SQRT2</span> <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="dv">2</span>)</span>
-<span id="cb4-570"><a href="#cb4-570" aria-hidden="true" tabindex="-1"></a>SQRT2PI <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="dv">2</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span>)</span>
-<span id="cb4-571"><a href="#cb4-571" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-572"><a href="#cb4-572" aria-hidden="true" tabindex="-1"></a><span class="co">// erf approximation (Abramowitz &amp; Stegun 7.1.26)</span></span>
-<span id="cb4-573"><a href="#cb4-573" aria-hidden="true" tabindex="-1"></a>erf <span class="op">=</span> (x) <span class="kw">=&gt;</span> {</span>
-<span id="cb4-574"><a href="#cb4-574" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> sign <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sign</span>(x)<span class="op">;</span></span>
-<span id="cb4-575"><a href="#cb4-575" aria-hidden="true" tabindex="-1"></a>  x <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">abs</span>(x)<span class="op">;</span></span>
-<span id="cb4-576"><a href="#cb4-576" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> a1 <span class="op">=</span> <span class="fl">0.254829592</span><span class="op">,</span> a2 <span class="op">=</span> <span class="op">-</span><span class="fl">0.284496736</span><span class="op">,</span> a3 <span class="op">=</span> <span class="fl">1.421413741</span><span class="op">;</span></span>
-<span id="cb4-577"><a href="#cb4-577" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> a4 <span class="op">=</span> <span class="op">-</span><span class="fl">1.453152027</span><span class="op">,</span> a5 <span class="op">=</span> <span class="fl">1.061405429</span><span class="op">,</span> p <span class="op">=</span> <span class="fl">0.3275911</span><span class="op">;</span></span>
-<span id="cb4-578"><a href="#cb4-578" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> t <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> p <span class="op">*</span> x)<span class="op">;</span></span>
-<span id="cb4-579"><a href="#cb4-579" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> y <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> (((((a5 <span class="op">*</span> t <span class="op">+</span> a4) <span class="op">*</span> t) <span class="op">+</span> a3) <span class="op">*</span> t <span class="op">+</span> a2) <span class="op">*</span> t <span class="op">+</span> a1) <span class="op">*</span> t <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(<span class="op">-</span>x<span class="op">*</span>x)<span class="op">;</span></span>
-<span id="cb4-580"><a href="#cb4-580" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> sign <span class="op">*</span> y<span class="op">;</span></span>
-<span id="cb4-581"><a href="#cb4-581" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-582"><a href="#cb4-582" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-583"><a href="#cb4-583" aria-hidden="true" tabindex="-1"></a>normalCDF <span class="op">=</span> (x) <span class="kw">=&gt;</span> <span class="fl">0.5</span> <span class="op">*</span> (<span class="dv">1</span> <span class="op">+</span> <span class="fu">erf</span>(x <span class="op">/</span> <span class="cn">SQRT2</span>))</span>
-<span id="cb4-584"><a href="#cb4-584" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-585"><a href="#cb4-585" aria-hidden="true" tabindex="-1"></a><span class="co">// Inverse normal CDF (Acklam's approximation, high accuracy)</span></span>
-<span id="cb4-586"><a href="#cb4-586" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">normalInvCDF</span>(p){</span>
-<span id="cb4-587"><a href="#cb4-587" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Coefficients</span></span>
-<span id="cb4-588"><a href="#cb4-588" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> a <span class="op">=</span> [<span class="op">-</span><span class="fl">3.969683028665376e+01</span><span class="op">,</span>  <span class="fl">2.209460984245205e+02</span><span class="op">,</span> <span class="op">-</span><span class="fl">2.759285104469687e+02</span><span class="op">,</span></span>
-<span id="cb4-589"><a href="#cb4-589" aria-hidden="true" tabindex="-1"></a>              <span class="fl">1.383577518672690e+02</span><span class="op">,</span> <span class="op">-</span><span class="fl">3.066479806614716e+01</span><span class="op">,</span>  <span class="fl">2.506628277459239e+00</span>]<span class="op">;</span></span>
-<span id="cb4-590"><a href="#cb4-590" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> b <span class="op">=</span> [<span class="op">-</span><span class="fl">5.447609879822406e+01</span><span class="op">,</span>  <span class="fl">1.615858368580409e+02</span><span class="op">,</span> <span class="op">-</span><span class="fl">1.556989798598866e+02</span><span class="op">,</span></span>
-<span id="cb4-591"><a href="#cb4-591" aria-hidden="true" tabindex="-1"></a>              <span class="fl">6.680131188771972e+01</span><span class="op">,</span> <span class="op">-</span><span class="fl">1.328068155288572e+01</span>]<span class="op">;</span></span>
-<span id="cb4-592"><a href="#cb4-592" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> c <span class="op">=</span> [<span class="op">-</span><span class="fl">7.784894002430293e-03</span><span class="op">,</span> <span class="op">-</span><span class="fl">3.223964580411365e-01</span><span class="op">,</span> <span class="op">-</span><span class="fl">2.400758277161838e+00</span><span class="op">,</span></span>
-<span id="cb4-593"><a href="#cb4-593" aria-hidden="true" tabindex="-1"></a>             <span class="op">-</span><span class="fl">2.549732539343734e+00</span><span class="op">,</span>  <span class="fl">4.374664141464968e+00</span><span class="op">,</span>  <span class="fl">2.938163982698783e+00</span>]<span class="op">;</span></span>
-<span id="cb4-594"><a href="#cb4-594" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> d <span class="op">=</span> [ <span class="fl">7.784695709041462e-03</span><span class="op">,</span>  <span class="fl">3.224671290700398e-01</span><span class="op">,</span>  <span class="fl">2.445134137142996e+00</span><span class="op">,</span></span>
-<span id="cb4-595"><a href="#cb4-595" aria-hidden="true" tabindex="-1"></a>              <span class="fl">3.754408661907416e+00</span>]<span class="op">;</span></span>
-<span id="cb4-596"><a href="#cb4-596" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Break-points</span></span>
-<span id="cb4-597"><a href="#cb4-597" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> plow <span class="op">=</span> <span class="fl">0.02425</span><span class="op">,</span> phigh <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> plow<span class="op">;</span></span>
-<span id="cb4-598"><a href="#cb4-598" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> q<span class="op">,</span> r<span class="op">,</span> x<span class="op">;</span></span>
-<span id="cb4-599"><a href="#cb4-599" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (p <span class="op">&lt;</span> plow){</span>
-<span id="cb4-600"><a href="#cb4-600" aria-hidden="true" tabindex="-1"></a>    q <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="op">-</span><span class="dv">2</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">log</span>(p))<span class="op">;</span></span>
-<span id="cb4-601"><a href="#cb4-601" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> (((((c[<span class="dv">0</span>]<span class="op">*</span>q <span class="op">+</span> c[<span class="dv">1</span>])<span class="op">*</span>q <span class="op">+</span> c[<span class="dv">2</span>])<span class="op">*</span>q <span class="op">+</span> c[<span class="dv">3</span>])<span class="op">*</span>q <span class="op">+</span> c[<span class="dv">4</span>])<span class="op">*</span>q <span class="op">+</span> c[<span class="dv">5</span>]) <span class="op">/</span></span>
-<span id="cb4-602"><a href="#cb4-602" aria-hidden="true" tabindex="-1"></a>        ((((d[<span class="dv">0</span>]<span class="op">*</span>q <span class="op">+</span> d[<span class="dv">1</span>])<span class="op">*</span>q <span class="op">+</span> d[<span class="dv">2</span>])<span class="op">*</span>q <span class="op">+</span> d[<span class="dv">3</span>])<span class="op">*</span>q <span class="op">+</span> <span class="dv">1</span>)<span class="op">;</span></span>
-<span id="cb4-603"><a href="#cb4-603" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (p <span class="op">&gt;</span> phigh){</span>
-<span id="cb4-604"><a href="#cb4-604" aria-hidden="true" tabindex="-1"></a>    q <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="op">-</span><span class="dv">2</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">log</span>(<span class="dv">1</span> <span class="op">-</span> p))<span class="op">;</span></span>
-<span id="cb4-605"><a href="#cb4-605" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="op">-</span>(((((c[<span class="dv">0</span>]<span class="op">*</span>q <span class="op">+</span> c[<span class="dv">1</span>])<span class="op">*</span>q <span class="op">+</span> c[<span class="dv">2</span>])<span class="op">*</span>q <span class="op">+</span> c[<span class="dv">3</span>])<span class="op">*</span>q <span class="op">+</span> c[<span class="dv">4</span>])<span class="op">*</span>q <span class="op">+</span> c[<span class="dv">5</span>]) <span class="op">/</span></span>
-<span id="cb4-606"><a href="#cb4-606" aria-hidden="true" tabindex="-1"></a>          ((((d[<span class="dv">0</span>]<span class="op">*</span>q <span class="op">+</span> d[<span class="dv">1</span>])<span class="op">*</span>q <span class="op">+</span> d[<span class="dv">2</span>])<span class="op">*</span>q <span class="op">+</span> d[<span class="dv">3</span>])<span class="op">*</span>q <span class="op">+</span> <span class="dv">1</span>)<span class="op">;</span></span>
-<span id="cb4-607"><a href="#cb4-607" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb4-608"><a href="#cb4-608" aria-hidden="true" tabindex="-1"></a>    q <span class="op">=</span> p <span class="op">-</span> <span class="fl">0.5</span><span class="op">;</span> r <span class="op">=</span> q<span class="op">*</span>q<span class="op">;</span></span>
-<span id="cb4-609"><a href="#cb4-609" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> (((((a[<span class="dv">0</span>]<span class="op">*</span>r <span class="op">+</span> a[<span class="dv">1</span>])<span class="op">*</span>r <span class="op">+</span> a[<span class="dv">2</span>])<span class="op">*</span>r <span class="op">+</span> a[<span class="dv">3</span>])<span class="op">*</span>r <span class="op">+</span> a[<span class="dv">4</span>])<span class="op">*</span>r <span class="op">+</span> a[<span class="dv">5</span>]) <span class="op">*</span> q <span class="op">/</span></span>
-<span id="cb4-610"><a href="#cb4-610" aria-hidden="true" tabindex="-1"></a>        (((((b[<span class="dv">0</span>]<span class="op">*</span>r <span class="op">+</span> b[<span class="dv">1</span>])<span class="op">*</span>r <span class="op">+</span> b[<span class="dv">2</span>])<span class="op">*</span>r <span class="op">+</span> b[<span class="dv">3</span>])<span class="op">*</span>r <span class="op">+</span> b[<span class="dv">4</span>])<span class="op">*</span>r <span class="op">+</span> <span class="dv">1</span>)<span class="op">;</span></span>
-<span id="cb4-611"><a href="#cb4-611" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb4-612"><a href="#cb4-612" aria-hidden="true" tabindex="-1"></a>  <span class="co">// One step of Halley refinement</span></span>
-<span id="cb4-613"><a href="#cb4-613" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> e <span class="op">=</span> <span class="fu">normalCDF</span>(x) <span class="op">-</span> p<span class="op">;</span></span>
-<span id="cb4-614"><a href="#cb4-614" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> u <span class="op">=</span> e <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="dv">2</span><span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span>) <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(x<span class="op">*</span>x<span class="op">/</span><span class="dv">2</span>)<span class="op">;</span></span>
-<span id="cb4-615"><a href="#cb4-615" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> x <span class="op">-</span> u <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> x<span class="op">*</span>u<span class="op">/</span><span class="dv">2</span>)<span class="op">;</span></span>
-<span id="cb4-616"><a href="#cb4-616" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-617"><a href="#cb4-617" aria-hidden="true" tabindex="-1"></a><span class="co">// Critical values based on current alpha</span></span>
-<span id="cb4-618"><a href="#cb4-618" aria-hidden="true" tabindex="-1"></a>z_twoSided <span class="op">=</span> <span class="fu">normalInvCDF</span>(<span class="dv">1</span> <span class="op">-</span> alphaValue <span class="op">/</span> <span class="dv">2</span>)</span>
-<span id="cb4-619"><a href="#cb4-619" aria-hidden="true" tabindex="-1"></a>z_oneSided <span class="op">=</span> <span class="fu">normalInvCDF</span>(<span class="dv">1</span> <span class="op">-</span> alphaValue)</span>
-<span id="cb4-620"><a href="#cb4-620" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-621"><a href="#cb4-621" aria-hidden="true" tabindex="-1"></a><span class="co">// Power functions using dynamic critical values</span></span>
-<span id="cb4-622"><a href="#cb4-622" aria-hidden="true" tabindex="-1"></a>powerTwoSided <span class="op">=</span> (mu) <span class="kw">=&gt;</span> {</span>
-<span id="cb4-623"><a href="#cb4-623" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Power(μ) = P(|T| &gt; z | μ) = Φ(μ - z) + Φ(-μ - z)</span></span>
-<span id="cb4-624"><a href="#cb4-624" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">normalCDF</span>(mu <span class="op">-</span> z_twoSided) <span class="op">+</span> <span class="fu">normalCDF</span>(<span class="op">-</span>mu <span class="op">-</span> z_twoSided)<span class="op">;</span></span>
-<span id="cb4-625"><a href="#cb4-625" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-626"><a href="#cb4-626" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-627"><a href="#cb4-627" aria-hidden="true" tabindex="-1"></a>powerOneSided <span class="op">=</span> (mu) <span class="kw">=&gt;</span> {</span>
-<span id="cb4-628"><a href="#cb4-628" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Power(μ) = P(T &gt; z | μ) = 1 - Φ(z - μ)</span></span>
-<span id="cb4-629"><a href="#cb4-629" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="dv">1</span> <span class="op">-</span> <span class="fu">normalCDF</span>(z_oneSided <span class="op">-</span> mu)<span class="op">;</span></span>
-<span id="cb4-630"><a href="#cb4-630" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-631"><a href="#cb4-631" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-632"><a href="#cb4-632" aria-hidden="true" tabindex="-1"></a><span class="co">// Build curves</span></span>
-<span id="cb4-633"><a href="#cb4-633" aria-hidden="true" tabindex="-1"></a>twoSided <span class="op">=</span> muXs<span class="op">.</span><span class="fu">map</span>(mu <span class="kw">=&gt;</span> ({ mu<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">powerTwoSided</span>(mu)<span class="op">,</span> <span class="dt">which</span><span class="op">:</span> <span class="st">"Two-sided"</span> }))</span>
-<span id="cb4-634"><a href="#cb4-634" aria-hidden="true" tabindex="-1"></a>oneSided <span class="op">=</span> muXs<span class="op">.</span><span class="fu">map</span>(mu <span class="kw">=&gt;</span> ({ mu<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">powerOneSided</span>(mu)<span class="op">,</span> <span class="dt">which</span><span class="op">:</span> <span class="st">"One-sided"</span> }))</span>
-<span id="cb4-635"><a href="#cb4-635" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-636"><a href="#cb4-636" aria-hidden="true" tabindex="-1"></a><span class="co">// Mark the μ=0 point (both equal α)</span></span>
-<span id="cb4-637"><a href="#cb4-637" aria-hidden="true" tabindex="-1"></a>at0 <span class="op">=</span> [</span>
-<span id="cb4-638"><a href="#cb4-638" aria-hidden="true" tabindex="-1"></a>  { <span class="dt">mu</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">powerTwoSided</span>(<span class="dv">0</span>)<span class="op">,</span> <span class="dt">which</span><span class="op">:</span> <span class="st">"Two-sided"</span> }<span class="op">,</span></span>
-<span id="cb4-639"><a href="#cb4-639" aria-hidden="true" tabindex="-1"></a>  { <span class="dt">mu</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">powerOneSided</span>(<span class="dv">0</span>)<span class="op">,</span> <span class="dt">which</span><span class="op">:</span> <span class="st">"One-sided"</span> }</span>
-<span id="cb4-640"><a href="#cb4-640" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb4-641"><a href="#cb4-641" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-642"><a href="#cb4-642" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-643"><a href="#cb4-643" aria-hidden="true" tabindex="-1"></a><span class="co">// On-curve label anchors (choose different μ to avoid overlap)</span></span>
-<span id="cb4-644"><a href="#cb4-644" aria-hidden="true" tabindex="-1"></a>muLabelTwo <span class="op">=</span> <span class="fl">2.4</span></span>
-<span id="cb4-645"><a href="#cb4-645" aria-hidden="true" tabindex="-1"></a>muLabelOne <span class="op">=</span> <span class="fl">1.2</span></span>
-<span id="cb4-646"><a href="#cb4-646" aria-hidden="true" tabindex="-1"></a>labelDots <span class="op">=</span> [</span>
-<span id="cb4-647"><a href="#cb4-647" aria-hidden="true" tabindex="-1"></a>  { <span class="dt">mu</span><span class="op">:</span> muLabelTwo<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">powerTwoSided</span>(muLabelTwo)<span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Two-sided"</span><span class="op">,</span> <span class="dt">color</span><span class="op">:</span> <span class="st">"var(--brand-teal)"</span> }<span class="op">,</span></span>
-<span id="cb4-648"><a href="#cb4-648" aria-hidden="true" tabindex="-1"></a>  { <span class="dt">mu</span><span class="op">:</span> muLabelOne<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">powerOneSided</span>(muLabelOne)<span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"One-sided"</span><span class="op">,</span> <span class="dt">color</span><span class="op">:</span> <span class="st">"var(--brand-red)"</span> }</span>
-<span id="cb4-649"><a href="#cb4-649" aria-hidden="true" tabindex="-1"></a>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="608" data-source-offset="-78"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 607;"><span id="cb4-608"><a href="#cb4-608" aria-hidden="true" tabindex="-1"></a>muDomain <span class="op">=</span> [<span class="op">-</span><span class="dv">4</span><span class="op">,</span> <span class="dv">4</span>]</span>
+<span id="cb4-609"><a href="#cb4-609" aria-hidden="true" tabindex="-1"></a>muXs <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleLinear</span>()<span class="op">.</span><span class="fu">domain</span>(muDomain)<span class="op">.</span><span class="fu">ticks</span>(<span class="dv">401</span>)</span>
+<span id="cb4-610"><a href="#cb4-610" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-611"><a href="#cb4-611" aria-hidden="true" tabindex="-1"></a><span class="co">// Standard normal PDF/CDF helpers</span></span>
+<span id="cb4-612"><a href="#cb4-612" aria-hidden="true" tabindex="-1"></a><span class="cn">SQRT2</span> <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="dv">2</span>)</span>
+<span id="cb4-613"><a href="#cb4-613" aria-hidden="true" tabindex="-1"></a>SQRT2PI <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="dv">2</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span>)</span>
+<span id="cb4-614"><a href="#cb4-614" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-615"><a href="#cb4-615" aria-hidden="true" tabindex="-1"></a><span class="co">// erf approximation (Abramowitz &amp; Stegun 7.1.26)</span></span>
+<span id="cb4-616"><a href="#cb4-616" aria-hidden="true" tabindex="-1"></a>erf <span class="op">=</span> (x) <span class="kw">=&gt;</span> {</span>
+<span id="cb4-617"><a href="#cb4-617" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> sign <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sign</span>(x)<span class="op">;</span></span>
+<span id="cb4-618"><a href="#cb4-618" aria-hidden="true" tabindex="-1"></a>  x <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">abs</span>(x)<span class="op">;</span></span>
+<span id="cb4-619"><a href="#cb4-619" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> a1 <span class="op">=</span> <span class="fl">0.254829592</span><span class="op">,</span> a2 <span class="op">=</span> <span class="op">-</span><span class="fl">0.284496736</span><span class="op">,</span> a3 <span class="op">=</span> <span class="fl">1.421413741</span><span class="op">;</span></span>
+<span id="cb4-620"><a href="#cb4-620" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> a4 <span class="op">=</span> <span class="op">-</span><span class="fl">1.453152027</span><span class="op">,</span> a5 <span class="op">=</span> <span class="fl">1.061405429</span><span class="op">,</span> p <span class="op">=</span> <span class="fl">0.3275911</span><span class="op">;</span></span>
+<span id="cb4-621"><a href="#cb4-621" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> t <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> p <span class="op">*</span> x)<span class="op">;</span></span>
+<span id="cb4-622"><a href="#cb4-622" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> y <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> (((((a5 <span class="op">*</span> t <span class="op">+</span> a4) <span class="op">*</span> t) <span class="op">+</span> a3) <span class="op">*</span> t <span class="op">+</span> a2) <span class="op">*</span> t <span class="op">+</span> a1) <span class="op">*</span> t <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(<span class="op">-</span>x<span class="op">*</span>x)<span class="op">;</span></span>
+<span id="cb4-623"><a href="#cb4-623" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> sign <span class="op">*</span> y<span class="op">;</span></span>
+<span id="cb4-624"><a href="#cb4-624" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-625"><a href="#cb4-625" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-626"><a href="#cb4-626" aria-hidden="true" tabindex="-1"></a>normalCDF <span class="op">=</span> (x) <span class="kw">=&gt;</span> <span class="fl">0.5</span> <span class="op">*</span> (<span class="dv">1</span> <span class="op">+</span> <span class="fu">erf</span>(x <span class="op">/</span> <span class="cn">SQRT2</span>))</span>
+<span id="cb4-627"><a href="#cb4-627" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-628"><a href="#cb4-628" aria-hidden="true" tabindex="-1"></a><span class="co">// Inverse normal CDF (Acklam's approximation, high accuracy)</span></span>
+<span id="cb4-629"><a href="#cb4-629" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">normalInvCDF</span>(p){</span>
+<span id="cb4-630"><a href="#cb4-630" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Coefficients</span></span>
+<span id="cb4-631"><a href="#cb4-631" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> a <span class="op">=</span> [<span class="op">-</span><span class="fl">3.969683028665376e+01</span><span class="op">,</span>  <span class="fl">2.209460984245205e+02</span><span class="op">,</span> <span class="op">-</span><span class="fl">2.759285104469687e+02</span><span class="op">,</span></span>
+<span id="cb4-632"><a href="#cb4-632" aria-hidden="true" tabindex="-1"></a>              <span class="fl">1.383577518672690e+02</span><span class="op">,</span> <span class="op">-</span><span class="fl">3.066479806614716e+01</span><span class="op">,</span>  <span class="fl">2.506628277459239e+00</span>]<span class="op">;</span></span>
+<span id="cb4-633"><a href="#cb4-633" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> b <span class="op">=</span> [<span class="op">-</span><span class="fl">5.447609879822406e+01</span><span class="op">,</span>  <span class="fl">1.615858368580409e+02</span><span class="op">,</span> <span class="op">-</span><span class="fl">1.556989798598866e+02</span><span class="op">,</span></span>
+<span id="cb4-634"><a href="#cb4-634" aria-hidden="true" tabindex="-1"></a>              <span class="fl">6.680131188771972e+01</span><span class="op">,</span> <span class="op">-</span><span class="fl">1.328068155288572e+01</span>]<span class="op">;</span></span>
+<span id="cb4-635"><a href="#cb4-635" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> c <span class="op">=</span> [<span class="op">-</span><span class="fl">7.784894002430293e-03</span><span class="op">,</span> <span class="op">-</span><span class="fl">3.223964580411365e-01</span><span class="op">,</span> <span class="op">-</span><span class="fl">2.400758277161838e+00</span><span class="op">,</span></span>
+<span id="cb4-636"><a href="#cb4-636" aria-hidden="true" tabindex="-1"></a>             <span class="op">-</span><span class="fl">2.549732539343734e+00</span><span class="op">,</span>  <span class="fl">4.374664141464968e+00</span><span class="op">,</span>  <span class="fl">2.938163982698783e+00</span>]<span class="op">;</span></span>
+<span id="cb4-637"><a href="#cb4-637" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> d <span class="op">=</span> [ <span class="fl">7.784695709041462e-03</span><span class="op">,</span>  <span class="fl">3.224671290700398e-01</span><span class="op">,</span>  <span class="fl">2.445134137142996e+00</span><span class="op">,</span></span>
+<span id="cb4-638"><a href="#cb4-638" aria-hidden="true" tabindex="-1"></a>              <span class="fl">3.754408661907416e+00</span>]<span class="op">;</span></span>
+<span id="cb4-639"><a href="#cb4-639" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Break-points</span></span>
+<span id="cb4-640"><a href="#cb4-640" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> plow <span class="op">=</span> <span class="fl">0.02425</span><span class="op">,</span> phigh <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> plow<span class="op">;</span></span>
+<span id="cb4-641"><a href="#cb4-641" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> q<span class="op">,</span> r<span class="op">,</span> x<span class="op">;</span></span>
+<span id="cb4-642"><a href="#cb4-642" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (p <span class="op">&lt;</span> plow){</span>
+<span id="cb4-643"><a href="#cb4-643" aria-hidden="true" tabindex="-1"></a>    q <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="op">-</span><span class="dv">2</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">log</span>(p))<span class="op">;</span></span>
+<span id="cb4-644"><a href="#cb4-644" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> (((((c[<span class="dv">0</span>]<span class="op">*</span>q <span class="op">+</span> c[<span class="dv">1</span>])<span class="op">*</span>q <span class="op">+</span> c[<span class="dv">2</span>])<span class="op">*</span>q <span class="op">+</span> c[<span class="dv">3</span>])<span class="op">*</span>q <span class="op">+</span> c[<span class="dv">4</span>])<span class="op">*</span>q <span class="op">+</span> c[<span class="dv">5</span>]) <span class="op">/</span></span>
+<span id="cb4-645"><a href="#cb4-645" aria-hidden="true" tabindex="-1"></a>        ((((d[<span class="dv">0</span>]<span class="op">*</span>q <span class="op">+</span> d[<span class="dv">1</span>])<span class="op">*</span>q <span class="op">+</span> d[<span class="dv">2</span>])<span class="op">*</span>q <span class="op">+</span> d[<span class="dv">3</span>])<span class="op">*</span>q <span class="op">+</span> <span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb4-646"><a href="#cb4-646" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (p <span class="op">&gt;</span> phigh){</span>
+<span id="cb4-647"><a href="#cb4-647" aria-hidden="true" tabindex="-1"></a>    q <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="op">-</span><span class="dv">2</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">log</span>(<span class="dv">1</span> <span class="op">-</span> p))<span class="op">;</span></span>
+<span id="cb4-648"><a href="#cb4-648" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="op">-</span>(((((c[<span class="dv">0</span>]<span class="op">*</span>q <span class="op">+</span> c[<span class="dv">1</span>])<span class="op">*</span>q <span class="op">+</span> c[<span class="dv">2</span>])<span class="op">*</span>q <span class="op">+</span> c[<span class="dv">3</span>])<span class="op">*</span>q <span class="op">+</span> c[<span class="dv">4</span>])<span class="op">*</span>q <span class="op">+</span> c[<span class="dv">5</span>]) <span class="op">/</span></span>
+<span id="cb4-649"><a href="#cb4-649" aria-hidden="true" tabindex="-1"></a>          ((((d[<span class="dv">0</span>]<span class="op">*</span>q <span class="op">+</span> d[<span class="dv">1</span>])<span class="op">*</span>q <span class="op">+</span> d[<span class="dv">2</span>])<span class="op">*</span>q <span class="op">+</span> d[<span class="dv">3</span>])<span class="op">*</span>q <span class="op">+</span> <span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb4-650"><a href="#cb4-650" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb4-651"><a href="#cb4-651" aria-hidden="true" tabindex="-1"></a>    q <span class="op">=</span> p <span class="op">-</span> <span class="fl">0.5</span><span class="op">;</span> r <span class="op">=</span> q<span class="op">*</span>q<span class="op">;</span></span>
+<span id="cb4-652"><a href="#cb4-652" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> (((((a[<span class="dv">0</span>]<span class="op">*</span>r <span class="op">+</span> a[<span class="dv">1</span>])<span class="op">*</span>r <span class="op">+</span> a[<span class="dv">2</span>])<span class="op">*</span>r <span class="op">+</span> a[<span class="dv">3</span>])<span class="op">*</span>r <span class="op">+</span> a[<span class="dv">4</span>])<span class="op">*</span>r <span class="op">+</span> a[<span class="dv">5</span>]) <span class="op">*</span> q <span class="op">/</span></span>
+<span id="cb4-653"><a href="#cb4-653" aria-hidden="true" tabindex="-1"></a>        (((((b[<span class="dv">0</span>]<span class="op">*</span>r <span class="op">+</span> b[<span class="dv">1</span>])<span class="op">*</span>r <span class="op">+</span> b[<span class="dv">2</span>])<span class="op">*</span>r <span class="op">+</span> b[<span class="dv">3</span>])<span class="op">*</span>r <span class="op">+</span> b[<span class="dv">4</span>])<span class="op">*</span>r <span class="op">+</span> <span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb4-654"><a href="#cb4-654" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-655"><a href="#cb4-655" aria-hidden="true" tabindex="-1"></a>  <span class="co">// One step of Halley refinement</span></span>
+<span id="cb4-656"><a href="#cb4-656" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> e <span class="op">=</span> <span class="fu">normalCDF</span>(x) <span class="op">-</span> p<span class="op">;</span></span>
+<span id="cb4-657"><a href="#cb4-657" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> u <span class="op">=</span> e <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="dv">2</span><span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span>) <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(x<span class="op">*</span>x<span class="op">/</span><span class="dv">2</span>)<span class="op">;</span></span>
+<span id="cb4-658"><a href="#cb4-658" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> x <span class="op">-</span> u <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> x<span class="op">*</span>u<span class="op">/</span><span class="dv">2</span>)<span class="op">;</span></span>
+<span id="cb4-659"><a href="#cb4-659" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-660"><a href="#cb4-660" aria-hidden="true" tabindex="-1"></a><span class="co">// Critical values based on current alpha</span></span>
+<span id="cb4-661"><a href="#cb4-661" aria-hidden="true" tabindex="-1"></a>z_twoSided <span class="op">=</span> <span class="fu">normalInvCDF</span>(<span class="dv">1</span> <span class="op">-</span> alphaValue <span class="op">/</span> <span class="dv">2</span>)</span>
+<span id="cb4-662"><a href="#cb4-662" aria-hidden="true" tabindex="-1"></a>z_oneSided <span class="op">=</span> <span class="fu">normalInvCDF</span>(<span class="dv">1</span> <span class="op">-</span> alphaValue)</span>
+<span id="cb4-663"><a href="#cb4-663" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-664"><a href="#cb4-664" aria-hidden="true" tabindex="-1"></a><span class="co">// Power functions using dynamic critical values</span></span>
+<span id="cb4-665"><a href="#cb4-665" aria-hidden="true" tabindex="-1"></a>powerTwoSided <span class="op">=</span> (mu) <span class="kw">=&gt;</span> {</span>
+<span id="cb4-666"><a href="#cb4-666" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Power(μ) = P(|T| &gt; z | μ) = Φ(μ - z) + Φ(-μ - z)</span></span>
+<span id="cb4-667"><a href="#cb4-667" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">normalCDF</span>(mu <span class="op">-</span> z_twoSided) <span class="op">+</span> <span class="fu">normalCDF</span>(<span class="op">-</span>mu <span class="op">-</span> z_twoSided)<span class="op">;</span></span>
+<span id="cb4-668"><a href="#cb4-668" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-669"><a href="#cb4-669" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-670"><a href="#cb4-670" aria-hidden="true" tabindex="-1"></a>powerOneSided <span class="op">=</span> (mu) <span class="kw">=&gt;</span> {</span>
+<span id="cb4-671"><a href="#cb4-671" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Power(μ) = P(T &gt; z | μ) = 1 - Φ(z - μ)</span></span>
+<span id="cb4-672"><a href="#cb4-672" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="dv">1</span> <span class="op">-</span> <span class="fu">normalCDF</span>(z_oneSided <span class="op">-</span> mu)<span class="op">;</span></span>
+<span id="cb4-673"><a href="#cb4-673" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-674"><a href="#cb4-674" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-675"><a href="#cb4-675" aria-hidden="true" tabindex="-1"></a><span class="co">// Build curves</span></span>
+<span id="cb4-676"><a href="#cb4-676" aria-hidden="true" tabindex="-1"></a>twoSided <span class="op">=</span> muXs<span class="op">.</span><span class="fu">map</span>(mu <span class="kw">=&gt;</span> ({ mu<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">powerTwoSided</span>(mu)<span class="op">,</span> <span class="dt">which</span><span class="op">:</span> <span class="st">"Two-sided"</span> }))</span>
+<span id="cb4-677"><a href="#cb4-677" aria-hidden="true" tabindex="-1"></a>oneSided <span class="op">=</span> muXs<span class="op">.</span><span class="fu">map</span>(mu <span class="kw">=&gt;</span> ({ mu<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">powerOneSided</span>(mu)<span class="op">,</span> <span class="dt">which</span><span class="op">:</span> <span class="st">"One-sided"</span> }))</span>
+<span id="cb4-678"><a href="#cb4-678" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-679"><a href="#cb4-679" aria-hidden="true" tabindex="-1"></a><span class="co">// Mark the μ=0 point (both equal α)</span></span>
+<span id="cb4-680"><a href="#cb4-680" aria-hidden="true" tabindex="-1"></a>at0 <span class="op">=</span> [</span>
+<span id="cb4-681"><a href="#cb4-681" aria-hidden="true" tabindex="-1"></a>  { <span class="dt">mu</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">powerTwoSided</span>(<span class="dv">0</span>)<span class="op">,</span> <span class="dt">which</span><span class="op">:</span> <span class="st">"Two-sided"</span> }<span class="op">,</span></span>
+<span id="cb4-682"><a href="#cb4-682" aria-hidden="true" tabindex="-1"></a>  { <span class="dt">mu</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">powerOneSided</span>(<span class="dv">0</span>)<span class="op">,</span> <span class="dt">which</span><span class="op">:</span> <span class="st">"One-sided"</span> }</span>
+<span id="cb4-683"><a href="#cb4-683" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb4-684"><a href="#cb4-684" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-685"><a href="#cb4-685" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-686"><a href="#cb4-686" aria-hidden="true" tabindex="-1"></a><span class="co">// On-curve label anchors (choose different μ to avoid overlap)</span></span>
+<span id="cb4-687"><a href="#cb4-687" aria-hidden="true" tabindex="-1"></a>muLabelTwo <span class="op">=</span> <span class="fl">2.4</span></span>
+<span id="cb4-688"><a href="#cb4-688" aria-hidden="true" tabindex="-1"></a>muLabelOne <span class="op">=</span> <span class="fl">1.2</span></span>
+<span id="cb4-689"><a href="#cb4-689" aria-hidden="true" tabindex="-1"></a>labelDots <span class="op">=</span> [</span>
+<span id="cb4-690"><a href="#cb4-690" aria-hidden="true" tabindex="-1"></a>  { <span class="dt">mu</span><span class="op">:</span> muLabelTwo<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">powerTwoSided</span>(muLabelTwo)<span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Two-sided"</span><span class="op">,</span> <span class="dt">color</span><span class="op">:</span> <span class="st">"var(--brand-teal)"</span> }<span class="op">,</span></span>
+<span id="cb4-691"><a href="#cb4-691" aria-hidden="true" tabindex="-1"></a>  { <span class="dt">mu</span><span class="op">:</span> muLabelOne<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">powerOneSided</span>(muLabelOne)<span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"One-sided"</span><span class="op">,</span> <span class="dt">color</span><span class="op">:</span> <span class="st">"var(--brand-red)"</span> }</span>
+<span id="cb4-692"><a href="#cb4-692" aria-hidden="true" tabindex="-1"></a>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-4-1" data-nodetype="declaration">
@@ -1618,115 +1674,115 @@ R_\alpha^{(2)} = \{\, T &gt; z_{1-\alpha} \,\}.
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb5" data-startfrom="658" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 657;"><span id="cb5-658"><a href="#cb5-658" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb5-659"><a href="#cb5-659" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> plot <span class="op">=</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb5-660"><a href="#cb5-660" aria-hidden="true" tabindex="-1"></a>    <span class="dt">height</span><span class="op">:</span> <span class="dv">340</span><span class="op">,</span></span>
-<span id="cb5-661"><a href="#cb5-661" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">52</span><span class="op">,</span></span>
-<span id="cb5-662"><a href="#cb5-662" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">46</span><span class="op">,</span></span>
-<span id="cb5-663"><a href="#cb5-663" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marginTop</span><span class="op">:</span> <span class="dv">40</span><span class="op">,</span></span>
-<span id="cb5-664"><a href="#cb5-664" aria-hidden="true" tabindex="-1"></a>    <span class="dt">x</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">"Effect size μ"</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> muDomain }<span class="op">,</span></span>
-<span id="cb5-665"><a href="#cb5-665" aria-hidden="true" tabindex="-1"></a>    <span class="dt">y</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">"Power"</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>] }<span class="op">,</span></span>
-<span id="cb5-666"><a href="#cb5-666" aria-hidden="true" tabindex="-1"></a>    <span class="dt">style</span><span class="op">:</span> {</span>
-<span id="cb5-667"><a href="#cb5-667" aria-hidden="true" tabindex="-1"></a>      <span class="dt">background</span><span class="op">:</span> <span class="st">"var(--brand-bg)"</span><span class="op">,</span></span>
-<span id="cb5-668"><a href="#cb5-668" aria-hidden="true" tabindex="-1"></a>      <span class="dt">color</span><span class="op">:</span> <span class="st">"var(--brand-fg)"</span><span class="op">,</span></span>
-<span id="cb5-669"><a href="#cb5-669" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontFamily</span><span class="op">:</span> bodyFont<span class="op">,</span></span>
-<span id="cb5-670"><a href="#cb5-670" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontSize</span><span class="op">:</span> <span class="dv">12</span></span>
-<span id="cb5-671"><a href="#cb5-671" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
-<span id="cb5-672"><a href="#cb5-672" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb5-673"><a href="#cb5-673" aria-hidden="true" tabindex="-1"></a>      <span class="co">// baseline and bands</span></span>
-<span id="cb5-674"><a href="#cb5-674" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>]<span class="op">,</span> { <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--border)"</span><span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.6</span> })<span class="op">,</span></span>
-<span id="cb5-675"><a href="#cb5-675" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">1</span>]<span class="op">,</span> { <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--border)"</span><span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.15</span> })<span class="op">,</span></span>
-<span id="cb5-676"><a href="#cb5-676" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">ruleY</span>([alphaValue]<span class="op">,</span> { </span>
-<span id="cb5-677"><a href="#cb5-677" aria-hidden="true" tabindex="-1"></a>        <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--brand-fg)"</span><span class="op">,</span> </span>
-<span id="cb5-678"><a href="#cb5-678" aria-hidden="true" tabindex="-1"></a>        <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> </span>
-<span id="cb5-679"><a href="#cb5-679" aria-hidden="true" tabindex="-1"></a>        <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.3</span><span class="op">,</span> </span>
-<span id="cb5-680"><a href="#cb5-680" aria-hidden="true" tabindex="-1"></a>        <span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"6,3"</span> </span>
-<span id="cb5-681"><a href="#cb5-681" aria-hidden="true" tabindex="-1"></a>      })<span class="op">,</span></span>
-<span id="cb5-682"><a href="#cb5-682" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">ruleX</span>([<span class="dv">0</span>]<span class="op">,</span> { </span>
-<span id="cb5-683"><a href="#cb5-683" aria-hidden="true" tabindex="-1"></a>        <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--brand-fg)"</span><span class="op">,</span> </span>
-<span id="cb5-684"><a href="#cb5-684" aria-hidden="true" tabindex="-1"></a>        <span class="dt">strokeWidth</span><span class="op">:</span> <span class="fl">1.5</span><span class="op">,</span> </span>
-<span id="cb5-685"><a href="#cb5-685" aria-hidden="true" tabindex="-1"></a>        <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.35</span><span class="op">,</span> </span>
-<span id="cb5-686"><a href="#cb5-686" aria-hidden="true" tabindex="-1"></a>        <span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"3,3"</span> </span>
-<span id="cb5-687"><a href="#cb5-687" aria-hidden="true" tabindex="-1"></a>      })<span class="op">,</span></span>
-<span id="cb5-688"><a href="#cb5-688" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-689"><a href="#cb5-689" aria-hidden="true" tabindex="-1"></a>      <span class="co">// two-sided curve &amp; light fill</span></span>
-<span id="cb5-690"><a href="#cb5-690" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">areaY</span>(twoSided<span class="op">,</span> { </span>
-<span id="cb5-691"><a href="#cb5-691" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"mu"</span><span class="op">,</span> </span>
-<span id="cb5-692"><a href="#cb5-692" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> </span>
-<span id="cb5-693"><a href="#cb5-693" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fill</span><span class="op">:</span> <span class="st">"var(--brand-teal)"</span><span class="op">,</span> </span>
-<span id="cb5-694"><a href="#cb5-694" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.10</span> </span>
-<span id="cb5-695"><a href="#cb5-695" aria-hidden="true" tabindex="-1"></a>      })<span class="op">,</span></span>
-<span id="cb5-696"><a href="#cb5-696" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">lineY</span>(twoSided<span class="op">,</span> { </span>
-<span id="cb5-697"><a href="#cb5-697" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"mu"</span><span class="op">,</span> </span>
-<span id="cb5-698"><a href="#cb5-698" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> </span>
-<span id="cb5-699"><a href="#cb5-699" aria-hidden="true" tabindex="-1"></a>        <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--brand-teal)"</span><span class="op">,</span> </span>
-<span id="cb5-700"><a href="#cb5-700" aria-hidden="true" tabindex="-1"></a>        <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span> </span>
-<span id="cb5-701"><a href="#cb5-701" aria-hidden="true" tabindex="-1"></a>      })<span class="op">,</span></span>
-<span id="cb5-702"><a href="#cb5-702" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-703"><a href="#cb5-703" aria-hidden="true" tabindex="-1"></a>      <span class="co">// one-sided curve &amp; light fill</span></span>
-<span id="cb5-704"><a href="#cb5-704" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">areaY</span>(oneSided<span class="op">,</span> { </span>
-<span id="cb5-705"><a href="#cb5-705" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"mu"</span><span class="op">,</span> </span>
-<span id="cb5-706"><a href="#cb5-706" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> </span>
-<span id="cb5-707"><a href="#cb5-707" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fill</span><span class="op">:</span> <span class="st">"var(--brand-red)"</span><span class="op">,</span> </span>
-<span id="cb5-708"><a href="#cb5-708" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.10</span> </span>
-<span id="cb5-709"><a href="#cb5-709" aria-hidden="true" tabindex="-1"></a>      })<span class="op">,</span></span>
-<span id="cb5-710"><a href="#cb5-710" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">lineY</span>(oneSided<span class="op">,</span> { </span>
-<span id="cb5-711"><a href="#cb5-711" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"mu"</span><span class="op">,</span> </span>
-<span id="cb5-712"><a href="#cb5-712" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> </span>
-<span id="cb5-713"><a href="#cb5-713" aria-hidden="true" tabindex="-1"></a>        <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--brand-red)"</span><span class="op">,</span> </span>
-<span id="cb5-714"><a href="#cb5-714" aria-hidden="true" tabindex="-1"></a>        <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span> </span>
-<span id="cb5-715"><a href="#cb5-715" aria-hidden="true" tabindex="-1"></a>      })<span class="op">,</span></span>
-<span id="cb5-716"><a href="#cb5-716" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-717"><a href="#cb5-717" aria-hidden="true" tabindex="-1"></a>      <span class="co">// points at μ=0 (both equal α)</span></span>
-<span id="cb5-718"><a href="#cb5-718" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">dot</span>(at0<span class="op">,</span> { </span>
-<span id="cb5-719"><a href="#cb5-719" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"mu"</span><span class="op">,</span> </span>
-<span id="cb5-720"><a href="#cb5-720" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> </span>
-<span id="cb5-721"><a href="#cb5-721" aria-hidden="true" tabindex="-1"></a>        <span class="dt">r</span><span class="op">:</span> <span class="dv">4</span><span class="op">,</span> </span>
-<span id="cb5-722"><a href="#cb5-722" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fill</span><span class="op">:</span> <span class="st">"var(--brand-fg)"</span><span class="op">,</span></span>
-<span id="cb5-723"><a href="#cb5-723" aria-hidden="true" tabindex="-1"></a>        <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--brand-bg)"</span><span class="op">,</span></span>
-<span id="cb5-724"><a href="#cb5-724" aria-hidden="true" tabindex="-1"></a>        <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span></span>
-<span id="cb5-725"><a href="#cb5-725" aria-hidden="true" tabindex="-1"></a>      })<span class="op">,</span></span>
-<span id="cb5-726"><a href="#cb5-726" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb5-727"><a href="#cb5-727" aria-hidden="true" tabindex="-1"></a>      <span class="co">// On-curve labels (placed at different μ values)</span></span>
-<span id="cb5-728"><a href="#cb5-728" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">dot</span>(labelDots<span class="op">,</span> { <span class="dt">x</span><span class="op">:</span> <span class="st">"mu"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">r</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">color</span> })<span class="op">,</span></span>
-<span id="cb5-729"><a href="#cb5-729" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">text</span>(labelDots<span class="op">,</span> { </span>
-<span id="cb5-730"><a href="#cb5-730" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"mu"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">text</span><span class="op">:</span> <span class="st">"label"</span><span class="op">,</span> </span>
-<span id="cb5-731"><a href="#cb5-731" aria-hidden="true" tabindex="-1"></a>        <span class="dt">dx</span><span class="op">:</span> <span class="op">-</span><span class="dv">30</span><span class="op">,</span> <span class="dt">dy</span><span class="op">:</span> <span class="op">-</span><span class="dv">20</span><span class="op">,</span> </span>
-<span id="cb5-732"><a href="#cb5-732" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fill</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">color</span><span class="op">,</span> </span>
-<span id="cb5-733"><a href="#cb5-733" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fontWeight</span><span class="op">:</span> <span class="st">"bold"</span></span>
-<span id="cb5-734"><a href="#cb5-734" aria-hidden="true" tabindex="-1"></a>      })<span class="op">,</span></span>
-<span id="cb5-735"><a href="#cb5-735" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-736"><a href="#cb5-736" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb5-737"><a href="#cb5-737" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Alpha level annotation</span></span>
-<span id="cb5-738"><a href="#cb5-738" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">text</span>([{<span class="dt">x</span><span class="op">:</span> <span class="op">-</span><span class="fl">3.5</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> alphaValue}]<span class="op">,</span> {</span>
-<span id="cb5-739"><a href="#cb5-739" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span></span>
-<span id="cb5-740"><a href="#cb5-740" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span></span>
-<span id="cb5-741"><a href="#cb5-741" aria-hidden="true" tabindex="-1"></a>        <span class="dt">text</span><span class="op">:</span> d <span class="kw">=&gt;</span> <span class="vs">`α = </span><span class="sc">${</span>alphaValue<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">`</span><span class="op">,</span></span>
-<span id="cb5-742"><a href="#cb5-742" aria-hidden="true" tabindex="-1"></a>        <span class="dt">dx</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span></span>
-<span id="cb5-743"><a href="#cb5-743" aria-hidden="true" tabindex="-1"></a>        <span class="dt">dy</span><span class="op">:</span> <span class="op">-</span><span class="dv">8</span><span class="op">,</span></span>
-<span id="cb5-744"><a href="#cb5-744" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fontSize</span><span class="op">:</span> <span class="dv">11</span><span class="op">,</span></span>
-<span id="cb5-745"><a href="#cb5-745" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fill</span><span class="op">:</span> <span class="st">"var(--brand-fg)"</span><span class="op">,</span></span>
-<span id="cb5-746"><a href="#cb5-746" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.7</span></span>
-<span id="cb5-747"><a href="#cb5-747" aria-hidden="true" tabindex="-1"></a>      })</span>
-<span id="cb5-748"><a href="#cb5-748" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb5-749"><a href="#cb5-749" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
-<span id="cb5-750"><a href="#cb5-750" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-751"><a href="#cb5-751" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Display info about current settings</span></span>
-<span id="cb5-752"><a href="#cb5-752" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> info <span class="op">=</span> <span class="fu">html</span><span class="vs">`</span></span>
-<span id="cb5-753"><a href="#cb5-753" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div style="margin-top: 10px; padding: 10px; background: var(--header-bg); border-radius: 4px; font-size: 13px;"&gt;</span></span>
-<span id="cb5-754"><a href="#cb5-754" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;strong&gt;Settings:&lt;/strong&gt; α = </span><span class="sc">${</span>alphaValue<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="vs"> | </span></span>
-<span id="cb5-755"><a href="#cb5-755" aria-hidden="true" tabindex="-1"></a><span class="vs">      Critical values: z&lt;sub&gt;</span><span class="sc">${</span>(<span class="dv">1</span> <span class="op">-</span> alphaValue<span class="op">/</span><span class="dv">2</span>)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="vs">&lt;/sub&gt; = </span><span class="sc">${</span>z_twoSided<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="vs"> (two-sided), </span></span>
-<span id="cb5-756"><a href="#cb5-756" aria-hidden="true" tabindex="-1"></a><span class="vs">      z&lt;sub&gt;</span><span class="sc">${</span>(<span class="dv">1</span> <span class="op">-</span> alphaValue)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="vs">&lt;/sub&gt; = </span><span class="sc">${</span>z_oneSided<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="vs"> (one-sided) |</span></span>
-<span id="cb5-757"><a href="#cb5-757" aria-hidden="true" tabindex="-1"></a><span class="vs">      Power at μ=0: </span><span class="sc">${</span>(alphaValue)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="sc">}</span></span>
-<span id="cb5-758"><a href="#cb5-758" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;</span></span>
-<span id="cb5-759"><a href="#cb5-759" aria-hidden="true" tabindex="-1"></a><span class="vs">  `</span><span class="op">;</span></span>
-<span id="cb5-760"><a href="#cb5-760" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-761"><a href="#cb5-761" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">html</span><span class="vs">`&lt;div style="width: 100%; max-width: 960px; margin: 0 auto;"&gt;</span></span>
-<span id="cb5-762"><a href="#cb5-762" aria-hidden="true" tabindex="-1"></a><span class="vs">    </span><span class="sc">${</span>plot<span class="sc">}</span></span>
-<span id="cb5-763"><a href="#cb5-763" aria-hidden="true" tabindex="-1"></a><span class="vs">    </span><span class="sc">${</span>info<span class="sc">}</span></span>
-<span id="cb5-764"><a href="#cb5-764" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;`</span><span class="op">;</span></span>
-<span id="cb5-765"><a href="#cb5-765" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-766"><a href="#cb5-766" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb5" data-startfrom="701" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 700;"><span id="cb5-701"><a href="#cb5-701" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb5-702"><a href="#cb5-702" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> plot <span class="op">=</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb5-703"><a href="#cb5-703" aria-hidden="true" tabindex="-1"></a>    <span class="dt">height</span><span class="op">:</span> <span class="dv">340</span><span class="op">,</span></span>
+<span id="cb5-704"><a href="#cb5-704" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">52</span><span class="op">,</span></span>
+<span id="cb5-705"><a href="#cb5-705" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">46</span><span class="op">,</span></span>
+<span id="cb5-706"><a href="#cb5-706" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marginTop</span><span class="op">:</span> <span class="dv">40</span><span class="op">,</span></span>
+<span id="cb5-707"><a href="#cb5-707" aria-hidden="true" tabindex="-1"></a>    <span class="dt">x</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">"Effect size μ"</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> muDomain }<span class="op">,</span></span>
+<span id="cb5-708"><a href="#cb5-708" aria-hidden="true" tabindex="-1"></a>    <span class="dt">y</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">"Power"</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>] }<span class="op">,</span></span>
+<span id="cb5-709"><a href="#cb5-709" aria-hidden="true" tabindex="-1"></a>    <span class="dt">style</span><span class="op">:</span> {</span>
+<span id="cb5-710"><a href="#cb5-710" aria-hidden="true" tabindex="-1"></a>      <span class="dt">background</span><span class="op">:</span> <span class="st">"var(--brand-bg)"</span><span class="op">,</span></span>
+<span id="cb5-711"><a href="#cb5-711" aria-hidden="true" tabindex="-1"></a>      <span class="dt">color</span><span class="op">:</span> <span class="st">"var(--brand-fg)"</span><span class="op">,</span></span>
+<span id="cb5-712"><a href="#cb5-712" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontFamily</span><span class="op">:</span> bodyFont<span class="op">,</span></span>
+<span id="cb5-713"><a href="#cb5-713" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontSize</span><span class="op">:</span> <span class="dv">12</span></span>
+<span id="cb5-714"><a href="#cb5-714" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb5-715"><a href="#cb5-715" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb5-716"><a href="#cb5-716" aria-hidden="true" tabindex="-1"></a>      <span class="co">// baseline and bands</span></span>
+<span id="cb5-717"><a href="#cb5-717" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>]<span class="op">,</span> { <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--border)"</span><span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.6</span> })<span class="op">,</span></span>
+<span id="cb5-718"><a href="#cb5-718" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">1</span>]<span class="op">,</span> { <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--border)"</span><span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.15</span> })<span class="op">,</span></span>
+<span id="cb5-719"><a href="#cb5-719" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">ruleY</span>([alphaValue]<span class="op">,</span> { </span>
+<span id="cb5-720"><a href="#cb5-720" aria-hidden="true" tabindex="-1"></a>        <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--brand-fg)"</span><span class="op">,</span> </span>
+<span id="cb5-721"><a href="#cb5-721" aria-hidden="true" tabindex="-1"></a>        <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> </span>
+<span id="cb5-722"><a href="#cb5-722" aria-hidden="true" tabindex="-1"></a>        <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.3</span><span class="op">,</span> </span>
+<span id="cb5-723"><a href="#cb5-723" aria-hidden="true" tabindex="-1"></a>        <span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"6,3"</span> </span>
+<span id="cb5-724"><a href="#cb5-724" aria-hidden="true" tabindex="-1"></a>      })<span class="op">,</span></span>
+<span id="cb5-725"><a href="#cb5-725" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">ruleX</span>([<span class="dv">0</span>]<span class="op">,</span> { </span>
+<span id="cb5-726"><a href="#cb5-726" aria-hidden="true" tabindex="-1"></a>        <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--brand-fg)"</span><span class="op">,</span> </span>
+<span id="cb5-727"><a href="#cb5-727" aria-hidden="true" tabindex="-1"></a>        <span class="dt">strokeWidth</span><span class="op">:</span> <span class="fl">1.5</span><span class="op">,</span> </span>
+<span id="cb5-728"><a href="#cb5-728" aria-hidden="true" tabindex="-1"></a>        <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.35</span><span class="op">,</span> </span>
+<span id="cb5-729"><a href="#cb5-729" aria-hidden="true" tabindex="-1"></a>        <span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"3,3"</span> </span>
+<span id="cb5-730"><a href="#cb5-730" aria-hidden="true" tabindex="-1"></a>      })<span class="op">,</span></span>
+<span id="cb5-731"><a href="#cb5-731" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-732"><a href="#cb5-732" aria-hidden="true" tabindex="-1"></a>      <span class="co">// two-sided curve &amp; light fill</span></span>
+<span id="cb5-733"><a href="#cb5-733" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">areaY</span>(twoSided<span class="op">,</span> { </span>
+<span id="cb5-734"><a href="#cb5-734" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"mu"</span><span class="op">,</span> </span>
+<span id="cb5-735"><a href="#cb5-735" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> </span>
+<span id="cb5-736"><a href="#cb5-736" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fill</span><span class="op">:</span> <span class="st">"var(--brand-teal)"</span><span class="op">,</span> </span>
+<span id="cb5-737"><a href="#cb5-737" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.10</span> </span>
+<span id="cb5-738"><a href="#cb5-738" aria-hidden="true" tabindex="-1"></a>      })<span class="op">,</span></span>
+<span id="cb5-739"><a href="#cb5-739" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">lineY</span>(twoSided<span class="op">,</span> { </span>
+<span id="cb5-740"><a href="#cb5-740" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"mu"</span><span class="op">,</span> </span>
+<span id="cb5-741"><a href="#cb5-741" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> </span>
+<span id="cb5-742"><a href="#cb5-742" aria-hidden="true" tabindex="-1"></a>        <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--brand-teal)"</span><span class="op">,</span> </span>
+<span id="cb5-743"><a href="#cb5-743" aria-hidden="true" tabindex="-1"></a>        <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span> </span>
+<span id="cb5-744"><a href="#cb5-744" aria-hidden="true" tabindex="-1"></a>      })<span class="op">,</span></span>
+<span id="cb5-745"><a href="#cb5-745" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-746"><a href="#cb5-746" aria-hidden="true" tabindex="-1"></a>      <span class="co">// one-sided curve &amp; light fill</span></span>
+<span id="cb5-747"><a href="#cb5-747" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">areaY</span>(oneSided<span class="op">,</span> { </span>
+<span id="cb5-748"><a href="#cb5-748" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"mu"</span><span class="op">,</span> </span>
+<span id="cb5-749"><a href="#cb5-749" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> </span>
+<span id="cb5-750"><a href="#cb5-750" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fill</span><span class="op">:</span> <span class="st">"var(--brand-red)"</span><span class="op">,</span> </span>
+<span id="cb5-751"><a href="#cb5-751" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.10</span> </span>
+<span id="cb5-752"><a href="#cb5-752" aria-hidden="true" tabindex="-1"></a>      })<span class="op">,</span></span>
+<span id="cb5-753"><a href="#cb5-753" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">lineY</span>(oneSided<span class="op">,</span> { </span>
+<span id="cb5-754"><a href="#cb5-754" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"mu"</span><span class="op">,</span> </span>
+<span id="cb5-755"><a href="#cb5-755" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> </span>
+<span id="cb5-756"><a href="#cb5-756" aria-hidden="true" tabindex="-1"></a>        <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--brand-red)"</span><span class="op">,</span> </span>
+<span id="cb5-757"><a href="#cb5-757" aria-hidden="true" tabindex="-1"></a>        <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span> </span>
+<span id="cb5-758"><a href="#cb5-758" aria-hidden="true" tabindex="-1"></a>      })<span class="op">,</span></span>
+<span id="cb5-759"><a href="#cb5-759" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-760"><a href="#cb5-760" aria-hidden="true" tabindex="-1"></a>      <span class="co">// points at μ=0 (both equal α)</span></span>
+<span id="cb5-761"><a href="#cb5-761" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">dot</span>(at0<span class="op">,</span> { </span>
+<span id="cb5-762"><a href="#cb5-762" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"mu"</span><span class="op">,</span> </span>
+<span id="cb5-763"><a href="#cb5-763" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> </span>
+<span id="cb5-764"><a href="#cb5-764" aria-hidden="true" tabindex="-1"></a>        <span class="dt">r</span><span class="op">:</span> <span class="dv">4</span><span class="op">,</span> </span>
+<span id="cb5-765"><a href="#cb5-765" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fill</span><span class="op">:</span> <span class="st">"var(--brand-fg)"</span><span class="op">,</span></span>
+<span id="cb5-766"><a href="#cb5-766" aria-hidden="true" tabindex="-1"></a>        <span class="dt">stroke</span><span class="op">:</span> <span class="st">"var(--brand-bg)"</span><span class="op">,</span></span>
+<span id="cb5-767"><a href="#cb5-767" aria-hidden="true" tabindex="-1"></a>        <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span></span>
+<span id="cb5-768"><a href="#cb5-768" aria-hidden="true" tabindex="-1"></a>      })<span class="op">,</span></span>
+<span id="cb5-769"><a href="#cb5-769" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb5-770"><a href="#cb5-770" aria-hidden="true" tabindex="-1"></a>      <span class="co">// On-curve labels (placed at different μ values)</span></span>
+<span id="cb5-771"><a href="#cb5-771" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">dot</span>(labelDots<span class="op">,</span> { <span class="dt">x</span><span class="op">:</span> <span class="st">"mu"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">r</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">color</span> })<span class="op">,</span></span>
+<span id="cb5-772"><a href="#cb5-772" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">text</span>(labelDots<span class="op">,</span> { </span>
+<span id="cb5-773"><a href="#cb5-773" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"mu"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">text</span><span class="op">:</span> <span class="st">"label"</span><span class="op">,</span> </span>
+<span id="cb5-774"><a href="#cb5-774" aria-hidden="true" tabindex="-1"></a>        <span class="dt">dx</span><span class="op">:</span> <span class="op">-</span><span class="dv">30</span><span class="op">,</span> <span class="dt">dy</span><span class="op">:</span> <span class="op">-</span><span class="dv">20</span><span class="op">,</span> </span>
+<span id="cb5-775"><a href="#cb5-775" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fill</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">color</span><span class="op">,</span> </span>
+<span id="cb5-776"><a href="#cb5-776" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fontWeight</span><span class="op">:</span> <span class="st">"bold"</span></span>
+<span id="cb5-777"><a href="#cb5-777" aria-hidden="true" tabindex="-1"></a>      })<span class="op">,</span></span>
+<span id="cb5-778"><a href="#cb5-778" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-779"><a href="#cb5-779" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb5-780"><a href="#cb5-780" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Alpha level annotation</span></span>
+<span id="cb5-781"><a href="#cb5-781" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">text</span>([{<span class="dt">x</span><span class="op">:</span> <span class="op">-</span><span class="fl">3.5</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> alphaValue}]<span class="op">,</span> {</span>
+<span id="cb5-782"><a href="#cb5-782" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span></span>
+<span id="cb5-783"><a href="#cb5-783" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span></span>
+<span id="cb5-784"><a href="#cb5-784" aria-hidden="true" tabindex="-1"></a>        <span class="dt">text</span><span class="op">:</span> d <span class="kw">=&gt;</span> <span class="vs">`α = </span><span class="sc">${</span>alphaValue<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">`</span><span class="op">,</span></span>
+<span id="cb5-785"><a href="#cb5-785" aria-hidden="true" tabindex="-1"></a>        <span class="dt">dx</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span></span>
+<span id="cb5-786"><a href="#cb5-786" aria-hidden="true" tabindex="-1"></a>        <span class="dt">dy</span><span class="op">:</span> <span class="op">-</span><span class="dv">8</span><span class="op">,</span></span>
+<span id="cb5-787"><a href="#cb5-787" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fontSize</span><span class="op">:</span> <span class="dv">11</span><span class="op">,</span></span>
+<span id="cb5-788"><a href="#cb5-788" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fill</span><span class="op">:</span> <span class="st">"var(--brand-fg)"</span><span class="op">,</span></span>
+<span id="cb5-789"><a href="#cb5-789" aria-hidden="true" tabindex="-1"></a>        <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.7</span></span>
+<span id="cb5-790"><a href="#cb5-790" aria-hidden="true" tabindex="-1"></a>      })</span>
+<span id="cb5-791"><a href="#cb5-791" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb5-792"><a href="#cb5-792" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb5-793"><a href="#cb5-793" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-794"><a href="#cb5-794" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Display info about current settings</span></span>
+<span id="cb5-795"><a href="#cb5-795" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> info <span class="op">=</span> <span class="fu">html</span><span class="vs">`</span></span>
+<span id="cb5-796"><a href="#cb5-796" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div style="margin-top: 10px; padding: 10px; background: var(--header-bg); border-radius: 4px; font-size: 13px;"&gt;</span></span>
+<span id="cb5-797"><a href="#cb5-797" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;strong&gt;Settings:&lt;/strong&gt; α = </span><span class="sc">${</span>alphaValue<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="vs"> | </span></span>
+<span id="cb5-798"><a href="#cb5-798" aria-hidden="true" tabindex="-1"></a><span class="vs">      Critical values: z&lt;sub&gt;</span><span class="sc">${</span>(<span class="dv">1</span> <span class="op">-</span> alphaValue<span class="op">/</span><span class="dv">2</span>)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="vs">&lt;/sub&gt; = </span><span class="sc">${</span>z_twoSided<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="vs"> (two-sided), </span></span>
+<span id="cb5-799"><a href="#cb5-799" aria-hidden="true" tabindex="-1"></a><span class="vs">      z&lt;sub&gt;</span><span class="sc">${</span>(<span class="dv">1</span> <span class="op">-</span> alphaValue)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="vs">&lt;/sub&gt; = </span><span class="sc">${</span>z_oneSided<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="vs"> (one-sided) |</span></span>
+<span id="cb5-800"><a href="#cb5-800" aria-hidden="true" tabindex="-1"></a><span class="vs">      Power at μ=0: </span><span class="sc">${</span>(alphaValue)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="sc">}</span></span>
+<span id="cb5-801"><a href="#cb5-801" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;</span></span>
+<span id="cb5-802"><a href="#cb5-802" aria-hidden="true" tabindex="-1"></a><span class="vs">  `</span><span class="op">;</span></span>
+<span id="cb5-803"><a href="#cb5-803" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-804"><a href="#cb5-804" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">html</span><span class="vs">`&lt;div style="width: 100%; max-width: 960px; margin: 0 auto;"&gt;</span></span>
+<span id="cb5-805"><a href="#cb5-805" aria-hidden="true" tabindex="-1"></a><span class="vs">    </span><span class="sc">${</span>plot<span class="sc">}</span></span>
+<span id="cb5-806"><a href="#cb5-806" aria-hidden="true" tabindex="-1"></a><span class="vs">    </span><span class="sc">${</span>info<span class="sc">}</span></span>
+<span id="cb5-807"><a href="#cb5-807" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb5-808"><a href="#cb5-808" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-809"><a href="#cb5-809" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div id="fig-power-one-vs-two" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-power-one-vs-two-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1741,81 +1797,81 @@ Figure&nbsp;9.1: Power curves for one-sided and two-sided z-tests, testing <span
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="771" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 770;"><span id="cb6-771"><a href="#cb6-771" aria-hidden="true" tabindex="-1"></a><span class="co">// Add custom CSS for the slider styling (without the details.controls-root requirement)</span></span>
-<span id="cb6-772"><a href="#cb6-772" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`&lt;style&gt;</span></span>
-<span id="cb6-773"><a href="#cb6-773" aria-hidden="true" tabindex="-1"></a><span class="vs">/* Style all range sliders in the document */</span></span>
-<span id="cb6-774"><a href="#cb6-774" aria-hidden="true" tabindex="-1"></a><span class="vs">input[type="range"] {</span></span>
-<span id="cb6-775"><a href="#cb6-775" aria-hidden="true" tabindex="-1"></a><span class="vs">  /* Reset browser defaults */</span></span>
-<span id="cb6-776"><a href="#cb6-776" aria-hidden="true" tabindex="-1"></a><span class="vs">  -webkit-appearance: none;</span></span>
-<span id="cb6-777"><a href="#cb6-777" aria-hidden="true" tabindex="-1"></a><span class="vs">  appearance: none;</span></span>
-<span id="cb6-778"><a href="#cb6-778" aria-hidden="true" tabindex="-1"></a><span class="vs">  </span></span>
-<span id="cb6-779"><a href="#cb6-779" aria-hidden="true" tabindex="-1"></a><span class="vs">  /* Layout */</span></span>
-<span id="cb6-780"><a href="#cb6-780" aria-hidden="true" tabindex="-1"></a><span class="vs">  width: 100%;</span></span>
-<span id="cb6-781"><a href="#cb6-781" aria-hidden="true" tabindex="-1"></a><span class="vs">  height: 18px;</span></span>
-<span id="cb6-782"><a href="#cb6-782" aria-hidden="true" tabindex="-1"></a><span class="vs">  background: transparent;</span></span>
-<span id="cb6-783"><a href="#cb6-783" aria-hidden="true" tabindex="-1"></a><span class="vs">  vertical-align: middle;</span></span>
-<span id="cb6-784"><a href="#cb6-784" aria-hidden="true" tabindex="-1"></a><span class="vs">  </span></span>
-<span id="cb6-785"><a href="#cb6-785" aria-hidden="true" tabindex="-1"></a><span class="vs">  /* Brand theming */</span></span>
-<span id="cb6-786"><a href="#cb6-786" aria-hidden="true" tabindex="-1"></a><span class="vs">  accent-color: var(--ctrl-brand);</span></span>
-<span id="cb6-787"><a href="#cb6-787" aria-hidden="true" tabindex="-1"></a><span class="vs">}</span></span>
-<span id="cb6-788"><a href="#cb6-788" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-789"><a href="#cb6-789" aria-hidden="true" tabindex="-1"></a><span class="vs">/* Hide the number input box that appears with Inputs.range */</span></span>
-<span id="cb6-790"><a href="#cb6-790" aria-hidden="true" tabindex="-1"></a><span class="vs">form:has(input[type="range"]) input[type="number"] {</span></span>
-<span id="cb6-791"><a href="#cb6-791" aria-hidden="true" tabindex="-1"></a><span class="vs">  display: none !important;</span></span>
-<span id="cb6-792"><a href="#cb6-792" aria-hidden="true" tabindex="-1"></a><span class="vs">}</span></span>
-<span id="cb6-793"><a href="#cb6-793" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-794"><a href="#cb6-794" aria-hidden="true" tabindex="-1"></a><span class="vs">/* Center the slider container */</span></span>
-<span id="cb6-795"><a href="#cb6-795" aria-hidden="true" tabindex="-1"></a><span class="vs">form:has(input[type="range"]) {</span></span>
-<span id="cb6-796"><a href="#cb6-796" aria-hidden="true" tabindex="-1"></a><span class="vs">  margin: 0 auto;</span></span>
-<span id="cb6-797"><a href="#cb6-797" aria-hidden="true" tabindex="-1"></a><span class="vs">  max-width: 600px; /* Adjust as needed */</span></span>
-<span id="cb6-798"><a href="#cb6-798" aria-hidden="true" tabindex="-1"></a><span class="vs">  padding: 10px 0;</span></span>
-<span id="cb6-799"><a href="#cb6-799" aria-hidden="true" tabindex="-1"></a><span class="vs">}</span></span>
-<span id="cb6-800"><a href="#cb6-800" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-801"><a href="#cb6-801" aria-hidden="true" tabindex="-1"></a><span class="vs">/* Slider track - WebKit */</span></span>
-<span id="cb6-802"><a href="#cb6-802" aria-hidden="true" tabindex="-1"></a><span class="vs">input[type="range"]::-webkit-slider-runnable-track {</span></span>
-<span id="cb6-803"><a href="#cb6-803" aria-hidden="true" tabindex="-1"></a><span class="vs">  height: 4px;</span></span>
-<span id="cb6-804"><a href="#cb6-804" aria-hidden="true" tabindex="-1"></a><span class="vs">  border-radius: 999px;</span></span>
-<span id="cb6-805"><a href="#cb6-805" aria-hidden="true" tabindex="-1"></a><span class="vs">  background: color-mix(in srgb, var(--ctrl-brand, #667eea) 35%, transparent);</span></span>
-<span id="cb6-806"><a href="#cb6-806" aria-hidden="true" tabindex="-1"></a><span class="vs">}</span></span>
-<span id="cb6-807"><a href="#cb6-807" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-808"><a href="#cb6-808" aria-hidden="true" tabindex="-1"></a><span class="vs">/* Slider thumb - WebKit */</span></span>
-<span id="cb6-809"><a href="#cb6-809" aria-hidden="true" tabindex="-1"></a><span class="vs">input[type="range"]::-webkit-slider-thumb {</span></span>
-<span id="cb6-810"><a href="#cb6-810" aria-hidden="true" tabindex="-1"></a><span class="vs">  -webkit-appearance: none;</span></span>
-<span id="cb6-811"><a href="#cb6-811" aria-hidden="true" tabindex="-1"></a><span class="vs">  appearance: none;</span></span>
-<span id="cb6-812"><a href="#cb6-812" aria-hidden="true" tabindex="-1"></a><span class="vs">  </span></span>
-<span id="cb6-813"><a href="#cb6-813" aria-hidden="true" tabindex="-1"></a><span class="vs">  width: 12px;</span></span>
-<span id="cb6-814"><a href="#cb6-814" aria-hidden="true" tabindex="-1"></a><span class="vs">  height: 12px;</span></span>
-<span id="cb6-815"><a href="#cb6-815" aria-hidden="true" tabindex="-1"></a><span class="vs">  border-radius: 50%;</span></span>
-<span id="cb6-816"><a href="#cb6-816" aria-hidden="true" tabindex="-1"></a><span class="vs">  border: 0;</span></span>
-<span id="cb6-817"><a href="#cb6-817" aria-hidden="true" tabindex="-1"></a><span class="vs">  background: var(--ctrl-brand, #667eea);</span></span>
-<span id="cb6-818"><a href="#cb6-818" aria-hidden="true" tabindex="-1"></a><span class="vs">  </span></span>
-<span id="cb6-819"><a href="#cb6-819" aria-hidden="true" tabindex="-1"></a><span class="vs">  /* Center thumb over 4px track */</span></span>
-<span id="cb6-820"><a href="#cb6-820" aria-hidden="true" tabindex="-1"></a><span class="vs">  margin-top: -4px;</span></span>
-<span id="cb6-821"><a href="#cb6-821" aria-hidden="true" tabindex="-1"></a><span class="vs">}</span></span>
-<span id="cb6-822"><a href="#cb6-822" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-823"><a href="#cb6-823" aria-hidden="true" tabindex="-1"></a><span class="vs">/* Slider track - Firefox */</span></span>
-<span id="cb6-824"><a href="#cb6-824" aria-hidden="true" tabindex="-1"></a><span class="vs">input[type="range"]::-moz-range-track {</span></span>
-<span id="cb6-825"><a href="#cb6-825" aria-hidden="true" tabindex="-1"></a><span class="vs">  height: 4px;</span></span>
-<span id="cb6-826"><a href="#cb6-826" aria-hidden="true" tabindex="-1"></a><span class="vs">  border-radius: 999px;</span></span>
-<span id="cb6-827"><a href="#cb6-827" aria-hidden="true" tabindex="-1"></a><span class="vs">  background: color-mix(in srgb, var(--ctrl-brand, #667eea) 35%, transparent);</span></span>
-<span id="cb6-828"><a href="#cb6-828" aria-hidden="true" tabindex="-1"></a><span class="vs">}</span></span>
-<span id="cb6-829"><a href="#cb6-829" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-830"><a href="#cb6-830" aria-hidden="true" tabindex="-1"></a><span class="vs">/* Slider thumb - Firefox */</span></span>
-<span id="cb6-831"><a href="#cb6-831" aria-hidden="true" tabindex="-1"></a><span class="vs">input[type="range"]::-moz-range-thumb {</span></span>
-<span id="cb6-832"><a href="#cb6-832" aria-hidden="true" tabindex="-1"></a><span class="vs">  width: 12px;</span></span>
-<span id="cb6-833"><a href="#cb6-833" aria-hidden="true" tabindex="-1"></a><span class="vs">  height: 12px;</span></span>
-<span id="cb6-834"><a href="#cb6-834" aria-hidden="true" tabindex="-1"></a><span class="vs">  border-radius: 50%;</span></span>
-<span id="cb6-835"><a href="#cb6-835" aria-hidden="true" tabindex="-1"></a><span class="vs">  border: 0;</span></span>
-<span id="cb6-836"><a href="#cb6-836" aria-hidden="true" tabindex="-1"></a><span class="vs">  background: var(--ctrl-brand, #667eea);</span></span>
-<span id="cb6-837"><a href="#cb6-837" aria-hidden="true" tabindex="-1"></a><span class="vs">}</span></span>
-<span id="cb6-838"><a href="#cb6-838" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-839"><a href="#cb6-839" aria-hidden="true" tabindex="-1"></a><span class="vs">/* Firefox progress styling */</span></span>
-<span id="cb6-840"><a href="#cb6-840" aria-hidden="true" tabindex="-1"></a><span class="vs">input[type="range"]::-moz-range-progress {</span></span>
-<span id="cb6-841"><a href="#cb6-841" aria-hidden="true" tabindex="-1"></a><span class="vs">  height: 4px;</span></span>
-<span id="cb6-842"><a href="#cb6-842" aria-hidden="true" tabindex="-1"></a><span class="vs">  border-radius: 999px;</span></span>
-<span id="cb6-843"><a href="#cb6-843" aria-hidden="true" tabindex="-1"></a><span class="vs">  background: color-mix(in srgb, var(--ctrl-brand, #667eea) 35%, transparent);</span></span>
-<span id="cb6-844"><a href="#cb6-844" aria-hidden="true" tabindex="-1"></a><span class="vs">}</span></span>
-<span id="cb6-845"><a href="#cb6-845" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/style&gt;`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="814" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 813;"><span id="cb6-814"><a href="#cb6-814" aria-hidden="true" tabindex="-1"></a><span class="co">// Add custom CSS for the slider styling (without the details.controls-root requirement)</span></span>
+<span id="cb6-815"><a href="#cb6-815" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`&lt;style&gt;</span></span>
+<span id="cb6-816"><a href="#cb6-816" aria-hidden="true" tabindex="-1"></a><span class="vs">/* Style all range sliders in the document */</span></span>
+<span id="cb6-817"><a href="#cb6-817" aria-hidden="true" tabindex="-1"></a><span class="vs">input[type="range"] {</span></span>
+<span id="cb6-818"><a href="#cb6-818" aria-hidden="true" tabindex="-1"></a><span class="vs">  /* Reset browser defaults */</span></span>
+<span id="cb6-819"><a href="#cb6-819" aria-hidden="true" tabindex="-1"></a><span class="vs">  -webkit-appearance: none;</span></span>
+<span id="cb6-820"><a href="#cb6-820" aria-hidden="true" tabindex="-1"></a><span class="vs">  appearance: none;</span></span>
+<span id="cb6-821"><a href="#cb6-821" aria-hidden="true" tabindex="-1"></a><span class="vs">  </span></span>
+<span id="cb6-822"><a href="#cb6-822" aria-hidden="true" tabindex="-1"></a><span class="vs">  /* Layout */</span></span>
+<span id="cb6-823"><a href="#cb6-823" aria-hidden="true" tabindex="-1"></a><span class="vs">  width: 100%;</span></span>
+<span id="cb6-824"><a href="#cb6-824" aria-hidden="true" tabindex="-1"></a><span class="vs">  height: 18px;</span></span>
+<span id="cb6-825"><a href="#cb6-825" aria-hidden="true" tabindex="-1"></a><span class="vs">  background: transparent;</span></span>
+<span id="cb6-826"><a href="#cb6-826" aria-hidden="true" tabindex="-1"></a><span class="vs">  vertical-align: middle;</span></span>
+<span id="cb6-827"><a href="#cb6-827" aria-hidden="true" tabindex="-1"></a><span class="vs">  </span></span>
+<span id="cb6-828"><a href="#cb6-828" aria-hidden="true" tabindex="-1"></a><span class="vs">  /* Brand theming */</span></span>
+<span id="cb6-829"><a href="#cb6-829" aria-hidden="true" tabindex="-1"></a><span class="vs">  accent-color: var(--ctrl-brand);</span></span>
+<span id="cb6-830"><a href="#cb6-830" aria-hidden="true" tabindex="-1"></a><span class="vs">}</span></span>
+<span id="cb6-831"><a href="#cb6-831" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-832"><a href="#cb6-832" aria-hidden="true" tabindex="-1"></a><span class="vs">/* Hide the number input box that appears with Inputs.range */</span></span>
+<span id="cb6-833"><a href="#cb6-833" aria-hidden="true" tabindex="-1"></a><span class="vs">form:has(input[type="range"]) input[type="number"] {</span></span>
+<span id="cb6-834"><a href="#cb6-834" aria-hidden="true" tabindex="-1"></a><span class="vs">  display: none !important;</span></span>
+<span id="cb6-835"><a href="#cb6-835" aria-hidden="true" tabindex="-1"></a><span class="vs">}</span></span>
+<span id="cb6-836"><a href="#cb6-836" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-837"><a href="#cb6-837" aria-hidden="true" tabindex="-1"></a><span class="vs">/* Center the slider container */</span></span>
+<span id="cb6-838"><a href="#cb6-838" aria-hidden="true" tabindex="-1"></a><span class="vs">form:has(input[type="range"]) {</span></span>
+<span id="cb6-839"><a href="#cb6-839" aria-hidden="true" tabindex="-1"></a><span class="vs">  margin: 0 auto;</span></span>
+<span id="cb6-840"><a href="#cb6-840" aria-hidden="true" tabindex="-1"></a><span class="vs">  max-width: 600px; /* Adjust as needed */</span></span>
+<span id="cb6-841"><a href="#cb6-841" aria-hidden="true" tabindex="-1"></a><span class="vs">  padding: 10px 0;</span></span>
+<span id="cb6-842"><a href="#cb6-842" aria-hidden="true" tabindex="-1"></a><span class="vs">}</span></span>
+<span id="cb6-843"><a href="#cb6-843" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-844"><a href="#cb6-844" aria-hidden="true" tabindex="-1"></a><span class="vs">/* Slider track - WebKit */</span></span>
+<span id="cb6-845"><a href="#cb6-845" aria-hidden="true" tabindex="-1"></a><span class="vs">input[type="range"]::-webkit-slider-runnable-track {</span></span>
+<span id="cb6-846"><a href="#cb6-846" aria-hidden="true" tabindex="-1"></a><span class="vs">  height: 4px;</span></span>
+<span id="cb6-847"><a href="#cb6-847" aria-hidden="true" tabindex="-1"></a><span class="vs">  border-radius: 999px;</span></span>
+<span id="cb6-848"><a href="#cb6-848" aria-hidden="true" tabindex="-1"></a><span class="vs">  background: color-mix(in srgb, var(--ctrl-brand, #667eea) 35%, transparent);</span></span>
+<span id="cb6-849"><a href="#cb6-849" aria-hidden="true" tabindex="-1"></a><span class="vs">}</span></span>
+<span id="cb6-850"><a href="#cb6-850" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-851"><a href="#cb6-851" aria-hidden="true" tabindex="-1"></a><span class="vs">/* Slider thumb - WebKit */</span></span>
+<span id="cb6-852"><a href="#cb6-852" aria-hidden="true" tabindex="-1"></a><span class="vs">input[type="range"]::-webkit-slider-thumb {</span></span>
+<span id="cb6-853"><a href="#cb6-853" aria-hidden="true" tabindex="-1"></a><span class="vs">  -webkit-appearance: none;</span></span>
+<span id="cb6-854"><a href="#cb6-854" aria-hidden="true" tabindex="-1"></a><span class="vs">  appearance: none;</span></span>
+<span id="cb6-855"><a href="#cb6-855" aria-hidden="true" tabindex="-1"></a><span class="vs">  </span></span>
+<span id="cb6-856"><a href="#cb6-856" aria-hidden="true" tabindex="-1"></a><span class="vs">  width: 12px;</span></span>
+<span id="cb6-857"><a href="#cb6-857" aria-hidden="true" tabindex="-1"></a><span class="vs">  height: 12px;</span></span>
+<span id="cb6-858"><a href="#cb6-858" aria-hidden="true" tabindex="-1"></a><span class="vs">  border-radius: 50%;</span></span>
+<span id="cb6-859"><a href="#cb6-859" aria-hidden="true" tabindex="-1"></a><span class="vs">  border: 0;</span></span>
+<span id="cb6-860"><a href="#cb6-860" aria-hidden="true" tabindex="-1"></a><span class="vs">  background: var(--ctrl-brand, #667eea);</span></span>
+<span id="cb6-861"><a href="#cb6-861" aria-hidden="true" tabindex="-1"></a><span class="vs">  </span></span>
+<span id="cb6-862"><a href="#cb6-862" aria-hidden="true" tabindex="-1"></a><span class="vs">  /* Center thumb over 4px track */</span></span>
+<span id="cb6-863"><a href="#cb6-863" aria-hidden="true" tabindex="-1"></a><span class="vs">  margin-top: -4px;</span></span>
+<span id="cb6-864"><a href="#cb6-864" aria-hidden="true" tabindex="-1"></a><span class="vs">}</span></span>
+<span id="cb6-865"><a href="#cb6-865" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-866"><a href="#cb6-866" aria-hidden="true" tabindex="-1"></a><span class="vs">/* Slider track - Firefox */</span></span>
+<span id="cb6-867"><a href="#cb6-867" aria-hidden="true" tabindex="-1"></a><span class="vs">input[type="range"]::-moz-range-track {</span></span>
+<span id="cb6-868"><a href="#cb6-868" aria-hidden="true" tabindex="-1"></a><span class="vs">  height: 4px;</span></span>
+<span id="cb6-869"><a href="#cb6-869" aria-hidden="true" tabindex="-1"></a><span class="vs">  border-radius: 999px;</span></span>
+<span id="cb6-870"><a href="#cb6-870" aria-hidden="true" tabindex="-1"></a><span class="vs">  background: color-mix(in srgb, var(--ctrl-brand, #667eea) 35%, transparent);</span></span>
+<span id="cb6-871"><a href="#cb6-871" aria-hidden="true" tabindex="-1"></a><span class="vs">}</span></span>
+<span id="cb6-872"><a href="#cb6-872" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-873"><a href="#cb6-873" aria-hidden="true" tabindex="-1"></a><span class="vs">/* Slider thumb - Firefox */</span></span>
+<span id="cb6-874"><a href="#cb6-874" aria-hidden="true" tabindex="-1"></a><span class="vs">input[type="range"]::-moz-range-thumb {</span></span>
+<span id="cb6-875"><a href="#cb6-875" aria-hidden="true" tabindex="-1"></a><span class="vs">  width: 12px;</span></span>
+<span id="cb6-876"><a href="#cb6-876" aria-hidden="true" tabindex="-1"></a><span class="vs">  height: 12px;</span></span>
+<span id="cb6-877"><a href="#cb6-877" aria-hidden="true" tabindex="-1"></a><span class="vs">  border-radius: 50%;</span></span>
+<span id="cb6-878"><a href="#cb6-878" aria-hidden="true" tabindex="-1"></a><span class="vs">  border: 0;</span></span>
+<span id="cb6-879"><a href="#cb6-879" aria-hidden="true" tabindex="-1"></a><span class="vs">  background: var(--ctrl-brand, #667eea);</span></span>
+<span id="cb6-880"><a href="#cb6-880" aria-hidden="true" tabindex="-1"></a><span class="vs">}</span></span>
+<span id="cb6-881"><a href="#cb6-881" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-882"><a href="#cb6-882" aria-hidden="true" tabindex="-1"></a><span class="vs">/* Firefox progress styling */</span></span>
+<span id="cb6-883"><a href="#cb6-883" aria-hidden="true" tabindex="-1"></a><span class="vs">input[type="range"]::-moz-range-progress {</span></span>
+<span id="cb6-884"><a href="#cb6-884" aria-hidden="true" tabindex="-1"></a><span class="vs">  height: 4px;</span></span>
+<span id="cb6-885"><a href="#cb6-885" aria-hidden="true" tabindex="-1"></a><span class="vs">  border-radius: 999px;</span></span>
+<span id="cb6-886"><a href="#cb6-886" aria-hidden="true" tabindex="-1"></a><span class="vs">  background: color-mix(in srgb, var(--ctrl-brand, #667eea) 35%, transparent);</span></span>
+<span id="cb6-887"><a href="#cb6-887" aria-hidden="true" tabindex="-1"></a><span class="vs">}</span></span>
+<span id="cb6-888"><a href="#cb6-888" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/style&gt;`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-6" data-nodetype="expression">
 
@@ -1834,7 +1890,7 @@ Figure&nbsp;9.1: Power curves for one-sided and two-sided z-tests, testing <span
 <p>We now turn to <strong>concrete examples</strong> where the distribution of the test statistic under <span class="math inline">H_0</span> is known exactly.</p>
 <p>In this subsection we focus on <strong>exact tests</strong> that are <strong>examinable</strong> in this module.</p>
 <section id="sec-one-sample-normal-known-var" class="level4" data-number="9.2.1.1">
-<h4 data-number="9.2.1.1" class="anchored" data-anchor-id="sec-one-sample-normal-known-var"><span class="header-section-number">9.2.1.1</span> One-Sample Normal (known variance)</h4>
+<h4 data-number="9.2.1.1" class="anchored" data-anchor-id="sec-one-sample-normal-known-var"><span class="header-section-number">9.2.1.1</span> One-Sample Z Test for a Normal Mean (Known Variance)</h4>
 <p>In <a href="#exm-bad-test-statistic" class="quarto-xref">Example&nbsp;<span>9.1</span></a>, we considered i.i.d. normally distributed data with known variance but chose a <strong>bad</strong> test statistic. For general i.i.d. <span class="math inline">X_i \sim \mathcal{N}(\mu, \sigma^2)</span>, it is much more natural to use the <span class="xref-no-num"><a href="../part2/4-freq-point-estimation.html#def-sample-mean" class="quarto-xref">sample mean&nbsp;<span>4.1</span></a></span>, <span class="math display">
 \bar{X} = \frac{1}{n}\sum_{i=1}^n X_i
 \sim \mathcal{N}\!\left(\mu, \frac{\sigma^2}{n}\right),
@@ -1846,17 +1902,13 @@ Figure&nbsp;9.1: Power curves for one-sided and two-sided z-tests, testing <span
 </div>
 <div class="callout-body-container">
 <div id="exm-one-sample-normal-known-var-test" class="theorem example">
-<p><span class="theorem-title"><strong>Example 9.3 (One-Sample Normal Test (known variance))</strong></span> Suppose we have i.i.d. data <span class="math inline">X_i \sim \mathcal{N}(\mu, \sigma^2)</span> with <span class="math inline">\sigma^2</span> known. We wish to test one of the following:</p>
+<p><span class="theorem-title"><strong>Example 9.3 (One-Sample Normal Test (known variance))</strong></span> Suppose we have i.i.d. data <span class="math inline">X_i \sim \mathcal{N}(\mu, \sigma^2)</span> with <span class="math inline">\sigma^2</span> known. We wish to test <span class="math display">
+H_0: \mu = \mu_0
+</span> against the following <strong>alternative hypotheses</strong>:</p>
 <ol type="1">
-<li>Two-sided: <span class="math display">
-H_0 : \mu = \mu_0, \qquad H_1 : \mu \neq \mu_0.
-</span></li>
-<li>Upper one-sided: <span class="math display">
-H_0 : \mu = \mu_0, \qquad H_1 : \mu &gt; \mu_0.
-</span></li>
-<li>Lower one-sided: <span class="math display">
-H_0 : \mu = \mu_0, \qquad H_1 : \mu &lt; \mu_0.
-</span></li>
+<li><strong>Two-sided:</strong> <span class="math inline">H_1 : \mu \neq \mu_0.</span></li>
+<li><strong>Upper one-sided:</strong> <span class="math inline">H_1 : \mu &gt; \mu_0.</span></li>
+<li><strong>Lower one-sided:</strong> <span class="math inline">H_1 : \mu &lt; \mu_0.</span></li>
 </ol>
 <p>Using the test statistic <span class="math display">
 T = \bar{X} = \frac{1}{n}\sum_{i=1}^n X_i,
@@ -1918,21 +1970,38 @@ R_\alpha
 </div>
 <div class="callout-body-container">
 <div id="def-one-sample-z-test" class="definition theorem">
-<p><span class="theorem-title"><strong>Definition 9.6 (One-Sample Normal Test (known variance))</strong></span> Let <span class="math inline">X_i \sim \mathcal{N}(\mu,\sigma^2)</span> with <span class="math inline">\sigma^2</span> known, and let <span class="math inline">\bar{X}</span> be the sample mean.</p>
+<p><span class="theorem-title"><strong>Definition 9.6 (One-Sample Z Test for a Normal Mean (Known Variance))</strong></span> Let <span class="math display">
+X_1,\ldots, X_n \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu,\sigma^2)
+</span> with <span class="math inline">\sigma^2</span> <strong>known</strong>, and let <span class="math inline">\bar{X}</span> be the <span class="xref-no-num"><a href="../part2/4-freq-point-estimation.html#def-sample-mean" class="quarto-xref">sample mean&nbsp;<span>4.1</span></a></span>.</p>
 <p>A size–<span class="math inline">\alpha</span> test of <span class="math inline">H_0 : \mu = \mu_0</span> uses the statistic <span class="math display">
-Z = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}},
-</span> which satisfies <span class="math inline">Z \sim \mathcal{N}(0,1)</span> under <span class="math inline">H_0</span>.</p>
+T = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}},
+</span> which satisfies <span class="math inline">T \sim \mathcal{N}(0,1)</span> under <span class="math inline">H_0</span>.</p>
+<hr>
+<section id="performing-the-test" class="level6 unnumbered">
+<h6 class="unnumbered anchored" data-anchor-id="performing-the-test">Performing the Test</h6>
+<p>Given <span class="math inline">H_0 : \mu = \mu_0</span> and a chosen <span class="xref-no-num"><a href="#def-one-two-sided-tests" class="quarto-xref">one-sided or two-sided alternative&nbsp;<span>9.4</span></a></span> <span class="math inline">H_1</span>, a size–<span class="math inline">\alpha</span> test proceeds as follows:</p>
+<ol type="1">
+<li><p><strong>Compute the observed test statistic</strong> <span class="math display">
+T_{\mathrm{obs}}
+= \frac{\bar{x} - \mu_0}{\sigma/\sqrt{n}}.
+</span></p></li>
+<li><p><strong>Apply the rejection rule</strong> according to the form of <span class="math inline">H_1</span>:</p>
 <ul>
-<li><p><strong>Two-sided test (<span class="math inline">H_0 : \mu = \mu_0</span> vs.&nbsp;<span class="math inline">H_1 : \mu \neq \mu_0</span>):</strong> Reject <span class="math inline">H_0</span> if <span class="math display">
-|Z| &gt; z_{1-\alpha/2}.
+<li><p><strong>Two-sided test (<span class="math inline">H_1 : \mu \neq \mu_0</span>):</strong> Reject <span class="math inline">H_0</span> if<br>
+<span class="math display">
+|T_{\mathrm{obs}}| &gt; z_{1-\alpha/2}.
 </span></p></li>
-<li><p><strong>Upper one-sided test (<span class="math inline">H_0 : \mu = \mu_0</span> vs.&nbsp;<span class="math inline">H_1 : \mu &gt; \mu_0</span>):</strong> Reject <span class="math inline">H_0</span> if <span class="math display">
-Z &gt; z_{1-\alpha}.
+<li><p><strong>Upper one-sided test (<span class="math inline">H_1 : \mu &gt; \mu_0</span>):</strong> Reject <span class="math inline">H_0</span> if<br>
+<span class="math display">
+T_{\mathrm{obs}} &gt; z_{1-\alpha}.
 </span></p></li>
-<li><p><strong>Lower one-sided test (<span class="math inline">H_0 : \mu = \mu_0</span> vs.&nbsp;<span class="math inline">H_1 : \mu &lt; \mu_0</span>):</strong> Reject <span class="math inline">H_0</span> if <span class="math display">
-Z &lt; z_{\alpha}.
+<li><p><strong>Lower one-sided test (<span class="math inline">H_1 : \mu &lt; \mu_0</span>):</strong> Reject <span class="math inline">H_0</span> if<br>
+<span class="math display">
+T_{\mathrm{obs}} &lt; z_{\alpha}.
 </span></p></li>
-</ul>
+</ul></li>
+</ol>
+</section>
 </div>
 </div>
 </div>
@@ -2002,27 +2071,39 @@ The same idea gives an <strong>exact hypothesis test</strong> for <span class="m
 </div>
 <div class="callout-body-container">
 <div id="def-one-sample-t-test" class="definition theorem">
-<p><span class="theorem-title"><strong>Definition 9.7 (One-Sample <span class="math inline">t</span>-Test (unknown variance))</strong></span> Let <span class="math inline">X_i \sim \mathcal{N}(\mu,\sigma^2)</span> with <span class="math inline">\sigma^2</span> unknown.</p>
-<p>Use the test statistic<br>
-<span class="math display">
+<p><span class="theorem-title"><strong>Definition 9.7 (One-Sample <span class="math inline">t</span>-Test (unknown variance))</strong></span> Suppose we have an i.i.d. Normally distributed sample of size <span class="math inline">n</span> <span class="math display">
+X_1,\ldots, X_n \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu,\sigma^2)
+</span> with <span class="math inline">\sigma^2</span> <strong>unknown</strong>.</p>
+<p>A size–<span class="math inline">\alpha</span> test of <span class="math inline">H_0 : \mu = \mu_0</span> uses the statistic <span class="math display">
 T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}},
-</span> where <span class="math inline">S^2</span> is the sample variance. Under <span class="math inline">H_0 : \mu = \mu_0</span>, <span class="math display">
-T \sim t_{n-1}.
-</span></p>
+</span> where <span class="math inline">S^2</span> is the <span class="xref-no-num"><a href="../part2/4-freq-point-estimation.html#def-sample-variance" class="quarto-xref">sample variance&nbsp;<span>4.2</span></a></span> and <span class="math inline">\bar{X}</span> is the <span class="xref-no-num"><a href="../part2/4-freq-point-estimation.html#def-sample-mean" class="quarto-xref">sample mean&nbsp;<span>4.1</span></a></span>. Under <span class="math inline">H_0 : \mu = \mu_0</span>, <span class="math display">
+T \sim t_{n-1},
+</span> where <span class="math inline">t_{n-1}</span> is the Student-<span class="math inline">t</span> distribution with <span class="math inline">n-1</span> degrees of freedom.</p>
+<hr>
+<section id="performing-the-test-1" class="level6 unnumbered">
+<h6 class="unnumbered anchored" data-anchor-id="performing-the-test-1">Performing the Test</h6>
+<p>Given <span class="math inline">H_0 : \mu = \mu_0</span> and a chosen <span class="xref-no-num"><a href="#def-one-two-sided-tests" class="quarto-xref">one-sided or two-sided alternative&nbsp;<span>9.4</span></a></span> <span class="math inline">H_1</span>, a size–<span class="math inline">\alpha</span> test proceeds as follows:</p>
+<ol type="1">
+<li><p><strong>Compute the observed test statistic</strong> <span class="math display">
+T_{\mathrm{obs}} = \frac{\bar{x} - \mu_0}{s/\sqrt{n}},
+</span> where <span class="math inline">s = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2}</span> is the square root of the <strong>observed</strong> <span class="xref-no-num"><a href="../part2/4-freq-point-estimation.html#def-sample-variance" class="quarto-xref">sample variance&nbsp;<span>4.2</span></a></span>.</p></li>
+<li><p><strong>Apply the rejection rule</strong> according to the form of <span class="math inline">H_1</span>:</p>
 <ul>
-<li><p><strong>Two-sided test (<span class="math inline">H_0 : \mu = \mu_0</span> vs.&nbsp;<span class="math inline">H_1 : \mu \neq \mu_0</span>):</strong> Reject <span class="math inline">H_0</span> if<br>
+<li><p><strong>Two-sided test (<span class="math inline">H_1 : \mu \neq \mu_0</span>):</strong> Reject <span class="math inline">H_0</span> if<br>
 <span class="math display">
-|T| &gt; t_{1-\alpha/2,\,n-1}.
+|T_{\mathrm{obs}}| &gt; t_{1-\alpha/2,\,n-1}.
 </span></p></li>
-<li><p><strong>Upper one-sided test (<span class="math inline">H_0 : \mu = \mu_0</span> vs.&nbsp;<span class="math inline">H_1 : \mu &gt; \mu_0</span>):</strong> Reject <span class="math inline">H_0</span> if<br>
+<li><p><strong>Upper one-sided test (<span class="math inline">H_1 : \mu &gt; \mu_0</span>):</strong> Reject <span class="math inline">H_0</span> if<br>
 <span class="math display">
-T &gt; t_{1-\alpha,\,n-1}.
+T_{\mathrm{obs}} &gt; t_{1-\alpha,\,n-1}.
 </span></p></li>
-<li><p><strong>Lower one-sided test (<span class="math inline">H_0 : \mu = \mu_0</span> vs.&nbsp;<span class="math inline">H_1 : \mu &lt; \mu_0</span>):</strong> Reject <span class="math inline">H_0</span> if<br>
+<li><p><strong>Lower one-sided test (<span class="math inline">H_1 : \mu &lt; \mu_0</span>):</strong> Reject <span class="math inline">H_0</span> if<br>
 <span class="math display">
-T &lt; t_{\alpha,\,n-1}.
+T_{\mathrm{obs}} &lt; t_{\alpha,\,n-1}.
 </span></p></li>
-</ul>
+</ul></li>
+</ol>
+</section>
 </div>
 </div>
 </div>
@@ -2113,7 +2194,7 @@ T \;\overset{\text{approx.}}{\sim}\; t_{n-1}.
 </ol>
 <p>Both approximations become accurate as <span class="math inline">n</span> grows. In practice, using the <strong>Student-<span class="math inline">t</span> critical values</strong> is slightly more conservative and is the conventional choice, although both are valid.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -2122,7 +2203,7 @@ T \;\overset{\text{approx.}}{\sim}\; t_{n-1}.
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="rem-student-t-normal" class="proof remark">
 <p><span class="proof-title"><em>Remark 9.3</em> (Why do both approximations hold?). </span></p>
@@ -2338,7 +2419,7 @@ T = 2\left( \ell(\hat{\theta}_{\mathrm{MLE}} \,; \underline{x}) - \ell(\theta_0\
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -2347,7 +2428,7 @@ T = 2\left( \ell(\hat{\theta}_{\mathrm{MLE}} \,; \underline{x}) - \ell(\theta_0\
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="prf-lrt-test-statistic" class="proof">
 <p><span class="proof-title"><em>Proof 9.1</em>. </span>We start from the definition of the likelihood ratio statistic <span class="math display">

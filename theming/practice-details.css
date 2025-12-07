@@ -1,28 +1,130 @@
-/* Style the summary bar */
-details.practice-questions summary {
-  cursor: pointer;
-  background: var(--brand-purple);   /* background colour */
-  color: #f8f8f8;          /* text colour */
-  padding: 0.3rem 0.4rem;
+/* Base details styling - always reserve border space */
+details.essential-points {
+  border: 1px solid transparent;
   border-radius: 2px;
-  font-weight: 600;
   margin-top: 0.6rem;
 }
 
-/* Optional: change background on hover/focus */
-details.practice-questions summary:hover {
+/* Show border when open */
+details.essential-points[open] {
+  border-color: var(--brand-red);
+}
+
+/* Summary styling */
+details.essential-points summary {
+  cursor: pointer;
+  background: var(--brand-red);
+  color: #f8f8f8;
+  padding: 0.3rem 0.4rem;
+  font-weight: 600;
+  margin: -1px -1px 0 -1px; /* pull to edges, covering border */
+  border-radius: 2px;
+}
+
+details.essential-points[open] summary {
+  border-radius: 2px 2px 0 0;
+}
+
+details.essential-points summary:hover {
+  background: color-mix(in srgb, var(--brand-red) 85%, black);
+}
+
+/* Pad ALL content after summary */
+details.essential-points[open] > :not(summary) {
+  margin-left: 0.6rem;
+  margin-right: 0.6rem;
+}
+
+details.essential-points[open] > :last-child {
+  margin-bottom: 0.6rem;
+}
+
+details.essential-points[open] > :not(summary):first-of-type {
+  margin-top: 0.6rem;
+}
+
+
+/* Base details styling - always reserve border space */
+details.revision-entry {
+  border: 1px solid transparent;
+  border-radius: 2px;
+  margin-top: 0.6rem;
+}
+
+/* Show border when open */
+details.revision-entry[open] {
+  border-color: var(--brand-border);
+}
+
+/* Summary keeps default styling, just pull to edges */
+details.revision-entry summary {
+  cursor: pointer;
+  padding: 0.3rem 0.4rem;
+  margin: -1px -1px 0 -1px;
+  border-radius: 2px;
+}
+
+details.revision-entry[open] summary {
+  border-radius: 2px 2px 0 0;
+}
+
+/* Pad ALL content after summary */
+details.revision-entry[open] > :not(summary) {
+  margin-left: 0.6rem;
+  margin-right: 0.6rem;
+}
+
+details.revision-entry[open] > :last-child {
+  margin-bottom: 0.6rem;
+}
+
+details.revision-entry[open] > :not(summary):first-of-type {
+  margin-top: 0.6rem;
+}
+
+
+
+/* Base details styling - always reserve border space */
+details.practice-details {
+  border: 1px solid transparent;
+  border-radius: 2px;
+  margin-top: 0.6rem;
+}
+
+/* Show border when open */
+details.practice-details[open] {
+  border-color: var(--brand-purple);
+}
+
+/* Summary styling */
+details.practice-details summary {
+  cursor: pointer;
+  background: var(--brand-purple);
+  color: #f8f8f8;
+  padding: 0.3rem 0.4rem;
+  font-weight: 600;
+  margin: -1px -1px 0 -1px; /* pull to edges, covering border */
+  border-radius: 2px;
+}
+
+details.practice-details[open] summary {
+  border-radius: 2px 2px 0 0;
+}
+
+details.practice-details summary:hover {
   background: color-mix(in srgb, var(--brand-purple) 85%, black);
 }
 
-/* Add spacing above the table */
-details.practice-questions table {
-  margin-top: 0.4rem;
+/* Pad ALL content after summary */
+details.practice-details[open] > :not(summary) {
+  margin-left: 0.6rem;
+  margin-right: 0.6rem;
 }
 
-/* Optional: add a border/box around expanded content */
-details.practice-questions[open] {
-  border: 1px solid var(--brand-purple);
-  border-radius: 2px;
-  padding: 0.6rem;
-  padding-top: 0.4rem; /* keeps summary aligned nicely */
+details.practice-details[open] > :last-child {
+  margin-bottom: 0.6rem;
+}
+
+details.practice-details[open] > :not(summary):first-of-type {
+  margin-top: 0.6rem;
 }

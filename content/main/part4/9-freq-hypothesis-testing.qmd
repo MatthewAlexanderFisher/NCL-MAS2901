@@ -74,7 +74,7 @@ For the models considered in this course, the probability of a Type I error is m
 Thus we may work with the simpler formulation $H_0 : \theta = \theta_0$ without loss of generality.
 :::
 
-At a conceptual level, any hypothesis test creates a <span class="xref-no-num">[partition @def-excl-exh-part]</span> of the parameter space into two regions: one in which the null holds and one in which it does not. The purpose of the test is to decide, using the observed data, which side of this partition is more consistent with the evidence.
+<!-- At a conceptual level, any hypothesis test creates a <span class="xref-no-num">[partition @def-excl-exh-part]</span> of the parameter space into two regions: one in which the null holds and one in which it does not. The purpose of the test is to decide, using the observed data, which side of this partition is more consistent with the evidence. -->
 
 We proceed by examining the observed data $\underline{x}$ and asking whether $H_0$ is a plausible explanation. The frequentist reasoning is:
 
@@ -173,16 +173,59 @@ Plot.plot({
 :::
 
 
-## The Testing Procedure
+## The Testing Procedure {#sec-testing-procedure}
 
-A hypothesis test makes a decision based on random data, so mistakes are unavoidable. The possible outcomes are:
 
-| **Decision**             | **Truth: $H_0$ true**                 | **Truth: $H_0$ false**                    |
-|--------------------------|----------------------------------------|-------------------------------------------|
-| **Reject $H_0$**         | Type I error *(false alarm)*           | Correct detection                         |
-| **Fail to reject $H_0$** | Correct decision                       | Type II error *(missed detection)*        |
+::: {#imp-test-outcomes .callout-important appearance="simple"}
+### Outcomes of a Hypothesis Test
 
-: **Outcomes of a hypothesis test.** Rows represent the decision made; columns represent the true state of nature. {#tbl-decision-table}
+Because hypothesis tests use **random sample data**, there is always a chance of reaching the wrong conclusion. A helpful way to understand this is to view the test as a **diagnostic system** — much like a fire alarm.
+
+1. **Starting Assumption:**  
+   A hypothesis test always begins by assuming the null hypothesis $H_0$ is **true**.
+
+2. **Triggering the Alarm:**  
+   We **reject $H_0$** only when the data provide strong evidence against this assumption.  
+   - *Analogy:* Rejecting $H_0$ corresponds to **“sounding the alarm”**.
+
+Given this interpretation, the interaction between the **true state of nature** and our **decision** leads to two kinds of errors.
+
+##### The Two Errors {.unnumbered}
+
+---
+
+###### **Type I Error: The False Alarm** {.unnumbered}
+- **Scenario:** $H_0$ is actually **true**, but we decide to **reject** it.  
+- **Analogy:** The fire alarm goes off, but there is **no fire**.  
+- **Consequence:** We incorrectly claim evidence of an effect when none exists.
+
+This error is controlled by the **size** (or **significance level**) $\alpha$ of the test:
+
+$$
+\alpha = \Pr(\text{reject } H_0 \mid H_0 \text{ true}).
+$$
+
+---
+
+###### **Type II Error: The Missed Detection** {.unnumbered}
+- **Scenario:** $H_0$ is actually **false**, but we **fail to reject** it.  
+- **Analogy:** A fire **is happening**, but the alarm **stays silent**.  
+- **Consequence:** We fail to detect a real effect.
+
+---
+
+###### Summary of Outcomes {.unnumbered}
+
+The relationship between reality (the truth) and our decision is summarised below:
+
+| | **Truth: $H_0$ is True** <br>*(Nothing is happening)* | **Truth: $H_0$ is False** <br>*(Something is happening)* |
+| :--- | :--- | :--- |
+| **Decision: Reject $H_0$** <br>*(Sound Alarm)* | **Type I Error** <br>*(False Alarm)* | **Correct Decision** <br>*(Valid Detection)* |
+| **Decision: Fail to Reject $H_0$** <br>*(Stay Quiet)* | **Correct Decision** <br>*(Correctly ignored)* | **Type II Error** <br>*(Missed Detection)* |
+
+: **Outcomes of a hypothesis test.** The columns represent reality; the rows represent the statistical decision. {#tbl-decision-table}
+
+:::
 
 The **size** (also called the **significance level**) of a test is the probability of a Type I error:
 $$
@@ -864,7 +907,7 @@ We now turn to **concrete examples** where the distribution of the test statisti
 
 In this subsection we focus on **exact tests** that are **examinable** in this module.
 
-#### One-Sample Normal (known variance) {#sec-one-sample-normal-known-var}
+#### One-Sample Z Test for a Normal Mean (Known Variance) {#sec-one-sample-normal-known-var}
 
 In @exm-bad-test-statistic, we considered i.i.d. normally distributed data with known variance but chose a **bad** test statistic. For general i.i.d. $X_i \sim \mathcal{N}(\mu, \sigma^2)$, it is much more natural to use the <span class="xref-no-num">[sample mean @def-sample-mean]</span>,
 $$
@@ -876,20 +919,15 @@ to test $H_0 : \mu = \mu_0$ against a one-sided or two-sided alternative. Let us
 ::: {#exm-one-sample-normal-known-var-test}
 ### One-Sample Normal Test (known variance)
 
-Suppose we have i.i.d. data $X_i \sim \mathcal{N}(\mu, \sigma^2)$ with $\sigma^2$ known. We wish to test one of the following:
+Suppose we have i.i.d. data $X_i \sim \mathcal{N}(\mu, \sigma^2)$ with $\sigma^2$ known. We wish to test 
+$$
+H_0: \mu = \mu_0
+$$
+against the following **alternative hypotheses**:
 
-1. Two-sided:
-   $$
-   H_0 : \mu = \mu_0, \qquad H_1 : \mu \neq \mu_0.
-   $$
-2. Upper one-sided:
-   $$
-   H_0 : \mu = \mu_0, \qquad H_1 : \mu > \mu_0.
-   $$
-3. Lower one-sided:
-   $$
-   H_0 : \mu = \mu_0, \qquad H_1 : \mu < \mu_0.
-   $$
+1. **Two-sided:** $H_1 : \mu \neq \mu_0.$
+2. **Upper one-sided:** $H_1 : \mu > \mu_0.$
+3. **Lower one-sided:** $H_1 : \mu < \mu_0.$
 
 Using the test statistic
 $$
@@ -979,38 +1017,52 @@ $$
 ```
 :::
 
- The test in @exm-one-sample-normal-known-var-test is fundamental: it is the basis for the **approximate hypothesis tests** derived later in
-@sec-clt-approx-test (CLT-based tests) and @sec-mle-approx-test (MLE-based tests).
+ The test in @exm-one-sample-normal-known-var-test is fundamental: it is the basis for the **approximate hypothesis tests** derived later in @sec-clt-approx-test (CLT-based tests) and @sec-mle-approx-test (MLE-based tests).
 
 ::: {.definition #def-one-sample-z-test}
 
-### One-Sample Normal Test (known variance)
+### One-Sample Z Test for a Normal Mean (Known Variance)
 
-Let $X_i \sim \mathcal{N}(\mu,\sigma^2)$ with $\sigma^2$ known, and let $\bar{X}$ be the sample mean.
+Let
+$$
+X_1,\ldots, X_n \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu,\sigma^2)
+$$ 
+with $\sigma^2$ **known**, and let $\bar{X}$ be the <span class="xref-no-num">[sample mean @def-sample-mean]</span>.
 
 A size–$\alpha$ test of $H_0 : \mu = \mu_0$ uses the statistic
 $$
-Z = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}},
+T = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}},
 $$
-which satisfies $Z \sim \mathcal{N}(0,1)$ under $H_0$.
+which satisfies $T \sim \mathcal{N}(0,1)$ under $H_0$.
 
-- **Two-sided test ($H_0 : \mu = \mu_0$ vs. $H_1 : \mu \neq \mu_0$):**
-  Reject $H_0$ if
-  $$
-  |Z| > z_{1-\alpha/2}.
-  $$
+---
 
-- **Upper one-sided test ($H_0 : \mu = \mu_0$ vs. $H_1 : \mu > \mu_0$):**
-  Reject $H_0$ if
-  $$
-  Z > z_{1-\alpha}.
-  $$
+###### Performing the Test {.unnumbered}
 
-- **Lower one-sided test ($H_0 : \mu = \mu_0$ vs. $H_1 : \mu < \mu_0$):**
-  Reject $H_0$ if
-  $$
-  Z < z_{\alpha}.
-  $$
+Given $H_0 : \mu = \mu_0$ and a chosen  <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span> $H_1$, a size–$\alpha$ test proceeds as follows:
+
+1. **Compute the observed test statistic**
+   $$
+   T_{\mathrm{obs}}
+   = \frac{\bar{x} - \mu_0}{\sigma/\sqrt{n}}.
+   $$
+
+2. **Apply the rejection rule** according to the form of $H_1$:
+
+   - **Two-sided test ($H_1 : \mu \neq \mu_0$):** Reject $H_0$ if  
+     $$
+     |T_{\mathrm{obs}}| > z_{1-\alpha/2}.
+     $$
+
+   - **Upper one-sided test ($H_1 : \mu > \mu_0$):** Reject $H_0$ if  
+     $$
+     T_{\mathrm{obs}} > z_{1-\alpha}.
+     $$
+
+   - **Lower one-sided test ($H_1 : \mu < \mu_0$):** Reject $H_0$ if  
+     $$
+     T_{\mathrm{obs}} < z_{\alpha}.
+     $$
 
 :::
 
@@ -1096,34 +1148,50 @@ The same idea gives an **exact hypothesis test** for $\mu$ when $\sigma^2$ is un
 ::: {.definition #def-one-sample-t-test}
 ### One-Sample $t$-Test (unknown variance)
 
-Let $X_i \sim \mathcal{N}(\mu,\sigma^2)$ with $\sigma^2$ unknown.
+Suppose we have an i.i.d. Normally distributed sample of size $n$
+$$
+X_1,\ldots, X_n \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu,\sigma^2)
+$$ 
+with $\sigma^2$ **unknown**.
 
-Use the test statistic  
+A size–$\alpha$ test of $H_0 : \mu = \mu_0$ uses the statistic
 $$
 T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}},
 $$
-where $S^2$ is the sample variance. Under $H_0 : \mu = \mu_0$,
+where $S^2$ is the <span class="xref-no-num">[sample variance @def-sample-variance]</span> and $\bar{X}$ is the <span class="xref-no-num">[sample mean @def-sample-mean]</span>. Under $H_0 : \mu = \mu_0$,
 $$
-T \sim t_{n-1}.
+T \sim t_{n-1},
 $$
+where $t_{n-1}$ is the Student-$t$ distribution with $n-1$ degrees of freedom.
 
-- **Two-sided test ($H_0 : \mu = \mu_0$ vs. $H_1 : \mu \neq \mu_0$):**
-  Reject $H_0$ if  
-  $$
-  |T| > t_{1-\alpha/2,\,n-1}.
-  $$
+---
 
-- **Upper one-sided test ($H_0 : \mu = \mu_0$ vs. $H_1 : \mu > \mu_0$):**
-  Reject $H_0$ if  
-  $$
-  T > t_{1-\alpha,\,n-1}.
-  $$
+###### Performing the Test {.unnumbered}
 
-- **Lower one-sided test ($H_0 : \mu = \mu_0$ vs. $H_1 : \mu < \mu_0$):**
-  Reject $H_0$ if  
-  $$
-  T < t_{\alpha,\,n-1}.
-  $$
+Given $H_0 : \mu = \mu_0$ and a chosen  <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span> $H_1$, a size–$\alpha$ test proceeds as follows:
+
+1. **Compute the observed test statistic**
+   $$
+   T_{\mathrm{obs}} = \frac{\bar{x} - \mu_0}{s/\sqrt{n}},
+   $$
+   where $s = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2}$ is the square root of the **observed** <span class="xref-no-num">[sample variance @def-sample-variance]</span>.
+
+2. **Apply the rejection rule** according to the form of $H_1$:
+
+   - **Two-sided test ($H_1 : \mu \neq \mu_0$):** Reject $H_0$ if  
+     $$
+     |T_{\mathrm{obs}}| > t_{1-\alpha/2,\,n-1}.
+     $$
+
+   - **Upper one-sided test ($H_1 : \mu > \mu_0$):** Reject $H_0$ if  
+     $$
+     T_{\mathrm{obs}} > t_{1-\alpha,\,n-1}.
+     $$
+
+   - **Lower one-sided test ($H_1 : \mu < \mu_0$):** Reject $H_0$ if  
+     $$
+     T_{\mathrm{obs}} < t_{\alpha,\,n-1}.
+     $$
 
 :::
 
