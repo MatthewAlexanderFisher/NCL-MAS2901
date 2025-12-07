@@ -279,6 +279,8 @@ window.Quarto = {
 <link rel="stylesheet" href="../../theming/visualisation-controls.css">
 <link rel="stylesheet" href="../../theming/tables.css">
 <link rel="stylesheet" href="../../theming/small-table.css">
+<link rel="stylesheet" href="theming/print-button.css">
+<link rel="stylesheet" href="../../theming/reading-mode.css">
 </head>
 
 <body class="nav-sidebar floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -1524,7 +1526,7 @@ Since <span class="math inline">X</span> is integer-valued, this corresponds to 
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="a4e090e8" class="cell" data-execution_count="2">
+<div id="2bb8fc0c" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> comb</span>
@@ -2225,7 +2227,7 @@ L(b;\underline{x}) = \prod_{i=1}^n f(x_i;b)
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="5ddf9b4f" class="cell" data-execution_count="3">
+<div id="47640018" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -2719,7 +2721,7 @@ Since <span class="math inline">\mathrm{Var}(X_i) = \lambda</span> and the <span
 </ol></li>
 </ol>
 <p>In Python:</p>
-<div id="8106e60e" class="cell" data-execution_count="4">
+<div id="c2b307c6" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> poisson</span>
@@ -3399,7 +3401,7 @@ f(\underline{x} \mid \lambda)
 <li>Construct a <span class="math inline">90\%</span> highest density interval (HDI) for <span class="math inline">\theta</span>.</li>
 </ol>
 <p><em>Hint:</em> The following plot may be helpful.</p>
-<div id="2267c748" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="5">
+<div id="f94f163c" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="5">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -5302,9 +5304,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('keydown', onKey);
 })();
 </script>
-
-
-
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   // 1) Find the brand container and the existing logo <img>
@@ -5355,8 +5354,860 @@ document.addEventListener('DOMContentLoaded', function () {
   // 3) Swap: remove the old <a><img/></a>, insert the new <a><svg/></a>
   const oldAnchor = img.closest('a.navbar-brand-logo') || img;
   brandContainer.replaceChild(a, oldAnchor);
+
+  // ============================
+  // 4) Add Settings Dropdown
+  // ============================
+  const tools = document.querySelector('#quarto-header .quarto-navbar-tools');
+  if (!tools) return;
+// Create settings container
+  const settingsContainer = document.createElement('div');
+  settingsContainer.className = 'settings-dropdown';
+  settingsContainer.innerHTML = `
+    <button class="btn-settings" type="button" aria-label="Display settings" title="Display settings">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+      </svg>
+    </button>
+    <div class="settings-menu">
+      <p class="settings-section-label">Display Mode</p>
+      <button class="settings-item" id="lecture-zoom-toggle" type="button">
+        <span class="settings-icon">
+          <svg class="icon-enter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <polyline points="9 21 3 21 3 15"></polyline>
+            <line x1="21" y1="3" x2="14" y2="10"></line>
+            <line x1="3" y1="21" x2="10" y2="14"></line>
+          </svg>
+          <svg class="icon-exit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="4 14 10 14 10 20"></polyline>
+            <polyline points="20 10 14 10 14 4"></polyline>
+            <line x1="14" y1="10" x2="21" y2="3"></line>
+            <line x1="3" y1="21" x2="10" y2="14"></line>
+          </svg>
+        </span>
+        <span class="settings-label">Lecture Zoom</span>
+        <span class="settings-status"></span>
+      </button>
+      <button class="settings-item" id="reading-mode-toggle" type="button">
+        <span class="settings-icon">
+          <svg class="icon-enter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+          </svg>
+          <svg class="icon-exit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </span>
+        <span class="settings-label">Reading Mode</span>
+        <span class="settings-status"></span>
+      </button>
+      
+      <div class="settings-divider"></div>
+      <p class="settings-section-label">Custom Colors</p>
+      
+      <div class="settings-color-row">
+        <label for="settings-bg-color">Background</label>
+        <input type="color" id="settings-bg-color" class="settings-color-input">
+      </div>
+
+      <div class="settings-color-row">
+        <label for="settings-text-color">Text</label>
+        <input type="color" id="settings-text-color" class="settings-color-input">
+      </div>
+
+      <div class="settings-color-row">
+        <label for="settings-accent-color">Accent</label>
+        <input type="color" id="settings-accent-color" class="settings-color-input">
+      </div>    
+        
+      <button class="settings-reset-btn" id="reset-colors" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+          <path d="M3 3v5h5"></path>
+        </svg>
+        Reset Colors
+      </button>
+    </div>
+  `;
+
+  // Insert after color toggle
+  const colorToggle = tools.querySelector('.quarto-color-scheme-toggle');
+  if (colorToggle && colorToggle.parentNode) {
+    colorToggle.parentNode.insertBefore(settingsContainer, colorToggle.nextSibling);
+  } else {
+    tools.appendChild(settingsContainer);
+  }
+
+  // Elements
+  const settingsBtn = settingsContainer.querySelector('.btn-settings');
+  const lectureZoomToggle = settingsContainer.querySelector('#lecture-zoom-toggle');
+  const readingModeToggle = settingsContainer.querySelector('#reading-mode-toggle');
+  const bgColorInput = settingsContainer.querySelector('#settings-bg-color');
+  const textColorInput = settingsContainer.querySelector('#settings-text-color');
+  const accentColorInput = settingsContainer.querySelector('#settings-accent-color');
+  const resetColorsBtn = settingsContainer.querySelector('#reset-colors');
+
+  // Default color values
+  const defaultBgColor = '#fafaf8';
+  const defaultTextColor = '#1a1a1a';
+  const defaultAccentColor = '#0d6efd';
+
+  // ============================
+  // Helper Functions (define first)
+  // ============================
+  
+  // Helper function to darken a hex color
+  const darkenColor = (hex, amount) => {
+    hex = hex.replace('#', '');
+    let r = parseInt(hex.substring(0, 2), 16);
+    let g = parseInt(hex.substring(2, 4), 16);
+    let b = parseInt(hex.substring(4, 6), 16);
+    r = Math.max(0, Math.floor(r * (1 - amount)));
+    g = Math.max(0, Math.floor(g * (1 - amount)));
+    b = Math.max(0, Math.floor(b * (1 - amount)));
+    return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+  };
+
+  // Helper function to lighten a hex color
+  const lightenColor = (hex, amount) => {
+    hex = hex.replace('#', '');
+    let r = parseInt(hex.substring(0, 2), 16);
+    let g = parseInt(hex.substring(2, 4), 16);
+    let b = parseInt(hex.substring(4, 6), 16);
+    r = Math.min(255, Math.floor(r + (255 - r) * amount));
+    g = Math.min(255, Math.floor(g + (255 - g) * amount));
+    b = Math.min(255, Math.floor(b + (255 - b) * amount));
+    return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+  };
+
+  // Reading progress indicator
+  const updateReadingProgress = () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    document.body.style.setProperty('--scroll-progress', `${progress}%`);
+  };
+
+  // Update visual states for display modes
+  const updateActiveStates = () => {
+    const isLectureZoom = document.body.classList.contains('lecture-zoom');
+    const isReadingMode = document.body.classList.contains('reading-mode');
+    lectureZoomToggle.classList.toggle('active', isLectureZoom);
+    readingModeToggle.classList.toggle('active', isReadingMode);
+  };
+
+  // Apply custom colors
+  const applyCustomColors = () => {
+    document.body.classList.add('custom-colors');
+    
+    const bgColor = bgColorInput.value;
+    const textColor = textColorInput.value;
+    const accentColor = accentColorInput.value;
+    
+    document.documentElement.style.setProperty('--custom-bg-color', bgColor);
+    document.documentElement.style.setProperty('--custom-text-color', textColor);
+    document.documentElement.style.setProperty('--custom-accent-color', accentColor);
+    
+    // Compute darker scrollbar thumb color (30% darker)
+    const darkerThumb = darkenColor(bgColor, 0.3);
+    document.documentElement.style.setProperty('--scroll-track', bgColor);
+    document.documentElement.style.setProperty('--scroll-thumb', darkerThumb);
+    
+    // Compute lighter variants for callouts and tabs
+    const lighterBg = lightenColor(bgColor, 0.3);
+    const lighterBgSubtle = lightenColor(bgColor, 0.15);
+    document.documentElement.style.setProperty('--custom-bg-lighter', lighterBg);
+    document.documentElement.style.setProperty('--custom-bg-lighter-subtle', lighterBgSubtle);
+    
+    // Save to localStorage
+    localStorage.setItem('mas2901-custom-bg', bgColor);
+    localStorage.setItem('mas2901-custom-text', textColor);
+    localStorage.setItem('mas2901-custom-accent', accentColor);
+  };
+
+  // Reset colors to defaults
+  const resetColors = () => {
+    document.body.classList.remove('custom-colors');
+    document.documentElement.style.removeProperty('--custom-bg-color');
+    document.documentElement.style.removeProperty('--custom-text-color');
+    document.documentElement.style.removeProperty('--custom-accent-color');
+    document.documentElement.style.removeProperty('--scroll-track');
+    document.documentElement.style.removeProperty('--scroll-thumb');
+    document.documentElement.style.removeProperty('--custom-bg-lighter');
+    document.documentElement.style.removeProperty('--custom-bg-lighter-subtle');
+    
+    // Reset inputs to defaults
+    bgColorInput.value = defaultBgColor;
+    textColorInput.value = defaultTextColor;
+    accentColorInput.value = defaultAccentColor;
+    
+    // Clear localStorage
+    localStorage.removeItem('mas2901-custom-bg');
+    localStorage.removeItem('mas2901-custom-text');
+    localStorage.removeItem('mas2901-custom-accent');
+  };
+
+  // ============================
+  // Event Listeners
+  // ============================
+
+  // Toggle dropdown
+  settingsBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    settingsContainer.classList.toggle('open');
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!settingsContainer.contains(e.target)) {
+      settingsContainer.classList.remove('open');
+    }
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      settingsContainer.classList.remove('open');
+    }
+  });
+
+  // Lecture Zoom toggle
+  lectureZoomToggle.addEventListener('click', () => {
+    // Turn off reading mode if active
+    if (document.body.classList.contains('reading-mode')) {
+      document.body.classList.remove('reading-mode');
+      document.documentElement.classList.remove('reading-mode');
+      window.removeEventListener('scroll', updateReadingProgress);
+      document.body.style.removeProperty('--scroll-progress');
+    }
+
+    document.body.classList.toggle('lecture-zoom');
+    document.documentElement.classList.toggle('lecture-zoom');
+    updateActiveStates();
+  });
+
+  // Reading Mode toggle
+  readingModeToggle.addEventListener('click', () => {
+    // Turn off lecture zoom if active
+    if (document.body.classList.contains('lecture-zoom')) {
+      document.body.classList.remove('lecture-zoom');
+      document.documentElement.classList.remove('lecture-zoom');
+    }
+
+    document.body.classList.toggle('reading-mode');
+    document.documentElement.classList.toggle('reading-mode');
+
+    // Update progress indicator on scroll
+    if (document.body.classList.contains('reading-mode')) {
+      updateReadingProgress();
+      window.addEventListener('scroll', updateReadingProgress);
+    } else {
+      window.removeEventListener('scroll', updateReadingProgress);
+      document.body.style.removeProperty('--scroll-progress');
+    }
+    
+    updateActiveStates();
+  });
+
+  // Color input listeners
+  bgColorInput.addEventListener('input', applyCustomColors);
+  textColorInput.addEventListener('input', applyCustomColors);
+  accentColorInput.addEventListener('input', applyCustomColors);
+
+  // Reset colors button
+  resetColorsBtn.addEventListener('click', resetColors);
+
+  // ============================
+  // Initialize
+  // ============================
+
+  // Load saved colors or use defaults
+  const savedBg = localStorage.getItem('mas2901-custom-bg');
+  const savedText = localStorage.getItem('mas2901-custom-text');
+  const savedAccent = localStorage.getItem('mas2901-custom-accent');
+
+  // Set input values (saved or default)
+  bgColorInput.value = savedBg || defaultBgColor;
+  textColorInput.value = savedText || defaultTextColor;
+  accentColorInput.value = savedAccent || defaultAccentColor;
+
+  // Apply custom colors if any were saved
+  if (savedBg || savedText || savedAccent) {
+    applyCustomColors();
+  }
+
+  // Initial display mode state
+  updateActiveStates();
 });
 </script>
+
+<style>
+/* ============================
+   Settings Dropdown
+   ============================ */
+.settings-dropdown {
+  position: relative;
+  display: inline-flex;
+}
+
+.btn-settings {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.375rem;
+  margin: 0 0.25rem;
+  border-radius: 0.25rem;
+  color: var(--bs-navbar-color, #333);
+  transition: opacity 0.15s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-settings:hover {
+  opacity: 0.7;
+}
+
+.btn-settings svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  transition: transform 0.2s ease;
+}
+
+/* Rotate cog when open */
+.settings-dropdown.open .btn-settings svg {
+  transform: rotate(45deg);
+}
+
+/* Dropdown menu */
+.settings-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  background: var(--surface-weak, white);
+  border: 1px solid var(--border, #ddd);
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 220px;
+  padding: 0.5rem 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+  z-index: 4000;
+}
+
+.settings-dropdown.open .settings-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Section divider */
+.settings-divider {
+  height: 1px;
+  background: var(--border, #ddd);
+  margin: 0.5rem 0;
+}
+
+.settings-section-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--brand-fg, #666);
+  opacity: 0.6;
+  padding: 0.5rem 1rem 0.25rem;
+  margin: 0;
+}
+
+/* Menu items */
+.settings-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: none;
+  color: var(--brand-fg, #333);
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  gap: 0.75rem;
+}
+
+.settings-item:hover {
+  background: var(--brand-teal-hover, #f8f9fa);
+  color: var(--brand-bg, #0d6efd);
+}
+
+.settings-item.active {
+  background: var(--brand-teal, #e7f1ff);
+  color: var(--brand-fg, #0d6efd);
+}
+
+.settings-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+}
+
+.settings-icon svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+/* Icon state switching */
+.settings-icon .icon-exit { display: none; }
+.settings-item.active .settings-icon .icon-enter { display: none; }
+.settings-item.active .settings-icon .icon-exit { display: block; }
+
+.settings-label {
+  flex-grow: 1;
+}
+
+.settings-status {
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+.settings-item.active .settings-status::after {
+  content: '✓';
+  font-size: 0.9rem;
+  opacity: 1;
+}
+
+/* ============================
+   Color Picker Row
+   ============================ */
+.settings-color-row {
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 1rem;
+  gap: 0.75rem;
+}
+
+.settings-color-row label {
+  font-size: 0.85rem;
+  color: var(--brand-fg, #333);
+  flex-grow: 1;
+  cursor: pointer;
+}
+
+/* Circular color swatch input */
+.settings-color-input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  padding: 0;
+  border: 2px solid rgba(0, 0, 0, 0.15);
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.settings-color-input::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.settings-color-input::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%;
+}
+
+.settings-color-input::-moz-color-swatch {
+  border: none;
+  border-radius: 50%;
+}
+
+.settings-color-input:hover {
+  border-color: var(--brand-teal, #0d6efd);
+}
+
+.settings-color-input:focus {
+  outline: none;
+  border-color: var(--brand-teal, #0d6efd);
+  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.25);
+}
+
+/* Reset button */
+.settings-reset-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(100% - 2rem);
+  margin: 0.25rem 1rem 0.5rem;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--border, #ddd);
+  border-radius: 0.25rem;
+  background: transparent;
+  color: var(--brand-fg, #666);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  gap: 0.5rem;
+}
+
+.settings-reset-btn:hover {
+  background: var(--brand-teal-hover, #f8f9fa);
+  border-color: var(--brand-teal, #0d6efd);
+  color: var(--brand-teal, #0d6efd);
+}
+
+.settings-reset-btn svg {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+/* Dark mode support */
+.quarto-dark .btn-settings {
+  color: var(--bs-navbar-dark-color, #fff);
+}
+
+.quarto-dark .settings-menu {
+  background: var(--bs-body-bg, #212529);
+  border-color: var(--bs-border-color, #495057);
+}
+
+.quarto-dark .settings-item:hover {
+  background: var(--bs-tertiary-bg, #2b3035);
+}
+
+.quarto-dark .settings-item.active {
+  background: rgba(13, 110, 253, 0.2);
+}
+
+.quarto-dark .settings-color-input {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.quarto-dark .settings-color-row label {
+  color: var(--bs-body-color, #e9ecef);
+}
+
+.quarto-dark .settings-reset-btn {
+  border-color: var(--bs-border-color, #495057);
+  color: var(--bs-body-color, #adb5bd);
+}
+
+.quarto-dark .settings-reset-btn:hover {
+  background: var(--bs-tertiary-bg, #2b3035);
+}
+
+/* ============================
+   Custom Colors Applied
+   ============================ */
+
+/* ============================
+   Custom Colors - Accent Color Elements
+   ============================ */
+body.custom-colors blockquote,
+body.custom-colors .blockquote {
+  color: var(--custom-accent-color) !important;
+}
+
+body.custom-colors .panel-caption,
+body.custom-colors .figure-caption,
+body.custom-colors .subfigure-caption,
+body.custom-colors .table-caption,
+body.custom-colors figcaption,
+body.custom-colors caption {
+  color: var(--custom-accent-color) !important;
+}
+
+body.custom-colors .header-section-number {
+  color: var(--custom-accent-color) !important;
+}
+
+body.custom-colors details > summary {
+  color: var(--custom-text-color) !important;
+}
+
+body.custom-colors details > summary:hover {
+  color: var(--custom-accent-color) !important;
+}
+
+body.custom-colors {
+  background-color: var(--custom-bg-color) !important;
+  color: var(--custom-text-color) !important;
+  
+  /* Scrollbar - thumb is 20% darker than background */
+  scrollbar-color: color-mix(in srgb, var(--custom-bg-color) 80%, black) var(--custom-bg-color);
+}
+
+body.custom-colors *::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+body.custom-colors *::-webkit-scrollbar-track {
+  background: var(--custom-bg-color);
+}
+
+body.custom-colors *::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--custom-bg-color) 80%, black);
+  border-radius: 6px;
+  border: 2px solid var(--custom-bg-color);
+}
+
+body.custom-colors *::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--custom-bg-color) 65%, black);
+}
+
+body.custom-colors main,
+body.custom-colors .content,
+body.custom-colors article,
+body.custom-colors div.sidebar.sidebar-navigation.rollup.quarto-sidebar-toggle-contents,
+body.custom-colors nav.sidebar.sidebar-navigation:not(.rollup) {
+  background-color: var(--custom-bg-color) !important;
+  color: var(--custom-text-color) !important;
+}
+
+/* Navbar */
+body.custom-colors #quarto-header,
+body.custom-colors #quarto-header nav.navbar,
+body.custom-colors .navbar {
+  background-color: color-mix(in srgb, var(--custom-bg-color) 95%, black) !important;
+  border-bottom-color: color-mix(in srgb, var(--custom-bg-color) 85%, black) !important;
+}
+
+body.custom-colors #quarto-header .navbar-title,
+body.custom-colors #quarto-header .navbar-brand {
+  color: var(--custom-text-color) !important;
+}
+
+/* Navbar icons */
+body.custom-colors #quarto-header .quarto-navbar-tools button,
+body.custom-colors #quarto-header .quarto-navbar-tools a,
+body.custom-colors #quarto-header .quarto-color-scheme-toggle,
+body.custom-colors #quarto-header .btn-settings,
+body.custom-colors #quarto-header .navbar-toggler {
+  color: var(--custom-text-color) !important;
+}
+
+body.custom-colors #quarto-header .quarto-navbar-tools button:hover,
+body.custom-colors #quarto-header .quarto-navbar-tools a:hover,
+body.custom-colors #quarto-header .quarto-color-scheme-toggle:hover,
+body.custom-colors #quarto-header .btn-settings:hover {
+  color: var(--custom-accent-color) !important;
+}
+
+body.custom-colors #quarto-header .navbar-logo {
+  color: var(--custom-text-color) !important;
+}
+
+/* Secondary navbar */
+body.custom-colors .quarto-secondary-nav {
+  background-color: var(--custom-bg-color) !important;
+  border-bottom-color: color-mix(in srgb, var(--custom-bg-color) 85%, black) !important;
+}
+
+body.custom-colors .quarto-secondary-nav .quarto-secondary-nav-title {
+  color: var(--custom-text-color) !important;
+}
+
+/* Autocomplete / Search */
+body.custom-colors .aa-Autocomplete .aa-Form,
+body.custom-colors .aa-DetachedFormContainer .aa-Form {
+  background-color: var(--custom-bg-color) !important;
+  border-color: color-mix(in srgb, var(--custom-bg-color) 80%, black) !important;
+}
+
+body.custom-colors .aa-Autocomplete .aa-Input,
+body.custom-colors .aa-DetachedFormContainer .aa-Input {
+  background-color: var(--custom-bg-color) !important;
+  color: var(--custom-text-color) !important;
+}
+
+body.custom-colors .aa-Autocomplete .aa-Input::placeholder,
+body.custom-colors .aa-DetachedFormContainer .aa-Input::placeholder {
+  color: color-mix(in srgb, var(--custom-text-color) 50%, transparent) !important;
+}
+
+body.custom-colors .aa-Panel,
+body.custom-colors .aa-PanelLayout {
+  background-color: var(--custom-bg-color) !important;
+  border-color: color-mix(in srgb, var(--custom-bg-color) 80%, black) !important;
+}
+
+body.custom-colors .aa-Item {
+  color: var(--custom-text-color) !important;
+}
+
+body.custom-colors .aa-Item[aria-selected="true"],
+body.custom-colors .aa-Item:hover {
+  background-color: color-mix(in srgb, var(--custom-bg-color) 90%, black) !important;
+}
+
+body.custom-colors .aa-Item mark {
+  color: var(--custom-accent-color) !important;
+  background: transparent !important;
+}
+
+/* Headings */
+body.custom-colors h1,
+body.custom-colors h2,
+body.custom-colors h3,
+body.custom-colors h4,
+body.custom-colors h5,
+body.custom-colors h6 {
+  color: var(--custom-text-color) !important;
+}
+
+/* Links */
+body.custom-colors a {
+  color: var(--custom-accent-color) !important;
+}
+
+/* Callouts */
+body.custom-colors .callout {
+  background-color: color-mix(in srgb, var(--custom-bg-color) 95%, black) !important;
+  border-left-color: var(--custom-accent-color) !important;
+}
+
+body.custom-colors .callout-title {
+  color: var(--custom-text-color) !important;
+}
+
+/* Code blocks */
+body.custom-colors pre,
+body.custom-colors code {
+  background-color: color-mix(in srgb, var(--custom-bg-color) 92%, black) !important;
+  color: var(--custom-text-color) !important;
+}
+
+/* Tables */
+body.custom-colors table {
+  color: var(--custom-text-color) !important;
+}
+
+body.custom-colors th {
+  background-color: color-mix(in srgb, var(--custom-bg-color) 90%, black) !important;
+  color: var(--custom-text-color) !important;
+}
+
+body.custom-colors td {
+  border-color: color-mix(in srgb, var(--custom-bg-color) 85%, black) !important;
+}
+
+body.custom-colors tr:hover {
+  background-color: color-mix(in srgb, var(--custom-bg-color) 95%, black) !important;
+}
+
+/* Selection */
+body.custom-colors ::selection {
+  background-color: var(--custom-accent-color);
+  color: white;
+}
+
+/* Sidebar link colors */
+body.custom-colors .sidebar-navigation .sidebar-item a,
+body.custom-colors .sidebar-navigation .sidebar-section a {
+  color: var(--custom-text-color) !important;
+}
+
+body.custom-colors .sidebar-navigation .sidebar-item a:hover,
+body.custom-colors .sidebar-navigation .sidebar-section a:hover {
+  color: var(--custom-accent-color) !important;
+}
+
+body.custom-colors .sidebar-navigation .sidebar-item.active a {
+  color: var(--custom-accent-color) !important;
+}
+
+/* ============================
+   Custom Colors - Callout Headers
+   ============================ */
+body.custom-colors div.callout-note.callout-style-default > .callout-header,
+body.custom-colors div.callout-tip.callout-style-default > .callout-header,
+body.custom-colors div.callout-warning.callout-style-default > .callout-header,
+body.custom-colors div.callout-caution.callout-style-default > .callout-header,
+body.custom-colors div.callout-important.callout-style-default > .callout-header {
+  background-color: var(--custom-bg-lighter) !important;
+}
+
+/* ============================
+   Custom Colors - Nav Tabs
+   ============================ */
+body.custom-colors .nav-tabs .nav-link.active,
+body.custom-colors .nav-tabs .nav-item.show .nav-link {
+  background-color: var(--custom-bg-lighter) !important;
+  color: var(--custom-text-color) !important;
+  border-color: var(--custom-bg-lighter-subtle) !important;
+}
+
+body.custom-colors .nav-tabs .nav-link {
+  color: var(--custom-text-color) !important;
+}
+
+body.custom-colors .nav-tabs .nav-link:hover:not(.active) {
+  background-color: var(--custom-bg-lighter-subtle) !important;
+  border-color: var(--custom-bg-lighter-subtle) !important;
+}
+
+body.custom-colors .nav-tabs {
+  border-bottom-color: var(--custom-bg-lighter-subtle) !important;
+}
+
+body.custom-colors .tab-content {
+  background-color: var(--custom-bg-color) !important;
+  color: var(--custom-text-color) !important;
+}
+
+/* Settings dropdown when custom colors active */
+body.custom-colors .settings-menu {
+  background-color: var(--custom-bg-color) !important;
+  border-color: color-mix(in srgb, var(--custom-bg-color) 80%, black) !important;
+}
+
+body.custom-colors .settings-item {
+  color: var(--custom-text-color) !important;
+}
+
+body.custom-colors .settings-item:hover {
+  background-color: color-mix(in srgb, var(--custom-bg-color) 90%, black) !important;
+}
+
+body.custom-colors .settings-item.active {
+  background-color: color-mix(in srgb, var(--custom-accent-color) 20%, var(--custom-bg-color)) !important;
+  color: var(--custom-accent-color) !important;
+}
+
+body.custom-colors .settings-section-label {
+  color: var(--custom-text-color) !important;
+}
+
+body.custom-colors .settings-color-row label {
+  color: var(--custom-text-color) !important;
+}
+
+body.custom-colors .settings-divider {
+  background-color: color-mix(in srgb, var(--custom-bg-color) 80%, black) !important;
+}
+
+body.custom-colors .settings-reset-btn {
+  color: var(--custom-text-color) !important;
+  border-color: color-mix(in srgb, var(--custom-bg-color) 80%, black) !important;
+}
+
+body.custom-colors .settings-reset-btn:hover {
+  background-color: color-mix(in srgb, var(--custom-bg-color) 90%, black) !important;
+  color: var(--custom-accent-color) !important;
+  border-color: var(--custom-accent-color) !important;
+}
+
+</style>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   // Only target IMPORTANT callouts; add more types if needed.
@@ -5374,223 +6225,6 @@ document.addEventListener('DOMContentLoaded', () => {
       el.innerHTML = el.innerHTML.replace(re, '');
     }
   });
-});
-</script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const tools = document.querySelector('#quarto-header .quarto-navbar-tools');
-  if (!tools) return;
-
-  // Create the button
-  const btn = document.createElement('button');
-  btn.id = 'lecture-zoom-header-toggle';
-  btn.className = 'btn-zoom-toggle';
-  btn.type = 'button';
-  btn.setAttribute('aria-pressed', 'false');
-  btn.setAttribute('aria-label', 'Lecture zoom');
-  btn.setAttribute('title', 'Lecture zoom (X)');
-
-  // svg icon
-  btn.innerHTML = `
-    <!-- ENTER: four corners -->
-    <svg class="icon-enter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <path d="M3 9V3h6"/>
-        <path d="M21 9V3h-6"/>
-        <path d="M3 15v6h6"/>
-        <path d="M21 15v6h-6"/>
-    </svg>
-
-    <!-- EXIT: corners-in (contract) -->
-    <svg class="icon-exit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <path d="M9 3v6H3"/>
-        <path d="M15 3v6h6"/>
-        <path d="M3 15h6v6"/>
-        <path d="M21 15h-6v6"/>
-    </svg>
-  `;
-
-  // Place it next to the colour-scheme toggle (after it, if present)
-  const colorToggle = tools.querySelector('.quarto-color-scheme-toggle');
-  if (colorToggle && colorToggle.parentNode) {
-    colorToggle.parentNode.insertBefore(btn, colorToggle.nextSibling);
-  } else {
-    tools.appendChild(btn);
-  }
-
-  // Toggle logic
-  const KEY = 'lecture-zoom-enabled';
-  
-  // Helper: are we in lecture zoom?
-  const isLectureZoom = () =>
-    document.body.classList.contains('lecture-zoom') ||
-    document.documentElement.classList.contains('lecture-zoom');
-
-  // Define closeLectureSearch early (forward declaration)
-  let closeLectureSearch;
-
-  const apply = (on) => {
-    document.body.classList.toggle('lecture-zoom', on);
-    document.documentElement.classList.toggle('lecture-zoom', on);
-    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
-    
-    // Close search overlay when exiting lecture zoom
-    if (!on && closeLectureSearch) {
-      closeLectureSearch();
-    }
-    
-    // Nudge charts/layouts to recompute
-    window.dispatchEvent(new Event('resize'));
-    sessionStorage.setItem(KEY, on ? '1' : '0');
-  };
-
-  // Restore per-tab state
-  apply(sessionStorage.getItem(KEY) === '1');
-
-  // Click handler
-  btn.addEventListener('click', () => apply(!isLectureZoom()));
-  
-  // Keyboard shortcut (Z)
-  document.addEventListener('keydown', (e) => {
-    if (e.key.toLowerCase() === 'x' && !/input|textarea|select/i.test(e.target.tagName)) {
-      apply(!isLectureZoom());
-    }
-  });
-
-  let acAnchor = null;          // where the autocomplete root came from
-  let panelObserver = null;     // to catch newly created panels
-
-  function ensureLectureOverlay() {
-    let overlay = document.getElementById('lecture-search-overlay');
-    if (!overlay) {
-      overlay = document.createElement('div');
-      overlay.id = 'lecture-search-overlay';
-      overlay.innerHTML = '<div class="lecture-search-modal"></div>';
-      document.body.appendChild(overlay);
-
-      // Close on backdrop click
-      overlay.addEventListener('click', (e) => {
-        if (e.target === overlay && closeLectureSearch) closeLectureSearch();
-      });
-
-      // Close on Esc
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && closeLectureSearch) closeLectureSearch();
-      });
-    }
-    return overlay;
-  }
-
-  function findAutocomplete() {
-    const root =
-      document.querySelector('.aa-Autocomplete') ||
-      document.querySelector('.quarto-search .aa-Autocomplete') ||
-      document.querySelector('.quarto-search-panel .aa-Autocomplete');
-
-    const input = root?.querySelector('input.aa-Input');
-    return { root, input };
-  }
-
-  // Move the results panel (if any) into the modal and normalize its positioning
-  function reparentPanel(modal) {
-    const panel = document.querySelector('.aa-Panel');
-    if (!panel || modal.contains(panel)) return;
-    modal.appendChild(panel);
-    // Let CSS control layout/width; clear inline positioning from Algolia
-    panel.style.left = '';
-    panel.style.top = '';
-    panel.style.width = '';
-  }
-
-  function startPanelObserver(modal) {
-    if (panelObserver) return;
-    panelObserver = new MutationObserver(() => reparentPanel(modal));
-    // Listen on body, since Algolia often inserts the panel there
-    panelObserver.observe(document.body, { childList: true, subtree: true });
-  }
-
-  function stopPanelObserver() {
-    panelObserver?.disconnect();
-    panelObserver = null;
-  }
-
-  function openLectureSearch() {
-    if (!isLectureZoom()) return false;
-
-    const { root, input } = findAutocomplete();
-    if (!root || !input) return false;
-
-    const overlay = ensureLectureOverlay();
-    const modal = overlay.querySelector('.lecture-search-modal');
-
-    // Anchor the current position of the autocomplete root (only once)
-    if (!acAnchor) {
-      acAnchor = document.createComment('autocomplete-anchor');
-      root.parentNode.insertBefore(acAnchor, root);
-    }
-
-    // Move the autocomplete *root* into the modal
-    modal.appendChild(root);
-
-    // Ensure any results panel gets moved into the modal too
-    reparentPanel(modal);
-    startPanelObserver(modal);
-
-    overlay.classList.add('open');
-    document.documentElement.classList.add('search-open');
-
-    // Focus the input after layout
-    requestAnimationFrame(() => {
-      input.focus();
-      input.select?.();
-      // In case Algolia computes sizes on resize, give it a nudge
-      window.dispatchEvent(new Event('resize'));
-    });
-
-    return true;
-  }
-
-  // Now properly define closeLectureSearch
-  closeLectureSearch = function() {
-    const overlay = document.getElementById('lecture-search-overlay');
-    if (!overlay || !overlay.classList.contains('open')) return;
-
-    stopPanelObserver();
-
-    const { root } = findAutocomplete();
-
-    // Move panel (if currently inside modal) back to body to let Algolia clean up normally
-    const modal = overlay.querySelector('.lecture-search-modal');
-    const panel = modal?.querySelector('.aa-Panel');
-    if (panel) document.body.appendChild(panel);
-
-    // Put the autocomplete root back where it came from
-    if (root && acAnchor && acAnchor.parentNode) {
-      acAnchor.parentNode.insertBefore(root, acAnchor.nextSibling);
-    }
-
-    overlay.classList.remove('open');
-    document.documentElement.classList.remove('search-open');
-  };
-
-  // Existing hotkeys:
-  document.addEventListener('keydown', (e) => {
-    const tag = e.target.tagName.toLowerCase();
-    const typing = tag === 'input' || tag === 'textarea' || tag === 'select' || e.isComposing;
-    if (typing) return;
-
-    if (e.key === 'F' && e.shiftKey) {
-      if (openLectureSearch()) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-    }
-    if (e.key === 'Escape') {
-      closeLectureSearch();
-    }
-  });
-
 });
 </script>
 <script>
@@ -7785,6 +8419,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 </style>
+<script>
+
+if (document.body.classList.contains('reading-mode')) {
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    document.body.style.setProperty('--scroll-progress', `${progress}%`);
+  });
+}
+
+</script>
 <script type="ojs-module-contents">
 eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImJvZHlGb250ID0gZ2V0Q29tcHV0ZWRTdHlsZShkb2N1bWVudC5ib2R5KS5mb250RmFtaWx5XG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTIiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiIvLyByZWFjdGl2ZSB2YXJzICh2aXNpYmxlIHRvIGxhdGVyIGNlbGxzKVxuYWxsUXVlc3Rpb25zID0gQXJyYXkuZnJvbShkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCcucXVlc3Rpb24nKSlcblxuYWxsVGFncyA9IEFycmF5LmZyb20obmV3IFNldChcbiAgYWxsUXVlc3Rpb25zLmZsYXRNYXAoZWwgPT4gKGVsLmRhdGFzZXQudGFncyB8fCBcIlwiKVxuICAgIC5zcGxpdCgvXFxzKy8pLm1hcCh0ID0+IHQudHJpbSgpKS5maWx0ZXIoQm9vbGVhbikpXG4pKS5zb3J0KClcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMyIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IntcbiAgZm9yIChjb25zdCBlbCBvZiBhbGxRdWVzdGlvbnMpIHtcbiAgICAvLyAtLS0gVGFnYmFyICh1bmNoYW5nZWQpIC0tLVxuICAgIGlmICghZWwucXVlcnlTZWxlY3RvcignLnRhZ2JhcicpKSB7XG4gICAgICBjb25zdCB0YWdzID0gKGVsLmRhdGFzZXQudGFncyB8fCBcIlwiKS5zcGxpdCgvXFxzKy8pLmZpbHRlcihCb29sZWFuKTtcbiAgICAgIGNvbnN0IGJhciA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ2RpdicpO1xuICAgICAgYmFyLmNsYXNzTmFtZSA9ICd0YWdiYXInO1xuICAgICAgYmFyLmFwcGVuZCguLi50YWdzLm1hcCh0ID0+IE9iamVjdC5hc3NpZ24oZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgnc3BhbicpLCB7XG4gICAgICAgIGNsYXNzTmFtZTogJ3RhZycsIHRleHRDb250ZW50OiB0XG4gICAgICB9KSkpO1xuICAgICAgZWwuYXBwZW5kQ2hpbGQoYmFyKTtcbiAgICB9XG5cbiAgICAvLyAtLS0gRGlmZmljdWx0eSBwZXBwZXJzIGluIGhlYWRlciAoUkhTKSAtLS1cbiAgICBjb25zdCBoZWFkZXIgPSBlbC5xdWVyeVNlbGVjdG9yKCcuY2FsbG91dC1oZWFkZXInKTtcbiAgICBpZiAoaGVhZGVyICYmICFoZWFkZXIucXVlcnlTZWxlY3RvcignLmRpZmZpY3VsdHktcGVwcGVycycpKSB7XG4gICAgICBjb25zdCBsZXZlbCA9IE51bWJlcihlbC5kYXRhc2V0LmRpZmZpY3VsdHkgPz8gMCk7XG5cbiAgICAgIC8vIEFsd2F5cyBzaG93LCBidXQgb25seSBhZGQgcGVwcGVycyBpZiA+MFxuICAgICAgY29uc3Qgc3BhbiA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ3NwYW4nKTtcbiAgICAgIHNwYW4uY2xhc3NOYW1lID0gYGRpZmZpY3VsdHktcGVwcGVycyBsZXZlbC0ke2xldmVsfWA7XG4gICAgICBzcGFuLnNldEF0dHJpYnV0ZSgnYXJpYS1sYWJlbCcsIGBEaWZmaWN1bHR5ICR7bGV2ZWx9YCk7XG4gICAgICBzcGFuLnRleHRDb250ZW50ID0gbGV2ZWwgPiAwID8gYCgkeyBcIvCfjLZcIi5yZXBlYXQobGV2ZWwpIH0pYCA6IFwiKCApXCI7XG4gICAgICBoZWFkZXIuYXBwZW5kQ2hpbGQoc3Bhbik7XG4gICAgfVxuICB9XG4gIHJldHVybiBodG1sYGAgIC8vIHNpbGVuY2Vcbn1cbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNCIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiB0eXBlZCA9IHtcbiAgLy8gLS0tIERPTVxuICBjb25zdCB3cmFwcGVyID0gaHRtbGA8ZGl2IGNsYXNzPVwidG9rZW4tYXV0b2NvbXBsZXRlXCI+PC9kaXY+YDtcbiAgY29uc3QgbGFiZWxFbCA9IGh0bWxgPGxhYmVsIGNsYXNzPVwidG9rZW4tbGFiZWxcIj5GaWx0ZXIgYnkgdGFncyAodHlwZSwgc3BhY2Utc2VwYXJhdGVkKTo8L2xhYmVsPmA7XG4gIGNvbnN0IGlucHV0ICAgPSBodG1sYDxpbnB1dCBjbGFzcz1cInRva2VuLWlucHV0XCIgdHlwZT1cInRleHRcIiBwbGFjZWhvbGRlcj1cImUuZy4gYmF5ZXMgcHJvYmFiaWxpdHlcIj5gO1xuICB3cmFwcGVyLmFwcGVuZChsYWJlbEVsLCBpbnB1dCk7XG5cbiAgLy8gLS0tIFBPUlRBTDogc3VnZ2VzdGlvbnMgbGlzdCBsaXZlcyBhdCBkb2N1bWVudC5ib2R5IHNvIGl0IGNhbiBvdmVybGF5IGV2ZXJ5dGhpbmdcbiAgY29uc3QgbGlzdCA9IGh0bWxgPGRpdiBjbGFzcz1cInRva2VuLXN1Z2dlc3Rpb25zXCIgcm9sZT1cImxpc3Rib3hcIiBoaWRkZW4+PC9kaXY+YDtcbiAgZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChsaXN0KTtcblxuICAvLyBNYWtlIHN1cmUgaXQgZmxvYXRzIGFib3ZlIGFsbCBjb250ZW50XG4gIGxpc3Quc3R5bGUucG9zaXRpb24gPSBcImZpeGVkXCI7XG4gIGxpc3Quc3R5bGUuekluZGV4ID0gXCI5OTk5XCI7IC8vIGhpZ2ggei1pbmRleCB0byBvdmVybGF5IGV2ZXJ5dGhpbmdcblxuICAvLyAtLS0gdmFsdWUgcGx1bWJpbmdcbiAgT2JqZWN0LmRlZmluZVByb3BlcnR5KHdyYXBwZXIsIFwidmFsdWVcIiwge1xuICAgIGdldCgpIHsgcmV0dXJuIGlucHV0LnZhbHVlOyB9LFxuICAgIHNldCh2KSB7IGlucHV0LnZhbHVlID0gdiA/PyBcIlwiOyB9XG4gIH0pO1xuXG4gIC8vIC0tLSBoZWxwZXJzXG4gIGNvbnN0IFRBR1MgPSAoKSA9PiAodHlwZW9mIGFsbFRhZ3MgIT09IFwidW5kZWZpbmVkXCIgPyBhbGxUYWdzIDogW10pO1xuICBjb25zdCB0b2tlbnMgPSAoKSA9PiBpbnB1dC52YWx1ZS5zcGxpdCgvXFxzKy8pLmZpbHRlcihCb29sZWFuKTtcbiAgY29uc3QgbGFzdFRva2VuID0gKCkgPT4gKGlucHV0LnZhbHVlLm1hdGNoKC8oPzpefFxccykoXFxTKikkLyk/LlsxXSkgPz8gXCJcIjtcbiAgY29uc3QgcHJldHR5ID0gdCA9PiB0LnJlcGxhY2UoLy0vZywgXCIgXCIpLnJlcGxhY2UoL1xcYlxcdy9nLCBjID0+IGMudG9VcHBlckNhc2UoKSk7XG5cbiAgLy8gUG9zaXRpb24gcG9ydGFsIGRpcmVjdGx5IGJlbG93IHRoZSBpbnB1dCwgbWF0Y2hpbmcgaXRzIHdpZHRoXG4gIGNvbnN0IGFsaWduTGlzdCA9ICgpID0+IHtcbiAgICBjb25zdCByID0gaW5wdXQuZ2V0Qm91bmRpbmdDbGllbnRSZWN0KCk7XG4gICAgbGlzdC5zdHlsZS5sZWZ0ID0gYCR7ci5sZWZ0fXB4YDtcbiAgICBsaXN0LnN0eWxlLnRvcCAgPSBgJHtyLmJvdHRvbSArIDR9cHhgO1xuICAgIGxpc3Quc3R5bGUud2lkdGggPSBgJHtyLndpZHRofXB4YDtcbiAgfTtcblxuICAvLyAtLS0gcmVuZGVyIHN1Z2dlc3Rpb25zXG4gIGxldCBzZWxlY3RlZEluZGV4ID0gLTE7XG4gIGNvbnN0IGFwcGx5QWN0aXZlU3R5bGVzID0gKCkgPT4ge1xuICAgIGNvbnN0IGl0ZW1zID0gQXJyYXkuZnJvbShsaXN0LmNoaWxkcmVuKTtcbiAgICBpdGVtcy5mb3JFYWNoKChlbCwgaSkgPT4gZWwuY2xhc3NMaXN0LnRvZ2dsZShcImFjdGl2ZVwiLCBpID09PSBzZWxlY3RlZEluZGV4KSk7XG4gIH07XG5cbiAgZnVuY3Rpb24gcmVuZGVyU3VnZ2VzdGlvbnMoKSB7XG4gICAgY29uc3QgcSA9IGxhc3RUb2tlbigpLnRvTG93ZXJDYXNlKCk7XG4gICAgY29uc3QgYWxyZWFkeSA9IG5ldyBTZXQodG9rZW5zKCkubWFwKHMgPT4gcy50b0xvd2VyQ2FzZSgpKSk7XG4gICAgY29uc3QgdGFncyA9IFRBR1MoKTtcblxuICAgIGNvbnN0IGNhbmRpZGF0ZXMgPSBxXG4gICAgICA/IHRhZ3MuZmlsdGVyKHQgPT4gdC50b0xvd2VyQ2FzZSgpLnN0YXJ0c1dpdGgocSkgJiYgIWFscmVhZHkuaGFzKHQudG9Mb3dlckNhc2UoKSkpXG4gICAgICA6IFtdO1xuXG4gICAgbGlzdC5pbm5lckhUTUwgPSBcIlwiO1xuICAgIGlmIChjYW5kaWRhdGVzLmxlbmd0aCA9PT0gMCkgeyBsaXN0LmhpZGRlbiA9IHRydWU7IHJldHVybjsgfVxuXG4gICAgZm9yIChjb25zdCB0IG9mIGNhbmRpZGF0ZXMuc2xpY2UoMCwgOCkpIHtcbiAgICAgIGNvbnN0IGl0ZW0gPSBodG1sYDxkaXYgY2xhc3M9XCJ0b2tlbi1zdWdnZXN0aW9uXCIgcm9sZT1cIm9wdGlvblwiIGRhdGEtdG9rZW49XCIke3R9XCI+JHtwcmV0dHkodCl9PC9kaXY+YDtcbiAgICAgIGl0ZW0uYWRkRXZlbnRMaXN0ZW5lcihcIm1vdXNlZG93blwiLCAoZSkgPT4geyBlLnByZXZlbnREZWZhdWx0KCk7IGFjY2VwdFN1Z2dlc3Rpb24odCk7IH0pO1xuICAgICAgbGlzdC5hcHBlbmRDaGlsZChpdGVtKTtcbiAgICB9XG4gICAgc2VsZWN0ZWRJbmRleCA9IC0xO1xuICAgIGFwcGx5QWN0aXZlU3R5bGVzKCk7XG4gICAgbGlzdC5oaWRkZW4gPSBmYWxzZTtcbiAgICBhbGlnbkxpc3QoKTsgLy8gZW5zdXJlIGNvcnJlY3QgcG9zaXRpb24gd2hlbiBzaG93blxuICB9XG5cbiAgZnVuY3Rpb24gY29tbWl0KCkge1xuICAgIGNvbnN0IHBhcnRzID0gdG9rZW5zKCk7XG4gICAgaW5wdXQudmFsdWUgPSBwYXJ0cy5qb2luKFwiIFwiKSArIChwYXJ0cy5sZW5ndGggPyBcIiBcIiA6IFwiXCIpO1xuICAgIHdyYXBwZXIuZGlzcGF0Y2hFdmVudChuZXcgRXZlbnQoXCJpbnB1dFwiLCB7IGJ1YmJsZXM6IHRydWUgfSkpO1xuICB9XG5cbiAgZnVuY3Rpb24gYWNjZXB0U3VnZ2VzdGlvbih0YWcpIHtcbiAgICBjb25zdCBwYXJ0cyA9IGlucHV0LnZhbHVlLnNwbGl0KC9cXHMrLyk7XG4gICAgaWYgKC9cXFMvLnRlc3QoaW5wdXQudmFsdWUpKSBwYXJ0cy5wb3AoKTsgLy8gcmVwbGFjZSBsYXN0IHRva2VuXG4gICAgY29uc3Qgc2V0ID0gbmV3IFNldChwYXJ0cy5maWx0ZXIoQm9vbGVhbikubWFwKHMgPT4gcy50b0xvd2VyQ2FzZSgpKSk7XG4gICAgaWYgKCFzZXQuaGFzKHRhZy50b0xvd2VyQ2FzZSgpKSkgcGFydHMucHVzaCh0YWcpO1xuICAgIGlucHV0LnZhbHVlID0gcGFydHMuZmlsdGVyKEJvb2xlYW4pLmpvaW4oXCIgXCIpICsgXCIgXCI7XG4gICAgbGlzdC5oaWRkZW4gPSB0cnVlO1xuICAgIGNvbW1pdCgpO1xuICAgIGlucHV0LmZvY3VzKCk7XG4gIH1cblxuICBmdW5jdGlvbiBtb3ZlU2VsZWN0aW9uKGRlbHRhKSB7XG4gICAgY29uc3QgaXRlbXMgPSBBcnJheS5mcm9tKGxpc3QuY2hpbGRyZW4pO1xuICAgIGlmIChpdGVtcy5sZW5ndGggPT09IDApIHJldHVybjtcbiAgICBzZWxlY3RlZEluZGV4ID0gKHNlbGVjdGVkSW5kZXggKyBkZWx0YSArIGl0ZW1zLmxlbmd0aCkgJSBpdGVtcy5sZW5ndGg7XG4gICAgYXBwbHlBY3RpdmVTdHlsZXMoKTtcbiAgICBpZiAoc2VsZWN0ZWRJbmRleCA+PSAwKSBpdGVtc1tzZWxlY3RlZEluZGV4XS5zY3JvbGxJbnRvVmlldyh7IGJsb2NrOiBcIm5lYXJlc3RcIiB9KTtcbiAgfVxuXG4gIC8vIC0tLSBldmVudHNcbiAgaW5wdXQuYWRkRXZlbnRMaXN0ZW5lcihcImlucHV0XCIsIHJlbmRlclN1Z2dlc3Rpb25zKTtcbiAgaW5wdXQuYWRkRXZlbnRMaXN0ZW5lcihcImZvY3VzXCIsICgpID0+IHsgYWxpZ25MaXN0KCk7IH0pOyAvLyByZWFsaWduIG9uIGZvY3VzXG5cbiAgaW5wdXQuYWRkRXZlbnRMaXN0ZW5lcihcImtleWRvd25cIiwgKGUpID0+IHtcbiAgICBpZiAoIWxpc3QuaGlkZGVuICYmIChlLmtleSA9PT0gXCJBcnJvd0Rvd25cIiB8fCBlLmtleSA9PT0gXCJBcnJvd1VwXCIpKSB7XG4gICAgICBlLnByZXZlbnREZWZhdWx0KCk7IG1vdmVTZWxlY3Rpb24oZS5rZXkgPT09IFwiQXJyb3dEb3duXCIgPyArMSA6IC0xKTsgcmV0dXJuO1xuICAgIH1cbiAgICBpZiAoZS5rZXkgPT09IFwiRW50ZXJcIikge1xuICAgICAgaWYgKCFsaXN0LmhpZGRlbiAmJiBzZWxlY3RlZEluZGV4ID49IDApIHtcbiAgICAgICAgZS5wcmV2ZW50RGVmYXVsdCgpO1xuICAgICAgICBjb25zdCBjaG9pY2UgPSBsaXN0LmNoaWxkcmVuW3NlbGVjdGVkSW5kZXhdPy5kYXRhc2V0LnRva2VuO1xuICAgICAgICBpZiAoY2hvaWNlKSBhY2NlcHRTdWdnZXN0aW9uKGNob2ljZSk7XG4gICAgICB9IGVsc2Uge1xuICAgICAgICBjb21taXQoKTtcbiAgICAgIH1cbiAgICB9IGVsc2UgaWYgKGUua2V5ID09PSBcIkVzY2FwZVwiKSB7XG4gICAgICBsaXN0LmhpZGRlbiA9IHRydWU7XG4gICAgfVxuICB9KTtcblxuICAvLyBEZWxheSBibHVyIHRvIGFsbG93IG1vdXNlZG93biBvbiBzdWdnZXN0aW9uIHRvIGZpcmUgZmlyc3RcbiAgaW5wdXQuYWRkRXZlbnRMaXN0ZW5lcihcImJsdXJcIiwgKCkgPT4ge1xuICAgIHNldFRpbWVvdXQoKCkgPT4geyBsaXN0LmhpZGRlbiA9IHRydWU7IGNvbW1pdCgpOyB9LCAyMDApO1xuICB9KTtcblxuICAvLyBDbG9zZSB3aGVuIGNsaWNraW5nIG91dHNpZGUgKHJlbWVtYmVyIGxpc3QgaXMgb3V0c2lkZSB3cmFwcGVyIG5vdylcbiAgY29uc3Qgb25Eb2NDbGljayA9IChlKSA9PiB7XG4gICAgaWYgKGUudGFyZ2V0ICE9PSBpbnB1dCAmJiAhbGlzdC5jb250YWlucyhlLnRhcmdldCkpIGxpc3QuaGlkZGVuID0gdHJ1ZTtcbiAgfTtcbiAgZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcihcImNsaWNrXCIsIG9uRG9jQ2xpY2ssIHRydWUpO1xuXG4gIC8vIFJlcG9zaXRpb24gb24gYW55IHNjcm9sbC9yZXNpemUgKGNhcHR1cmUgc2Nyb2xscyBmcm9tIG5lc3RlZCBjb250YWluZXJzKVxuICBjb25zdCBvblZpZXdwb3J0Q2hhbmdlID0gKCkgPT4geyBpZiAoIWxpc3QuaGlkZGVuKSBhbGlnbkxpc3QoKTsgfTtcbiAgd2luZG93LmFkZEV2ZW50TGlzdGVuZXIoXCJyZXNpemVcIiwgb25WaWV3cG9ydENoYW5nZSwgeyBwYXNzaXZlOiB0cnVlIH0pO1xuICB3aW5kb3cuYWRkRXZlbnRMaXN0ZW5lcihcInNjcm9sbFwiLCBvblZpZXdwb3J0Q2hhbmdlLCB0cnVlKTtcblxuICAvLyBJbml0aWFsIGFsaWdubWVudFxuICBxdWV1ZU1pY3JvdGFzayhhbGlnbkxpc3QpO1xuXG4gIC8vIENsZWFudXAgd2hlbiB0aGUgY2VsbCByZS1ydW5zXG4gIHdyYXBwZXIuZGlzcG9zZSA9ICgpID0+IHtcbiAgICBkb2N1bWVudC5yZW1vdmVFdmVudExpc3RlbmVyKFwiY2xpY2tcIiwgb25Eb2NDbGljaywgdHJ1ZSk7XG4gICAgd2luZG93LnJlbW92ZUV2ZW50TGlzdGVuZXIoXCJyZXNpemVcIiwgb25WaWV3cG9ydENoYW5nZSwgeyBwYXNzaXZlOiB0cnVlIH0pO1xuICAgIHdpbmRvdy5yZW1vdmVFdmVudExpc3RlbmVyKFwic2Nyb2xsXCIsIG9uVmlld3BvcnRDaGFuZ2UsIHRydWUpO1xuICAgIGxpc3QucmVtb3ZlKCk7XG4gIH07XG5cbiAgLy8gSW5pdGlhbCByZW5kZXJcbiAgcmVuZGVyU3VnZ2VzdGlvbnMoKTtcblxuICByZXR1cm4gd3JhcHBlcjtcbn1cblxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC01IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoidmlld29mIGNob3NlbiA9IElucHV0cy5jaGVja2JveChhbGxUYWdzLCB7XG4gIGxhYmVsOiBtZGBPciBwaWNrIHRhZ3M6YCxcbiAgdmFsdWU6IFtdXG59KVxuXG52aWV3b2YgbGV2ZWxzID0gSW5wdXRzLmNoZWNrYm94KFxuICBbMCwgMSwgMiwgM10sXG4gIHtcbiAgICBsYWJlbDogbWRgRGlmZmljdWx0eTpgLFxuICAgIHZhbHVlOiBbMCwgMSwgMiwgM10sICAgICAgICAgICAgICAgICAvLyBkZWZhdWx0OiBzaG93IGFsbFxuICAgIGZvcm1hdDogZCA9PiBbXCJFYXN5XCIsIFwiTWVkaXVtXCIsIFwiSGFyZFwiLCBcIlRvbyBoYXJkXCJdW2RdXG4gIH1cbilcblxuXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTYiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ7XG4gIC8vIFN5bmMgY2hlY2tib3hlcyB0byB0aGUgY29tbWl0dGVkIHRleHQgdG9rZW5zXG4gIGNvbnN0IGxjTWFwID0gbmV3IE1hcChhbGxUYWdzLm1hcCh0ID0+IFt0LnRvTG93ZXJDYXNlKCksIHRdKSk7IC8vIGxvd2VyIOKGkiBvcmlnaW5hbFxuICBjb25zdCB0eXBlZE5vdyA9ICh0eXBlZCB8fCBcIlwiKS5zcGxpdCgvXFxzKy8pLmZpbHRlcihCb29sZWFuKS5tYXAocyA9PiBzLnRvTG93ZXJDYXNlKCkpO1xuICBjb25zdCBzZWxlY3RlZCA9IHR5cGVkTm93Lm1hcChzID0+IGxjTWFwLmdldChzKSkuZmlsdGVyKEJvb2xlYW4pO1xuXG4gIGNvbnN0IGVsID0gdmlld29mIGNob3NlbjtcbiAgaWYgKGVsICYmIEFycmF5LmlzQXJyYXkoZWwudmFsdWUpKSB7XG4gICAgLy8gY29tcGFyZSBzZXRzIHRvIGF2b2lkIGNodXJuXG4gICAgY29uc3QgY3VyID0gbmV3IFNldChlbC52YWx1ZSk7XG4gICAgbGV0IGVxdWFsID0gc2VsZWN0ZWQubGVuZ3RoID09PSBjdXIuc2l6ZSAmJiBzZWxlY3RlZC5ldmVyeSh2ID0+IGN1ci5oYXModikpO1xuICAgIGlmICghZXF1YWwpIHtcbiAgICAgIGVsLnZhbHVlID0gc2VsZWN0ZWQ7XG4gICAgICBlbC5kaXNwYXRjaEV2ZW50KG5ldyBFdmVudChcImlucHV0XCIsIHtidWJibGVzOnRydWV9KSk7XG4gICAgfVxuICB9XG4gIHJldHVybiBodG1sYGA7XG59XG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTciLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ7XG4gIGNvbnN0IHR5cGVkU2V0ICA9IG5ldyBTZXQoKHR5cGVkIHx8IFwiXCIpLnNwbGl0KC9cXHMrLykuZmlsdGVyKEJvb2xlYW4pKTtcbiAgY29uc3QgY2hvc2VuU2V0ID0gbmV3IFNldChjaG9zZW4gfHwgW10pO1xuICBjb25zdCByZXF1aXJlZCAgPSBuZXcgU2V0KFsuLi50eXBlZFNldCwgLi4uY2hvc2VuU2V0XSk7ICAgLy8gQU5EIG92ZXIgdGFnc1xuICBjb25zdCBjaG9zZW5MdiAgPSBuZXcgU2V0KGxldmVscyB8fCBbXSk7ICAgICAgICAgICAgICAgICAgLy8gYWxsb3dlZCBsZXZlbHNcblxuICBsZXQgc2hvd24gPSAwO1xuICBmb3IgKGNvbnN0IGVsIG9mIGFsbFF1ZXN0aW9ucykge1xuICAgIC8vIHRhZ3MgY2hlY2tcbiAgICBjb25zdCBlbFRhZ3MgPSBuZXcgU2V0KChlbC5kYXRhc2V0LnRhZ3MgfHwgXCJcIikuc3BsaXQoL1xccysvKS5maWx0ZXIoQm9vbGVhbikpO1xuICAgIGNvbnN0IHBhc3NUYWdzID0gcmVxdWlyZWQuc2l6ZSA9PT0gMCB8fCBbLi4ucmVxdWlyZWRdLmV2ZXJ5KHQgPT4gZWxUYWdzLmhhcyh0KSk7XG5cbiAgICAvLyBkaWZmaWN1bHR5IGNoZWNrICgwIGRlZmF1bHQpXG4gICAgY29uc3QgbGV2ZWwgPSBOdW1iZXIoZWwuZGF0YXNldC5kaWZmaWN1bHR5ID8/IDApO1xuICAgIGNvbnN0IHBhc3NEaWZmID0gY2hvc2VuTHYuaGFzKGxldmVsKTtcblxuICAgIGNvbnN0IHNob3cgPSBwYXNzVGFncyAmJiBwYXNzRGlmZjtcbiAgICBlbC5zdHlsZS5kaXNwbGF5ID0gc2hvdyA/IFwiXCIgOiBcIm5vbmVcIjtcbiAgICBpZiAoc2hvdykgc2hvd24gKz0gMTtcbiAgfVxuXG4gIHJldHVybiBodG1sYDxkaXY+PHN0cm9uZz5TaG93aW5nICR7c2hvd259PC9zdHJvbmc+IG9mICR7YWxsUXVlc3Rpb25zLmxlbmd0aH0gcXVlc3Rpb25zLjwvZGl2PmBcbn1cblxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC04IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiXG4vLyBkb21haW5cbnhzID0gZDMucmFuZ2UoLTAuMSwgMS4xLCAwLjAxKVxuXG4vLyBQREZcblBERiA9IHhzLm1hcCh4ID0+ICh7XG4gIHg6IHgsXG4gIHk6ICh4ID49IDAgJiYgeCA8PSAxKSA/IDYqeCooMS14KSA6IDAsXG4gIHdoaWNoOiBcIlBERiBmKHgpXCJcbn0pKVxuXG4vLyBDREZcbkNERiA9IHhzLm1hcCh4ID0+IHtcbiAgbGV0IHk7XG4gIGlmICh4IDwgMCkgeSA9IDA7XG4gIGVsc2UgaWYgKHggPiAxKSB5ID0gMTtcbiAgZWxzZSB5ID0geCoqMiAqICgzIC0gMip4KTtcbiAgcmV0dXJuIHt4OiB4LCB5OiB5LCB3aGljaDogXCJDREYgRih4KVwifTtcbn0pXG5cbnZpZXdvZiBjaGFydCA9IFBsb3QucGxvdCh7XG4gIGhlaWdodDogMzAwLFxuICB3aWR0aDogNTAwLFxuICBzdHlsZTogeyBiYWNrZ3JvdW5kOiBcInZhcigtLXBsb3QtcGFuZWwtYmcpXCIsIFxuICAgICAgICAgICBmb250U2l6ZTogMTQsXG4gICAgICAgICAgIGZvbnRGYW1pbHk6IGJvZHlGb250LCAgfSxcbiAgeToge2RvbWFpbjogWzAsMS44XX0sXG4gIG1hcmtzOiBbXG4gICAgUGxvdC5saW5lKFBERiwge3g6IFwieFwiLCB5OiBcInlcIiwgc3Ryb2tlOiBcInN0ZWVsYmx1ZVwifSksXG4gICAgUGxvdC5saW5lKENERiwge3g6IFwieFwiLCB5OiBcInlcIiwgc3Ryb2tlOiBcIm9yYW5nZVwifSksXG4gICAgUGxvdC5ydWxlWShbMF0pLFxuICBdLFxuICBjb2xvcjoge2xlZ2VuZDogdHJ1ZX1cbn0pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3R5cGVkJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2Nob3NlbicpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdsZXZlbHMnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnY2hhcnQnKSJ9XX0=
 </script>

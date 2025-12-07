@@ -9,7 +9,7 @@ tbl-cap-location: bottom
 
 # Revision Sheet {.unnumbered}
 
-(under construction...)
+(nearly complete...)
 
 This page provides a concise summary of all **examinable material** for the MAS2901 exam. If a topic appears in the main notes **but is not included here**, you may assume it is **not examinable**. A dedicated section at the end lists all **non-examinable** content explicitly.
 
@@ -53,53 +53,135 @@ The exam follows the same structure and style as the specimen exam. Key points:
 <details class="essential-points">
 <summary> Assessment Focus </summary>
 
-The **key points** from this chapter are:
+The **core skills** from this chapter that you may be assessed on are:
 
-1. Ability to manipulate expectations.
+1. **Computing probabilities** using basic rules
+   (e.g. complements, unions, intersections, conditional probability).
 
+2. **Manipulating expectations**
+   (linearity of expectation, expectations of simple random variables, using PDFs/PMFs).
 
-</details>
+3. **Rewriting and simplifying probability statements**
+   (e.g. applying the law of total probability, conditioning, decomposing complex events).
 
-
-<details class="revision-entry">
-<summary> 
-Be able to recall and use <span class="xref-no-num">[Bayes Theorem for events @thm-bayes]</span> 
-</summary>
-
-Bayes theorem for events is the following;
-$$
-\mathrm{Pr}(A \mid B) = \frac{\mathrm{Pr}(B \mid A)\mathrm{Pr}(A)}{\mathrm{Pr}(B)}.
-$$
-
-Its <span class="xref-no-num">[proof @prf-bayes]</span> is **not examinable**.
+These competencies underpin nearly all later topics.
 
 </details>
 
 <details class="revision-entry">
 <summary> 
-Understand the role played by <span class="xref-no-num">[random variables @sec-random-variables]</span> in probability theory.
+Be able to recall and use <span class="xref-no-num">[Bayes’ Theorem for events @thm-bayes]</span>.
 </summary>
 
+Bayes’ theorem gives the probability of event (A) given event (B):
+$$
+\Pr(A \mid B)
+= \frac{\Pr(B \mid A)\Pr(A)}{\Pr(B)}.
+$$
+
+Its <span class="xref-no-num">[proof @prf-bayes]</span> is **not examinable**, but you must be able to **apply** the formula in simple settings.
+
 </details>
+
+<details class="revision-entry">
+<summary> 
+Understand the role of <span class="xref-no-num">[random variables @sec-random-variables]</span> in probability theory.
+</summary>
+
+A **random variable** is a numerical quantity whose value depends on the outcome of a random experiment.
+
+You should understand:
+
+* The distinction between **discrete** and **continuous** random variables.
+* How random variables are described using **PMFs**, **PDFs**, **CDFs**, and **expectations**.
+* How events such as $X \leq x$ or $X \in A$ are represented in terms of a random variable’s distribution. In particular, for a *continuous random variable* with PDF $f_X(x)$, we have
+  $$ 
+  \mathrm{Pr}(X \in A) = \int_A f_X(x) \,\mathrm{d}x.
+  $$
+
+This conceptual understanding is essential for later chapters involving likelihoods, estimators, and posterior distributions.
+
+</details>
+
 
 ### Chapter 2 - What is Statistical Inference? 
 
 <details class="essential-points">
 <summary> Assessment Focus </summary>
 
+- <span class="xref-no-num">[Chapter 2 @sec-what-is-statistics]</span> presents the **core idea** of statistical inference:
+  1. We 
+
 
 </details>
 
 <details class="revision-entry">
 <summary> 
-Understanding the role played by a <span class="xref-no-num">[statistical model @sec-statistical-models]</span>.
+Understand the role played by a <span class="xref-no-num">[statistical model @sec-statistical-models]</span>.
 </summary>
+
+A **statistical model** is specified whenever we write something like  
+$$
+X_i \sim \mathrm{Distribution}(\theta).
+$$
+
+This statement encodes our assumptions about how the data are generated. For example, writing  
+$$
+X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu,\sigma^2)
+$$
+tells us:
+
+- which family of distributions we are assuming (here: Normal),
+- what the parameters are (here: $\mu$ and $\sigma^2$),
+- and any structural assumptions (independent, identically distributed).
+
+The statistical model provides the **mathematical structure** needed to compute likelihoods, estimators, posteriors, and hypothesis tests.
+
 </details>
 
 <details class="revision-entry">
 <summary> 
-Understanding the **difference** between data $X_1,\ldots, X_n$ and parameters $\theta$ within a statistical model.</summary>
+Understand the **difference** between data $X_1,\ldots, X_n$ and parameters $\theta$ within a statistical model.
+</summary>
+
+In any statistical model:
+
+- The **data** $X_1,\ldots,X_n$ are **random variables**.  
+- The **parameter** $\theta$ controls the distribution of each $X_i$.
+
 </details>
+
+
+<details class="revision-entry">
+<summary> 
+Understand that different <span class="xref-no-num">[types of data @sec-types-of-data]</span> require different statistical models.
+</summary>
+
+For **numerical data**, there are two main categories:
+
+1. **Continuous data**  
+   - Can take *any real value* within an interval.  
+   - Must be modelled using **continuous distributions**, such as:  
+     - Normal  
+     - Uniform  
+     - Exponential  
+     - Gamma  
+     - Log-normal  
+   - These models have **PDFs** and require integration when computing probabilities.
+
+2. **Discrete data**  
+   - Can take only *specific* isolated values (typically integers).  
+   - Must be modelled using **discrete distributions**, such as:  
+     - Binomial  
+     - Geometric  
+     - Poisson  
+     - Negative Binomial  
+   - These models have **PMFs** and require summation when computing probabilities.
+
+Correctly identifying the data type ensures the likelihood function, estimators, and inferential procedures are appropriate for the problem.
+
+</details>
+
 
 <details class="revision-entry">
 <summary> 
@@ -960,7 +1042,6 @@ Be able to recall and compute the <span class="xref-no-num">[asymptotic posterio
 <details class="essential-points">
 <summary> Assessment Focus </summary>
 
-
 </details>
 
 <details class="revision-entry">
@@ -1172,8 +1253,6 @@ Be able to recall and compute simple examples of <span class="xref-no-num">[High
 
 </details>
 
-#### Essential Points
-
 
 ## Part IV - Hypothesis Testing
 
@@ -1236,27 +1315,80 @@ Understand that a <span class="xref-no-num">[hypothesis test @def-simple-hypothe
 
 </details>
 
+
+
 <details class="revision-entry">
 <summary>
-  Understand the <span class="xref-no-num">[general recipe @sec-general-testing-strategy]</span> for defining hypothesis tests.
+Understand what a <span class="xref-no-num">[rejection region @def-rejection-region]</span> is, and be able to compute simple examples for common test statistics.
 </summary>
+
+Given:
+
+1. **Hypotheses:** A simple null $H_0 : \theta = \theta_0$ and either a  
+   <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span>.
+2. **Data and Test Statistic:** Random data  
+   $X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\theta)$  
+   and a chosen test statistic $T(\underline{X})$.
+3. **Size (or significance level):** A chosen size $\alpha$.
+
+A **size–$\alpha$ rejection region** is any set $R_\alpha$ such that
+$$
+\Pr(T \in R_\alpha \mid H_0) = \alpha.
+$$
+
+---
+
+**Notes**
+
+- The choice of **rejection region** $R_\alpha$ fully determines the test's decision rule:
+
+  - **Reject $H_0$** if the observed statistic lies in the region:
+    $$
+    T_{\mathrm{obs}} \in R_\alpha.
+    $$
+
+  - **Fail to reject $H_0$** if the observed statistic does *not* lie in the region:
+    $$
+    T_{\mathrm{obs}} \notin R_\alpha.
+    $$
+
+- Any *test* that specifies a size–$\alpha$ rejection region is a **valid hypothesis test**.
+
+  - In principle, there are infinitely many possible regions $R_\alpha$ satisfying $\Pr(T \in R_\alpha \mid H_0) = \alpha$.
+
+  - However, not all valid regions are **good**. Beyond having the correct size, we want a rejection region that gives the test **high ability to detect false nulls**. In other words, we prefer choices of $R_\alpha$ that make the probability of a **Type II error** small — meaning the test is likely to reject $H_0$ when $H_0$ is actually false.
+
+  - This is why, in practice, we choose rejection regions that correspond to the **most extreme** values of the test statistic in the direction(s) specified by the alternative.
 
 </details>
 
+<details class="practice-details">
+<summary><em>Computing Rejection Regions — Practice Questions</em></summary>
 
+
+::: {.smaller-table}
+| Location | Description | Link |
+|----------|-------------|-------|
+| Examples | A Terrible Hypothesis Test | @exm-bad-test-statistic|
+
+
+: {tbl-colwidths="[17, 70, 13]"}
+:::
+
+</details>
 
 <details class="revision-entry">
 <summary>
 Be able to perform <span class="xref-no-num">[One-Sample Z tests @def-one-sample-z-test]</span>.
 </summary>
 
-###### Assumptions and Setup {.unnumbered}
+**Assumptions and Setup**
 
 - The <span class="xref-no-num">[One-Sample Z test @def-one-sample-z-test]</span> assumes we have i.i.d. *normally distributed data*
-$$
-X_1,\ldots, X_n \overset{i.i.d.}{\sim} \mathcal{N}(\mu, \sigma^2)
-$$
-with variance $\sigma^2$ **known**.
+  $$
+  X_1,\ldots, X_n \overset{i.i.d.}{\sim} \mathcal{N}(\mu, \sigma^2)
+  $$
+  with variance $\sigma^2$ **known**.
 
 - It tests $H_0 : \mu = \mu_0$ against either a <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span> 
 
@@ -1269,18 +1401,18 @@ with variance $\sigma^2$ **known**.
 
 ---
 
-###### Performing the Test {.unnumbered}
+**Performing the Test**
 
 Given $H_0 : \mu = \mu_0$ and a chosen  <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span> $H_1$, the size–$\alpha$ test proceeds as follows:
 
 1. **Compute the observed test statistic**
   $$
   T_{\mathrm{obs}}
-  = \frac{\bar{x} - \mu_0}{\sigma/\sqrt{n}}.
+  = \frac{\bar{x} - \mu_0}{\sigma/\sqrt{n}},
   $$
-  Under $H_0$, the test statistic is $\mathcal{N}(0,1)$.
+  where $\bar{x} = \frac{1}{n}\sum_{i=1}^n x_i$ is the **observed** <span class="xref-no-num">[sample mean @def-sample-mean]</span>
 
-2. **Apply the rejection rule** according to the form of $H_1$:
+1. **Apply the rejection rule** according to the form of $H_1$:
 
   - **Two-sided test ($H_1 : \mu \neq \mu_0$):** Reject $H_0$ if  
     $$
@@ -1299,6 +1431,8 @@ Given $H_0 : \mu = \mu_0$ and a chosen  <span class="xref-no-num">[one-sided or 
 
 </details>
 
+
+
 <details class="practice-details">
 <summary><em>One-sample z-tests — Practice Questions</em></summary>
 
@@ -1315,48 +1449,62 @@ Given $H_0 : \mu = \mu_0$ and a chosen  <span class="xref-no-num">[one-sided or 
 
 </details>
 
+
+
 <details class="revision-entry">
+
 <summary>
-  Be able to perform <span class="xref-no-num">[One-Sample t tests @def-one-sample-t-test]</span>
+Be able to perform <span class="xref-no-num">[One-Sample t tests @def-one-sample-t-test]</span>
 </summary>
-- Assumes we have i.i.d. *normally distributed data*
+
+**Assumptions and Setup**
+
+- The <span class="xref-no-num">[One-Sample Z test @def-one-sample-z-test]</span> assumes we have i.i.d. *normally distributed data*
   $$
   X_1,\ldots, X_n \overset{i.i.d.}{\sim} \mathcal{N}(\mu, \sigma^2)
   $$
   with variance $\sigma^2$ **unknown**.
-- Tests $H_0 : \mu = \mu_0$  against either a <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span>.
-- Uses test statistic
+
+- It tests $H_0 : \mu = \mu_0$ against either a <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span> 
+
+- Uses the test statistic
   $$
   T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}},
   $$
   where $S^2$ is the <span class="xref-no-num">[sample variance @def-sample-variance]</span>.
 
-- Under $H_0$, the test statistic $T\sim \mathcal{t}_{n-1}$ is Student-$t$ distributed with $n-1$ degrees of freedom.
+- Under $H_0$, the test statistic $T\sim t_{n-1}$ is Student-$t$ distributed with $n-1$ degrees of freedom. 
+  - **Note:** $n$ is the number of data points.
 
-- Given $H_0 : \mu = \mu_0$ and a chosen  <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span> $H_1$, the size–$\alpha$ test proceeds as follows:
+---
 
-  1. **Compute the observed test statistic**
-      $$
-      T_{\mathrm{obs}} = \frac{\bar{x} - \mu_0}{s/\sqrt{n}},
-      $$
-      where $s = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2}$ is the square root of the **observed** <span class="xref-no-num">[sample variance @def-sample-variance]</span>.
+**Performing the Test**
 
-  2. **Apply the rejection rule** according to the form of $H_1$:
+Given $H_0 : \mu = \mu_0$ and a chosen  <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span> $H_1$, the size–$\alpha$ test proceeds as follows:
 
-      - **Two-sided test ($H_1 : \mu \neq \mu_0$):** Reject $H_0$ if  
-        $$
-        |T_{\mathrm{obs}}| > t_{1-\alpha/2,\,n-1}.
-        $$
+1. **Compute the observed test statistic**
+  $$
+  T_{\mathrm{obs}}
+  = \frac{\bar{x} - \mu_0}{s/\sqrt{n}},
+  $$
+  where $s = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2}$ is the square root of the **observed** <span class="xref-no-num">[sample variance @def-sample-variance]</span>.
 
-      - **Upper one-sided test ($H_1 : \mu > \mu_0$):** Reject $H_0$ if  
-        $$
-        T_{\mathrm{obs}} > t_{1-\alpha,\,n-1}.
-        $$
+1. **Apply the rejection rule** according to the form of $H_1$:
 
-      - **Lower one-sided test ($H_1 : \mu < \mu_0$):** Reject $H_0$ if  
-        $$
-        T_{\mathrm{obs}} < t_{\alpha,\,n-1}.
-        $$
+  - **Two-sided test ($H_1 : \mu \neq \mu_0$):** Reject $H_0$ if  
+    $$
+    |T_{\mathrm{obs}}| > t_{n-1, \, 1-\alpha/2}.
+    $$
+
+  - **Upper one-sided test ($H_1 : \mu > \mu_0$):** Reject $H_0$ if  
+    $$
+    T_{\mathrm{obs}} > t_{n-1, \, 1-\alpha}.
+    $$
+
+  - **Lower one-sided test ($H_1 : \mu < \mu_0$):** Reject $H_0$ if  
+    $$
+    T_{\mathrm{obs}} < t_{n-1,\, \alpha}.
+    $$
 
 </details>
 
@@ -1376,8 +1524,79 @@ Given $H_0 : \mu = \mu_0$ and a chosen  <span class="xref-no-num">[one-sided or 
 
 <details class="revision-entry">
 <summary>
-  Be able to perform <span class="xref-no-num">[approximate CLT-based tests for the mean @def-clt-test]</span>
+  Be able to perform <span class="xref-no-num">[approximate CLT-based tests for the mean @def-clt-test]</span>.
 </summary>
+
+**Assumptions and Setup**
+
+- The <span class="xref-no-num">[approximate CLT-based tests for the mean @def-clt-test]</span> may be applied when we have i.i.d. data from **any** distribution with finite variance:
+  $$
+  X_1,\ldots, X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\theta),
+  $$
+  where $\mathrm{Var}(X_i) = \sigma^2$ may be either **known** or **unknown**.
+
+- We write $\mu = \mathrm{E}[X_i]$ and $\sigma^2 = \mathrm{Var}(X_i)$.  
+  - **Note:** Although the distribution is parameterised by $\theta$, the parameter $\theta$ does **not necessarily** coincide with the population mean $\mu$.
+
+- The test relies on the fact that, by the <span class="xref-no-num">[CLT @def-clt-test]</span>, for *large* $n$, we have
+  $$
+  \bar{X} \overset{\text{approx.}}{\sim} \mathcal{N}\left(\mu,\frac{\sigma^2}{n}\right),
+  $$
+  regardless of the original distribution $X_i \sim \mathrm{Distribution}(\theta)$. 
+
+- It tests $H_0 : \mu = \mu_0$ against either a <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span> 
+
+- The test statistic is either:
+  - **Known variance**
+    $$
+    T = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}},
+    $$
+  - **Unknown variance**
+    $$
+    T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}},
+    $$
+    where $S^2$ is the <span class="xref-no-num">[sample variance @def-sample-variance]</span>.
+
+- In both the known- and unknown-variance cases, for large $n$ and under $H_0$, the test statistic
+  $$
+  T \;\overset{\text{approx.}}{\sim}\; \mathcal{N}(0,1)
+  $$
+  is **approximately standard normal**.
+
+- **Note:**  
+  - In the *unknown variance* case, the test statistic may also be approximated by a Student-$t$ distribution with $n-1$ degrees of freedom. This is still an approximation unless the underlying data are exactly normal.  
+  - For the exam, it is sufficient to **always use the $\mathcal{N}(0,1)$ approximation** for these CLT-based tests.
+
+---
+
+**Performing the Test**
+
+Given $H_0 : \mu = \mu_0$ and a chosen  <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span> $H_1$, the size–$\alpha$ test proceeds as follows:
+
+1. **Compute the observed test statistic:** Depending on whether the variance is *known* or *unknown*:
+  $$
+  T_{\mathrm{obs}}
+  = \frac{\bar{x} - \mu_0}{\sigma/\sqrt{n}}, \qquad T_{\mathrm{obs}} = \frac{\bar{x} - \mu_0}{s/\sqrt{n}},
+  $$
+  where $s = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2}$ is the square root of the **observed** <span class="xref-no-num">[sample variance @def-sample-variance]</span>.
+
+2. **Apply the rejection rule** according to the form of $H_1$:
+
+  - **Two-sided test ($H_1 : \mu \neq \mu_0$):** Reject $H_0$ if  
+    $$
+    |T_{\mathrm{obs}}| > z_{1-\alpha/2}.
+    $$
+
+  - **Upper one-sided test ($H_1 : \mu > \mu_0$):** Reject $H_0$ if  
+    $$
+    T_{\mathrm{obs}} > z_{1-\alpha}.
+    $$
+
+  - **Lower one-sided test ($H_1 : \mu < \mu_0$):** Reject $H_0$ if  
+    $$
+    T_{\mathrm{obs}} < z_{\alpha}.
+    $$
+
 
 </details>
 
@@ -1399,6 +1618,59 @@ Given $H_0 : \mu = \mu_0$ and a chosen  <span class="xref-no-num">[one-sided or 
 <summary>
   Be able to perform <span class="xref-no-num">[Likelihood Ratio Tests @def-lrt-simple]</span> (with a **simple null hypothesis**).
 </summary>
+
+
+**Assumptions and Setup**
+
+- The <span class="xref-no-num">[Likelihood Ratio Test @def-lrt-simple]</span> may be applied when we have i.i.d. data from **any** distribution:
+  $$
+  X_1,\ldots, X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\theta).
+  $$
+
+- It tests $H_0 : \theta = \theta_0$ against the two-sided alternative $H_1: \theta \neq \theta_0$. 
+
+- The test statistic is
+  $$
+  T = -2 \log \lambda(\underline{X}),
+  $$
+  where
+  $$
+  \lambda(\underline{X}) = \frac{L(\theta_0; \underline{X})}{L(\hat{\theta}_{\mathrm{MLE}}; \underline{X})} 
+  $$
+  and $L(\theta; \underline{X})$ is the  <span class="xref-no-num">[likelihood function @def-likelihood]</span>.
+
+- A <span class="xref-no-num">[convenient form @prp-lrt-test-statistic]</span> of the test statistic is:
+  $$
+  T = 2\left( \ell(\hat{\theta}_{\mathrm{MLE}} \,; \underline{X}) - \ell(\theta_0\, ; \underline{X})\right),
+  $$
+  where $\ell(\theta; \underline{X})$ is the <span class="xref-no-num">[log likelihood function @def-log-likelihood]</span>.
+
+- By <span class="xref-no-num">[Wilk's theorem @thm-wilks]</span>, for *large* $n$, the test statistic is
+  $$
+  T \; \overset{\text{approx.}}{\sim} \; \chi^2_1,
+  $$
+  approximately $\chi^2_1$ distributed.
+
+---
+
+**Performing the Test**
+
+Given $H_0 : \theta = \theta_0$ and the two-sided alternative $H_1: \theta \neq \theta_0$, the size–$\alpha$ test proceeds as follows:
+
+1. **Compute the observed test statistic:**
+  $$
+  T_{\mathrm{obs}} = 2\left( \ell(\hat{\theta}_{\mathrm{MLE}} \,; \underline{x}) - \ell(\theta_0\, ; \underline{x})\right),
+  $$
+  This can be *broken down into* substeps:
+   1. Compute the log-likelihood function $\ell(\theta; \underline{x})$
+   2. Compute the MLE $\hat{\theta}_{\mathrm{MLE}}$ using the observed data $\underline{x}$.
+   3. Plug both the null $\theta = \theta_0$ and MLE $\theta = \theta_{\mathrm{MLE}}$ into $\ell(\theta; \underline{x})$ and compute the test statistic.
+  
+1. **Apply the rejection rule:** We Reject $H_0$ if  
+  $$
+  T_{\mathrm{obs}} > \chi^2_{1,\,1-\alpha}
+  $$
+  where $\chi^2_{1,\,1-\alpha}$ is the $(1-\alpha)$ quantile of the $\chi^2_1$ distribution.
 
 </details>
 
@@ -1432,6 +1704,10 @@ This section covers all the non-examinable content in the course notes.
 
 
 ### Chapter 2 - What is Statistical Inference?
+
+- You will <span class="xref-no-num">[not be examined @sec-types-of-data]</span> on the following **types of data**:
+  - **Multivariate data:** All exam questions involve **univariate data**, where each observation $x_i$ is a *single numerical value*.  
+  - **Categorical data:** All exam questions involve **numerical data** only; no problems will require modelling categories, labels, or qualitative outcomes.
 
 - You will <span class="xref-no-num">[not be examined @wrn-nonexaminable-specifying-models]</span> on how to *specify a statistical model* (i.e. choosing an appropriate distribution for the data). All exam questions will **explicitly state** the statistical model whenever it is required.
 - You will <span class="xref-no-num">[not be examined @def-model]</span> on the formal definition of a **statistical model**.
@@ -1468,12 +1744,13 @@ This section covers all the non-examinable content in the course notes.
 
 ### Chapter 8 - Bayesian Intervals
 
-
+- You will **not be examined** on actually **computing a Bayesian HDI**. The exam will only require you to understand the <span class="xref-no-num">[definition @def-hdi]</span> in context, and the interpretation of a Highest Density Interval.
 
 ## Part IV - Hypothesis Testing
 
 ### Chapter 9 - Frequentist Hypothesis Testing
 
+- For the <span class="xref-no-num">[likelihood ratio test @sec-lrt]</span>, you do **not** need to remember the name <span class="xref-no-num">[Wilks' Theorem @thm-wilks]</span>. It is sufficient to only remember that **the likelihood ratio test statistic is asymptotically distributed as $\chi^2_1$.**
 
 ### Chapter 10 - Bayesian Hypothesis Testing
 

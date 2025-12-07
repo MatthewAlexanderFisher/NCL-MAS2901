@@ -242,6 +242,8 @@ window.Quarto = {
 <link rel="stylesheet" href="../../theming/visualisation-controls.css">
 <link rel="stylesheet" href="../../theming/tables.css">
 <link rel="stylesheet" href="../../theming/small-table.css">
+<link rel="stylesheet" href="theming/print-button.css">
+<link rel="stylesheet" href="../../theming/reading-mode.css">
 </head>
 
 <body class="nav-sidebar floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -698,7 +700,7 @@ window.Quarto = {
 </header>
 
 
-<p>(under construction…)</p>
+<p>(nearly complete…)</p>
 <p>This page provides a concise summary of all <strong>examinable material</strong> for the MAS2901 exam. If a topic appears in the main notes <strong>but is not included here</strong>, you may assume it is <strong>not examinable</strong>. A dedicated section at the end lists all <strong>non-examinable</strong> content explicitly.</p>
 <p>The revision sheet is organised as follows:</p>
 <ol type="1">
@@ -749,24 +751,38 @@ window.Quarto = {
 <summary>
 Assessment Focus
 </summary>
-<p>The <strong>key points</strong> from this chapter are:</p>
+<p>The <strong>core skills</strong> from this chapter that you may be assessed on are:</p>
 <ol type="1">
-<li>Ability to manipulate expectations.</li>
+<li><p><strong>Computing probabilities</strong> using basic rules (e.g.&nbsp;complements, unions, intersections, conditional probability).</p></li>
+<li><p><strong>Manipulating expectations</strong> (linearity of expectation, expectations of simple random variables, using PDFs/PMFs).</p></li>
+<li><p><strong>Rewriting and simplifying probability statements</strong> (e.g.&nbsp;applying the law of total probability, conditioning, decomposing complex events).</p></li>
 </ol>
+<p>These competencies underpin nearly all later topics.</p>
 </details>
 <details class="revision-entry">
 <summary>
-Be able to recall and use <span class="xref-no-num"><a href="../main/part1/1-prob-theory.html#thm-bayes" class="quarto-xref">Bayes Theorem for events&nbsp;<span>1.2</span></a></span>
+Be able to recall and use <span class="xref-no-num"><a href="../main/part1/1-prob-theory.html#thm-bayes" class="quarto-xref">Bayes’ Theorem for events&nbsp;<span>1.2</span></a></span>.
 </summary>
-<p>Bayes theorem for events is the following; <span class="math display">
-\mathrm{Pr}(A \mid B) = \frac{\mathrm{Pr}(B \mid A)\mathrm{Pr}(A)}{\mathrm{Pr}(B)}.
+<p>Bayes’ theorem gives the probability of event (A) given event (B): <span class="math display">
+\Pr(A \mid B)
+= \frac{\Pr(B \mid A)\Pr(A)}{\Pr(B)}.
 </span></p>
-<p>Its <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#prf-bayes" class="quarto-xref">proof&nbsp;<span>6.1</span></a></span> is <strong>not examinable</strong>.</p>
+<p>Its <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#prf-bayes" class="quarto-xref">proof&nbsp;<span>6.1</span></a></span> is <strong>not examinable</strong>, but you must be able to <strong>apply</strong> the formula in simple settings.</p>
 </details>
 <details class="revision-entry">
 <summary>
-Understand the role played by <span class="xref-no-num"><a href="../main/part1/1-prob-theory.html#sec-random-variables" class="quarto-xref">random variables&nbsp;<span>Random Variables</span></a></span> in probability theory.
+Understand the role of <span class="xref-no-num"><a href="../main/part1/1-prob-theory.html#sec-random-variables" class="quarto-xref">random variables&nbsp;<span>Random Variables</span></a></span> in probability theory.
 </summary>
+<p>A <strong>random variable</strong> is a numerical quantity whose value depends on the outcome of a random experiment.</p>
+<p>You should understand:</p>
+<ul>
+<li>The distinction between <strong>discrete</strong> and <strong>continuous</strong> random variables.</li>
+<li>How random variables are described using <strong>PMFs</strong>, <strong>PDFs</strong>, <strong>CDFs</strong>, and <strong>expectations</strong>.</li>
+<li>How events such as <span class="math inline">X \leq x</span> or <span class="math inline">X \in A</span> are represented in terms of a random variable’s distribution. In particular, for a <em>continuous random variable</em> with PDF <span class="math inline">f_X(x)</span>, we have <span class="math display">
+\mathrm{Pr}(X \in A) = \int_A f_X(x) \,\mathrm{d}x.
+</span></li>
+</ul>
+<p>This conceptual understanding is essential for later chapters involving likelihoods, estimators, and posterior distributions.</p>
 </details>
 </section>
 <section id="chapter-2---what-is-statistical-inference" class="level3">
@@ -775,16 +791,87 @@ Understand the role played by <span class="xref-no-num"><a href="../main/part1/1
 <summary>
 Assessment Focus
 </summary>
+<ul>
+<li><span class="xref-no-num"><a href="../main/part1/2-what-is-stats-inference.html" class="quarto-xref">Chapter 2&nbsp;<span>2&nbsp; What is Statistical Inference?</span></a></span> presents the <strong>core idea</strong> of statistical inference:
+<ol type="1">
+<li>We</li>
+</ol></li>
+</ul>
 </details>
 <details class="revision-entry">
 <summary>
-Understanding the role played by a <span class="xref-no-num"><a href="../main/part1/2-what-is-stats-inference.html#sec-statistical-models" class="quarto-xref">statistical model&nbsp;<span>Statistical Models</span></a></span>.
+Understand the role played by a <span class="xref-no-num"><a href="../main/part1/2-what-is-stats-inference.html#sec-statistical-models" class="quarto-xref">statistical model&nbsp;<span>Statistical Models</span></a></span>.
 </summary>
+<p>A <strong>statistical model</strong> is specified whenever we write something like<br>
+<span class="math display">
+X_i \sim \mathrm{Distribution}(\theta).
+</span></p>
+<p>This statement encodes our assumptions about how the data are generated. For example, writing<br>
+<span class="math display">
+X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu,\sigma^2)
+</span> tells us:</p>
+<ul>
+<li>which family of distributions we are assuming (here: Normal),</li>
+<li>what the parameters are (here: <span class="math inline">\mu</span> and <span class="math inline">\sigma^2</span>),</li>
+<li>and any structural assumptions (independent, identically distributed).</li>
+</ul>
+<p>The statistical model provides the <strong>mathematical structure</strong> needed to compute likelihoods, estimators, posteriors, and hypothesis tests.</p>
 </details>
 <details class="revision-entry">
 <summary>
-Understanding the <strong>difference</strong> between data <span class="math inline">X_1,\ldots, X_n</span> and parameters <span class="math inline">\theta</span> within a statistical model.
+Understand the <strong>difference</strong> between data <span class="math inline">X_1,\ldots, X_n</span> and parameters <span class="math inline">\theta</span> within a statistical model.
 </summary>
+<p>In any statistical model:</p>
+<ul>
+<li>The <strong>data</strong> <span class="math inline">X_1,\ldots,X_n</span> are <strong>random variables</strong>.<br>
+</li>
+<li>The <strong>parameter</strong> <span class="math inline">\theta</span> controls the distribution of each <span class="math inline">X_i</span>.</li>
+</ul>
+</details>
+<details class="revision-entry">
+<summary>
+Understand that different <span class="xref-no-num"><a href="../main/part1/2-what-is-stats-inference.html#sec-types-of-data" class="quarto-xref">types of data&nbsp;<span>Types of Data</span></a></span> require different statistical models.
+</summary>
+<p>For <strong>numerical data</strong>, there are two main categories:</p>
+<ol type="1">
+<li><strong>Continuous data</strong>
+<ul>
+<li>Can take <em>any real value</em> within an interval.<br>
+</li>
+<li>Must be modelled using <strong>continuous distributions</strong>, such as:
+<ul>
+<li>Normal<br>
+</li>
+<li>Uniform<br>
+</li>
+<li>Exponential<br>
+</li>
+<li>Gamma<br>
+</li>
+<li>Log-normal<br>
+</li>
+</ul></li>
+<li>These models have <strong>PDFs</strong> and require integration when computing probabilities.</li>
+</ul></li>
+<li><strong>Discrete data</strong>
+<ul>
+<li>Can take only <em>specific</em> isolated values (typically integers).<br>
+</li>
+<li>Must be modelled using <strong>discrete distributions</strong>, such as:
+<ul>
+<li>Binomial<br>
+</li>
+<li>Geometric<br>
+</li>
+<li>Poisson<br>
+</li>
+<li>Negative Binomial<br>
+</li>
+</ul></li>
+<li>These models have <strong>PMFs</strong> and require summation when computing probabilities.</li>
+</ul></li>
+</ol>
+<p>Correctly identifying the data type ensures the likelihood function, estimators, and inferential procedures are appropriate for the problem.</p>
 </details>
 <details class="revision-entry">
 <summary>
@@ -2082,9 +2169,6 @@ M \pm z_{\alpha/2}\sqrt{V}.
 </table>
 </div>
 </details>
-<section id="essential-points" class="level4">
-<h4 class="anchored" data-anchor-id="essential-points">Essential Points</h4>
-</section>
 </section>
 </section>
 <section id="part-iv---hypothesis-testing" class="level2">
@@ -2153,15 +2237,73 @@ Understand the different <span class="xref-no-num"><a href="../main/part4/9-freq
 </details>
 <details class="revision-entry">
 <summary>
-Understand the <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#sec-general-testing-strategy" class="quarto-xref">general recipe&nbsp;<span>General Recipe</span></a></span> for defining hypothesis tests.
+Understand what a <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-rejection-region" class="quarto-xref">rejection region&nbsp;<span>9.2</span></a></span> is, and be able to compute simple examples for common test statistics.
 </summary>
+<p>Given:</p>
+<ol type="1">
+<li><strong>Hypotheses:</strong> A simple null <span class="math inline">H_0 : \theta = \theta_0</span> and either a<br>
+<span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-one-two-sided-tests" class="quarto-xref">one-sided or two-sided alternative&nbsp;<span>9.4</span></a></span>.</li>
+<li><strong>Data and Test Statistic:</strong> Random data<br>
+<span class="math inline">X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\theta)</span><br>
+and a chosen test statistic <span class="math inline">T(\underline{X})</span>.</li>
+<li><strong>Size (or significance level):</strong> A chosen size <span class="math inline">\alpha</span>.</li>
+</ol>
+<p>A <strong>size–<span class="math inline">\alpha</span> rejection region</strong> is any set <span class="math inline">R_\alpha</span> such that <span class="math display">
+\Pr(T \in R_\alpha \mid H_0) = \alpha.
+</span></p>
+<hr>
+<p><strong>Notes</strong></p>
+<ul>
+<li><p>The choice of <strong>rejection region</strong> <span class="math inline">R_\alpha</span> fully determines the test’s decision rule:</p>
+<ul>
+<li><p><strong>Reject <span class="math inline">H_0</span></strong> if the observed statistic lies in the region: <span class="math display">
+T_{\mathrm{obs}} \in R_\alpha.
+</span></p></li>
+<li><p><strong>Fail to reject <span class="math inline">H_0</span></strong> if the observed statistic does <em>not</em> lie in the region: <span class="math display">
+T_{\mathrm{obs}} \notin R_\alpha.
+</span></p></li>
+</ul></li>
+<li><p>Any <em>test</em> that specifies a size–<span class="math inline">\alpha</span> rejection region is a <strong>valid hypothesis test</strong>.</p>
+<ul>
+<li><p>In principle, there are infinitely many possible regions <span class="math inline">R_\alpha</span> satisfying <span class="math inline">\Pr(T \in R_\alpha \mid H_0) = \alpha</span>.</p></li>
+<li><p>However, not all valid regions are <strong>good</strong>. Beyond having the correct size, we want a rejection region that gives the test <strong>high ability to detect false nulls</strong>. In other words, we prefer choices of <span class="math inline">R_\alpha</span> that make the probability of a <strong>Type II error</strong> small — meaning the test is likely to reject <span class="math inline">H_0</span> when <span class="math inline">H_0</span> is actually false.</p></li>
+<li><p>This is why, in practice, we choose rejection regions that correspond to the <strong>most extreme</strong> values of the test statistic in the direction(s) specified by the alternative.</p></li>
+</ul></li>
+</ul>
+</details>
+<details class="practice-details">
+<summary>
+<em>Computing Rejection Regions — Practice Questions</em>
+</summary>
+<div class="smaller-table">
+<table class="table">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 70%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Location</th>
+<th>Description</th>
+<th>Link</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Examples</td>
+<td>A Terrible Hypothesis Test</td>
+<td><a href="../main/part4/9-freq-hypothesis-testing.html#exm-bad-test-statistic" class="quarto-xref">Example&nbsp;<span>9.1</span></a></td>
+</tr>
+</tbody>
+</table>
+</div>
 </details>
 <details class="revision-entry">
 <summary>
 Be able to perform <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-one-sample-z-test" class="quarto-xref">One-Sample Z tests&nbsp;<span>9.6</span></a></span>.
 </summary>
-<section id="assumptions-and-setup" class="level6 unnumbered">
-<h6 class="unnumbered anchored" data-anchor-id="assumptions-and-setup">Assumptions and Setup</h6>
+<p><strong>Assumptions and Setup</strong></p>
 <ul>
 <li><p>The <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-one-sample-z-test" class="quarto-xref">One-Sample Z test&nbsp;<span>9.6</span></a></span> assumes we have i.i.d. <em>normally distributed data</em> <span class="math display">
 X_1,\ldots, X_n \overset{i.i.d.}{\sim} \mathcal{N}(\mu, \sigma^2)
@@ -2173,15 +2315,13 @@ T = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}}.
 <li><p>Under <span class="math inline">H_0</span>, the test statistic <span class="math inline">T\sim \mathcal{N}(0,1)</span> is <strong>standard normal</strong> distributed.</p></li>
 </ul>
 <hr>
-</section>
-<section id="performing-the-test" class="level6 unnumbered">
-<h6 class="unnumbered anchored" data-anchor-id="performing-the-test">Performing the Test</h6>
+<p><strong>Performing the Test</strong></p>
 <p>Given <span class="math inline">H_0 : \mu = \mu_0</span> and a chosen <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-one-two-sided-tests" class="quarto-xref">one-sided or two-sided alternative&nbsp;<span>9.4</span></a></span> <span class="math inline">H_1</span>, the size–<span class="math inline">\alpha</span> test proceeds as follows:</p>
 <ol type="1">
 <li><p><strong>Compute the observed test statistic</strong> <span class="math display">
   T_{\mathrm{obs}}
-  = \frac{\bar{x} - \mu_0}{\sigma/\sqrt{n}}.
-  </span> Under <span class="math inline">H_0</span>, the test statistic is <span class="math inline">\mathcal{N}(0,1)</span>.</p></li>
+  = \frac{\bar{x} - \mu_0}{\sigma/\sqrt{n}},
+  </span> where <span class="math inline">\bar{x} = \frac{1}{n}\sum_{i=1}^n x_i</span> is the <strong>observed</strong> <span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#def-sample-mean" class="quarto-xref">sample mean&nbsp;<span>4.1</span></a></span></p></li>
 <li><p><strong>Apply the rejection rule</strong> according to the form of <span class="math inline">H_1</span>:</p></li>
 </ol>
 <ul>
@@ -2198,7 +2338,7 @@ T_{\mathrm{obs}} &gt; z_{1-\alpha}.
 T_{\mathrm{obs}} &lt; z_{\alpha}.
 </span></p></li>
 </ul>
-</section></details>
+</details>
 <details class="practice-details">
 <summary>
 <em>One-sample z-tests — Practice Questions</em>
@@ -2231,36 +2371,43 @@ T_{\mathrm{obs}} &lt; z_{\alpha}.
 <summary>
 Be able to perform <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-one-sample-t-test" class="quarto-xref">One-Sample t tests&nbsp;<span>9.7</span></a></span>
 </summary>
+<p><strong>Assumptions and Setup</strong></p>
 <ul>
-<li><p>Assumes we have i.i.d. <em>normally distributed data</em> <span class="math display">
+<li><p>The <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-one-sample-z-test" class="quarto-xref">One-Sample Z test&nbsp;<span>9.6</span></a></span> assumes we have i.i.d. <em>normally distributed data</em> <span class="math display">
 X_1,\ldots, X_n \overset{i.i.d.}{\sim} \mathcal{N}(\mu, \sigma^2)
 </span> with variance <span class="math inline">\sigma^2</span> <strong>unknown</strong>.</p></li>
-<li><p>Tests <span class="math inline">H_0 : \mu = \mu_0</span> against either a <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-one-two-sided-tests" class="quarto-xref">one-sided or two-sided alternative&nbsp;<span>9.4</span></a></span>.</p></li>
-<li><p>Uses test statistic <span class="math display">
+<li><p>It tests <span class="math inline">H_0 : \mu = \mu_0</span> against either a <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-one-two-sided-tests" class="quarto-xref">one-sided or two-sided alternative&nbsp;<span>9.4</span></a></span></p></li>
+<li><p>Uses the test statistic <span class="math display">
 T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}},
 </span> where <span class="math inline">S^2</span> is the <span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#def-sample-variance" class="quarto-xref">sample variance&nbsp;<span>4.2</span></a></span>.</p></li>
-<li><p>Under <span class="math inline">H_0</span>, the test statistic <span class="math inline">T\sim \mathcal{t}_{n-1}</span> is Student-<span class="math inline">t</span> distributed with <span class="math inline">n-1</span> degrees of freedom.</p></li>
-<li><p>Given <span class="math inline">H_0 : \mu = \mu_0</span> and a chosen <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-one-two-sided-tests" class="quarto-xref">one-sided or two-sided alternative&nbsp;<span>9.4</span></a></span> <span class="math inline">H_1</span>, the size–<span class="math inline">\alpha</span> test proceeds as follows:</p>
+<li><p>Under <span class="math inline">H_0</span>, the test statistic <span class="math inline">T\sim t_{n-1}</span> is Student-<span class="math inline">t</span> distributed with <span class="math inline">n-1</span> degrees of freedom.</p>
+<ul>
+<li><strong>Note:</strong> <span class="math inline">n</span> is the number of data points.</li>
+</ul></li>
+</ul>
+<hr>
+<p><strong>Performing the Test</strong></p>
+<p>Given <span class="math inline">H_0 : \mu = \mu_0</span> and a chosen <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-one-two-sided-tests" class="quarto-xref">one-sided or two-sided alternative&nbsp;<span>9.4</span></a></span> <span class="math inline">H_1</span>, the size–<span class="math inline">\alpha</span> test proceeds as follows:</p>
 <ol type="1">
 <li><p><strong>Compute the observed test statistic</strong> <span class="math display">
-T_{\mathrm{obs}} = \frac{\bar{x} - \mu_0}{s/\sqrt{n}},
-</span> where <span class="math inline">s = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2}</span> is the square root of the <strong>observed</strong> <span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#def-sample-variance" class="quarto-xref">sample variance&nbsp;<span>4.2</span></a></span>.</p></li>
-<li><p><strong>Apply the rejection rule</strong> according to the form of <span class="math inline">H_1</span>:</p>
+  T_{\mathrm{obs}}
+  = \frac{\bar{x} - \mu_0}{s/\sqrt{n}},
+  </span> where <span class="math inline">s = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2}</span> is the square root of the <strong>observed</strong> <span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#def-sample-variance" class="quarto-xref">sample variance&nbsp;<span>4.2</span></a></span>.</p></li>
+<li><p><strong>Apply the rejection rule</strong> according to the form of <span class="math inline">H_1</span>:</p></li>
+</ol>
 <ul>
 <li><p><strong>Two-sided test (<span class="math inline">H_1 : \mu \neq \mu_0</span>):</strong> Reject <span class="math inline">H_0</span> if<br>
 <span class="math display">
-|T_{\mathrm{obs}}| &gt; t_{1-\alpha/2,\,n-1}.
+|T_{\mathrm{obs}}| &gt; t_{n-1, \, 1-\alpha/2}.
 </span></p></li>
 <li><p><strong>Upper one-sided test (<span class="math inline">H_1 : \mu &gt; \mu_0</span>):</strong> Reject <span class="math inline">H_0</span> if<br>
 <span class="math display">
-T_{\mathrm{obs}} &gt; t_{1-\alpha,\,n-1}.
+T_{\mathrm{obs}} &gt; t_{n-1, \, 1-\alpha}.
 </span></p></li>
 <li><p><strong>Lower one-sided test (<span class="math inline">H_1 : \mu &lt; \mu_0</span>):</strong> Reject <span class="math inline">H_0</span> if<br>
 <span class="math display">
-T_{\mathrm{obs}} &lt; t_{\alpha,\,n-1}.
+T_{\mathrm{obs}} &lt; t_{n-1,\, \alpha}.
 </span></p></li>
-</ul></li>
-</ol></li>
 </ul>
 </details>
 <details class="practice-details">
@@ -2293,8 +2440,64 @@ T_{\mathrm{obs}} &lt; t_{\alpha,\,n-1}.
 </details>
 <details class="revision-entry">
 <summary>
-Be able to perform <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-clt-test" class="quarto-xref">approximate CLT-based tests for the mean&nbsp;<span>9.8</span></a></span>
+Be able to perform <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-clt-test" class="quarto-xref">approximate CLT-based tests for the mean&nbsp;<span>9.8</span></a></span>.
 </summary>
+<p><strong>Assumptions and Setup</strong></p>
+<ul>
+<li><p>The <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-clt-test" class="quarto-xref">approximate CLT-based tests for the mean&nbsp;<span>9.8</span></a></span> may be applied when we have i.i.d. data from <strong>any</strong> distribution with finite variance: <span class="math display">
+X_1,\ldots, X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\theta),
+</span> where <span class="math inline">\mathrm{Var}(X_i) = \sigma^2</span> may be either <strong>known</strong> or <strong>unknown</strong>.</p></li>
+<li><p>We write <span class="math inline">\mu = \mathrm{E}[X_i]</span> and <span class="math inline">\sigma^2 = \mathrm{Var}(X_i)</span>.</p>
+<ul>
+<li><strong>Note:</strong> Although the distribution is parameterised by <span class="math inline">\theta</span>, the parameter <span class="math inline">\theta</span> does <strong>not necessarily</strong> coincide with the population mean <span class="math inline">\mu</span>.</li>
+</ul></li>
+<li><p>The test relies on the fact that, by the <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-clt-test" class="quarto-xref">CLT&nbsp;<span>9.8</span></a></span>, for <em>large</em> <span class="math inline">n</span>, we have <span class="math display">
+\bar{X} \overset{\text{approx.}}{\sim} \mathcal{N}\left(\mu,\frac{\sigma^2}{n}\right),
+</span> regardless of the original distribution <span class="math inline">X_i \sim \mathrm{Distribution}(\theta)</span>.</p></li>
+<li><p>It tests <span class="math inline">H_0 : \mu = \mu_0</span> against either a <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-one-two-sided-tests" class="quarto-xref">one-sided or two-sided alternative&nbsp;<span>9.4</span></a></span></p></li>
+<li><p>The test statistic is either:</p>
+<ul>
+<li><strong>Known variance</strong> <span class="math display">
+T = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}},
+</span></li>
+<li><strong>Unknown variance</strong> <span class="math display">
+T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}},
+</span> where <span class="math inline">S^2</span> is the <span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#def-sample-variance" class="quarto-xref">sample variance&nbsp;<span>4.2</span></a></span>.</li>
+</ul></li>
+<li><p>In both the known- and unknown-variance cases, for large <span class="math inline">n</span> and under <span class="math inline">H_0</span>, the test statistic <span class="math display">
+T \;\overset{\text{approx.}}{\sim}\; \mathcal{N}(0,1)
+</span> is <strong>approximately standard normal</strong>.</p></li>
+<li><p><strong>Note:</strong></p>
+<ul>
+<li>In the <em>unknown variance</em> case, the test statistic may also be approximated by a Student-<span class="math inline">t</span> distribution with <span class="math inline">n-1</span> degrees of freedom. This is still an approximation unless the underlying data are exactly normal.<br>
+</li>
+<li>For the exam, it is sufficient to <strong>always use the <span class="math inline">\mathcal{N}(0,1)</span> approximation</strong> for these CLT-based tests.</li>
+</ul></li>
+</ul>
+<hr>
+<p><strong>Performing the Test</strong></p>
+<p>Given <span class="math inline">H_0 : \mu = \mu_0</span> and a chosen <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-one-two-sided-tests" class="quarto-xref">one-sided or two-sided alternative&nbsp;<span>9.4</span></a></span> <span class="math inline">H_1</span>, the size–<span class="math inline">\alpha</span> test proceeds as follows:</p>
+<ol type="1">
+<li><p><strong>Compute the observed test statistic:</strong> Depending on whether the variance is <em>known</em> or <em>unknown</em>: <span class="math display">
+  T_{\mathrm{obs}}
+  = \frac{\bar{x} - \mu_0}{\sigma/\sqrt{n}}, \qquad T_{\mathrm{obs}} = \frac{\bar{x} - \mu_0}{s/\sqrt{n}},
+  </span> where <span class="math inline">s = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2}</span> is the square root of the <strong>observed</strong> <span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#def-sample-variance" class="quarto-xref">sample variance&nbsp;<span>4.2</span></a></span>.</p></li>
+<li><p><strong>Apply the rejection rule</strong> according to the form of <span class="math inline">H_1</span>:</p></li>
+</ol>
+<ul>
+<li><p><strong>Two-sided test (<span class="math inline">H_1 : \mu \neq \mu_0</span>):</strong> Reject <span class="math inline">H_0</span> if<br>
+<span class="math display">
+|T_{\mathrm{obs}}| &gt; z_{1-\alpha/2}.
+</span></p></li>
+<li><p><strong>Upper one-sided test (<span class="math inline">H_1 : \mu &gt; \mu_0</span>):</strong> Reject <span class="math inline">H_0</span> if<br>
+<span class="math display">
+T_{\mathrm{obs}} &gt; z_{1-\alpha}.
+</span></p></li>
+<li><p><strong>Lower one-sided test (<span class="math inline">H_1 : \mu &lt; \mu_0</span>):</strong> Reject <span class="math inline">H_0</span> if<br>
+<span class="math display">
+T_{\mathrm{obs}} &lt; z_{\alpha}.
+</span></p></li>
+</ul>
 </details>
 <details class="practice-details">
 <summary>
@@ -2328,6 +2531,41 @@ Be able to perform <span class="xref-no-num"><a href="../main/part4/9-freq-hypot
 <summary>
 Be able to perform <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-lrt-simple" class="quarto-xref">Likelihood Ratio Tests&nbsp;<span>9.9</span></a></span> (with a <strong>simple null hypothesis</strong>).
 </summary>
+<p><strong>Assumptions and Setup</strong></p>
+<ul>
+<li><p>The <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-lrt-simple" class="quarto-xref">Likelihood Ratio Test&nbsp;<span>9.9</span></a></span> may be applied when we have i.i.d. data from <strong>any</strong> distribution: <span class="math display">
+X_1,\ldots, X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\theta).
+</span></p></li>
+<li><p>It tests <span class="math inline">H_0 : \theta = \theta_0</span> against the two-sided alternative <span class="math inline">H_1: \theta \neq \theta_0</span>.</p></li>
+<li><p>The test statistic is <span class="math display">
+T = -2 \log \lambda(\underline{X}),
+</span> where <span class="math display">
+\lambda(\underline{X}) = \frac{L(\theta_0; \underline{X})}{L(\hat{\theta}_{\mathrm{MLE}}; \underline{X})}
+</span> and <span class="math inline">L(\theta; \underline{X})</span> is the <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#def-likelihood" class="quarto-xref">likelihood function&nbsp;<span>5.1</span></a></span>.</p></li>
+<li><p>A <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#prp-lrt-test-statistic" class="quarto-xref">convenient form&nbsp;<span>9.1</span></a></span> of the test statistic is: <span class="math display">
+T = 2\left( \ell(\hat{\theta}_{\mathrm{MLE}} \,; \underline{X}) - \ell(\theta_0\, ; \underline{X})\right),
+</span> where <span class="math inline">\ell(\theta; \underline{X})</span> is the <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#def-log-likelihood" class="quarto-xref">log likelihood function&nbsp;<span>5.4</span></a></span>.</p></li>
+<li><p>By <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#thm-wilks" class="quarto-xref">Wilk’s theorem&nbsp;<span>9.1</span></a></span>, for <em>large</em> <span class="math inline">n</span>, the test statistic is <span class="math display">
+T \; \overset{\text{approx.}}{\sim} \; \chi^2_1,
+</span> approximately <span class="math inline">\chi^2_1</span> distributed.</p></li>
+</ul>
+<hr>
+<p><strong>Performing the Test</strong></p>
+<p>Given <span class="math inline">H_0 : \theta = \theta_0</span> and the two-sided alternative <span class="math inline">H_1: \theta \neq \theta_0</span>, the size–<span class="math inline">\alpha</span> test proceeds as follows:</p>
+<ol type="1">
+<li><strong>Compute the observed test statistic:</strong> <span class="math display">
+  T_{\mathrm{obs}} = 2\left( \ell(\hat{\theta}_{\mathrm{MLE}} \,; \underline{x}) - \ell(\theta_0\, ; \underline{x})\right),
+  </span> This can be <em>broken down into</em> substeps:
+<ol type="1">
+<li>Compute the log-likelihood function <span class="math inline">\ell(\theta; \underline{x})</span></li>
+<li>Compute the MLE <span class="math inline">\hat{\theta}_{\mathrm{MLE}}</span> using the observed data <span class="math inline">\underline{x}</span>.</li>
+<li>Plug both the null <span class="math inline">\theta = \theta_0</span> and MLE <span class="math inline">\theta = \theta_{\mathrm{MLE}}</span> into <span class="math inline">\ell(\theta; \underline{x})</span> and compute the test statistic.</li>
+</ol></li>
+<li><strong>Apply the rejection rule:</strong> We Reject <span class="math inline">H_0</span> if<br>
+<span class="math display">
+  T_{\mathrm{obs}} &gt; \chi^2_{1,\,1-\alpha}
+  </span> where <span class="math inline">\chi^2_{1,\,1-\alpha}</span> is the <span class="math inline">(1-\alpha)</span> quantile of the <span class="math inline">\chi^2_1</span> distribution.</li>
+</ol>
 </details>
 <details class="practice-details">
 <summary>
@@ -2365,7 +2603,6 @@ Be able to perform <span class="xref-no-num"><a href="../main/part4/9-freq-hypot
 </section>
 </section>
 </section>
-
 <section id="sec-non-examinable-content" class="level1">
 <h1>Non-Examinable Content</h1>
 <p>This section covers all the non-examinable content in the course notes.</p>
@@ -2382,6 +2619,12 @@ Be able to perform <span class="xref-no-num"><a href="../main/part4/9-freq-hypot
 <section id="chapter-2---what-is-statistical-inference-1" class="level3">
 <h3 class="anchored" data-anchor-id="chapter-2---what-is-statistical-inference-1">Chapter 2 - What is Statistical Inference?</h3>
 <ul>
+<li>You will <span class="xref-no-num"><a href="../main/part1/2-what-is-stats-inference.html#sec-types-of-data" class="quarto-xref">not be examined&nbsp;<span>Types of Data</span></a></span> on the following <strong>types of data</strong>:
+<ul>
+<li><strong>Multivariate data:</strong> All exam questions involve <strong>univariate data</strong>, where each observation <span class="math inline">x_i</span> is a <em>single numerical value</em>.<br>
+</li>
+<li><strong>Categorical data:</strong> All exam questions involve <strong>numerical data</strong> only; no problems will require modelling categories, labels, or qualitative outcomes.</li>
+</ul></li>
 <li>You will <span class="xref-no-num"><a href="../main/part1/2-what-is-stats-inference.html#wrn-nonexaminable-specifying-models" class="quarto-xref">not be examined&nbsp;<span>2.1</span></a></span> on how to <em>specify a statistical model</em> (i.e.&nbsp;choosing an appropriate distribution for the data). All exam questions will <strong>explicitly state</strong> the statistical model whenever it is required.</li>
 <li>You will <span class="xref-no-num"><a href="../main/part1/2-what-is-stats-inference.html#def-model" class="quarto-xref">not be examined&nbsp;<span>2.1</span></a></span> on the formal definition of a <strong>statistical model</strong>.</li>
 </ul>
@@ -2428,12 +2671,18 @@ Be able to perform <span class="xref-no-num"><a href="../main/part4/9-freq-hypot
 </section>
 <section id="chapter-8---bayesian-intervals-1" class="level3">
 <h3 class="anchored" data-anchor-id="chapter-8---bayesian-intervals-1">Chapter 8 - Bayesian Intervals</h3>
+<ul>
+<li>You will <strong>not be examined</strong> on actually <strong>computing a Bayesian HDI</strong>. The exam will only require you to understand the <span class="xref-no-num"><a href="../main/part3/8-bayes-interval-estimation.html#def-hdi" class="quarto-xref">definition&nbsp;<span>8.2</span></a></span> in context, and the interpretation of a Highest Density Interval.</li>
+</ul>
 </section>
 </section>
 <section id="part-iv---hypothesis-testing-1" class="level2">
 <h2 class="anchored" data-anchor-id="part-iv---hypothesis-testing-1">Part IV - Hypothesis Testing</h2>
 <section id="chapter-9---frequentist-hypothesis-testing-1" class="level3">
 <h3 class="anchored" data-anchor-id="chapter-9---frequentist-hypothesis-testing-1">Chapter 9 - Frequentist Hypothesis Testing</h3>
+<ul>
+<li>For the <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#sec-lrt" class="quarto-xref">likelihood ratio test&nbsp;<span>Likelihood Ratio Test (Simple Null)</span></a></span>, you do <strong>not</strong> need to remember the name <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#thm-wilks" class="quarto-xref">Wilks’ Theorem&nbsp;<span>9.1</span></a></span>. It is sufficient to only remember that <strong>the likelihood ratio test statistic is asymptotically distributed as <span class="math inline">\chi^2_1</span>.</strong></li>
+</ul>
 </section>
 <section id="chapter-10---bayesian-hypothesis-testing" class="level3">
 <h3 class="anchored" data-anchor-id="chapter-10---bayesian-hypothesis-testing">Chapter 10 - Bayesian Hypothesis Testing</h3>
@@ -2491,9 +2740,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('keydown', onKey);
 })();
 </script>
-
-
-
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   // 1) Find the brand container and the existing logo <img>
@@ -2544,8 +2790,860 @@ document.addEventListener('DOMContentLoaded', function () {
   // 3) Swap: remove the old <a><img/></a>, insert the new <a><svg/></a>
   const oldAnchor = img.closest('a.navbar-brand-logo') || img;
   brandContainer.replaceChild(a, oldAnchor);
+
+  // ============================
+  // 4) Add Settings Dropdown
+  // ============================
+  const tools = document.querySelector('#quarto-header .quarto-navbar-tools');
+  if (!tools) return;
+// Create settings container
+  const settingsContainer = document.createElement('div');
+  settingsContainer.className = 'settings-dropdown';
+  settingsContainer.innerHTML = `
+    <button class="btn-settings" type="button" aria-label="Display settings" title="Display settings">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+      </svg>
+    </button>
+    <div class="settings-menu">
+      <p class="settings-section-label">Display Mode</p>
+      <button class="settings-item" id="lecture-zoom-toggle" type="button">
+        <span class="settings-icon">
+          <svg class="icon-enter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <polyline points="9 21 3 21 3 15"></polyline>
+            <line x1="21" y1="3" x2="14" y2="10"></line>
+            <line x1="3" y1="21" x2="10" y2="14"></line>
+          </svg>
+          <svg class="icon-exit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="4 14 10 14 10 20"></polyline>
+            <polyline points="20 10 14 10 14 4"></polyline>
+            <line x1="14" y1="10" x2="21" y2="3"></line>
+            <line x1="3" y1="21" x2="10" y2="14"></line>
+          </svg>
+        </span>
+        <span class="settings-label">Lecture Zoom</span>
+        <span class="settings-status"></span>
+      </button>
+      <button class="settings-item" id="reading-mode-toggle" type="button">
+        <span class="settings-icon">
+          <svg class="icon-enter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+          </svg>
+          <svg class="icon-exit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </span>
+        <span class="settings-label">Reading Mode</span>
+        <span class="settings-status"></span>
+      </button>
+      
+      <div class="settings-divider"></div>
+      <p class="settings-section-label">Custom Colors</p>
+      
+      <div class="settings-color-row">
+        <label for="settings-bg-color">Background</label>
+        <input type="color" id="settings-bg-color" class="settings-color-input">
+      </div>
+
+      <div class="settings-color-row">
+        <label for="settings-text-color">Text</label>
+        <input type="color" id="settings-text-color" class="settings-color-input">
+      </div>
+
+      <div class="settings-color-row">
+        <label for="settings-accent-color">Accent</label>
+        <input type="color" id="settings-accent-color" class="settings-color-input">
+      </div>    
+        
+      <button class="settings-reset-btn" id="reset-colors" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+          <path d="M3 3v5h5"></path>
+        </svg>
+        Reset Colors
+      </button>
+    </div>
+  `;
+
+  // Insert after color toggle
+  const colorToggle = tools.querySelector('.quarto-color-scheme-toggle');
+  if (colorToggle && colorToggle.parentNode) {
+    colorToggle.parentNode.insertBefore(settingsContainer, colorToggle.nextSibling);
+  } else {
+    tools.appendChild(settingsContainer);
+  }
+
+  // Elements
+  const settingsBtn = settingsContainer.querySelector('.btn-settings');
+  const lectureZoomToggle = settingsContainer.querySelector('#lecture-zoom-toggle');
+  const readingModeToggle = settingsContainer.querySelector('#reading-mode-toggle');
+  const bgColorInput = settingsContainer.querySelector('#settings-bg-color');
+  const textColorInput = settingsContainer.querySelector('#settings-text-color');
+  const accentColorInput = settingsContainer.querySelector('#settings-accent-color');
+  const resetColorsBtn = settingsContainer.querySelector('#reset-colors');
+
+  // Default color values
+  const defaultBgColor = '#fafaf8';
+  const defaultTextColor = '#1a1a1a';
+  const defaultAccentColor = '#0d6efd';
+
+  // ============================
+  // Helper Functions (define first)
+  // ============================
+  
+  // Helper function to darken a hex color
+  const darkenColor = (hex, amount) => {
+    hex = hex.replace('#', '');
+    let r = parseInt(hex.substring(0, 2), 16);
+    let g = parseInt(hex.substring(2, 4), 16);
+    let b = parseInt(hex.substring(4, 6), 16);
+    r = Math.max(0, Math.floor(r * (1 - amount)));
+    g = Math.max(0, Math.floor(g * (1 - amount)));
+    b = Math.max(0, Math.floor(b * (1 - amount)));
+    return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+  };
+
+  // Helper function to lighten a hex color
+  const lightenColor = (hex, amount) => {
+    hex = hex.replace('#', '');
+    let r = parseInt(hex.substring(0, 2), 16);
+    let g = parseInt(hex.substring(2, 4), 16);
+    let b = parseInt(hex.substring(4, 6), 16);
+    r = Math.min(255, Math.floor(r + (255 - r) * amount));
+    g = Math.min(255, Math.floor(g + (255 - g) * amount));
+    b = Math.min(255, Math.floor(b + (255 - b) * amount));
+    return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+  };
+
+  // Reading progress indicator
+  const updateReadingProgress = () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    document.body.style.setProperty('--scroll-progress', `${progress}%`);
+  };
+
+  // Update visual states for display modes
+  const updateActiveStates = () => {
+    const isLectureZoom = document.body.classList.contains('lecture-zoom');
+    const isReadingMode = document.body.classList.contains('reading-mode');
+    lectureZoomToggle.classList.toggle('active', isLectureZoom);
+    readingModeToggle.classList.toggle('active', isReadingMode);
+  };
+
+  // Apply custom colors
+  const applyCustomColors = () => {
+    document.body.classList.add('custom-colors');
+    
+    const bgColor = bgColorInput.value;
+    const textColor = textColorInput.value;
+    const accentColor = accentColorInput.value;
+    
+    document.documentElement.style.setProperty('--custom-bg-color', bgColor);
+    document.documentElement.style.setProperty('--custom-text-color', textColor);
+    document.documentElement.style.setProperty('--custom-accent-color', accentColor);
+    
+    // Compute darker scrollbar thumb color (30% darker)
+    const darkerThumb = darkenColor(bgColor, 0.3);
+    document.documentElement.style.setProperty('--scroll-track', bgColor);
+    document.documentElement.style.setProperty('--scroll-thumb', darkerThumb);
+    
+    // Compute lighter variants for callouts and tabs
+    const lighterBg = lightenColor(bgColor, 0.3);
+    const lighterBgSubtle = lightenColor(bgColor, 0.15);
+    document.documentElement.style.setProperty('--custom-bg-lighter', lighterBg);
+    document.documentElement.style.setProperty('--custom-bg-lighter-subtle', lighterBgSubtle);
+    
+    // Save to localStorage
+    localStorage.setItem('mas2901-custom-bg', bgColor);
+    localStorage.setItem('mas2901-custom-text', textColor);
+    localStorage.setItem('mas2901-custom-accent', accentColor);
+  };
+
+  // Reset colors to defaults
+  const resetColors = () => {
+    document.body.classList.remove('custom-colors');
+    document.documentElement.style.removeProperty('--custom-bg-color');
+    document.documentElement.style.removeProperty('--custom-text-color');
+    document.documentElement.style.removeProperty('--custom-accent-color');
+    document.documentElement.style.removeProperty('--scroll-track');
+    document.documentElement.style.removeProperty('--scroll-thumb');
+    document.documentElement.style.removeProperty('--custom-bg-lighter');
+    document.documentElement.style.removeProperty('--custom-bg-lighter-subtle');
+    
+    // Reset inputs to defaults
+    bgColorInput.value = defaultBgColor;
+    textColorInput.value = defaultTextColor;
+    accentColorInput.value = defaultAccentColor;
+    
+    // Clear localStorage
+    localStorage.removeItem('mas2901-custom-bg');
+    localStorage.removeItem('mas2901-custom-text');
+    localStorage.removeItem('mas2901-custom-accent');
+  };
+
+  // ============================
+  // Event Listeners
+  // ============================
+
+  // Toggle dropdown
+  settingsBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    settingsContainer.classList.toggle('open');
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!settingsContainer.contains(e.target)) {
+      settingsContainer.classList.remove('open');
+    }
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      settingsContainer.classList.remove('open');
+    }
+  });
+
+  // Lecture Zoom toggle
+  lectureZoomToggle.addEventListener('click', () => {
+    // Turn off reading mode if active
+    if (document.body.classList.contains('reading-mode')) {
+      document.body.classList.remove('reading-mode');
+      document.documentElement.classList.remove('reading-mode');
+      window.removeEventListener('scroll', updateReadingProgress);
+      document.body.style.removeProperty('--scroll-progress');
+    }
+
+    document.body.classList.toggle('lecture-zoom');
+    document.documentElement.classList.toggle('lecture-zoom');
+    updateActiveStates();
+  });
+
+  // Reading Mode toggle
+  readingModeToggle.addEventListener('click', () => {
+    // Turn off lecture zoom if active
+    if (document.body.classList.contains('lecture-zoom')) {
+      document.body.classList.remove('lecture-zoom');
+      document.documentElement.classList.remove('lecture-zoom');
+    }
+
+    document.body.classList.toggle('reading-mode');
+    document.documentElement.classList.toggle('reading-mode');
+
+    // Update progress indicator on scroll
+    if (document.body.classList.contains('reading-mode')) {
+      updateReadingProgress();
+      window.addEventListener('scroll', updateReadingProgress);
+    } else {
+      window.removeEventListener('scroll', updateReadingProgress);
+      document.body.style.removeProperty('--scroll-progress');
+    }
+    
+    updateActiveStates();
+  });
+
+  // Color input listeners
+  bgColorInput.addEventListener('input', applyCustomColors);
+  textColorInput.addEventListener('input', applyCustomColors);
+  accentColorInput.addEventListener('input', applyCustomColors);
+
+  // Reset colors button
+  resetColorsBtn.addEventListener('click', resetColors);
+
+  // ============================
+  // Initialize
+  // ============================
+
+  // Load saved colors or use defaults
+  const savedBg = localStorage.getItem('mas2901-custom-bg');
+  const savedText = localStorage.getItem('mas2901-custom-text');
+  const savedAccent = localStorage.getItem('mas2901-custom-accent');
+
+  // Set input values (saved or default)
+  bgColorInput.value = savedBg || defaultBgColor;
+  textColorInput.value = savedText || defaultTextColor;
+  accentColorInput.value = savedAccent || defaultAccentColor;
+
+  // Apply custom colors if any were saved
+  if (savedBg || savedText || savedAccent) {
+    applyCustomColors();
+  }
+
+  // Initial display mode state
+  updateActiveStates();
 });
 </script>
+
+<style>
+/* ============================
+   Settings Dropdown
+   ============================ */
+.settings-dropdown {
+  position: relative;
+  display: inline-flex;
+}
+
+.btn-settings {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.375rem;
+  margin: 0 0.25rem;
+  border-radius: 0.25rem;
+  color: var(--bs-navbar-color, #333);
+  transition: opacity 0.15s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-settings:hover {
+  opacity: 0.7;
+}
+
+.btn-settings svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  transition: transform 0.2s ease;
+}
+
+/* Rotate cog when open */
+.settings-dropdown.open .btn-settings svg {
+  transform: rotate(45deg);
+}
+
+/* Dropdown menu */
+.settings-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  background: var(--surface-weak, white);
+  border: 1px solid var(--border, #ddd);
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 220px;
+  padding: 0.5rem 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+  z-index: 4000;
+}
+
+.settings-dropdown.open .settings-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Section divider */
+.settings-divider {
+  height: 1px;
+  background: var(--border, #ddd);
+  margin: 0.5rem 0;
+}
+
+.settings-section-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--brand-fg, #666);
+  opacity: 0.6;
+  padding: 0.5rem 1rem 0.25rem;
+  margin: 0;
+}
+
+/* Menu items */
+.settings-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: none;
+  color: var(--brand-fg, #333);
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  gap: 0.75rem;
+}
+
+.settings-item:hover {
+  background: var(--brand-teal-hover, #f8f9fa);
+  color: var(--brand-bg, #0d6efd);
+}
+
+.settings-item.active {
+  background: var(--brand-teal, #e7f1ff);
+  color: var(--brand-fg, #0d6efd);
+}
+
+.settings-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+}
+
+.settings-icon svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+/* Icon state switching */
+.settings-icon .icon-exit { display: none; }
+.settings-item.active .settings-icon .icon-enter { display: none; }
+.settings-item.active .settings-icon .icon-exit { display: block; }
+
+.settings-label {
+  flex-grow: 1;
+}
+
+.settings-status {
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+.settings-item.active .settings-status::after {
+  content: '✓';
+  font-size: 0.9rem;
+  opacity: 1;
+}
+
+/* ============================
+   Color Picker Row
+   ============================ */
+.settings-color-row {
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 1rem;
+  gap: 0.75rem;
+}
+
+.settings-color-row label {
+  font-size: 0.85rem;
+  color: var(--brand-fg, #333);
+  flex-grow: 1;
+  cursor: pointer;
+}
+
+/* Circular color swatch input */
+.settings-color-input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  padding: 0;
+  border: 2px solid rgba(0, 0, 0, 0.15);
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.settings-color-input::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.settings-color-input::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%;
+}
+
+.settings-color-input::-moz-color-swatch {
+  border: none;
+  border-radius: 50%;
+}
+
+.settings-color-input:hover {
+  border-color: var(--brand-teal, #0d6efd);
+}
+
+.settings-color-input:focus {
+  outline: none;
+  border-color: var(--brand-teal, #0d6efd);
+  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.25);
+}
+
+/* Reset button */
+.settings-reset-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(100% - 2rem);
+  margin: 0.25rem 1rem 0.5rem;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--border, #ddd);
+  border-radius: 0.25rem;
+  background: transparent;
+  color: var(--brand-fg, #666);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  gap: 0.5rem;
+}
+
+.settings-reset-btn:hover {
+  background: var(--brand-teal-hover, #f8f9fa);
+  border-color: var(--brand-teal, #0d6efd);
+  color: var(--brand-teal, #0d6efd);
+}
+
+.settings-reset-btn svg {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+/* Dark mode support */
+.quarto-dark .btn-settings {
+  color: var(--bs-navbar-dark-color, #fff);
+}
+
+.quarto-dark .settings-menu {
+  background: var(--bs-body-bg, #212529);
+  border-color: var(--bs-border-color, #495057);
+}
+
+.quarto-dark .settings-item:hover {
+  background: var(--bs-tertiary-bg, #2b3035);
+}
+
+.quarto-dark .settings-item.active {
+  background: rgba(13, 110, 253, 0.2);
+}
+
+.quarto-dark .settings-color-input {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.quarto-dark .settings-color-row label {
+  color: var(--bs-body-color, #e9ecef);
+}
+
+.quarto-dark .settings-reset-btn {
+  border-color: var(--bs-border-color, #495057);
+  color: var(--bs-body-color, #adb5bd);
+}
+
+.quarto-dark .settings-reset-btn:hover {
+  background: var(--bs-tertiary-bg, #2b3035);
+}
+
+/* ============================
+   Custom Colors Applied
+   ============================ */
+
+/* ============================
+   Custom Colors - Accent Color Elements
+   ============================ */
+body.custom-colors blockquote,
+body.custom-colors .blockquote {
+  color: var(--custom-accent-color) !important;
+}
+
+body.custom-colors .panel-caption,
+body.custom-colors .figure-caption,
+body.custom-colors .subfigure-caption,
+body.custom-colors .table-caption,
+body.custom-colors figcaption,
+body.custom-colors caption {
+  color: var(--custom-accent-color) !important;
+}
+
+body.custom-colors .header-section-number {
+  color: var(--custom-accent-color) !important;
+}
+
+body.custom-colors details > summary {
+  color: var(--custom-text-color) !important;
+}
+
+body.custom-colors details > summary:hover {
+  color: var(--custom-accent-color) !important;
+}
+
+body.custom-colors {
+  background-color: var(--custom-bg-color) !important;
+  color: var(--custom-text-color) !important;
+  
+  /* Scrollbar - thumb is 20% darker than background */
+  scrollbar-color: color-mix(in srgb, var(--custom-bg-color) 80%, black) var(--custom-bg-color);
+}
+
+body.custom-colors *::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+body.custom-colors *::-webkit-scrollbar-track {
+  background: var(--custom-bg-color);
+}
+
+body.custom-colors *::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--custom-bg-color) 80%, black);
+  border-radius: 6px;
+  border: 2px solid var(--custom-bg-color);
+}
+
+body.custom-colors *::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--custom-bg-color) 65%, black);
+}
+
+body.custom-colors main,
+body.custom-colors .content,
+body.custom-colors article,
+body.custom-colors div.sidebar.sidebar-navigation.rollup.quarto-sidebar-toggle-contents,
+body.custom-colors nav.sidebar.sidebar-navigation:not(.rollup) {
+  background-color: var(--custom-bg-color) !important;
+  color: var(--custom-text-color) !important;
+}
+
+/* Navbar */
+body.custom-colors #quarto-header,
+body.custom-colors #quarto-header nav.navbar,
+body.custom-colors .navbar {
+  background-color: color-mix(in srgb, var(--custom-bg-color) 95%, black) !important;
+  border-bottom-color: color-mix(in srgb, var(--custom-bg-color) 85%, black) !important;
+}
+
+body.custom-colors #quarto-header .navbar-title,
+body.custom-colors #quarto-header .navbar-brand {
+  color: var(--custom-text-color) !important;
+}
+
+/* Navbar icons */
+body.custom-colors #quarto-header .quarto-navbar-tools button,
+body.custom-colors #quarto-header .quarto-navbar-tools a,
+body.custom-colors #quarto-header .quarto-color-scheme-toggle,
+body.custom-colors #quarto-header .btn-settings,
+body.custom-colors #quarto-header .navbar-toggler {
+  color: var(--custom-text-color) !important;
+}
+
+body.custom-colors #quarto-header .quarto-navbar-tools button:hover,
+body.custom-colors #quarto-header .quarto-navbar-tools a:hover,
+body.custom-colors #quarto-header .quarto-color-scheme-toggle:hover,
+body.custom-colors #quarto-header .btn-settings:hover {
+  color: var(--custom-accent-color) !important;
+}
+
+body.custom-colors #quarto-header .navbar-logo {
+  color: var(--custom-text-color) !important;
+}
+
+/* Secondary navbar */
+body.custom-colors .quarto-secondary-nav {
+  background-color: var(--custom-bg-color) !important;
+  border-bottom-color: color-mix(in srgb, var(--custom-bg-color) 85%, black) !important;
+}
+
+body.custom-colors .quarto-secondary-nav .quarto-secondary-nav-title {
+  color: var(--custom-text-color) !important;
+}
+
+/* Autocomplete / Search */
+body.custom-colors .aa-Autocomplete .aa-Form,
+body.custom-colors .aa-DetachedFormContainer .aa-Form {
+  background-color: var(--custom-bg-color) !important;
+  border-color: color-mix(in srgb, var(--custom-bg-color) 80%, black) !important;
+}
+
+body.custom-colors .aa-Autocomplete .aa-Input,
+body.custom-colors .aa-DetachedFormContainer .aa-Input {
+  background-color: var(--custom-bg-color) !important;
+  color: var(--custom-text-color) !important;
+}
+
+body.custom-colors .aa-Autocomplete .aa-Input::placeholder,
+body.custom-colors .aa-DetachedFormContainer .aa-Input::placeholder {
+  color: color-mix(in srgb, var(--custom-text-color) 50%, transparent) !important;
+}
+
+body.custom-colors .aa-Panel,
+body.custom-colors .aa-PanelLayout {
+  background-color: var(--custom-bg-color) !important;
+  border-color: color-mix(in srgb, var(--custom-bg-color) 80%, black) !important;
+}
+
+body.custom-colors .aa-Item {
+  color: var(--custom-text-color) !important;
+}
+
+body.custom-colors .aa-Item[aria-selected="true"],
+body.custom-colors .aa-Item:hover {
+  background-color: color-mix(in srgb, var(--custom-bg-color) 90%, black) !important;
+}
+
+body.custom-colors .aa-Item mark {
+  color: var(--custom-accent-color) !important;
+  background: transparent !important;
+}
+
+/* Headings */
+body.custom-colors h1,
+body.custom-colors h2,
+body.custom-colors h3,
+body.custom-colors h4,
+body.custom-colors h5,
+body.custom-colors h6 {
+  color: var(--custom-text-color) !important;
+}
+
+/* Links */
+body.custom-colors a {
+  color: var(--custom-accent-color) !important;
+}
+
+/* Callouts */
+body.custom-colors .callout {
+  background-color: color-mix(in srgb, var(--custom-bg-color) 95%, black) !important;
+  border-left-color: var(--custom-accent-color) !important;
+}
+
+body.custom-colors .callout-title {
+  color: var(--custom-text-color) !important;
+}
+
+/* Code blocks */
+body.custom-colors pre,
+body.custom-colors code {
+  background-color: color-mix(in srgb, var(--custom-bg-color) 92%, black) !important;
+  color: var(--custom-text-color) !important;
+}
+
+/* Tables */
+body.custom-colors table {
+  color: var(--custom-text-color) !important;
+}
+
+body.custom-colors th {
+  background-color: color-mix(in srgb, var(--custom-bg-color) 90%, black) !important;
+  color: var(--custom-text-color) !important;
+}
+
+body.custom-colors td {
+  border-color: color-mix(in srgb, var(--custom-bg-color) 85%, black) !important;
+}
+
+body.custom-colors tr:hover {
+  background-color: color-mix(in srgb, var(--custom-bg-color) 95%, black) !important;
+}
+
+/* Selection */
+body.custom-colors ::selection {
+  background-color: var(--custom-accent-color);
+  color: white;
+}
+
+/* Sidebar link colors */
+body.custom-colors .sidebar-navigation .sidebar-item a,
+body.custom-colors .sidebar-navigation .sidebar-section a {
+  color: var(--custom-text-color) !important;
+}
+
+body.custom-colors .sidebar-navigation .sidebar-item a:hover,
+body.custom-colors .sidebar-navigation .sidebar-section a:hover {
+  color: var(--custom-accent-color) !important;
+}
+
+body.custom-colors .sidebar-navigation .sidebar-item.active a {
+  color: var(--custom-accent-color) !important;
+}
+
+/* ============================
+   Custom Colors - Callout Headers
+   ============================ */
+body.custom-colors div.callout-note.callout-style-default > .callout-header,
+body.custom-colors div.callout-tip.callout-style-default > .callout-header,
+body.custom-colors div.callout-warning.callout-style-default > .callout-header,
+body.custom-colors div.callout-caution.callout-style-default > .callout-header,
+body.custom-colors div.callout-important.callout-style-default > .callout-header {
+  background-color: var(--custom-bg-lighter) !important;
+}
+
+/* ============================
+   Custom Colors - Nav Tabs
+   ============================ */
+body.custom-colors .nav-tabs .nav-link.active,
+body.custom-colors .nav-tabs .nav-item.show .nav-link {
+  background-color: var(--custom-bg-lighter) !important;
+  color: var(--custom-text-color) !important;
+  border-color: var(--custom-bg-lighter-subtle) !important;
+}
+
+body.custom-colors .nav-tabs .nav-link {
+  color: var(--custom-text-color) !important;
+}
+
+body.custom-colors .nav-tabs .nav-link:hover:not(.active) {
+  background-color: var(--custom-bg-lighter-subtle) !important;
+  border-color: var(--custom-bg-lighter-subtle) !important;
+}
+
+body.custom-colors .nav-tabs {
+  border-bottom-color: var(--custom-bg-lighter-subtle) !important;
+}
+
+body.custom-colors .tab-content {
+  background-color: var(--custom-bg-color) !important;
+  color: var(--custom-text-color) !important;
+}
+
+/* Settings dropdown when custom colors active */
+body.custom-colors .settings-menu {
+  background-color: var(--custom-bg-color) !important;
+  border-color: color-mix(in srgb, var(--custom-bg-color) 80%, black) !important;
+}
+
+body.custom-colors .settings-item {
+  color: var(--custom-text-color) !important;
+}
+
+body.custom-colors .settings-item:hover {
+  background-color: color-mix(in srgb, var(--custom-bg-color) 90%, black) !important;
+}
+
+body.custom-colors .settings-item.active {
+  background-color: color-mix(in srgb, var(--custom-accent-color) 20%, var(--custom-bg-color)) !important;
+  color: var(--custom-accent-color) !important;
+}
+
+body.custom-colors .settings-section-label {
+  color: var(--custom-text-color) !important;
+}
+
+body.custom-colors .settings-color-row label {
+  color: var(--custom-text-color) !important;
+}
+
+body.custom-colors .settings-divider {
+  background-color: color-mix(in srgb, var(--custom-bg-color) 80%, black) !important;
+}
+
+body.custom-colors .settings-reset-btn {
+  color: var(--custom-text-color) !important;
+  border-color: color-mix(in srgb, var(--custom-bg-color) 80%, black) !important;
+}
+
+body.custom-colors .settings-reset-btn:hover {
+  background-color: color-mix(in srgb, var(--custom-bg-color) 90%, black) !important;
+  color: var(--custom-accent-color) !important;
+  border-color: var(--custom-accent-color) !important;
+}
+
+</style>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   // Only target IMPORTANT callouts; add more types if needed.
@@ -2563,223 +3661,6 @@ document.addEventListener('DOMContentLoaded', () => {
       el.innerHTML = el.innerHTML.replace(re, '');
     }
   });
-});
-</script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const tools = document.querySelector('#quarto-header .quarto-navbar-tools');
-  if (!tools) return;
-
-  // Create the button
-  const btn = document.createElement('button');
-  btn.id = 'lecture-zoom-header-toggle';
-  btn.className = 'btn-zoom-toggle';
-  btn.type = 'button';
-  btn.setAttribute('aria-pressed', 'false');
-  btn.setAttribute('aria-label', 'Lecture zoom');
-  btn.setAttribute('title', 'Lecture zoom (X)');
-
-  // svg icon
-  btn.innerHTML = `
-    <!-- ENTER: four corners -->
-    <svg class="icon-enter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <path d="M3 9V3h6"/>
-        <path d="M21 9V3h-6"/>
-        <path d="M3 15v6h6"/>
-        <path d="M21 15v6h-6"/>
-    </svg>
-
-    <!-- EXIT: corners-in (contract) -->
-    <svg class="icon-exit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <path d="M9 3v6H3"/>
-        <path d="M15 3v6h6"/>
-        <path d="M3 15h6v6"/>
-        <path d="M21 15h-6v6"/>
-    </svg>
-  `;
-
-  // Place it next to the colour-scheme toggle (after it, if present)
-  const colorToggle = tools.querySelector('.quarto-color-scheme-toggle');
-  if (colorToggle && colorToggle.parentNode) {
-    colorToggle.parentNode.insertBefore(btn, colorToggle.nextSibling);
-  } else {
-    tools.appendChild(btn);
-  }
-
-  // Toggle logic
-  const KEY = 'lecture-zoom-enabled';
-  
-  // Helper: are we in lecture zoom?
-  const isLectureZoom = () =>
-    document.body.classList.contains('lecture-zoom') ||
-    document.documentElement.classList.contains('lecture-zoom');
-
-  // Define closeLectureSearch early (forward declaration)
-  let closeLectureSearch;
-
-  const apply = (on) => {
-    document.body.classList.toggle('lecture-zoom', on);
-    document.documentElement.classList.toggle('lecture-zoom', on);
-    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
-    
-    // Close search overlay when exiting lecture zoom
-    if (!on && closeLectureSearch) {
-      closeLectureSearch();
-    }
-    
-    // Nudge charts/layouts to recompute
-    window.dispatchEvent(new Event('resize'));
-    sessionStorage.setItem(KEY, on ? '1' : '0');
-  };
-
-  // Restore per-tab state
-  apply(sessionStorage.getItem(KEY) === '1');
-
-  // Click handler
-  btn.addEventListener('click', () => apply(!isLectureZoom()));
-  
-  // Keyboard shortcut (Z)
-  document.addEventListener('keydown', (e) => {
-    if (e.key.toLowerCase() === 'x' && !/input|textarea|select/i.test(e.target.tagName)) {
-      apply(!isLectureZoom());
-    }
-  });
-
-  let acAnchor = null;          // where the autocomplete root came from
-  let panelObserver = null;     // to catch newly created panels
-
-  function ensureLectureOverlay() {
-    let overlay = document.getElementById('lecture-search-overlay');
-    if (!overlay) {
-      overlay = document.createElement('div');
-      overlay.id = 'lecture-search-overlay';
-      overlay.innerHTML = '<div class="lecture-search-modal"></div>';
-      document.body.appendChild(overlay);
-
-      // Close on backdrop click
-      overlay.addEventListener('click', (e) => {
-        if (e.target === overlay && closeLectureSearch) closeLectureSearch();
-      });
-
-      // Close on Esc
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && closeLectureSearch) closeLectureSearch();
-      });
-    }
-    return overlay;
-  }
-
-  function findAutocomplete() {
-    const root =
-      document.querySelector('.aa-Autocomplete') ||
-      document.querySelector('.quarto-search .aa-Autocomplete') ||
-      document.querySelector('.quarto-search-panel .aa-Autocomplete');
-
-    const input = root?.querySelector('input.aa-Input');
-    return { root, input };
-  }
-
-  // Move the results panel (if any) into the modal and normalize its positioning
-  function reparentPanel(modal) {
-    const panel = document.querySelector('.aa-Panel');
-    if (!panel || modal.contains(panel)) return;
-    modal.appendChild(panel);
-    // Let CSS control layout/width; clear inline positioning from Algolia
-    panel.style.left = '';
-    panel.style.top = '';
-    panel.style.width = '';
-  }
-
-  function startPanelObserver(modal) {
-    if (panelObserver) return;
-    panelObserver = new MutationObserver(() => reparentPanel(modal));
-    // Listen on body, since Algolia often inserts the panel there
-    panelObserver.observe(document.body, { childList: true, subtree: true });
-  }
-
-  function stopPanelObserver() {
-    panelObserver?.disconnect();
-    panelObserver = null;
-  }
-
-  function openLectureSearch() {
-    if (!isLectureZoom()) return false;
-
-    const { root, input } = findAutocomplete();
-    if (!root || !input) return false;
-
-    const overlay = ensureLectureOverlay();
-    const modal = overlay.querySelector('.lecture-search-modal');
-
-    // Anchor the current position of the autocomplete root (only once)
-    if (!acAnchor) {
-      acAnchor = document.createComment('autocomplete-anchor');
-      root.parentNode.insertBefore(acAnchor, root);
-    }
-
-    // Move the autocomplete *root* into the modal
-    modal.appendChild(root);
-
-    // Ensure any results panel gets moved into the modal too
-    reparentPanel(modal);
-    startPanelObserver(modal);
-
-    overlay.classList.add('open');
-    document.documentElement.classList.add('search-open');
-
-    // Focus the input after layout
-    requestAnimationFrame(() => {
-      input.focus();
-      input.select?.();
-      // In case Algolia computes sizes on resize, give it a nudge
-      window.dispatchEvent(new Event('resize'));
-    });
-
-    return true;
-  }
-
-  // Now properly define closeLectureSearch
-  closeLectureSearch = function() {
-    const overlay = document.getElementById('lecture-search-overlay');
-    if (!overlay || !overlay.classList.contains('open')) return;
-
-    stopPanelObserver();
-
-    const { root } = findAutocomplete();
-
-    // Move panel (if currently inside modal) back to body to let Algolia clean up normally
-    const modal = overlay.querySelector('.lecture-search-modal');
-    const panel = modal?.querySelector('.aa-Panel');
-    if (panel) document.body.appendChild(panel);
-
-    // Put the autocomplete root back where it came from
-    if (root && acAnchor && acAnchor.parentNode) {
-      acAnchor.parentNode.insertBefore(root, acAnchor.nextSibling);
-    }
-
-    overlay.classList.remove('open');
-    document.documentElement.classList.remove('search-open');
-  };
-
-  // Existing hotkeys:
-  document.addEventListener('keydown', (e) => {
-    const tag = e.target.tagName.toLowerCase();
-    const typing = tag === 'input' || tag === 'textarea' || tag === 'select' || e.isComposing;
-    if (typing) return;
-
-    if (e.key === 'F' && e.shiftKey) {
-      if (openLectureSearch()) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-    }
-    if (e.key === 'Escape') {
-      closeLectureSearch();
-    }
-  });
-
 });
 </script>
 <script>
@@ -4974,6 +5855,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 </style>
+<script>
+
+if (document.body.classList.contains('reading-mode')) {
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    document.body.style.setProperty('--scroll-progress', `${progress}%`);
+  });
+}
+
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
