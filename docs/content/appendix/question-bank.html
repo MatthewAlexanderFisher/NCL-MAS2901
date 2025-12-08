@@ -1526,7 +1526,7 @@ Since <span class="math inline">X</span> is integer-valued, this corresponds to 
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="2bb8fc0c" class="cell" data-execution_count="2">
+<div id="c556dd91" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> comb</span>
@@ -2227,7 +2227,7 @@ L(b;\underline{x}) = \prod_{i=1}^n f(x_i;b)
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="47640018" class="cell" data-execution_count="3">
+<div id="d74e79d4" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -2721,7 +2721,7 @@ Since <span class="math inline">\mathrm{Var}(X_i) = \lambda</span> and the <span
 </ol></li>
 </ol>
 <p>In Python:</p>
-<div id="c2b307c6" class="cell" data-execution_count="4">
+<div id="5f89fb3a" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> poisson</span>
@@ -3401,7 +3401,7 @@ f(\underline{x} \mid \lambda)
 <li>Construct a <span class="math inline">90\%</span> highest density interval (HDI) for <span class="math inline">\theta</span>.</li>
 </ol>
 <p><em>Hint:</em> The following plot may be helpful.</p>
-<div id="f94f163c" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="5">
+<div id="da088cb4" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="5">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -4107,13 +4107,105 @@ If a biased estimator has a smaller MSE than an unbiased one, the biased estimat
 </details>
 </div>
 </div>
+<div id="q-lrt-lifespan" class="question callout callout-style-simple callout-important no-icon callout-titled" data-tags="exponential lrt hypothesis-testing exam-style" data-difficulty="2">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important&nbsp;27: Likelihood Ratio Test for the Lifespan of a Magical Artefact
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The time (in years) until a magical artefact loses its power is modelled as an exponential random variable <span class="math inline">X \sim \mathrm{Exponential}(1/\theta)</span>, where <span class="math inline">\theta &gt; 0</span> is the mean lifespan.</p>
+<p>According to archived lore, an authentic artifact should have mean lifespan <span class="math inline">\theta_0 = 50</span> years.</p>
+<p>We wish to test the hypothesis<br>
+<span class="math display">
+H_0 : \theta = 50
+</span><br>
+against the alternative that the true lifespan differs.</p>
+<ol type="1">
+<li><p>Show that the maximum likelihood estimate of <span class="math inline">\theta</span> is <span class="math inline">\hat{\theta} = x</span>, where <span class="math inline">x</span> is the observed lifespan.<br>
+(You may assume that any critical point is a global maximum.)</p></li>
+<li><p>Suppose a recovered artifact is observed to last <span class="math inline">x = 60</span> years. Show that <span class="math display">
+\max_{\theta \in \Theta} L(\theta; x)
+= \frac{1}{60} e^{-1},
+\qquad
+L(\theta = 50; x)
+= \frac{1}{50} e^{-60/50},
+</span> where <span class="math inline">L(\theta; x)</span> denotes the likelihood under mean <span class="math inline">\theta</span>.</p></li>
+<li><p>Show that the likelihood ratio statistic is <span class="math display">
+\lambda(x)
+= \frac{5}{6} \, e^{-1/5},
+</span> and compute the observed statistic <span class="math inline">T_{\mathrm{obs}} = -2 \log \lambda(x)</span> to 3 significant figures.</p></li>
+<li><p>Based on the asymptotic <span class="math inline">\chi^2_1</span> distribution of <span class="math inline">T_{\mathrm{obs}}</span>, is there sufficient evidence to reject <span class="math inline">H_0</span> at the <span class="math inline">10\%</span> significance level?</p></li>
+</ol>
+<details class="solution">
+<summary>
+Solution
+</summary>
+<p><strong>1. Maximum likelihood estimate</strong></p>
+<p>Exponential density: <span class="math display">
+f(x \mid \theta) = \frac{1}{\theta} e^{-x/\theta}, \qquad x \ge 0.
+</span> Likelihood for a single observation: <span class="math display">
+L(\theta; x) = \frac{1}{\theta} e^{-x/\theta}.
+</span> Log-likelihood: <span class="math display">
+\ell(\theta; x) = -\log \theta - \frac{x}{\theta}.
+</span> Differentiate: <span class="math display">
+\frac{\partial \ell}{\partial \theta}
+= -\frac{1}{\theta} + \frac{x}{\theta^2}
+= 0
+\quad \Rightarrow \quad
+\hat{\theta} = x.
+</span></p>
+<hr>
+<p><strong>2. Evaluate the likelihoods</strong></p>
+<p>At the MLE <span class="math inline">\theta = 60</span>: <span class="math display">
+L(60; x)
+= \frac{1}{60} e^{-60/60}
+= \frac{1}{60} e^{-1}.
+</span> At <span class="math inline">\theta = 50</span>: <span class="math display">
+L(50; x)
+= \frac{1}{50} e^{-60/50}
+= \frac{1}{50} e^{-6/5}.
+</span></p>
+<hr>
+<p><strong>3. Likelihood ratio statistic</strong></p>
+<p><span class="math display">
+\lambda(x)
+= \frac{L(50; x)}{L(60; x)}
+=
+\frac{\tfrac{1}{50} e^{-6/5}}
+     {\tfrac{1}{60} e^{-1}}
+= \frac{60}{50} \, e^{-6/5 + 1}
+= \frac{6}{5} e^{-1/5}.
+</span></p>
+<p>Thus: <span class="math display">
+\lambda(x) = \frac{5}{6} e^{-1/5}.
+</span></p>
+<p>Then: <span class="math display">
+T_{\mathrm{obs}} = -2 \log \lambda(x)
+= -2\left[\log(5/6) - \frac{1}{5}\right]
+= 0.514 \quad (\text{3 s.f.}).
+</span></p>
+<hr>
+<p><strong>4. Hypothesis decision</strong></p>
+<p>Under <span class="math inline">H_0</span>, <span class="math inline">T \sim \chi^2_1</span> approximately.</p>
+<p>The <span class="math inline">10\%</span> upper-tail critical value is <span class="math inline">2.71</span>.</p>
+<p>Since: <span class="math display">
+T_{\mathrm{obs}} = 0.514 &lt; 2.71,
+</span> we <strong>do not reject <span class="math inline">H_0</span></strong> at the <span class="math inline">10\%</span> significance level.</p>
+<p>There is insufficient evidence that the artifact’s lifespan differs from <span class="math inline">50</span> years.</p>
+</details>
+</div>
+</div>
 <div id="q-mle-property" class="question callout callout-style-simple callout-important no-icon callout-titled" data-tags="mle bias consistency exam-style" data-difficulty="2">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;27: Properties of the Maximum Likelihood Estimator
+Important&nbsp;28: Properties of the Maximum Likelihood Estimator
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4183,7 +4275,7 @@ L(\theta; \underline{x}) = \prod_{i=1}^n f(x_i \mid \theta) = \theta^{-n} \prod_
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;28: Estimation from a Uniform Distribution
+Important&nbsp;29: Estimation from a Uniform Distribution
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4528,7 +4620,7 @@ f(\underline{t} \mid \theta)
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;29: MLE for the Uniform Distribution <span class="math inline">U(\theta, 2\theta)</span>
+Important&nbsp;30: MLE for the Uniform Distribution <span class="math inline">U(\theta, 2\theta)</span>
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4844,7 +4936,7 @@ There is evidence that the proportion of left-handed people differs from 0.1.</p
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;30: Conjugacy: Binomial Model, Beta Prior
+Important&nbsp;31: Conjugacy: Binomial Model, Beta Prior
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4888,7 +4980,7 @@ p \mid x \sim \mathrm{Beta}(a + x, b + n - x),
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;31: Conjugacy: Poisson Model, Gamma Prior
+Important&nbsp;32: Conjugacy: Poisson Model, Gamma Prior
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4938,7 +5030,7 @@ f(\underline{x} \mid \lambda) \propto \lambda^{n\bar{x}} e^{-n\lambda}.
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;32: Conjugacy: Geometric Model, Beta Prior
+Important&nbsp;33: Conjugacy: Geometric Model, Beta Prior
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4986,7 +5078,7 @@ p \mid \underline{x} \sim \mathrm{Beta}(a + n, b + n(\bar{x} - 1)),
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;33: Conjugacy: Normal Model with known variance, Normal Prior for mean
+Important&nbsp;34: Conjugacy: Normal Model with known variance, Normal Prior for mean
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -5056,7 +5148,7 @@ V &amp;= \frac{1}{\frac{1}{\sigma^2_0} + \frac{n}{\sigma^2}}.
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;34: Conjugacy: Normal Model with known mean, Inverse Gamma Prior for variance
+Important&nbsp;35: Conjugacy: Normal Model with known mean, Inverse Gamma Prior for variance
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -5114,7 +5206,7 @@ b + \frac{1}{2}\sum_{i=1}^n (x_i - \mu)^2  \right),
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;35: Conjugacy: Exponential Model, Gamma Prior
+Important&nbsp;36: Conjugacy: Exponential Model, Gamma Prior
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -5166,7 +5258,7 @@ b + n\bar{x}  \right),
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;36: Conjugacy: Weibull Model with known rate, Inverse Gamma Prior
+Important&nbsp;37: Conjugacy: Weibull Model with known rate, Inverse Gamma Prior
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -5220,11 +5312,11 @@ b + \sum_{i=1}^n x_i^\beta  \right),
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;37: Posterior calculation: Normal likelihood, Normal prior
+Important&nbsp;38: Posterior calculation: Normal likelihood, Normal prior
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Consider the setup of <span class="xref-no-num"><a href="#q-normal-normal" class="quarto-xref">Conjugacy: Normal Model, Normal Prior&nbsp;<span>33</span></a></span>.<br>
+<p>Consider the setup of <span class="xref-no-num"><a href="#q-normal-normal" class="quarto-xref">Conjugacy: Normal Model, Normal Prior&nbsp;<span>34</span></a></span>.<br>
 Suppose the observation variance is known and equal to <span class="math display">
 \sigma^2 = 4,
 </span> and the prior for the mean is <span class="math display">

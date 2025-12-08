@@ -3890,6 +3890,131 @@ $$
 
 :::
 
+::: {.callout-important .question appearance="minimal" data-tags="exponential lrt hypothesis-testing exam-style" data-difficulty="2" #q-lrt-lifespan}
+
+## Likelihood Ratio Test for the Lifespan of a Magical Artefact
+
+The time (in years) until a magical artefact loses its power is modelled as an exponential random variable $X \sim \mathrm{Exponential}(1/\theta)$, where $\theta > 0$ is the mean lifespan.
+
+According to archived lore, an authentic artifact should have mean lifespan $\theta_0 = 50$ years.
+
+We wish to test the hypothesis  
+$$
+H_0 : \theta = 50
+$$  
+against the alternative that the true lifespan differs.
+
+1. Show that the maximum likelihood estimate of $\theta$ is $\hat{\theta} = x$, where $x$ is the observed lifespan.  
+   (You may assume that any critical point is a global maximum.)
+
+2. Suppose a recovered artifact is observed to last $x = 60$ years. Show that
+   $$
+   \max_{\theta \in \Theta} L(\theta; x) 
+   = \frac{1}{60} e^{-1}, 
+   \qquad
+   L(\theta = 50; x)
+   = \frac{1}{50} e^{-60/50},
+   $$
+   where $L(\theta; x)$ denotes the likelihood under mean $\theta$.
+
+3. Show that the likelihood ratio statistic is
+   $$
+   \lambda(x) 
+   = \frac{5}{6} \, e^{-1/5},
+   $$
+   and compute the observed statistic $T_{\mathrm{obs}} = -2 \log \lambda(x)$ to 3 significant figures.
+
+4. Based on the asymptotic $\chi^2_1$ distribution of $T_{\mathrm{obs}}$, is there sufficient evidence to reject $H_0$ at the $10\%$ significance level?
+
+<details class="solution">
+<summary>Solution</summary>
+
+**1. Maximum likelihood estimate**
+
+Exponential density:
+$$
+f(x \mid \theta) = \frac{1}{\theta} e^{-x/\theta}, \qquad x \ge 0.
+$$
+Likelihood for a single observation:
+$$
+L(\theta; x) = \frac{1}{\theta} e^{-x/\theta}.
+$$
+Log-likelihood:
+$$
+\ell(\theta; x) = -\log \theta - \frac{x}{\theta}.
+$$
+Differentiate:
+$$
+\frac{\partial \ell}{\partial \theta}
+= -\frac{1}{\theta} + \frac{x}{\theta^2}
+= 0
+\quad \Rightarrow \quad
+\hat{\theta} = x.
+$$
+
+---
+
+**2. Evaluate the likelihoods**
+
+At the MLE $\theta = 60$:
+$$
+L(60; x) 
+= \frac{1}{60} e^{-60/60}
+= \frac{1}{60} e^{-1}.
+$$
+At $\theta = 50$:
+$$
+L(50; x)
+= \frac{1}{50} e^{-60/50}
+= \frac{1}{50} e^{-6/5}.
+$$
+
+---
+
+**3. Likelihood ratio statistic**
+
+$$
+\lambda(x)
+= \frac{L(50; x)}{L(60; x)}
+= 
+\frac{\tfrac{1}{50} e^{-6/5}}
+     {\tfrac{1}{60} e^{-1}}
+= \frac{60}{50} \, e^{-6/5 + 1}
+= \frac{6}{5} e^{-1/5}.
+$$
+
+Thus:
+$$
+\lambda(x) = \frac{5}{6} e^{-1/5}.
+$$
+
+Then:
+$$
+T_{\mathrm{obs}} = -2 \log \lambda(x)
+= -2\left[\log(5/6) - \frac{1}{5}\right]
+= 0.514 \quad (\text{3 s.f.}).
+$$
+
+---
+
+**4. Hypothesis decision**
+
+Under $H_0$, $T \sim \chi^2_1$ approximately.
+
+The $10\%$ upper-tail critical value is $2.71$.
+
+Since:
+$$
+T_{\mathrm{obs}} = 0.514 < 2.71,
+$$
+we **do not reject $H_0$** at the $10\%$ significance level.
+
+There is insufficient evidence that the artifact's lifespan differs from $50$ years.
+
+</details>
+
+:::
+
 
 ::: {.callout-important .question appearance="minimal" data-tags="mle bias consistency exam-style" data-difficulty="2" #q-mle-property}
 
