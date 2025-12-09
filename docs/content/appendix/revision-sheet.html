@@ -755,7 +755,7 @@ Assessment Focus
 <ol type="1">
 <li><p><strong>Computing probabilities</strong> using basic rules (e.g.&nbsp;complements, unions, intersections, conditional probability).</p></li>
 <li><p><strong>Manipulating expectations</strong> (linearity of expectation, expectations of simple random variables, using PDFs/PMFs).</p></li>
-<li><p><strong>Rewriting and simplifying probability statements</strong> (e.g.&nbsp;applying the law of total probability, conditioning, decomposing complex events).</p></li>
+<li><p><strong>Rewriting and simplifying probability statements</strong> (e.g.&nbsp;applying the law of total probability, conditioning).</p></li>
 </ol>
 <p>These competencies underpin nearly all later topics.</p>
 </details>
@@ -885,10 +885,29 @@ X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu,\sigma^2)
 </div>
 <div class="revision-entry">
 <div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-goal-inference">
-<p><span class="toggle-icon" aria-hidden="true"></span> <span class="revision-topic"> Understand the goal of <strong>statistical inference</strong> is to infer the parameter <span class="math inline">\theta</span> from data. </span></p>
+<p><span class="toggle-icon" aria-hidden="true"></span> <span class="revision-topic"> Understand that the goal of <strong>statistical inference</strong> is to learn about an unknown parameter <span class="math inline">\theta</span> using observed data. </span></p>
 </div>
 <div id="rev-goal-inference" class="revision-content" hidden="">
-
+<p><strong>Statistical inference</strong> is the process of using data to draw conclusions about an unknown aspect of the population, usually represented by a parameter <span class="math inline">\theta</span>.</p>
+<p>The basic setup is:</p>
+<ul>
+<li>We observe data <span class="math inline">\underline{x} = (x_1,\ldots,x_n)</span>.</li>
+<li>We assume the data come from a distribution <span class="math inline">f(x \mid \theta)</span>, but the value of <span class="math inline">\theta</span> is unknown.</li>
+<li>Our aim is to use the sample to learn about <span class="math inline">\theta</span>, and therefore about the population distribution.</li>
+</ul>
+<p>Typically, we assume the sample is <strong>i.i.d.</strong>: <span class="math display">
+X_1,\ldots,X_n \stackrel{\text{iid}}{\sim} \mathrm{Distribution}(\theta).
+</span></p>
+<ul>
+<li><strong>Independent</strong>: knowing one observation tells us nothing about another.<br>
+</li>
+<li><strong>Identically distributed</strong>: all observations follow the same model <span class="math inline">f(x \mid \theta)</span>.</li>
+</ul>
+<p>Under this framework, statistical inference asks:</p>
+<blockquote class="blockquote">
+<p>Given the data we have, what can we say about the underlying parameter <span class="math inline">\theta</span>?</p>
+</blockquote>
+<p>This includes estimating <span class="math inline">\theta</span>, quantifying uncertainty, and performing hypothesis tests. All of these activities are different ways of using data to learn about the population through the parameter <span class="math inline">\theta</span>.</p>
 </div>
 </div>
 </section>
@@ -1310,7 +1329,7 @@ X_1,\ldots, X_n \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu, \sigma^2).
 <tr class="odd">
 <td>Question Bank</td>
 <td>Uniform Data, hard consistency question</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-uniform-hard-consistent" class="quarto-xref">Link&nbsp;<span>29</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-uniform-hard-consistent" class="quarto-xref">Link&nbsp;<span>30</span></a></span></td>
 </tr>
 <tr class="even">
 <td>Examples</td>
@@ -1519,12 +1538,12 @@ For this module, you may assume any solution you find is the global maximiser.</
 <tr class="odd">
 <td>Question Bank</td>
 <td>Uniform MLE, <span class="math inline">U(\theta, 2\theta)</span> data</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-unif-mle1" class="quarto-xref">Link&nbsp;<span>30</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-unif-mle1" class="quarto-xref">Link&nbsp;<span>31</span></a></span></td>
 </tr>
 <tr class="even">
 <td>Question Bank</td>
 <td>Shifted Pareto MLE</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-mle-property" class="quarto-xref">Link&nbsp;<span>28</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-mle-property" class="quarto-xref">Link&nbsp;<span>29</span></a></span></td>
 </tr>
 <tr class="odd">
 <td>Examples</td>
@@ -1673,7 +1692,7 @@ For this module, you may assume any solution you find is the global maximiser.</
 <tr class="odd">
 <td>Question Bank</td>
 <td>Efficiency of sample variance for Normal data</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-efficiency-hard-normal" class="quarto-xref">Link&nbsp;<span>25</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-efficiency-hard-normal" class="quarto-xref">Link&nbsp;<span>26</span></a></span></td>
 </tr>
 </tbody>
 </table>
@@ -1730,6 +1749,11 @@ X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\theta),
 <td><span class="xref-no-num"><a href="question-bank.html#q-asymp-mle-exp" class="quarto-xref">Link&nbsp;<span>22</span></a></span></td>
 </tr>
 <tr class="even">
+<td>Question Bank</td>
+<td>Asymptotic Sampling Distribution of MLE, Variance of Normal Data</td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-asymp-mle-norm-var" class="quarto-xref">Link&nbsp;<span>23</span></a></span></td>
+</tr>
+<tr class="odd">
 <td>Examples</td>
 <td>Asymptotic Sampling Distribution of MLE, Poisson Data</td>
 <td><a href="../main/part2/5-likelihood.html#exm-asymp-mle-pois" class="quarto-xref">Example&nbsp;<span>5.15</span></a></td>
@@ -1758,7 +1782,7 @@ Assessment Focus
 </li>
 <li><strong>Obtain asymptotic posteriors</strong> using large-sample approximations.</li>
 </ol></li>
-<li>Among all posterior calculations in the course, the most <strong>algebraically involved</strong> is <span class="xref-no-num"><a href="question-bank.html#q-normal-normal" class="quarto-xref">this&nbsp;<span>34</span></a></span> question, where<br>
+<li>Among all posterior calculations in the course, the most <strong>algebraically involved</strong> is <span class="xref-no-num"><a href="question-bank.html#q-normal-normal" class="quarto-xref">this&nbsp;<span>35</span></a></span> question, where<br>
 <span class="math display">
 X_i \mid \mu \sim \mathcal{N}(\mu, \gamma), \qquad \mu \sim \mathcal{N}(m, v).
 </span> Be prepared to work through this derivation carefully.</li>
@@ -1857,37 +1881,37 @@ This is the quantity from which all Bayesian estimates, intervals, and predictio
 <tr class="odd">
 <td>Question Bank</td>
 <td>Beta–Binomial model</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-beta-binom" class="quarto-xref">Link&nbsp;<span>31</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-beta-binom" class="quarto-xref">Link&nbsp;<span>32</span></a></span></td>
 </tr>
 <tr class="even">
 <td>Question Bank</td>
 <td>Gamma–Poisson model</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-gamma-pois" class="quarto-xref">Link&nbsp;<span>32</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-gamma-pois" class="quarto-xref">Link&nbsp;<span>33</span></a></span></td>
 </tr>
 <tr class="odd">
 <td>Question Bank</td>
 <td>Beta–Geometric model</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-beta-geom" class="quarto-xref">Link&nbsp;<span>33</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-beta-geom" class="quarto-xref">Link&nbsp;<span>34</span></a></span></td>
 </tr>
 <tr class="even">
 <td>Question Bank</td>
 <td>Normal–Normal mean model (known variance)</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-normal-normal" class="quarto-xref">Link&nbsp;<span>34</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-normal-normal" class="quarto-xref">Link&nbsp;<span>35</span></a></span></td>
 </tr>
 <tr class="odd">
 <td>Question Bank</td>
 <td>Inverse-Gamma–Normal variance model (known mean)</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-normal-invgamma" class="quarto-xref">Link&nbsp;<span>35</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-normal-invgamma" class="quarto-xref">Link&nbsp;<span>36</span></a></span></td>
 </tr>
 <tr class="even">
 <td>Question Bank</td>
 <td>Gamma–Exponential rate model</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-exp-gamma" class="quarto-xref">Link&nbsp;<span>36</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-exp-gamma" class="quarto-xref">Link&nbsp;<span>37</span></a></span></td>
 </tr>
 <tr class="odd">
 <td>Question Bank</td>
 <td>Inverse-Gamma–Weibull scale model (known shape)</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-weib-invgamma" class="quarto-xref">Link&nbsp;<span>37</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-weib-invgamma" class="quarto-xref">Link&nbsp;<span>38</span></a></span></td>
 </tr>
 <tr class="even">
 <td>Examples</td>
@@ -1945,12 +1969,12 @@ This is the quantity from which all Bayesian estimates, intervals, and predictio
 <tr class="odd">
 <td>Question Bank</td>
 <td>Beta-Binomial model, MAP with data</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-map-factory-defects" class="quarto-xref">Link&nbsp;<span>23</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-map-factory-defects" class="quarto-xref">Link&nbsp;<span>24</span></a></span></td>
 </tr>
 <tr class="even">
 <td>Question Bank</td>
 <td>Gamma-Poisson model, MAP with data</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-map-call-rate" class="quarto-xref">Link&nbsp;<span>24</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-map-call-rate" class="quarto-xref">Link&nbsp;<span>25</span></a></span></td>
 </tr>
 </tbody>
 </table>
@@ -2405,6 +2429,88 @@ T_{\mathrm{obs}} \notin R_\alpha.
 </div>
 </details>
 <div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-p-value">
+<p><span class="toggle-icon" aria-hidden="true"></span> <span class="revision-topic"> Understand what a <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-p-value" class="quarto-xref">p-value&nbsp;<span>9.3</span></a></span> is, and be able to compute simple examples for common test statistics. </span></p>
+</div>
+<div id="rev-p-value" class="revision-content" hidden="">
+<p>Given null and alternative hypotheses <span class="math inline">H_0</span> and <span class="math inline">H_1</span>, together with:</p>
+<ol type="1">
+<li>A <strong>test statistic</strong> <span class="math inline">T(\underline{X})</span>,</li>
+<li>A <strong>rejection region</strong> <span class="math inline">R_\alpha</span> describing which values of <span class="math inline">T</span> are considered “too inconsistent’’ with <span class="math inline">H_0</span> at size (significance level) <span class="math inline">\alpha</span>,</li>
+<li>The <strong>observed value</strong> <span class="math inline">T_{\mathrm{obs}} = T(\underline{x})</span> computed from the data,</li>
+</ol>
+<p>the <strong><span class="math inline">p</span>-value</strong> is defined as the <strong>largest value of</strong> <span class="math inline">\alpha</span> for which <span class="math display">
+T_{\mathrm{obs}} \in R_\alpha.
+</span></p>
+<p>Equivalently, it is the probability, under <span class="math inline">H_0</span>, of observing a test statistic <strong>at least as extreme</strong> as the observed value: <span class="math display">
+p = \Pr\!\big( T \text{ is at least as extreme as } T_{\mathrm{obs}} \mid H_0 \big).
+</span></p>
+<p>For a chosen test size <span class="math inline">\alpha</span>, <strong>we reject <span class="math inline">H_0</span> whenever <span class="math inline">p &lt; \alpha</span></strong>.</p>
+</div>
+</div>
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-power-function">
+<p><span class="toggle-icon" aria-hidden="true"></span> <span class="revision-topic"> Understand the definition of the <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-power" class="quarto-xref">power function&nbsp;<span>9.5</span></a></span>, and be able to compute the power function for simple examples for common test statistics. </span></p>
+</div>
+<div id="rev-power-function" class="revision-content" hidden="">
+<p>Given hypotheses <span class="math inline">H_0</span> and <span class="math inline">H_1</span>, and:</p>
+<ol type="1">
+<li>A <strong>test statistic</strong> <span class="math inline">T(\underline{X})</span>,</li>
+<li>A <strong>rejection region</strong> <span class="math inline">R_\alpha</span> specifying when we reject <span class="math inline">H_0</span> at size <span class="math inline">\alpha</span>,</li>
+<li>The sampling distribution of <span class="math inline">T</span> under different parameter values <span class="math inline">\theta</span>,</li>
+</ol>
+<p>the <strong>power function</strong> is defined as <span class="math display">
+\beta(\theta) = \Pr\big(T \in R_\alpha \mid \theta\big).
+</span></p>
+<p>That is, <span class="math inline">\beta(\theta)</span> tells us <strong>how likely our test is to reject <span class="math inline">H_0</span> when the true parameter value is <span class="math inline">\theta</span></strong>.</p>
+<ul>
+<li><p>If <span class="math inline">\theta \in H_0</span>, then<br>
+<span class="math display">
+\beta(\theta) = \Pr(\text{Type I error at }\theta),
+</span> which is by definition no larger than <span class="math inline">\alpha</span>.</p></li>
+<li><p>If <span class="math inline">\theta \in H_1</span>, then<br>
+<span class="math display">
+\beta(\theta) = \Pr(\text{correctly rejecting } H_0 \mid \theta),
+</span> so larger values of <span class="math inline">\beta(\theta)</span> mean a more effective test.</p></li>
+</ul>
+<p>In short:</p>
+<ul>
+<li><strong>On the null</strong>: the power function measures the chance of a false alarm → should be small.<br>
+</li>
+<li><strong>On the alternative</strong>: the power function measures the chance of detecting a real effect → should be large.</li>
+</ul>
+<p>Thus the power function summarises the performance of a test across all possible parameter values.</p>
+</div>
+</div>
+<details class="practice-details">
+<summary>
+<em>Computing Power Functions — Practice Questions</em>
+</summary>
+<div class="smaller-table">
+<table class="table">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 70%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Location</th>
+<th>Description</th>
+<th>Link</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Examples</td>
+<td>The Power of a Terrible Hypothesis Test</td>
+<td><a href="../main/part4/9-freq-hypothesis-testing.html#exm-bad-test-statistic-power" class="quarto-xref">Example&nbsp;<span>9.2</span></a></td>
+</tr>
+</tbody>
+</table>
+</div>
+</details>
+<div class="revision-entry">
 <div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-z-test">
 <p><span class="toggle-icon" aria-hidden="true"></span> <span class="revision-topic"> Be able to perform <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-one-sample-z-test" class="quarto-xref">One-Sample Z tests&nbsp;<span>9.6</span></a></span>. </span></p>
 </div>
@@ -2702,12 +2808,12 @@ T \; \overset{\text{approx.}}{\sim} \; \chi^2_1,
 <tr class="odd">
 <td>Question Bank</td>
 <td>Extreme Weather, Poisson Data LRT</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-lrt-weather" class="quarto-xref">Link&nbsp;<span>26</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-lrt-weather" class="quarto-xref">Link&nbsp;<span>27</span></a></span></td>
 </tr>
 <tr class="even">
 <td>Question Bank</td>
 <td>Lifespan of Magical Artefact, Exponential Data LRT</td>
-<td><span class="xref-no-num"><a href="question-bank.html#q-lrt-lifespan" class="quarto-xref">Link&nbsp;<span>27</span></a></span></td>
+<td><span class="xref-no-num"><a href="question-bank.html#q-lrt-lifespan" class="quarto-xref">Link&nbsp;<span>28</span></a></span></td>
 </tr>
 <tr class="odd">
 <td>Examples</td>

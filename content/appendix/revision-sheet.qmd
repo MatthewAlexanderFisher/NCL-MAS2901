@@ -62,7 +62,7 @@ The **core skills** from this chapter that you may be assessed on are:
    (linearity of expectation, expectations of simple random variables, using PDFs/PMFs).
 
 3. **Rewriting and simplifying probability statements**
-   (e.g. applying the law of total probability, conditioning, decomposing complex events).
+   (e.g. applying the law of total probability, conditioning).
 
 These competencies underpin nearly all later topics.
 
@@ -212,16 +212,37 @@ Correctly identifying the data type ensures the likelihood function, estimators,
 </div>
 </div>
 
-
 <div class="revision-entry">
 <div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-goal-inference">
 <span class="toggle-icon" aria-hidden="true"></span>
 <span class="revision-topic">
-Understand the goal of **statistical inference** is to infer the parameter $\theta$ from data.
+Understand that the goal of **statistical inference** is to learn about an unknown parameter $\theta$ using observed data.
 </span>
 </div>
 
 <div class="revision-content" id="rev-goal-inference" hidden>
+
+**Statistical inference** is the process of using data to draw conclusions about an unknown aspect of the population, usually represented by a parameter $\theta$.
+
+The basic setup is:
+
+* We observe data $\underline{x} = (x_1,\ldots,x_n)$.
+* We assume the data come from a distribution $f(x \mid \theta)$, but the value of $\theta$ is unknown.
+* Our aim is to use the sample to learn about $\theta$, and therefore about the population distribution.
+
+Typically, we assume the sample is **i.i.d.**:
+$$
+X_1,\ldots,X_n \stackrel{\text{iid}}{\sim} \mathrm{Distribution}(\theta).
+$$
+
+- **Independent**: knowing one observation tells us nothing about another.  
+- **Identically distributed**: all observations follow the same model $f(x \mid \theta)$.
+
+Under this framework, statistical inference asks:
+
+> Given the data we have, what can we say about the underlying parameter $\theta$?
+
+This includes estimating $\theta$, quantifying uncertainty, and performing hypothesis tests. All of these activities are different ways of using data to learn about the population through the parameter $\theta$.
 
 </div>
 </div>
@@ -1024,10 +1045,11 @@ $$
 <details class="practice-details">
 <summary><em>Asymptotic Distribution of MLE  — Practice Questions</em></summary>
 
-::: {.smaller-table} 
+::: {.smaller-table}  
 | Location | Description | Link |
 |------|-------------|-------|
 | Question Bank | Asymptotic Sampling Distribution of MLE, Exponential Data  | <span class="xref-no-num">[Link @q-asymp-mle-exp]</span> |
+| Question Bank | Asymptotic Sampling Distribution of MLE, Variance of Normal Data  | <span class="xref-no-num">[Link @q-asymp-mle-norm-var]</span> |
 | Examples | Asymptotic Sampling Distribution of MLE, Poisson Data | @exm-asymp-mle-pois |
 
 : {tbl-colwidths="[17, 70, 13]"}
@@ -1607,8 +1629,6 @@ Understand the different <span class="xref-no-num">[outcomes @imp-test-outcomes]
 </div>
 </div>
 
-
-
 <div class="revision-entry">
 <div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-rejection-region">
 <span class="toggle-icon" aria-hidden="true"></span>
@@ -1668,6 +1688,97 @@ $$
 | Location | Description | Link |
 |----------|-------------|-------|
 | Examples | A Terrible Hypothesis Test | @exm-bad-test-statistic|
+
+
+: {tbl-colwidths="[17, 70, 13]"}
+:::
+
+</details>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-p-value">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Understand what a <span class="xref-no-num">[p-value @def-p-value]</span> is, and be able to compute simple examples for common test statistics.
+</span>
+</div>
+
+<div class="revision-content" id="rev-p-value" hidden>
+
+Given null and alternative hypotheses $H_0$ and $H_1$, together with:
+
+1. A **test statistic** $T(\underline{X})$,
+2. A **rejection region** $R_\alpha$ describing which values of $T$ are considered “too inconsistent’’ with $H_0$ at size (significance level) $\alpha$,
+3. The **observed value** $T_{\mathrm{obs}} = T(\underline{x})$ computed from the data,
+
+the **$p$-value** is defined as the **largest value of** $\alpha$ for which
+$$
+T_{\mathrm{obs}} \in R_\alpha.
+$$
+
+Equivalently, it is the probability, under $H_0$, of observing a test statistic **at least as extreme** as the observed value:
+$$
+p = \Pr\!\big( T \text{ is at least as extreme as } T_{\mathrm{obs}} \mid H_0 \big).
+$$
+
+For a chosen test size $\alpha$, **we reject $H_0$ whenever $p < \alpha$**.
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-power-function">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Understand the definition of the <span class="xref-no-num">[power function @def-power]</span>, and be able to compute the power function for simple examples for common test statistics.
+</span>
+</div>
+
+<div class="revision-content" id="rev-power-function" hidden>
+
+Given hypotheses $H_0$ and $H_1$, and:
+
+1. A **test statistic** $T(\underline{X})$,
+2. A **rejection region** $R_\alpha$ specifying when we reject $H_0$ at size $\alpha$,
+3. The sampling distribution of $T$ under different parameter values $\theta$,
+
+the **power function** is defined as
+$$
+\beta(\theta) = \Pr\big(T \in R_\alpha \mid \theta\big).
+$$
+
+That is, $\beta(\theta)$ tells us **how likely our test is to reject $H_0$ when the true parameter value is $\theta$**.
+
+- If $\theta \in H_0$, then  
+  $$
+  \beta(\theta) = \Pr(\text{Type I error at }\theta),
+  $$
+  which is by definition no larger than $\alpha$.
+
+- If $\theta \in H_1$, then  
+  $$
+  \beta(\theta) = \Pr(\text{correctly rejecting } H_0 \mid \theta),
+  $$
+  so larger values of $\beta(\theta)$ mean a more effective test.
+
+In short:
+
+- **On the null**: the power function measures the chance of a false alarm → should be small.  
+- **On the alternative**: the power function measures the chance of detecting a real effect → should be large.
+
+Thus the power function summarises the performance of a test across all possible parameter values.
+
+</div>
+</div>
+
+<details class="practice-details">
+<summary><em>Computing Power Functions — Practice Questions</em></summary>
+
+
+::: {.smaller-table}
+| Location | Description | Link |
+|----------|-------------|-------|
+| Examples | The Power of a Terrible Hypothesis Test | @exm-bad-test-statistic-power|
 
 
 : {tbl-colwidths="[17, 70, 13]"}

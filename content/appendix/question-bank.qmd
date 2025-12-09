@@ -1244,7 +1244,7 @@ $$
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="exponential-distribution expectation probability" data-difficulty="2"}
+::: {.callout-important .question appearance="minimal" data-tags="exponential expectation probability" data-difficulty="2"}
 ## Moment Generating Function of the Exponential
 
 We have seen that properties of a random variable $X$ can be described by the CDF, PMF, or PDF.  
@@ -2349,7 +2349,7 @@ L(\mu; \underline{x}) &= \prod_{i=1}^n \frac{1}{\sqrt{2\pi}} \exp\left\{ -\frac{
 
 :::
 
-::: {.callout-important .question appearance="minimal" data-tags="likelihood lognormal" data-difficulty="1" #q-lognormal-likelihood}
+::: {.callout-important .question appearance="minimal" data-tags="likelihood log-normal" data-difficulty="1" #q-lognormal-likelihood}
 
 ## Computing Likelihoods III
 
@@ -3262,6 +3262,105 @@ $$
 </details>
 
 :::
+
+::: {.callout-important .question appearance="minimal" data-tags="asymptotic-mle normal variance" data-difficulty="1" #q-asymp-mle-norm-var}
+
+### Normal Data: Asymptotic Distribution of the MLE of the variance
+
+Suppose 
+$$
+X_1,\ldots, X_n \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu, \gamma),
+$$
+with mean $\mu$ known.
+
+The maximum likelihood estimator for $\gamma$ is known to be
+$$
+\hat{\gamma}_{\mathrm{MLE}} = \frac{1}{n}\sum_{i=1}^n (x_i - \mu)^2.
+$$
+Compute the approximate <span class="xref-no-num">[sampling distribution @def-asymp-mle-approx]</span> of $\hat{\gamma}_{\mathrm{MLE}}$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**Step 1: Recall the general asymptotic MLE result**
+
+From the asymptotic normality of the MLE, for regular models:
+$$
+\hat{\gamma}_{\mathrm{MLE}}
+\;\overset{\text{approx.}}{\sim}\;
+\mathcal{N}\!\left(
+  \gamma,\;
+  \mathcal{I}_n(\gamma)^{-1}
+\right),
+\quad \text{for large } n,
+$$
+where $\mathcal{I}_n(\gamma)$ is the **Fisher information for the whole sample**.
+
+---
+
+**Step 2: Compute the Fisher information**
+
+The log-likelihood is
+$$
+\ell(\gamma; \underline{x}) = -\frac{n}{2} \log(2\pi\gamma) - \frac{1}{2\gamma}\sum_{i=1}^n (x_i - \mu)^2
+$$
+
+Differentiate:
+$$
+\frac{\partial}{\partial \gamma} \ell(\gamma; \underline{x}) 
+=  -\frac{n}{2\gamma} + \frac{1}{2\gamma^2} \sum_{i=1}^n (x_i - \mu)^2
+\qquad
+\frac{\partial^2 }{\partial \gamma^2} \ell(\gamma; \underline{x}) 
+= \frac{n}{2\gamma^2} - \frac{1}{\gamma^3} \sum_{i=1}^n (x_i - \mu)^2.
+$$
+
+So the Fisher information for **the whole sample** is
+$$
+\begin{align*}
+\mathcal{I}_n(\gamma) &= -\mathrm{E}\left[\frac{n}{2\gamma^2} - \frac{1}{\gamma^3} \sum_{i=1}^n (X_i - \mu)^2\right] \\
+&= -\frac{n}{2\gamma^2} + \frac{1}{\gamma^3}\sum_{i=1}^n \mathrm{E}[(X_i - \mu)^2] \\
+&= \frac{n}{2\gamma^2},
+\end{align*}
+$$
+since $\mathrm{E}[(X_i - \mu)^2] = \mathrm{Var}(X_i) = \gamma$. 
+
+Thus
+$$
+\mathcal{I}_n(\lambda)^{-1} = \frac{2\gamma^2}{n}.
+$$
+
+---
+
+**Step 3: Asymptotic distribution of the MLE**
+
+Plugging this into the general asymptotic MLE result:
+$$
+\hat{\gamma}_{\mathrm{MLE}}
+\;\overset{\text{approx.}}{\sim}\;
+\mathcal{N}\!\left(
+  \gamma,\;
+  \frac{2\gamma^2}{n}
+\right).
+$$
+
+In practice, since $\gamma$ is unknown, we use the **plug-in** $\hat{\gamma}_{\mathrm{MLE}} =  \frac{1}{n}\sum_{i=1}^n (x_i - \mu)^2$ into the Fisher information, resulting in:
+$$
+\hat{\gamma}_{\mathrm{MLE}}
+\;\overset{\text{approx.}}{\sim}\;
+\mathcal{N} \left(
+  \gamma,\;
+  \frac{2(\hat{\gamma}_{\mathrm{MLE}})^2}{n}
+\right) = \mathcal{N} \left(
+  \gamma,\;
+  \frac{2\left(\sum_{i=1}^n (x_i - \mu)^2\right)^2}{n^3}
+\right),
+$$
+
+
+</details>
+
+:::
+
 
 ::: {.callout-important .question appearance="minimal" data-tags="binomial clt confidence-interval" data-difficulty="1"}
 
