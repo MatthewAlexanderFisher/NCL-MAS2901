@@ -9,8 +9,6 @@ tbl-cap-location: bottom
 
 # Revision Sheet {.unnumbered}
 
-(nearly complete...)
-
 This page provides a concise summary of all **examinable material** for the MAS2901 exam. If a topic appears in the main notes **but is not included here**, you may assume it is **not examinable**. A dedicated section at the end lists all **non-examinable** content explicitly.
 
 The revision sheet is organised as follows:
@@ -380,6 +378,15 @@ Be able to recall and use the definitions of the <span class="xref-no-num">[samp
 </div>
 
 <div class="revision-content" id="rev-sample-mean-var" hidden>
+
+The <span class="xref-no-num">[sample mean @def-sample-mean]</span> is defined as
+$$
+\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i.
+$$
+The <span class="xref-no-num">[sample variance @def-sample-variance]</span> is defined as
+$$
+S^2 = \frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X})^2.
+$$
 
 </div>
 </div>
@@ -1146,11 +1153,36 @@ Be able to <span class="xref-no-num">[prove @prf-bayes]</span> and recall <span 
 $$
 \pi(\theta \mid \underline{x}) = \frac{\pi(\theta) \, f(\underline{x}\mid \theta)}{f(\underline{x})}.
 $$
-That is, we **condition** upon the observations $\underline{x}$ and apply @thm-bayes-density.
 </span>
 </div>
 
 <div class="revision-content" id="rev-bayes-theorem-density" hidden>
+
+To obtain the posterior, we simply apply Bayes’ theorem to the parameter $\theta$ and the observed data $\underline{x}$.  
+
+The usual density form in @thm-bayes-density is
+$$
+f(x \mid y) = \frac{f(y \mid x)\,f(x)}{f(y)}.
+$$
+It is relabelled as follows:
+
+- **Parameter:** $x = \theta$
+- **Data:** $y = \underline{x}$
+- **Prior:** $f(x) = \pi(\theta)$
+- **Likelihood:** $f(y \mid x) = f(\underline{x} \mid \theta)$
+- **Posterior:** $f(x \mid y) = \pi(\theta \mid \underline{x})$
+
+Substituting these into Bayes’ theorem gives:
+$$
+\pi(\theta \mid \underline{x})
+= \frac{\pi(\theta)\,f(\underline{x}\mid \theta)}
+       {f(\underline{x})},
+$$
+where the denominator
+$$
+f(\underline{x}) = \int \pi(\theta)\,f(\underline{x}\mid \theta)\,d\theta
+$$
+acts only as a **normalising constant**, ensuring the posterior integrates to $1$.
 
 </div>
 </div>
@@ -1371,6 +1403,42 @@ Compared with the known-variance case, the unknown-variance version differs in o
 2. The normal quantile $z_{1-\alpha/2}$ is replaced by the 
    Student-$t$ quantile $t_{n-1,\,1-\alpha/2}$.
 
+---
+
+**Computing Confidence Intervals**
+
+Suppose we observe $n$ i.i.d. data points $x_1,\ldots,x_n$ from a normal distribution. A $100(1-\alpha)\%$ confidence interval for the mean depends on whether the variance is known or unknown:
+
+1. **Known variance:** If the population variance $\sigma^2$ is known, the confidence interval is
+  $$
+  \boxed{\bar{x} \pm z_{1-\alpha/2}\,\frac{\sigma}{\sqrt{n}}}
+  $$
+  where:
+
+   - $\bar{x}$ is the **observed** <span class="xref-no-num">[sample mean @def-sample-mean]</span>,
+   - $z_{1-\alpha/2}$ is the $(1-\alpha/2)$ quantile of the **standard normal** distribution:
+    $$
+    \Pr(Z < z_{1-\alpha/2}) = 1 - \alpha/2, \qquad Z \sim \mathcal{N}(0,1).
+    $$
+
+1. **Unknown Variance:** If the population variance is unknown, we estimate it with the **sample standard deviation**
+  $$
+  s = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2},
+  $$
+  and the confidence interval becomes
+  $$
+  \boxed{\bar{x} \pm t_{n-1,\,1-\alpha/2}\,\frac{s}{\sqrt{n}}}
+  $$
+  where:
+
+   - $t_{n-1,\,1-\alpha/2}$ is the $(1-\alpha/2)$ quantile of the **Student-$t$ distribution** with $n-1$ degrees of freedom:
+    $$
+    \Pr(T < t_{n-1,\,1-\alpha/2}) = 1 - \alpha/2,
+    \qquad T \sim t_{n-1}.
+    $$
+
+---
+
 **Note:** You will **not be examined** on the derivations of the confidence intervals for **normally distributed data** with either <span class="xref-no-num">[known @sec-normal-ci-known-var]</span> or <span class="xref-no-num">[unknown @sec-normal-ci-unknown-var]</span> variance.
 
 </div>
@@ -1405,6 +1473,40 @@ $$
 \bar{X} \,\overset{\text{approx.}}{\sim}\, 
 \mathcal{N}\!\left(\mu,\, \frac{\sigma^2}{n}\right).
 $$
+
+---
+
+**Computing Confidence Intervals**
+
+Suppose we observe $n$ i.i.d. data points $x_1,\ldots,x_n$ from **any** distribution with finite variance. A $100(1-\alpha)\%$ <span class="xref-no-num">[approximate CLT-based confidence interval @def-approx-ci-clt]</span> for the **population mean** takes the form:
+
+1. **Known variance:** If the population variance $\sigma^2$ is known, the confidence interval is
+  $$
+  \boxed{\bar{x} \pm z_{1-\alpha/2}\,\frac{\sigma}{\sqrt{n}}}
+  $$
+  where:
+
+   - $\bar{x}$ is the **observed** <span class="xref-no-num">[sample mean @def-sample-mean]</span>,
+   - $z_{1-\alpha/2}$ is the $(1-\alpha/2)$ quantile of the **standard normal** distribution:
+    $$
+    \Pr(Z < z_{1-\alpha/2}) = 1 - \alpha/2, \qquad Z \sim \mathcal{N}(0,1).
+    $$
+
+
+1. **Unknown Variance:** If $\sigma^2$ is unknown, we estimate it using the **sample standard deviation**
+  $$
+  s = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2},
+  $$
+  and the CLT gives the approximate interval:
+  $$
+  \boxed{\bar{x} \pm z_{1-\alpha/2}\,\frac{s}{\sqrt{n}}}
+  $$
+  using the **same** $z$-quantile as above.
+
+
+--- 
+
+**Note:** You may also use the Student-$t$ quantile $t_{n-1,\,1-\alpha/2}$ in the unknown-variance case. Both the **$z$-based** and **$t$-based** intervals are acceptable in the exam and would receive *full marks*.
 
 </div>
 </div>
@@ -1441,6 +1543,31 @@ $$
   \mathcal{I}_n\!\big(\hat{\theta}_{\mathrm{MLE}}\big)^{-1}
 \right).
 $$
+
+---
+
+**Computing Confidence Intervals**
+
+Suppose we observe $n$ i.i.d. data points $x_1,\ldots,x_n$ from a distribution $\mathrm{Distribution}(\theta)$ depending on an unknown parameter $\theta$. A $100(1-\alpha)\%$ <span class="xref-no-num">[approximate asymptotic MLE-based confidence interval @def-approx-ci-mle]</span> for $\theta$ is
+
+$$
+\boxed{
+\hat{\theta}_{\mathrm{MLE}}
+\;\pm\;
+z_{1-\alpha/2}\,
+\sqrt{\mathcal{I}_n\!\big(\hat{\theta}_{\mathrm{MLE}}\big)^{-1}}
+}
+$$
+
+where:
+
+- $\hat{\theta}_{\mathrm{MLE}}$ is the **observed** <span class="xref-no-num">[maximum likelihood estimate @def-mle]</span>,
+- $\mathcal{I}_n(\theta)$ is the <span class="xref-no-num">[Fisher information @prp-fisher-one-obs]</span> for the full sample, evaluated at $\theta = \hat{\theta}_{\mathrm{MLE}}$,
+- $z_{1-\alpha/2}$ is the $(1-\alpha/2)$ quantile of the **standard normal distribution**:
+  $$
+  \Pr(Z < z_{1-\alpha/2}) = 1 - \alpha/2, 
+  \qquad Z \sim \mathcal{N}(0,1).
+  $$
 
 </div>
 </div>
@@ -1506,7 +1633,7 @@ $$
 <div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-hdi">
 <span class="toggle-icon" aria-hidden="true"></span>
 <span class="revision-topic">
-Be able to recall and compute simple examples of <span class="xref-no-num">[Highest Density Intervals (HDI) @def-hdi]</span>.
+Be able to recall, explain, and apply the definition of a <span class="xref-no-num">[Highest Density Interval (HDI) @def-hdi]</span>.
 </span>
 </div>
 
@@ -1527,20 +1654,31 @@ Be able to recall and compute simple examples of <span class="xref-no-num">[High
   = 1 - \alpha.
   $$
 
-- If the posterior distribution is normal,
+<!-- - If the posterior distribution is normal,
   $$
   \theta \mid \underline{x} \sim \mathcal{N}(M, V),
   $$
   then the $100(1-\alpha)\%$ HDI coincides with the equal–tailed interval and is given by
   $$
   M \pm z_{\alpha/2}\sqrt{V}.
-  $$
+  $$ -->
+
+---
+
+**Note:**
+
+- You will not be examined on computing analytic HDIs for any specific posterior distribution, such as the Normal or the Beta. The examinable content concerns understanding and interpreting the HDI definition.
+
 
 </div>
 </div>
 
 <details class="practice-details">
 <summary><em> Computing HDIs — Practice Questions</em></summary>
+
+**Note:** The examples below are provided for intuition and practice only. You will not be required to compute analytic HDIs in the exam.
+
+In the exam, HDIs will be assessed through understanding of the definition and interpretation of a Highest Density Interval in context, not through algebraic calculation.
 
 ::: {.smaller-table}
 | Location | Description | Link |
@@ -1573,6 +1711,7 @@ Understand that a <span class="xref-no-num">[hypothesis test @def-simple-hypothe
 </div>
 
 <div class="revision-content" id="rev-hypothesis-test" hidden>
+To perform a <span class="xref-no-num">[hypothesis test @def-simple-hypothesis]</span> we:
 
 1. **State Hypothesis:** We begin by stating a hypothesis about the parameter, $H_0: \theta = \theta_0$, called the **null hypothesis**.
 2. **Assume the Null is True:** We then **assume** $H_0$ is true.
@@ -2074,7 +2213,7 @@ Be able to perform <span class="xref-no-num">[Likelihood Ratio Tests @def-lrt-si
   $$
   where $\ell(\theta; \underline{X})$ is the <span class="xref-no-num">[log likelihood function @def-log-likelihood]</span>.
 
-- By <span class="xref-no-num">[Wilk's theorem @thm-wilks]</span>, for *large* $n$, the test statistic is
+- By <span class="xref-no-num">[Wilks' theorem @thm-wilks]</span>, for *large* $n$, the test statistic is
   $$
   T \; \overset{\text{approx.}}{\sim} \; \chi^2_1,
   $$
@@ -2131,7 +2270,7 @@ This section covers all the non-examinable content in the course notes.
 
 - You will not be examined on <span class="xref-no-num">[covariance @def-covariance]</span>.
 - You will not be examined on <span class="xref-no-num">[correlation @def-correlation]</span>.
-- The material in the section names <span class="xref-no-num">[Non-Examinable material @sec-prob-theory-non-examinable]</span> section is **not examinable**.
+- The material in the section named <span class="xref-no-num">[Non-Examinable material @sec-prob-theory-non-examinable]</span> section is **not examinable**.
 
 
 ### Chapter 2 - What is Statistical Inference?
@@ -2175,7 +2314,7 @@ This section covers all the non-examinable content in the course notes.
 
 ### Chapter 8 - Bayesian Intervals
 
-- You will **not be examined** on actually **computing a Bayesian HDI**. The exam will only require you to understand the <span class="xref-no-num">[definition @def-hdi]</span> in context, and the interpretation of a Highest Density Interval.
+- You will **not be examined** on **computing analytic HDIs** for any posterior distribution. The exam will only require you to understand, interpret and apply the <span class="xref-no-num">[definition @def-hdi]</span> of an HDI in context.
 
 ## Part IV - Hypothesis Testing
 

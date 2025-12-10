@@ -700,7 +700,6 @@ window.Quarto = {
 </header>
 
 
-<p>(nearly complete…)</p>
 <p>This page provides a concise summary of all <strong>examinable material</strong> for the MAS2901 exam. If a topic appears in the main notes <strong>but is not included here</strong>, you may assume it is <strong>not examinable</strong>. A dedicated section at the end lists all <strong>non-examinable</strong> content explicitly.</p>
 <p>The revision sheet is organised as follows:</p>
 <ol type="1">
@@ -1018,7 +1017,11 @@ Assessment Focus
 <p><span class="toggle-icon" aria-hidden="true"></span> <span class="revision-topic"> Be able to recall and use the definitions of the <span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#def-sample-mean" class="quarto-xref">sample mean&nbsp;<span>4.1</span></a></span> and the <span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#def-sample-variance" class="quarto-xref">sample variance&nbsp;<span>4.2</span></a></span>. </span></p>
 </div>
 <div id="rev-sample-mean-var" class="revision-content" hidden="">
-
+<p>The <span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#def-sample-mean" class="quarto-xref">sample mean&nbsp;<span>4.1</span></a></span> is defined as <span class="math display">
+\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i.
+</span> The <span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#def-sample-variance" class="quarto-xref">sample variance&nbsp;<span>4.2</span></a></span> is defined as <span class="math display">
+S^2 = \frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X})^2.
+</span></p>
 </div>
 </div>
 <div class="revision-entry">
@@ -1833,10 +1836,27 @@ This is the quantity from which all Bayesian estimates, intervals, and predictio
 <div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-bayes-theorem-density">
 <p><span class="toggle-icon" aria-hidden="true"></span> <span class="revision-topic"> Be able to <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#prf-bayes" class="quarto-xref">prove&nbsp;<span>6.1</span></a></span> and recall <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#thm-bayes-density" class="quarto-xref">Bayes theorem for densities&nbsp;<span>6.1</span></a></span> and understand how this yields the <strong>posterior density</strong>: <span class="math display">
 \pi(\theta \mid \underline{x}) = \frac{\pi(\theta) \, f(\underline{x}\mid \theta)}{f(\underline{x})}.
-</span> That is, we <strong>condition</strong> upon the observations <span class="math inline">\underline{x}</span> and apply <a href="../main/part2/6-bayes-inference.html#thm-bayes-density" class="quarto-xref">Theorem&nbsp;<span>6.1</span></a>. </span></p>
+</span> </span></p>
 </div>
 <div id="rev-bayes-theorem-density" class="revision-content" hidden="">
-
+<p>To obtain the posterior, we simply apply Bayes’ theorem to the parameter <span class="math inline">\theta</span> and the observed data <span class="math inline">\underline{x}</span>.</p>
+<p>The usual density form in <a href="../main/part2/6-bayes-inference.html#thm-bayes-density" class="quarto-xref">Theorem&nbsp;<span>6.1</span></a> is <span class="math display">
+f(x \mid y) = \frac{f(y \mid x)\,f(x)}{f(y)}.
+</span> It is relabelled as follows:</p>
+<ul>
+<li><strong>Parameter:</strong> <span class="math inline">x = \theta</span></li>
+<li><strong>Data:</strong> <span class="math inline">y = \underline{x}</span></li>
+<li><strong>Prior:</strong> <span class="math inline">f(x) = \pi(\theta)</span></li>
+<li><strong>Likelihood:</strong> <span class="math inline">f(y \mid x) = f(\underline{x} \mid \theta)</span></li>
+<li><strong>Posterior:</strong> <span class="math inline">f(x \mid y) = \pi(\theta \mid \underline{x})</span></li>
+</ul>
+<p>Substituting these into Bayes’ theorem gives: <span class="math display">
+\pi(\theta \mid \underline{x})
+= \frac{\pi(\theta)\,f(\underline{x}\mid \theta)}
+       {f(\underline{x})},
+</span> where the denominator <span class="math display">
+f(\underline{x}) = \int \pi(\theta)\,f(\underline{x}\mid \theta)\,d\theta
+</span> acts only as a <strong>normalising constant</strong>, ensuring the posterior integrates to <span class="math inline">1</span>.</p>
 </div>
 </div>
 <div class="revision-entry">
@@ -2084,6 +2104,32 @@ X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu,\sigma^2),
 <li>The <span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#def-sample-variance" class="quarto-xref">sample variance&nbsp;<span>4.2</span></a></span> is substituted for <span class="math inline">\sigma^2</span>.</li>
 <li>The normal quantile <span class="math inline">z_{1-\alpha/2}</span> is replaced by the Student-<span class="math inline">t</span> quantile <span class="math inline">t_{n-1,\,1-\alpha/2}</span>.</li>
 </ol>
+<hr>
+<p><strong>Computing Confidence Intervals</strong></p>
+<p>Suppose we observe <span class="math inline">n</span> i.i.d. data points <span class="math inline">x_1,\ldots,x_n</span> from a normal distribution. A <span class="math inline">100(1-\alpha)\%</span> confidence interval for the mean depends on whether the variance is known or unknown:</p>
+<ol type="1">
+<li><p><strong>Known variance:</strong> If the population variance <span class="math inline">\sigma^2</span> is known, the confidence interval is <span class="math display">
+  \boxed{\bar{x} \pm z_{1-\alpha/2}\,\frac{\sigma}{\sqrt{n}}}
+  </span> where:</p>
+<ul>
+<li><span class="math inline">\bar{x}</span> is the <strong>observed</strong> <span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#def-sample-mean" class="quarto-xref">sample mean&nbsp;<span>4.1</span></a></span>,</li>
+<li><span class="math inline">z_{1-\alpha/2}</span> is the <span class="math inline">(1-\alpha/2)</span> quantile of the <strong>standard normal</strong> distribution: <span class="math display">
+\Pr(Z &lt; z_{1-\alpha/2}) = 1 - \alpha/2, \qquad Z \sim \mathcal{N}(0,1).
+</span></li>
+</ul></li>
+<li><p><strong>Unknown Variance:</strong> If the population variance is unknown, we estimate it with the <strong>sample standard deviation</strong> <span class="math display">
+  s = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2},
+  </span> and the confidence interval becomes <span class="math display">
+  \boxed{\bar{x} \pm t_{n-1,\,1-\alpha/2}\,\frac{s}{\sqrt{n}}}
+  </span> where:</p>
+<ul>
+<li><span class="math inline">t_{n-1,\,1-\alpha/2}</span> is the <span class="math inline">(1-\alpha/2)</span> quantile of the <strong>Student-<span class="math inline">t</span> distribution</strong> with <span class="math inline">n-1</span> degrees of freedom: <span class="math display">
+\Pr(T &lt; t_{n-1,\,1-\alpha/2}) = 1 - \alpha/2,
+\qquad T \sim t_{n-1}.
+</span></li>
+</ul></li>
+</ol>
+<hr>
 <p><strong>Note:</strong> You will <strong>not be examined</strong> on the derivations of the confidence intervals for <strong>normally distributed data</strong> with either <span class="xref-no-num"><a href="../main/part3/7-freq-interval-estimation.html#sec-normal-ci-known-var" class="quarto-xref">known&nbsp;<span>The Normal Case (Known Variance)</span></a></span> or <span class="xref-no-num"><a href="../main/part3/7-freq-interval-estimation.html#sec-normal-ci-unknown-var" class="quarto-xref">unknown&nbsp;<span>The Normal Case (Unknown Variance)</span></a></span> variance.</p>
 </div>
 </div>
@@ -2129,6 +2175,27 @@ X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu,\sigma^2),
 \bar{X} \,\overset{\text{approx.}}{\sim}\,
 \mathcal{N}\!\left(\mu,\, \frac{\sigma^2}{n}\right).
 </span></p>
+<hr>
+<p><strong>Computing Confidence Intervals</strong></p>
+<p>Suppose we observe <span class="math inline">n</span> i.i.d. data points <span class="math inline">x_1,\ldots,x_n</span> from <strong>any</strong> distribution with finite variance. A <span class="math inline">100(1-\alpha)\%</span> <span class="xref-no-num"><a href="../main/part3/7-freq-interval-estimation.html#def-approx-ci-clt" class="quarto-xref">approximate CLT-based confidence interval&nbsp;<span>7.4</span></a></span> for the <strong>population mean</strong> takes the form:</p>
+<ol type="1">
+<li><p><strong>Known variance:</strong> If the population variance <span class="math inline">\sigma^2</span> is known, the confidence interval is <span class="math display">
+  \boxed{\bar{x} \pm z_{1-\alpha/2}\,\frac{\sigma}{\sqrt{n}}}
+  </span> where:</p>
+<ul>
+<li><span class="math inline">\bar{x}</span> is the <strong>observed</strong> <span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#def-sample-mean" class="quarto-xref">sample mean&nbsp;<span>4.1</span></a></span>,</li>
+<li><span class="math inline">z_{1-\alpha/2}</span> is the <span class="math inline">(1-\alpha/2)</span> quantile of the <strong>standard normal</strong> distribution: <span class="math display">
+\Pr(Z &lt; z_{1-\alpha/2}) = 1 - \alpha/2, \qquad Z \sim \mathcal{N}(0,1).
+</span></li>
+</ul></li>
+<li><p><strong>Unknown Variance:</strong> If <span class="math inline">\sigma^2</span> is unknown, we estimate it using the <strong>sample standard deviation</strong> <span class="math display">
+  s = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2},
+  </span> and the CLT gives the approximate interval: <span class="math display">
+  \boxed{\bar{x} \pm z_{1-\alpha/2}\,\frac{s}{\sqrt{n}}}
+  </span> using the <strong>same</strong> <span class="math inline">z</span>-quantile as above.</p></li>
+</ol>
+<hr>
+<p><strong>Note:</strong> You may also use the Student-<span class="math inline">t</span> quantile <span class="math inline">t_{n-1,\,1-\alpha/2}</span> in the unknown-variance case. Both the <strong><span class="math inline">z</span>-based</strong> and <strong><span class="math inline">t</span>-based</strong> intervals are acceptable in the exam and would receive <em>full marks</em>.</p>
 </div>
 </div>
 <details class="practice-details">
@@ -2172,6 +2239,26 @@ X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu,\sigma^2),
   \mathcal{I}_n\!\big(\hat{\theta}_{\mathrm{MLE}}\big)^{-1}
 \right).
 </span></p>
+<hr>
+<p><strong>Computing Confidence Intervals</strong></p>
+<p>Suppose we observe <span class="math inline">n</span> i.i.d. data points <span class="math inline">x_1,\ldots,x_n</span> from a distribution <span class="math inline">\mathrm{Distribution}(\theta)</span> depending on an unknown parameter <span class="math inline">\theta</span>. A <span class="math inline">100(1-\alpha)\%</span> <span class="xref-no-num"><a href="../main/part3/7-freq-interval-estimation.html#def-approx-ci-mle" class="quarto-xref">approximate asymptotic MLE-based confidence interval&nbsp;<span>7.5</span></a></span> for <span class="math inline">\theta</span> is</p>
+<p><span class="math display">
+\boxed{
+\hat{\theta}_{\mathrm{MLE}}
+\;\pm\;
+z_{1-\alpha/2}\,
+\sqrt{\mathcal{I}_n\!\big(\hat{\theta}_{\mathrm{MLE}}\big)^{-1}}
+}
+</span></p>
+<p>where:</p>
+<ul>
+<li><span class="math inline">\hat{\theta}_{\mathrm{MLE}}</span> is the <strong>observed</strong> <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#def-mle" class="quarto-xref">maximum likelihood estimate&nbsp;<span>5.3</span></a></span>,</li>
+<li><span class="math inline">\mathcal{I}_n(\theta)</span> is the <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#prp-fisher-one-obs" class="quarto-xref">Fisher information&nbsp;<span>5.1</span></a></span> for the full sample, evaluated at <span class="math inline">\theta = \hat{\theta}_{\mathrm{MLE}}</span>,</li>
+<li><span class="math inline">z_{1-\alpha/2}</span> is the <span class="math inline">(1-\alpha/2)</span> quantile of the <strong>standard normal distribution</strong>: <span class="math display">
+\Pr(Z &lt; z_{1-\alpha/2}) = 1 - \alpha/2,
+\qquad Z \sim \mathcal{N}(0,1).
+</span></li>
+</ul>
 </div>
 </div>
 <details class="practice-details">
@@ -2237,7 +2324,7 @@ Assessment Focus
 </div>
 <div class="revision-entry">
 <div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-hdi">
-<p><span class="toggle-icon" aria-hidden="true"></span> <span class="revision-topic"> Be able to recall and compute simple examples of <span class="xref-no-num"><a href="../main/part3/8-bayes-interval-estimation.html#def-hdi" class="quarto-xref">Highest Density Intervals (HDI)&nbsp;<span>8.2</span></a></span>. </span></p>
+<p><span class="toggle-icon" aria-hidden="true"></span> <span class="revision-topic"> Be able to recall, explain, and apply the definition of a <span class="xref-no-num"><a href="../main/part3/8-bayes-interval-estimation.html#def-hdi" class="quarto-xref">Highest Density Interval (HDI)&nbsp;<span>8.2</span></a></span>. </span></p>
 </div>
 <div id="rev-hdi" class="revision-content" hidden="">
 <ul>
@@ -2250,11 +2337,19 @@ C_\alpha = \{\theta : \pi(\theta \mid \underline{x}) \ge \gamma\}
 = \int_{C_\alpha} \pi(\theta \mid \underline{x})\,\mathrm{d}\theta
 = 1 - \alpha.
 </span></p></li>
-<li><p>If the posterior distribution is normal, <span class="math display">
-\theta \mid \underline{x} \sim \mathcal{N}(M, V),
-</span> then the <span class="math inline">100(1-\alpha)\%</span> HDI coincides with the equal–tailed interval and is given by <span class="math display">
-M \pm z_{\alpha/2}\sqrt{V}.
-</span></p></li>
+</ul>
+<!-- - If the posterior distribution is normal,
+  $$
+  \theta \mid \underline{x} \sim \mathcal{N}(M, V),
+  $$
+  then the $100(1-\alpha)\%$ HDI coincides with the equal–tailed interval and is given by
+  $$
+  M \pm z_{\alpha/2}\sqrt{V}.
+  $$ -->
+<hr>
+<p><strong>Note:</strong></p>
+<ul>
+<li>You will not be examined on computing analytic HDIs for any specific posterior distribution, such as the Normal or the Beta. The examinable content concerns understanding and interpreting the HDI definition.</li>
 </ul>
 </div>
 </div>
@@ -2262,6 +2357,8 @@ M \pm z_{\alpha/2}\sqrt{V}.
 <summary>
 <em> Computing HDIs — Practice Questions</em>
 </summary>
+<p><strong>Note:</strong> The examples below are provided for intuition and practice only. You will not be required to compute analytic HDIs in the exam.</p>
+<p>In the exam, HDIs will be assessed through understanding of the definition and interpretation of a Highest Density Interval in context, not through algebraic calculation.</p>
 <div class="smaller-table">
 <table class="table">
 <colgroup>
@@ -2307,6 +2404,7 @@ Assessment Focus
 <p><span class="toggle-icon" aria-hidden="true"></span> <span class="revision-topic"> Understand that a <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-simple-hypothesis" class="quarto-xref">hypothesis test&nbsp;<span>9.1</span></a></span> answers a <strong>yes/no</strong> question about the value of a parameter <span class="math inline">\theta</span>. </span></p>
 </div>
 <div id="rev-hypothesis-test" class="revision-content" hidden="">
+<p>To perform a <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-simple-hypothesis" class="quarto-xref">hypothesis test&nbsp;<span>9.1</span></a></span> we:</p>
 <ol type="1">
 <li><p><strong>State Hypothesis:</strong> We begin by stating a hypothesis about the parameter, <span class="math inline">H_0: \theta = \theta_0</span>, called the <strong>null hypothesis</strong>.</p></li>
 <li><p><strong>Assume the Null is True:</strong> We then <strong>assume</strong> <span class="math inline">H_0</span> is true.</p></li>
@@ -2763,7 +2861,7 @@ T = -2 \log \lambda(\underline{X}),
 <li><p>A <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#prp-lrt-test-statistic" class="quarto-xref">convenient form&nbsp;<span>9.1</span></a></span> of the test statistic is: <span class="math display">
 T = 2\left( \ell(\hat{\theta}_{\mathrm{MLE}} \,; \underline{X}) - \ell(\theta_0\, ; \underline{X})\right),
 </span> where <span class="math inline">\ell(\theta; \underline{X})</span> is the <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#def-log-likelihood" class="quarto-xref">log likelihood function&nbsp;<span>5.4</span></a></span>.</p></li>
-<li><p>By <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#thm-wilks" class="quarto-xref">Wilk’s theorem&nbsp;<span>9.1</span></a></span>, for <em>large</em> <span class="math inline">n</span>, the test statistic is <span class="math display">
+<li><p>By <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#thm-wilks" class="quarto-xref">Wilks’ theorem&nbsp;<span>9.1</span></a></span>, for <em>large</em> <span class="math inline">n</span>, the test statistic is <span class="math display">
 T \; \overset{\text{approx.}}{\sim} \; \chi^2_1,
 </span> approximately <span class="math inline">\chi^2_1</span> distributed.</p></li>
 </ul>
@@ -2837,7 +2935,7 @@ T \; \overset{\text{approx.}}{\sim} \; \chi^2_1,
 <ul>
 <li>You will not be examined on <span class="xref-no-num"><a href="../main/part1/1-prob-theory.html#def-covariance" class="quarto-xref">covariance&nbsp;<span>1.15</span></a></span>.</li>
 <li>You will not be examined on <span class="xref-no-num"><a href="../main/part1/1-prob-theory.html#def-correlation" class="quarto-xref">correlation&nbsp;<span>1.16</span></a></span>.</li>
-<li>The material in the section names <span class="xref-no-num"><a href="../main/part1/1-prob-theory.html#sec-prob-theory-non-examinable" class="quarto-xref">Non-Examinable material&nbsp;<span>Non-Examinable Material</span></a></span> section is <strong>not examinable</strong>.</li>
+<li>The material in the section named <span class="xref-no-num"><a href="../main/part1/1-prob-theory.html#sec-prob-theory-non-examinable" class="quarto-xref">Non-Examinable material&nbsp;<span>Non-Examinable Material</span></a></span> section is <strong>not examinable</strong>.</li>
 </ul>
 </section>
 <section id="chapter-2---what-is-statistical-inference-1" class="level3">
@@ -2896,7 +2994,7 @@ T \; \overset{\text{approx.}}{\sim} \; \chi^2_1,
 <section id="chapter-8---bayesian-intervals-1" class="level3">
 <h3 class="anchored" data-anchor-id="chapter-8---bayesian-intervals-1">Chapter 8 - Bayesian Intervals</h3>
 <ul>
-<li>You will <strong>not be examined</strong> on actually <strong>computing a Bayesian HDI</strong>. The exam will only require you to understand the <span class="xref-no-num"><a href="../main/part3/8-bayes-interval-estimation.html#def-hdi" class="quarto-xref">definition&nbsp;<span>8.2</span></a></span> in context, and the interpretation of a Highest Density Interval.</li>
+<li>You will <strong>not be examined</strong> on <strong>computing analytic HDIs</strong> for any posterior distribution. The exam will only require you to understand, interpret and apply the <span class="xref-no-num"><a href="../main/part3/8-bayes-interval-estimation.html#def-hdi" class="quarto-xref">definition&nbsp;<span>8.2</span></a></span> of an HDI in context.</li>
 </ul>
 </section>
 </section>
