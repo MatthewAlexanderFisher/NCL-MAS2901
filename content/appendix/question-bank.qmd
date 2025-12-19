@@ -3362,7 +3362,7 @@ $$
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="binomial clt confidence-interval" data-difficulty="1"}
+::: {.callout-important .question appearance="minimal" data-tags="binomial clt confidence-interval" data-difficulty="1" #q-clt-ci-bin1}
 
 ## Large-Sample Approximate Confidence Interval for a Proportion
 
@@ -3370,12 +3370,13 @@ A university careers office surveys a random sample of $n = 200$ graduates to es
 
 Assuming a <span class="xref-no-num">[Binomial model @sec-binom]</span> 
 $$
-X \sim \mathrm{Binomial}(n = 200,\, p),
+X \sim \mathrm{Binomial}(n = 200 , \,  p),
 $$
 where $p$ is the true employment rate, use the <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span>  to construct an **approximate 95% confidence interval** for $p$.
 
 <details class="solution">
   <summary>Solution</summary>
+
 
 **Step 1: Model and estimator**
 
@@ -3412,6 +3413,717 @@ We are approximately 95% confident that the true proportion of graduates in full
 </details>
 
 :::
+
+::: {.callout-important .question appearance="minimal" data-tags="binomial clt hypothesis-test" data-difficulty="1" #q-clt-hypothesis-bin1}
+
+## Large-Sample Hypothesis Test for a Proportion
+
+A public health agency claims that at least 70% of adults in a city receive an annual flu vaccination. To assess this claim, a random sample of $n = 180$ adults is surveyed. Of these, $117$ report having received a flu vaccination in the past year.
+
+Assuming a <span class="xref-no-num">[Binomial model @sec-binom]</span>
+$$
+X \sim \mathrm{Binomial}(n = 180,\, p),
+$$
+where $p$ is the true proportion of adults who receive an annual flu vaccination, use the <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span> to perform a **5% significance level hypothesis test** of the agency’s claim.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+
+The sample proportion is
+$$
+\hat{p} = \frac{X}{n} = \frac{146}{200} = 0.73,
+$$
+
+and, for large $n$, the CLT gives us
+$$
+\hat{p} \overset{\text{approx.}}{\sim} \mathcal{N}\!\left(p,\, \frac{p(1-p)}{n}\right).
+$$
+
+**Step 1: State the hypotheses**
+
+The claim “at least 70%” corresponds to
+$$
+H_0: p = 0.70, \qquad H_1: p < 0.70.
+$$
+This is a **one-sided (left-tailed) test**.
+
+**Step 2: Compute the test statistic**
+
+The sample proportion is
+$$
+\hat{p} = \frac{117}{180} = 0.65.
+$$
+
+Under the null hypothesis, the standard error is
+$$
+\mathrm{SE}_0 = \sqrt{\frac{p_0(1-p_0)}{n}}
+= \sqrt{\frac{0.7(0.3)}{180}} \approx 0.0342.
+$$
+
+The observed test statistic is
+$$
+T_{\mathrm{obs}}= \frac{\hat{p} - p_0}{\mathrm{SE}_0}
+= \frac{0.65 - 0.70}{0.0342}
+\approx -1.46.
+$$
+
+**Step 3: Determine the rejection region / p-value**
+
+At the 5% significance level for a one-sided test, the critical value is
+$$
+z_{0.05} = -1.645.
+$$
+
+Since
+$$
+-1.46 > -1.645,
+$$
+the test statistic does **not** fall in the rejection region.
+
+Equivalently, the $p$-value is
+$$
+\mathrm{Pr}(Z \le -1.46) \approx 0.072,
+$$
+which is greater than $0.05$.
+
+**Step 4: Conclusion**
+
+There is **insufficient evidence at the 5% significance level** to reject the agency’s claim.
+The data do not provide strong enough evidence to conclude that fewer than 70% of adults receive an annual flu vaccination.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="poisson clt hypothesis-test" data-difficulty="1" #q-clt-hypothesis-pois1}
+
+## Large-Sample Hypothesis Test for a Poisson Rate
+
+A city council claims that the average number of pothole reports received per day is **at least 12**. To assess this claim, the number of pothole reports is recorded for a random sample of $n = 50$ days. Across these 50 days, a total of $X = 540$ pothole reports are logged.
+
+Assuming a <span class="xref-no-num">[Poisson model @sec-pois]</span>
+$$
+X_i \stackrel{\text{iid}}{\sim} \mathrm{Poisson}(\lambda), \qquad i=1,\dots,n,
+$$
+where $\lambda$ is the true mean number of pothole reports per day, use the <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span> to perform a **5% significance level hypothesis test** of the council’s claim.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+Let $X_1,\dots,X_n$ be the daily counts. The observed sample mean is
+$$
+\bar{x} = \frac{1}{n}\sum_{i=1}^n x_i = \frac{540}{50} = 10.8.
+$$
+
+For a Poisson random variable, $\mathrm{E}[X_i]=\lambda$ and $\mathrm{Var}(X_i)=\lambda$.
+For large $n$, the CLT gives
+$$
+\bar{X} \overset{\text{approx.}}{\sim} \mathcal{N} \left(\lambda, \frac{\lambda}{n}\right).
+$$
+
+**Step 1: State the hypotheses**
+
+The claim “at least 12 per day” corresponds to
+$$
+H_0: \lambda = 12, \qquad H_1: \lambda < 12.
+$$
+This is a **one-sided (left-tailed) test**.
+
+**Step 2: Compute the test statistic**
+
+Under the null, the standard error is
+$$
+\mathrm{SE}_0 = \sqrt{\frac{\lambda_0}{n}}
+= \sqrt{\frac{12}{50}} \approx 0.490.
+$$
+
+The observed test statistic is
+$$
+T_{\mathrm{obs}} = \frac{\bar{X} - \lambda_0}{\mathrm{SE}_0}
+= \frac{10.8 - 12}{0.490}
+\approx -2.45.
+$$
+
+**Step 3: Determine the rejection region / p-value**
+
+At the 5% significance level for a one-sided test, the critical value is
+$$
+z_{0.05} = -1.645.
+$$
+
+Since
+$$
+-2.45 < -1.645,
+$$
+the test statistic falls in the rejection region.
+
+Equivalently, the $p$-value is
+$$
+\mathrm{Pr}(Z \le -2.45) \approx 0.007.
+$$
+
+**Step 4: Conclusion**
+
+There is **sufficient evidence at the 5% significance level** to reject the council’s claim.
+The data provide evidence that the true mean number of pothole reports per day is **less than 12**.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="poisson clt hypothesis-test two-sided" data-difficulty="1" #q-clt-hypothesis-pois2}
+
+## Large-Sample Two-Sided Hypothesis Test for a Poisson Rate
+
+A call centre manager claims that the average number of customer complaint calls received per hour is **5**. To assess this claim, the number of complaint calls is recorded over a random sample of $n = 60$ one-hour periods. Across these 60 hours, a total of $X = 360$ complaint calls are received.
+
+Assuming a <span class="xref-no-num">[Poisson model @sec-pois]</span>
+$$
+X_i \stackrel{\text{iid}}{\sim} \mathrm{Poisson}(\lambda), \qquad i=1,\dots,n,
+$$
+where $\lambda$ is the true mean number of complaint calls per hour, use the <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span> to perform a **1% significance level** **two-sided** hypothesis test of the manager’s claim.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+Let $X_1,\dots,X_n$ be the hourly counts. The sample mean is
+$$
+\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i = \frac{360}{60} = 6.
+$$
+
+For a Poisson random variable, $\mathrm{E}[X_i]=\lambda$ and $\mathrm{Var}(X_i)=\lambda$.
+For large $n$, the CLT gives
+$$
+\bar{X} \overset{\text{approx.}}{\sim} \mathcal{N}\left(\lambda, \frac{\lambda}{n}\right).
+$$
+
+**Step 1: State the hypotheses**
+
+The claim “$\lambda = 5$ per hour” corresponds to
+$$
+H_0: \lambda = 5, \qquad H_1: \lambda \neq 5.
+$$
+This is a **two-sided** test.
+
+**Step 2: Compute the test statistic**
+
+Under the null, the standard error is
+$$
+\mathrm{SE}_0 = \sqrt{\frac{\lambda_0}{n}}
+= \sqrt{\frac{5}{60}} \approx 0.289.
+$$
+
+The observed test statistic is
+$$
+T_{\mathrm{obs}} = \frac{\bar{X} - \lambda_0}{\mathrm{SE}_0}
+= \frac{6 - 5}{0.289}
+\approx 3.46.
+$$
+
+**Step 3: Determine the rejection region / p-value**
+
+At the 1% significance level for a two-sided test, the critical values are
+$$
+\pm z_{0.995} = \pm 2.576.
+$$
+
+Since
+$$
+|3.46| > 2.576,
+$$
+the test statistic falls in the rejection region.
+
+Equivalently, the $p$-value is
+$$
+2\,\mathrm{Pr}(Z \ge 3.46) \approx 2(0.00027) \approx 0.00054.
+$$
+
+**Step 4: Conclusion**
+
+There is **sufficient evidence at the 1% significance level** to reject the manager’s claim.
+The data provide evidence that the true mean number of complaint calls per hour is **different from 5**.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="exponential clt hypothesis-test" data-difficulty="1" #q-clt-hypothesis-exp1}
+
+## Large-Sample Two-Sided Hypothesis Test for an Exponential Rate
+
+A hospital administrator claims that the **average waiting time** for a non-urgent blood test is **20 minutes**. To assess this, a random sample of $n = 64$ waiting times is collected. The sample mean waiting time is $\bar{X} = 24.0$ minutes.
+
+Assuming an <span class="xref-no-num">[Exponential model @sec-exp]</span>
+$$
+X_i \stackrel{\text{iid}}{\sim} \mathrm{Exponential}(\lambda), \qquad i=1,\dots,n,
+$$
+where $\lambda$ is the **rate parameter** (so that $\mathrm{E}[X_i]=1/\lambda$), use the <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span> to perform a **5% significance level** **two-sided** hypothesis test of the administrator’s claim.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+For an exponential random variable with rate $\lambda$,
+$$
+\mathrm{E}[X_i] = \frac{1}{\lambda},
+\qquad
+\mathrm{Var}(X_i) = \frac{1}{\lambda^2}.
+$$
+
+For large $n$, the CLT gives
+$$
+\bar{X} \overset{\text{approx.}}{\sim} \mathcal{N}\left(\frac{1}{\lambda}, \frac{1}{n\lambda^2}\right).
+$$
+
+**Step 1: State the hypotheses**
+
+The claim “mean waiting time is 20 minutes” is
+$$
+H_0: \frac{1}{\lambda} = 20
+\quad \Longleftrightarrow \quad
+H_0: \lambda = \lambda_0 = \frac{1}{20} = 0.05,
+$$
+with the two-sided alternative
+$$
+H_1: \lambda \neq 0.05.
+$$
+
+**Step 2: Compute the test statistic**
+
+Under the null hypothesis, the standard error of $\bar{X}$ is
+$$
+\mathrm{SE}_0 = \sqrt{\frac{1}{n\lambda_0^2}}
+= \frac{1}{\lambda_0\sqrt{n}}
+= \frac{1}{0.05\sqrt{64}}
+= \frac{1}{0.05\cdot 8}
+= 2.5.
+$$
+
+The observed test statistic is
+$$
+T_{\mathrm{obs}} = \frac{\bar{X} - 1/\lambda_0}{\mathrm{SE}_0}
+= \frac{24 - 20}{2.5}
+= 1.60.
+$$
+
+**Step 3: Determine the rejection region / p-value**
+
+At the 5% significance level for a two-sided test, the critical values are
+$$
+\pm z_{0.975} = \pm 1.96.
+$$
+
+Since
+$$
+|1.60| < 1.96,
+$$
+the test statistic does **not** fall in the rejection region.
+
+Equivalently, the $p$-value is approximately
+$$
+2\,\mathrm{Pr}(Z \ge 1.60) \approx 2(0.0548) \approx 0.110.
+$$
+
+**Step 4: Conclusion**
+
+There is **insufficient evidence at the 5% significance level** to reject the administrator’s claim.
+The data do not provide strong evidence that the mean waiting time differs from **20 minutes**.
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="normal z-test t-test hypothesis-test" data-difficulty="1" #q-normal-z-t1}
+
+## One-Sample Z-test and t-test for a Normal Mean
+
+A materials scientist is studying the **tensile strength** (in MPa) of a newly developed polymer. From a random sample of
+$n = 25$ specimens, the observed sample mean strength is
+$$
+\bar{X} = 52.4 \text{ MPa}.
+$$
+
+It is reasonable to assume that tensile strength measurements are normally distributed and independent:
+$$
+X \sim \mathcal{N}(\mu, \sigma^2),
+$$
+where $\mu$ is the true mean tensile strength.
+
+The manufacturer claims that the mean tensile strength of the polymer is
+$$
+\mu_0 = 50 \text{ MPa}.
+$$
+
+You are asked to assess this claim at the **5% significance level** under two different assumptions.
+
+---
+
+**(a)** Assume that the population variance is **known** to be $\sigma^2 = 16$ MPa$^2$.
+
+**(b)** Assume instead that the population variance is **unknown**, and the sample standard deviation is
+$$
+s = 4.5 \text{ MPa}.
+$$
+
+In each case, perform an appropriate **two-sided hypothesis test** of
+$$
+H_0 : \mu = 50,
+\qquad
+H_1 : \mu \neq 50.
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a) Z-test (known variance)**
+
+Since $\sigma^2$ is known and the data are normally distributed, a **one-sample Z-test** is appropriate.
+
+The standard error of the sample mean is
+$$
+\mathrm{SE} = \frac{\sigma}{\sqrt{n}} = \frac{4}{\sqrt{25}} = 0.8.
+$$
+
+The observed Z-statistic is
+$$
+Z_{\mathrm{obs}} = \frac{\bar{X} - \mu_0}{\mathrm{SE}}
+= \frac{52.4 - 50}{0.8}
+= 3.00.
+$$
+
+At the 5% significance level for a two-sided test, the critical values are
+$$
+\pm z_{0.975} = \pm 1.96.
+$$
+
+Since
+$$
+|3.00| > 1.96,
+$$
+we reject $H_0$.
+
+Equivalently, the p-value is
+$$
+2\,\mathrm{Pr}(Z \ge 3.00) \approx 0.0027,
+$$
+which is less than $0.05$.
+
+**Conclusion (Z-test):**
+There is **strong evidence** that the mean tensile strength differs from 50 MPa.
+
+---
+
+**(b) t-test (unknown variance)**
+
+When $\sigma^2$ is unknown and estimated from the data, we use a **one-sample t-test**.
+
+The estimated standard error is
+$$
+\widehat{\mathrm{SE}} = \frac{s}{\sqrt{n}} = \frac{4.5}{\sqrt{25}} = 0.9.
+$$
+
+The observed t-statistic is
+$$
+T_{\mathrm{obs}} = \frac{\bar{X} - \mu_0}{\widehat{\mathrm{SE}}}
+= \frac{52.4 - 50}{0.9}
+\approx 2.67.
+$$
+
+Under $H_0$, this statistic follows a $t$-distribution with
+$$
+n - 1 = 24
+$$
+degrees of freedom.
+
+At the 5% significance level for a two-sided test, the critical values are
+$$
+\pm t_{0.975,,24} \approx \pm 2.064.
+$$
+
+Since
+$$
+|2.67| > 2.064,
+$$
+we reject $H_0$.
+
+The $p$-value is approximately
+$$
+2\,\mathrm{Pr}(T_{24} \ge 2.67) \approx 0.013,
+$$
+which is less than $0.05$.
+
+**Conclusion (t-test):**
+There is **sufficient evidence** to conclude that the mean tensile strength differs from 50 MPa.
+
+---
+
+**Final remark**
+
+Both tests lead to rejection of $H_0$, but the **t-test is more conservative**, reflecting the additional uncertainty introduced by estimating the variance from the data.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="normal z-test t-test hypothesis-test one-sided" data-difficulty="1" #q-normal-z-t-onesided}
+
+## VO$_2$ Max: One-Sided One-Sample Z-Test and t-Test for a Normal Mean
+
+A sports physiologist is evaluating whether a new training programme increases athletes’ **VO$_2$ max** (in mL/kg/min). From a random sample of $n = 41$ athletes who completed the programme, the sample mean VO$_2$ max is
+$$
+\bar{X} = 47.2 \text{ mL/kg/min}.
+$$
+
+It is reasonable to assume the VO$_2$ max measurements are normally distributed and independent across athletes:
+$$
+X \sim \mathcal{N}(\mu, \sigma^2),
+$$
+where $\mu$ is the true mean VO$_2$ max after completing the programme.
+
+Previous seasons’ data suggest the historical mean is
+$$
+\mu_0 = 45 \text{ mL/kg/min}.
+$$
+
+You are asked to test whether the programme **increases** mean VO$_2$ max, using a **one-sided test at significance level $\alpha = 0.01$**, under two different assumptions.
+
+---
+
+**(a)** Assume the population variance is **known** to be $\sigma^2 = 36$ (so $\sigma = 6$).
+
+**(b)** Assume instead the population variance is **unknown**, and the sample standard deviation is
+$$
+s = 6.4.
+$$
+
+In each case, perform the appropriate hypothesis test of
+$$
+H_0 : \mu = 45,
+\qquad
+H_1 : \mu > 45.
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a) Z-test (known variance)**
+
+With known $\sigma$, use the **one-sample Z-test**.
+
+The standard error is
+$$
+\mathrm{SE} = \frac{\sigma}{\sqrt{n}} = \frac{6}{\sqrt{41}} \approx 0.937.
+$$
+
+The observed Z-statistic is
+$$
+Z_{\mathrm{obs}} = \frac{\bar{X} - \mu_0}{\mathrm{SE}}
+= \frac{47.2 - 45}{0.937}
+\approx 2.35.
+$$
+
+At significance level $\alpha = 0.01$ for a **right-tailed** test, the critical value is
+$$
+z_{0.99} \approx 2.326.
+$$
+
+Since
+$$
+2.35 > 2.326,
+$$
+we **reject** $H_0$.
+
+Equivalently, the p-value is
+$$
+\mathrm{Pr}(Z \ge 2.35) \approx 0.0094,
+$$
+which is less than $0.01$.
+
+**Conclusion (Z-test):**
+There is **sufficient evidence at the 1% level** to conclude that the programme increases mean VO$_2$ max.
+
+---
+
+**(b) t-test (unknown variance)**
+
+With unknown $\sigma$, use the **one-sample t-test**.
+
+The estimated standard error is
+$$
+\widehat{\mathrm{SE}} = \frac{s}{\sqrt{n}} = \frac{6.4}{\sqrt{41}} \approx 1.00.
+$$
+
+The observed t-statistic is
+$$
+T_{\mathrm{obs}} = \frac{\bar{X} - \mu_0}{\widehat{\mathrm{SE}}}
+= \frac{47.2 - 45}{1.00}
+\approx 2.20.
+$$
+
+Under $H_0$, this statistic follows a $t$-distribution with
+$$
+n-1 = 40
+$$
+degrees of freedom.
+
+At $\alpha = 0.01$ (right-tailed), the critical value is
+$$
+t_{40,,0.99} \approx 2.423.
+$$
+
+Since
+$$
+2.20 < 2.423,
+$$
+we **do not reject** $H_0$.
+
+The $p$-value is approximately
+$$
+\mathrm{Pr}(T_{40} \ge 2.20) \approx 0.017,
+$$
+which is greater than $0.01$.
+
+**Conclusion (t-test):**
+There is **insufficient evidence at the 1% level** to conclude that the programme increases mean VO$_2$ max.
+
+---
+
+**Final remark**
+
+The Z-test rejects while the t-test does not at the 1% level. This illustrates how accounting for uncertainty in the variance (via the t-test use of the sample variance) leads to a more conservative inference.
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="normal z-test t-test hypothesis-test one-sided" data-difficulty="1" #q-normal-z-t-onesided-left}
+
+## Sodium Content: One-Sided One-Sample Z-Test and t-Test for a Normal Mean
+
+A food manufacturer monitors the **average sodium content** (in mg) of a packaged soup product. Regulations require that the mean sodium content should **not exceed 820 mg** per serving. To check compliance, a random sample of $n = 40$ servings is tested, yielding a sample mean of
+$$
+\bar{X} = 790 \text{ mg}.
+$$
+
+It is reasonable to model sodium content as independent normal observations
+$$
+X \sim \mathcal{N}(\mu, \sigma^2),
+$$
+where $\mu$ is the true mean sodium content per serving.
+
+You are asked to test whether the product’s mean sodium content is **below** the regulatory limit, using a **one-sided test at significance level $\alpha = 0.01$**, under two different assumptions.
+
+---
+
+**(a)** Assume the population variance is **known** to be $\sigma^2 = 10{,}000$ mg$^2$ (so $\sigma = 100$ mg).
+
+**(b)** Assume instead that the population variance is **unknown**, and the sample standard deviation is
+$$
+s = 110 \text{ mg}.
+$$
+
+In each case, perform the appropriate hypothesis test of
+$$
+H_0 : \mu = 820,
+\qquad
+H_1 : \mu < 820.
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a) Z-test (known variance)**
+
+With known $\sigma$, use the **one-sample Z-test**.
+
+The standard error is
+$$
+\mathrm{SE} = \frac{\sigma}{\sqrt{n}} = \frac{100}{\sqrt{40}} \approx 15.81.
+$$
+
+The observed Z-statistic is
+$$
+Z_{\mathrm{obs}} = \frac{\bar{X} - \mu_0}{\mathrm{SE}}
+= \frac{790 - 820}{15.81}
+\approx -1.90.
+$$
+
+At significance level $\alpha = 0.01$ for a **left-tailed** test, the critical value is
+$$
+z_{0.01} \approx -2.326.
+$$
+
+Since
+$$
+-1.90 > -2.326,
+$$
+we **do not reject** $H_0$.
+
+Equivalently, the p-value is
+$$
+\mathrm{Pr}(Z \le -1.90) \approx 0.029,
+$$
+which is greater than $0.01$.
+
+**Conclusion (Z-test):**
+There is **insufficient evidence at the 1% level** to conclude that the mean sodium content is below 820 mg.
+
+---
+
+**(b) t-test (unknown variance)**
+
+With unknown $\sigma$, use the **one-sample t-test**.
+
+The estimated standard error is
+$$
+\widehat{\mathrm{SE}} = \frac{s}{\sqrt{n}} = \frac{110}{\sqrt{40}} \approx 17.39.
+$$
+
+The observed t-statistic is
+$$
+T_{\mathrm{obs}} = \frac{\bar{X} - \mu_0}{\widehat{\mathrm{SE}}}
+= \frac{790 - 820}{17.39}
+\approx -1.73.
+$$
+
+Under $H_0$, this statistic follows a $t$-distribution with
+$$
+n-1 = 39
+$$
+degrees of freedom.
+
+At $\alpha = 0.01$ (left-tailed), the critical value is
+$$
+t_{39,\,0.01} \approx -2.426.
+$$
+
+Since
+$$
+-1.73 > -2.426,
+$$
+we **do not reject** $H_0$.
+
+The $p$-value is approximately
+$$
+\mathrm{Pr}(T_{39} \le -1.73) \approx 0.046,
+$$
+which is greater than $0.01$.
+
+**Conclusion (t-test):**
+There is **insufficient evidence at the 1% significance level** to conclude that the product’s mean sodium content is below the regulatory limit.
+
+---
+
+**Final remark**
+
+Both tests lead to the same conclusion. The t-test is slightly more conservative due to the additional uncertainty in estimating the variance.
+
+</details>
+
+:::
+
 
 ::: {.callout-important .question appearance="minimal" data-tags="bayes map beta binomial" data-difficulty="2" #q-map-factory-defects}
 
@@ -3835,7 +4547,7 @@ $\hat{\theta}'$ has a **smaller mean-squared error** than any unbiased estimator
 
 :::
 
-::: {.callout-important .question appearance="minimal" data-tags="poisson lrt hypothesis-testing exam-style" data-difficulty="2" #q-lrt-weather}
+::: {.callout-important .question appearance="minimal" data-tags="poisson lrt hypothesis-test exam-style" data-difficulty="2" #q-lrt-weather}
 
 ## Likelihood Ratio Test for Extreme Weather Events
 
@@ -3989,7 +4701,7 @@ $$
 
 :::
 
-::: {.callout-important .question appearance="minimal" data-tags="exponential lrt hypothesis-testing exam-style" data-difficulty="2" #q-lrt-lifespan}
+::: {.callout-important .question appearance="minimal" data-tags="exponential lrt hypothesis-test exam-style" data-difficulty="2" #q-lrt-lifespan}
 
 ## Likelihood Ratio Test for the Lifespan of a Magical Artefact
 
@@ -4349,7 +5061,7 @@ Therefore, $\hat{\theta}$ is a **consistent estimator** of $\theta$.
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="t-test hypothesis-testing" data-difficulty="2"}
+::: {.callout-important .question appearance="minimal" data-tags="t-test hypothesis-test" data-difficulty="2"}
 
 ## Two-Sample $t$-Test for Difference in Means
 
@@ -4673,7 +5385,7 @@ Therefore, $\hat{\theta}_2$ is preferred.
 
 :::
 
-::: {.callout-important .question appearance="minimal" data-tags="estimator bias t-test hypothesis-testing exam-style" data-difficulty="3"}
+::: {.callout-important .question appearance="minimal" data-tags="estimator bias t-test hypothesis-test exam-style" data-difficulty="3"}
 
 ## Unbiasedness of the Sample Variance and Pooled Variance; Hypothesis Test for Means
 
