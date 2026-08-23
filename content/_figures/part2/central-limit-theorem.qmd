@@ -1,67 +1,4 @@
 ```{ojs}
-viewof cltControls = {
-  const drawButton = Inputs.button("Draw new samples", {
-    reduce: value => (value ?? 0) + 1
-  });
-  drawButton.classList.add("btn-resim");
-
-  const samplingForm = Inputs.form({
-    distribution: Inputs.select(
-      ["Normal", "Uniform", "Exponential", "Bimodal mixture"],
-      {value: "Exponential", label: "Population distribution"}
-    ),
-    n: Inputs.range([1, 100], {
-      value: 1,
-      step: 1,
-      label: md`Sample size ${tex`n`}`
-    }),
-    replications: Inputs.range([200, 4000], {
-      value: 2000,
-      step: 200,
-      label: md`Repeated samples ${tex`N`}`
-    })
-  }, {submit: false});
-
-  const displayForm = Inputs.form({
-    bins: Inputs.range([10, 60], {
-      value: 32,
-      step: 1,
-      label: "Histogram bins"
-    })
-  }, {submit: false});
-
-  const root = html`<details class="controls-root" open>
-    <summary>Simulation controls</summary>
-    <div class="controls-grid">
-      <div class="controls-col"><h4>Sampling</h4></div>
-      <div class="controls-col"><h4>Display &amp; actions</h4></div>
-    </div>
-  </details>`;
-
-  const columns = root.querySelectorAll(".controls-col");
-  columns[0].append(samplingForm);
-  columns[1].append(displayForm);
-  const buttonWrap = html`<div style="display:flex; justify-content:flex-start; margin-top:6px;"></div>`;
-  buttonWrap.append(drawButton);
-  columns[1].append(buttonWrap);
-
-  const getValue = () => ({
-    ...samplingForm.value,
-    ...displayForm.value,
-    run: drawButton.value ?? 0
-  });
-  const update = () => {
-    root.value = getValue();
-    root.dispatchEvent(new CustomEvent("input", {bubbles: true}));
-  };
-
-  root.querySelector(".controls-grid").addEventListener("input", update);
-  queueMicrotask(update);
-  return root;
-}
-```
-
-```{ojs}
 cltPopulation = {
   const name = cltControls.distribution;
 
@@ -289,9 +226,6 @@ cltMeansPlot = Plot.plot({
       <div><span>CLT standard error</span><strong>${tex`\sigma/\sqrt n=${cltStandardError.toFixed(3)}`}</strong></div>
     </div>
 
-    <div class="controls-wrap">${viewof cltControls}</div>
-
-    <p class="clt-prompt"><strong>Try this:</strong> start with ${tex`n=1`} and the Exponential or Bimodal population, then increase ${tex`n`}. The histogram changes shape and narrows; the red Normal curve uses the theorem, not the simulated histogram.</p>
   </div>
 
   <style>
@@ -355,4 +289,71 @@ cltMeansPlot = Plot.plot({
     }
   </style>`;
 }
+```
+
+```{ojs}
+// Keep the control view in its own output cell below the reactive figure.
+// Embedding it in the figure template would replace a slider during a drag.
+viewof cltControls = {
+  const drawButton = Inputs.button("Draw new samples", {
+    reduce: value => (value ?? 0) + 1
+  });
+  drawButton.classList.add("btn-resim");
+
+  const samplingForm = Inputs.form({
+    distribution: Inputs.select(
+      ["Normal", "Uniform", "Exponential", "Bimodal mixture"],
+      {value: "Exponential", label: "Population distribution"}
+    ),
+    n: Inputs.range([1, 100], {
+      value: 1,
+      step: 1,
+      label: md`Sample size ${tex`n`}`
+    }),
+    replications: Inputs.range([200, 4000], {
+      value: 2000,
+      step: 200,
+      label: md`Repeated samples ${tex`N`}`
+    })
+  }, {submit: false});
+
+  const displayForm = Inputs.form({
+    bins: Inputs.range([10, 60], {
+      value: 32,
+      step: 1,
+      label: "Histogram bins"
+    })
+  }, {submit: false});
+
+  const root = html`<div class="controls-wrap">
+    <details class="controls-root" open>
+      <summary>Simulation controls</summary>
+      <div class="controls-grid">
+        <div class="controls-col"><h4>Sampling</h4></div>
+        <div class="controls-col"><h4>Display &amp; actions</h4></div>
+      </div>
+    </details>
+  </div>`;
+
+  const columns = root.querySelectorAll(".controls-col");
+  columns[0].append(samplingForm);
+  columns[1].append(displayForm);
+  const buttonWrap = html`<div style="display:flex; justify-content:flex-start; margin-top:6px;"></div>`;
+  buttonWrap.append(drawButton);
+  columns[1].append(buttonWrap);
+
+  Object.defineProperty(root, "value", {
+    get: () => ({
+      ...samplingForm.value,
+      ...displayForm.value,
+      run: drawButton.value ?? 0
+    })
+  });
+
+  return root;
+}
+```
+
+```{ojs}
+html`<p class="clt-prompt"><strong>Try this:</strong> start with ${tex`n=1`} and the Exponential or Bimodal population, then increase ${tex`n`}. The histogram changes shape and narrows; the red Normal curve uses the theorem, not the simulated histogram.</p>`
 ```

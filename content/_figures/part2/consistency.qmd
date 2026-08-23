@@ -1,54 +1,4 @@
 ```{ojs}
-viewof consControls = {
-  const sequenceForm = Inputs.form({
-    scenario: Inputs.select([
-      "Consistent (biased at finite n)",
-      "Asymptotically unbiased only",
-      "Unbiased but not consistent"
-    ], {
-      value: "Consistent (biased at finite n)",
-      label: "Estimator sequence"
-    })
-  }, {submit: false});
-
-  const toleranceForm = Inputs.form({
-    n: Inputs.range([1, 100], {
-      value: 1,
-      step: 1,
-      label: md`Sample size ${tex`n`}`
-    }),
-    epsilon: Inputs.range([0.2, 1.2], {
-      value: 0.5,
-      step: 0.1,
-      label: md`Tolerance ${tex`\varepsilon`}`
-    })
-  }, {submit: false});
-
-  const root = html`<details class="controls-root" open>
-    <summary>Simulation controls</summary>
-    <div class="controls-grid">
-      <div class="controls-col"><h4>Estimator sequence</h4></div>
-      <div class="controls-col"><h4>Sample size &amp; tolerance</h4></div>
-    </div>
-  </details>`;
-
-  const columns = root.querySelectorAll(".controls-col");
-  columns[0].append(sequenceForm);
-  columns[1].append(toleranceForm);
-
-  const getValue = () => ({...sequenceForm.value, ...toleranceForm.value});
-  const update = () => {
-    root.value = getValue();
-    root.dispatchEvent(new CustomEvent("input", {bubbles: true}));
-  };
-
-  root.querySelector(".controls-grid").addEventListener("input", update);
-  queueMicrotask(update);
-  return root;
-}
-```
-
-```{ojs}
 consTarget = 0
 
 consParametersAt = (scenario, n) => {
@@ -245,9 +195,6 @@ html`<div class="cons-figure-shell">
     sd(θ̂ₙ) = ${consParameters.sd.toFixed(3)};
     Pr(|θ̂ₙ − θ| &gt; ε) = ${consProbabilityOutside.toFixed(3)}
   </div>
-  <div class="controls-wrap">${viewof consControls}</div>
-  <p class="cons-message">${consConclusion}</p>
-  <p class="cons-prompt"><strong>Compare:</strong> increase ${tex`n`} under each estimator sequence. Only consistency requires the probability outside <em>every fixed</em> ${tex`\varepsilon`}-band to approach zero.</p>
 </div>
 
 <style>
@@ -300,4 +247,61 @@ html`<div class="cons-figure-shell">
     background: var(--plot-fill-2);
   }
 </style>`
+```
+
+```{ojs}
+// Keep the control view in its own output cell below the reactive figure.
+// Embedding it in the figure template would replace a slider during a drag.
+viewof consControls = {
+  const sequenceForm = Inputs.form({
+    scenario: Inputs.select([
+      "Consistent (biased at finite n)",
+      "Asymptotically unbiased only",
+      "Unbiased but not consistent"
+    ], {
+      value: "Consistent (biased at finite n)",
+      label: "Estimator sequence"
+    })
+  }, {submit: false});
+
+  const toleranceForm = Inputs.form({
+    n: Inputs.range([1, 100], {
+      value: 1,
+      step: 1,
+      label: md`Sample size ${tex`n`}`
+    }),
+    epsilon: Inputs.range([0.2, 1.2], {
+      value: 0.5,
+      step: 0.1,
+      label: md`Tolerance ${tex`\varepsilon`}`
+    })
+  }, {submit: false});
+
+  const root = html`<div class="controls-wrap">
+    <details class="controls-root" open>
+      <summary>Simulation controls</summary>
+      <div class="controls-grid">
+        <div class="controls-col"><h4>Estimator sequence</h4></div>
+        <div class="controls-col"><h4>Sample size &amp; tolerance</h4></div>
+      </div>
+    </details>
+  </div>`;
+
+  const columns = root.querySelectorAll(".controls-col");
+  columns[0].append(sequenceForm);
+  columns[1].append(toleranceForm);
+
+  Object.defineProperty(root, "value", {
+    get: () => ({...sequenceForm.value, ...toleranceForm.value})
+  });
+
+  return root;
+}
+```
+
+```{ojs}
+html`<div>
+  <p class="cons-message">${consConclusion}</p>
+  <p class="cons-prompt"><strong>Compare:</strong> increase ${tex`n`} under each estimator sequence. Only consistency requires the probability outside <em>every fixed</em> ${tex`\varepsilon`}-band to approach zero.</p>
+</div>`
 ```

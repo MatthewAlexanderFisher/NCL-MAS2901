@@ -1,31 +1,4 @@
 ```{ojs}
-viewof auControls = {
-  const sampleSizeForm = Inputs.form({
-    n: Inputs.range([1, 100], {
-      value: 1,
-      step: 1,
-      label: md`Sample size ${tex`n`}`
-    })
-  }, {submit: false});
-
-  const root = html`<details class="controls-root" open>
-    <summary>Simulation controls</summary>
-    <div class="controls-grid">
-      <div class="controls-col"><h4>Sample size</h4></div>
-    </div>
-  </details>`;
-
-  root.querySelector(".controls-col").append(sampleSizeForm);
-  const update = () => {
-    root.value = {...sampleSizeForm.value};
-    root.dispatchEvent(new CustomEvent("input", {bubbles: true}));
-  };
-
-  sampleSizeForm.addEventListener("input", update);
-  queueMicrotask(update);
-  return root;
-}
-
 auSampleSize = auControls.n
 
 auTarget = 0
@@ -154,8 +127,6 @@ html`<div class="au-figure-shell">
     θ = ${auTarget}; E[θ̂ₙ] = ${auExpectedValue.toFixed(3)};
     Bias(θ̂ₙ) = ${auBias.toFixed(3)}; sd(θ̂ₙ) = ${auFixedSd.toFixed(1)}
   </div>
-  <div class="controls-wrap">${viewof auControls}</div>
-  <p class="au-message"><strong>Watch the centre, not the width.</strong> As ${tex`n`} increases, the red centre moves towards ${tex`\theta`} and the bias approaches zero. The spread is deliberately held fixed: this sequence is asymptotically unbiased, but it is <em>not</em> consistent.</p>
 </div>
 
 <style>
@@ -189,4 +160,38 @@ html`<div class="au-figure-shell">
     background: var(--plot-fill-3);
   }
 </style>`
+```
+
+```{ojs}
+// Keep the control view in its own output cell below the reactive figure.
+// Embedding it in the figure template would replace a slider during a drag.
+viewof auControls = {
+  const sampleSizeForm = Inputs.form({
+    n: Inputs.range([1, 100], {
+      value: 1,
+      step: 1,
+      label: md`Sample size ${tex`n`}`
+    })
+  }, {submit: false});
+
+  const root = html`<div class="controls-wrap">
+    <details class="controls-root" open>
+      <summary>Simulation controls</summary>
+      <div class="controls-grid">
+        <div class="controls-col"><h4>Sample size</h4></div>
+      </div>
+    </details>
+  </div>`;
+
+  root.querySelector(".controls-col").append(sampleSizeForm);
+  Object.defineProperty(root, "value", {
+    get: () => ({...sampleSizeForm.value})
+  });
+
+  return root;
+}
+```
+
+```{ojs}
+html`<p class="au-message"><strong>Watch the centre, not the width.</strong> As ${tex`n`} increases, the red centre moves towards ${tex`\theta`} and the bias approaches zero. The spread is deliberately held fixed: this sequence is asymptotically unbiased, but it is <em>not</em> consistent.</p>`
 ```
