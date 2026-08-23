@@ -112,6 +112,11 @@ auBiasPlot = Plot.plot({
 ```
 
 ```{ojs}
+auReadout = md`${tex`\theta=${auTarget};\quad
+  \mathrm E[\hat\theta_n]=${auExpectedValue.toFixed(3)};\quad
+  \operatorname{Bias}(\hat\theta_n)=${auBias.toFixed(3)};\quad
+  \operatorname{sd}(\hat\theta_n)=${auFixedSd.toFixed(1)}`}`
+
 html`<div class="au-figure-shell">
   <div class="au-plots">
     <div class="au-plot-panel">
@@ -124,8 +129,7 @@ html`<div class="au-figure-shell">
     </div>
   </div>
   <div class="au-readout" role="status" aria-live="polite">
-    θ = ${auTarget}; E[θ̂ₙ] = ${auExpectedValue.toFixed(3)};
-    Bias(θ̂ₙ) = ${auBias.toFixed(3)}; sd(θ̂ₙ) = ${auFixedSd.toFixed(1)}
+    ${auReadout}
   </div>
 </div>
 
@@ -153,6 +157,7 @@ html`<div class="au-figure-shell">
     font-size: .9rem;
     text-align: center;
   }
+  .au-readout > p { margin: 0; }
   .au-message {
     margin: .65rem 0 0;
     padding: .65rem .8rem;

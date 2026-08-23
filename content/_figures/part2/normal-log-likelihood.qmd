@@ -34,7 +34,9 @@ xbar = d3.mean(X);
 S = d3.sum(X, x => (x - xbar) ** 2);
 
 logLik = (mu, sigma2) => {
-  const ss = d3.sum(X, x => (x - mu) ** 2);
+  // Normal-model sufficient statistics:
+  // sum((x_i - mu)^2) = S + n * (xbar - mu)^2.
+  const ss = S + n * (xbar - mu) ** 2;
   return -0.5 * n * Math.log(2 * Math.PI * sigma2) - 0.5 * ss / sigma2;
 };
 
@@ -186,53 +188,64 @@ viewof leftPanel = {
   hit.setAttribute("aria-label", "Log-likelihood surface. Use the arrow keys to move the mu and sigma-squared probe.");
   wrap.append(hit);
 
-  const state = { x: muhat, y: sigma2hat, dragging: false };
-  wrap.value = { ...state };            // <-- expose full state via the view's value
+  const state = { x: muhat, y: sigma2hat };
+  let dragging = false;
+  wrap.value = { ...state };
 
   function emit() {
-    wrap.value = { ...state };          // <-- assign a fresh object so equality changes
+    wrap.value = { ...state };
     wrap.dispatchEvent(new CustomEvent("input", { bubbles: true }));
   }
 
-  function setFromEvent(evt) {
+  function setFromPoint(clientX, clientY, notify = true) {
     const r = hit.getBoundingClientRect();
-    let px = evt.clientX - r.left, py = evt.clientY - r.top;
+    let px = clientX - r.left, py = clientY - r.top;
     px = Math.min(Math.max(0, px - marginLeft), innerW);
     py = Math.min(Math.max(0, py - marginTop), innerH);
     state.x = muDomain[0] + (px / innerW) * (muDomain[1] - muDomain[0]);
     state.y = sig2Domain[1] - (py / innerH) * (sig2Domain[1] - sig2Domain[0]);
     vline.attr("x1", xScale(state.x)).attr("x2", xScale(state.x));
     hline.attr("y1", yScale(state.y)).attr("y2", yScale(state.y));
-    emit();                              // <-- notify dependents
+    if (notify) emit();
   }
 
-  // RAF throttle for move
+  // Follow the newest pointer position on each animation frame. Retaining the
+  // first event in a busy frame makes the probe visibly trail the pointer.
   let raf = 0;
+  let pendingPoint = null;
   function scheduleUpdate(e) {
+    pendingPoint = [e.clientX, e.clientY];
     if (raf) return;
-    raf = requestAnimationFrame(() => { raf = 0; setFromEvent(e); });
-  }
-
-  function setDragging(on) {
-    if (state.dragging === on) return;
-    state.dragging = on;
-    emit();                              // <-- notify on drag state changes too
+    raf = requestAnimationFrame(() => {
+      raf = 0;
+      const [clientX, clientY] = pendingPoint;
+      pendingPoint = null;
+      setFromPoint(clientX, clientY);
+    });
   }
 
   hit.addEventListener("pointerdown", (e) => {
-    setDragging(true);
-    setFromEvent(e);
+    dragging = true;
+    setFromPoint(e.clientX, e.clientY);
     hit.setPointerCapture(e.pointerId);
   });
 
   hit.addEventListener("pointermove", (e) => {
-    if (state.dragging) scheduleUpdate(e);
+    if (dragging) scheduleUpdate(e);
   });
 
-  const endDrag = () => setDragging(false);
+  const endDrag = (e) => {
+    if (!dragging) return;
+    dragging = false;
+    if (raf) {
+      cancelAnimationFrame(raf);
+      raf = 0;
+    }
+    pendingPoint = null;
+    setFromPoint(e.clientX, e.clientY);
+  };
   hit.addEventListener("pointerup", endDrag);
   hit.addEventListener("pointercancel", endDrag);
-  hit.addEventListener("pointerleave", endDrag);
 
   hit.addEventListener("keydown", (e) => {
     const xStep = (muDomain[1] - muDomain[0]) / 50;
@@ -254,13 +267,12 @@ viewof leftPanel = {
   // initial notify
   queueMicrotask(emit);
 
-  return wrap;                           // <-- the view element
+  return wrap;
 }
 
-// leftPanel is now { x, y, dragging }
-isDragging = leftPanel.dragging
-numPts     = isDragging ? 100 : 200
-pdfStroke  = isDragging ? 1   : 2
+// The reactive value contains only the probe coordinates. Drag state remains
+// local so starting and ending a drag do not trigger redundant plot rebuilds.
+numPts = 160
 
 // if you want the probe to follow the crosshair:
 probeMu   = leftPanel.x
@@ -318,7 +330,7 @@ rightPanel = Plot.plot({
     Plot.line(xs.map((x, i) => ({ x, y: pdfYs[i] })), {
       x: "x", y: "y",
       stroke: "var(--plot-series-4)",
-      strokeWidth: pdfStroke
+      strokeWidth: 2
     }),
     Plot.ruleX(X, {
       y1: 0,
@@ -334,13 +346,30 @@ rightPanel = Plot.plot({
 
 probeInfo = md`**Probe:** ${tex`\mu=${probeMu.toFixed(2)},\ \sigma^2=${probeSig2.toFixed(3)}\ \Rightarrow\ \log f(\underline{x} \mid \mu, \sigma^2)=${probeLL.toFixed(2)}`}`
 
-html`<div style="max-width:100%;">
-<div style="display:flex; gap:${gap}px; align-items:flex-start; flex-wrap:nowrap; overflow-x:auto;">
-<div style="flex:0 0 ${plotW}px;">${viewof leftPanel}</div>
-<div style="flex:0 0 ${plotW}px;">${rightPanel}</div>
-</div>
-<div role="status" aria-live="polite" style="margin-top:10px; margin-bottom:-10px">${probeInfo}</div>
-</div>`
+// Keep the active probe mounted while its dependent plot changes. Rebuilding a
+// parent that contains the pointer target can interrupt pointer capture.
+likelihoodLayout = {
+  const rightHost = html`<div style="flex:0 0 ${plotW}px;"></div>`;
+  const statusHost = html`<div role="status" aria-live="polite"
+    style="margin-top:10px; margin-bottom:-10px"></div>`;
+  const node = html`<div style="max-width:100%;">
+    <div style="display:flex; gap:${gap}px; align-items:flex-start; flex-wrap:nowrap; overflow-x:auto;">
+      <div style="flex:0 0 ${plotW}px;">${viewof leftPanel}</div>
+      ${rightHost}
+    </div>
+    ${statusHost}
+  </div>`;
+  return {node, rightHost, statusHost};
+}
+
+likelihoodLayout.node
+
+{
+  rightPanel;
+  probeInfo;
+  likelihoodLayout.rightHost.replaceChildren(rightPanel);
+  likelihoodLayout.statusHost.replaceChildren(probeInfo);
+}
 ```
 
 ```{ojs}
