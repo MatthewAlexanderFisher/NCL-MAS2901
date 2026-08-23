@@ -8,8 +8,8 @@ Recalling the <span class="xref-no-num">[main inference tasks @sec-inference-tas
 
 The key idea is that instead of giving a single “best guess”[^bayes-exc] of a parameter, we report a **range of values compatible with the data**, constructed by a method whose repeated-sampling behaviour we understand.
 
-::: {.callout-note appearance="simple"}
-**By the end of this chapter, you should be able to:**
+::: {.callout-note .learning-objectives .reader-only title="Learning objectives" appearance="simple"}
+By the end of this chapter, you should be able to:
 
 - distinguish a random confidence-interval procedure from the fixed interval obtained after observing data;
 - construct and interpret exact Normal confidence intervals when the variance is known or unknown;
@@ -93,8 +93,8 @@ Instead, a useful report is:
 
 > **Using a method that covers the true parameter in $100(1-\alpha)\%$ of repeated samples, we obtained the interval $[L_{\mathrm{obs}},U_{\mathrm{obs}}]$.**
 
-::: {.callout-tip appearance="simple"}
-**Quick interpretation check.** A $95\%$ confidence interval does **not** mean that:
+::: {.callout-tip .checkpoint .reader-only title="Checkpoint: interpret the interval" appearance="simple"}
+A $95\%$ confidence interval does **not** mean that:
 
 - $95\%$ of the observations lie inside the interval;
 - there is a $95\%$ frequentist probability that the fixed $\theta$ lies inside this realised interval; or
@@ -826,9 +826,16 @@ This matches the CLT option that used $\mathrm{Var}(X)=\lambda$ (since the Poiss
 :::
 
 
-::: {.callout-note appearance="simple"}
-**Chapter summary.** A confidence interval is a random procedure before sampling and a fixed numerical interval afterwards. Exact Normal intervals use a known sampling distribution; CLT- and MLE-based intervals use large-sample approximations. In every case, interpretation and reliability depend on the construction method and its assumptions, not only on the two reported endpoints.
+::: {.callout-tip .checkpoint .reader-only title="Chapter checkpoint" appearance="simple"}
+For a new interval problem, identify the target parameter, decide whether the construction is exact or approximate, write down the relevant standard error and quantile, and state both the repeated-sampling interpretation and the assumptions on which it depends.
 :::
+
+## Chapter summary
+
+- A confidence interval is a random procedure before sampling and a fixed numerical interval after the data have been observed.
+- Exact Normal intervals use a known sampling distribution; CLT- and MLE-based intervals use large-sample approximations.
+- Confidence level, sample size, and standard error determine width, but the numerical endpoints alone do not establish reliability.
+- Interpretation and coverage depend on the construction method and its assumptions.
 
 
 

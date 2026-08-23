@@ -79,9 +79,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-8fb485cf94e4d5e4901ea4dc05e24a05.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark-219a089c5cb161a3888b836ebc17e238.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../../site_libs/bootstrap/bootstrap-8fb485cf94e4d5e4901ea4dc05e24a05.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-bb83413c46596ab086c5794f53f32f56.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-20ea643ef43c4df2296309bdca3edf74.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-bb83413c46596ab086c5794f53f32f56.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -267,6 +267,7 @@ window.Quarto = {
 <link rel="stylesheet" href="../../../theming/math-scroll.css">
 <link rel="stylesheet" href="../../../theming/practice-details.css">
 <link rel="stylesheet" href="../../../theming/callout-style.css">
+<link rel="stylesheet" href="../../../theming/reader-support.css">
 <link rel="stylesheet" href="../../../theming/floating-code.css">
 <link rel="stylesheet" href="../../../theming/font.css">
 <link rel="stylesheet" href="../../../theming/no-xref-suffix.css">
@@ -678,6 +679,7 @@ window.Quarto = {
   <li><a href="#cramérrao-lower-bound-and-efficiency" id="toc-cramérrao-lower-bound-and-efficiency" class="nav-link" data-scroll-target="#cramérrao-lower-bound-and-efficiency"><span class="header-section-number">5.4.2</span> Cramér–Rao Lower Bound and Efficiency</a></li>
   </ul></li>
   <li><a href="#the-asymptotic-distribution-of-the-mle" id="toc-the-asymptotic-distribution-of-the-mle" class="nav-link" data-scroll-target="#the-asymptotic-distribution-of-the-mle"><span class="header-section-number">5.5</span> The Asymptotic Distribution of the MLE</a></li>
+  <li><a href="#chapter-summary" id="toc-chapter-summary" class="nav-link" data-scroll-target="#chapter-summary"><span class="header-section-number">5.6</span> Chapter summary</a></li>
   </ul>
 </nav>
     </div>
@@ -796,13 +798,13 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<div class="callout callout-style-simple callout-note callout-titled">
+<div class="learning-objectives reader-only callout callout-style-simple callout-note callout-titled" title="Learning objectives">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Learning objectives and route through this chapter
+<span class="screen-reader-only">Note</span>Learning objectives
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1358,13 +1360,13 @@ L(\theta;\underline{x}) = f(\underline{x}\mid\theta),
 </div>
 </div>
 </div>
-<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="checkpoint reader-only callout callout-style-simple callout-tip callout-titled" title="Checkpoint: what is varying?">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Quick check: what is varying?
+<span class="screen-reader-only">Tip</span>Checkpoint: what is varying?
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4014,24 +4016,33 @@ j_n(\theta;\underline x)
 </div>
 </div>
 </div>
-<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="checkpoint reader-only callout callout-style-simple callout-tip callout-titled" title="Chapter checkpoint">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Chapter summary and checkpoint
+<span class="screen-reader-only">Tip</span>Chapter checkpoint
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Starting from a model, the route is <span class="math display">
+<p>For the Bernoulli model, explain why <span class="math inline">\bar Y</span> is simultaneously an unbiased estimator and the MLE, while still being a random quantity before the data are observed.</p>
+</div>
+</div>
+</section>
+<section id="chapter-summary" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="chapter-summary"><span class="header-section-number">5.6</span> Chapter summary</h2>
+<ul>
+<li>Starting from a model, the main route is <span class="math display">
 \text{joint model}\longrightarrow L(\theta;\underline x)
 \longrightarrow \ell(\theta;\underline x)
 \longrightarrow \hat\theta_{\mathrm{MLE}}
 \longrightarrow \text{information and an estimated standard error}.
-</span> At each arrow, check what is fixed, the parameter space, and whether the result is exact or asymptotic. For the Bernoulli model, explain why <span class="math inline">\bar Y</span> is simultaneously an unbiased estimator and the MLE, while still being a random quantity before the data are observed.</p>
-</div>
-</div>
+</span></li>
+<li>A likelihood treats the observed data as fixed and compares parameter values; it is not a probability distribution over the parameter.</li>
+<li>Solving the score equation only finds candidates: the parameter space, boundaries, curvature, and global maximum must still be checked.</li>
+<li>Expected Fisher information and observed information describe related but distinct curvatures; large-sample standard errors and Normal approximations depend on regularity conditions.</li>
+</ul>
 
 
 </section>

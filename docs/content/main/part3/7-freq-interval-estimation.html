@@ -79,9 +79,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-8fb485cf94e4d5e4901ea4dc05e24a05.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark-219a089c5cb161a3888b836ebc17e238.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../../site_libs/bootstrap/bootstrap-8fb485cf94e4d5e4901ea4dc05e24a05.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-bb83413c46596ab086c5794f53f32f56.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-20ea643ef43c4df2296309bdca3edf74.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-bb83413c46596ab086c5794f53f32f56.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -267,6 +267,7 @@ window.Quarto = {
 <link rel="stylesheet" href="../../../theming/math-scroll.css">
 <link rel="stylesheet" href="../../../theming/practice-details.css">
 <link rel="stylesheet" href="../../../theming/callout-style.css">
+<link rel="stylesheet" href="../../../theming/reader-support.css">
 <link rel="stylesheet" href="../../../theming/floating-code.css">
 <link rel="stylesheet" href="../../../theming/font.css">
 <link rel="stylesheet" href="../../../theming/no-xref-suffix.css">
@@ -673,6 +674,7 @@ window.Quarto = {
   <li><a href="#sec-clt-approx-ci" id="toc-sec-clt-approx-ci" class="nav-link" data-scroll-target="#sec-clt-approx-ci"><span class="header-section-number">7.4.1</span> CLT: Approximate CI for the Mean</a></li>
   <li><a href="#asymptotic-mle-approximate-ci-for-the-mle" id="toc-asymptotic-mle-approximate-ci-for-the-mle" class="nav-link" data-scroll-target="#asymptotic-mle-approximate-ci-for-the-mle"><span class="header-section-number">7.4.2</span> Asymptotic MLE: Approximate CI for the MLE</a></li>
   </ul></li>
+  <li><a href="#chapter-summary" id="toc-chapter-summary" class="nav-link" data-scroll-target="#chapter-summary"><span class="header-section-number">7.5</span> Chapter summary</a></li>
   </ul>
 </nav>
     </div>
@@ -701,20 +703,23 @@ window.Quarto = {
 
 <p>Recalling the <span class="xref-no-num"><a href="../part1/3-types-of-inference.html#sec-inference-tasks" class="quarto-xref">main inference tasks&nbsp;<span>3.2</span></a></span>, we now move from <em>point estimation</em> to <em>interval estimation</em>.</p>
 <p>The key idea is that instead of giving a single “best guess”<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> of a parameter, we report a <strong>range of values compatible with the data</strong>, constructed by a method whose repeated-sampling behaviour we understand.</p>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
+<div class="learning-objectives reader-only callout callout-style-simple callout-note callout-titled" title="Learning objectives">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-body-container">
-<p><strong>By the end of this chapter, you should be able to:</strong></p>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Learning objectives
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>By the end of this chapter, you should be able to:</p>
 <ul>
 <li>distinguish a random confidence-interval procedure from the fixed interval obtained after observing data;</li>
 <li>construct and interpret exact Normal confidence intervals when the variance is known or unknown;</li>
 <li>recognise when a CLT- or MLE-based interval is approximate; and</li>
 <li>explain how confidence level, sample size and standard error affect interval width.</li>
 </ul>
-</div>
 </div>
 </div>
 <section id="sec-freq-persp-interval" class="level2" data-number="7.1">
@@ -1381,20 +1386,23 @@ Important&nbsp;7.1: Terminology: Exact vs.&nbsp;Approximate Confidence Intervals
 <blockquote class="blockquote">
 <p><strong>Using a method that covers the true parameter in <span class="math inline">100(1-\alpha)\%</span> of repeated samples, we obtained the interval <span class="math inline">[L_{\mathrm{obs}},U_{\mathrm{obs}}]</span>.</strong></p>
 </blockquote>
-<div class="callout callout-style-simple callout-tip">
-<div class="callout-body d-flex">
+<div class="checkpoint reader-only callout callout-style-simple callout-tip callout-titled" title="Checkpoint: interpret the interval">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-body-container">
-<p><strong>Quick interpretation check.</strong> A <span class="math inline">95\%</span> confidence interval does <strong>not</strong> mean that:</p>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Checkpoint: interpret the interval
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A <span class="math inline">95\%</span> confidence interval does <strong>not</strong> mean that:</p>
 <ul>
 <li><span class="math inline">95\%</span> of the observations lie inside the interval;</li>
 <li>there is a <span class="math inline">95\%</span> frequentist probability that the fixed <span class="math inline">\theta</span> lies inside this realised interval; or</li>
 <li>the method will have <span class="math inline">95\%</span> coverage if its modelling assumptions are badly wrong.</li>
 </ul>
 <p>Higher confidence produces a wider interval, while increasing <span class="math inline">n</span> usually narrows it through the <span class="math inline">1/\sqrt n</span> standard error.</p>
-</div>
 </div>
 </div>
 </section>
@@ -1493,7 +1501,7 @@ Z = \frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \sim \mathcal{N}(0,1).
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1502,7 +1510,7 @@ Z = \frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \sim \mathcal{N}(0,1).
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="rem-normal-ci" class="proof remark">
 <p><span class="proof-title"><em>Remark 7.1</em> (Quantiles of the pivot). </span>When constructing a confidence interval from a pivot, the choice of quantiles is not unique.</p>
@@ -2347,19 +2355,31 @@ S^2 \approx 3.956.
 </div>
 </div>
 </div>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
+<div class="checkpoint reader-only callout callout-style-simple callout-tip callout-titled" title="Chapter checkpoint">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-body-container">
-<p><strong>Chapter summary.</strong> A confidence interval is a random procedure before sampling and a fixed numerical interval afterwards. Exact Normal intervals use a known sampling distribution; CLT- and MLE-based intervals use large-sample approximations. In every case, interpretation and reliability depend on the construction method and its assumptions, not only on the two reported endpoints.</p>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Chapter checkpoint
 </div>
 </div>
+<div class="callout-body-container callout-body">
+<p>For a new interval problem, identify the target parameter, decide whether the construction is exact or approximate, write down the relevant standard error and quantile, and state both the repeated-sampling interpretation and the assumptions on which it depends.</p>
 </div>
-
-
+</div>
 </section>
+</section>
+<section id="chapter-summary" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="chapter-summary"><span class="header-section-number">7.5</span> Chapter summary</h2>
+<ul>
+<li>A confidence interval is a random procedure before sampling and a fixed numerical interval after the data have been observed.</li>
+<li>Exact Normal intervals use a known sampling distribution; CLT- and MLE-based intervals use large-sample approximations.</li>
+<li>Confidence level, sample size, and standard error determine width, but the numerical endpoints alone do not establish reliability.</li>
+<li>Interpretation and coverage depend on the construction method and its assumptions.</li>
+</ul>
+
+
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>

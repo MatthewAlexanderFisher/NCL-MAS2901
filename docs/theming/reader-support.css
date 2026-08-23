@@ -1,0 +1,69 @@
+/*
+ * Reader-support material is useful during independent study, but deliberately
+ * omitted from Lecture Zoom so that a page can double as uncluttered slides.
+ */
+body.lecture-zoom .reader-only {
+  display: none !important;
+}
+
+/* Shared structure for the two reader-support callout roles. */
+.callout.learning-objectives,
+.callout.checkpoint {
+  --reader-box-accent: var(--brand-purple);
+  --reader-box-bg: var(--surface-weak);
+
+  background: var(--reader-box-bg) !important;
+  border: 1px solid color-mix(in srgb, var(--reader-box-accent) 45%, var(--border)) !important;
+  border-left: 0.35rem solid var(--reader-box-accent) !important;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.15rem 0.45rem color-mix(in srgb, var(--brand-fg) 8%, transparent);
+  overflow: hidden;
+}
+
+.callout.learning-objectives {
+  --reader-box-accent: var(--learning-objectives-accent);
+  --reader-box-bg: var(--learning-objectives-bg);
+}
+
+.callout.checkpoint {
+  --reader-box-accent: var(--checkpoint-accent);
+  --reader-box-bg: var(--checkpoint-bg);
+}
+
+.callout.learning-objectives .callout-header,
+.callout.checkpoint .callout-header {
+  background: transparent !important;
+  border: 0 !important;
+  color: var(--reader-box-accent) !important;
+  padding: 0.75rem 1rem 0.25rem;
+}
+
+.callout.learning-objectives .callout-title-container,
+.callout.checkpoint .callout-title-container {
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.callout.learning-objectives .callout-icon-container,
+.callout.checkpoint .callout-icon-container {
+  display: none;
+}
+
+.callout.learning-objectives .callout-body,
+.callout.checkpoint .callout-body {
+  background: transparent !important;
+  color: var(--brand-fg);
+  padding: 0.25rem 1rem 0.8rem;
+}
+
+.callout.learning-objectives .callout-body > :last-child,
+.callout.checkpoint .callout-body > :last-child {
+  margin-bottom: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .callout.learning-objectives,
+  .callout.checkpoint {
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+  }
+}

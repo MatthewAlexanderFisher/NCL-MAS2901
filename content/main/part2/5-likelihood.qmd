@@ -2,8 +2,7 @@
 
 {{< include ../../_figures/part2/likelihood-shared.qmd >}}
 
-::: {.callout-note appearance="simple"}
-## Learning objectives and route through this chapter
+::: {.callout-note .learning-objectives .reader-only title="Learning objectives" appearance="simple"}
 
 By the end of this chapter, you should be able to:
 
@@ -290,9 +289,7 @@ In short:
 
 :::
 
-::: {.callout-tip appearance="simple"}
-### Quick check: what is varying?
-
+::: {.callout-tip .checkpoint .reader-only title="Checkpoint: what is varying?" appearance="simple"}
 In $f(2\mid\theta)=\theta^2$, ask which quantity is held fixed. If $\theta$ is fixed and $x$ varies, this belongs to a PMF. If $x=2$ is fixed and $\theta$ varies over $[0,1]$, it is a likelihood. Explain why the second curve is not required to sum or integrate to $1$ over $\theta$.
 :::
 
@@ -1978,18 +1975,22 @@ $$
 :::
 
 
-::: {.callout-tip appearance="simple"}
-### Chapter summary and checkpoint
-
-Starting from a model, the route is
-$$
-\text{joint model}\longrightarrow L(\theta;\underline x)
-\longrightarrow \ell(\theta;\underline x)
-\longrightarrow \hat\theta_{\mathrm{MLE}}
-\longrightarrow \text{information and an estimated standard error}.
-$$
-At each arrow, check what is fixed, the parameter space, and whether the result is exact or asymptotic. For the Bernoulli model, explain why $\bar Y$ is simultaneously an unbiased estimator and the MLE, while still being a random quantity before the data are observed.
+::: {.callout-tip .checkpoint .reader-only title="Chapter checkpoint" appearance="simple"}
+For the Bernoulli model, explain why $\bar Y$ is simultaneously an unbiased estimator and the MLE, while still being a random quantity before the data are observed.
 :::
+
+## Chapter summary
+
+- Starting from a model, the main route is
+  $$
+  \text{joint model}\longrightarrow L(\theta;\underline x)
+  \longrightarrow \ell(\theta;\underline x)
+  \longrightarrow \hat\theta_{\mathrm{MLE}}
+  \longrightarrow \text{information and an estimated standard error}.
+  $$
+- A likelihood treats the observed data as fixed and compares parameter values; it is not a probability distribution over the parameter.
+- Solving the score equation only finds candidates: the parameter space, boundaries, curvature, and global maximum must still be checked.
+- Expected Fisher information and observed information describe related but distinct curvatures; large-sample standard errors and Normal approximations depend on regularity conditions.
 
 
 [^geometric-mean]: **Geometric mean.** One can write $\prod_{i=1}^n x_i = \bar{x}_g^n$ where $\bar{x}_g = \left(\prod_{i=1}^n x_i \right)^{1/n}$ is the *geometric mean*. This reformulation is rarely useful in practice, so it’s usually best to leave the product as it is.

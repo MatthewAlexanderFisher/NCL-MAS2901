@@ -79,9 +79,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-8fb485cf94e4d5e4901ea4dc05e24a05.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark-219a089c5cb161a3888b836ebc17e238.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../../site_libs/bootstrap/bootstrap-8fb485cf94e4d5e4901ea4dc05e24a05.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-bb83413c46596ab086c5794f53f32f56.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-20ea643ef43c4df2296309bdca3edf74.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-bb83413c46596ab086c5794f53f32f56.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -267,6 +267,7 @@ window.Quarto = {
 <link rel="stylesheet" href="../../../theming/math-scroll.css">
 <link rel="stylesheet" href="../../../theming/practice-details.css">
 <link rel="stylesheet" href="../../../theming/callout-style.css">
+<link rel="stylesheet" href="../../../theming/reader-support.css">
 <link rel="stylesheet" href="../../../theming/floating-code.css">
 <link rel="stylesheet" href="../../../theming/font.css">
 <link rel="stylesheet" href="../../../theming/no-xref-suffix.css">
@@ -665,6 +666,7 @@ window.Quarto = {
   <li><a href="#posterior-probabilities-of-hypotheses" id="toc-posterior-probabilities-of-hypotheses" class="nav-link" data-scroll-target="#posterior-probabilities-of-hypotheses"><span class="header-section-number">10.1.1</span> Posterior Probabilities of Hypotheses</a></li>
   <li><a href="#bayes-factor" id="toc-bayes-factor" class="nav-link" data-scroll-target="#bayes-factor"><span class="header-section-number">10.1.2</span> Bayes Factor</a></li>
   </ul></li>
+  <li><a href="#chapter-summary" id="toc-chapter-summary" class="nav-link" data-scroll-target="#chapter-summary"><span class="header-section-number">10.2</span> Chapter summary</a></li>
   </ul>
 </nav>
     </div>
@@ -692,19 +694,22 @@ window.Quarto = {
 
 
 <p>Recalling the <span class="xref-no-num"><a href="../part1/3-types-of-inference.html#sec-inference-tasks" class="quarto-xref">main inference tasks&nbsp;<span>3.2</span></a></span>, we now move from <em>interval estimation</em> to <em>hypothesis testing</em> in the <strong>Bayesian</strong> framework, and consider the Bayesian analogue of frequentist hypothesis testing.</p>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
+<div class="learning-objectives reader-only callout callout-style-simple callout-note callout-titled" title="Learning objectives">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-body-container">
-<p><strong>By the end of this optional chapter, you should be able to:</strong></p>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Learning objectives
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>By the end of this optional chapter, you should be able to:</p>
 <ul>
 <li>explain why a point null needs positive prior probability;</li>
 <li>compute posterior hypothesis odds from a Bayes factor and prior odds; and</li>
 <li>distinguish a Bayes factor, a posterior hypothesis probability and a frequentist <span class="math inline">p</span>-value.</li>
 </ul>
-</div>
 </div>
 </div>
 <p>The Bayesian perspective is different from the frequentist one: instead of calibrating a rejection rule under repeated samples from <span class="math inline">H_0</span>, we compare how well the competing hypotheses predicted the observed data.</p>
@@ -969,19 +974,31 @@ Z=\frac{204-200}{10/\sqrt{30}}\approx2.19,
 </div>
 </div>
 </div>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
+<div class="checkpoint reader-only callout callout-style-simple callout-tip callout-titled" title="Chapter checkpoint">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-body-container">
-<p><strong>Chapter summary.</strong> Bayesian point-null testing begins with prior probabilities for the hypotheses and proper conditional priors within them. The Bayes factor updates prior odds to posterior odds and can favour either hypothesis. Its value depends on how both hypotheses predicted the data, whereas a frequentist <span class="math inline">p</span>-value is calibrated only under <span class="math inline">H_0</span>.</p>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Chapter checkpoint
 </div>
 </div>
+<div class="callout-body-container callout-body">
+<p>For a point-null problem, can you state the prior probability of each hypothesis, specify a proper conditional prior under the alternative, compute posterior odds from prior odds and a Bayes factor, and explain why the result is not a <span class="math inline">p</span>-value?</p>
 </div>
-
-
+</div>
 </section>
+</section>
+<section id="chapter-summary" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="chapter-summary"><span class="header-section-number">10.2</span> Chapter summary</h2>
+<ul>
+<li>Bayesian point-null testing begins with prior probabilities for the hypotheses and proper conditional priors within them.</li>
+<li>The Bayes factor compares how well the hypotheses predicted the observed data and updates prior odds to posterior odds.</li>
+<li>A Bayes factor can favour either hypothesis, but its value depends on the model and prior specified under each.</li>
+<li>A frequentist <span class="math inline">p</span>-value is calibrated only under <span class="math inline">H_0</span> and should not be interpreted as a Bayes factor or posterior hypothesis probability.</li>
+</ul>
+
+
 </section>
 
 </main> <!-- /main -->

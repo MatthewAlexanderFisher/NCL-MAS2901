@@ -41,8 +41,7 @@ def set_plot_theme(mode="light"):
 {{< include ../../_figures/part2/bayes-inference-shared.qmd >}}
 :::
 
-::: {.callout-note appearance="simple"}
-## Learning objectives and route through this chapter
+::: {.callout-note .learning-objectives .reader-only title="Learning objectives" appearance="simple"}
 
 By the end of this chapter, you should be able to:
 
@@ -1275,11 +1274,16 @@ obtained by replacing $\theta_0$ with $\hat{\theta}_n$ in the Fisher information
 The MLE approximation in Chapter 5 describes the **sampling distribution of $\hat\theta_n$ when new datasets are repeatedly generated with $\theta_0$ fixed**. The approximation above describes the **posterior distribution of $\theta$ conditional on the dataset that was observed**. Under regularity conditions they have approximately the same centre and information-based variance, but they condition on different things and support different interpretations.
 :::
 
-::: {.callout-tip appearance="simple"}
-### Chapter summary
-
-Bayesian updating combines a likelihood shared with frequentist inference and an explicit prior. Conjugacy makes some updates algebraic, but prior strength, parameter support, and model assumptions still require interpretation. A posterior is the main inferential output; its mean, median, and mode answer different decision questions, and large samples often—but not always—reduce prior influence.
+::: {.callout-tip .checkpoint .reader-only title="Chapter checkpoint" appearance="simple"}
+Given a prior and a likelihood, can you identify the support, derive the posterior up to proportionality, recognise whether the update is conjugate, and choose a point summary that matches the stated loss? Also explain why posterior uncertainty is not the sampling distribution of an estimator.
 :::
+
+## Chapter summary
+
+- Bayesian updating combines a likelihood shared with frequentist inference and an explicit prior to produce a posterior distribution.
+- Conjugacy makes some updates algebraic, but prior strength, parameter support, and model assumptions still require interpretation.
+- The posterior mean, median, and mode answer different decision questions; there is no universally best point summary without a loss or decision goal.
+- Large samples often reduce prior influence and can produce an approximately Normal posterior, but the result is conditional on the observed data and can fail outside regular settings.
 
 
 [^binomial]:

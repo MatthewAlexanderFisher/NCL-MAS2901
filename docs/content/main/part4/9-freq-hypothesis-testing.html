@@ -79,9 +79,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-8fb485cf94e4d5e4901ea4dc05e24a05.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark-219a089c5cb161a3888b836ebc17e238.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../../site_libs/bootstrap/bootstrap-8fb485cf94e4d5e4901ea4dc05e24a05.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-bb83413c46596ab086c5794f53f32f56.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-20ea643ef43c4df2296309bdca3edf74.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-bb83413c46596ab086c5794f53f32f56.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -267,6 +267,7 @@ window.Quarto = {
 <link rel="stylesheet" href="../../../theming/math-scroll.css">
 <link rel="stylesheet" href="../../../theming/practice-details.css">
 <link rel="stylesheet" href="../../../theming/callout-style.css">
+<link rel="stylesheet" href="../../../theming/reader-support.css">
 <link rel="stylesheet" href="../../../theming/floating-code.css">
 <link rel="stylesheet" href="../../../theming/font.css">
 <link rel="stylesheet" href="../../../theming/no-xref-suffix.css">
@@ -674,6 +675,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#sec-mle-approx-test" id="toc-sec-mle-approx-test" class="nav-link" data-scroll-target="#sec-mle-approx-test"><span class="header-section-number">9.3.1</span> Asymptotic MLE Tests</a></li>
   </ul></li>
+  <li><a href="#chapter-summary" id="toc-chapter-summary" class="nav-link" data-scroll-target="#chapter-summary"><span class="header-section-number">9.4</span> Chapter summary</a></li>
   </ul>
 </nav>
     </div>
@@ -793,20 +795,23 @@ window.Quarto = {
 </div>
 </div>
 <p>Recalling the <span class="xref-no-num"><a href="../part1/3-types-of-inference.html#sec-inference-tasks" class="quarto-xref">main inference tasks&nbsp;<span>3.2</span></a></span>, we now move from <em>interval estimation</em> to <em>hypothesis testing</em>.</p>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
+<div class="learning-objectives reader-only callout callout-style-simple callout-note callout-titled" title="Learning objectives">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-body-container">
-<p><strong>By the end of this chapter, you should be able to:</strong></p>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Learning objectives
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>By the end of this chapter, you should be able to:</p>
 <ul>
 <li>state null and alternative hypotheses and choose a direction before examining the result;</li>
 <li>distinguish Type I error, Type II error, significance level, size, <span class="math inline">p</span>-value and power;</li>
 <li>select and carry out the appropriate one-sample Z, <span class="math inline">t</span>, CLT or likelihood-ratio test; and</li>
 <li>report statistical evidence alongside effect size, uncertainty and modelling assumptions.</li>
 </ul>
-</div>
 </div>
 </div>
 <p>The chapter has two stages. First we develop the logic common to all tests: rejection regions, <span class="math inline">p</span>-values and power. We then apply one common reporting template to the examinable tests.</p>
@@ -848,7 +853,7 @@ H_1 : \theta &lt; \theta_0.
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -857,7 +862,7 @@ H_1 : \theta &lt; \theta_0.
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="rem-composite" class="proof remark">
 <p><span class="proof-title"><em>Remark 9.1</em> (Relation to Composite One-Sided Nulls). </span>In more advanced treatments, one-sided tests are often written with a <strong>composite</strong> null hypothesis, e.g. <span class="math display">
@@ -878,7 +883,7 @@ Thus we may work with the simpler formulation <span class="math inline">H_0 : \t
 <li>Compare the actual data with this prediction. If the data appear highly unusual under <span class="math inline">H_0</span>, this counts against the hypothesis.</li>
 </ol>
 <div class="callout callout-style-simple callout-important callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -887,7 +892,7 @@ Thus we may work with the simpler formulation <span class="math inline">H_0 : \t
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>A hypothesis test yields a <strong>decision rule</strong>, not a logical proof:</p>
 <ul>
@@ -1228,7 +1233,7 @@ T_{\text{obs}} = T(\underline{x}).
 </ul></li>
 </ol>
 <div id="imp-ing-hypothesis" class="callout callout-style-simple callout-important callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1237,7 +1242,7 @@ Important&nbsp;9.2: Ingredients of a Hypothesis Test
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>A hypothesis test is fully determined by two choices:</p>
 <ol type="1">
@@ -1404,7 +1409,7 @@ R_\alpha = \{\, T \mid |T| \ge c_\alpha \,\}.
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1413,7 +1418,7 @@ R_\alpha = \{\, T \mid |T| \ge c_\alpha \,\}.
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="rem-rejec-regs" class="proof remark">
 <p><span class="proof-title"><em>Remark 9.2</em> (Why these regions?). </span>For a given test statistic, there are infinitely many possible rejection regions of level <span class="math inline">\alpha</span>. In practice we choose the regions above because:</p>
@@ -2319,7 +2324,7 @@ T \;\overset{\text{approx.}}{\sim}\; \mathcal{N}(0,1).
 </span></p>
 <p>One may use Normal critical values directly. In practice, using <strong>Student-<span class="math inline">t_{n-1}</span> critical values</strong> is a conventional, slightly more conservative choice. For a non-Normal population this does not mean that <span class="math inline">T</span> has an exact <span class="math inline">t</span> distribution: the Normal and <span class="math inline">t_{n-1}</span> reference distributions simply become indistinguishable as <span class="math inline">n</span> grows.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -2328,7 +2333,7 @@ T \;\overset{\text{approx.}}{\sim}\; \mathcal{N}(0,1).
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="rem-student-t-normal" class="proof remark">
 <p><span class="proof-title"><em>Remark 9.3</em> (Why do both approximations hold?). </span></p>
@@ -2537,7 +2542,7 @@ T = 2\left( \ell(\hat{\theta}_{\mathrm{MLE}} \,; \underline{x}) - \ell(\theta_0\
 </div>
 </div>
 <div id="prf-lrt-test-statistic" class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -2546,7 +2551,7 @@ Note&nbsp;9.1: Optional derivation
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>We start from the definition of the likelihood ratio statistic <span class="math display">
 \lambda(\underline{x})
@@ -2723,29 +2728,31 @@ T &lt; z_{\alpha}.
 <li>you can compute (or approximate) the Fisher information.</li>
 </ol>
 <p>For a composite null, the likelihood-ratio numerator is maximised over <span class="math inline">\Theta_0</span> rather than evaluated at a single point. Under suitable regularity conditions, the degrees of freedom equal the difference between the dimensions of the full and null parameter spaces; see the accompanying footnote.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
-<div class="callout callout-style-simple callout-tip">
-<div class="callout-body d-flex">
+<div class="checkpoint reader-only callout callout-style-simple callout-tip callout-titled" title="Chapter checkpoint">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-body-container">
-<p><strong>Final checkpoint.</strong> For a new problem, ask in order: What parameter is being tested? Are the hypotheses one- or two-sided? Which assumptions justify the null distribution? What is the observed effect and its standard error? What does the <span class="math inline">p</span>-value say—and not say? A defensible conclusion answers all five questions.</p>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Chapter checkpoint
 </div>
 </div>
-</div>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p><strong>Chapter summary.</strong> A level-<span class="math inline">\alpha</span> test controls false rejections under <span class="math inline">H_0</span>; power describes detection under specified alternatives. A <span class="math inline">p</span>-value measures extremeness under the null model, not the probability that <span class="math inline">H_0</span> is true. Exact Z and <span class="math inline">t</span> tests require their Normal-model assumptions, while CLT, Wald and likelihood-ratio tests rely on large-sample approximations. Always report the estimated effect, uncertainty and modelling assumptions alongside the decision.</p>
+<div class="callout-body-container callout-body">
+<p>For a new problem, ask in order: What parameter is being tested? Are the hypotheses one- or two-sided? Which assumptions justify the null distribution? What is the observed effect and its standard error? What does the <span class="math inline">p</span>-value say—and not say? A defensible conclusion answers all five questions.</p>
 </div>
 </div>
-</div>
-
-
 </section>
+</section>
+<section id="chapter-summary" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="chapter-summary"><span class="header-section-number">9.4</span> Chapter summary</h2>
+<ul>
+<li>A level-<span class="math inline">\alpha</span> test controls false rejections under <span class="math inline">H_0</span>; power describes detection under specified alternatives.</li>
+<li>A <span class="math inline">p</span>-value measures extremeness under the null model, not the probability that <span class="math inline">H_0</span> is true.</li>
+<li>Exact Z and <span class="math inline">t</span> tests require their Normal-model assumptions, while CLT, Wald, and likelihood-ratio tests rely on large-sample approximations.</li>
+<li>A defensible report gives the estimated effect, uncertainty, modelling assumptions, and decision rather than the decision alone.</li>
+</ul>
+
+
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>

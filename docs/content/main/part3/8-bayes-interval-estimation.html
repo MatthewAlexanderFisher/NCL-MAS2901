@@ -79,9 +79,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-8fb485cf94e4d5e4901ea4dc05e24a05.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark-219a089c5cb161a3888b836ebc17e238.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../../site_libs/bootstrap/bootstrap-8fb485cf94e4d5e4901ea4dc05e24a05.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-bb83413c46596ab086c5794f53f32f56.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-20ea643ef43c4df2296309bdca3edf74.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-bb83413c46596ab086c5794f53f32f56.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -267,6 +267,7 @@ window.Quarto = {
 <link rel="stylesheet" href="../../../theming/math-scroll.css">
 <link rel="stylesheet" href="../../../theming/practice-details.css">
 <link rel="stylesheet" href="../../../theming/callout-style.css">
+<link rel="stylesheet" href="../../../theming/reader-support.css">
 <link rel="stylesheet" href="../../../theming/floating-code.css">
 <link rel="stylesheet" href="../../../theming/font.css">
 <link rel="stylesheet" href="../../../theming/no-xref-suffix.css">
@@ -663,6 +664,7 @@ window.Quarto = {
   <li><a href="#the-bayesian-perspective" id="toc-the-bayesian-perspective" class="nav-link active" data-scroll-target="#the-bayesian-perspective"><span class="header-section-number">8.1</span> The Bayesian perspective</a></li>
   <li><a href="#interpreting-credible-intervals" id="toc-interpreting-credible-intervals" class="nav-link" data-scroll-target="#interpreting-credible-intervals"><span class="header-section-number">8.2</span> Interpreting Credible Intervals</a></li>
   <li><a href="#highest-density-intervals" id="toc-highest-density-intervals" class="nav-link" data-scroll-target="#highest-density-intervals"><span class="header-section-number">8.3</span> Highest Density Intervals</a></li>
+  <li><a href="#chapter-summary" id="toc-chapter-summary" class="nav-link" data-scroll-target="#chapter-summary"><span class="header-section-number">8.4</span> Chapter summary</a></li>
   </ul>
 </nav>
     </div>
@@ -782,20 +784,23 @@ window.Quarto = {
 </div>
 </div>
 <p>We now consider the <strong>Bayesian analogue</strong> of frequentist confidence intervals.</p>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
+<div class="learning-objectives reader-only callout callout-style-simple callout-note callout-titled" title="Learning objectives">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-body-container">
-<p><strong>By the end of this chapter, you should be able to:</strong></p>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Learning objectives
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>By the end of this chapter, you should be able to:</p>
 <ul>
 <li>interpret posterior probability statements about a parameter;</li>
 <li>distinguish a credible interval from a confidence interval;</li>
 <li>explain why many credible sets can contain the same posterior probability; and</li>
 <li>construct and interpret a highest-density region in simple cases.</li>
 </ul>
-</div>
 </div>
 </div>
 <section id="the-bayesian-perspective" class="level2" data-number="8.1">
@@ -1256,19 +1261,22 @@ window.Quarto = {
 <p>A <span class="math inline">95\%</span> <strong>credible interval</strong> means that, <em>given the observed data and the prior</em>, there is a <span class="math inline">95\%</span> posterior probability that <span class="math inline">\theta</span> lies inside the chosen interval. The probability statement is about the parameter itself, conditional on the data at hand.</p>
 <p>In contrast, a <span class="math inline">95\%</span> <strong>confidence interval</strong> is a procedure: if we were to repeatedly draw new samples and reconstruct a confidence interval each time, then <span class="math inline">95\%</span> of those intervals would cover the true parameter. It does <strong>not</strong> mean there is a <span class="math inline">95\%</span> chance that <span class="math inline">\theta</span> lies inside the one interval we have.</p>
 <p>Thus, credible intervals are often more natural to interpret, but they depend explicitly on the prior, sampling model and data. They do not automatically have <span class="math inline">95\%</span> repeated-sampling coverage.</p>
-<div class="callout callout-style-simple callout-tip">
-<div class="callout-body d-flex">
+<div class="checkpoint reader-only callout callout-style-simple callout-tip callout-titled" title="Checkpoint: confidence or credible?">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-body-container">
-<p><strong>Checkpoint.</strong> Decide whether each statement describes a <span class="math inline">95\%</span> confidence interval or a <span class="math inline">95\%</span> credible interval:</p>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Checkpoint: confidence or credible?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Decide whether each statement describes a <span class="math inline">95\%</span> confidence interval or a <span class="math inline">95\%</span> credible interval:</p>
 <ol type="1">
 <li>“Conditional on this model, prior and dataset, the posterior probability that <span class="math inline">\theta</span> lies in the interval is <span class="math inline">0.95</span>.”</li>
 <li>“Across repeated samples, the construction method covers the fixed <span class="math inline">\theta</span> on <span class="math inline">95\%</span> of occasions.”</li>
 </ol>
 <p>The first is Bayesian; the second is frequentist. Numerically identical endpoints do not make the interpretations identical.</p>
-</div>
 </div>
 </div>
 </section>
@@ -1770,16 +1778,28 @@ m_{\mathrm{post}}
 </div>
 </div>
 </div>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
+<div class="checkpoint reader-only callout callout-style-simple callout-tip callout-titled" title="Chapter checkpoint">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-body-container">
-<p><strong>Chapter summary.</strong> Credible intervals make posterior probability statements conditional on a model, prior and observed data. A credibility level does not uniquely determine a set, so conventions such as equal-tailed intervals and highest-density regions are used. Confidence and credible intervals can occasionally share endpoints, but they answer different probability questions.</p>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Chapter checkpoint
 </div>
 </div>
+<div class="callout-body-container callout-body">
+<p>Given a posterior distribution, can you state a valid credible-set probability, distinguish an equal-tailed interval from a highest-density region, and explain how the interpretation depends on the model, prior, and observed data?</p>
 </div>
+</div>
+</section>
+<section id="chapter-summary" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="chapter-summary"><span class="header-section-number">8.4</span> Chapter summary</h2>
+<ul>
+<li>Credible intervals make posterior probability statements conditional on a model, prior, and observed data.</li>
+<li>A credibility level does not uniquely determine a set, so conventions such as equal-tailed intervals and highest-density regions are used.</li>
+<li>Highest-density regions collect the most locally probable parameter values and need not be connected in more complicated posteriors.</li>
+<li>Confidence and credible intervals can sometimes share endpoints, but they answer different probability questions.</li>
+</ul>
 
 
 </section>

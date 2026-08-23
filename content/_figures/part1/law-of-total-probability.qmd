@@ -63,30 +63,52 @@
   const Ax = width * 0.50, Ay = height * 0.52;  // centre
   const Arx = width * 0.42, Ary = height * 0.4;
 
-  // Draw A outline (thin) so learners see the target set even before fills
-  svg.append("ellipse")
-    .attr("cx", Ax).attr("cy", Ay)
-    .attr("rx", Arx).attr("ry", Ary)
-    .attr("fill", "none")
-    .attr("stroke", orangeStroke)
-    .attr("stroke-width", 2)
-    .attr("clip-path", "url(#clipOmega-lotp2)");
-
-  // --- Voronoi cells: visible strokes on TOP of orange pieces ---
-  const strokes = svg.append("g").attr("clip-path", "url(#clipOmega-lotp2)");
+  // --- Voronoi cell fills: the back layer of the diagram ---
+  const cellFills = svg.append("g").attr("clip-path", "url(#clipOmega-lotp2)");
   const polys = [];
   for (let i = 0; i < sites.length; i++) {
     const poly = vor.cellPolygon(i);
     if (!poly) continue;
     polys.push({ i, poly, name: sites[i].name });
-    strokes.append("path")
+    cellFills.append("path")
       .attr("d", d3.line()(poly))
-      .attr("stroke", "currentColor")
-      .attr("fill", col(i))
-      .attr("stroke-opacity", 0.55);
+      .attr("fill", col(i));
   }
 
-  // Labels at polygon centroids; adaptive font size
+  // --- A∩B_i pieces (orange), revealed up to 'frame2' ---
+  const overlaps = svg.append("g").attr("clip-path", "url(#clipOmega-lotp2)");
+  for (let i = 0; i < sites.length; i++) {
+    overlaps.append("ellipse")
+      .attr("cx", Ax).attr("cy", Ay)
+      .attr("rx", Arx).attr("ry", Ary)
+      .attr("fill", orangeFill)
+      .attr("fill-opacity", i < frame2 ? 1. : 0)  // reveal progressively
+      .attr("clip-path", `url(#clipCell-lotp2-${i})`);
+  }
+
+  // Redraw the partition boundaries after the animated fills so they stay clear.
+  svg.append("g")
+    .attr("clip-path", "url(#clipOmega-lotp2)")
+    .selectAll("path")
+    .data(polys)
+    .join("path")
+      .attr("d", d => d3.line()(d.poly))
+      .attr("fill", "none")
+      .attr("stroke", "currentColor")
+      .attr("stroke-opacity", 0.62)
+      .attr("stroke-width", 1.25);
+
+  // A must be the top geometric layer: its outline remains visible throughout.
+  svg.append("ellipse")
+    .attr("cx", Ax).attr("cy", Ay)
+    .attr("rx", Arx).attr("ry", Ary)
+    .attr("fill", "none")
+    .attr("stroke", orangeStroke)
+    .attr("stroke-width", 4)
+    .attr("vector-effect", "non-scaling-stroke")
+    .attr("clip-path", "url(#clipOmega-lotp2)");
+
+  // Labels at polygon centroids are also kept above the animated pieces.
   const fz2 = Math.max(10, Math.min(14, 16 - 0.3 * (n2 - 3)));
   svg.append("g")
     .selectAll("text")
@@ -103,17 +125,6 @@
       .attr("font-size", `${fz2}px`)
       .attr("text-anchor", "middle")
       .attr("dominant-baseline", "middle");
-
-  // --- A∩B_i pieces (orange), revealed up to 'frame2' ---
-  const overlaps = svg.append("g").attr("clip-path", "url(#clipOmega-lotp2)");
-  for (let i = 0; i < sites.length; i++) {
-    overlaps.append("ellipse")
-      .attr("cx", Ax).attr("cy", Ay)
-      .attr("rx", Arx).attr("ry", Ary)
-      .attr("fill", orangeFill)
-      .attr("fill-opacity", i < frame2 ? 1. : 0)  // reveal progressively
-      .attr("clip-path", `url(#clipCell-lotp2-${i})`);
-  }
 
 
   // Ω frame

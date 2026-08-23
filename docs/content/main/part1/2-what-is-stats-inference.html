@@ -79,9 +79,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-8fb485cf94e4d5e4901ea4dc05e24a05.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark-219a089c5cb161a3888b836ebc17e238.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../../site_libs/bootstrap/bootstrap-8fb485cf94e4d5e4901ea4dc05e24a05.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-bb83413c46596ab086c5794f53f32f56.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-20ea643ef43c4df2296309bdca3edf74.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-bb83413c46596ab086c5794f53f32f56.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -267,6 +267,7 @@ window.Quarto = {
 <link rel="stylesheet" href="../../../theming/math-scroll.css">
 <link rel="stylesheet" href="../../../theming/practice-details.css">
 <link rel="stylesheet" href="../../../theming/callout-style.css">
+<link rel="stylesheet" href="../../../theming/reader-support.css">
 <link rel="stylesheet" href="../../../theming/floating-code.css">
 <link rel="stylesheet" href="../../../theming/font.css">
 <link rel="stylesheet" href="../../../theming/no-xref-suffix.css">
@@ -671,8 +672,7 @@ window.Quarto = {
   <li><a href="#categorical-data" id="toc-categorical-data" class="nav-link" data-scroll-target="#categorical-data"><span class="header-section-number">2.2.3</span> Categorical data</a></li>
   </ul></li>
   <li><a href="#sec-statistical-models" id="toc-sec-statistical-models" class="nav-link" data-scroll-target="#sec-statistical-models"><span class="header-section-number">2.3</span> Statistical Models</a></li>
-  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">2.4</span> Check your understanding</a></li>
-  <li><a href="#chapter-summary" id="toc-chapter-summary" class="nav-link" data-scroll-target="#chapter-summary"><span class="header-section-number">2.5</span> Chapter summary</a></li>
+  <li><a href="#chapter-summary" id="toc-chapter-summary" class="nav-link" data-scroll-target="#chapter-summary"><span class="header-section-number">2.4</span> Chapter summary</a></li>
   </ul>
 </nav>
     </div>
@@ -699,7 +699,7 @@ window.Quarto = {
 </header>
 
 
-<div class="callout callout-style-default callout-note callout-titled" title="Learning objectives">
+<div class="learning-objectives reader-only callout callout-style-simple callout-note callout-titled" title="Learning objectives">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -833,7 +833,7 @@ X_1, \dots, X_n \stackrel{\text{iid}}{\sim} \mathrm{Distribution}(\theta).
 <p>The mathematical term <strong>random sample</strong> does not by itself guarantee that the observed people or objects represent the target population. Selection bias, under-coverage, or non-response can make an iid model inappropriate for the target of interest. Conversely, a simple random sample drawn <em>without replacement</em> from a finite population is not exactly independent, although the iid approximation is often reasonable when the population is much larger than the sample.</p>
 </div>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled" title="Checkpoint: identify the ingredients">
+<div class="checkpoint reader-only callout callout-style-simple callout-tip callout-titled" title="Checkpoint: identify the ingredients">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -1795,7 +1795,7 @@ Now we cross-classify by both colour and shop:</p>
 </div>
 </div>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled" title="Checkpoint: classify before modelling">
+<div class="checkpoint reader-only callout callout-style-simple callout-tip callout-titled" title="Checkpoint: classify before modelling">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -1868,7 +1868,7 @@ X_1,\ldots, X_n \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2).
 </div>
 </div>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled" title="Checkpoint: question the model">
+<div class="checkpoint reader-only callout callout-style-simple callout-tip callout-titled" title="Checkpoint: question the model">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -2050,9 +2050,16 @@ Warning&nbsp;2.1: Non-Examinable Content: Specifying Statistical Models
 </div>
 </div>
 </div>
-</section>
-<section id="check-your-understanding" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">2.4</span> Check your understanding</h2>
+<div class="checkpoint reader-only callout callout-style-simple callout-tip callout-titled" title="Chapter checkpoint">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Chapter checkpoint
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p>Attempt these from memory before opening the answers.</p>
 <ol type="1">
 <li>In the study-space survey, distinguish the target population, random sample <span class="math inline">X_1,\ldots,X_n</span>, observed data <span class="math inline">x_1,\ldots,x_n</span>, parameter <span class="math inline">p</span>, and statistic <span class="math inline">\hat p</span>.</li>
@@ -2069,9 +2076,11 @@ Warning&nbsp;2.1: Non-Examinable Content: Specifying Statistical Models
 <li>The iid model describes variation under an assumed sampling mechanism; it does not remove selection bias or under-coverage caused by how volunteers were recruited.</li>
 </ol>
 </details>
+</div>
+</div>
 </section>
-<section id="chapter-summary" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="chapter-summary"><span class="header-section-number">2.5</span> Chapter summary</h2>
+<section id="chapter-summary" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="chapter-summary"><span class="header-section-number">2.4</span> Chapter summary</h2>
 <ul>
 <li>A target population states where we want to generalise; the random sample <span class="math inline">\underline{X}</span> represents uncertain measurements and <span class="math inline">\underline{x}</span> denotes the values actually observed.</li>
 <li>An iid model assumes independence and a common distribution, but representativeness also depends on how observations enter the sample.</li>
