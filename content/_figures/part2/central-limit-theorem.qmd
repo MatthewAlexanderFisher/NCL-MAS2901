@@ -1,29 +1,64 @@
 ```{ojs}
-viewof cltControls = Inputs.form({
-  distribution: Inputs.select(
-    ["Normal", "Uniform", "Exponential", "Bimodal mixture"],
-    {value: "Exponential", label: "Population distribution"}
-  ),
-  n: Inputs.range([1, 100], {
-    value: 1,
-    step: 1,
-    label: md`Sample size ${tex`n`}`
-  }),
-  replications: Inputs.range([200, 4000], {
-    value: 2000,
-    step: 200,
-    label: md`Repeated samples ${tex`N`}`
-  }),
-  bins: Inputs.range([10, 60], {
-    value: 32,
-    step: 1,
-    label: "Histogram bins"
-  })
-}, {submit: false})
+viewof cltControls = {
+  const drawButton = Inputs.button("Draw new samples", {
+    reduce: value => (value ?? 0) + 1
+  });
+  drawButton.classList.add("btn-resim");
 
-viewof cltNewSimulation = Inputs.button("Draw new samples", {
-  reduce: value => (value ?? 0) + 1
-})
+  const samplingForm = Inputs.form({
+    distribution: Inputs.select(
+      ["Normal", "Uniform", "Exponential", "Bimodal mixture"],
+      {value: "Exponential", label: "Population distribution"}
+    ),
+    n: Inputs.range([1, 100], {
+      value: 1,
+      step: 1,
+      label: md`Sample size ${tex`n`}`
+    }),
+    replications: Inputs.range([200, 4000], {
+      value: 2000,
+      step: 200,
+      label: md`Repeated samples ${tex`N`}`
+    })
+  }, {submit: false});
+
+  const displayForm = Inputs.form({
+    bins: Inputs.range([10, 60], {
+      value: 32,
+      step: 1,
+      label: "Histogram bins"
+    })
+  }, {submit: false});
+
+  const root = html`<details class="controls-root" open>
+    <summary>Simulation controls</summary>
+    <div class="controls-grid">
+      <div class="controls-col"><h4>Sampling</h4></div>
+      <div class="controls-col"><h4>Display &amp; actions</h4></div>
+    </div>
+  </details>`;
+
+  const columns = root.querySelectorAll(".controls-col");
+  columns[0].append(samplingForm);
+  columns[1].append(displayForm);
+  const buttonWrap = html`<div style="display:flex; justify-content:flex-start; margin-top:6px;"></div>`;
+  buttonWrap.append(drawButton);
+  columns[1].append(buttonWrap);
+
+  const getValue = () => ({
+    ...samplingForm.value,
+    ...displayForm.value,
+    run: drawButton.value ?? 0
+  });
+  const update = () => {
+    root.value = getValue();
+    root.dispatchEvent(new CustomEvent("input", {bubbles: true}));
+  };
+
+  root.querySelector(".controls-grid").addEventListener("input", update);
+  queueMicrotask(update);
+  return root;
+}
 ```
 
 ```{ojs}
@@ -75,7 +110,7 @@ cltPopulation = {
 }
 
 cltSimulation = {
-  const run = Number(cltNewSimulation ?? 0);
+  const run = Number(cltControls.run ?? 0);
   const meanSeed = (0.137 + 0.173 * run) % 1;
   const populationSeed = (0.619 + 0.197 * run) % 1;
   const meanRng = d3.randomLcg(meanSeed || 0.137);
@@ -228,22 +263,17 @@ cltMeansPlot = Plot.plot({
 {
   const simulatedMean = d3.mean(cltSimulation.means);
   const simulatedSd = d3.deviation(cltSimulation.means);
-  const button = viewof cltNewSimulation.querySelector("button");
-  if (button) button.classList.add("clt-resample-button");
 
   return html`<div class="clt-figure-shell">
-    <div class="clt-controls-row">
-      <div>${viewof cltControls}</div>
-      <div class="clt-action">${viewof cltNewSimulation}</div>
-    </div>
-
-    <div class="clt-plot-titles">
-      <strong>Population: ${cltPopulation.name}</strong>
-      <strong>Sampling distribution from ${cltControls.replications.toLocaleString()} means</strong>
-    </div>
     <div class="clt-plots">
-      <div>${cltPopulationPlot}</div>
-      <div>${cltMeansPlot}</div>
+      <div class="clt-plot-panel">
+        <strong>Population: ${cltPopulation.name}</strong>
+        ${cltPopulationPlot}
+      </div>
+      <div class="clt-plot-panel">
+        <strong>Sampling distribution from ${cltControls.replications.toLocaleString()} means</strong>
+        ${cltMeansPlot}
+      </div>
     </div>
 
     <div class="clt-legend" aria-label="Plot legend">
@@ -259,37 +289,30 @@ cltMeansPlot = Plot.plot({
       <div><span>CLT standard error</span><strong>${tex`\sigma/\sqrt n=${cltStandardError.toFixed(3)}`}</strong></div>
     </div>
 
+    <div class="controls-wrap">${viewof cltControls}</div>
+
     <p class="clt-prompt"><strong>Try this:</strong> start with ${tex`n=1`} and the Exponential or Bimodal population, then increase ${tex`n`}. The histogram changes shape and narrows; the red Normal curve uses the theorem, not the simulated histogram.</p>
   </div>
 
   <style>
     .clt-figure-shell { color: var(--plot-fg); }
-    .clt-controls-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 1rem;
-      align-items: end;
-      padding: .85rem 1rem;
-      margin-bottom: .75rem;
-      background: var(--plot-bg);
-      border: 1px solid var(--border);
-      border-radius: .4rem;
-    }
-    .clt-controls-row form { margin: 0; }
-    .clt-action { padding-bottom: .2rem; }
-    .clt-resample-button {
-      background: var(--plot-series-1) !important;
-      color: var(--plot-on-accent) !important;
-      border: 0 !important;
-    }
-    .clt-plot-titles,
     .clt-plots {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      display: flex;
       gap: 1rem;
+      align-items: flex-start;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      max-width: 100%;
     }
-    .clt-plot-titles { text-align: center; margin: .2rem 0 .35rem; }
-    .clt-plots > div { min-width: 0; overflow-x: auto; }
+    .clt-plot-panel {
+      flex: 0 0 auto;
+      min-width: 320px;
+      text-align: center;
+    }
+    .clt-plot-panel > strong {
+      display: block;
+      margin: .2rem 0 .35rem;
+    }
     .clt-legend {
       display: flex;
       flex-wrap: wrap;
@@ -328,20 +351,7 @@ cltMeansPlot = Plot.plot({
       background: var(--plot-fill-2);
     }
     @media (max-width: 760px) {
-      .clt-controls-row,
-      .clt-plot-titles,
-      .clt-plots { grid-template-columns: 1fr; }
-      .clt-plot-titles { display: none; }
-      .clt-plots > div::before {
-        display: block;
-        text-align: center;
-        font-weight: 600;
-        margin-bottom: .3rem;
-      }
-      .clt-plots > div:first-child::before { content: "Population distribution"; }
-      .clt-plots > div:last-child::before { content: "Sampling distribution of the mean"; }
       .clt-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .clt-action { padding-bottom: 0; }
     }
   </style>`;
 }

@@ -1,9 +1,32 @@
 ```{ojs}
-viewof auSampleSize = Inputs.range([1, 100], {
-  value: 1,
-  step: 1,
-  label: md`Sample size ${tex`n`}`
-})
+viewof auControls = {
+  const sampleSizeForm = Inputs.form({
+    n: Inputs.range([1, 100], {
+      value: 1,
+      step: 1,
+      label: md`Sample size ${tex`n`}`
+    })
+  }, {submit: false});
+
+  const root = html`<details class="controls-root" open>
+    <summary>Simulation controls</summary>
+    <div class="controls-grid">
+      <div class="controls-col"><h4>Sample size</h4></div>
+    </div>
+  </details>`;
+
+  root.querySelector(".controls-col").append(sampleSizeForm);
+  const update = () => {
+    root.value = {...sampleSizeForm.value};
+    root.dispatchEvent(new CustomEvent("input", {bubbles: true}));
+  };
+
+  sampleSizeForm.addEventListener("input", update);
+  queueMicrotask(update);
+  return root;
+}
+
+auSampleSize = auControls.n
 
 auTarget = 0
 auFixedSd = 0.8
@@ -117,74 +140,53 @@ auBiasPlot = Plot.plot({
 
 ```{ojs}
 html`<div class="au-figure-shell">
-  <div class="au-control">${viewof auSampleSize}</div>
-  <div class="au-titles">
-    <strong>Sampling distribution at the selected ${tex`n`}</strong>
-    <strong>What happens to the bias as ${tex`n`} grows?</strong>
-  </div>
   <div class="au-plots">
-    <div>${auDensityPlot}</div>
-    <div>${auBiasPlot}</div>
+    <div class="au-plot-panel">
+      <strong>Sampling distribution at the selected ${tex`n`}</strong>
+      ${auDensityPlot}
+    </div>
+    <div class="au-plot-panel">
+      <strong>What happens to the bias as ${tex`n`} grows?</strong>
+      ${auBiasPlot}
+    </div>
   </div>
-  <div class="au-metrics">
-    <div>θ = ${auTarget}</div>
-    <div>E[θ̂ₙ] = ${auExpectedValue.toFixed(3)}</div>
-    <div>Bias(θ̂ₙ) = ${auBias.toFixed(3)}</div>
-    <div>sd(θ̂ₙ) = ${auFixedSd.toFixed(1)}</div>
+  <div class="au-readout" role="status" aria-live="polite">
+    θ = ${auTarget}; E[θ̂ₙ] = ${auExpectedValue.toFixed(3)};
+    Bias(θ̂ₙ) = ${auBias.toFixed(3)}; sd(θ̂ₙ) = ${auFixedSd.toFixed(1)}
   </div>
+  <div class="controls-wrap">${viewof auControls}</div>
   <p class="au-message"><strong>Watch the centre, not the width.</strong> As ${tex`n`} increases, the red centre moves towards ${tex`\theta`} and the bias approaches zero. The spread is deliberately held fixed: this sequence is asymptotically unbiased, but it is <em>not</em> consistent.</p>
 </div>
 
 <style>
   .au-figure-shell { color: var(--plot-fg); }
-  .au-control {
-    padding: .75rem 1rem;
-    margin-bottom: .7rem;
-    background: var(--plot-bg);
-    border: 1px solid var(--border);
-    border-radius: .4rem;
-  }
-  .au-control form { margin: 0; max-width: 30rem; }
-  .au-titles,
   .au-plots {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
-  }
-  .au-titles { text-align: center; margin: .2rem 0 .35rem; }
-  .au-plots > div { min-width: 0; overflow-x: auto; }
-  .au-metrics {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: .5rem;
-    margin: .6rem 0;
+    gap: 1rem;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    max-width: 100%;
   }
-  .au-metrics > div {
-    padding: .35rem .65rem;
-    background: var(--plot-bg);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    font-size: .88rem;
+  .au-plot-panel {
+    flex: 0 0 auto;
+    min-width: 320px;
+    text-align: center;
+  }
+  .au-plot-panel > strong {
+    display: block;
+    margin: .2rem 0 .35rem;
+  }
+  .au-readout {
+    margin: .65rem 0 0;
+    font-size: .9rem;
+    text-align: center;
   }
   .au-message {
     margin: .65rem 0 0;
     padding: .65rem .8rem;
     border-left: .25rem solid var(--plot-series-3);
     background: var(--plot-fill-3);
-  }
-  @media (max-width: 760px) {
-    .au-titles,
-    .au-plots { grid-template-columns: 1fr; }
-    .au-titles { display: none; }
-    .au-plots > div::before {
-      display: block;
-      text-align: center;
-      font-weight: 600;
-      margin-bottom: .3rem;
-    }
-    .au-plots > div:first-child::before { content: "Sampling distribution"; }
-    .au-plots > div:last-child::before { content: "Bias against sample size"; }
   }
 </style>`
 ```
