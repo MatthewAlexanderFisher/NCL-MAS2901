@@ -881,7 +881,8 @@ Thus the sample proportion is unbiased and becomes more precise as $n$ grows. In
 
 ::: {.thm #thm-clt}
 ### Central Limit Theorem (CLT)
-Let $X_1, X_2, \ldots$ be an infinite sequence of **independent and identically distributed** random variables with finite mean $\mu=\mathrm{E}[X_1]$ and finite variance $\sigma^2=\mathrm{Var}(X_1)<\infty$.  
+Let $X_1, X_2, \ldots$ be an infinite sequence of **independent and identically distributed** random variables with finite mean $\mu=\mathrm{E}[X_1]$ and positive finite variance $0<\sigma^2=\mathrm{Var}(X_1)<\infty$.
+
 Define the sample mean
 $$
 \bar X_n \;=\; \frac{1}{n}\sum_{i=1}^n X_i.
@@ -892,12 +893,78 @@ $$
 $$
 :::
 
-::: {#prf-clt}
-### Not Examinable
-We do not give a proof here. An outline is provided in separate practice exercises (not examinable).
+::: {.prf #prf-clt}
+*This proof is not examinable.*
+
+The proof uses **characteristic functions**. For a random variable $Y$, its characteristic function is
+$$
+\varphi_Y(t)=\mathrm{E}\!\left[e^{itY}\right],
+\qquad t\in\mathbb R,
+$$
+where $i^2=-1$. Every random variable has a characteristic function, even when its moment generating function does not exist.
+
+**Step 1: Standardise the observations.** Define
+$$
+Y_i=\frac{X_i-\mu}{\sigma}.
+$$
+Then $Y_1,Y_2,\ldots$ are i.i.d. with
+$$
+\mathrm E[Y_i]=0,
+\qquad
+\mathrm E[Y_i^2]=\mathrm{Var}(Y_i)=1.
+$$
+Moreover, the standardised sample mean can be written as
+$$
+Z_n
+=\frac{\bar X_n-\mu}{\sigma/\sqrt n}
+=\frac{1}{\sqrt n}\sum_{i=1}^nY_i.
+$$
+
+**Step 2: Expand the characteristic function near zero.** The Taylor expansion of $e^{ix}$ at $x=0$ gives
+$$
+e^{ix}=1+ix-\frac{x^2}{2}+o(x^2).
+$$
+Because $\mathrm E[Y_1^2]<\infty$, this expansion may be taken inside the expectation.[^clt-cf-expansion] Hence, as $u\to0$,
+$$
+\begin{aligned}
+\varphi_Y(u)
+&=\mathrm E\!\left[e^{iuY_1}\right] \\
+&=1+iu\,\mathrm E[Y_1]
+  -\frac{u^2}{2}\,\mathrm E[Y_1^2]+o(u^2) \\
+&=1-\frac{u^2}{2}+o(u^2).
+\end{aligned}
+$$
+
+**Step 3: Use independence.** For any fixed $t\in\mathbb R$, independence of the $Y_i$ gives
+$$
+\begin{aligned}
+\varphi_{Z_n}(t)
+&=\mathrm E\!\left[
+   \exp\!\left(\frac{it}{\sqrt n}\sum_{i=1}^nY_i\right)
+  \right] \\
+&=\prod_{i=1}^n
+  \mathrm E\!\left[e^{itY_i/\sqrt n}\right] \\
+&=\left[\varphi_Y\!\left(\frac{t}{\sqrt n}\right)\right]^n.
+\end{aligned}
+$$
+Applying the expansion from Step 2 with $u=t/\sqrt n$,
+$$
+\varphi_{Z_n}(t)
+=\left[1-\frac{t^2}{2n}+o\!\left(\frac1n\right)\right]^n
+\longrightarrow e^{-t^2/2}.
+$$
+The limit $e^{-t^2/2}$ is the characteristic function of a standard Normal random variable.
+
+**Step 4: Convert characteristic-function convergence into distributional convergence.** Lévy's continuity theorem says that if characteristic functions converge pointwise to a characteristic function that is continuous at zero, then the corresponding random variables converge in distribution. Therefore
+$$
+Z_n
+=\frac{\bar X_n-\mu}{\sigma/\sqrt n}
+\xrightarrow{d}\mathcal N(0,1),
+$$
+which proves the result.
+:::
 
 *Note.* The notation $\xrightarrow{d}$ means **convergence in distribution**: the distribution of the random variable on the left approaches the distribution on the right as $n$ grows.
-:::
 
 The CLT is remarkable: subject to the conditions in @thm-clt—most importantly i.i.d. observations with finite variance—the **sample mean** becomes approximately Normal as $n$ increases. It does not apply to every possible population distribution.
 
@@ -1156,3 +1223,11 @@ For any proposed estimator, ask four questions in order: **What is random? Where
 - Bias measures systematic displacement, variance measures sampling spread, and MSE combines both through the bias--variance decomposition.
 - The Central Limit Theorem often gives a large-sample Normal approximation for a sample mean, provided its assumptions—notably finite variance—are appropriate.
 - Consistency asks whether an estimator concentrates near the target as $n$ grows; unbiasedness at each fixed sample size is neither required nor sufficient on its own.
+
+[^clt-cf-expansion]: Write $e^{ix}=1+ix-x^2/2+x^2r(x)$, where $r(x)\to0$ as $x\to0$ and $r$ is bounded. Then
+    $$
+    \mathrm E\!\left[(uY_1)^2r(uY_1)\right]
+    =u^2\mathrm E\!\left[Y_1^2r(uY_1)\right]
+    =o(u^2)
+    $$
+    by dominated convergence, because $Y_1^2$ is integrable. This justifies the expected Taylor expansion without assuming that an MGF exists.
