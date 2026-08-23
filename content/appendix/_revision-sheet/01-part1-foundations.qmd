@@ -40,7 +40,7 @@ $$
 = \frac{\Pr(B \mid A)\Pr(A)}{\Pr(B)}.
 $$
 
-Its <span class="xref-no-num">[proof @prf-bayes]</span> is **not examinable**, but you must be able to **apply** the formula in simple settings.
+Its <span class="xref-no-num">[proof @prf-bayes-events]</span> is **not examinable**, but you must be able to **apply** the formula in simple settings.
 
 </div>
 </div>
@@ -77,9 +77,17 @@ This conceptual understanding is essential for later chapters involving likeliho
 <details class="essential-points">
 <summary> Assessment Focus </summary>
 
-- <span class="xref-no-num">[Chapter 2 @sec-what-is-statistics]</span> presents the **core idea** of statistical inference:
-  1. We 
-
+- <span class="xref-no-num">[Chapter 2 @sec-what-is-statistics]</span> presents the
+  **core idea** of statistical inference:
+  1. specify a population or data-generating model and its unknown parameter;
+  2. obtain a sample through a stated sampling mechanism;
+  3. distinguish the random variables $X_i$ from their observed values $x_i$;
+  4. use the observations to learn about the unknown parameter.
+- Be able to identify the model, parameter, parameter space, data type and i.i.d.
+  assumptions in a question. Remember that i.i.d. is a modelling assumption; it
+  does not by itself guarantee that a sample represents the target population.
+- Model construction is background rather than a major algebraic exam task, but
+  you must be able to use and interpret a model supplied in a question.
 
 </details>
 
@@ -125,8 +133,12 @@ Understand the **difference** between data $X_1,\ldots, X_n$ and parameters $\th
 
 In any statistical model:
 
-- The **data** $X_1,\ldots,X_n$ are **random variables**.  
+- Before observation, $X_1,\ldots,X_n$ are **random variables**. After sampling,
+  $x_1,\ldots,x_n$ denote their fixed observed values.
 - The **parameter** $\theta$ controls the distribution of each $X_i$.
+- A sampling mechanism connects the target population to the observations. A
+  convenient i.i.d. model is not automatically evidence that this mechanism was
+  representative.
 
 </div>
 </div>
@@ -164,6 +176,10 @@ For **numerical data**, there are two main categories:
    - These models have **PMFs** and require summation when computing probabilities.
 
 Correctly identifying the data type ensures the likelihood function, estimators, and inferential procedures are appropriate for the problem.
+
+Categorical data are labels rather than numerical measurements. They are often
+represented through indicator/count variables before a Bernoulli, Binomial or
+Multinomial model is used.
 
 </div>
 </div>
@@ -247,13 +263,23 @@ Understand the differences between the <span class="xref-no-num">[Bayesian and F
 <div class="revision-content" id="rev-bayes-vs-freq" hidden>
 
 1. **Frequentist Inference:** 
-   - Data $X_i$ is **treated as random**
+   - Before observation, the sampling model treats the data $X_i$ as random;
+     after observation, the values $x_i$ are fixed.
    - The parameter $\theta$ is treated as **fixed** but **unknown**.
-   - Uncertainty arises from repeated experiments.
+   - Procedures are evaluated through their behaviour over hypothetical repeated
+     samples (for example, bias or confidence-interval coverage).
 2. **Bayesian Inference:**
-   - The **data** are fixed once observed.
-   - The **parameter** $\theta$ is treated as a random variable, with uncertainty described by a **prior distribution** $\pi(\theta)$.
+   - The same sampling model describes possible data before observation, and the
+     observed values are then conditioned upon.
+   - Uncertainty about $\theta$ is described using a **prior distribution**
+     $\pi(\theta)$.
    - Inference updates this prior in light of the data, giving a **posterior distribution** $\pi(\theta \mid \text{data})$.
+
+Neither framework owns prior scientific knowledge or objectivity: frequentist
+analyses can use prior knowledge in their model and design, while Bayesian
+analyses may use subjective, weakly informative or reference priors. The key
+difference is the meaning assigned to probability statements about $\theta$ and
+how procedures are calibrated.
 
 </div>
 </div>
@@ -281,5 +307,3 @@ The four types of tasks are:
 
 </div>
 </div>
-
-

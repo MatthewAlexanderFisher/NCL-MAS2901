@@ -2,6 +2,19 @@
 
 {{< include ../../_figures/part2/point-estimation-shared.qmd >}}
 
+::: {.callout-note appearance="simple"}
+## Learning objectives and route through this chapter
+
+By the end of this chapter, you should be able to:
+
+1. distinguish a **statistic**, an **estimator**, and an observed **estimate**;
+2. explain why an estimator has a sampling distribution;
+3. compute and interpret bias, variance, standard error, and mean squared error;
+4. compare finite-sample properties with large-sample properties such as consistency.
+
+The **core route** is the definitions, worked examples, the Central Limit Theorem, and the consistency criterion. Longer derivations marked *optional/not examinable* are there for readers who want to see why the results hold; they are not prerequisites for continuing.
+:::
+
 A **statistic** is any function of the sample
 $$
 T \;=\; T(X_1,\dots,X_n).
@@ -198,20 +211,18 @@ $$
 X_1,\dots,X_n \overset{\text{iid}}{\sim} \mathcal{N}(\mu,\sigma^2),
 $$
 
-then
-
-1. The scaled sample variance follows a chi-squared distribution:
-  $$
-  \dfrac{(n-1)S^2}{\sigma^2} \;\sim\; \chi^2_{\,n-1},
-  $$
-
-2. The sample mean $\bar{X}$ and the sample variance $S^2$ are independent random variables.
+then the scaled sample variance follows a chi-squared distribution:
+$$
+\dfrac{(n-1)S^2}{\sigma^2} \;\sim\; \chi^2_{\,n-1}.
+$$
 
 :::
 
-::: {.prf #prf-normal-sample-variance}
+Under Normality, $\bar X$ and $S^2$ are also independent. We will use this later, but its proof is not needed here.
 
-#### Not Examinable
+::: {.callout-note collapse="true" #prf-normal-sample-variance}
+
+#### Optional derivation of the chi-squared result (not examinable)
 
 The proof relies on the following *property* of the $\chi^2_p$ distribution: For $p$ i.i.d. standard normal random variables
 $$
@@ -296,7 +307,7 @@ $$
 = a_ja_k\Bigl(\frac{j}{jk}-\frac{1}{k}\Bigr)=0.
 $$
 
-Thus the $Z_k$ are pairwise uncorrelated. Since they are all Normal (linear combos of independent Normals), *uncorrelated $\Rightarrow$ independent*. So $Z_1,\dots,Z_{n-1}$ are **independent** $\mathcal N(0,1)$.
+Thus the $Z_k$ are pairwise uncorrelated. Moreover, the vector $(Z_1,\ldots,Z_{n-1})$ is **jointly Normal**, because it is a linear transformation of the jointly Normal vector $(Y_1,\ldots,Y_n)$. For jointly Normal variables, uncorrelatedness implies independence. Hence $Z_1,\dots,Z_{n-1}$ are **independent** $\mathcal N(0,1)$.
 
 **Step 4 ($\tfrac{(n-1)S^2}{\sigma^2}= \sum_{k=1}^{n-1} Z_k^2$ ).**
 
@@ -371,7 +382,7 @@ $$
 $$
 
 * If $\mathrm{Bias}(\hat{\theta}) = 0$, the estimator is called **unbiased**.
-* Otherwise, it is **biased**: it systematically over- or under-estimates $\theta$.
+* Otherwise, it is **biased**: it over- or under-estimates $\theta$ **on average**. Bias does not mean that every realised estimate lies on the same side of $\theta$.
 :::
 
 ::: {.example #exm-bias-sm}
@@ -538,16 +549,16 @@ $$
 In the next visualisation we look at the *bias* of the *naive sample variance*:
 
 $$
-S^2_n = \frac{1}{n}\sum_{i=1}^n (X_i-\bar{X})^2.
+\widetilde S^2_n = \frac{1}{n}\sum_{i=1}^n (X_i-\bar{X})^2.
 $$
 
 From @exm-bias-sv, the bias is
 
 $$
-\mathrm{Bias}(S^2_n) = -\frac{\sigma^2}{n}.
+\mathrm{Bias}(\widetilde S^2_n) = -\frac{\sigma^2}{n}.
 $$
 
-This means $S^2_n$ **systematically underestimates** the true population variance $\sigma^2$.
+This means $\widetilde S^2_n$ **underestimates on average** the true population variance $\sigma^2$.
 
 ::: {.content-visible unless-format="pdf"}
 
@@ -558,7 +569,9 @@ This means $S^2_n$ **systematically underestimates** the true population varianc
 <summary><strong>Show Visualisation</strong></summary>
 ```
 
-In the right-hand panel of the simulation, notice how the sampling distribution of $S^2_n$ is centred *below* $\sigma^2$. As $n$ increases, the bias shrinks (since $-\sigma^2/n \to 0$), but for small $n$ the underestimation is quite visible.
+Before resampling, predict where the distribution of $\widetilde S^2_n$ will be centred relative to $\sigma^2$. Then compare small and large $n$: observe what happens to both the bias and the spread, and explain why these are different properties.
+
+The right-hand panel shows that the sampling distribution of $\widetilde S^2_n$ is centred *below* $\sigma^2$. As $n$ increases, the bias shrinks (since $-\sigma^2/n \to 0$), but for small $n$ the underestimation is quite visible. This sentence is also the text-only takeaway from the simulation.
 
 {{< include ../../_figures/part2/sample-variance-bias.qmd >}}
 
@@ -590,18 +603,18 @@ In the right-hand panel of the simulation, notice how the sampling distribution 
 
 ### Standard Error
 
-The **standard error** of an estimator $\hat{\theta}$ of $\theta$, is just the *standard deviation* of the estimator:
+The **standard error** of an estimator $\hat{\theta}$ of $\theta$ is its *standard deviation under repeated sampling*:
 
 $$
 \mathrm{S.E.}(\hat{\theta}) = \sqrt{\mathrm{Var}(\hat{\theta})}.
 $$
 
-It gives a scale for how much we expect the estimator to vary from sample to sample.
+It gives a scale for how much we expect the estimator to vary from sample to sample. This is the **theoretical standard error**, which may depend on unknown parameters. An **estimated standard error** replaces those unknown quantities by estimates computed from the observed data.
 :::
 
 
 
-### Mean Squared Error (MSE)
+### From Error to Mean Squared Error (MSE)
 
 So far we have seen that estimators can have **bias** and **variance**. Both are important, but it is often useful to combine them into a *single* overall measure of accuracy.
 
@@ -611,14 +624,14 @@ To get there, we start with the basic idea of **error**.
 
 ### Error
 
-The **error** of an estimator is the difference between the estimate and the true parameter:
+The **estimation error** is the random difference between the estimator and the true parameter:
 
 $$
 \mathrm{Error}(\hat{\theta}) = \hat{\theta} - \theta.
 $$
 :::
 
-This captures exactly “how far off” our estimate is. But there are two problems:
+After data are observed this has a realised value, but in practice the true $\theta$ is unknown, so the realised error cannot usually be calculated directly. As a theoretical quantity it captures “how far off” the estimator is. There are two problems with averaging the unsquared error:
 
 1. The error is a **random variable** (it depends on the sample we happened to draw).
 2. The error can be **positive or negative** — so if we just averaged it across many samples, the positives and negatives might cancel out, misleading us into thinking the estimator is more accurate than it really is.
@@ -638,7 +651,7 @@ $$
 This measures the *average squared distance* between the estimator and the true parameter value.
 :::
 
-::: {#rem-mse}
+::: {#rem-why-squared-error}
 ### Why Squared Error?
 
 The MSE is built to solve the two problems with using the <span class="xref-no-num">[error @def-error]</span>:
@@ -726,13 +739,7 @@ $$
 ::: {.example #exm-mse1}
 ### MSE of Sample Mean
 
-Suppose we have a random sample
-
-$$
-X_1,\dots,X_n  \overset{\text{iid}}{\sim} \mathrm{Distribution}(\underline{\theta})
-$$
-
-and we wish to estimate its *population mean* $\mu$ with $\hat{\mu} = c\bar{X}$, where $c$ is a constant.
+Suppose $X_1,\ldots,X_n$ are i.i.d. with $\mathrm E[X_i]=\mu$ and $\mathrm{Var}(X_i)=\sigma^2<\infty$. We wish to estimate the population mean $\mu$ with $\hat{\mu} = c\bar{X}$, where $c$ is a constant.
 
 Compute the **MSE** of this estimator.
 
@@ -852,6 +859,25 @@ Thus, $\hat{\theta}_3$ has the smallest MSE and is the best choice.
 :::
 
 
+::: {.example #exm-bernoulli-estimator}
+### Recurring example: estimating a Bernoulli probability
+
+Let $Y_1,\ldots,Y_n\overset{\mathrm{iid}}{\sim}\mathrm{Bernoulli}(p)$ and estimate the unknown success probability with
+$$
+\hat p=\bar Y=\frac1n\sum_{i=1}^nY_i.
+$$
+Since $\mathrm E[Y_i]=p$ and $\mathrm{Var}(Y_i)=p(1-p)$,
+$$
+\mathrm E[\hat p]=p,
+\qquad
+\mathrm{Var}(\hat p)=\frac{p(1-p)}n,
+\qquad
+\mathrm{MSE}(\hat p)=\frac{p(1-p)}n.
+$$
+Thus the sample proportion is unbiased and becomes more precise as $n$ grows. In the next chapter the same rule will reappear as the **MLE**; in the Bayesian chapter we will compare it with a Beta-posterior mean and MAP estimate.
+:::
+
+
 ## Central Limit Theorem (CLT) {#sec-clt}
 
 ::: {.thm #thm-clt}
@@ -861,7 +887,7 @@ Define the sample mean
 $$
 \bar X_n \;=\; \frac{1}{n}\sum_{i=1}^n X_i.
 $$
-Then, **regardless of the original distribution of the $X_i$**,
+Then, under these stated conditions,
 $$
 \frac{\bar X_n - \mu}{\sigma/\sqrt{n}} \;\xrightarrow{\,d\,}\; \mathcal N(0,1)\quad\text{as } n\to\infty.
 $$
@@ -874,13 +900,13 @@ We do not give a proof here. An outline is provided in separate practice exercis
 *Note.* The notation $\xrightarrow{d}$ means **convergence in distribution**: the distribution of the random variable on the left approaches the distribution on the right as $n$ grows.
 :::
 
-The CLT is remarkable: it tells us that **whatever the original distribution** of the data, the **sample mean** is approximately Normal for sufficiently large $n$, and the approximation **improves** as $n$ increases.
+The CLT is remarkable: subject to the conditions in @thm-clt—most importantly i.i.d. observations with finite variance—the **sample mean** becomes approximately Normal as $n$ increases. It does not apply to every possible population distribution.
 
 In practice, for a *reasonable* sample size we may write
 $$
 \bar X_n \;\overset{\text{approx.}}{\sim}\; \mathcal N\!\left(\mu,\ \frac{\sigma^2}{n}\right),
 $$
-not only for Normal samples but for many non-Normal populations as well. What counts as “reasonable” depends on how skewed/heavy-tailed the original distribution is; often $n>20$ suffices, and in many settings even smaller $n$ will do.
+not only for Normal samples but for many non-Normal populations as well. There is **no universal threshold** for a “large enough” $n$: convergence can be quick for roughly symmetric, light-tailed data and much slower for strongly skewed or heavy-tailed data. The model and the purpose of the approximation must therefore be considered, rather than applying a fixed rule such as $n>20$.
 
 Because $\bar X_n = \tfrac{1}{n}\sum_{i=1}^n X_i$, the CLT also yields an approximation for **sums**:
 $$
@@ -889,7 +915,9 @@ $$
 
 ::: {.callout-tip}
 ### Common misconceptions
- The CLT does **not** say the *data* become Normal; it says the **distribution of the sample mean** becomes approximately Normal as $n$ grows.
+
+- The CLT does **not** say the *data* become Normal; it says the **distribution of the sample mean** becomes approximately Normal as $n$ grows.
+- A large sample does not rescue a model with infinite variance or make every Normal approximation accurate.
 :::
 
 
@@ -936,7 +964,7 @@ However, some biased estimators may still “correct themselves” in the limit 
 ::: {.definition #def-consistency}
 ### Consistency
 
-A sequence of estimator $\hat{\theta}_n$ is **consistent** for $\theta$ if
+A sequence of estimators $\hat{\theta}_n$ is **consistent** for $\theta$ if
 
 $$
 \hat{\theta}_n \;\xrightarrow{p}\; \theta 
@@ -1115,4 +1143,12 @@ Thus $S_n^2$ is **consistent**.
 ### Consistency
 - Consistency requires <span class="xref-no-num">[convergence in probability @def-convergence-in-probability]</span>, not necessarily unbiasedness at every finite $n$.  
 - In this course, you can always use the sufficient condition (@prp-sufficient-consistency) to prove consistency.
+- Equivalently, if $\mathrm{MSE}(\hat\theta_n)\to0$, then both squared bias and variance vanish, so the sufficient condition holds.
+- Unbiasedness alone does **not** imply consistency: an unbiased estimator whose variance never shrinks need not home in on $\theta$.
+:::
+
+::: {.callout-tip appearance="simple"}
+### Chapter checkpoint
+
+For any proposed estimator, ask four questions in order: **What is random? Where is its sampling distribution centred? How spread out is it? What happens as $n$ grows?** These correspond to the estimator/estimate distinction, bias, standard error/MSE, and consistency.
 :::

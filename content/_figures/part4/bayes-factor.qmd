@@ -1,21 +1,22 @@
 ```{ojs}
-// Parameters
+// Model parameters
 n = 30
 sigma = 10
 mu0 = 200
+sampling_sd = sigma / Math.sqrt(n)
 
-// Slider for observed sample mean
-viewof xbar_obs = Inputs.range([mu0 - 3*sigma, mu0 + 3*sigma], 
-  {step: 0.5, value: mu0, label: md`Observed sample mean ${tex`\bar{x}_{obs}`}`} )
+viewof xbar_obs = Inputs.range([mu0 - 8*sampling_sd, mu0 + 8*sampling_sd],
+  {step: 0.1, value: mu0, label: md`Observed sample mean ${tex`\bar{x}_{\mathrm{obs}}`}`} )
+
+viewof prior_sd = Inputs.range([1, 20],
+  {step: 0.5, value: 5, label: md`Prior standard deviation under ${tex`H_1`}`} )
 
 // Likelihood under H0 (point null)
 m0 = 1/(sigma/Math.sqrt(n)*Math.sqrt(2*Math.PI)) *
      Math.exp(-0.5*((xbar_obs - mu0)/(sigma/Math.sqrt(n)))**2)
 
-// Marginal likelihood under H1 (normal prior on mu)
-tau = 25        // prior variance for H1
-post_var = 1 / (1/tau + n/sigma**2)
-post_mean = post_var * (mu0/tau + n*xbar_obs/sigma**2)
+// Marginal likelihood under H1 (proper normal conditional prior on mu)
+tau = prior_sd**2
 
 // Under H1, the marginal distribution of xbar is Normal(mu0, sigma^2/n + tau)
 m1 = 1/Math.sqrt(2*Math.PI*(sigma**2/n + tau)) *
@@ -23,6 +24,11 @@ m1 = 1/Math.sqrt(2*Math.PI*(sigma**2/n + tau)) *
 
 // Bayes factor
 B10 = m1/m0
+posteriorH1EqualOdds = B10 / (1 + B10)
 
-md`**Bayes factor** ${tex`B_{10}`} = ${B10.toFixed(3)}`
+html`<div role="status" aria-live="polite" style="padding:.75rem;border:1px solid var(--border);border-radius:.5rem;background:var(--surface-weak);">
+  <strong>Bayes factor:</strong> ${tex`B_{10}=${B10.toFixed(3)}`}<br>
+  With equal prior odds: ${tex`\Pr(H_1\mid\underline{x})=${posteriorH1EqualOdds.toFixed(3)}`}.<br>
+  <span style="color:var(--fg-muted);">Values above 1 favour ${tex`H_1`}; values below 1 favour ${tex`H_0`}.</span>
+</div>`
 ```

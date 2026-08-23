@@ -691,8 +691,23 @@ window.Quarto = {
 </header>
 
 
-<p>Recalling the <span class="xref-no-num"><a href="../part1/3-types-of-inference.html#sec-inference-tasks" class="quarto-xref">main inference tasks&nbsp;<span>3.2</span></a></span>, we now move from <em>interval estimation</em> to <em>hypothesis testing</em> in the <strong>Bayesian</strong> framework, and consider the Bayesian analogue of frequentist hypothesis testing..</p>
-<p>The Bayesian perspective is slightly different from the frequentist one: instead of asking whether data look <em>unlikely</em> under a hypothesis, we ask:</p>
+<p>Recalling the <span class="xref-no-num"><a href="../part1/3-types-of-inference.html#sec-inference-tasks" class="quarto-xref">main inference tasks&nbsp;<span>3.2</span></a></span>, we now move from <em>interval estimation</em> to <em>hypothesis testing</em> in the <strong>Bayesian</strong> framework, and consider the Bayesian analogue of frequentist hypothesis testing.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><strong>By the end of this optional chapter, you should be able to:</strong></p>
+<ul>
+<li>explain why a point null needs positive prior probability;</li>
+<li>compute posterior hypothesis odds from a Bayes factor and prior odds; and</li>
+<li>distinguish a Bayes factor, a posterior hypothesis probability and a frequentist <span class="math inline">p</span>-value.</li>
+</ul>
+</div>
+</div>
+</div>
+<p>The Bayesian perspective is different from the frequentist one: instead of calibrating a rejection rule under repeated samples from <span class="math inline">H_0</span>, we compare how well the competing hypotheses predicted the observed data.</p>
 <blockquote class="blockquote">
 <p><strong>How probable is each hypothesis given the observed data?</strong></p>
 </blockquote>
@@ -715,6 +730,9 @@ This involves two ingredients:</p>
 \pi(\theta \mid H_0) \quad \text{and} \quad \pi(\theta \mid H_1).
 </span></p></li>
 </ol>
+<p>Equivalently, introduce a hypothesis indicator <span class="math inline">H\in\{0,1\}</span>, assign <span class="math inline">\Pr(H=j)&gt;0</span>, and then specify the distribution of <span class="math inline">\theta</span> conditional on <span class="math inline">H=j</span>. This mixture construction is essential for a point null: a continuous prior on <span class="math inline">\theta</span> alone gives <span class="math inline">\Pr(\theta=\theta_0)=0</span>. For <span class="math display">
+H_0:\theta=\theta_0,
+</span> the conditional prior under <span class="math inline">H_0</span> is a point mass at <span class="math inline">\theta_0</span>.</p>
 <section id="posterior-probabilities-of-hypotheses" class="level3" data-number="10.1.1">
 <h3 data-number="10.1.1" class="anchored" data-anchor-id="posterior-probabilities-of-hypotheses"><span class="header-section-number">10.1.1</span> Posterior Probabilities of Hypotheses</h3>
 <p>After observing data <span class="math inline">\underline{x}</span>, Bayes’ theorem gives <span class="math display">
@@ -724,6 +742,9 @@ This involves two ingredients:</p>
 <p>If <span class="math inline">H_0</span> is not simple, the likelihood <span class="math inline">f(\underline{x}\mid H_0)</span> is obtained by averaging over <span class="math inline">\theta \in \Theta_0</span> with the conditional prior: <span class="math display">
 f(\underline{x} \mid H_0)
 = \int_{\Theta_0} f(\underline{x}\mid\theta)\,\pi(\theta \mid H_0)\,\mathrm{d}\theta.
+</span></p>
+<p>For the simple null <span class="math inline">H_0:\theta=\theta_0</span>, this reduces to <span class="math display">
+m_0(\underline{x})=f(\underline{x}\mid\theta_0).
 </span></p>
 <p>So we can write <span class="math display">
 \Pr(H_0 \mid \underline{x})
@@ -756,46 +777,54 @@ B_{10} = \frac{m_1(\underline{x})}{m_0(\underline{x})}.
 </li>
 <li>If <span class="math inline">B_{10} &lt; 1</span>: the data increase belief in <span class="math inline">H_0</span>.</li>
 </ul>
+<p>A Bayes factor is <strong>not</strong> itself a posterior probability: posterior odds also depend on the prior odds. Moreover, the marginal likelihood under a composite hypothesis depends on its conditional prior, which must be proper for the standard Bayes factor to be defined.</p>
 <hr>
 <details>
-<summary><strong>Show Visualisation</strong></summary>
+<summary><strong>Explore a Bayes factor</strong></summary>
 <p>Suppose our model is</p>
 <p><span class="math display">
-X_i \mid \mu \sim \mathcal{N}(\mu, 10),
+X_i \mid \mu \sim \mathcal{N}(\mu, 10^2),
 </span></p>
 <p>and we want to test whether <span class="math inline">\mu = 200</span>:</p>
 <ul>
 <li><span class="math inline">H_0: \mu = 200</span><br>
 </li>
-<li><span class="math inline">H_1: \mu \sim \mathcal{N}(200, 25)</span> (a vague prior centred on 200)</li>
+<li><span class="math inline">H_1: \mu \neq 200</span>, with conditional prior <span class="math inline">\mu\mid H_1\sim\mathcal{N}(200,25)</span>.</li>
 </ul>
 <p>We compare the <em>likelihood of the observed sample mean</em> under each hypothesis.</p>
+<p><strong>Predict.</strong> What should happen to <span class="math inline">B_{10}</span> as <span class="math inline">\bar x</span> moves away from <span class="math inline">200</span>? Then change both the observed mean and the prior scale under <span class="math inline">H_1</span>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="1" data-source-offset="-14"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">30</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="1" data-source-offset="-20"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">30</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>sigma <span class="op">=</span> <span class="dv">10</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>mu0 <span class="op">=</span> <span class="dv">200</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">// Slider for observed sample mean</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>viewof xbar_obs <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([mu0 <span class="op">-</span> <span class="dv">3</span><span class="op">*</span>sigma<span class="op">,</span> mu0 <span class="op">+</span> <span class="dv">3</span><span class="op">*</span>sigma]<span class="op">,</span> </span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> mu0<span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="fu">md</span><span class="vs">`Observed sample mean </span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`</span><span class="sc">\b</span><span class="vs">ar{x}_{obs}`</span><span class="sc">}</span><span class="vs">`</span>} )</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>sampling_sd <span class="op">=</span> sigma <span class="op">/</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(n)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>viewof xbar_obs <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([mu0 <span class="op">-</span> <span class="dv">8</span><span class="op">*</span>sampling_sd<span class="op">,</span> mu0 <span class="op">+</span> <span class="dv">8</span><span class="op">*</span>sampling_sd]<span class="op">,</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> mu0<span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="fu">md</span><span class="vs">`Observed sample mean </span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`</span><span class="sc">\b</span><span class="vs">ar{x}_{</span><span class="sc">\m</span><span class="vs">athrm{obs}}`</span><span class="sc">}</span><span class="vs">`</span>} )</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">// Likelihood under H0 (point null)</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>m0 <span class="op">=</span> <span class="dv">1</span><span class="op">/</span>(sigma<span class="op">/</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(n)<span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="dv">2</span><span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span>)) <span class="op">*</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>     <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(<span class="op">-</span><span class="fl">0.5</span><span class="op">*</span>((xbar_obs <span class="op">-</span> mu0)<span class="op">/</span>(sigma<span class="op">/</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(n)))<span class="op">**</span><span class="dv">2</span>)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">// Marginal likelihood under H1 (normal prior on mu)</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>tau <span class="op">=</span> <span class="dv">25</span>        <span class="co">// prior variance for H1</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>post_var <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> (<span class="dv">1</span><span class="op">/</span>tau <span class="op">+</span> n<span class="op">/</span>sigma<span class="op">**</span><span class="dv">2</span>)</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>post_mean <span class="op">=</span> post_var <span class="op">*</span> (mu0<span class="op">/</span>tau <span class="op">+</span> n<span class="op">*</span>xbar_obs<span class="op">/</span>sigma<span class="op">**</span><span class="dv">2</span>)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">// Under H1, the marginal distribution of xbar is Normal(mu0, sigma^2/n + tau)</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>m1 <span class="op">=</span> <span class="dv">1</span><span class="op">/</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="dv">2</span><span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span><span class="op">*</span>(sigma<span class="op">**</span><span class="dv">2</span><span class="op">/</span>n <span class="op">+</span> tau)) <span class="op">*</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>     <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(<span class="op">-</span><span class="fl">0.5</span><span class="op">*</span>((xbar_obs <span class="op">-</span> mu0)<span class="op">**</span><span class="dv">2</span>)<span class="op">/</span>(sigma<span class="op">**</span><span class="dv">2</span><span class="op">/</span>n <span class="op">+</span> tau))</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co">// Bayes factor</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>B10 <span class="op">=</span> m1<span class="op">/</span>m0</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="fu">md</span><span class="vs">`**Bayes factor** </span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`B_{10}`</span><span class="sc">}</span><span class="vs"> = </span><span class="sc">${</span>B10<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="vs">`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>viewof prior_sd <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="fu">md</span><span class="vs">`Prior standard deviation under </span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`H_1`</span><span class="sc">}</span><span class="vs">`</span>} )</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">// Likelihood under H0 (point null)</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>m0 <span class="op">=</span> <span class="dv">1</span><span class="op">/</span>(sigma<span class="op">/</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(n)<span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="dv">2</span><span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span>)) <span class="op">*</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>     <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(<span class="op">-</span><span class="fl">0.5</span><span class="op">*</span>((xbar_obs <span class="op">-</span> mu0)<span class="op">/</span>(sigma<span class="op">/</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(n)))<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">// Marginal likelihood under H1 (proper normal conditional prior on mu)</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>tau <span class="op">=</span> prior_sd<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">// Under H1, the marginal distribution of xbar is Normal(mu0, sigma^2/n + tau)</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>m1 <span class="op">=</span> <span class="dv">1</span><span class="op">/</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(<span class="dv">2</span><span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span><span class="op">*</span>(sigma<span class="op">**</span><span class="dv">2</span><span class="op">/</span>n <span class="op">+</span> tau)) <span class="op">*</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>     <span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>(<span class="op">-</span><span class="fl">0.5</span><span class="op">*</span>((xbar_obs <span class="op">-</span> mu0)<span class="op">**</span><span class="dv">2</span>)<span class="op">/</span>(sigma<span class="op">**</span><span class="dv">2</span><span class="op">/</span>n <span class="op">+</span> tau))</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co">// Bayes factor</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>B10 <span class="op">=</span> m1<span class="op">/</span>m0</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>posteriorH1EqualOdds <span class="op">=</span> B10 <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> B10)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`&lt;div role="status" aria-live="polite" style="padding:.75rem;border:1px solid var(--border);border-radius:.5rem;background:var(--surface-weak);"&gt;</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;strong&gt;Bayes factor:&lt;/strong&gt; </span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`B_{10}=</span><span class="sc">${</span>B10<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="vs">`</span><span class="sc">}</span><span class="vs">&lt;br&gt;</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="vs">  With equal prior odds: </span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`</span><span class="sc">\P</span><span class="vs">r(H_1</span><span class="sc">\m</span><span class="vs">id</span><span class="er">\u</span><span class="vs">nderline{x})=</span><span class="sc">${</span>posteriorH1EqualOdds<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="vs">`</span><span class="sc">}</span><span class="vs">.&lt;br&gt;</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;span style="color:var(--fg-muted);"&gt;Values above 1 favour </span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`H_1`</span><span class="sc">}</span><span class="vs">; values below 1 favour </span><span class="sc">${</span><span class="fu">tex</span><span class="vs">`H_0`</span><span class="sc">}</span><span class="vs">.&lt;/span&gt;</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/div&gt;`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-1" data-nodetype="declaration">
@@ -868,14 +897,88 @@ X_i \mid \mu \sim \mathcal{N}(\mu, 10),
 </div>
 <div class="cell-output cell-output-display">
 <div>
-<div id="ojs-cell-1-11" data-nodetype="expression">
+<div id="ojs-cell-1-11" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-12" data-nodetype="expression">
 
 </div>
 </div>
 </div>
 </div>
+<p><strong>Observe and explain.</strong> Evidence depends both on the distance from the null and on how sharply <span class="math inline">H_1</span> predicted that distance. A more diffuse alternative does not automatically receive a larger Bayes factor.</p>
 </details>
 <hr>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exm-normal-bayes-factor" class="example theorem">
+<p><span class="theorem-title"><strong>Example 10.1 (Normal-Mean Bayes Factor: Complete Calculation)</strong></span> Use the model above with <span class="math inline">n=30</span>, known <span class="math inline">\sigma=10</span> and observed <span class="math inline">\bar x=204</span>. Under <span class="math display">
+H_0:\mu=200,
+</span> the sampling distribution of the mean is <span class="math display">
+\bar X\mid H_0\sim\mathcal N\!\left(200,\frac{100}{30}\right).
+</span> Under <span class="math inline">H_1</span>, use the proper conditional prior <span class="math display">
+\mu\mid H_1\sim\mathcal N(200,25).
+</span> Find <span class="math inline">B_{10}</span> and the posterior probability of <span class="math inline">H_1</span> when the hypotheses have equal prior probability.</p>
+<details>
+<summary><strong>Solution</strong></summary>
+<p>Under <span class="math inline">H_0</span>, the marginal density of <span class="math inline">\bar X</span> at <span class="math inline">204</span> is <span class="math display">
+m_0(204)
+=\phi\!\left(204;200,\frac{100}{30}\right)
+\approx0.01982,
+</span> where <span class="math inline">\phi(x;m,v)</span> denotes the <span class="math inline">\mathcal N(m,v)</span> density.</p>
+<p>Under <span class="math inline">H_1</span>, integrating over the Normal prior adds the prior variance: <span class="math display">
+\bar X\mid H_1
+\sim\mathcal N\!\left(200,\frac{100}{30}+25\right),
+</span> so <span class="math display">
+m_1(204)
+=\phi\!\left(204;200,\frac{100}{30}+25\right)
+\approx0.05651.
+</span> Therefore <span class="math display">
+B_{10}=\frac{m_1(204)}{m_0(204)}
+\approx\frac{0.05651}{0.01982}
+=2.85.
+</span></p>
+<p>With equal prior odds, the posterior odds are <span class="math inline">2.85:1</span> and <span class="math display">
+\Pr(H_1\mid\underline{x})
+=\frac{2.85}{1+2.85}
+\approx0.740.
+</span></p>
+<p>For comparison, the frequentist statistic for the same data is <span class="math display">
+Z=\frac{204-200}{10/\sqrt{30}}\approx2.19,
+</span> with a two-sided <span class="math inline">p</span>-value of approximately <span class="math inline">0.0285</span>. The <span class="math inline">p</span>-value asks how unusual the statistic is under <span class="math inline">H_0</span>; the Bayes factor compares the predictions made by <span class="math inline">H_0</span> and the specified <span class="math inline">H_1</span>. Neither is the other in disguise.</p>
+</details>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><strong>Prior sensitivity and decisions.</strong> For the same <span class="math inline">\bar x=204</span>, changing the prior variance under <span class="math inline">H_1</span> from <span class="math inline">25</span> to <span class="math inline">100</span> changes <span class="math inline">B_{10}</span> from about <span class="math inline">2.85</span> to <span class="math inline">1.83</span>. Report the alternative prior and justify its scale. A final accept/reject action additionally requires a decision rule or losses; evidence alone does not determine the consequences of being wrong.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><strong>Chapter summary.</strong> Bayesian point-null testing begins with prior probabilities for the hypotheses and proper conditional priors within them. The Bayes factor updates prior odds to posterior odds and can favour either hypothesis. Its value depends on how both hypotheses predicted the data, whereas a frequentist <span class="math inline">p</span>-value is calibrated only under <span class="math inline">H_0</span>.</p>
+</div>
+</div>
+</div>
 
 
 </section>
@@ -4102,7 +4205,7 @@ if (document.body.classList.contains('reading-mode')) {
 })();
 </script>
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Ii8vIFBhcmFtZXRlcnNcbm4gPSAzMFxuc2lnbWEgPSAxMFxubXUwID0gMjAwXG5cbi8vIFNsaWRlciBmb3Igb2JzZXJ2ZWQgc2FtcGxlIG1lYW5cbnZpZXdvZiB4YmFyX29icyA9IElucHV0cy5yYW5nZShbbXUwIC0gMypzaWdtYSwgbXUwICsgMypzaWdtYV0sIFxuICB7c3RlcDogMC41LCB2YWx1ZTogbXUwLCBsYWJlbDogbWRgT2JzZXJ2ZWQgc2FtcGxlIG1lYW4gJHt0ZXhgXFxiYXJ7eH1fe29ic31gfWB9IClcblxuLy8gTGlrZWxpaG9vZCB1bmRlciBIMCAocG9pbnQgbnVsbClcbm0wID0gMS8oc2lnbWEvTWF0aC5zcXJ0KG4pKk1hdGguc3FydCgyKk1hdGguUEkpKSAqXG4gICAgIE1hdGguZXhwKC0wLjUqKCh4YmFyX29icyAtIG11MCkvKHNpZ21hL01hdGguc3FydChuKSkpKioyKVxuXG4vLyBNYXJnaW5hbCBsaWtlbGlob29kIHVuZGVyIEgxIChub3JtYWwgcHJpb3Igb24gbXUpXG50YXUgPSAyNSAgICAgICAgLy8gcHJpb3IgdmFyaWFuY2UgZm9yIEgxXG5wb3N0X3ZhciA9IDEgLyAoMS90YXUgKyBuL3NpZ21hKioyKVxucG9zdF9tZWFuID0gcG9zdF92YXIgKiAobXUwL3RhdSArIG4qeGJhcl9vYnMvc2lnbWEqKjIpXG5cbi8vIFVuZGVyIEgxLCB0aGUgbWFyZ2luYWwgZGlzdHJpYnV0aW9uIG9mIHhiYXIgaXMgTm9ybWFsKG11MCwgc2lnbWFeMi9uICsgdGF1KVxubTEgPSAxL01hdGguc3FydCgyKk1hdGguUEkqKHNpZ21hKioyL24gKyB0YXUpKSAqXG4gICAgIE1hdGguZXhwKC0wLjUqKCh4YmFyX29icyAtIG11MCkqKjIpLyhzaWdtYSoqMi9uICsgdGF1KSlcblxuLy8gQmF5ZXMgZmFjdG9yXG5CMTAgPSBtMS9tMFxuXG5tZGAqKkJheWVzIGZhY3RvcioqICR7dGV4YEJfezEwfWB9ID0gJHtCMTAudG9GaXhlZCgzKX1gXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3hiYXJfb2JzJykifV19
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Ii8vIE1vZGVsIHBhcmFtZXRlcnNcbm4gPSAzMFxuc2lnbWEgPSAxMFxubXUwID0gMjAwXG5zYW1wbGluZ19zZCA9IHNpZ21hIC8gTWF0aC5zcXJ0KG4pXG5cbnZpZXdvZiB4YmFyX29icyA9IElucHV0cy5yYW5nZShbbXUwIC0gOCpzYW1wbGluZ19zZCwgbXUwICsgOCpzYW1wbGluZ19zZF0sXG4gIHtzdGVwOiAwLjEsIHZhbHVlOiBtdTAsIGxhYmVsOiBtZGBPYnNlcnZlZCBzYW1wbGUgbWVhbiAke3RleGBcXGJhcnt4fV97XFxtYXRocm17b2JzfX1gfWB9IClcblxudmlld29mIHByaW9yX3NkID0gSW5wdXRzLnJhbmdlKFsxLCAyMF0sXG4gIHtzdGVwOiAwLjUsIHZhbHVlOiA1LCBsYWJlbDogbWRgUHJpb3Igc3RhbmRhcmQgZGV2aWF0aW9uIHVuZGVyICR7dGV4YEhfMWB9YH0gKVxuXG4vLyBMaWtlbGlob29kIHVuZGVyIEgwIChwb2ludCBudWxsKVxubTAgPSAxLyhzaWdtYS9NYXRoLnNxcnQobikqTWF0aC5zcXJ0KDIqTWF0aC5QSSkpICpcbiAgICAgTWF0aC5leHAoLTAuNSooKHhiYXJfb2JzIC0gbXUwKS8oc2lnbWEvTWF0aC5zcXJ0KG4pKSkqKjIpXG5cbi8vIE1hcmdpbmFsIGxpa2VsaWhvb2QgdW5kZXIgSDEgKHByb3BlciBub3JtYWwgY29uZGl0aW9uYWwgcHJpb3Igb24gbXUpXG50YXUgPSBwcmlvcl9zZCoqMlxuXG4vLyBVbmRlciBIMSwgdGhlIG1hcmdpbmFsIGRpc3RyaWJ1dGlvbiBvZiB4YmFyIGlzIE5vcm1hbChtdTAsIHNpZ21hXjIvbiArIHRhdSlcbm0xID0gMS9NYXRoLnNxcnQoMipNYXRoLlBJKihzaWdtYSoqMi9uICsgdGF1KSkgKlxuICAgICBNYXRoLmV4cCgtMC41KigoeGJhcl9vYnMgLSBtdTApKioyKS8oc2lnbWEqKjIvbiArIHRhdSkpXG5cbi8vIEJheWVzIGZhY3RvclxuQjEwID0gbTEvbTBcbnBvc3RlcmlvckgxRXF1YWxPZGRzID0gQjEwIC8gKDEgKyBCMTApXG5cbmh0bWxgPGRpdiByb2xlPVwic3RhdHVzXCIgYXJpYS1saXZlPVwicG9saXRlXCIgc3R5bGU9XCJwYWRkaW5nOi43NXJlbTtib3JkZXI6MXB4IHNvbGlkIHZhcigtLWJvcmRlcik7Ym9yZGVyLXJhZGl1czouNXJlbTtiYWNrZ3JvdW5kOnZhcigtLXN1cmZhY2Utd2Vhayk7XCI+XG4gIDxzdHJvbmc+QmF5ZXMgZmFjdG9yOjwvc3Ryb25nPiAke3RleGBCX3sxMH09JHtCMTAudG9GaXhlZCgzKX1gfTxicj5cbiAgV2l0aCBlcXVhbCBwcmlvciBvZGRzOiAke3RleGBcXFByKEhfMVxcbWlkXFx1bmRlcmxpbmV7eH0pPSR7cG9zdGVyaW9ySDFFcXVhbE9kZHMudG9GaXhlZCgzKX1gfS48YnI+XG4gIDxzcGFuIHN0eWxlPVwiY29sb3I6dmFyKC0tZmctbXV0ZWQpO1wiPlZhbHVlcyBhYm92ZSAxIGZhdm91ciAke3RleGBIXzFgfTsgdmFsdWVzIGJlbG93IDEgZmF2b3VyICR7dGV4YEhfMGB9Ljwvc3Bhbj5cbjwvZGl2PmBcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgneGJhcl9vYnMnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgncHJpb3Jfc2QnKSJ9XX0=
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }

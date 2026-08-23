@@ -689,12 +689,17 @@ Suppose we have a single <span class="xref-no-num">[Binomial @sec-binom]</span> 
 $$
 X \sim \mathrm{Binomial}(n, \theta),
 $$
-Derive the <span class="xref-no-num">[Fisher information @def-fisher-information]</span> and the <span class="xref-no-num">[observed Fisher information @def-observed-fisher]</span>.
+Derive the <span class="xref-no-num">[expected Fisher information @def-fisher-information]</span>
+$\mathcal I(\theta)$ and the <span class="xref-no-num">[observed information @def-observed-fisher]</span>
+$j(\theta;x)$. Evaluate both at the MLE when $0<x<n$.
 
 <details class="solution">
   <summary>Solution</summary>
 
-Note: We want to compute $\mathcal{I}(\theta) = -\mathrm{E}\left[\frac{\partial^2}{\partial\theta^2} \ell(\theta; X)\right]$ for the Fisher information and $\hat{\theta}_{\mathrm{MLE}}$ for the observed Fisher information.
+We compute
+$\mathcal I(\theta)=-\mathrm E_\theta[\ell''(\theta;X)]$ and
+$j(\theta;x)=-\ell''(\theta;x)$. The former averages over possible data; the
+latter is the curvature of the realised log-likelihood.
 
 **Step 1: Compute log-likelihood**
 
@@ -734,9 +739,14 @@ using the fact that $\mathrm{E}[X] = n\theta$. Continuing:
 &= \frac{n}{\theta(1-\theta)}.
 \end{align*}
 
+The observed information is therefore
+$$
+j(\theta;x)=\frac{x}{\theta^2}+\frac{n-x}{(1-\theta)^2}.
+$$
+
 **Step 4: Compute MLE**
 
-We require the MLE for the observed Fisher information. We solve:
+For $0<x<n$, the interior MLE solves:
 \begin{align*}
 \frac{\partial}{\partial \theta} \ell(\theta; x) &= 0 \\
 \frac{x}{\theta} - \frac{n-x}{1-\theta} &= 0 \\
@@ -745,14 +755,21 @@ x &= n\theta \\
 \Rightarrow \hat{\theta}_{\mathrm{MLE}} &= \frac{x}{n}.
 \end{align*}
 
-**Step 5: Compute observed Fisher information**
+**Step 5: Evaluate both information measures at the MLE**
 
-Given the MLE $\hat{\theta}_{\mathrm{MLE}} = \frac{x}{n}$ and the derived Fisher information, we have
+The plug-in expected information is
 \begin{align*}
 \mathcal{I}(\hat{\theta}_{\mathrm{MLE}}) &=  \frac{n}{\hat{\theta}_{\mathrm{MLE}}(1-\hat{\theta}_{\mathrm{MLE}})} \\
 &= \frac{n}{x/n(1-x/n)} \\
 &= \frac{n^3}{x(n - x)}.
 \end{align*}
+In this model the observed information happens to agree at the MLE:
+$$
+j(\hat\theta_{\mathrm{MLE}};x)
+=\frac{x}{(x/n)^2}+\frac{n-x}{(1-x/n)^2}
+=\frac{n^3}{x(n-x)}.
+$$
+This equality is model-specific; the two definitions should not be conflated.
 
 </details>
 
@@ -767,12 +784,17 @@ Suppose we have a random <span class="xref-no-num">[Geometric @sec-geom]</span> 
 $$
 X_1,\ldots, X_n \stackrel{\text{i.i.d.}}{\sim} \mathrm{Geom}(\theta).
 $$
-Derive the <span class="xref-no-num">[Fisher information @def-fisher-information]</span> and the <span class="xref-no-num">[observed Fisher information @def-observed-fisher]</span> for both a **single observation** and the **whole random sample**.
+Derive the <span class="xref-no-num">[expected Fisher information @def-fisher-information]</span>
+for one observation and for the whole sample. Also derive the
+<span class="xref-no-num">[observed information @def-observed-fisher]</span> for the
+realised sample and evaluate it at the MLE.
 
 <details class="solution">
   <summary>Solution</summary>
 
-Since we have i.i.d. observations, we can use @prp-fisher-one-obs to compute the Fisher information for the **whole random sample** by computing $\mathcal{I}_1(\theta)$ for a single observation. However, the observed information requires the MLE using all $n$ data points $x_1,\ldots,x_n$. So, let's compute $\mathcal{I}_n(\theta)$ using the **whole sample** $X_1,\ldots, X_n$:
+Since the observations are i.i.d., expected information is additive:
+$\mathcal I_n(\theta)=n\mathcal I_1(\theta)$. We first work with the whole
+sample, then retain the realised curvature for the observed information.
 
 **Step 1: Compute log-likelihood**
 
@@ -822,9 +844,19 @@ $$
 \mathcal{I}_1(\theta) = \frac{1}{\theta^2(1-\theta)}.
 $$
 
+For the realised sample, the observed information is
+$$
+j_n(\theta;\underline x)
+=-\ell''(\theta;\underline x)
+=\frac{n}{\theta^2}
+ +\frac{n(\bar x-1)}{(1-\theta)^2}.
+$$
+For one realised observation $x$, this reduces to
+$j_1(\theta;x)=\theta^{-2}+(x-1)(1-\theta)^{-2}$.
+
 **Step 4: Compute MLE**
 
-We require the MLE for the observed Fisher information. We solve:
+The interior MLE solves:
 \begin{align*}
 \frac{\partial}{\partial \theta} \ell(\theta; \underline{x}) &= 0 \\
 \frac{n}{\theta} - \frac{n(\bar{x} - 1)}{1-\theta} &= 0 \\
@@ -833,18 +865,22 @@ n(1-\theta) &= n \theta (\bar{x} - 1) \\
 \Rightarrow \hat{\theta}_{\mathrm{MLE}} &= \frac{1}{\bar{x}}.
 \end{align*}
 
-**Step 5: Compute observed Fisher information**
+**Step 5: Evaluate the information at the MLE**
 
-Given the MLE $\hat{\theta}_{\mathrm{MLE}} = \frac{1}{\bar{x}}$ and the derived Fisher information, we have
+The plug-in expected information is
 \begin{align*}
 \mathcal{I}_n(\hat{\theta}_{\mathrm{MLE}}) &=  \frac{n}{\hat{\theta}_{\mathrm{MLE}}^2(1-\hat{\theta}_{\mathrm{MLE}})} \\
 &= \frac{n}{\bar{x}^{-2}(1-\bar{x}^{-1})}. \\
 &= \frac{n \bar{x}^3}{\bar{x} - 1}.
 \end{align*}
-This immediately implies the observed Fisher information for a single observation is
+Substitution in the realised curvature gives the same value here:
 $$
-\mathcal{I}_1(\hat{\theta}_{\mathrm{MLE}}) = \frac{\bar{x}^3}{\bar{x} - 1}.
+j_n(\hat\theta_{\mathrm{MLE}};\underline x)
+=\frac{n\bar x^3}{\bar x-1}.
 $$
+The corresponding **average information per observation** is this quantity
+divided by $n$; it is not the observed information from one separately observed
+Geometric variable.
 
 </details>
 
@@ -859,14 +895,18 @@ Suppose we have a random <span class="xref-no-num">[Normal @sec-normal]</span> s
 $$
 X_1,\ldots, X_n \stackrel{\text{i.i.d.}}{\sim} \mathcal{N}(\mu, \gamma),
 $$
-where $\mu$ is a *known* value $\gamma$ is *unknown*.
+where $\mu$ is a *known* value and $\gamma$ is *unknown*.
 
-Derive the <span class="xref-no-num">[Fisher information @def-fisher-information]</span> and the <span class="xref-no-num">[observed Fisher information @def-observed-fisher]</span> of $\gamma$ for the **whole random sample**.
+Derive the <span class="xref-no-num">[expected Fisher information @def-fisher-information]</span>
+and the <span class="xref-no-num">[observed information @def-observed-fisher]</span>
+for $\gamma$ using the **whole random sample**. Evaluate both at the MLE.
 
 <details class="solution">
   <summary>Solution</summary>
 
-Note: We want to compute $\mathcal{I}(\gamma) = -\mathrm{E}\left[\frac{\partial^2}{\partial\gamma^2} \ell(\gamma; \underline{X})\right]$ for the Fisher information and $\hat{\gamma}_{\mathrm{MLE}}$ for the observed Fisher information.
+We compute
+$\mathcal I_n(\gamma)=-\mathrm E_\gamma[\ell''(\gamma;\underline X)]$
+and $j_n(\gamma;\underline x)=-\ell''(\gamma;\underline x)$ separately.
 
 **Step 1: Compute log-likelihood**
 
@@ -912,9 +952,16 @@ $$
 \end{align*}
 $$
 
+For the realised data, the observed information is
+$$
+j_n(\gamma;\underline x)
+=-\frac{n}{2\gamma^2}
+ +\frac{1}{\gamma^3}\sum_{i=1}^n(x_i-\mu)^2.
+$$
+
 **Step 4: Compute MLE**
 
-We require the MLE for the observed Fisher information. We solve:
+The interior MLE solves:
 $$
 \begin{align*}
 \frac{\partial}{\partial \gamma} \ell(\gamma; \underline{x}) &= 0 \\
@@ -923,14 +970,22 @@ $$
 \end{align*}
 $$
 
-**Step 5: Compute observed Fisher information**
+**Step 5: Evaluate the information at the MLE**
 
-Given the MLE $\hat{\gamma}_{\mathrm{MLE}} = \frac{1}{n}\sum_{i=1}^n (x_i - \mu)^2 $ and the derived Fisher information, we have
+The plug-in expected information is
 $$
 \begin{align*}
 \mathcal{I}(\hat{\gamma}_{\mathrm{MLE}}) &= \frac{n}{2\hat{\gamma}_{\mathrm{MLE}}^2} \\
 &= \frac{n^3}{2\left(\sum_{i=1}^n (x_i - \mu)^2\right)^2}.
 \end{align*}
+$$
+Because $\sum_i(x_i-\mu)^2=n\hat\gamma_{\mathrm{MLE}}$, evaluating the
+observed information also gives
+$$
+j_n(\hat\gamma_{\mathrm{MLE}};\underline x)
+=-\frac{n}{2\hat\gamma_{\mathrm{MLE}}^2}
+ +\frac{n\hat\gamma_{\mathrm{MLE}}}{\hat\gamma_{\mathrm{MLE}}^3}
+=\frac{n}{2\hat\gamma_{\mathrm{MLE}}^2}.
 $$
 
 </details>
@@ -1135,10 +1190,12 @@ $$
       \end{align*}
       $$ 
       since each $\mathrm{E}[X_i] = \lambda$.
-    4. **Plugging in MLE:** The <span class="xref-no-num">[observed Fisher information @def-observed-fisher]</span> is thus
+    4. **Plug in the MLE:** The expected Fisher information evaluated at the MLE is
       $$
       \mathcal{I}_n(\hat{\lambda}) = \frac{n}{\bar{x}}.
       $$
+      (For the Poisson model, the observed information evaluated at the MLE
+      happens to have the same value.)
     5. **Asymptotic Posterior Distribution:** The <span class="xref-no-num">[asymptotic posterior distribution @thm-bernstein-von-mises]</span> is thus
       $$
       \lambda \mid \underline{x} \overset{\text{approx.}}{\sim} \mathcal{N}\left(\bar{x}, \frac{\bar{x}}{n}\right)
@@ -1222,12 +1279,14 @@ $$
    \mathcal{I}_n(\lambda) = -\mathrm{E}\left[-\frac{n}{\lambda^2}\right] = \frac{n}{\lambda^2}.
    $$
 
-   Evaluated at the MLE, the <span class="xref-no-num">[observed Fisher information @def-observed-fisher]</span> is
+   Evaluating the expected Fisher information at the MLE gives
    $$
    \mathcal{I}_n(\hat{\lambda})
    = \frac{n}{\hat{\lambda}^2}
    = n\bar{x}^2.
    $$
+   Here the observed information is $j_n(\lambda;\underline x)=n/\lambda^2$,
+   so it agrees with expected information for every $\lambda$.
 
    5. **Asymptotic posterior distribution**
 
@@ -1267,5 +1326,3 @@ $$
 </details>
 
 :::
-
-

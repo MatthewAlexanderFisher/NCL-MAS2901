@@ -118,7 +118,7 @@ yMax = Math.max(0.05, d3.max(densities) ?? 0.05);
 yCI  = yMax * 0.75
 
 leftPlot = Plot.plot({
-  width: Math.min(680, Math.max(360, width/2 - 20)),
+  width: Math.min(680, Math.max(300, width/2 - 20)),
   height: 340,
   style: { background: "var(--plot-bg)",
            color: "var(--plot-fg)",
@@ -162,7 +162,7 @@ rightYDomain = (() => {
 })()
 
 rightPlot = Plot.plot({
-  width: Math.min(680, Math.max(360, width/2 - 20)),
+  width: Math.min(680, Math.max(300, width/2 - 20)),
   height: 340,
   style: { background: "var(--plot-bg)",
            color: "var(--plot-fg)",
@@ -203,8 +203,9 @@ rightPlot = Plot.plot({
 
   return html`<div class="ojs-toolbar-grid">
     <div class="left">${viewof resample}</div>
-      <div class="center">
-        ${md`${tex`\big[L(\underline{X}),\, U(\underline{X})\big] = \big[${ciZ.L.toFixed(2)},\; ${ciZ.U.toFixed(2)}\big]`}`}
+      <div class="center" role="status" aria-live="polite">
+        ${md`${tex`\big[L(\underline{X}),\, U(\underline{X})\big] = \big[${ciZ.L.toFixed(2)},\; ${ciZ.U.toFixed(2)}\big]`}
+        This interval **${currentCoveredZ ? "covers" : "does not cover"}** the fixed true value ${tex`\mu=${controls.trueMu.toFixed(1)}`}.`}
       </div>
     <div class="right">${viewof reset}</div>
   </div>
@@ -245,9 +246,9 @@ rightPlot = Plot.plot({
   </style>`;
 }
 
-html`<div style="max-width:100%; display:flex; gap:14px; align-items:flex-start; flex-wrap:nowrap;">
-  <div>${leftPlot}</div>
-  <div>${rightPlot}</div>
+html`<div class="ci-row">
+  <div class="ci-panel">${leftPlot}</div>
+  <div class="ci-panel">${rightPlot}</div>
 </div>`
 
 
@@ -311,6 +312,16 @@ details.controls-root[open] > summary::before { transform: rotate(90deg); }
   flex-wrap: nowrap; overflow-x: auto; max-width: 100%;
 }
 .ci-panel { flex: 0 0 50%; min-width: 460px; }
+
+@media (max-width: 760px) {
+  .ci-row { flex-direction: column; overflow-x: visible; }
+  .ci-panel { flex: 1 1 auto; min-width: 0; width: 100%; }
+  .controls-grid { grid-template-columns: 1fr; }
+  .controls-col { min-width: 0; }
+  .ojs-toolbar-grid { grid-template-columns: 1fr; gap: 8px; }
+  .ojs-toolbar-grid .left form,
+  .ojs-toolbar-grid .right form { justify-content: center !important; }
+}
 </style>`
 
 viewof controls = {

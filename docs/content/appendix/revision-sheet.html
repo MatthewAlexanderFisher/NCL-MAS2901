@@ -700,6 +700,78 @@ window.Quarto = {
 
 
 <p>This page provides a concise summary of all <strong>examinable material</strong> for the MAS2901 exam. If a topic appears in the main notes <strong>but is not included here</strong>, you may assume it is <strong>not examinable</strong>. A dedicated section at the end lists all <strong>non-examinable</strong> content explicitly.</p>
+<p>Use the page in two layers. Begin with the <strong>fast route</strong> below to select a method and recall its interpretation. Then open the detailed checklist entries only for topics you cannot yet explain or apply without help.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Fast revision route
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For every problem, identify these four things before calculating:</p>
+<ol type="1">
+<li><strong>Model and assumptions:</strong> distribution, parameter space, independence and whether the data are identically distributed.</li>
+<li><strong>Target:</strong> which parameter or population feature is being learned about.</li>
+<li><strong>Task:</strong> point estimate, interval estimate or hypothesis test.</li>
+<li><strong>Framework and approximation:</strong> frequentist or Bayesian; exact or large-sample.</li>
+</ol>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Question asks for…</th>
+<th>Main route</th>
+<th>Essential interpretation/check</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>a single frequentist estimate</td>
+<td>sampling properties or MLE</td>
+<td>distinguish the random estimator from its observed value</td>
+</tr>
+<tr class="even">
+<td>a single Bayesian estimate</td>
+<td>posterior mean, median or MAP</td>
+<td>state the posterior summary and the prior/model used</td>
+</tr>
+<tr class="odd">
+<td>uncertainty about a mean</td>
+<td>Normal <span class="math inline">z/t</span> interval or a CLT interval</td>
+<td>exact <span class="math inline">t</span> needs Normal data; CLT methods need suitable large-sample behaviour</td>
+</tr>
+<tr class="even">
+<td>uncertainty about a general parameter</td>
+<td>MLE/Fisher-information approximation</td>
+<td>check regularity and remember coverage is approximate</td>
+</tr>
+<tr class="odd">
+<td>evidence against a simple null</td>
+<td><span class="math inline">z</span>, <span class="math inline">t</span>, CLT or likelihood-ratio test</td>
+<td>choose the tail in advance; report the statistic, <span class="math inline">p</span>-value and contextual conclusion</td>
+</tr>
+<tr class="even">
+<td>posterior uncertainty or model evidence</td>
+<td>credible region/HD region or Bayes factor</td>
+<td>posterior probability is conditional on the prior and model</td>
+</tr>
+</tbody>
+</table>
+<p>Three interpretation checks catch many errors:</p>
+<ul>
+<li>a confidence level describes a <strong>repeated-sampling procedure</strong>, not the probability that a fixed parameter lies in one realised interval;</li>
+<li>a <span class="math inline">p</span>-value is <strong>not</strong> <span class="math inline">\Pr(H_0\mid x)</span> and is not an effect size;</li>
+<li>failing to reject <span class="math inline">H_0</span> is <strong>not</strong> the same as accepting or proving it.</li>
+</ul>
+</div>
+</div>
 <p>The revision sheet is organised as follows:</p>
 <ol type="1">
 <li><a href="#sec-exam-details" class="quarto-xref"><span>Exam Details</span></a>: Addresses common questions about the structure and format of the exam.</li>
@@ -766,7 +838,7 @@ Assessment Focus
 \Pr(A \mid B)
 = \frac{\Pr(B \mid A)\Pr(A)}{\Pr(B)}.
 </span></p>
-<p>Its <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#prf-bayes" class="quarto-xref">proof&nbsp;<span>6.1</span></a></span> is <strong>not examinable</strong>, but you must be able to <strong>apply</strong> the formula in simple settings.</p>
+<p>Its <span class="xref-no-num"><a href="../main/part1/1-prob-theory.html#prf-bayes-events" class="quarto-xref">proof&nbsp;<span>1.2</span></a></span> is <strong>not examinable</strong>, but you must be able to <strong>apply</strong> the formula in simple settings.</p>
 </div>
 </div>
 <div class="revision-entry">
@@ -796,8 +868,13 @@ Assessment Focus
 <ul>
 <li><span class="xref-no-num"><a href="../main/part1/2-what-is-stats-inference.html" class="quarto-xref">Chapter 2&nbsp;<span>2&nbsp; What is Statistical Inference?</span></a></span> presents the <strong>core idea</strong> of statistical inference:
 <ol type="1">
-<li>We</li>
+<li>specify a population or data-generating model and its unknown parameter;</li>
+<li>obtain a sample through a stated sampling mechanism;</li>
+<li>distinguish the random variables <span class="math inline">X_i</span> from their observed values <span class="math inline">x_i</span>;</li>
+<li>use the observations to learn about the unknown parameter.</li>
 </ol></li>
+<li>Be able to identify the model, parameter, parameter space, data type and i.i.d. assumptions in a question. Remember that i.i.d. is a modelling assumption; it does not by itself guarantee that a sample represents the target population.</li>
+<li>Model construction is background rather than a major algebraic exam task, but you must be able to use and interpret a model supplied in a question.</li>
 </ul>
 </details>
 <div class="revision-entry">
@@ -828,9 +905,9 @@ X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu,\sigma^2)
 <div id="rev-data-vs-parameters" class="revision-content" hidden="">
 <p>In any statistical model:</p>
 <ul>
-<li>The <strong>data</strong> <span class="math inline">X_1,\ldots,X_n</span> are <strong>random variables</strong>.<br>
-</li>
+<li>Before observation, <span class="math inline">X_1,\ldots,X_n</span> are <strong>random variables</strong>. After sampling, <span class="math inline">x_1,\ldots,x_n</span> denote their fixed observed values.</li>
 <li>The <strong>parameter</strong> <span class="math inline">\theta</span> controls the distribution of each <span class="math inline">X_i</span>.</li>
+<li>A sampling mechanism connects the target population to the observations. A convenient i.i.d. model is not automatically evidence that this mechanism was representative.</li>
 </ul>
 </div>
 </div>
@@ -879,6 +956,7 @@ X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu,\sigma^2)
 </ul></li>
 </ol>
 <p>Correctly identifying the data type ensures the likelihood function, estimators, and inferential procedures are appropriate for the problem.</p>
+<p>Categorical data are labels rather than numerical measurements. They are often represented through indicator/count variables before a Bernoulli, Binomial or Multinomial model is used.</p>
 </div>
 </div>
 <div class="revision-entry">
@@ -946,17 +1024,18 @@ The parameter <span class="math inline">\theta</span> is treated as a <strong>ra
 <ol type="1">
 <li><strong>Frequentist Inference:</strong>
 <ul>
-<li>Data <span class="math inline">X_i</span> is <strong>treated as random</strong></li>
+<li>Before observation, the sampling model treats the data <span class="math inline">X_i</span> as random; after observation, the values <span class="math inline">x_i</span> are fixed.</li>
 <li>The parameter <span class="math inline">\theta</span> is treated as <strong>fixed</strong> but <strong>unknown</strong>.</li>
-<li>Uncertainty arises from repeated experiments.</li>
+<li>Procedures are evaluated through their behaviour over hypothetical repeated samples (for example, bias or confidence-interval coverage).</li>
 </ul></li>
 <li><strong>Bayesian Inference:</strong>
 <ul>
-<li>The <strong>data</strong> are fixed once observed.</li>
-<li>The <strong>parameter</strong> <span class="math inline">\theta</span> is treated as a random variable, with uncertainty described by a <strong>prior distribution</strong> <span class="math inline">\pi(\theta)</span>.</li>
+<li>The same sampling model describes possible data before observation, and the observed values are then conditioned upon.</li>
+<li>Uncertainty about <span class="math inline">\theta</span> is described using a <strong>prior distribution</strong> <span class="math inline">\pi(\theta)</span>.</li>
 <li>Inference updates this prior in light of the data, giving a <strong>posterior distribution</strong> <span class="math inline">\pi(\theta \mid \text{data})</span>.</li>
 </ul></li>
 </ol>
+<p>Neither framework owns prior scientific knowledge or objectivity: frequentist analyses can use prior knowledge in their model and design, while Bayesian analyses may use subjective, weakly informative or reference priors. The key difference is the meaning assigned to probability statements about <span class="math inline">\theta</span> and how procedures are calibrated.</p>
 </div>
 </div>
 <div class="revision-entry">
@@ -983,6 +1062,12 @@ The parameter <span class="math inline">\theta</span> is treated as a <strong>ra
 <summary>
 Assessment Focus
 </summary>
+<ul>
+<li>Distinguish a statistic, estimator and observed estimate, and describe an estimator through its sampling distribution.</li>
+<li>Be able to compute bias, variance, standard error and MSE, and use the bias–variance decomposition to compare estimators.</li>
+<li>Know when the Normal sampling distribution of <span class="math inline">\bar X</span> is exact and when the CLT supplies only a large-sample approximation.</li>
+<li>Recall asymptotic unbiasedness and consistency, and prove consistency using vanishing bias and variance when those sufficient conditions are convenient.</li>
+</ul>
 </details>
 <div class="revision-entry">
 <div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-statistic-estimator">
@@ -1278,7 +1363,13 @@ X_1,\ldots, X_n \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu, \sigma^2).
 <p><span class="toggle-icon" aria-hidden="true"></span> <span class="revision-topic"> Be able to recall the definitions of <span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#def-asymptotic-unbiasedness" class="quarto-xref">asymptotic unbiasedness&nbsp;<span>4.9</span></a></span> and <span class="xref-no-num"><a href="../main/part2/4-freq-point-estimation.html#def-consistency" class="quarto-xref">consistency&nbsp;<span>4.10</span></a></span>. </span></p>
 </div>
 <div id="rev-asymp-unbiased-consistent" class="revision-content" hidden="">
-
+<p>An estimator sequence <span class="math inline">\hat\theta_n</span> is <strong>asymptotically unbiased</strong> if <span class="math display">
+\operatorname{Bias}_\theta(\hat\theta_n)
+=\operatorname{E}_\theta[\hat\theta_n]-\theta\longrightarrow0.
+</span> It is <strong>consistent</strong> if, for every <span class="math inline">\varepsilon&gt;0</span>, <span class="math display">
+\Pr_\theta\!\left(|\hat\theta_n-\theta|&gt;\varepsilon\right)
+\longrightarrow0.
+</span> These are different properties: asymptotic unbiasedness alone does not control spread, whereas consistency requires the estimator to concentrate near <span class="math inline">\theta</span>.</p>
 </div>
 </div>
 <div class="revision-entry">
@@ -1336,7 +1427,7 @@ X_1,\ldots, X_n \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu, \sigma^2).
 <tr class="even">
 <td>Examples</td>
 <td>Consistency of the Sample Mean</td>
-<td><a href="../main/part2/4-freq-point-estimation.html#exm-consistency-samplemean" class="quarto-xref">Example&nbsp;<span>4.6</span></a></td>
+<td><a href="../main/part2/4-freq-point-estimation.html#exm-consistency-samplemean" class="quarto-xref">Example&nbsp;<span>4.7</span></a></td>
 </tr>
 </tbody>
 </table>
@@ -1363,7 +1454,7 @@ Assessment Focus
 X_1,\ldots,X_n \sim \mathrm{Distribution}(\theta),
 </span> the <strong>joint density (or PMF)</strong> of the observed data <span class="math inline">\underline{x}</span>, viewed as a function of the parameter <span class="math inline">\theta</span>, is the likelihood: <span class="math display">
 L(\theta;\,\underline{x}) = f(\underline{x}\mid\theta).
-</span> The data are treated as fixed, and the likelihood expresses how plausible different values of <span class="math inline">\theta</span> are in light of those observations.</p>
+</span> The observations are fixed, and the likelihood provides <strong>relative support</strong> for different values of <span class="math inline">\theta</span>. It is not generally a probability density over <span class="math inline">\theta</span> and need not integrate to <span class="math inline">1</span> over the parameter space.</p>
 </div>
 </div>
 <div class="revision-entry">
@@ -1390,7 +1481,12 @@ f(\underline{x}\mid\theta) = \prod_{i=1}^n f_{X_i}(x_i \mid \theta),
 <p><span class="toggle-icon" aria-hidden="true"></span> <span class="revision-topic"> Be able to <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#sec-computing-likelihoods" class="quarto-xref">compute&nbsp;<span>Computing Likelihood Functions</span></a></span> likelihood functions for general statistical models, under both i.i.d. assumptions and the more general case of independent (but not necessarily identically distributed) data. </span></p>
 </div>
 <div id="rev-compute-likelihood" class="revision-content" hidden="">
-
+<ol type="1">
+<li>State the model, the data support and the parameter space <span class="math inline">\Theta</span>.</li>
+<li>Write the joint PMF/PDF of the observations. Under independence this is a product; under i.i.d. sampling every factor has the same form.</li>
+<li>Substitute the observed values and collect all factors that depend on <span class="math inline">\theta</span>. Retain parameter-free factors unless you explicitly write proportionality.</li>
+<li>Check that impossible observations or parameter values receive likelihood zero where appropriate.</li>
+</ol>
 </div>
 </div>
 <details class="practice-details">
@@ -1457,7 +1553,9 @@ f(\underline{x}\mid\theta) = \prod_{i=1}^n f_{X_i}(x_i \mid \theta),
 <p><span class="toggle-icon" aria-hidden="true"></span> <span class="revision-topic"> Be able to compute <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#def-log-likelihood" class="quarto-xref">log-likelihood functions&nbsp;<span>5.4</span></a></span> and understand their role in computing MLEs. </span></p>
 </div>
 <div id="rev-log-likelihood" class="revision-content" hidden="">
-
+<p>The log-likelihood is <span class="math display">
+\ell(\theta;\underline{x})=\log L(\theta;\underline{x}).
+</span> Because the logarithm is increasing, <span class="math inline">L</span> and <span class="math inline">\ell</span> have the same maximisers. Logs turn products into sums and are usually easier to differentiate. Terms that do not depend on <span class="math inline">\theta</span> may be dropped <strong>for maximisation</strong>, but doing so produces a log-likelihood only up to an additive constant.</p>
 </div>
 </div>
 <div class="revision-entry">
@@ -1492,17 +1590,14 @@ Compute<br>
 <span class="math display">
 \frac{\partial}{\partial \theta}\,\ell(\theta;\underline{x}).
 </span></p></li>
-<li><p><strong>Set the derivative equal to zero and solve</strong><br>
-Find all solutions to<br>
-<span class="math display">
+<li><p><strong>Find and compare candidates</strong> Interior stationary-point candidates solve <span class="math display">
 \frac{\partial}{\partial \theta}\,\ell(\theta;\underline{x}) = 0.
 </span></p></li>
 </ol>
 <hr>
 <p><strong>Notes:</strong></p>
 <ul>
-<li><p>Unless the question explicitly states otherwise, you do <strong>not</strong> need to check whether the solution corresponds to a maximum.<br>
-For this module, you may assume any solution you find is the global maximiser.</p></li>
+<li><p>A score-equation solution is only a candidate: also respect the parameter space and consider boundaries, non-differentiable points and global behaviour. In an exam, a question may state that these checks are not required, but they remain part of the mathematical definition of the MLE.</p></li>
 <li><p>Computing <strong>multivariate MLEs</strong> is <em>not examinable</em>.</p></li>
 </ul>
 </div>
@@ -1597,6 +1692,11 @@ For this module, you may assume any solution you find is the global maximiser.</
       \ell(\theta;\underline{X})
     \right],
 </span> where <span class="math inline">\ell(\theta;\underline{X})</span> is the log-likelihood of all <span class="math inline">n</span> observations.</p></li>
+<li><p><strong>Observed information for the realised sample</strong> <span class="math display">
+j_n(\theta;\underline{x})
+=-\frac{\partial^2}{\partial\theta^2}
+     \ell(\theta;\underline{x}).
+</span> Unlike <span class="math inline">\mathcal I_n(\theta)</span>, this uses the realised curvature and contains no expectation. Evaluating expected information at an estimate, <span class="math inline">\mathcal I_n(\hat\theta)</span>, is a <strong>plug-in estimate of expected information</strong>; it is not the observed information.</p></li>
 </ul>
 <hr>
 <p><strong>Note:</strong> In this module, you will almost always be asked to compute the <strong>Fisher information for the whole sample</strong>. For consistency and simplicity, we recommend using <strong>Approach 1</strong> described <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#imp-compute-fisher-info" class="quarto-xref">here&nbsp;<span>5.4</span></a></span>.</p>
@@ -1652,12 +1752,12 @@ For this module, you may assume any solution you find is the global maximiser.</
 </div>
 <div id="rev-crlb" class="revision-content" hidden="">
 <ul>
-<li><p>The Cramér–Rao inequality states that for <strong>any unbiased estimator</strong> <span class="math inline">\hat{\theta}</span> of a parameter <span class="math inline">\theta</span>, <span class="math display">
+<li><p>Under its regularity conditions, the Cramér–Rao inequality states that for <strong>any unbiased estimator</strong> <span class="math inline">\hat{\theta}</span> of a parameter <span class="math inline">\theta</span>, <span class="math display">
 \mathrm{Var}(\hat{\theta}) \;\ge\; \mathcal{I}_n(\theta)^{-1},
 </span> where <span class="math inline">\mathcal{I}_n(\theta)^{-1}</span> is the <strong>Cramér–Rao Lower Bound (CRLB)</strong>.</p></li>
-<li><p>This result is extremely important because, for unbiased estimators, <span class="math display">
+<li><p>Under the theorem’s regularity conditions, this result is useful because, for unbiased estimators, <span class="math display">
 \mathrm{MSE}(\hat{\theta}) = \mathrm{Var}(\hat{\theta}).
-</span> So, the CRLB provides a theoretical minimum: it tells us the best possible performance an unbiased estimator can achieve.</p></li>
+</span> The CRLB is a lower benchmark for variance. Equality need not be attainable for a given model and parameter.</p></li>
 <li><p>If an unbiased estimator <strong>achieves</strong> the CRLB, it is called <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#def-efficiency" class="quarto-xref">efficient&nbsp;<span>5.8</span></a></span>, meaning no other unbiased estimator has smaller variance.</p></li>
 </ul>
 </div>
@@ -1708,7 +1808,7 @@ For this module, you may assume any solution you find is the global maximiser.</
 <p>This result states that for data<br>
 <span class="math display">
 X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\theta),
-</span> from <strong>any model</strong>, the <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#def-mle" class="quarto-xref">maximum likelihood estimator&nbsp;<span>5.3</span></a></span> satisfies <span class="math display">
+</span> from a <strong>regular model</strong>, the <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#def-mle" class="quarto-xref">maximum likelihood estimator&nbsp;<span>5.3</span></a></span> satisfies <span class="math display">
 \hat{\theta}_{\mathrm{MLE}}
 \;\overset{\text{approx.}}{\sim}\;
 \mathcal{N}\!\left(
@@ -1720,9 +1820,10 @@ X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\theta),
 <hr>
 <p><strong>Notes:</strong></p>
 <ul>
-<li>In practice, we usually replace the unknown parameter <span class="math inline">\theta</span> with its estimate <span class="math inline">\hat{\theta}_{\mathrm{MLE}}</span> inside the Fisher information.</li>
-<li>So, for the exam, it is sufficient to remember the <strong>plug-in form</strong> <span class="math inline">\mathcal{I}_n\big(\hat{\theta}_{\mathrm{MLE}}\big)</span>.</li>
-<li>This <strong>plug-in form</strong> <span class="math inline">\mathcal{I}_n\big(\hat{\theta}_{\mathrm{MLE}}\big)</span>, is called the <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#def-observed-fisher" class="quarto-xref">observed Fisher information&nbsp;<span>5.10</span></a></span>.</li>
+<li>In practice, we often replace the unknown parameter <span class="math inline">\theta</span> by <span class="math inline">\hat{\theta}_{\mathrm{MLE}}</span> inside the <strong>expected</strong> Fisher information. This gives the plug-in quantity <span class="math inline">\mathcal{I}_n(\hat{\theta}_{\mathrm{MLE}})</span>.</li>
+<li>The distinct <strong>observed information</strong> is <span class="math inline">j_n(\hat\theta_{\mathrm{MLE}};\underline{x})
+=-\ell''(\hat\theta_{\mathrm{MLE}};\underline{x})</span>.</li>
+<li>The approximation requires regularity conditions and can be poor near a boundary or in a small sample.</li>
 </ul>
 </div>
 </div>
@@ -1833,7 +1934,7 @@ This is the quantity from which all Bayesian estimates, intervals, and predictio
 </div>
 <div class="revision-entry">
 <div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-bayes-theorem-density">
-<p><span class="toggle-icon" aria-hidden="true"></span> <span class="revision-topic"> Be able to <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#prf-bayes" class="quarto-xref">prove&nbsp;<span>6.1</span></a></span> and recall <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#thm-bayes-density" class="quarto-xref">Bayes theorem for densities&nbsp;<span>6.1</span></a></span> and understand how this yields the <strong>posterior density</strong>: <span class="math display">
+<p><span class="toggle-icon" aria-hidden="true"></span> <span class="revision-topic"> Be able to <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#prf-bayes-density" class="quarto-xref">prove&nbsp;<span>6.1</span></a></span> and recall <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#thm-bayes-density" class="quarto-xref">Bayes theorem for densities&nbsp;<span>6.1</span></a></span> and understand how this yields the <strong>posterior density</strong>: <span class="math display">
 \pi(\theta \mid \underline{x}) = \frac{\pi(\theta) \, f(\underline{x}\mid \theta)}{f(\underline{x})}.
 </span> </span></p>
 </div>
@@ -1963,7 +2064,7 @@ f(\underline{x}) = \int \pi(\theta)\,f(\underline{x}\mid \theta)\,d\theta
 <div id="rev-map" class="revision-content" hidden="">
 <p><strong>Note:</strong> In some cases, the MAP can be read off directly. For example, if <span class="math display">
 \theta \mid \underline{x} \sim \mathcal{N}(M, V),
-</span> then the posterior is maximised at its mean, so the MAP estimator is <span class="math inline">M</span>.</p>
+</span> then the posterior is maximised at its mean, so the MAP estimator is <span class="math inline">M</span>. When differentiating a posterior density, score-equation solutions are only candidates: respect the parameter support and check boundaries and the global maximum.</p>
 </div>
 </div>
 <details class="practice-details">
@@ -2004,7 +2105,7 @@ f(\underline{x}) = \int \pi(\theta)\,f(\underline{x}\mid \theta)\,d\theta
 <p><span class="toggle-icon" aria-hidden="true"></span> <span class="revision-topic"> Be able to recall and compute the <span class="xref-no-num"><a href="../main/part2/6-bayes-inference.html#thm-bernstein-von-mises" class="quarto-xref">asymptotic posterior distribution&nbsp;<span>6.2</span></a></span>. </span></p>
 </div>
 <div id="rev-asymp-posterior" class="revision-content" hidden="">
-<p><strong>Note:</strong> The method for computing the asymptotic posterior distribution is <em>exactly the same</em> as the approach for the <span class="xref-no-num"><a href="../main/part2/5-likelihood.html#def-asymp-mle-approx" class="quarto-xref">asymptotic distribution of the MLE&nbsp;<span>5.9</span></a></span>.</p>
+<p><strong>Note:</strong> Under suitable regularity conditions, the posterior and the MLE’s sampling distribution can have similar large-sample Normal centres and variances. They remain different objects: the former describes uncertainty in <span class="math inline">\theta</span> conditional on the observed data, while the latter describes repeated values of an estimator under repeated sampling.</p>
 </div>
 </div>
 <details class="practice-details">
@@ -2055,13 +2156,21 @@ f(\underline{x}) = \int \pi(\theta)\,f(\underline{x}\mid \theta)\,d\theta
 <summary>
 Assessment Focus
 </summary>
+<ul>
+<li>Define confidence through repeated-sampling coverage and interpret a realised interval without assigning frequentist probability to the fixed parameter.</li>
+<li>Select between an exact Normal <span class="math inline">z</span> interval, an exact Normal-theory <span class="math inline">t</span> interval, a CLT interval and an MLE/Fisher-information approximation by first checking the model and assumptions.</li>
+<li>Use the course-wide quantile convention <span class="math inline">z_p=\Phi^{-1}(p)</span>, so a two-sided Normal interval uses <span class="math inline">z_{1-\alpha/2}</span>.</li>
+<li>Distinguish exact, conservative and approximate coverage, and state when the reported method is approximate.</li>
+</ul>
 </details>
 <div class="revision-entry">
 <div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-ci-random-interval">
 <p><span class="toggle-icon" aria-hidden="true"></span> <span class="revision-topic"> <span class="xref-no-num"><a href="../main/part3/7-freq-interval-estimation.html#sec-freq-persp-interval" class="quarto-xref">Understand&nbsp;<span>The Frequentist Perspective</span></a></span> that a <strong>frequentist confidence interval</strong> is defined by two statistics <span class="math inline">L(\underline{X})</span> and <span class="math inline">U(\underline{X})</span>, which together form a <em>random interval</em>. </span></p>
 </div>
 <div id="rev-ci-random-interval" class="revision-content" hidden="">
-
+<p>Before observing the data, <span class="math display">
+C(\underline X)=[L(\underline X),U(\underline X)]
+</span> is random because its endpoints are statistics. Repeating the sampling process would produce different intervals. After observing <span class="math inline">\underline x</span>, the realised interval <span class="math inline">C(\underline x)</span> is fixed, as is the unknown frequentist parameter.</p>
 </div>
 </div>
 <div class="revision-entry">
@@ -2069,9 +2178,10 @@ Assessment Focus
 <p><span class="toggle-icon" aria-hidden="true"></span> <span class="revision-topic"> Be able to recall the <span class="xref-no-num"><a href="../main/part3/7-freq-interval-estimation.html#def-confidence-interval" class="quarto-xref">definition&nbsp;<span>7.1</span></a></span> of a <span class="math inline">100(1-\alpha)\%</span> confidence interval. </span></p>
 </div>
 <div id="rev-ci-def" class="revision-content" hidden="">
-<p>A <span class="math inline">100(1-\alpha)\%</span> confidence interval is defined by a <em>random interval</em> <span class="math inline">L(\underline{X})</span> and <span class="math inline">U(\underline{X})</span> such that: <span class="math display">
-\Pr\big(L(\underline{X}) &lt; \theta &lt; U(\underline{X})\big) = 1 - \alpha.
+<p>A level-<span class="math inline">100(1-\alpha)\%</span> confidence procedure is defined by a <em>random interval</em> <span class="math inline">C(\underline X)=[L(\underline X),U(\underline X)]</span> such that, for each relevant <span class="math inline">\theta</span>, <span class="math display">
+\Pr_\theta\!\big\{\theta\in C(\underline X)\big\}\geq 1-\alpha.
 </span> Here, the <strong>random quantities</strong> are the statistics <span class="math inline">L(\underline{X})</span> and <span class="math inline">U(\underline{X})</span>; the parameter <span class="math inline">\theta</span> is fixed (but unknown).</p>
+<p>An exact continuous procedure often attains equality. A discrete exact procedure may be conservative, while an approximate procedure has coverage that approaches the nominal level under its large-sample conditions.</p>
 </div>
 </div>
 <div class="revision-entry">
@@ -2176,7 +2286,7 @@ X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu,\sigma^2),
 </span></p>
 <hr>
 <p><strong>Computing Confidence Intervals</strong></p>
-<p>Suppose we observe <span class="math inline">n</span> i.i.d. data points <span class="math inline">x_1,\ldots,x_n</span> from <strong>any</strong> distribution with finite variance. A <span class="math inline">100(1-\alpha)\%</span> <span class="xref-no-num"><a href="../main/part3/7-freq-interval-estimation.html#def-approx-ci-clt" class="quarto-xref">approximate CLT-based confidence interval&nbsp;<span>7.4</span></a></span> for the <strong>population mean</strong> takes the form:</p>
+<p>Suppose we observe <span class="math inline">n</span> i.i.d. data points <span class="math inline">x_1,\ldots,x_n</span> from a distribution satisfying the finite-variance CLT conditions. A <span class="math inline">100(1-\alpha)\%</span> <span class="xref-no-num"><a href="../main/part3/7-freq-interval-estimation.html#def-approx-ci-clt" class="quarto-xref">approximate CLT-based confidence interval&nbsp;<span>7.4</span></a></span> for the <strong>population mean</strong> takes the form:</p>
 <ol type="1">
 <li><p><strong>Known variance:</strong> If the population variance <span class="math inline">\sigma^2</span> is known, the confidence interval is <span class="math display">
   \boxed{\bar{x} \pm z_{1-\alpha/2}\,\frac{\sigma}{\sqrt{n}}}
@@ -2305,13 +2415,22 @@ z_{1-\alpha/2}\,
 <summary>
 Assessment Focus
 </summary>
+<ul>
+<li>Interpret the posterior distribution as the complete Bayesian update conditional on the stated model, prior and observed data.</li>
+<li>Define a credible region and explain why many regions can contain the same posterior mass.</li>
+<li>Define and interpret a highest-density region; understand that it may be disjoint for a multimodal posterior.</li>
+<li>Contrast posterior probability in a credible region with repeated-sampling coverage of a confidence procedure. Analytic HDI calculations are not examinable unless a question explicitly supplies the needed form.</li>
+</ul>
 </details>
 <div class="revision-entry">
 <div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-posterior-inference">
 <p><span class="toggle-icon" aria-hidden="true"></span> <span class="revision-topic"> Understand that a Bayesian inference outputs the posterior distribution <span class="math inline">\pi(\theta \mid \underline{x})</span>, and that all Bayesian estimates, intervals, and summaries are derived from this distribution. </span></p>
 </div>
 <div id="rev-posterior-inference" class="revision-content" hidden="">
-
+<p>Bayesian inference begins with <span class="math display">
+\pi(\theta\mid\underline x)
+\propto f(\underline x\mid\theta)\pi(\theta).
+</span> Posterior means, medians, MAP estimates, credible regions and posterior probabilities are summaries of this distribution. Their conclusions are conditional on the likelihood/model, the prior and the observations; changing a consequential prior can change the result.</p>
 </div>
 </div>
 <div class="revision-entry">
@@ -2319,11 +2438,11 @@ Assessment Focus
 <p><span class="toggle-icon" aria-hidden="true"></span> <span class="revision-topic"> Understand, and be able to recall, the definition of a <span class="xref-no-num"><a href="../main/part3/8-bayes-interval-estimation.html#def-credible-interval" class="quarto-xref">Credible Interval&nbsp;<span>8.1</span></a></span>. </span></p>
 </div>
 <div id="rev-credible-interval" class="revision-content" hidden="">
-<p>A <span class="math inline">100(1-\alpha)\%</span> Bayesian credible interval is <strong>any</strong> region <span class="math inline">C_\alpha</span> such that <span class="math display">
+<p>A <span class="math inline">100(1-\alpha)\%</span> Bayesian credible <strong>region</strong> is a set <span class="math inline">C_\alpha</span> such that <span class="math display">
 \Pr(\theta \in C_\alpha \mid \underline{x})
 = \int_{C_\alpha} \pi(\theta \mid \underline{x})\,\mathrm{d}\theta
 = 1 - \alpha.
-</span></p>
+</span> When <span class="math inline">C_\alpha</span> is connected on the real line, it is a credible interval. For a discrete posterior, exactly <span class="math inline">1-\alpha</span> mass may be unattainable, so a region with at least the requested mass is used.</p>
 </div>
 </div>
 <div class="revision-entry">
@@ -2333,7 +2452,7 @@ Assessment Focus
 <div id="rev-hdi" class="revision-content" hidden="">
 <ul>
 <li><p>See the visualisation in the <span class="xref-no-num"><a href="../main/part3/8-bayes-interval-estimation.html#def-hdi" class="quarto-xref">definition&nbsp;<span>8.2</span></a></span> for intuition.</p></li>
-<li><p>A <span class="math inline">100(1-\alpha)\%</span> <strong>Highest Density Interval (HDI)</strong> is the <em>narrowest</em> credible interval containing posterior probability <span class="math inline">1-\alpha</span>.</p></li>
+<li><p>A <span class="math inline">100(1-\alpha)\%</span> <strong>highest-density region</strong> contains the parameter values with greatest posterior density until probability <span class="math inline">1-\alpha</span> is accumulated. Under suitable regularity conditions it minimises total length/measure among credible regions with that mass.</p></li>
 <li><p>It is defined by choosing a constant <span class="math inline">\gamma</span> such that <span class="math display">
 C_\alpha = \{\theta : \pi(\theta \mid \underline{x}) \ge \gamma\}
 </span> and this region satisfies <span class="math display">
@@ -2341,6 +2460,7 @@ C_\alpha = \{\theta : \pi(\theta \mid \underline{x}) \ge \gamma\}
 = \int_{C_\alpha} \pi(\theta \mid \underline{x})\,\mathrm{d}\theta
 = 1 - \alpha.
 </span></p></li>
+<li><p>For a unimodal posterior this region is usually one interval. For a multimodal posterior it may be a union of disjoint intervals, so “highest density interval” is common terminology but “region” is more general.</p></li>
 </ul>
 <!-- - If the posterior distribution is normal,
   $$
@@ -2348,7 +2468,7 @@ C_\alpha = \{\theta : \pi(\theta \mid \underline{x}) \ge \gamma\}
   $$
   then the $100(1-\alpha)\%$ HDI coincides with the equal–tailed interval and is given by
   $$
-  M \pm z_{\alpha/2}\sqrt{V}.
+  M \pm z_{1-\alpha/2}\sqrt{V}.
   $$ -->
 <hr>
 <p><strong>Note:</strong></p>
@@ -2402,6 +2522,12 @@ C_\alpha = \{\theta : \pi(\theta \mid \underline{x}) \ge \gamma\}
 <summary>
 Assessment Focus
 </summary>
+<ul>
+<li>State <span class="math inline">H_0</span> and the one- or two-sided <span class="math inline">H_1</span> before choosing a rejection tail; distinguish a level, the actual size, Type I error, Type II error and power.</li>
+<li>Select an exact <span class="math inline">z</span> or <span class="math inline">t</span> test, a CLT test, or a likelihood-ratio test from the model and assumptions, then use the matching null distribution.</li>
+<li>Report the statistic, rejection rule or <span class="math inline">p</span>-value, decision and a cautious contextual conclusion. “Fail to reject” never means “accept” or “prove.”</li>
+<li>Interpret a <span class="math inline">p</span>-value as a null-model tail probability, not as <span class="math inline">\Pr(H_0\mid\underline x)</span>, the probability the result was due to chance, or the size of an effect.</li>
+</ul>
 </details>
 <div class="revision-entry">
 <div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-hypothesis-test">
@@ -2476,11 +2602,11 @@ Assessment Focus
 <li><strong>Data and Test Statistic:</strong> Random data<br>
 <span class="math inline">X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\theta)</span><br>
 and a chosen test statistic <span class="math inline">T(\underline{X})</span>.</li>
-<li><strong>Size (or significance level):</strong> A chosen size <span class="math inline">\alpha</span>.</li>
+<li><strong>Significance level:</strong> A chosen upper bound <span class="math inline">\alpha</span> for the Type I error.</li>
 </ol>
-<p>A <strong>size–<span class="math inline">\alpha</span> rejection region</strong> is any set <span class="math inline">R_\alpha</span> such that <span class="math display">
-\Pr(T \in R_\alpha \mid H_0) = \alpha.
-</span></p>
+<p>A <strong>level-<span class="math inline">\alpha</span> rejection region</strong> is any set <span class="math inline">R_\alpha</span> such that <span class="math display">
+\sup_{\theta\in H_0}\Pr_\theta(T \in R_\alpha) \leq \alpha.
+</span> The <strong>size</strong> is the actual supremum on the left. For many simple continuous tests in this course it equals <span class="math inline">\alpha</span>; for a discrete conservative test it may be smaller.</p>
 <hr>
 <p><strong>Notes</strong></p>
 <ul>
@@ -2493,9 +2619,9 @@ T_{\mathrm{obs}} \in R_\alpha.
 T_{\mathrm{obs}} \notin R_\alpha.
 </span></p></li>
 </ul></li>
-<li><p>Any <em>test</em> that specifies a size–<span class="math inline">\alpha</span> rejection region is a <strong>valid hypothesis test</strong>.</p>
+<li><p>Any <em>test</em> that specifies a level-<span class="math inline">\alpha</span> rejection region is a <strong>valid hypothesis test</strong>.</p>
 <ul>
-<li><p>In principle, there are infinitely many possible regions <span class="math inline">R_\alpha</span> satisfying <span class="math inline">\Pr(T \in R_\alpha \mid H_0) = \alpha</span>.</p></li>
+<li><p>In principle, there can be many possible regions satisfying the level requirement.</p></li>
 <li><p>However, not all valid regions are <strong>good</strong>. Beyond having the correct size, we want a rejection region that gives the test <strong>high ability to detect false nulls</strong>. In other words, we prefer choices of <span class="math inline">R_\alpha</span> that make the probability of a <strong>Type II error</strong> small — meaning the test is likely to reject <span class="math inline">H_0</span> when <span class="math inline">H_0</span> is actually false.</p></li>
 <li><p>This is why, in practice, we choose rejection regions that correspond to the <strong>most extreme</strong> values of the test statistic in the direction(s) specified by the alternative.</p></li>
 </ul></li>
@@ -2541,13 +2667,13 @@ T_{\mathrm{obs}} \notin R_\alpha.
 <li>A <strong>rejection region</strong> <span class="math inline">R_\alpha</span> describing which values of <span class="math inline">T</span> are considered “too inconsistent’’ with <span class="math inline">H_0</span> at size (significance level) <span class="math inline">\alpha</span>,</li>
 <li>The <strong>observed value</strong> <span class="math inline">T_{\mathrm{obs}} = T(\underline{x})</span> computed from the data,</li>
 </ol>
-<p>the <strong><span class="math inline">p</span>-value</strong> is defined as the <strong>largest value of</strong> <span class="math inline">\alpha</span> for which <span class="math display">
+<p>for a nested family of rejection regions, the <strong><span class="math inline">p</span>-value</strong> is the <strong>smallest significance level</strong> <span class="math inline">\alpha</span> for which <span class="math display">
 T_{\mathrm{obs}} \in R_\alpha.
 </span></p>
 <p>Equivalently, it is the probability, under <span class="math inline">H_0</span>, of observing a test statistic <strong>at least as extreme</strong> as the observed value: <span class="math display">
 p = \Pr\!\big( T \text{ is at least as extreme as } T_{\mathrm{obs}} \mid H_0 \big).
 </span></p>
-<p>For a chosen test size <span class="math inline">\alpha</span>, <strong>we reject <span class="math inline">H_0</span> whenever <span class="math inline">p &lt; \alpha</span></strong>.</p>
+<p>For a pre-specified test level <span class="math inline">\alpha</span>, <strong>we reject <span class="math inline">H_0</span> whenever <span class="math inline">p\leq\alpha</span></strong>. The <span class="math inline">p</span>-value is not <span class="math inline">\Pr(H_0\mid\underline x)</span> and does not measure effect size or practical importance.</p>
 </div>
 </div>
 <div class="revision-entry">
@@ -2558,22 +2684,22 @@ p = \Pr\!\big( T \text{ is at least as extreme as } T_{\mathrm{obs}} \mid H_0 \b
 <p>Given hypotheses <span class="math inline">H_0</span> and <span class="math inline">H_1</span>, and:</p>
 <ol type="1">
 <li>A <strong>test statistic</strong> <span class="math inline">T(\underline{X})</span>,</li>
-<li>A <strong>rejection region</strong> <span class="math inline">R_\alpha</span> specifying when we reject <span class="math inline">H_0</span> at size <span class="math inline">\alpha</span>,</li>
+<li>A <strong>rejection region</strong> <span class="math inline">R_\alpha</span> specifying when we reject <span class="math inline">H_0</span> at level <span class="math inline">\alpha</span>,</li>
 <li>The sampling distribution of <span class="math inline">T</span> under different parameter values <span class="math inline">\theta</span>,</li>
 </ol>
 <p>the <strong>power function</strong> is defined as <span class="math display">
-\beta(\theta) = \Pr\big(T \in R_\alpha \mid \theta\big).
+\pi(\theta) = \Pr_\theta\big(T \in R_\alpha\big).
 </span></p>
-<p>That is, <span class="math inline">\beta(\theta)</span> tells us <strong>how likely our test is to reject <span class="math inline">H_0</span> when the true parameter value is <span class="math inline">\theta</span></strong>.</p>
+<p>That is, <span class="math inline">\pi(\theta)</span> tells us <strong>how likely our test is to reject <span class="math inline">H_0</span> when the true parameter value is <span class="math inline">\theta</span></strong>. The Type II error probability is <span class="math inline">\beta(\theta)=1-\pi(\theta)</span> for <span class="math inline">\theta\in H_1</span>.</p>
 <ul>
 <li><p>If <span class="math inline">\theta \in H_0</span>, then<br>
 <span class="math display">
-\beta(\theta) = \Pr(\text{Type I error at }\theta),
+\pi(\theta) = \Pr(\text{Type I error at }\theta),
 </span> which is by definition no larger than <span class="math inline">\alpha</span>.</p></li>
 <li><p>If <span class="math inline">\theta \in H_1</span>, then<br>
 <span class="math display">
-\beta(\theta) = \Pr(\text{correctly rejecting } H_0 \mid \theta),
-</span> so larger values of <span class="math inline">\beta(\theta)</span> mean a more effective test.</p></li>
+\pi(\theta) = \Pr(\text{correctly rejecting } H_0 \mid \theta),
+</span> so larger values of <span class="math inline">\pi(\theta)</span> mean a more effective test.</p></li>
 </ul>
 <p>In short:</p>
 <ul>
@@ -2619,7 +2745,7 @@ p = \Pr\!\big( T \text{ is at least as extreme as } T_{\mathrm{obs}} \mid H_0 \b
 <div id="rev-z-test" class="revision-content" hidden="">
 <p><strong>Assumptions and Setup</strong></p>
 <ul>
-<li><p>The <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-one-sample-z-test" class="quarto-xref">One-Sample Z test&nbsp;<span>9.6</span></a></span> assumes we have i.i.d. <em>normally distributed data</em> <span class="math display">
+<li><p>The <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-one-sample-t-test" class="quarto-xref">One-Sample t test&nbsp;<span>9.7</span></a></span> assumes we have i.i.d. <em>normally distributed data</em> <span class="math display">
 X_1,\ldots, X_n \overset{i.i.d.}{\sim} \mathcal{N}(\mu, \sigma^2)
 </span> with variance <span class="math inline">\sigma^2</span> <strong>known</strong>.</p></li>
 <li><p>It tests <span class="math inline">H_0 : \mu = \mu_0</span> against either a <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-one-two-sided-tests" class="quarto-xref">one-sided or two-sided alternative&nbsp;<span>9.4</span></a></span></p></li>
@@ -2630,7 +2756,7 @@ T = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}}.
 </ul>
 <hr>
 <p><strong>Performing the Test</strong></p>
-<p>Given <span class="math inline">H_0 : \mu = \mu_0</span> and a chosen <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-one-two-sided-tests" class="quarto-xref">one-sided or two-sided alternative&nbsp;<span>9.4</span></a></span> <span class="math inline">H_1</span>, the size–<span class="math inline">\alpha</span> test proceeds as follows:</p>
+<p>Given <span class="math inline">H_0 : \mu = \mu_0</span> and a chosen <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-one-two-sided-tests" class="quarto-xref">one-sided or two-sided alternative&nbsp;<span>9.4</span></a></span> <span class="math inline">H_1</span>, the level-<span class="math inline">\alpha</span> test proceeds as follows:</p>
 <ol type="1">
 <li><p><strong>Compute the observed test statistic</strong> <span class="math display">
   T_{\mathrm{obs}}
@@ -2718,7 +2844,7 @@ T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}},
 </ul>
 <hr>
 <p><strong>Performing the Test</strong></p>
-<p>Given <span class="math inline">H_0 : \mu = \mu_0</span> and a chosen <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-one-two-sided-tests" class="quarto-xref">one-sided or two-sided alternative&nbsp;<span>9.4</span></a></span> <span class="math inline">H_1</span>, the size–<span class="math inline">\alpha</span> test proceeds as follows:</p>
+<p>Given <span class="math inline">H_0 : \mu = \mu_0</span> and a chosen <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-one-two-sided-tests" class="quarto-xref">one-sided or two-sided alternative&nbsp;<span>9.4</span></a></span> <span class="math inline">H_1</span>, the level-<span class="math inline">\alpha</span> test proceeds as follows:</p>
 <ol type="1">
 <li><p><strong>Compute the observed test statistic</strong> <span class="math display">
   T_{\mathrm{obs}}
@@ -2792,7 +2918,7 @@ T_{\mathrm{obs}} &lt; t_{n-1,\, \alpha}.
 <div id="rev-clt-test" class="revision-content" hidden="">
 <p><strong>Assumptions and Setup</strong></p>
 <ul>
-<li><p>The <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-clt-test" class="quarto-xref">approximate CLT-based tests for the mean&nbsp;<span>9.8</span></a></span> may be applied when we have i.i.d. data from <strong>any</strong> distribution with finite variance: <span class="math display">
+<li><p>The <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-clt-test" class="quarto-xref">approximate CLT-based tests for the mean&nbsp;<span>9.8</span></a></span> may be applied when we have i.i.d. data from a distribution satisfying the finite-variance CLT conditions: <span class="math display">
 X_1,\ldots, X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\theta),
 </span> where <span class="math inline">\mathrm{Var}(X_i) = \sigma^2</span> may be either <strong>known</strong> or <strong>unknown</strong>.</p></li>
 <li><p>We write <span class="math inline">\mu = \mathrm{E}[X_i]</span> and <span class="math inline">\sigma^2 = \mathrm{Var}(X_i)</span>.</p>
@@ -2801,7 +2927,7 @@ X_1,\ldots, X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\theta),
 </ul></li>
 <li><p>The test relies on the fact that, by the <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-clt-test" class="quarto-xref">CLT&nbsp;<span>9.8</span></a></span>, for <em>large</em> <span class="math inline">n</span>, we have <span class="math display">
 \bar{X} \overset{\text{approx.}}{\sim} \mathcal{N}\left(\mu,\frac{\sigma^2}{n}\right),
-</span> regardless of the original distribution <span class="math inline">X_i \sim \mathrm{Distribution}(\theta)</span>.</p></li>
+</span> provided the finite-variance CLT conditions hold. The required sample size depends on features such as skewness and tail weight; there is no universal cutoff.</p></li>
 <li><p>It tests <span class="math inline">H_0 : \mu = \mu_0</span> against either a <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-one-two-sided-tests" class="quarto-xref">one-sided or two-sided alternative&nbsp;<span>9.4</span></a></span></p></li>
 <li><p>The test statistic is either:</p>
 <ul>
@@ -2824,7 +2950,7 @@ T \;\overset{\text{approx.}}{\sim}\; \mathcal{N}(0,1)
 </ul>
 <hr>
 <p><strong>Performing the Test</strong></p>
-<p>Given <span class="math inline">H_0 : \mu = \mu_0</span> and a chosen <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-one-two-sided-tests" class="quarto-xref">one-sided or two-sided alternative&nbsp;<span>9.4</span></a></span> <span class="math inline">H_1</span>, the size–<span class="math inline">\alpha</span> test proceeds as follows:</p>
+<p>Given <span class="math inline">H_0 : \mu = \mu_0</span> and a chosen <span class="xref-no-num"><a href="../main/part4/9-freq-hypothesis-testing.html#def-one-two-sided-tests" class="quarto-xref">one-sided or two-sided alternative&nbsp;<span>9.4</span></a></span> <span class="math inline">H_1</span>, the level-<span class="math inline">\alpha</span> test proceeds as follows:</p>
 <ol type="1">
 <li><p><strong>Compute the observed test statistic:</strong> Depending on whether the variance is <em>known</em> or <em>unknown</em>: <span class="math display">
   T_{\mathrm{obs}}
@@ -2921,7 +3047,7 @@ T \; \overset{\text{approx.}}{\sim} \; \chi^2_1,
 </ul>
 <hr>
 <p><strong>Performing the Test</strong></p>
-<p>Given <span class="math inline">H_0 : \theta = \theta_0</span> and the two-sided alternative <span class="math inline">H_1: \theta \neq \theta_0</span>, the size–<span class="math inline">\alpha</span> test proceeds as follows:</p>
+<p>Given <span class="math inline">H_0 : \theta = \theta_0</span> and the two-sided alternative <span class="math inline">H_1: \theta \neq \theta_0</span>, the level-<span class="math inline">\alpha</span> test proceeds as follows:</p>
 <ol type="1">
 <li><strong>Compute the observed test statistic:</strong> <span class="math display">
   T_{\mathrm{obs}} = 2\left( \ell(\hat{\theta}_{\mathrm{MLE}} \,; \underline{x}) - \ell(\theta_0\, ; \underline{x})\right),

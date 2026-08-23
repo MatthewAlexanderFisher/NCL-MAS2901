@@ -1,49 +1,76 @@
 ```{ojs}
-// Parameters
+// Null model and sampling distribution of the sample mean
 n = 30
-mu0 = 200       // null mean
-sigma = 10      // std deviation under null
+mu0 = 200
+sigma = 10
 alpha = 0.05
+standardError = sigma / Math.sqrt(n)
+criticalValue = 1.959963984540054
 
-// Slider for observed sample mean
-viewof xbar_obs = Inputs.range([mu0 - 3*sigma, mu0 + 3*sigma], 
-  {step: 0.5, value: mu0, label: md`Observed sample mean ${tex`\bar{x}_{obs}`}`} )
+viewof xbar_obs = Inputs.range(
+  [mu0 - 4 * standardError, mu0 + 4 * standardError],
+  {
+    step: 0.05,
+    value: mu0,
+    label: md`Observed sample mean ${tex`\bar{x}_{\mathrm{obs}}`}`
+  }
+)
 
-// Null sampling distribution
-xgrid = d3.range(mu0 - 4*sigma, mu0 + 4*sigma, 0.1)
-pdf = xgrid.map(x => ({x, y: d3.randomNormal(mu0, sigma/Math.sqrt(n))() })) // or use normal pdf
+lower = mu0 - criticalValue * standardError
+upper = mu0 + criticalValue * standardError
+observedZ = (xbar_obs - mu0) / standardError
 
-// Compute rejection region bounds
-zcrit = d3.quantile(d3.range(-5,5,0.01), alpha/2) // could just hardcode 1.96
-lower = mu0 - 1.96 * sigma/Math.sqrt(n)
-upper = mu0 + 1.96 * sigma/Math.sqrt(n)
+rvNormalCDF = (z) => {
+  const sign = Math.sign(z);
+  const x = Math.abs(z) / Math.sqrt(2);
+  const t = 1 / (1 + 0.3275911 * x);
+  const erf = sign * (1 - (((((1.061405429 * t - 1.453152027) * t + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x)));
+  return 0.5 * (1 + erf);
+}
 
-// Plot
-Plot.plot({
-  width: 600, height: 300,
-  style: {
-    background: "var(--plot-bg)",
-    color: "var(--plot-fg)",
-    fontFamily: bodyFont,
-    fontSize: 14
-  },
-  x: {label: "Sample mean"},
-  y: {label: "Density"},
-  marks: [
-    // Null distribution
-    Plot.line(xgrid.map(x => ({x, y: 1/(sigma/Math.sqrt(n)*Math.sqrt(2*Math.PI)) 
-                                    * Math.exp(-0.5*((x-mu0)/(sigma/Math.sqrt(n)))**2)})), 
-              {x:"x", y:"y", stroke: "var(--plot-series-4)" }),
+pValue = Math.min(1, 2 * (1 - rvNormalCDF(Math.abs(observedZ))))
+rejectNull = Math.abs(observedZ) > criticalValue
 
-    // Shaded rejection regions
-    Plot.areaY(xgrid.map(x => ({x, y: (x<lower||x>upper) ? 
-       1/(sigma/Math.sqrt(n)*Math.sqrt(2*Math.PI)) 
-         * Math.exp(-0.5*((x-mu0)/(sigma/Math.sqrt(n)))**2) : 0})), 
-       {x:"x", y:"y", fill: "var(--plot-series-4)", fillOpacity:0.3}),
-    
-    // Observed value
-    Plot.ruleX([xbar_obs], {stroke:"var(--plot-reference)", strokeWidth:2}),
-  ]
-})
+{
+  const plotWidth = Math.min(700, Math.max(320, width));
+  const step = standardError / 80;
+  const xgrid = d3.range(mu0 - 4 * standardError, mu0 + 4 * standardError + step, step);
+  const density = x => 1 / (standardError * Math.sqrt(2 * Math.PI))
+    * Math.exp(-0.5 * ((x - mu0) / standardError) ** 2);
 
+  const plot = Plot.plot({
+    width: plotWidth,
+    height: 320,
+    style: {
+      background: "var(--plot-bg)",
+      color: "var(--plot-fg)",
+      fontFamily: bodyFont,
+      fontSize: 14
+    },
+    x: {label: "Sample mean", domain: d3.extent(xgrid)},
+    y: {label: "Density"},
+    marks: [
+      Plot.areaY(
+        xgrid.map(x => ({x, y: (x < lower || x > upper) ? density(x) : 0})),
+        {x: "x", y: "y", fill: "var(--plot-series-4)", fillOpacity: 0.28}
+      ),
+      Plot.line(
+        xgrid.map(x => ({x, y: density(x)})),
+        {x: "x", y: "y", stroke: "var(--plot-series-4)", strokeWidth: 2}
+      ),
+      Plot.ruleX([lower, upper], {stroke: "var(--plot-series-4)", strokeDasharray: "5,3"}),
+      Plot.ruleX([xbar_obs], {stroke: "var(--plot-reference)", strokeWidth: 3}),
+      Plot.ruleY([0], {stroke: "var(--plot-grid)"})
+    ]
+  });
+
+  const status = html`<p role="status" aria-live="polite" style="margin:.5rem 0 0;">
+    <strong>${rejectNull ? "Reject H₀" : "Fail to reject H₀"}.</strong>
+    ${tex`z_{\mathrm{obs}}=${observedZ.toFixed(3)}`}; two-sided
+    ${tex`p=${pValue.toFixed(4)}`}.
+    The shaded tails form the 5% rejection region.
+  </p>`;
+
+  return html`<div style="max-width:700px;margin:0 auto;">${plot}${status}</div>`;
+}
 ```

@@ -6,7 +6,16 @@ tbl-cap-location: bottom
 
 Recalling the <span class="xref-no-num">[main inference tasks @sec-inference-tasks]</span>, we now move from *point estimation* to *interval estimation*. 
 
-The key idea is that instead of giving a single “best guess”[^bayes-exc] of a parameter, we want to provide a **range of plausible values**. In other words, an **interval**.
+The key idea is that instead of giving a single “best guess”[^bayes-exc] of a parameter, we report a **range of values compatible with the data**, constructed by a method whose repeated-sampling behaviour we understand.
+
+::: {.callout-note appearance="simple"}
+**By the end of this chapter, you should be able to:**
+
+- distinguish a random confidence-interval procedure from the fixed interval obtained after observing data;
+- construct and interpret exact Normal confidence intervals when the variance is known or unknown;
+- recognise when a CLT- or MLE-based interval is approximate; and
+- explain how confidence level, sample size and standard error affect interval width.
+:::
 
 ## The Frequentist Perspective {#sec-freq-persp-interval}
 
@@ -24,12 +33,12 @@ A $100(1-\alpha)\%$ **confidence interval** for $\theta$ is a *random interval*
 $$
 \big[L(\underline{X}),\; U(\underline{X})\big]
 $$
-satisfying
+constructed so that, for every parameter value $\theta$ under consideration,
 $$
-\mathrm{Pr} \big(L(\underline{X}) < \theta < U(\underline{X})\big) = 1 - \alpha.
+\Pr_{\theta}\!\big(\theta\in[L(\underline{X}),U(\underline{X})]\big) \geq 1-\alpha.
 $$
 
-This property is called **coverage**: in the long run, a proportion $1-\alpha$ of such intervals (constructed from repeated experiments) will contain the true $\theta$.
+The probability is over repeated samples generated at the fixed value $\theta$. This property is called **coverage**: in the long run, at least a proportion $1-\alpha$ of intervals constructed in this way will contain the true $\theta$. When equality holds, the interval has **exact coverage** $1-\alpha$.
 :::
 
 ::: {.content-visible unless-format="pdf"}
@@ -38,10 +47,14 @@ This property is called **coverage**: in the long run, a proportion $1-\alpha$ o
 
 ```{=html}
 <details>
-<summary><strong>Show Visualisation</strong></summary>
+<summary><strong>Explore repeated-sampling coverage</strong></summary>
 ```
 
+**Predict.** Before resampling, what should happen to interval width if you increase $n$ or increase the confidence level?
+
 {{< include ../../_figures/part3/confidence-interval-simulation.qmd >}}
+
+**Observe and explain.** Resample repeatedly. Individual intervals either cover the fixed $\mu$ or miss it; the confidence level describes the long-run proportion that cover, not the probability attached to any one realised interval.
 
 ```{=html}
 </details>
@@ -55,7 +68,7 @@ This property is called **coverage**: in the long run, a proportion $1-\alpha$ o
 ### Terminology: Exact vs. Approximate Confidence Intervals
 A **confidence interval (CI)** is a random interval, constructed from the data, that aims to contain the true parameter value with a specified probability (the *coverage probability*).
 
-* **Exact CI.** The coverage probability is *exactly* equal to the nominal level (e.g. $95\%$). Such intervals are sometimes called *well-calibrated*. These are rare, but they can be derived in some classical settings (e.g. certain normal models).
+* **Exact (non-asymptotic) CI.** Its coverage guarantee comes from the exact finite-sample distribution and is at least the nominal level. In continuous settings, including the Normal models below, equality is often attained. With discrete data, exact equality may be impossible, so an exact procedure may be conservative.
 
 * **Approximate CI.** The coverage probability is only guaranteed *asymptotically* (typically as $n \to \infty$). In practice, most commonly used intervals are of this type.
 :::
@@ -74,9 +87,21 @@ Therefore, a frequentist would **not** say
 $$
 \mathrm{Pr}(L_{\text{obs}} < \theta < U_{\text{obs}}) = 1 - \alpha.
 $$
-That statement is meaningless, because $\theta$ is not random in the frequentist view.
+That is not a frequentist probability statement, because $\theta$ is not random in the frequentist model.
 
-Instead, the correct interpretation is: **our method has long-run coverage $1-\alpha$.**
+Instead, a useful report is:
+
+> **Using a method that covers the true parameter in $100(1-\alpha)\%$ of repeated samples, we obtained the interval $[L_{\mathrm{obs}},U_{\mathrm{obs}}]$.**
+
+::: {.callout-tip appearance="simple"}
+**Quick interpretation check.** A $95\%$ confidence interval does **not** mean that:
+
+- $95\%$ of the observations lie inside the interval;
+- there is a $95\%$ frequentist probability that the fixed $\theta$ lies inside this realised interval; or
+- the method will have $95\%$ coverage if its modelling assumptions are badly wrong.
+
+Higher confidence produces a wider interval, while increasing $n$ usually narrows it through the $1/\sqrt n$ standard error.
+:::
 
 ## Exact Confidence Intervals {#sec-exact-ci}
 
@@ -228,7 +253,7 @@ When constructing a confidence interval from a pivot, the choice of quantiles is
   \Pr\!\left(Z \leq z_{1-\alpha}\right) = 1-\alpha.
   $$
 
-The symmetric interval is usually preferred because it places equal probability mass in both tails, making it “balanced” around the estimator. This choice minimises the interval length for symmetric distributions (like the normal), which is why it is *standard*.
+The symmetric interval is usually preferred because it places equal probability mass in both tails, making it balanced around the estimator. For a symmetric, unimodal pivot such as the Normal pivot, this choice gives the shortest interval, which is why it is standard here.
 :::
 
 ::: {.example #exm-normal-ci-known-var}
@@ -254,17 +279,17 @@ We have $\bar{x} = 161.72$, $n=30$, $\sigma = 10$.
 
 For a confidence interval, the formula is
 $$
-\bar{x} \;\pm\; z_{\alpha/2} \cdot \frac{\sigma}{\sqrt{n}}.
+\bar{x} \;\pm\; z_{1-\alpha/2} \cdot \frac{\sigma}{\sqrt{n}}.
 $$
 
-- For $95\%$ confidence, $z_{0.05/2} = 1.96$:  
+- For $95\%$ confidence, $z_{0.975} = 1.96$:
 $$
 161.72 \pm 1.96 \cdot \frac{10}{\sqrt{30}} 
 = 161.72 \pm 3.578 
 = (158.14, \ 165.30).
 $$
 
-- For 99% confidence, $z_{0.01/2} = 2.576$:  
+- For 99% confidence, $z_{0.995} = 2.576$:
 $$
 161.72 \pm 2.576 \cdot \frac{10}{\sqrt{30}} 
 = 161.72 \pm 4.703 
@@ -277,7 +302,7 @@ $$
 
 The width of a 95% CI is
 $$
-\text{Width} = 2 \cdot z_{0.05/2} \cdot \frac{\sigma}{\sqrt{n}}
+\text{Width} = 2 \cdot z_{0.975} \cdot \frac{\sigma}{\sqrt{n}}
 = 2 \cdot 1.96 \cdot \frac{10}{\sqrt{n}}.
 $$
 
@@ -324,7 +349,7 @@ $$
 #### Aside: The Student’s $t$ Distribution {.unnumbered}
 
 * The <span class="xref-no-num">[Student-t @sec-t]</span> distribution was discovered in 1908 by William Sealy Gosset, who published under the pseudonym *“Student”*.
-* It arises when we replace the (unknown) variance $\sigma^2$ in a Normal problem with its estimate from the data. Formally,
+* In this **Normal-sample setting**, it arises when we replace the unknown variance $\sigma^2$ by its estimate from the data. This exact $t$ result depends on Normality; replacing $\sigma$ by $S$ does not produce an exact $t$ distribution for arbitrary populations. Formally,
 
   $$
   T = \frac{Z}{\sqrt{U/\nu}}, 
@@ -339,7 +364,7 @@ $$
 
 ```{=html}
 <details>
-  <summary><strong> Show Visualisation </strong></summary>
+  <summary><strong>Explore the Student $t$ distribution</strong></summary>
 ```
 
 
@@ -449,7 +474,7 @@ Continuing with @exm-normal-ci-known-var, suppose now that we don't assume we kn
 
 In addition to the sample mean $\bar{x}=161.72$, we also compute the sample variance $s^2=86.63$.
 
-Provide the archaelogist with $95\%$ and $99\%$ confidence intervals for $\mu$.  
+Provide the archaeologist with $95\%$ and $99\%$ confidence intervals for $\mu$.
 
 ```{=html}
 <details>
@@ -458,7 +483,7 @@ Provide the archaelogist with $95\%$ and $99\%$ confidence intervals for $\mu$.
 
 We need the critical values $t_{29,\,0.975}$ and $t_{29,\,0.995}$.
 
-From using R, Python or the above visualisation with degrees of freedon $\nu = n-1 = 29$, we have
+From using R, Python or the above visualisation with degrees of freedom $\nu = n-1 = 29$, we have
 
 $$
 t_{29,\,0.975} = 2.045 \quad \text{and} \quad t_{29,\,0.995} = 2.756.
@@ -496,7 +521,7 @@ Therefore:
 
 ## Approximate Confidence Intervals {#sec-approx-ci}
 
-For more general distributions (not necessarily normal), exact CIs are not available. In such cases we rely on <span class="xref-no-num">[asymptotics @imp-term-asymptotic]</span> to derive **approximate** CIs. For example:
+For more general distributions (not necessarily Normal), exact CIs are often unavailable or inconvenient. In such cases we rely on <span class="xref-no-num">[asymptotics @imp-term-asymptotic]</span> to derive **approximate** CIs. For example:
 
 1. The <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span>.
 2. The <span class="xref-no-num">[Asymptotic Distribution of the MLE @thm-asymp-mle]</span>.
@@ -651,6 +676,10 @@ $$
 - **Option 2** uses the Poisson property $\mathrm{Var}(X_i) = \lambda$, whereas **Option 1** is more agnostic (i.e. can be used more broadly) and can be preferable if there’s overdispersion (variance > mean) or mild model misspecification.
 - If the model is well-specified (i.e. the total number of goals **is** Poisson distributed), as we observe more matches (larger $n$) the two intervals will get closer.
 
+::: {.callout-tip appearance="simple"}
+**Model check.** The calculation assumes matches are i.i.d. Poisson observations. In real football data, teams recur, team strengths differ and variance may exceed the mean. The interval quantifies sampling uncertainty **within the assumed model**; it does not validate those assumptions.
+:::
+
 ```{=html}
 </details>
 ```
@@ -674,7 +703,7 @@ But in practice, $\theta$ is unknown - that’s the very reason we’re estimati
 
 Just as in the <span class="xref-no-num">[CLT confidence interval @def-approx-ci-clt]</span> we replaced the unknown $\sigma$ with its estimator $S$, here we replace the unknown $\theta$ inside $\mathcal{I}_n(\theta)$ with the maximum likelihood estimate $\hat{\theta}_n$.
 
-* This gives a **computable** estimate of the Fisher information, called the <span class="xref-no-num">[observed Fisher information @def-observed-fisher]</span>:
+* This gives a **computable plug-in estimate** of the expected Fisher information:
   $$
   \mathcal{I}_n(\theta) \;\approx\; \mathcal{I}_n(\hat{\theta}_n).
   $$
@@ -794,6 +823,11 @@ This matches the CLT option that used $\mathrm{Var}(X)=\lambda$ (since the Poiss
 </details>
 ```
 
+:::
+
+
+::: {.callout-note appearance="simple"}
+**Chapter summary.** A confidence interval is a random procedure before sampling and a fixed numerical interval afterwards. Exact Normal intervals use a known sampling distribution; CLT- and MLE-based intervals use large-sample approximations. In every case, interpretation and reliability depend on the construction method and its assumptions, not only on the two reported endpoints.
 :::
 
 

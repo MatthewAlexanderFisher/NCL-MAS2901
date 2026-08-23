@@ -5,6 +5,15 @@
 <details class="essential-points">
 <summary> Assessment Focus </summary>
 
+- State $H_0$ and the one- or two-sided $H_1$ before choosing a rejection tail;
+  distinguish a level, the actual size, Type I error, Type II error and power.
+- Select an exact $z$ or $t$ test, a CLT test, or a likelihood-ratio test from the
+  model and assumptions, then use the matching null distribution.
+- Report the statistic, rejection rule or $p$-value, decision and a cautious
+  contextual conclusion. "Fail to reject" never means "accept" or "prove."
+- Interpret a $p$-value as a null-model tail probability, not as
+  $\Pr(H_0\mid\underline x)$, the probability the result was due to chance, or
+  the size of an effect.
 
 </details>
 
@@ -91,12 +100,15 @@ Given:
 2. **Data and Test Statistic:** Random data  
    $X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\theta)$  
    and a chosen test statistic $T(\underline{X})$.
-3. **Size (or significance level):** A chosen size $\alpha$.
+3. **Significance level:** A chosen upper bound $\alpha$ for the Type I error.
 
-A **size–$\alpha$ rejection region** is any set $R_\alpha$ such that
+A **level-$\alpha$ rejection region** is any set $R_\alpha$ such that
 $$
-\Pr(T \in R_\alpha \mid H_0) = \alpha.
+\sup_{\theta\in H_0}\Pr_\theta(T \in R_\alpha) \leq \alpha.
 $$
+The **size** is the actual supremum on the left. For many simple continuous
+tests in this course it equals $\alpha$; for a discrete conservative test it may
+be smaller.
 
 ---
 
@@ -114,9 +126,10 @@ $$
     T_{\mathrm{obs}} \notin R_\alpha.
     $$
 
-- Any *test* that specifies a size–$\alpha$ rejection region is a **valid hypothesis test**.
+- Any *test* that specifies a level-$\alpha$ rejection region is a **valid hypothesis test**.
 
-  - In principle, there are infinitely many possible regions $R_\alpha$ satisfying $\Pr(T \in R_\alpha \mid H_0) = \alpha$.
+  - In principle, there can be many possible regions satisfying the level
+    requirement.
 
   - However, not all valid regions are **good**. Beyond having the correct size, we want a rejection region that gives the test **high ability to detect false nulls**. In other words, we prefer choices of $R_\alpha$ that make the probability of a **Type II error** small — meaning the test is likely to reject $H_0$ when $H_0$ is actually false.
 
@@ -156,7 +169,8 @@ Given null and alternative hypotheses $H_0$ and $H_1$, together with:
 2. A **rejection region** $R_\alpha$ describing which values of $T$ are considered “too inconsistent’’ with $H_0$ at size (significance level) $\alpha$,
 3. The **observed value** $T_{\mathrm{obs}} = T(\underline{x})$ computed from the data,
 
-the **$p$-value** is defined as the **largest value of** $\alpha$ for which
+for a nested family of rejection regions, the **$p$-value** is the **smallest
+significance level** $\alpha$ for which
 $$
 T_{\mathrm{obs}} \in R_\alpha.
 $$
@@ -166,7 +180,9 @@ $$
 p = \Pr\!\big( T \text{ is at least as extreme as } T_{\mathrm{obs}} \mid H_0 \big).
 $$
 
-For a chosen test size $\alpha$, **we reject $H_0$ whenever $p < \alpha$**.
+For a pre-specified test level $\alpha$, **we reject $H_0$ whenever
+$p\leq\alpha$**. The $p$-value is not $\Pr(H_0\mid\underline x)$ and does not
+measure effect size or practical importance.
 
 </div>
 </div>
@@ -184,27 +200,28 @@ Understand the definition of the <span class="xref-no-num">[power function @def-
 Given hypotheses $H_0$ and $H_1$, and:
 
 1. A **test statistic** $T(\underline{X})$,
-2. A **rejection region** $R_\alpha$ specifying when we reject $H_0$ at size $\alpha$,
+2. A **rejection region** $R_\alpha$ specifying when we reject $H_0$ at level $\alpha$,
 3. The sampling distribution of $T$ under different parameter values $\theta$,
 
 the **power function** is defined as
 $$
-\beta(\theta) = \Pr\big(T \in R_\alpha \mid \theta\big).
+\pi(\theta) = \Pr_\theta\big(T \in R_\alpha\big).
 $$
 
-That is, $\beta(\theta)$ tells us **how likely our test is to reject $H_0$ when the true parameter value is $\theta$**.
+That is, $\pi(\theta)$ tells us **how likely our test is to reject $H_0$ when the true parameter value is $\theta$**. The Type II error probability is
+$\beta(\theta)=1-\pi(\theta)$ for $\theta\in H_1$.
 
 - If $\theta \in H_0$, then  
   $$
-  \beta(\theta) = \Pr(\text{Type I error at }\theta),
+  \pi(\theta) = \Pr(\text{Type I error at }\theta),
   $$
   which is by definition no larger than $\alpha$.
 
 - If $\theta \in H_1$, then  
   $$
-  \beta(\theta) = \Pr(\text{correctly rejecting } H_0 \mid \theta),
+  \pi(\theta) = \Pr(\text{correctly rejecting } H_0 \mid \theta),
   $$
-  so larger values of $\beta(\theta)$ mean a more effective test.
+  so larger values of $\pi(\theta)$ mean a more effective test.
 
 In short:
 
@@ -243,7 +260,7 @@ Be able to perform <span class="xref-no-num">[One-Sample Z tests @def-one-sample
 
 **Assumptions and Setup**
 
-- The <span class="xref-no-num">[One-Sample Z test @def-one-sample-z-test]</span> assumes we have i.i.d. *normally distributed data*
+- The <span class="xref-no-num">[One-Sample t test @def-one-sample-t-test]</span> assumes we have i.i.d. *normally distributed data*
   $$
   X_1,\ldots, X_n \overset{i.i.d.}{\sim} \mathcal{N}(\mu, \sigma^2)
   $$
@@ -262,7 +279,7 @@ Be able to perform <span class="xref-no-num">[One-Sample Z tests @def-one-sample
 
 **Performing the Test**
 
-Given $H_0 : \mu = \mu_0$ and a chosen  <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span> $H_1$, the size–$\alpha$ test proceeds as follows:
+Given $H_0 : \mu = \mu_0$ and a chosen  <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span> $H_1$, the level-$\alpha$ test proceeds as follows:
 
 1. **Compute the observed test statistic**
   $$
@@ -347,7 +364,7 @@ Be able to perform <span class="xref-no-num">[One-Sample t tests @def-one-sample
 
 **Performing the Test**
 
-Given $H_0 : \mu = \mu_0$ and a chosen  <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span> $H_1$, the size–$\alpha$ test proceeds as follows:
+Given $H_0 : \mu = \mu_0$ and a chosen  <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span> $H_1$, the level-$\alpha$ test proceeds as follows:
 
 1. **Compute the observed test statistic**
   $$
@@ -405,7 +422,7 @@ Be able to perform <span class="xref-no-num">[approximate CLT-based tests for th
 
 **Assumptions and Setup**
 
-- The <span class="xref-no-num">[approximate CLT-based tests for the mean @def-clt-test]</span> may be applied when we have i.i.d. data from **any** distribution with finite variance:
+- The <span class="xref-no-num">[approximate CLT-based tests for the mean @def-clt-test]</span> may be applied when we have i.i.d. data from a distribution satisfying the finite-variance CLT conditions:
   $$
   X_1,\ldots, X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\theta),
   $$
@@ -418,7 +435,9 @@ Be able to perform <span class="xref-no-num">[approximate CLT-based tests for th
   $$
   \bar{X} \overset{\text{approx.}}{\sim} \mathcal{N}\left(\mu,\frac{\sigma^2}{n}\right),
   $$
-  regardless of the original distribution $X_i \sim \mathrm{Distribution}(\theta)$. 
+  provided the finite-variance CLT conditions hold. The required sample size
+  depends on features such as skewness and tail weight; there is no universal
+  cutoff.
 
 - It tests $H_0 : \mu = \mu_0$ against either a <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span> 
 
@@ -447,7 +466,7 @@ Be able to perform <span class="xref-no-num">[approximate CLT-based tests for th
 
 **Performing the Test**
 
-Given $H_0 : \mu = \mu_0$ and a chosen  <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span> $H_1$, the size–$\alpha$ test proceeds as follows:
+Given $H_0 : \mu = \mu_0$ and a chosen  <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span> $H_1$, the level-$\alpha$ test proceeds as follows:
 
 1. **Compute the observed test statistic:** Depending on whether the variance is *known* or *unknown*:
   $$
@@ -539,7 +558,7 @@ Be able to perform <span class="xref-no-num">[Likelihood Ratio Tests @def-lrt-si
 
 **Performing the Test**
 
-Given $H_0 : \theta = \theta_0$ and the two-sided alternative $H_1: \theta \neq \theta_0$, the size–$\alpha$ test proceeds as follows:
+Given $H_0 : \theta = \theta_0$ and the two-sided alternative $H_1: \theta \neq \theta_0$, the level-$\alpha$ test proceeds as follows:
 
 1. **Compute the observed test statistic:**
   $$
@@ -574,5 +593,3 @@ Given $H_0 : \theta = \theta_0$ and the two-sided alternative $H_1: \theta \neq 
 :::
 
 </details>
-
-

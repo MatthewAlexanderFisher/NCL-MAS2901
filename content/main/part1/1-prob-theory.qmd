@@ -1,36 +1,39 @@
 # Probability Theory {#sec-probability-theory}
 
-::: {.callout-note collapse="true" title="Learning objectives"}
+::: {.callout-note title="Review objectives"}
 - Define and work with events (union, intersection, complement) and apply inclusion–exclusion.
 - Distinguish mutually exclusive, exhaustive, and independent events.
 - Compute conditional probabilities and apply Bayes’ theorem.
 - Use partitions and the law of total probability.
 - Define random variables and their distribution functions: cdf, pmf (discrete), and pdf (continuous).
 - Compute probabilities from pmfs/pdfs/cdfs (using sums or areas) and check normalisation.
+- Compute simple expectations and variances, and interpret covariance and correlation.
+
+The final section, explicitly labelled **Non-Examinable Material**, is included only as a reference for later proofs and remarks.
 :::
 
 {{< include ../../_figures/part1/probability-shared.qmd >}}
 
-Before we delve into statistical inference, we briefly review key ideas from probability theory. 
+Before we delve into statistical inference, we briefly review key ideas from probability theory. The chapter moves from events and conditioning, through random variables and distributions, to expectations and variances. These ideas are the language used later for likelihoods, estimators, intervals, and Bayesian updating.
 
 ::: {.callout-warning}
 ## Note on this chapter
 - This chapter is provided **for review and reference only**. 
-- It will not be examined in detail, but the ideas are useful background for later topics.  
+- Probability theory will not be examined as a separate topic, but the core ideas are **assumed and used** throughout the assessed material.
 - Much of the content should already be familiar.
+- Treat the examples and checkpoints as a diagnostic: spend most time on the sections where your first answer is uncertain.
 :::
 
 ## Probability and Events
 
 When working with probability we need three basic ingredients[^prob-space]
 
-1. The **sample space** $\Omega$. all possible outcomes of an experiment.  
-      *Example:* for a coin toss, $\Omega = \{\text{Heads}, \text{Tails}\}$.  
+1. The **sample space** $\Omega$: all possible outcomes of an experiment. For a coin toss, for example, $\Omega = \{\text{Heads}, \text{Tails}\}$.
 2. **Events** subsets of the sample space. We use capital letters $A, B, \ldots$ to denote events.  
    - The **complement** of $A$ is $A^c$, meaning $A$ does *not* occur.  
    - The **intersection** $A \cap B$ means $A$ *and* $B$ occur.  
    - The **union** $A \cup B$ means $A$ *or* $B$ (or both) occur.  
-3. A **probability distribution** $\mathrm{Pr}$. Assigns numbers between $0$ and $1$ to events, with $\mathrm{Pr}(\Omega)=1$.
+3. A **probability distribution** $\mathrm{Pr}$: a rule that assigns numbers between $0$ and $1$ to events, with $\mathrm{Pr}(\Omega)=1$.
 
 We can write the definitions of complement, intersection and union formally with sets:
 
@@ -44,6 +47,8 @@ We can write the definitions of complement, intersection and union formally with
 ::: {.content-visible unless-format="pdf"}
 
 ---
+
+Before opening the visualisation, sketch two overlapping events and predict which region represents $A^c$, $A\cup B$, and $A\cap B$. Then use the controls to check your sketch.
 
 ```{=html}
 <details>
@@ -59,6 +64,8 @@ We can write the definitions of complement, intersection and union formally with
 ---
 
 :::
+
+In words, the union contains outcomes in either event, the intersection contains outcomes in both events, and the complement contains outcomes in $\Omega$ but outside $A$.
 
 ::: {.def #def-inclusion-exclusion}
 ### Addition rule (inclusion–exclusion)
@@ -100,13 +107,15 @@ $$
 
 - Two events $A$ and $B$ are **mutually exclusive** (or *disjoint*) if they cannot occur together:
 $$
-\mathrm{Pr}(A \cap B) = 0.
+A \cap B = \varnothing.
 $$
+Consequently, $\mathrm{Pr}(A\cap B)=0$.
 
 - Two events $A$ and $B$ are **exhaustive** if at least one of them must occur:
 $$
-\mathrm{Pr}(A \cup B) = 1.
+A \cup B = \Omega.
 $$  
+Consequently, $\mathrm{Pr}(A\cup B)=1$.
 More generally, a collection of events $\{B_1,\ldots,B_k\}$ is exhaustive if $\bigcup_{i=1}^k B_i = \Omega$,
 where $\Omega$ is the sample space.
 
@@ -118,6 +127,8 @@ where $\Omega$ is the sample space.
 ::: {.content-visible unless-format="pdf"}
 
 ---
+
+Prediction prompt: changing the number or shape of the regions should not change the two defining properties of a partition. Identify those properties before opening the figure.
 
 ```{=html}
 <details>
@@ -133,6 +144,8 @@ where $\Omega$ is the sample space.
 ---
 
 :::
+
+In words, a partition consists of non-overlapping regions whose union is $\Omega$, so every outcome lies in exactly one region. The geometry of the regions is irrelevant.
 
 ::: {.def #def-conditional}
 ### Conditional probability
@@ -152,6 +165,26 @@ Equivalently,
 $$
 \mathrm{Pr}(A\mid B) = \mathrm{Pr}(A) \quad \text{and} \quad \mathrm{Pr}(B\mid A) = \mathrm{Pr}(B)
 $$
+whenever the conditioning events have positive probability.
+:::
+
+::: {.callout-tip title="Checkpoint: mutually exclusive or independent?"}
+Try these before opening the answer.
+
+1. Can two events with positive probability be both mutually exclusive and independent?
+2. For a fair die, let $A=\{2,4,6\}$ and $B=\{4,5,6\}$. Are $A$ and $B$ independent?
+
+```{=html}
+<details>
+  <summary><strong>Check your answer</strong></summary>
+```
+
+1. No. Mutual exclusivity gives $\mathrm{Pr}(A\cap B)=0$, whereas independence would require $\mathrm{Pr}(A\cap B)=\mathrm{Pr}(A)\mathrm{Pr}(B)>0$.
+2. No. Here $\mathrm{Pr}(A\cap B)=2/6=1/3$, but $\mathrm{Pr}(A)\mathrm{Pr}(B)=(1/2)(1/2)=1/4$.
+
+```{=html}
+</details>
+```
 :::
 
 
@@ -165,24 +198,26 @@ $$
 :::
 
 ::: {#prf-total-prob}
-Since $B_1\ldots, B_n$ form a partition of $\Omega$, we can decompose any event $A$ in a *disjoint* union of intersections:
+Since $B_1,\ldots, B_k$ form a partition of $\Omega$, we can decompose any event $A$ as a *disjoint* union of intersections:
 $$
-A = \bigcup_{i=1}^n (A\cap B_i).
+A = \bigcup_{i=1}^k (A\cap B_i).
 $$
 By induction on the <span class="xref-no-num">[addition rule @def-inclusion-exclusion]</span>, we thus have
 $$
-\mathrm{Pr}(A) = \sum_{i=1}^n \mathrm{Pr}(A\cap B_i).
+\mathrm{Pr}(A) = \sum_{i=1}^k \mathrm{Pr}(A\cap B_i).
 $$
 By the definition of <span class="xref-no-num">[conditional probability @def-conditional]</span>, we have $\mathrm{Pr}(A\cap B_i) = \mathrm{Pr}(A\mid B_i) \mathrm{Pr}(B_i)$. Therefore,
 
 $$
-\mathrm{Pr}(A) =  \sum_{i=1}^n \mathrm{Pr}(A \mid B_i)\mathrm{Pr}(B_i).
+\mathrm{Pr}(A) =  \sum_{i=1}^k \mathrm{Pr}(A \mid B_i)\mathrm{Pr}(B_i).
 $$
 :::
 
 ::: {.content-visible unless-format="pdf"}
 
 ---
+
+Before playing the animation, predict why $A$ can be broken into the non-overlapping pieces $A\cap B_i$. As each piece appears, connect it to one term in the sum.
 
 ```{=html}
 <details>
@@ -199,6 +234,8 @@ $$
 
 :::
 
+In words, $A$ is the disjoint union of the pieces $A\cap B_i$. The geometry is schematic rather than a numerical probability scale; algebraically, each piece contributes $\mathrm{Pr}(A\cap B_i)=\mathrm{Pr}(A\mid B_i)\mathrm{Pr}(B_i)$.
+
 ::: {.thm #thm-bayes}
 ### Bayes’ Theorem
 If $\mathrm{Pr}(B) > 0$, then
@@ -207,7 +244,18 @@ $$
 $$
 :::
 
-::: {#prf-bayes}
+::: {.callout-note title="A useful partition form"}
+Suppose $H_1,\ldots,H_k$ are mutually exclusive and exhaustive explanations, each with positive probability, and $E$ is observed evidence with $\mathrm{Pr}(E)>0$. Combining Bayes’ theorem with the law of total probability gives
+$$
+\mathrm{Pr}(H_j\mid E)
+=\frac{\mathrm{Pr}(E\mid H_j)\mathrm{Pr}(H_j)}
+{\sum_{i=1}^k \mathrm{Pr}(E\mid H_i)\mathrm{Pr}(H_i)}.
+$$
+
+This form makes the roles clear: **updated probability** is proportional to **compatibility with the evidence** times **initial probability**, with the denominator ensuring that the updated probabilities sum to one.
+:::
+
+::: {#prf-bayes-events}
 
 From the definition of <span class="xref-no-num">[conditional probability @def-conditional]</span>,  
 $$
@@ -233,11 +281,11 @@ This completes the proof.
 :::
 
 ::: {#exm-student-example}
-### Student Example
-Seventy percent of students are attentive in lectures and thirty percent are not. If a student is *attentive* the probability of passing the course is $0.8$. If a student is *not attentive* the probability of passing the course is $0.1$.
+### Manufacturing Example
+Seventy percent of components come from supplier $A$ and thirty percent come from supplier $B$. A component from supplier $A$ passes inspection with probability $0.8$, while a component from supplier $B$ passes with probability $0.1$.
 
-1. A student is selected at random. What is the probability that they pass the course?
-2. Given that the student passed the course, what is the probability that they were attentive?
+1. A component is selected at random. What is the probability that it passes inspection?
+2. Given that the component passed inspection, what is the probability that it came from supplier $A$?
 
 ```{=html}
 <details>
@@ -246,11 +294,11 @@ Seventy percent of students are attentive in lectures and thirty percent are not
 
 Let
 
-- $P$ denote the event of a student passing the course.
-- $A$ denote the event of a student being attentive.
-- $A^c$ denote the event of a student not being attentive.
+- $P$ denote the event that a component passes inspection.
+- $A$ denote the event that it came from supplier $A$.
+- $A^c$ denote the event that it came from supplier $B$.
 
-1. Attentive and inattentive form a partition. By the law of total probability,
+1. Suppliers $A$ and $B$ form a partition. By the law of total probability,
 
 $$
 \mathrm{Pr}(P)=\mathrm{Pr}(P\mid A)\mathrm{Pr}(A)+\mathrm{Pr}(P\mid A^c)\mathrm{Pr}(A^c)=0.8\times0.7+0.1\times0.3=0.59.
@@ -273,42 +321,48 @@ $$
 
 ## Random Variables {#sec-random-variables}
 
-We use upper-case letters for random variables, e.g. $X, Y, X_1, X_2,\dots$.
+A **random variable** assigns a numerical value to each outcome in the sample space. For example, when two coins are tossed, $X$ might record the number of heads: the outcomes $\{HT,TH\}$ both give $X=1$.
+
+Before an experiment, $X$ represents an uncertain quantity. After observing it, we use the corresponding lower-case letter $x$ for its realised value. We use upper-case letters for random variables, e.g. $X,Y,X_1,X_2,\dots$.
 
 * **Cumulative distribution function (cdf).**
   For any (real-valued) random variable $X$,
 
   $$
-  F(x)=\mathrm{Pr}(X\le x).
+  F_X(x)=\mathrm{Pr}(X\le x).
   $$
 
 * **Discrete case (pmf).**
   If $X$ is discrete, its *probability mass function* is
 
   $$
-  p(x)=\mathrm{Pr}(X=x),\qquad \sum_x p(x)=1.
+  p_X(x)=\mathrm{Pr}(X=x),\qquad \sum_x p_X(x)=1.
   $$
 
 * **Continuous case (pdf).**
   If $X$ is continuous, its *probability density function* satisfies
 
   $$
-  f(x)=\frac{\partial F(x)}{\partial x},\qquad \mathrm{Pr}(a<X\le b)=\int_a^b f(x)\,\mathrm{d}x,\qquad \int_{-\infty}^{\infty} f(x)\,\mathrm{d}x=1.
+  f_X(x)=\frac{\mathrm{d}F_X(x)}{\mathrm{d}x},\qquad \mathrm{Pr}(a<X\le b)=\int_a^b f_X(x)\,\mathrm{d}x,\qquad \int_{-\infty}^{\infty} f_X(x)\,\mathrm{d}x=1.
   $$
+
+::: {.callout-important title="Density is not probability"}
+For a continuous random variable, $f_X(x)$ is a **density height**, not $\mathrm{Pr}(X=x)$. A density can be greater than one. Probabilities are areas under the density, and $\mathrm{Pr}(X=x)=0$ at any single point.
+:::
 
 
 ::: {#exm-discrete-cdf}
-### Discrete CDF.
+### Discrete CDF
 
-Let $X$ be the outcome of a fair six-sided die. Find $p(x)$ and $F(3)$.
+Let $X$ be the outcome of a fair six-sided die. Find $p_X(x)$ and $F_X(3)$.
 
 ```{=html}
 <details>
   <summary><strong> Solution </strong></summary>
 ```
 
-$p(x)=\mathrm{Pr}(X=x)=1/6$ for $x\in\{1,2,3,4,5,6\}$, and $0$ otherwise.  
-$F(3)=\mathrm{Pr}(X\le 3)=\mathrm{Pr}(\{1,2,3\})=3\times(1/6)=1/2.$
+$p_X(x)=\mathrm{Pr}(X=x)=1/6$ for $x\in\{1,2,3,4,5,6\}$, and $0$ otherwise.
+$F_X(3)=\mathrm{Pr}(X\le 3)=\mathrm{Pr}(\{1,2,3\})=3\times(1/6)=1/2.$
 
 
 ```{=html}
@@ -325,10 +379,10 @@ Let $X\sim \mathrm{Uniform}(0,1)$. Compute $\mathrm{Pr}(0.2<X<0.5)$.
   <summary><strong> Solution </strong></summary>
 ```
 
-Here $f(x)=1$ for $0<x<1$ and $0$ otherwise.  
+Here $f_X(x)=1$ for $0<x<1$ and $0$ otherwise.
 
 $$
-\mathrm{Pr}(0.2<X<0.5)=\int_{0.2}^{0.5} 1\,dx = 0.3.
+\mathrm{Pr}(0.2<X<0.5)=\int_{0.2}^{0.5} 1\,\mathrm{d}x = 0.3.
 $$
 
 
@@ -339,9 +393,9 @@ $$
 :::
 
 
-### Joint, Marginal, and Conditional Densities {#sec-joint-marginal-conditional}
+### Joint, Marginal, and Conditional Distributions {#sec-joint-marginal-conditional}
 
-Suppose $X$ and $Y$ are random variables with joint PDF/PMF $f_{XY}(x,y)$ (often written $f(x,y)$). From this joint distribution we can define:
+Suppose $X$ and $Y$ have joint PMF $p_{X,Y}(x,y)$ in the discrete case or joint PDF $f_{X,Y}(x,y)$ in the continuous case. From this joint distribution we can define:
 
 - **Marginal distributions:** the distribution of each variable on its own.  
 - **Conditional distributions:**  the distribution of one variable given the other.  
@@ -350,20 +404,26 @@ Suppose $X$ and $Y$ are random variables with joint PDF/PMF $f_{XY}(x,y)$ (often
 
 ::: {#def-marginal-pdf}
 #### Marginal Distributions  
-If we only care about $X$, regardless of $Y$, we integrate/sum out $Y$:
+If we only care about $X$, regardless of $Y$, we sum or integrate out $Y$:
 $$
-f_X(x) = \int f(x,y)\,\mathrm{d}y.
+\begin{aligned}
+p_X(x)&=\sum_y p_{X,Y}(x,y) && \text{(discrete)},\\
+f_X(x)&=\int_{-\infty}^{\infty} f_{X,Y}(x,y)\,\mathrm{d}y && \text{(continuous)}.
+\end{aligned}
 $$
-Similarly for $f_Y(y)$.  
+Similarly, summing or integrating out $X$ gives $p_Y(y)$ or $f_Y(y)$.
 *Note:* knowing the marginals does **not** determine the joint.
 :::
 
 
 ::: {#def-conditional-pdf}
-#### Conditional Densities  
-For $y$ in the support of $Y$ with $f_Y(y) > 0$, we define:
+#### Conditional Distributions
+For $y$ in the support of $Y$ with positive marginal mass or density, we define
 $$
-f_{X \mid Y}(x \mid y) = \frac{f(x,y)}{f_Y(y)}.
+\begin{aligned}
+p_{X\mid Y}(x\mid y)&=\frac{p_{X,Y}(x,y)}{p_Y(y)} && \text{(discrete)},\\
+f_{X\mid Y}(x\mid y)&=\frac{f_{X,Y}(x,y)}{f_Y(y)} && \text{(continuous)}.
+\end{aligned}
 $$
 This describes the distribution of $X$ *given* $Y=y$.
 :::
@@ -373,7 +433,10 @@ This describes the distribution of $X$ *given* $Y=y$.
 #### Law of Total Probability  
 We can recover the marginal by “averaging” the conditional over $Y$:
 $$
-f_X(x) = \int f_{X \mid Y}(x \mid y) f_Y(y)\,\mathrm{d}y.
+\begin{aligned}
+p_X(x)&=\sum_y p_{X\mid Y}(x\mid y)p_Y(y) && \text{(discrete)},\\
+f_X(x)&=\int_{-\infty}^{\infty} f_{X\mid Y}(x\mid y)f_Y(y)\,\mathrm{d}y && \text{(continuous)}.
+\end{aligned}
 $$
 :::
 
@@ -382,9 +445,31 @@ $$
 #### Independence  
 $X$ and $Y$ are independent if and only if
 $$
-f(x,y) = f_X(x) f_Y(y).
+\begin{aligned}
+p_{X,Y}(x,y)&=p_X(x)p_Y(y) && \text{(discrete)},\\
+f_{X,Y}(x,y)&=f_X(x)f_Y(y) && \text{(continuous)}.
+\end{aligned}
 $$
-In this case, $f_{X \mid Y}(x \mid y) = f_X(x)$: knowing $Y$ tells us nothing about $X$.
+In this case, the conditional distribution of $X$ given $Y$ is just its marginal distribution: knowing $Y$ does not change the distribution of $X$.
+:::
+
+::: {.callout-tip title="Checkpoint: what does the joint tell us?"}
+Decide whether each statement is true or false.
+
+1. Knowing both marginal distributions is enough to reconstruct the joint distribution.
+2. If $X$ and $Y$ are independent, conditioning on $Y=y$ does not change the distribution of $X$.
+3. In a discrete problem, marginalisation uses a sum rather than an integral.
+
+```{=html}
+<details>
+  <summary><strong>Check your answer</strong></summary>
+```
+
+The statements are **false**, **true**, and **true**, respectively. Different dependence structures can have the same marginals, so the marginals alone do not determine the joint.
+
+```{=html}
+</details>
+```
 :::
 
 
@@ -435,7 +520,7 @@ $$
 The quantities $\mathrm{E}[X], \mathrm{E}[X^2], \mathrm{E}[X^3], \ldots$ are the (raw) **moments** of $X$.
 :::
 
-::: {#def-variance}
+::: {#def-random-variable-variance}
 #### Variance  
 The **population variance** of $X$ is
 $$
@@ -486,8 +571,10 @@ If $X$ and $Y$ are **independent**, then $\mathrm{Cov}(X,Y)=0$.
 
 A <span class="xref-no-num">[Bernoulli random variable @sec-bern]</span> $X$ takes only the values $0$ and $1$, with probabilities
 $$
-\operatorname{Pr}(X=1) = p, \qquad \operatorname{Pr}(X=0) = 1-p, \qquad 0 \leq p \leq 1.
+\mathrm{Pr}(X=1) = p, \qquad \mathrm{Pr}(X=0) = 1-p, \qquad 0 \leq p \leq 1.
 $$
+
+For example, $X$ could indicate whether one respondent in our recurring study-space survey prefers space $A$.
 
 For what value of $p$ is the variance maximised?
 
@@ -552,6 +639,37 @@ $$
 :::
 
 
+::: {.callout-tip title="Checkpoint: retrieve the essentials"}
+Without looking back, answer these in one sentence each.
+
+1. For a continuous random variable, where does probability come from: density height or area?
+2. Which identity often makes variance easier to calculate?
+3. What does independence imply about covariance, and does the converse always hold?
+
+```{=html}
+<details>
+  <summary><strong>Check your answer</strong></summary>
+```
+
+1. Probability is an **area** under the density over an interval.
+2. $\mathrm{Var}(X)=\mathrm{E}[X^2]-\big(\mathrm{E}[X]\big)^2$.
+3. Independence implies zero covariance (when the moments exist), but zero covariance does not generally imply independence.
+
+```{=html}
+</details>
+```
+:::
+
+## Chapter summary
+
+- Events and conditional probability let us represent partial information; partitions lead to the law of total probability and Bayes’ theorem.
+- A random variable is uncertain before observation and has a cdf together with a pmf or pdf; continuous probabilities are areas, not density heights.
+- A joint distribution contains both marginal behaviour and dependence. Independence is a particular factorisation of the joint.
+- Expectations, variances, covariances, and correlations describe important features of population distributions and later help us evaluate estimators.
+
+If you are following the core path, continue to <span class="xref-no-num">[What is Statistical Inference? @sec-what-is-statistics]</span>, which reverses the usual probability question: instead of starting with a known distribution and predicting data, we start with observed data and learn about an unknown distribution. The optional reference material below can be revisited when a later proof links back to it.
+
+
 
 ## Non-Examinable Material {#sec-prob-theory-non-examinable}
 
@@ -571,7 +689,7 @@ None of the material in this section is examinable.
 A sequence of random variables $X_n$ is said to **converge in probability** to a random variable $X$ if, for every $\varepsilon > 0$,
 
 $$
-\Pr\big(|X_n - X| > \varepsilon\big) \;\longrightarrow\; 0 
+\mathrm{Pr}\big(|X_n - X| > \varepsilon\big) \;\longrightarrow\; 0
 \quad \text{as } n \to \infty.
 $$
 
@@ -622,7 +740,7 @@ But not the other way around.
 If a random variable $X$ has mean $\mu$ and variance $\sigma^2 < \infty$, then for any $\varepsilon > 0$,
 
 $$
-\Pr\big(|X - \mu| \geq \varepsilon\big) 
+\mathrm{Pr}\big(|X - \mu| \geq \varepsilon\big)
 \;\leq\; \frac{\sigma^2}{\varepsilon^2}.
 $$
 

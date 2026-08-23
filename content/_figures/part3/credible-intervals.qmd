@@ -102,7 +102,7 @@ function generateIntervals(nIntervals, targetProb, alpha, beta) {
 ```{ojs}
 // Main visualization
 {
-  const width = 960;
+  const plotWidth = Math.min(960, Math.max(320, width));
   const height = 400;
   const marginTop = 40;
   const marginBottom = 60;
@@ -153,7 +153,7 @@ function generateIntervals(nIntervals, targetProb, alpha, beta) {
   
   // Create the plot
   const plot = Plot.plot({
-    width,
+    width: plotWidth,
     height,
     marginTop,
     marginBottom,
@@ -249,7 +249,7 @@ function generateIntervals(nIntervals, targetProb, alpha, beta) {
           <strong>Target credibility:</strong> ${((1 - alphaLevel) * 100).toFixed(1)}%
         </div>
         <div>
-          <strong>Actual coverage:</strong> ${(totalProb * 100).toFixed(2)}%
+          <strong>Posterior mass shown:</strong> ${(totalProb * 100).toFixed(2)}%
         </div>
       </div>
       ${numIntervals > 1 ? html`
@@ -306,7 +306,7 @@ viewof credibleControls = {
   
   const root = html`<details class="controls-root" open>
     <summary style="cursor: pointer; font-weight: 600;">Credible Interval Controls</summary>
-    <div class="controls-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 15px;">
+    <div class="controls-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;padding:15px;">
       <div class="controls-col">
         <h4 style="margin-bottom: 10px;">Interval Configuration</h4>
         ${alphaSlider}

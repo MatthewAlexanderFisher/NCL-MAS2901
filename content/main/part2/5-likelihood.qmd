@@ -2,7 +2,20 @@
 
 {{< include ../../_figures/part2/likelihood-shared.qmd >}}
 
-The **likelihood** is simply the **joint density (or probability mass function)** of the observed data:
+::: {.callout-note appearance="simple"}
+## Learning objectives and route through this chapter
+
+By the end of this chapter, you should be able to:
+
+1. construct a likelihood from an independent sampling model and its parameter space;
+2. distinguish a likelihood from a probability distribution and compute an MLE;
+3. interpret score, expected Fisher information, and observed information;
+4. use the Cramér–Rao bound and the large-sample Normal approximation with their stated conditions.
+
+The **core route** runs through likelihood, log-likelihood, MLE, information, and the approximate distribution of the MLE. Sufficiency and the long proofs marked *not examinable* are optional enrichment.
+:::
+
+The **likelihood** is obtained by evaluating the **joint density (or probability mass function)** at the observed data:
 
 $$
 f(\underline{x} \mid \theta),
@@ -10,6 +23,8 @@ f(\underline{x} \mid \theta),
 $$
 
 It plays a central role in both **frequentist** and **Bayesian** statistics.
+
+The same mathematical expression has two different roles. As a function of the data it is a probability model; as a function of $\theta$ with the observed data fixed it is a likelihood. A likelihood gives **relative support** for parameter values—it is not generally a probability distribution over $\theta$, need not integrate to $1$ over $\theta$, and a density value is not itself a probability.
 
 ::: {#imp-notation-freq-vs-bayes .callout-important collapse="true" appearance="simple"}
 
@@ -100,12 +115,14 @@ $$
 X_{t+1} \mid X_t = x_t  \sim \mathcal{N}(x_t, \sigma^2).
 $$
 
-The likelihood is still the **joint distribution**, but expressed as a product of **conditional densities**:
+The likelihood is still the **joint distribution**, but expressed as an initial density followed by a product of **conditional densities**:
 
 $$
 f(x_1,\ldots,x_n \mid \sigma^2) 
-= \prod_{t=1}^n f(x_t \mid x_{t-1}, \sigma^2).
+= f(x_1\mid\sigma^2)\prod_{t=2}^n f(x_t \mid x_{t-1}, \sigma^2).
 $$
+
+The initial model $f(x_1\mid\sigma^2)$ must be specified; otherwise the joint model is incomplete.
 
 The example above assumed a Markov property (each observation only depends on the previous one). In general, observations may depend on the entire history, in which case the joint density factorises via the <span class="xref-no-num">[chain rule @prp-chain-rule]</span>:
 $$
@@ -167,6 +184,7 @@ L(\theta ; \underline{x}) \coloneqq f(\,\underline{x} \mid \theta).
 $$
 
 Here we treat $\theta$ as the **variable**, and the data $\underline{x}$ as fixed.
+The domain is the parameter space $\Theta$ (for example, $p\in[0,1]$, $\lambda\geq0$, or $\sigma^2>0$).
 :::
 
 
@@ -261,6 +279,8 @@ It is important to distinguish between the **joint density** of the data and the
   is instead viewed as a function of the *parameter* $\theta$, with the observed data $\underline{x}$ held fixed.
   This is the function we use to make inferences about $\theta$.
 
+  It is **not** a posterior distribution: areas under a likelihood curve are not probabilities for $\theta$ unless a Bayesian prior is supplied and the result is normalised.
+
 ---
 
 In short:
@@ -268,6 +288,12 @@ In short:
 * **Joint density**: given $\theta$, how *likely* are different data values $\underline{x}$?
 * **Likelihood**: given observed $\underline{x}$, how *plausible* are different values of $\theta$?
 
+:::
+
+::: {.callout-tip appearance="simple"}
+### Quick check: what is varying?
+
+In $f(2\mid\theta)=\theta^2$, ask which quantity is held fixed. If $\theta$ is fixed and $x$ varies, this belongs to a PMF. If $x=2$ is fixed and $\theta$ varies over $[0,1]$, it is a likelihood. Explain why the second curve is not required to sum or integrate to $1$ over $\theta$.
 :::
 
 
@@ -293,6 +319,7 @@ The general strategy is:
    * How many **data points** are observed?
    * What notation is used for the data ($X_i$, $Y_i$, $Z_i$, …)?
    * What notation is used for the parameters ($\mu$, $\alpha$, $\gamma$, $\theta$, …)?
+   * What is the **parameter space**, and what restrictions define the support of the data?
 
    *(In the examples below we assume $n$ independent data points $X_1,\dots,X_n$ with parameter $\theta$. If there is only one data point, the likelihood is just its PDF/PMF.)*
 
@@ -475,6 +502,12 @@ So the data are slightly more likely under $p=0.5$ than $p=0.8$.
 ```
 
 
+:::
+
+::: {.remark #rem-bernoulli-binomial-likelihood}
+### Bernoulli sequence versus Binomial count
+
+For the exact sequence $(1,0,1,1,0)$, the Bernoulli likelihood is $p^3(1-p)^2$. If we retain only the count $X=3$ out of $5$, the Binomial likelihood is $\binom53p^3(1-p)^2$. The expressions differ by $\binom53$, which does not depend on $p$, so they have the same shape as functions of $p$ and the same MLE. This is an early example of data reduction: for this model, the number of successes contains the information about $p$ needed for likelihood-based inference.
 :::
 
 ::: {#exm-normal-likelihood}
@@ -665,13 +698,15 @@ Thus $T(\underline{X})=(\bar{X},S^2)$ is jointly sufficient for $(\mu,\sigma^2)$
 ::: {.definition #def-mle}
 ### Maximum Likelihood Estimator (MLE)
 
-The **maximum likelihood estimator (MLE)** is the parameter value that makes the observed data most likely:
+For observed data $\underline x$, a **maximum likelihood estimate** is a parameter value that maximises the likelihood over the full parameter space:
 
 $$
-\hat{\theta}_{\text{MLE}} = \argmax_{\theta \in \Theta} \, L(\theta ; \underline{X}),
+\hat{\theta}_{\mathrm{obs}} = \argmax_{\theta \in \Theta} \, L(\theta ; \underline{x}).
 $$
 
-where $L(\theta ; \underline{X})$ is the likelihood function.
+Before the data are observed, replacing $\underline x$ by the random sample $\underline X$ defines the **maximum likelihood estimator** $\hat\theta_{\mathrm{MLE}}(\underline X)$.
+
+Solving a score equation finds only interior stationary-point **candidates**. To identify the MLE, check the parameter space, compare all candidates, verify maxima rather than minima, and inspect any boundaries. The maximiser can also be non-unique.
 :::
 
 ::: {#imp-term-argmax-max .callout-important collapse="false" appearance="simple"}
@@ -738,6 +773,8 @@ $$
   <summary><strong> Show Visualisation </strong></summary>
 ```
 
+Before moving the probe, predict where the log-likelihood should be largest. Then move it away from that point in the $\mu$ and $\sigma^2$ directions and explain how the fitted density changes. Keyboard users can focus the likelihood surface and use the arrow keys. The text readout beneath the plots reports the selected values and log-likelihood.
+
 {{< include ../../_figures/part2/normal-log-likelihood.qmd >}}
 
 ```{=html}
@@ -776,17 +813,17 @@ Compute the MLE of $p$.
 From the provided likelihood, we first compute the **log-likelihood**:
 
 $$
-\ell(p \mid \underline{x}) 
-= \Big(\sum_i x_i \Big)\log p + \Big(n-\sum_i x_i\Big)\log(1-p).
+\ell(p ; \underline{y})
+= \Big(\sum_i y_i \Big)\log p + \Big(n-\sum_i y_i\Big)\log(1-p).
 $$
 Differentiate and solve:
 $$
-\frac{\partial}{\partial p}\ell(p \mid \underline{x}) 
-= \frac{\sum_i x_i}{p} - \frac{n - \sum_i x_i}{1-p} = 0.
+\frac{\partial}{\partial p}\ell(p ; \underline{y})
+= \frac{\sum_i y_i}{p} - \frac{n - \sum_i y_i}{1-p} = 0.
 $$
 This gives
 $$
-\hat{p}_{\text{MLE}} = \frac{1}{n}\sum_{i=1}^n x_i,
+\hat{p}_{\text{MLE}} = \frac{1}{n}\sum_{i=1}^n y_i,
 $$
 
 the **sample proportion of successes**.
@@ -796,6 +833,16 @@ the **sample proportion of successes**.
 </details>
 ```
 
+:::
+
+::: {.callout-tip #tip-bernoulli-estimator-mle appearance="simple"}
+### Recurring Bernoulli example: the same rule, a new justification
+
+In @exm-bernoulli-estimator, $\bar Y$ was introduced because it is unbiased with variance $p(1-p)/n$. The likelihood argument now gives
+$$
+\hat p_{\mathrm{MLE}}=\bar Y.
+$$
+Thus one formula can be justified in two ways: by its repeated-sampling properties and by maximising the support the observed data give to $p$. In Chapter 6 a Beta prior will produce a posterior mean and MAP estimate that modify this rule using prior counts.
 :::
 
 ::: {.example #exm-binom-mle-single}
@@ -1086,7 +1133,7 @@ The definitions of the likelihood function and the MLE extend in a natural way. 
 
 Let $L(\underline{\theta}; \underline{x})$ and $\ell(\underline{\theta}; \underline{x})$ denote the **likelihood** and **log-likelihood** functions respectively, based on observations $\underline{x} = (x_1,\ldots,x_n)$ from a model with parameters $\underline{\theta} = (\theta_1,\ldots,\theta_p)$.
 
-The maximum likelihood estimator $\hat{\underline{\theta}}$ is obtained by solving the system
+Interior stationary-point candidates can be found by solving the system
 
 $$
 \nabla_{\underline{\theta}} \,\ell(\underline{\theta}; \underline{x}) 
@@ -1105,14 +1152,14 @@ $$
 
 :::
 
-In general, solving this system of equations cannot be done in closed form, so in practice we usually rely on *numerical optimisation methods* to approximate the MLE. We will not cover these methods in this course. Instead, we will focus on a few important cases where the MLE can be worked out explicitly.
+The score equations are a candidate-generating step, not a complete definition of the MLE. A candidate must be checked using the Hessian or the global shape of the log-likelihood, compared with other candidates, and compared with any parameter-space boundaries. In general this cannot be done in closed form, so in practice we usually rely on *numerical optimisation methods*. We will not cover those methods here; instead, we focus on cases where the global maximiser can be established explicitly.
 
 ::: {.example #exm-normal-full-mle}
-### Normal MLE for $\mu$ and $\gamma$
+### Normal MLE for $\mu$ and $\sigma^2$
 
-Suppose we have $n$ i.i.d. observations $X_i \sim \mathcal{N}(\mu, \gamma)$. 
+Suppose we have $n$ i.i.d. observations $X_i \sim \mathcal{N}(\mu, \sigma^2)$.
 
-Determine the **maximum likelihood estimators** for $\mu$ and $\gamma$.
+Determine the **maximum likelihood estimators** for $\mu$ and $\sigma^2$.
 
 ```{=html}
 <details>
@@ -1124,8 +1171,8 @@ Determine the **maximum likelihood estimators** for $\mu$ and $\gamma$.
 The likelihood function is a relabelling of the data terms in @exm-normal-likelihood:
 
 \begin{align*}
-L(\mu, \gamma ;\underline{x}) &= \prod_{i=1}^n \frac{1}{\sqrt{2\pi \gamma}} \exp\left\{ -\frac{1}{2\gamma} (x_i - \mu)^2 \right\} \\
-&= (2\pi \gamma)^{-\tfrac{n}{2}} \exp\left\{ \sum_{i=1}^n -\frac{1}{2\gamma} (x_i - \mu)^2 \right\}.
+L(\mu, \sigma^2 ;\underline{x}) &= \prod_{i=1}^n \frac{1}{\sqrt{2\pi \sigma^2}} \exp\left\{ -\frac{1}{2\sigma^2} (x_i - \mu)^2 \right\} \\
+&= (2\pi \sigma^2)^{-\tfrac{n}{2}} \exp\left\{ \sum_{i=1}^n -\frac{1}{2\sigma^2} (x_i - \mu)^2 \right\}.
 \end{align*}
 
 The log-likelihood is thus
@@ -1150,7 +1197,7 @@ $$
 \hat{\mu} = \bar{x}.
 $$
 
-**Step 2. Differentiate w.r.t. $\sigma^2$:**
+**Step 3. Differentiate w.r.t. $\sigma^2$:**
 
 $$
 \frac{\partial \ell}{\partial \sigma^2}
@@ -1193,7 +1240,7 @@ In the previous chapter we studied two kinds of *properties of estimators*:
 
 Now that we have the *likelihood function*, we can go further and introduce two powerful ideas:
 
-* **Cramér–Rao Lower Bound ([CRLB]{title="Cramér–Rao Lower Bound"}):** a universal lower bound on the variance of any unbiased estimator.
+* **Cramér–Rao Lower Bound ([CRLB]{title="Cramér–Rao Lower Bound"}):** under regularity conditions, a lower bound on the variance of an unbiased estimator.
 * **Efficiency:** whether an estimator actually attains this bound (at least asymptotically).
 
 ::: {#imp-crlb-motivation .callout-important collapse="true" appearance="simple"}
@@ -1215,7 +1262,7 @@ So if we restrict attention to unbiased estimators, the question of “how good�
 
 > *Which unbiased estimator has the **smallest possible variance**?*
 
-The Cramér–Rao Lower Bound ([CRLB]{title="Cramér–Rao Lower Bound"}) answers this: it gives a universal benchmark for how small the variance can ever be.
+The Cramér–Rao Lower Bound ([CRLB]{title="Cramér–Rao Lower Bound"}) gives a benchmark for how small the variance can be within this regular, unbiased setting.
 
 :::
 
@@ -1241,19 +1288,25 @@ It is a **random quantity**.
 
 #### Fisher Information
 
-The **Fisher Information** (or *expected information*) for data $\underline{X}$ with log-likelihood $\ell(\theta;\underline{X})$ is
+The **Fisher information** (or *expected information*) in a sample of size $n$ is the model-average negative curvature of the log-likelihood:
 
 $$
-\mathcal{I}(\theta;\underline{X}) \;=\; -\,\mathrm{E}\!\left[ \frac{\partial^2}{\partial \theta^2}\,\ell(\theta;\underline{X}) \right].
+\mathcal{I}_n(\theta) \;=\; -\,\mathrm{E}_{\theta}\!\left[ \frac{\partial^2}{\partial \theta^2}\,\ell(\theta;\underline{X}) \right].
+$$
+
+Under the usual regularity conditions, the equivalent score-variance form is
+$$
+\mathcal I_n(\theta)=\mathrm E_\theta[U(\theta;\underline X)^2].
 $$
 
 :::
 
-**Intuition:** Fisher information measures how much the data tell us about $\theta$.
+**Intuition:** Fisher information measures how much the experiment is expected to tell us about $\theta$ over repeated samples.
 
-* A sharply peaked log-likelihood $\Rightarrow$ high information (data strongly constrain $\theta$).
-* A flat log-likelihood $\Rightarrow$ low information (many $\theta$’s are plausible).
-  The curvature (second derivative) captures this “peakedness.”
+* Large expected negative curvature $\Rightarrow$ high expected information.
+* Small expected negative curvature $\Rightarrow$ low expected information.
+
+The curvature of the log-likelihood for the **particular observed data** is instead called *observed information*. We define it explicitly near the large-sample approximation below.
 
 
 ::: {#prp-fisher-one-obs}
@@ -1268,7 +1321,7 @@ Suppose we have an i.i.d. sample $\underline{X}^{(n)} = (X_1,\ldots,X_n)$ drawn 
   $$
 * The Fisher information from the **whole sample** (i.e. @def-fisher-information): 
   $$
-  \mathcal{I}_n(\theta) = \mathcal{I}(\theta; \underline{X}^{(n)}) = -\mathrm{E}\left [\tfrac{\partial^2}{\partial \theta^2}\ell(\theta;\underline{X}^{(n)})\right]
+  \mathcal{I}_n(\theta) = -\mathrm{E}_\theta\left [\tfrac{\partial^2}{\partial \theta^2}\ell(\theta;\underline{X}^{(n)})\right]
   $$
 
 Then
@@ -1311,7 +1364,7 @@ $$
 Since the $X_i$ are IID, each term in the sum is the same:
 
 $$
-\mathcal{I}_n(\theta) = n\,\mathcal{I}(\theta).
+\mathcal{I}_n(\theta) = n\,\mathcal{I}_1(\theta).
 $$
 
 :::
@@ -1403,7 +1456,7 @@ Using @prp-fisher-one-obs, compute the Fisher information for **one observation*
 
 **Recommendation**
 
-- If the data are **not identically distributed**, only **Approach 1** applies.  
+- If observations are independent but **not identically distributed**, information is still additive, $\mathcal I(\theta)=\sum_i\mathcal I_i(\theta)$, but the shortcut $n\mathcal I_1(\theta)$ does not apply.
 - Even in the i.i.d. case, Approach 1 is often just as quick and avoids memorising extra formulas.  
 - For consistency, I therefore recommend **always using Approach 1**.
 
@@ -1486,7 +1539,7 @@ $$
 
 
 ```{=html}
-</details
+</details>
 ```
 
 :::
@@ -1494,7 +1547,7 @@ $$
 
 ### Cramér–Rao Lower Bound and Efficiency
 
-We can now state one of the most important results in statistical inference: the **Cramér–Rao inequality**. It tells us how small the variance of an unbiased estimator can ever be.
+We can now state one of the most important results in statistical inference: the **Cramér–Rao inequality**. Under its regularity conditions, it gives a lower benchmark for the variance of an unbiased estimator.
 
 ::: {#thm-crlb}
 #### The Cramér–Rao Inequality and the [CRLB]{title="Cramér–Rao Lower Bound"}
@@ -1508,11 +1561,11 @@ $$
 $$
 where $\mathcal{I}_n(\theta)$ is the <span class="xref-no-num">[Fisher information @prp-fisher-one-obs]</span> for the **whole sample**.
 
-The quantity $\tfrac{1}{\mathcal{I}_n(\theta)}$ is called the **Cramér–Rao Lower Bound ([CRLB]{title="Cramér–Rao Lower Bound"})**. It represents the *smallest possible variance* achievable by any unbiased estimator of $\theta$.
+The quantity $\tfrac{1}{\mathcal{I}_n(\theta)}$ is called the **Cramér–Rao Lower Bound ([CRLB]{title="Cramér–Rao Lower Bound"})**. It is a lower benchmark for the variance of regular unbiased estimators; it is **not guaranteed to be attainable**. An estimator is called efficient when it does attain the bound.
 :::
 
-::: {#prf-crlb}
-#### Not Examinable
+::: {.callout-note collapse="true" #prf-crlb}
+#### Optional proof of the Cramér–Rao inequality (not examinable)
 
 The proof of the Cramér–Rao inequality follows from the **covariance inequality**:
 
@@ -1532,7 +1585,7 @@ Thus, the proof can be broken into steps:
 
 1. **Prove the Covariance Inequality**
 2. **Show:** $\mathrm{E}[U] = 0$
-3. **Show:** $\mathrm{Var}(U) = \mathcal{I}(\theta)$
+3. **Show:** $\mathrm{Var}(U) = \mathcal{I}_n(\theta)$
 4. **Show:** $\mathrm{Cov}(\hat{\theta}, U) = 1$
 
 Along the way, we will present the regularity conditions.
@@ -1565,7 +1618,7 @@ Using the quadratic formula the roots satisfy:
 $$
 a = \frac{-2\mathrm{E}[XY] \pm \sqrt{4 \mathrm{E}[XY]^2 - 4 \mathrm{E}[X^2] \mathrm{E}[Y^2]}}{2 \mathrm{E}[X^2]}
 $$
-For there to be zero or one real roots, the square root term must be non-positive i.e.
+For there to be zero or one real root, the discriminant must be non-positive, i.e.
 $$
 \mathrm{E}[XY]^2 - \mathrm{E}[X^2] \mathrm{E}[Y^2] \leq 0.
 $$
@@ -1784,7 +1837,7 @@ If you are curious, see the non-examinable proof in @prf-crlb.
 
 ::: {#cor-crlb-efficiency appearance="minimal"}
 
-### Asymptotic Variance of an Efficent Estimator
+### Asymptotic Variance of an Efficient Estimator
 
 By the CRLB and <span class="xref-no-num">[Fisher Information for IID Data @prp-fisher-one-obs]</span>, the variance of an efficient estimator decreases at rate $1/n$ as the sample size increases.
 
@@ -1801,6 +1854,8 @@ In particular, we saw that we can determine the asymptotic <span class="xref-no-
 This gave us a first example of the principle: with enough data, many estimators behave like a Normal random variable around the true parameter.
 
 A much more general and powerful result is that maximum likelihood estimators also satisfy this property.
+
+This is a regular-model result, not a guarantee for every likelihood. Boundary parameters, non-identifiable models, or strongly irregular likelihoods can produce non-Normal behaviour.
 
 ::: {#thm-asymp-mle}
 
@@ -1829,7 +1884,7 @@ The full proof uses tools such as Taylor expansions of the score function and th
 The *regularity conditions* required for the Asymptotic Distribution of the MLE are **not examinable**. 
 :::
 
-In this course, the main use of the @thm-asymp-mle will be to approximate the MLE distribution using the normal distribution for sufficienty large $n$:
+In this course, the main use of @thm-asymp-mle will be to approximate the MLE distribution using the Normal distribution for sufficiently large $n$:
 
 ::: {#def-asymp-mle-approx}
 #### Approximate Sampling Distribution of the MLE
@@ -1846,31 +1901,30 @@ $$
 \mathcal N\!\left(\theta,\; \mathcal{I}_n(\theta)^{-1}\right),
 \qquad \text{for large } n.
 $$
-In practice, since the true parameter $\theta$ is unknown, we replace $\theta$ by the observed MLE $\hat{\theta}_{\text{obs}}$.
-This gives the practical approximation
+The corresponding theoretical large-sample standard error is $\mathcal I_n(\theta)^{-1/2}$. Because $\theta$ is unknown, it must be estimated in applications. One common **plug-in expected-information** estimate is
 $$
-\hat{\theta}_n \;\overset{\text{approx.}}{\sim}\; 
-\mathcal N \left(\theta,\; \mathcal{I}_n(\hat{\theta}_{\text{obs}})^{-1}\right).
+\widehat{\mathrm{SE}}_{\mathrm{exp}}
+=\mathcal I_n(\hat\theta_{\mathrm{obs}})^{-1/2}.
 $$
 
-This Normal distribution serves as an **approximate sampling distribution** of the MLE and underpins methods such as constructing confidence intervals and hypothesis tests.
+This yields the practical variance estimate $\mathcal I_n(\hat\theta_{\mathrm{obs}})^{-1}$. A second option uses the observed curvature defined below. These estimated standard errors underpin approximate confidence intervals and hypothesis tests.
 :::
 
-The quantity $\mathcal{I}_n(\hat{\theta}_{\text{obs}})$ is called the **observed Fisher information**.
-
 ::: {#def-observed-fisher}
-#### Observed Fisher Information
+#### Observed Information
 
-Let $\hat{\theta}$ denote the <span class="xref-no-num">[maximum likelihood estimator @def-mle]</span> based on $n$ i.i.d. samples $X_1, \ldots, X_n$ drawn from a distribution with density or mass function $f(x \mid \theta)$.
+For fixed observed data $\underline x$, the **observed information** is the realised negative curvature of the log-likelihood:
+$$
+j_n(\theta;\underline x)
+=-\frac{\partial^2}{\partial\theta^2}\ell(\theta;\underline x).
+$$
+Evaluating it at the observed MLE gives another estimated standard error,
+$$
+\widehat{\mathrm{SE}}_{\mathrm{obs}}
+=j_n(\hat\theta_{\mathrm{obs}};\underline x)^{-1/2}.
+$$
 
-The **observed Fisher information** is the <span class="xref-no-num">[Fisher information @def-fisher-information]</span> evaluated at the **observed value** of the MLE, $\hat{\theta}_{\text{obs}}$, obtained from the observed data $x_1, \ldots, x_n$:
-$$
-\mathcal{I}_n(\hat{\theta}_{\text{obs}}) = \mathcal{I}(\hat{\theta}_{\text{obs}}; \underline{X}).
-$$
-Similarly, the observed Fisher information for **a single observation** is the quantity
-$$
-\mathcal{I}_1(\hat{\theta}_{\text{obs}}).
-$$
+Do not confuse $j_n(\hat\theta_{\mathrm{obs}};\underline x)$ with $\mathcal I_n(\hat\theta_{\mathrm{obs}})$. The former uses the curvature of the realised log-likelihood; the latter evaluates an **expected** curvature at an estimated parameter. They are often close in large regular samples, but they need not be identical.
 :::
 
 ::: {#exm-asymp-mle-pois}
@@ -1921,6 +1975,20 @@ $$
 </details>
 ```
 
+:::
+
+
+::: {.callout-tip appearance="simple"}
+### Chapter summary and checkpoint
+
+Starting from a model, the route is
+$$
+\text{joint model}\longrightarrow L(\theta;\underline x)
+\longrightarrow \ell(\theta;\underline x)
+\longrightarrow \hat\theta_{\mathrm{MLE}}
+\longrightarrow \text{information and an estimated standard error}.
+$$
+At each arrow, check what is fixed, the parameter space, and whether the result is exact or asymptotic. For the Bernoulli model, explain why $\bar Y$ is simultaneously an unbiased estimator and the MLE, while still being a random quantity before the data are observed.
 :::
 
 

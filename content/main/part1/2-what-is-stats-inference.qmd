@@ -5,24 +5,29 @@ tbl-cap-location: bottom
 
 # What is Statistical Inference? {#sec-what-is-statistics}
 
-::: {.callout-note collapse="true" title="Learning objectives"}
-- Define *population* and *sample*, and identify each in simple scenarios.
-- State the *goal* of statistical inference: using a sample to learn about a population distribution.
-- Recognise the idea of a *random sample* $X_1,\dots,X_n$ and the iid assumption.
-- Define a *statistical model* as a set of distributions $\{P_\theta:\theta\in\Theta\}$.
-- Identify the *parameter(s)* $\theta$ and the *parameter space* $\Theta$ for a given model.
-- Write down a suitable statistical model for a short verbal problem.
+::: {.callout-note title="Learning objectives"}
+- Distinguish a *target population*, the random variables in a *sample*, and their observed data values.
+- State the goal of statistical inference: using observed data to learn about a population distribution.
+- Explain the iid assumption and why it is not the same as representative sampling.
+- Read a provided statistical model and identify its parameter(s) $\theta$ and parameter space $\Theta$.
+- Connect common univariate data types to plausible probability models, while recognising that models are approximations.
+
+Constructing a model from scratch and the fully formal definition of a model are useful context, but are explicitly marked **non-examinable** later in the chapter.
 :::
 
 
 {{< include ../../_figures/part1/inference-shared.qmd >}}
 
-Statistical inference underpins experimental science, machine learning, clinical trials, and more. The overall aim is:
+Statistical inference underpins experimental science, machine learning, clinical trials, and more. This chapter first separates population, sample, and observed data; then classifies common data; and finally shows how a statistical model connects data to an unknown parameter. The overall aim is:
 
-* Given a **sample** (the data you have) from a **population** (the broader group you care about),
+* Given **observed data** from a sample connected to a clearly defined **target population**,
 * Draw a justified **conclusion about the population’s distribution**.
 
 Typical conclusions include estimating a proportion or mean, quantifying uncertainty, comparing groups, or predicting future outcomes.
+
+::: {.callout-note title="Recurring example: study-space preferences"}
+Suppose the target population is all students eligible to use two campus study spaces this term. For student $i$, let $X_i=1$ if they prefer space $A$ and $X_i=0$ if they prefer space $B$. The population proportion $p$ who prefer $A$ will provide a simple thread through this chapter and the next.
+:::
 
 ::: {#imp-notation-dist .callout-important collapse="true" appearance="simple"}
 ### Notation: $\mathrm{Distribution}(\theta)$
@@ -39,15 +44,16 @@ For example:
 This allows us to keep the definitions *general*! 
 :::
 
-::: {#imp-terminology-sample .callout-important collapse="true" appearance="simple"}
+::: {#imp-terminology-sample .callout-important appearance="simple"}
 ### Terminology: Population, Sample, Data
 
-- **Population:** the entire group we want to study (conceptual, often infinite).  
-- **Sample:** the $n$ random variables we actually collect from the population $X_1,X_2,\ldots, X_n$.  
-- **Data:** the realised values of the sample once observed $x_1,x_2,\ldots, x_n$.  
-- **Observation / data point:** a single element of the sample, e.g. $X_i$ (random) or $x_i$ (observed).  
+- **Target population:** the broader group or collection of outcomes to which we want our conclusion to apply. It may be concrete, such as current students, or conceptual, such as future comparable patients.
+- **Population distribution:** the probability distribution describing a randomly selected outcome from that target population under our assumptions.
+- **Sample (before observation):** the random variables $X_1,X_2,\ldots,X_n$ used to represent the measurements we will observe.
+- **Observed sample / data:** the realised values $x_1,x_2,\ldots,x_n$ after measurement.
+- **Observation / data point:** one measurement, represented by $X_i$ before observation and $x_i$ afterwards.
 
-**Note:** In practice, the terms *data*, *observations*, and *data points* are often used interchangeably. In these notes, we’ll do the same unless we need to be precise about whether something is random (sample) or fixed (data).
+**Note:** In everyday usage, *sample* often means the observed dataset itself. In mathematical derivations we distinguish the random sample $\underline{X}=(X_1,\ldots,X_n)$ from its realised value $\underline{x}=(x_1,\ldots,x_n)$.
 :::
 
 
@@ -55,14 +61,14 @@ This allows us to keep the definitions *general*!
 
 In **probability theory**, the usual direction is:
 
-* Start with a distribution $f(x \mid \theta)$ (the model, with known parameter $\theta$).
+* Start with a distribution $f(x \mid \theta)$ for one outcome (the model, with known parameter $\theta$).
 * Use it to generate random samples, or calculate probabilities of events involving the data.
 
 In **statistical inference**, we reverse the problem:
 
 * We observe data $\underline{x} = (x_1,\ldots,x_n)$.
 * The distribution $f(x \mid \theta)$ is only partially known, through the unknown parameter $\theta$.
-* Our task is to use the sample to learn about $\theta$, and hence about the population distribution.
+* Our task is to use the observed data to learn about $\theta$, and hence about the population distribution.
 
 Formally, we (*usually*) assume our data are an **i.i.d. sample**:
 
@@ -70,15 +76,15 @@ $$
 X_1,\ldots,X_n \stackrel{\text{iid}}{\sim} \mathrm{Distribution}(\theta).
 $$
 
-- *Independent*: knowing the value of one $X_i$ gives no information about any other.  
+- *Independent*: observing one $X_i$ does not change the distribution of any other.
 - *Identically distributed*: each $X_i$ comes from the same population distribution $f(x \mid \theta)$.  
 
 The goal of *statistical inference* is to use the observed sample to learn about $\theta$, and hence about the underlying population. 
 
-::: {#imp-term-random-sample .callout-important collapse="true" appearance="simple"}
+::: {#imp-term-random-sample .callout-important appearance="simple"}
 ### Terminology: Random Sample
 
-- A <span class="xref-no-num">[sample @imp-terminology-sample]</span> means the $n$ random variables we collect from the population, $X_1,\dots,X_n$. These need not be independent or identically distributed.  
+- A <span class="xref-no-num">[sample @imp-terminology-sample]</span> means the $n$ random variables used to represent our measurements before observation, $X_1,\dots,X_n$. These need not be independent or identically distributed.
 
 - A **random sample** is the special case where the $X_i$ are assumed *independent and identically distributed (i.i.d.)* from the same distribution:
   $$
@@ -86,6 +92,26 @@ The goal of *statistical inference* is to use the observed sample to learn about
   $$
 
 Most of the inference procedures in this course are developed under the random-sample (iid) assumption.
+
+The mathematical term **random sample** does not by itself guarantee that the observed people or objects represent the target population. Selection bias, under-coverage, or non-response can make an iid model inappropriate for the target of interest. Conversely, a simple random sample drawn *without replacement* from a finite population is not exactly independent, although the iid approximation is often reasonable when the population is much larger than the sample.
+:::
+
+::: {.callout-tip title="Checkpoint: identify the ingredients"}
+Return to the study-space survey. Suppose 20 students volunteer through a social-media post and 12 prefer space $A$.
+
+1. What are the target population, $X_i$, observed value $x_i$, and parameter $p$?
+2. Does “20 volunteers” alone make the sample representative or justify an iid model for the target population?
+
+```{=html}
+<details>
+  <summary><strong>Check your answer</strong></summary>
+```
+
+The target population is the eligible students defined above; $X_i$ is the preference indicator before observation; each $x_i$ is an observed 0 or 1; and $p$ is the population probability of preferring $A$. Volunteering may be related to preference, so the recruitment method can create selection bias. An iid calculation may describe the volunteer mechanism without supporting generalisation to all eligible students.
+
+```{=html}
+</details>
+```
 :::
 
 ### Statistical Inference by Eye {#sec-inference-eye}
@@ -93,6 +119,12 @@ Most of the inference procedures in this course are developed under the random-s
 As an informal starting point, suppose $X_1,\ldots,X_n$ are sampled from a $\mathcal{N}(\mu,\sigma^2)$ distribution, with $\mu$ and $\sigma^2$ unknown. 
 
 Try to “guess” $\mu$ and $\sigma^2$ by eye from the data:
+
+Use a **predict–observe–explain** sequence:
+
+1. Before opening the simulation controls, place the fitted curve by estimating the centre $\mu$ and variance $\sigma^2$.
+2. Reveal the simulation settings and compare your estimate with the true values.
+3. Resimulate at the same settings. Explain why your estimate changes even though $\mu$ and $\sigma^2$ do not, then compare a small and a large sample size.
 
 ::: {.content-visible unless-format="pdf"}
 
@@ -114,10 +146,17 @@ Try to “guess” $\mu$ and $\sigma^2$ by eye from the data:
 
 :::
 
+In words, $\mu$ controls the distribution’s centre, $\sigma$ controls its typical spread, and $\sigma^2$ is the variance. A finite sample will not reproduce either feature exactly, and estimates usually stabilise as $n$ increases.
+
 ## Types of Data {#sec-types-of-data}
 
 Before we build **statistical models**, it helps to think about the kinds of data we might collect.
 Different data types naturally lead to different models.
+
+::: {.callout-warning}
+### Scope of this course
+The assessed methods in this course focus on **univariate data**: one measurement per observational unit. Multivariate and high-dimensional examples below provide context for later courses and may be skimmed on a first reading.
+:::
 
 ### Univariate vs. Multivariate data
 
@@ -178,8 +217,9 @@ Here, the **units** are the weather **stations** (during the same storm), and th
 
 :::
 
-Some data is **extremely high-dimensional**:
+Some data are **extremely high-dimensional**. The following example is enrichment rather than assessed content.
 
+:::: {.callout-note collapse="true" title="Enrichment: image data"}
 ::: {#exm-image-data}
 #### Image Data
 
@@ -189,7 +229,7 @@ A colour can be represented by three channels: red, green, and blue[^a-channel].
 
 ![A 32×32 image of a cat, broken into its three colour channels (red, green, blue). Each pixel has three values (one per channel), making the image a high-dimensional observation.](figures/cat_pixel.png){#fig-pixel}
 
-Each pixel has **multiple measurements** (one per channel), so images are an example of **high-dimensional multivariate data**. To see why, consider the size of real images:
+If the whole image is one observational unit, each pixel–channel position is one variable. An image is therefore a **high-dimensional multivariate observation**. To see why, consider the size of real images:
 
 - A tiny image of size $32\times 32$ pixels with 3 channels (RGB) already has $32\times 32 \times 3 = 3072$ measurements.
 - A small image of size $128 \times 128$ pixels with 3 channels (RGB) has  
@@ -201,14 +241,8 @@ So even a single image can be thought of as a *very high-dimensional observation
 
 :::
 
+::::
 
-
-::: {.callout-warning}
-### Non-Examinable Content: Multivariate Data
-In this course we focus **only on univariate data** (one measurement per observational unit).  
-
-Although many real-world problems involve **multivariate data** (two or more measurements on the same unit), this topic will be studied in later statistics courses.
-:::
 
 
 ### Numerical data
@@ -238,7 +272,7 @@ Although many real-world problems involve **multivariate data** (two or more mea
 | Deneb  |  1.25 |
 | …      | … |
 
-: **Astronomy data.** The brightness of a star (its *magnitude*) is measured on a continuous scale. . {#tbl-astronomy}
+: **Astronomy data.** The brightness of a star (its *magnitude*) is measured on a continuous scale. {#tbl-astronomy}
 
 ### Discrete data
 
@@ -257,11 +291,11 @@ Although many real-world problems involve **multivariate data** (two or more mea
 | …                                    | … | … |
 
 
-: **Sports analytics.** Goals scored in football matches are discrete counts. Each match provides *multivariate discrete data* (two counts per unit). {#tbl-goals}
+: **Sports analytics.** Goals scored in football matches are discrete counts. Each match provides *multivariate discrete data* (two counts per unit); analysing home goals alone would give a univariate count. The values shown are illustrative. {#tbl-goals}
 
 ### Mixed data
 
-In practice, most datasets are **mixed**
+In practice, most datasets are **mixed**.
 
 | Patient | Age (years) | Reaction time (ms) | Smoker (yes/no) |
 |:-------:|:-----------:|:------------------:|:---------------:|
@@ -271,7 +305,7 @@ In practice, most datasets are **mixed**
 | D       | 29 | 452 | No  |
 | …       | …  | …   | …   |
 
-: **Medical study.** Here each patient (unit) has both continuous and discrete measurements. {#tbl-mixed}
+: **Medical study.** Here each patient (unit) has two numerical measurements and one categorical measurement. The values shown are illustrative. {#tbl-mixed}
 
 :::
 
@@ -322,10 +356,27 @@ Later in the course we will see this leads to the **chi-squared test of independ
 
 :::
 
+::: {.callout-tip title="Checkpoint: classify before modelling"}
+Classify each variable as continuous numerical, discrete numerical, nominal categorical, or ordinal categorical: measured reaction time; number of goals; preferred study space $A/B$; satisfaction rating from “poor” to “excellent”.
+
+```{=html}
+<details>
+  <summary><strong>Check your answer</strong></summary>
+```
+
+In the idealised models used here these are, respectively: **continuous numerical**, **discrete numerical**, **nominal categorical**, and **ordinal categorical**. Recorded measurements may be rounded, but the model can still treat the underlying quantity as continuous.
+
+```{=html}
+</details>
+```
+:::
+
 
 ## Statistical Models {#sec-statistical-models}
 
 Whenever we perform statistical inference, we must specify a **model**.
+
+A model records assumptions about both the distribution of each observation and how observations relate to one another. Choosing a named distribution is therefore only one part of modelling; assumptions such as independence and a common parameter matter too.
 
 In @sec-stat-inf-as-inv-prob we wrote
 $$
@@ -352,7 +403,7 @@ $$
 - **Parameter:** $\theta = \lambda$
 - **Parameter space**[^sets1] **:** $\Theta = \{ \lambda \mid \lambda > 0\} = (0,\infty)$
 
-The exponential model often arises in *Poisson processes*, where events occur independently at a constant rate (e.g. radioactive decay, arrivals at a bus stop).
+The exponential model often arises in *Poisson processes*, where events occur independently at a constant rate (e.g. radioactive decay or customer arrivals at a service desk).
 :::
 
 ::: {.example #exm-normal-model}
@@ -369,6 +420,25 @@ $$
 This model is widely used, e.g. for measurement error or traits like human height.
 :::
 
+::: {.callout-tip title="Checkpoint: question the model"}
+A useful model need not be literally true, but its assumptions should be reasonable for the intended purpose.
+
+1. Why might an exponential model be poor for waiting times when the arrival rate changes sharply during the day?
+2. What feature of a Normal model makes it only an approximation for human height?
+
+```{=html}
+<details>
+  <summary><strong>Check your answer</strong></summary>
+```
+
+1. A single exponential rate assumes a constant event rate (and the associated memoryless waiting-time structure); a changing rate violates that assumption.
+2. A Normal distribution is symmetric and has unbounded support, so it assigns some probability to impossible negative heights. It can nevertheless approximate the central part of a height distribution well.
+
+```{=html}
+</details>
+```
+:::
+
 ::: {.callout-tip}
 ### Common Misconceptions
 
@@ -377,9 +447,9 @@ This model is widely used, e.g. for measurement error or traits like human heigh
   A *statistic* (e.g. $\bar{X}$, a sample proportion) is calculated from the sample and used to learn about $\theta$.
 
 - **“Random sample” is not just “whatever data we found”.**  
-  A random sample means data collected in a way that makes the i.i.d. assumption reasonable (e.g. independent trials, simple random sampling).  
+  In this course, a random sample is the mathematical iid model for $X_1,\ldots,X_n$. Whether that model supports inference to the target population also depends on the recruitment or sampling mechanism.
   
-  > Example: If your population is *all humans on the planet*, then sampling only your family would not be random and could bias inference.
+  > Example: If the target population is *all humans on the planet*, observations from one family may be dependent and will not represent the full target population.
 
 - **Models are approximations.**  
   In practice you should treat models as *useful simplifications*, not as exact descriptions of reality. It’s important to choose them sensibly, and be prepared to adjust if they don’t fit the data well.
@@ -387,22 +457,22 @@ This model is widely used, e.g. for measurement error or traits like human heigh
 
 ::: {.example #exm-identify-model}
 ### From words to a model
-A questionnaire records whether each respondent would recommend a service (“yes” or “no”). Write down a simple model and identify the parameter.
+Return to the study-space survey. A response is recorded as $1$ for preference $A$ and $0$ for preference $B$. Write down a simple model and identify the parameter.
 
 ```{=html}
 <details>
   <summary><strong> Solution </strong></summary>
 ```
 
-Let $X_i=1$ if respondent $i$ says “yes”, and $0$ otherwise.  
+Let $X_i=1$ if respondent $i$ prefers $A$, and $0$ otherwise.
 
 Assume $X_1,\ldots,X_n \stackrel{\text{iid}}{\sim}\mathrm{Bernoulli}(p)$.  
 
-- **Model:** $\mathcal{P} = \{ \mathrm{Bernoulli}(p) : 0 < p < 1 \}$  
+- **Model:** $\mathcal{P} = \{ \mathrm{Bernoulli}(p) : 0 \leq p \leq 1 \}$
 - **Parameter:** $\theta = p$  
-- **Parameter space:** $\Theta = (0,1)$  
+- **Parameter space:** $\Theta = [0,1]$
 
-Here $p$ is the long-run proportion of “yes” responses.
+Here $p$ is the probability that a randomly selected member of the target population prefers $A$. The common-$p$ and independence assumptions would be questionable if recruitment favoured one type of student or responses influenced one another.
 
 
 ```{=html}
@@ -430,6 +500,8 @@ A natural model is the <span class="xref-no-num">[multinomial @sec-multinomial]<
 - **Parameters:** $\theta = (p_R,p_B,p_G)$  
 - **Parameter space:** the 2-simplex $\;\Theta=\{(p_R,p_B,p_G)\in[0,1]^3 \mid \,p_R+p_B+p_G=1\}$  
 
+Although three probabilities are written down, only two are free: the third is determined by the constraint that they sum to one.
+
 If you only had two colours, the multinomial distribution would become the <span class="xref-no-num">[binomial distribution @sec-binom]</span>.
 
 ```{=html}
@@ -440,6 +512,7 @@ If you only had two colours, the multinomial distribution would become the <span
 
 
 
+:::: {.callout-note collapse="true" title="Enrichment: a conditional model in machine learning"}
 ::: {.example #exm-ml-inference}
 ### Machine learning example
 In image classification, each "training" example is a pair $(X_i,Y_i)$ where $X_i$ is an image and $Y_i\in\{0,1\}$. A generic probabilistic model specifies
@@ -456,13 +529,15 @@ What are the *sample*, *population*, *model*, and *parameter*?
 ```
 
 - **Sample:** the dataset $\{(X_i,Y_i)\}_{i=1}^n$.  
-- **Population:** the (conceptual) set of all image–label pairs of interest; equivalently, the joint distribution of $(X,Y)$ in the real world we care about.  
+- **Target population:** the conceptual collection of image–label pairs to which we want the classifier to generalise. Its real-world distribution determines how frequently different pairs occur.
 - **Model:** we specify the conditional distribution of $Y$ given $X$,
   $$Y \mid X \sim \mathrm{Bernoulli}\big(g_\theta(X)\big),$$
   i.e.
-  $$\operatorname{Pr}_\theta(Y=1\mid X=x)=g_\theta(x).$$
+  $$\mathrm{Pr}_\theta(Y=1\mid X=x)=g_\theta(x).$$
 - **Parameter:** $\theta$ indexes the function $g_\theta$ (e.g. regression coefficients or neural-network weights).  
 - **Parameter space:** $\Theta\subseteq\mathbb{R}^d$ (dimension $d$ depends on the chosen model class).
+
+This is a **conditional** model: it specifies $Y\mid X$ while treating the input images as given. It does not by itself specify a marginal distribution for $X$ or a full joint model for $(X,Y)$.
 
 *Common misconception:* confusing the *training sample* (finite) with the *population* (conceptual/infinite). The goal of inference is to use the sample to learn $\theta$ so that the model generalises to the population.
 
@@ -472,6 +547,8 @@ What are the *sample*, *population*, *model*, and *parameter*?
 ```
 
 :::
+
+::::
 
 
 
@@ -507,14 +584,37 @@ where:
 :::
 
 
-<!-- ---
+## Check your understanding
 
-## Exercises
+Attempt these from memory before opening the answers.
 
-1. For a study recording daily counts of emails received by a helpdesk, propose a one-parameter model and state the parameter space.
-2. In a satisfaction survey with responses $\{\text{poor},\text{OK},\text{good}\}$, suggest a simple probabilistic model and identify the parameter(s).
-3. State what “iid” means in one sentence, and give one example of how it could fail in practice.
-4. Revisit @sec-inference-eye: if the spread of points increases, which parameter of $\mathcal{N}(\mu,\sigma^2)$ has changed, and how would you describe that change informally? -->
+1. In the study-space survey, distinguish the target population, random sample $X_1,\ldots,X_n$, observed data $x_1,\ldots,x_n$, parameter $p$, and statistic $\hat p$.
+2. Daily helpdesk email counts are modelled as $X_1,\ldots,X_n\stackrel{\mathrm{iid}}{\sim}\mathrm{Poisson}(\lambda)$. State the parameter space and one practical reason the iid assumption might fail.
+3. For $X_i\stackrel{\mathrm{iid}}{\sim}\mathcal{N}(\mu,\sigma^2)$, which parameter changes the centre and which changes the spread? Why can two samples from the same model look different?
+4. Explain why an iid model for a volunteer survey does not, by itself, justify generalising to the target population.
+
+```{=html}
+<details>
+  <summary><strong>Check your answers</strong></summary>
+```
+
+1. The target population is the group to which the conclusion should apply; $X_i$ is the random preference indicator before observation; $x_i$ is its realised 0/1 value; $p$ is the fixed but unknown population proportion under this model; and $\hat p=n^{-1}\sum_i X_i$ is a statistic calculated from the sample.
+2. $\Theta=\{\lambda\mid\lambda>0\}$. Counts may have different distributions on weekdays and weekends, or successive days may be dependent.
+3. $\mu$ controls the centre and $\sigma^2$ controls the spread. Samples differ because each is a different random realisation from the same distribution.
+4. The iid model describes variation under an assumed sampling mechanism; it does not remove selection bias or under-coverage caused by how volunteers were recruited.
+
+```{=html}
+</details>
+```
+
+## Chapter summary
+
+- A target population states where we want to generalise; the random sample $\underline{X}$ represents uncertain measurements and $\underline{x}$ denotes the values actually observed.
+- An iid model assumes independence and a common distribution, but representativeness also depends on how observations enter the sample.
+- A statistical model links possible data distributions to parameter values in $\Theta$. The parameter describes the population; a statistic is computed from a sample.
+- Data type and scientific context guide model choice, while model criticism asks which assumptions are useful approximations and which may be damaging.
+
+Next, <span class="xref-no-num">[Types of Inference @sec-types-of-inference]</span> separates the frequentist and Bayesian frameworks and organises the course around point estimation, interval estimation, and hypothesis testing.
 
 [^sets1]:
   **Set notation.** There are several equivalent ways to write sets:

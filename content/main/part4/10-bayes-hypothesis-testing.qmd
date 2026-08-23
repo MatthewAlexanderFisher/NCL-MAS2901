@@ -5,9 +5,17 @@ tbl-cap-location: bottom
 # Bayesian Hypothesis Testing (not examinable) {#sec-bayes-hypothesis-test}
 
 
-Recalling the <span class="xref-no-num">[main inference tasks @sec-inference-tasks]</span>, we now move from *interval estimation* to *hypothesis testing* in the **Bayesian** framework, and consider the Bayesian analogue of frequentist hypothesis testing.. 
+Recalling the <span class="xref-no-num">[main inference tasks @sec-inference-tasks]</span>, we now move from *interval estimation* to *hypothesis testing* in the **Bayesian** framework, and consider the Bayesian analogue of frequentist hypothesis testing.
 
-The Bayesian perspective is slightly different from the frequentist one: instead of asking whether data look *unlikely* under a hypothesis, we ask:
+::: {.callout-note appearance="simple"}
+**By the end of this optional chapter, you should be able to:**
+
+- explain why a point null needs positive prior probability;
+- compute posterior hypothesis odds from a Bayes factor and prior odds; and
+- distinguish a Bayes factor, a posterior hypothesis probability and a frequentist $p$-value.
+:::
+
+The Bayesian perspective is different from the frequentist one: instead of calibrating a rejection rule under repeated samples from $H_0$, we compare how well the competing hypotheses predicted the observed data.
 
 > **How probable is each hypothesis given the observed data?**
 
@@ -37,6 +45,12 @@ This involves two ingredients:
    \pi(\theta \mid H_0) \quad \text{and} \quad \pi(\theta \mid H_1).
    $$
 
+Equivalently, introduce a hypothesis indicator $H\in\{0,1\}$, assign $\Pr(H=j)>0$, and then specify the distribution of $\theta$ conditional on $H=j$. This mixture construction is essential for a point null: a continuous prior on $\theta$ alone gives $\Pr(\theta=\theta_0)=0$. For
+$$
+H_0:\theta=\theta_0,
+$$
+the conditional prior under $H_0$ is a point mass at $\theta_0$.
+
 ### Posterior Probabilities of Hypotheses
 
 After observing data $\underline{x}$, Bayes’ theorem gives
@@ -49,6 +63,11 @@ If $H_0$ is not simple, the likelihood $f(\underline{x}\mid H_0)$ is obtained by
 $$
 f(\underline{x} \mid H_0) 
 = \int_{\Theta_0} f(\underline{x}\mid\theta)\,\pi(\theta \mid H_0)\,\mathrm{d}\theta.
+$$
+
+For the simple null $H_0:\theta=\theta_0$, this reduces to
+$$
+m_0(\underline{x})=f(\underline{x}\mid\theta_0).
 $$
 
 So we can write
@@ -86,6 +105,8 @@ $$
 - If $B_{10} > 1$: the data increase belief in $H_1$.  
 - If $B_{10} < 1$: the data increase belief in $H_0$.  
 
+A Bayes factor is **not** itself a posterior probability: posterior odds also depend on the prior odds. Moreover, the marginal likelihood under a composite hypothesis depends on its conditional prior, which must be proper for the standard Bayes factor to be defined.
+
 
 ::: {.content-visible unless-format="pdf"}
 
@@ -93,22 +114,26 @@ $$
 
 ```{=html}
 <details>
-<summary><strong>Show Visualisation</strong></summary>
+<summary><strong>Explore a Bayes factor</strong></summary>
 ```
 Suppose our model is
 
 $$
-X_i \mid \mu \sim \mathcal{N}(\mu, 10),
+X_i \mid \mu \sim \mathcal{N}(\mu, 10^2),
 $$
 
 and we want to test whether $\mu = 200$:
 
 - $H_0: \mu = 200$  
-- $H_1: \mu \sim \mathcal{N}(200, 25)$ (a vague prior centred on 200)
+- $H_1: \mu \neq 200$, with conditional prior $\mu\mid H_1\sim\mathcal{N}(200,25)$.
 
 We compare the *likelihood of the observed sample mean* under each hypothesis.
 
+**Predict.** What should happen to $B_{10}$ as $\bar x$ moves away from $200$? Then change both the observed mean and the prior scale under $H_1$.
+
 {{< include ../../_figures/part4/bayes-factor.qmd >}}
+
+**Observe and explain.** Evidence depends both on the distance from the null and on how sharply $H_1$ predicted that distance. A more diffuse alternative does not automatically receive a larger Bayes factor.
 
 ```{=html}
 </details>
@@ -116,4 +141,79 @@ We compare the *likelihood of the observed sample mean* under each hypothesis.
 
 ---
 
+:::
+
+
+::: {.example #exm-normal-bayes-factor}
+### Normal-Mean Bayes Factor: Complete Calculation
+
+Use the model above with $n=30$, known $\sigma=10$ and observed $\bar x=204$. Under
+$$
+H_0:\mu=200,
+$$
+the sampling distribution of the mean is
+$$
+\bar X\mid H_0\sim\mathcal N\!\left(200,\frac{100}{30}\right).
+$$
+Under $H_1$, use the proper conditional prior
+$$
+\mu\mid H_1\sim\mathcal N(200,25).
+$$
+Find $B_{10}$ and the posterior probability of $H_1$ when the hypotheses have equal prior probability.
+
+```{=html}
+<details>
+<summary><strong>Solution</strong></summary>
+```
+
+Under $H_0$, the marginal density of $\bar X$ at $204$ is
+$$
+m_0(204)
+=\phi\!\left(204;200,\frac{100}{30}\right)
+\approx0.01982,
+$$
+where $\phi(x;m,v)$ denotes the $\mathcal N(m,v)$ density.
+
+Under $H_1$, integrating over the Normal prior adds the prior variance:
+$$
+\bar X\mid H_1
+\sim\mathcal N\!\left(200,\frac{100}{30}+25\right),
+$$
+so
+$$
+m_1(204)
+=\phi\!\left(204;200,\frac{100}{30}+25\right)
+\approx0.05651.
+$$
+Therefore
+$$
+B_{10}=\frac{m_1(204)}{m_0(204)}
+\approx\frac{0.05651}{0.01982}
+=2.85.
+$$
+
+With equal prior odds, the posterior odds are $2.85:1$ and
+$$
+\Pr(H_1\mid\underline{x})
+=\frac{2.85}{1+2.85}
+\approx0.740.
+$$
+
+For comparison, the frequentist statistic for the same data is
+$$
+Z=\frac{204-200}{10/\sqrt{30}}\approx2.19,
+$$
+with a two-sided $p$-value of approximately $0.0285$. The $p$-value asks how unusual the statistic is under $H_0$; the Bayes factor compares the predictions made by $H_0$ and the specified $H_1$. Neither is the other in disguise.
+
+```{=html}
+</details>
+```
+:::
+
+::: {.callout-warning appearance="simple"}
+**Prior sensitivity and decisions.** For the same $\bar x=204$, changing the prior variance under $H_1$ from $25$ to $100$ changes $B_{10}$ from about $2.85$ to $1.83$. Report the alternative prior and justify its scale. A final accept/reject action additionally requires a decision rule or losses; evidence alone does not determine the consequences of being wrong.
+:::
+
+::: {.callout-note appearance="simple"}
+**Chapter summary.** Bayesian point-null testing begins with prior probabilities for the hypotheses and proper conditional priors within them. The Bayes factor updates prior odds to posterior odds and can favour either hypothesis. Its value depends on how both hypotheses predicted the data, whereas a frequentist $p$-value is calibrated only under $H_0$.
 :::

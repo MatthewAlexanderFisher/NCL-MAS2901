@@ -220,6 +220,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script type="module" src="../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
 <link href="../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../theming/math-scroll.css">
 <link rel="stylesheet" href="../../theming/practice-details.css">
@@ -638,6 +681,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<p>Use this page to connect a distribution’s <strong>parameters</strong> to its support, centre, spread and shape. The aim is not simply to move the sliders: make a prediction, change one parameter, and explain the result in words.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Three guided investigations
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><strong>Discrete models:</strong> compare Bernoulli, Binomial and Poisson. Before moving a slider, predict which changes the centre and which changes the spread. What outcomes remain possible?</li>
+<li><strong>Waiting times:</strong> compare Geometric, Exponential and Gamma. Which are discrete or continuous, and how does a larger rate affect a typical wait?</li>
+<li><strong>Shape and tails:</strong> compare Normal, Lognormal, Chi-squared and Student-<span class="math inline">t</span>. Which are symmetric? Which cannot be negative? What changes as the Student-<span class="math inline">t</span> degrees of freedom grow?</li>
+</ol>
+<p>For a PDF, remember that <strong>area</strong>, not curve height, is probability. A density may exceed <span class="math inline">1</span> while the total area remains <span class="math inline">1</span>.</p>
+</div>
+</div>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="1" data-source-offset="-42"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>ACCENT <span class="op">=</span> <span class="st">"var(--plot-series-1)"</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>AREA   <span class="op">=</span> <span class="st">"var(--plot-fill-1)"</span></span>
@@ -1462,19 +1524,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Note
+<span class="screen-reader-only">Note</span>What to record
 </div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Use the tabs to switch distributions. Adjust the sliders to see how the PMF/PDF changes.</p>
-</div>
+<p>For each distribution you revise, write one sentence for each item:</p>
+<ul>
+<li><strong>support:</strong> which values can occur;</li>
+<li><strong>parameters:</strong> what each parameter controls;</li>
+<li><strong>centre and spread:</strong> how the mean and variance respond;</li>
+<li><strong>shape:</strong> symmetry, skewness and tail behaviour;</li>
+<li><strong>model choice:</strong> one kind of data for which the distribution would be plausible, and one observation that would make it doubtful.</li>
+</ul>
+<p>The corresponding formulas and parameterisation alerts are collected in the <span class="xref-no-num"><a href="formula-sheet.html#sec-formula-sheet" class="quarto-xref">Formula Sheet&nbsp;<span>Conventions</span></a></span>.</p>
 </div>
 </div>
 

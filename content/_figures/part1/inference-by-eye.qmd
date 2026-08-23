@@ -88,8 +88,9 @@ viewof muVar2D = {
 
   // Initial value
   let state = {
-    approxMu: clamp(mu_true, mu_min, mu_max),
-    approxVar: clamp((var_max - var_min) * 0.4, var_min, var_max)
+    // Start from a neutral guess rather than revealing the generating values.
+    approxMu: clamp(0, mu_min, mu_max),
+    approxVar: clamp(1, var_min, var_max)
   };
 
   const bg = "var(--plot-bg)";
@@ -252,10 +253,10 @@ viewof controls = {
     bins: Inputs.range([10, 60], { value: 12, step: 1, label: "Histogram bins" })
   }, { submit: false });
 
-  const root = html`<details class="controls-root" open>
-    <summary>Simulation controls</summary>
+  const root = html`<details class="controls-root">
+    <summary>Reveal simulation controls and true values</summary>
     <div class="controls-grid">
-      <div class="controls-col"><h4>Data & truth</h4></div>
+      <div class="controls-col"><h4>Data-generating values</h4></div>
       <div class="controls-col"><h4>Grid & display</h4></div>
     </div>
   </details>`;

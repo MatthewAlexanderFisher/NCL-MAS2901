@@ -663,14 +663,15 @@ window.Quarto = {
   <li><a href="#probability-and-events" id="toc-probability-and-events" class="nav-link active" data-scroll-target="#probability-and-events"><span class="header-section-number">1.1</span> Probability and Events</a></li>
   <li><a href="#sec-random-variables" id="toc-sec-random-variables" class="nav-link" data-scroll-target="#sec-random-variables"><span class="header-section-number">1.2</span> Random Variables</a>
   <ul class="collapse">
-  <li><a href="#sec-joint-marginal-conditional" id="toc-sec-joint-marginal-conditional" class="nav-link" data-scroll-target="#sec-joint-marginal-conditional"><span class="header-section-number">1.2.1</span> Joint, Marginal, and Conditional Densities</a></li>
+  <li><a href="#sec-joint-marginal-conditional" id="toc-sec-joint-marginal-conditional" class="nav-link" data-scroll-target="#sec-joint-marginal-conditional"><span class="header-section-number">1.2.1</span> Joint, Marginal, and Conditional Distributions</a></li>
   </ul></li>
   <li><a href="#expectations-variances-and-covariances" id="toc-expectations-variances-and-covariances" class="nav-link" data-scroll-target="#expectations-variances-and-covariances"><span class="header-section-number">1.3</span> Expectations, Variances and Covariances</a></li>
-  <li><a href="#sec-prob-theory-non-examinable" id="toc-sec-prob-theory-non-examinable" class="nav-link" data-scroll-target="#sec-prob-theory-non-examinable"><span class="header-section-number">1.4</span> Non-Examinable Material</a>
+  <li><a href="#chapter-summary" id="toc-chapter-summary" class="nav-link" data-scroll-target="#chapter-summary"><span class="header-section-number">1.4</span> Chapter summary</a></li>
+  <li><a href="#sec-prob-theory-non-examinable" id="toc-sec-prob-theory-non-examinable" class="nav-link" data-scroll-target="#sec-prob-theory-non-examinable"><span class="header-section-number">1.5</span> Non-Examinable Material</a>
   <ul class="collapse">
-  <li><a href="#convergence-of-random-variables" id="toc-convergence-of-random-variables" class="nav-link" data-scroll-target="#convergence-of-random-variables"><span class="header-section-number">1.4.1</span> Convergence of Random Variables</a></li>
-  <li><a href="#probability-inequalities" id="toc-probability-inequalities" class="nav-link" data-scroll-target="#probability-inequalities"><span class="header-section-number">1.4.2</span> Probability Inequalities</a></li>
-  <li><a href="#factorising-the-joint" id="toc-factorising-the-joint" class="nav-link" data-scroll-target="#factorising-the-joint"><span class="header-section-number">1.4.3</span> Factorising the Joint</a></li>
+  <li><a href="#convergence-of-random-variables" id="toc-convergence-of-random-variables" class="nav-link" data-scroll-target="#convergence-of-random-variables"><span class="header-section-number">1.5.1</span> Convergence of Random Variables</a></li>
+  <li><a href="#probability-inequalities" id="toc-probability-inequalities" class="nav-link" data-scroll-target="#probability-inequalities"><span class="header-section-number">1.5.2</span> Probability Inequalities</a></li>
+  <li><a href="#factorising-the-joint" id="toc-factorising-the-joint" class="nav-link" data-scroll-target="#factorising-the-joint"><span class="header-section-number">1.5.3</span> Factorising the Joint</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -698,17 +699,15 @@ window.Quarto = {
 </header>
 
 
-<div class="callout callout-style-default callout-note callout-titled" title="Learning objectives">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout callout-style-default callout-note callout-titled" title="Review objectives">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Learning objectives
+<span class="screen-reader-only">Note</span>Review objectives
 </div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
 <li>Define and work with events (union, intersection, complement) and apply inclusion–exclusion.</li>
@@ -717,8 +716,9 @@ window.Quarto = {
 <li>Use partitions and the law of total probability.</li>
 <li>Define random variables and their distribution functions: cdf, pmf (discrete), and pdf (continuous).</li>
 <li>Compute probabilities from pmfs/pdfs/cdfs (using sums or areas) and check normalisation.</li>
+<li>Compute simple expectations and variances, and interpret covariance and correlation.</li>
 </ul>
-</div>
+<p>The final section, explicitly labelled <strong>Non-Examinable Material</strong>, is included only as a reference for later proofs and remarks.</p>
 </div>
 </div>
 <div class="cell">
@@ -729,7 +729,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Before we delve into statistical inference, we briefly review key ideas from probability theory.</p>
+<p>Before we delve into statistical inference, we briefly review key ideas from probability theory. The chapter moves from events and conditioning, through random variables and distributions, to expectations and variances. These ideas are the language used later for likelihoods, estimators, intervals, and Bayesian updating.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -742,9 +742,9 @@ window.Quarto = {
 <div class="callout-body-container callout-body">
 <ul>
 <li>This chapter is provided <strong>for review and reference only</strong>.</li>
-<li>It will not be examined in detail, but the ideas are useful background for later topics.<br>
-</li>
+<li>Probability theory will not be examined as a separate topic, but the core ideas are <strong>assumed and used</strong> throughout the assessed material.</li>
 <li>Much of the content should already be familiar.</li>
+<li>Treat the examples and checkpoints as a diagnostic: spend most time on the sections where your first answer is uncertain.</li>
 </ul>
 </div>
 </div>
@@ -752,9 +752,7 @@ window.Quarto = {
 <h2 data-number="1.1" class="anchored" data-anchor-id="probability-and-events"><span class="header-section-number">1.1</span> Probability and Events</h2>
 <p>When working with probability we need three basic ingredients<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <ol type="1">
-<li>The <strong>sample space</strong> <span class="math inline">\Omega</span>. all possible outcomes of an experiment.<br>
-<em>Example:</em> for a coin toss, <span class="math inline">\Omega = \{\text{Heads}, \text{Tails}\}</span>.<br>
-</li>
+<li>The <strong>sample space</strong> <span class="math inline">\Omega</span>: all possible outcomes of an experiment. For a coin toss, for example, <span class="math inline">\Omega = \{\text{Heads}, \text{Tails}\}</span>.</li>
 <li><strong>Events</strong> subsets of the sample space. We use capital letters <span class="math inline">A, B, \ldots</span> to denote events.
 <ul>
 <li>The <strong>complement</strong> of <span class="math inline">A</span> is <span class="math inline">A^c</span>, meaning <span class="math inline">A</span> does <em>not</em> occur.<br>
@@ -764,7 +762,7 @@ window.Quarto = {
 <li>The <strong>union</strong> <span class="math inline">A \cup B</span> means <span class="math inline">A</span> <em>or</em> <span class="math inline">B</span> (or both) occur.<br>
 </li>
 </ul></li>
-<li>A <strong>probability distribution</strong> <span class="math inline">\mathrm{Pr}</span>. Assigns numbers between <span class="math inline">0</span> and <span class="math inline">1</span> to events, with <span class="math inline">\mathrm{Pr}(\Omega)=1</span>.</li>
+<li>A <strong>probability distribution</strong> <span class="math inline">\mathrm{Pr}</span>: a rule that assigns numbers between <span class="math inline">0</span> and <span class="math inline">1</span> to events, with <span class="math inline">\mathrm{Pr}(\Omega)=1</span>.</li>
 </ol>
 <p>We can write the definitions of complement, intersection and union formally with sets:</p>
 <div class="callout callout-style-simple callout-note no-icon">
@@ -787,6 +785,7 @@ window.Quarto = {
 </div>
 </div>
 <hr>
+<p>Before opening the visualisation, sketch two overlapping events and predict which region represents <span class="math inline">A^c</span>, <span class="math inline">A\cup B</span>, and <span class="math inline">A\cap B</span>. Then use the controls to check your sketch.</p>
 <details>
 <summary><strong>Show Visualisation</strong></summary>
 <div class="cell">
@@ -943,6 +942,7 @@ Figure&nbsp;1.1: Venn diagram of two events <span class="math inline">A</span> a
 </div>
 </details>
 <hr>
+<p>In words, the union contains outcomes in either event, the intersection contains outcomes in both events, and the complement contains outcomes in <span class="math inline">\Omega</span> but outside <span class="math inline">A</span>.</p>
 <div class="callout callout-style-simple callout-note no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -993,12 +993,12 @@ Figure&nbsp;1.1: Venn diagram of two events <span class="math inline">A</span> a
 <p><span class="theorem-title"><strong>Definition 1.3 (Mutually Exclusive, Exhaustive Events, and Partitions)</strong></span> &nbsp;</p>
 <ul>
 <li><p>Two events <span class="math inline">A</span> and <span class="math inline">B</span> are <strong>mutually exclusive</strong> (or <em>disjoint</em>) if they cannot occur together: <span class="math display">
-\mathrm{Pr}(A \cap B) = 0.
-</span></p></li>
+A \cap B = \varnothing.
+</span> Consequently, <span class="math inline">\mathrm{Pr}(A\cap B)=0</span>.</p></li>
 <li><p>Two events <span class="math inline">A</span> and <span class="math inline">B</span> are <strong>exhaustive</strong> if at least one of them must occur: <span class="math display">
-\mathrm{Pr}(A \cup B) = 1.
+A \cup B = \Omega.
 </span><br>
-More generally, a collection of events <span class="math inline">\{B_1,\ldots,B_k\}</span> is exhaustive if <span class="math inline">\bigcup_{i=1}^k B_i = \Omega</span>, where <span class="math inline">\Omega</span> is the sample space.</p></li>
+Consequently, <span class="math inline">\mathrm{Pr}(A\cup B)=1</span>. More generally, a collection of events <span class="math inline">\{B_1,\ldots,B_k\}</span> is exhaustive if <span class="math inline">\bigcup_{i=1}^k B_i = \Omega</span>, where <span class="math inline">\Omega</span> is the sample space.</p></li>
 <li><p>A collection of events <span class="math inline">\{B_1,\ldots,B_k\}</span> forms a <strong>partition</strong> of <span class="math inline">\Omega</span> if they are both mutually exclusive and exhaustive. Equivalently,</p>
 <ul>
 <li><span class="math inline">B_i \cap B_j = \varnothing</span> for all <span class="math inline">i \neq j</span> (non-overlapping), and<br>
@@ -1011,6 +1011,7 @@ More generally, a collection of events <span class="math inline">\{B_1,\ldots,B_
 </div>
 </div>
 <hr>
+<p>Prediction prompt: changing the number or shape of the regions should not change the two defining properties of a partition. Identify those properties before opening the figure.</p>
 <details>
 <summary><strong>Show Visualisation</strong></summary>
 <div class="cell" data-layout-align="center">
@@ -1190,6 +1191,7 @@ Figure&nbsp;1.2: A decomposition of the sample space <span class="math inline">\
 </div>
 </details>
 <hr>
+<p>In words, a partition consists of non-overlapping regions whose union is <span class="math inline">\Omega</span>, so every outcome lies in exactly one region. The geometry of the regions is irrelevant.</p>
 <div class="callout callout-style-simple callout-note no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -1215,9 +1217,33 @@ Figure&nbsp;1.2: A decomposition of the sample space <span class="math inline">\
 \mathrm{Pr}(A \cap B) = \mathrm{Pr}(A)\mathrm{Pr}(B).
 </span> Equivalently, <span class="math display">
 \mathrm{Pr}(A\mid B) = \mathrm{Pr}(A) \quad \text{and} \quad \mathrm{Pr}(B\mid A) = \mathrm{Pr}(B)
-</span></p>
+</span> whenever the conditioning events have positive probability.</p>
 </div>
 </div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Checkpoint: mutually exclusive or independent?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Checkpoint: mutually exclusive or independent?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Try these before opening the answer.</p>
+<ol type="1">
+<li>Can two events with positive probability be both mutually exclusive and independent?</li>
+<li>For a fair die, let <span class="math inline">A=\{2,4,6\}</span> and <span class="math inline">B=\{4,5,6\}</span>. Are <span class="math inline">A</span> and <span class="math inline">B</span> independent?</li>
+</ol>
+<details>
+  <summary><strong>Check your answer</strong></summary>
+<ol type="1">
+<li>No.&nbsp;Mutual exclusivity gives <span class="math inline">\mathrm{Pr}(A\cap B)=0</span>, whereas independence would require <span class="math inline">\mathrm{Pr}(A\cap B)=\mathrm{Pr}(A)\mathrm{Pr}(B)&gt;0</span>.</li>
+<li>No.&nbsp;Here <span class="math inline">\mathrm{Pr}(A\cap B)=2/6=1/3</span>, but <span class="math inline">\mathrm{Pr}(A)\mathrm{Pr}(B)=(1/2)(1/2)=1/4</span>.</li>
+</ol>
+</details>
 </div>
 </div>
 <div class="callout callout-style-simple callout-note no-icon">
@@ -1235,7 +1261,7 @@ Figure&nbsp;1.2: A decomposition of the sample space <span class="math inline">\
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1244,22 +1270,23 @@ Figure&nbsp;1.2: A decomposition of the sample space <span class="math inline">\
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="prf-total-prob" class="proof">
-<p><span class="proof-title"><em>Proof 1.1</em>. </span>Since <span class="math inline">B_1\ldots, B_n</span> form a partition of <span class="math inline">\Omega</span>, we can decompose any event <span class="math inline">A</span> in a <em>disjoint</em> union of intersections: <span class="math display">
-A = \bigcup_{i=1}^n (A\cap B_i).
+<p><span class="proof-title"><em>Proof 1.1</em>. </span>Since <span class="math inline">B_1,\ldots, B_k</span> form a partition of <span class="math inline">\Omega</span>, we can decompose any event <span class="math inline">A</span> as a <em>disjoint</em> union of intersections: <span class="math display">
+A = \bigcup_{i=1}^k (A\cap B_i).
 </span> By induction on the <span class="xref-no-num"><a href="#def-inclusion-exclusion" class="quarto-xref">addition rule&nbsp;<span>1.2</span></a></span>, we thus have <span class="math display">
-\mathrm{Pr}(A) = \sum_{i=1}^n \mathrm{Pr}(A\cap B_i).
+\mathrm{Pr}(A) = \sum_{i=1}^k \mathrm{Pr}(A\cap B_i).
 </span> By the definition of <span class="xref-no-num"><a href="#def-conditional" class="quarto-xref">conditional probability&nbsp;<span>1.4</span></a></span>, we have <span class="math inline">\mathrm{Pr}(A\cap B_i) = \mathrm{Pr}(A\mid B_i) \mathrm{Pr}(B_i)</span>. Therefore,</p>
 <p><span class="math display">
-\mathrm{Pr}(A) =  \sum_{i=1}^n \mathrm{Pr}(A \mid B_i)\mathrm{Pr}(B_i).
+\mathrm{Pr}(A) =  \sum_{i=1}^k \mathrm{Pr}(A \mid B_i)\mathrm{Pr}(B_i).
 </span></p>
 </div>
 </div>
 </div>
 </div>
 <hr>
+<p>Before playing the animation, predict why <span class="math inline">A</span> can be broken into the non-overlapping pieces <span class="math inline">A\cap B_i</span>. As each piece appears, connect it to one term in the sum.</p>
 <details>
 <summary><strong>Show Visualisation</strong></summary>
 <div class="cell" data-layout-align="center">
@@ -1497,6 +1524,7 @@ Figure&nbsp;1.3: Law of Total Probability visualised. An event <span class="math
 </div>
 </details>
 <hr>
+<p>In words, <span class="math inline">A</span> is the disjoint union of the pieces <span class="math inline">A\cap B_i</span>. The geometry is schematic rather than a numerical probability scale; algebraically, each piece contributes <span class="math inline">\mathrm{Pr}(A\cap B_i)=\mathrm{Pr}(A\mid B_i)\mathrm{Pr}(B_i)</span>.</p>
 <div class="callout callout-style-simple callout-note no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -1511,8 +1539,26 @@ Figure&nbsp;1.3: Law of Total Probability visualised. An event <span class="math
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-note callout-titled" title="A useful partition form">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>A useful partition form
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suppose <span class="math inline">H_1,\ldots,H_k</span> are mutually exclusive and exhaustive explanations, each with positive probability, and <span class="math inline">E</span> is observed evidence with <span class="math inline">\mathrm{Pr}(E)&gt;0</span>. Combining Bayes’ theorem with the law of total probability gives <span class="math display">
+\mathrm{Pr}(H_j\mid E)
+=\frac{\mathrm{Pr}(E\mid H_j)\mathrm{Pr}(H_j)}
+{\sum_{i=1}^k \mathrm{Pr}(E\mid H_i)\mathrm{Pr}(H_i)}.
+</span></p>
+<p>This form makes the roles clear: <strong>updated probability</strong> is proportional to <strong>compatibility with the evidence</strong> times <strong>initial probability</strong>, with the denominator ensuring that the updated probabilities sum to one.</p>
+</div>
+</div>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1521,9 +1567,9 @@ Figure&nbsp;1.3: Law of Total Probability visualised. An event <span class="math
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="prf-bayes" class="proof">
+<div id="prf-bayes-events" class="proof">
 <p><span class="proof-title"><em>Proof 1.2</em>. </span>From the definition of <span class="xref-no-num"><a href="#def-conditional" class="quarto-xref">conditional probability&nbsp;<span>1.4</span></a></span>,<br>
 <span class="math display">
 \mathrm{Pr}(A \mid B) = \frac{\mathrm{Pr}(A \cap B)}{\mathrm{Pr}(B)}.
@@ -1549,21 +1595,21 @@ Figure&nbsp;1.3: Law of Total Probability visualised. An event <span class="math
 </div>
 <div class="callout-body-container">
 <div id="exm-student-example" class="theorem example">
-<p><span class="theorem-title"><strong>Example 1.2 (Student Example)</strong></span> Seventy percent of students are attentive in lectures and thirty percent are not. If a student is <em>attentive</em> the probability of passing the course is <span class="math inline">0.8</span>. If a student is <em>not attentive</em> the probability of passing the course is <span class="math inline">0.1</span>.</p>
+<p><span class="theorem-title"><strong>Example 1.2 (Manufacturing Example)</strong></span> Seventy percent of components come from supplier <span class="math inline">A</span> and thirty percent come from supplier <span class="math inline">B</span>. A component from supplier <span class="math inline">A</span> passes inspection with probability <span class="math inline">0.8</span>, while a component from supplier <span class="math inline">B</span> passes with probability <span class="math inline">0.1</span>.</p>
 <ol type="1">
-<li>A student is selected at random. What is the probability that they pass the course?</li>
-<li>Given that the student passed the course, what is the probability that they were attentive?</li>
+<li>A component is selected at random. What is the probability that it passes inspection?</li>
+<li>Given that the component passed inspection, what is the probability that it came from supplier <span class="math inline">A</span>?</li>
 </ol>
 <details>
   <summary><strong> Solution </strong></summary>
 <p>Let</p>
 <ul>
-<li><span class="math inline">P</span> denote the event of a student passing the course.</li>
-<li><span class="math inline">A</span> denote the event of a student being attentive.</li>
-<li><span class="math inline">A^c</span> denote the event of a student not being attentive.</li>
+<li><span class="math inline">P</span> denote the event that a component passes inspection.</li>
+<li><span class="math inline">A</span> denote the event that it came from supplier <span class="math inline">A</span>.</li>
+<li><span class="math inline">A^c</span> denote the event that it came from supplier <span class="math inline">B</span>.</li>
 </ul>
 <ol type="1">
-<li>Attentive and inattentive form a partition. By the law of total probability,</li>
+<li>Suppliers <span class="math inline">A</span> and <span class="math inline">B</span> form a partition. By the law of total probability,</li>
 </ol>
 <p><span class="math display">
 \mathrm{Pr}(P)=\mathrm{Pr}(P\mid A)\mathrm{Pr}(A)+\mathrm{Pr}(P\mid A^c)\mathrm{Pr}(A^c)=0.8\times0.7+0.1\times0.3=0.59.
@@ -1583,21 +1629,35 @@ Figure&nbsp;1.3: Law of Total Probability visualised. An event <span class="math
 </section>
 <section id="sec-random-variables" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="sec-random-variables"><span class="header-section-number">1.2</span> Random Variables</h2>
-<p>We use upper-case letters for random variables, e.g.&nbsp;<span class="math inline">X, Y, X_1, X_2,\dots</span>.</p>
+<p>A <strong>random variable</strong> assigns a numerical value to each outcome in the sample space. For example, when two coins are tossed, <span class="math inline">X</span> might record the number of heads: the outcomes <span class="math inline">\{HT,TH\}</span> both give <span class="math inline">X=1</span>.</p>
+<p>Before an experiment, <span class="math inline">X</span> represents an uncertain quantity. After observing it, we use the corresponding lower-case letter <span class="math inline">x</span> for its realised value. We use upper-case letters for random variables, e.g.&nbsp;<span class="math inline">X,Y,X_1,X_2,\dots</span>.</p>
 <ul>
 <li><p><strong>Cumulative distribution function (cdf).</strong> For any (real-valued) random variable <span class="math inline">X</span>,</p>
 <p><span class="math display">
-F(x)=\mathrm{Pr}(X\le x).
+F_X(x)=\mathrm{Pr}(X\le x).
 </span></p></li>
 <li><p><strong>Discrete case (pmf).</strong> If <span class="math inline">X</span> is discrete, its <em>probability mass function</em> is</p>
 <p><span class="math display">
-p(x)=\mathrm{Pr}(X=x),\qquad \sum_x p(x)=1.
+p_X(x)=\mathrm{Pr}(X=x),\qquad \sum_x p_X(x)=1.
 </span></p></li>
 <li><p><strong>Continuous case (pdf).</strong> If <span class="math inline">X</span> is continuous, its <em>probability density function</em> satisfies</p>
 <p><span class="math display">
-f(x)=\frac{\partial F(x)}{\partial x},\qquad \mathrm{Pr}(a&lt;X\le b)=\int_a^b f(x)\,\mathrm{d}x,\qquad \int_{-\infty}^{\infty} f(x)\,\mathrm{d}x=1.
+f_X(x)=\frac{\mathrm{d}F_X(x)}{\mathrm{d}x},\qquad \mathrm{Pr}(a&lt;X\le b)=\int_a^b f_X(x)\,\mathrm{d}x,\qquad \int_{-\infty}^{\infty} f_X(x)\,\mathrm{d}x=1.
 </span></p></li>
 </ul>
+<div class="callout callout-style-default callout-important callout-titled" title="Density is not probability">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Density is not probability
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For a continuous random variable, <span class="math inline">f_X(x)</span> is a <strong>density height</strong>, not <span class="math inline">\mathrm{Pr}(X=x)</span>. A density can be greater than one. Probabilities are areas under the density, and <span class="math inline">\mathrm{Pr}(X=x)=0</span> at any single point.</p>
+</div>
+</div>
 <div class="callout callout-style-simple callout-caution no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -1605,11 +1665,10 @@ f(x)=\frac{\partial F(x)}{\partial x},\qquad \mathrm{Pr}(a&lt;X\le b)=\int_a^b f
 </div>
 <div class="callout-body-container">
 <div id="exm-discrete-cdf" class="theorem example">
-<p><span class="theorem-title"><strong>Example 1.3 (Discrete CDF.)</strong></span> Let <span class="math inline">X</span> be the outcome of a fair six-sided die. Find <span class="math inline">p(x)</span> and <span class="math inline">F(3)</span>.</p>
+<p><span class="theorem-title"><strong>Example 1.3 (Discrete CDF)</strong></span> Let <span class="math inline">X</span> be the outcome of a fair six-sided die. Find <span class="math inline">p_X(x)</span> and <span class="math inline">F_X(3)</span>.</p>
 <details>
   <summary><strong> Solution </strong></summary>
-<p><span class="math inline">p(x)=\mathrm{Pr}(X=x)=1/6</span> for <span class="math inline">x\in\{1,2,3,4,5,6\}</span>, and <span class="math inline">0</span> otherwise.<br>
-<span class="math inline">F(3)=\mathrm{Pr}(X\le 3)=\mathrm{Pr}(\{1,2,3\})=3\times(1/6)=1/2.</span></p>
+<p><span class="math inline">p_X(x)=\mathrm{Pr}(X=x)=1/6</span> for <span class="math inline">x\in\{1,2,3,4,5,6\}</span>, and <span class="math inline">0</span> otherwise. <span class="math inline">F_X(3)=\mathrm{Pr}(X\le 3)=\mathrm{Pr}(\{1,2,3\})=3\times(1/6)=1/2.</span></p>
 </details>
 </div>
 </div>
@@ -1625,9 +1684,9 @@ f(x)=\frac{\partial F(x)}{\partial x},\qquad \mathrm{Pr}(a&lt;X\le b)=\int_a^b f
 <p><span class="theorem-title"><strong>Example 1.4</strong></span> Let <span class="math inline">X\sim \mathrm{Uniform}(0,1)</span>. Compute <span class="math inline">\mathrm{Pr}(0.2&lt;X&lt;0.5)</span>.</p>
 <details>
   <summary><strong> Solution </strong></summary>
-<p>Here <span class="math inline">f(x)=1</span> for <span class="math inline">0&lt;x&lt;1</span> and <span class="math inline">0</span> otherwise.</p>
+<p>Here <span class="math inline">f_X(x)=1</span> for <span class="math inline">0&lt;x&lt;1</span> and <span class="math inline">0</span> otherwise.</p>
 <p><span class="math display">
-\mathrm{Pr}(0.2&lt;X&lt;0.5)=\int_{0.2}^{0.5} 1\,dx = 0.3.
+\mathrm{Pr}(0.2&lt;X&lt;0.5)=\int_{0.2}^{0.5} 1\,\mathrm{d}x = 0.3.
 </span></p>
 </details>
 </div>
@@ -1635,8 +1694,8 @@ f(x)=\frac{\partial F(x)}{\partial x},\qquad \mathrm{Pr}(a&lt;X\le b)=\int_a^b f
 </div>
 </div>
 <section id="sec-joint-marginal-conditional" class="level3" data-number="1.2.1">
-<h3 data-number="1.2.1" class="anchored" data-anchor-id="sec-joint-marginal-conditional"><span class="header-section-number">1.2.1</span> Joint, Marginal, and Conditional Densities</h3>
-<p>Suppose <span class="math inline">X</span> and <span class="math inline">Y</span> are random variables with joint PDF/PMF <span class="math inline">f_{XY}(x,y)</span> (often written <span class="math inline">f(x,y)</span>). From this joint distribution we can define:</p>
+<h3 data-number="1.2.1" class="anchored" data-anchor-id="sec-joint-marginal-conditional"><span class="header-section-number">1.2.1</span> Joint, Marginal, and Conditional Distributions</h3>
+<p>Suppose <span class="math inline">X</span> and <span class="math inline">Y</span> have joint PMF <span class="math inline">p_{X,Y}(x,y)</span> in the discrete case or joint PDF <span class="math inline">f_{X,Y}(x,y)</span> in the continuous case. From this joint distribution we can define:</p>
 <ul>
 <li><strong>Marginal distributions:</strong> the distribution of each variable on its own.<br>
 </li>
@@ -1651,10 +1710,12 @@ f(x)=\frac{\partial F(x)}{\partial x},\qquad \mathrm{Pr}(a&lt;X\le b)=\int_a^b f
 </div>
 <div class="callout-body-container">
 <div id="def-marginal-pdf" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 1.6 (Marginal Distributions)</strong></span> If we only care about <span class="math inline">X</span>, regardless of <span class="math inline">Y</span>, we integrate/sum out <span class="math inline">Y</span>: <span class="math display">
-f_X(x) = \int f(x,y)\,\mathrm{d}y.
-</span> Similarly for <span class="math inline">f_Y(y)</span>.<br>
-<em>Note:</em> knowing the marginals does <strong>not</strong> determine the joint.</p>
+<p><span class="theorem-title"><strong>Definition 1.6 (Marginal Distributions)</strong></span> If we only care about <span class="math inline">X</span>, regardless of <span class="math inline">Y</span>, we sum or integrate out <span class="math inline">Y</span>: <span class="math display">
+\begin{aligned}
+p_X(x)&amp;=\sum_y p_{X,Y}(x,y) &amp;&amp; \text{(discrete)},\\
+f_X(x)&amp;=\int_{-\infty}^{\infty} f_{X,Y}(x,y)\,\mathrm{d}y &amp;&amp; \text{(continuous)}.
+\end{aligned}
+</span> Similarly, summing or integrating out <span class="math inline">X</span> gives <span class="math inline">p_Y(y)</span> or <span class="math inline">f_Y(y)</span>. <em>Note:</em> knowing the marginals does <strong>not</strong> determine the joint.</p>
 </div>
 </div>
 </div>
@@ -1666,8 +1727,11 @@ f_X(x) = \int f(x,y)\,\mathrm{d}y.
 </div>
 <div class="callout-body-container">
 <div id="def-conditional-pdf" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 1.7 (Conditional Densities)</strong></span> For <span class="math inline">y</span> in the support of <span class="math inline">Y</span> with <span class="math inline">f_Y(y) &gt; 0</span>, we define: <span class="math display">
-f_{X \mid Y}(x \mid y) = \frac{f(x,y)}{f_Y(y)}.
+<p><span class="theorem-title"><strong>Definition 1.7 (Conditional Distributions)</strong></span> For <span class="math inline">y</span> in the support of <span class="math inline">Y</span> with positive marginal mass or density, we define <span class="math display">
+\begin{aligned}
+p_{X\mid Y}(x\mid y)&amp;=\frac{p_{X,Y}(x,y)}{p_Y(y)} &amp;&amp; \text{(discrete)},\\
+f_{X\mid Y}(x\mid y)&amp;=\frac{f_{X,Y}(x,y)}{f_Y(y)} &amp;&amp; \text{(continuous)}.
+\end{aligned}
 </span> This describes the distribution of <span class="math inline">X</span> <em>given</em> <span class="math inline">Y=y</span>.</p>
 </div>
 </div>
@@ -1681,7 +1745,10 @@ f_{X \mid Y}(x \mid y) = \frac{f(x,y)}{f_Y(y)}.
 <div class="callout-body-container">
 <div id="thm-total-probability-pdfs" class="theorem">
 <p><span class="theorem-title"><strong>Theorem 1.3 (Law of Total Probability)</strong></span> We can recover the marginal by “averaging” the conditional over <span class="math inline">Y</span>: <span class="math display">
-f_X(x) = \int f_{X \mid Y}(x \mid y) f_Y(y)\,\mathrm{d}y.
+\begin{aligned}
+p_X(x)&amp;=\sum_y p_{X\mid Y}(x\mid y)p_Y(y) &amp;&amp; \text{(discrete)},\\
+f_X(x)&amp;=\int_{-\infty}^{\infty} f_{X\mid Y}(x\mid y)f_Y(y)\,\mathrm{d}y &amp;&amp; \text{(continuous)}.
+\end{aligned}
 </span></p>
 </div>
 </div>
@@ -1695,10 +1762,35 @@ f_X(x) = \int f_{X \mid Y}(x \mid y) f_Y(y)\,\mathrm{d}y.
 <div class="callout-body-container">
 <div id="def-independence-rv" class="theorem definition">
 <p><span class="theorem-title"><strong>Definition 1.8 (Independence)</strong></span> <span class="math inline">X</span> and <span class="math inline">Y</span> are independent if and only if <span class="math display">
-f(x,y) = f_X(x) f_Y(y).
-</span> In this case, <span class="math inline">f_{X \mid Y}(x \mid y) = f_X(x)</span>: knowing <span class="math inline">Y</span> tells us nothing about <span class="math inline">X</span>.</p>
+\begin{aligned}
+p_{X,Y}(x,y)&amp;=p_X(x)p_Y(y) &amp;&amp; \text{(discrete)},\\
+f_{X,Y}(x,y)&amp;=f_X(x)f_Y(y) &amp;&amp; \text{(continuous)}.
+\end{aligned}
+</span> In this case, the conditional distribution of <span class="math inline">X</span> given <span class="math inline">Y</span> is just its marginal distribution: knowing <span class="math inline">Y</span> does not change the distribution of <span class="math inline">X</span>.</p>
 </div>
 </div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Checkpoint: what does the joint tell us?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Checkpoint: what does the joint tell us?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Decide whether each statement is true or false.</p>
+<ol type="1">
+<li>Knowing both marginal distributions is enough to reconstruct the joint distribution.</li>
+<li>If <span class="math inline">X</span> and <span class="math inline">Y</span> are independent, conditioning on <span class="math inline">Y=y</span> does not change the distribution of <span class="math inline">X</span>.</li>
+<li>In a discrete problem, marginalisation uses a sum rather than an integral.</li>
+</ol>
+<details>
+  <summary><strong>Check your answer</strong></summary>
+<p>The statements are <strong>false</strong>, <strong>true</strong>, and <strong>true</strong>, respectively. Different dependence structures can have the same marginals, so the marginals alone do not determine the joint.</p>
+</details>
 </div>
 </div>
 </section>
@@ -1778,7 +1870,7 @@ f(x,y) = f_X(x) f_Y(y).
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-body-container">
-<div id="def-variance" class="theorem definition">
+<div id="def-random-variable-variance" class="theorem definition">
 <p><span class="theorem-title"><strong>Definition 1.13 (Variance)</strong></span> The <strong>population variance</strong> of <span class="math inline">X</span> is <span class="math display">
 \mathrm{Var}(X) = \mathrm{E}\!\left[(X-\mathrm{E}[X])^2\right]
 = \mathrm{E}[X^2] - \big(\mathrm{E}[X]\big)^2.
@@ -1851,9 +1943,10 @@ f(x,y) = f_X(x) f_Y(y).
 </div>
 <div class="callout-body-container">
 <div id="exm-bern-var" class="example theorem">
-<p><span class="theorem-title"><strong>Example 1.5 (Variance of a Bernoulli Random Variable)</strong></span> A <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-bern" class="quarto-xref">Bernoulli random variable&nbsp;<span>1.1</span></a></span> <span class="math inline">X</span> takes only the values <span class="math inline">0</span> and <span class="math inline">1</span>, with probabilities <span class="math display">
-\operatorname{Pr}(X=1) = p, \qquad \operatorname{Pr}(X=0) = 1-p, \qquad 0 \leq p \leq 1.
+<p><span class="theorem-title"><strong>Example 1.5 (Variance of a Bernoulli Random Variable)</strong></span> A <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-bern" class="quarto-xref">Bernoulli random variable&nbsp;<span>2.1</span></a></span> <span class="math inline">X</span> takes only the values <span class="math inline">0</span> and <span class="math inline">1</span>, with probabilities <span class="math display">
+\mathrm{Pr}(X=1) = p, \qquad \mathrm{Pr}(X=0) = 1-p, \qquad 0 \leq p \leq 1.
 </span></p>
+<p>For example, <span class="math inline">X</span> could indicate whether one respondent in our recurring study-space survey prefers space <span class="math inline">A</span>.</p>
 <p>For what value of <span class="math inline">p</span> is the variance maximised?</p>
 <details>
   <summary><strong> Solution </strong></summary>
@@ -1892,9 +1985,45 @@ p = \tfrac{1}{2}, \quad \mathrm{Var}(X) = \tfrac{1}{4}.
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Checkpoint: retrieve the essentials">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Checkpoint: retrieve the essentials
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Without looking back, answer these in one sentence each.</p>
+<ol type="1">
+<li>For a continuous random variable, where does probability come from: density height or area?</li>
+<li>Which identity often makes variance easier to calculate?</li>
+<li>What does independence imply about covariance, and does the converse always hold?</li>
+</ol>
+<details>
+  <summary><strong>Check your answer</strong></summary>
+<ol type="1">
+<li>Probability is an <strong>area</strong> under the density over an interval.</li>
+<li><span class="math inline">\mathrm{Var}(X)=\mathrm{E}[X^2]-\big(\mathrm{E}[X]\big)^2</span>.</li>
+<li>Independence implies zero covariance (when the moments exist), but zero covariance does not generally imply independence.</li>
+</ol>
+</details>
+</div>
+</div>
 </section>
-<section id="sec-prob-theory-non-examinable" class="level2" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="sec-prob-theory-non-examinable"><span class="header-section-number">1.4</span> Non-Examinable Material</h2>
+<section id="chapter-summary" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="chapter-summary"><span class="header-section-number">1.4</span> Chapter summary</h2>
+<ul>
+<li>Events and conditional probability let us represent partial information; partitions lead to the law of total probability and Bayes’ theorem.</li>
+<li>A random variable is uncertain before observation and has a cdf together with a pmf or pdf; continuous probabilities are areas, not density heights.</li>
+<li>A joint distribution contains both marginal behaviour and dependence. Independence is a particular factorisation of the joint.</li>
+<li>Expectations, variances, covariances, and correlations describe important features of population distributions and later help us evaluate estimators.</li>
+</ul>
+<p>If you are following the core path, continue to <span class="xref-no-num"><a href="2-what-is-stats-inference.html" class="quarto-xref">What is Statistical Inference?&nbsp;<span>2</span></a></span>, which reverses the usual probability question: instead of starting with a known distribution and predicting data, we start with observed data and learn about an unknown distribution. The optional reference material below can be revisited when a later proof links back to it.</p>
+</section>
+<section id="sec-prob-theory-non-examinable" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="sec-prob-theory-non-examinable"><span class="header-section-number">1.5</span> Non-Examinable Material</h2>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1910,8 +2039,8 @@ None of the material in this section is examinable.</p>
 </div>
 </div>
 <hr>
-<section id="convergence-of-random-variables" class="level3" data-number="1.4.1">
-<h3 data-number="1.4.1" class="anchored" data-anchor-id="convergence-of-random-variables"><span class="header-section-number">1.4.1</span> Convergence of Random Variables</h3>
+<section id="convergence-of-random-variables" class="level3" data-number="1.5.1">
+<h3 data-number="1.5.1" class="anchored" data-anchor-id="convergence-of-random-variables"><span class="header-section-number">1.5.1</span> Convergence of Random Variables</h3>
 <div class="callout callout-style-simple callout-note no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -1921,7 +2050,7 @@ None of the material in this section is examinable.</p>
 <div id="def-convergence-in-probability" class="theorem definition">
 <p><span class="theorem-title"><strong>Definition 1.17 (Convergence in Probability)</strong></span> A sequence of random variables <span class="math inline">X_n</span> is said to <strong>converge in probability</strong> to a random variable <span class="math inline">X</span> if, for every <span class="math inline">\varepsilon &gt; 0</span>,</p>
 <p><span class="math display">
-\Pr\big(|X_n - X| &gt; \varepsilon\big) \;\longrightarrow\; 0
+\mathrm{Pr}\big(|X_n - X| &gt; \varepsilon\big) \;\longrightarrow\; 0
 \quad \text{as } n \to \infty.
 </span></p>
 <p>We write this as <span class="math display">
@@ -1971,8 +2100,8 @@ X_n \xrightarrow{p} X \;\;\;\implies\;\;\; X_n \xrightarrow{d} X.
 </div>
 <hr>
 </section>
-<section id="probability-inequalities" class="level3" data-number="1.4.2">
-<h3 data-number="1.4.2" class="anchored" data-anchor-id="probability-inequalities"><span class="header-section-number">1.4.2</span> Probability Inequalities</h3>
+<section id="probability-inequalities" class="level3" data-number="1.5.2">
+<h3 data-number="1.5.2" class="anchored" data-anchor-id="probability-inequalities"><span class="header-section-number">1.5.2</span> Probability Inequalities</h3>
 <div class="callout callout-style-simple callout-note no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -1982,7 +2111,7 @@ X_n \xrightarrow{p} X \;\;\;\implies\;\;\; X_n \xrightarrow{d} X.
 <div id="prp-chebyshev" class="theorem proposition">
 <p><span class="theorem-title"><strong>Proposition 1.1 (Chebyshev’s Inequality)</strong></span> If a random variable <span class="math inline">X</span> has mean <span class="math inline">\mu</span> and variance <span class="math inline">\sigma^2 &lt; \infty</span>, then for any <span class="math inline">\varepsilon &gt; 0</span>,</p>
 <p><span class="math display">
-\Pr\big(|X - \mu| \geq \varepsilon\big)
+\mathrm{Pr}\big(|X - \mu| \geq \varepsilon\big)
 \;\leq\; \frac{\sigma^2}{\varepsilon^2}.
 </span></p>
 <p>This provides a bound on the probability of large deviations from the mean.</p>
@@ -1992,8 +2121,8 @@ X_n \xrightarrow{p} X \;\;\;\implies\;\;\; X_n \xrightarrow{d} X.
 </div>
 <hr>
 </section>
-<section id="factorising-the-joint" class="level3" data-number="1.4.3">
-<h3 data-number="1.4.3" class="anchored" data-anchor-id="factorising-the-joint"><span class="header-section-number">1.4.3</span> Factorising the Joint</h3>
+<section id="factorising-the-joint" class="level3" data-number="1.5.3">
+<h3 data-number="1.5.3" class="anchored" data-anchor-id="factorising-the-joint"><span class="header-section-number">1.5.3</span> Factorising the Joint</h3>
 <div class="callout callout-style-simple callout-note no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -2009,7 +2138,7 @@ f(\underline{x}) \;=\; f(x_1)\;\prod_{t=2}^n f \big(x_t \mid x_1, \ldots, x_{t-1
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -2018,7 +2147,7 @@ f(\underline{x}) \;=\; f(x_1)\;\prod_{t=2}^n f \big(x_t \mid x_1, \ldots, x_{t-1
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="prf-chain-rule" class="proof">
 <p><span class="proof-title"><em>Proof 1.3</em> (Not Examinable). </span>We use the definition of conditional PDF/PMF (<a href="#def-conditional-pdf" class="quarto-xref">Definition&nbsp;<span>1.7</span></a>) and induction.</p>

@@ -708,6 +708,26 @@ window.Quarto = {
 </div>
 </div>
 </div>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Learning objectives and route through this chapter
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>By the end of this chapter, you should be able to:</p>
+<ol type="1">
+<li>identify the prior, likelihood, evidence, and posterior in Bayes’ theorem;</li>
+<li>derive conjugate posteriors up to proportionality and interpret prior strength;</li>
+<li>compare the MLE, posterior mean, posterior median, and MAP estimate;</li>
+<li>explain why frequentist and Bayesian Normal approximations can look similar while describing different sources of uncertainty.</li>
+</ol>
+<p>The <strong>core route</strong> is prior <span class="math inline">\rightarrow</span> likelihood <span class="math inline">\rightarrow</span> posterior <span class="math inline">\rightarrow</span> interpretation. Code and longer algebra are supporting material; first focus on what each distribution represents and how the update changes uncertainty.</p>
+</div>
+</div>
 <section id="sec-intro-bayes-approach" class="level2" data-number="6.1">
 <h2 data-number="6.1" class="anchored" data-anchor-id="sec-intro-bayes-approach"><span class="header-section-number">6.1</span> Introduction to the Bayesian Approach</h2>
 <p>So far we have taken a <strong>frequentist perspective</strong>: parameters such as <span class="math inline">\theta</span> are fixed but unknown, and all randomness comes from the sample.</p>
@@ -730,8 +750,8 @@ window.Quarto = {
 <div id="exm-bayes-umbrella" class="theorem example">
 <p><span class="theorem-title"><strong>Example 6.1 (Umbrella Decisions)</strong></span> Imagine the weather forecast says there is a <span class="math inline">70\%</span> chance of rain tomorrow.</p>
 <ul>
-<li><p>The sky doesn’t “rain in <span class="math inline">70\%</span> of parallel universes.”</p></li>
-<li><p>Instead, the number <span class="math inline">70\%</span> reflects our uncertainty given current information (satellite data, forecasts, etc.).</p></li>
+<li><p>For a particular tomorrow, rain either occurs or it does not.</p></li>
+<li><p>The number <span class="math inline">70\%</span> can express our uncertainty given current information; across well-calibrated forecasts issued at <span class="math inline">70\%</span>, rain should also occur about <span class="math inline">70\%</span> of the time.</p></li>
 </ul>
 <details>
   <summary><strong> Show Plot </strong></summary>
@@ -982,9 +1002,9 @@ Figure&nbsp;6.2: Prior for the average exam mark. A Normal prior centred at <spa
 </div>
 <div class="callout-body-container">
 <div id="exm-bayes-disease" class="theorem example">
-<p><span class="theorem-title"><strong>Example 6.3 (Disease Prevalance)</strong></span> Let <span class="math inline">\theta</span> be the proportion of people with a rare condition.</p>
-<p>Before collecting data, experts might believe <span class="math inline">\theta</span> is “probably around <span class="math inline">2\%</span>, but definitely less than <span class="math inline">10\%</span>”.</p>
-<p>We could express this with a <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-beta" class="quarto-xref">Beta distribution&nbsp;<span>2.10</span></a></span> prior.</p>
+<p><span class="theorem-title"><strong>Example 6.3 (Disease Prevalence)</strong></span> Let <span class="math inline">\theta</span> be the proportion of people with a rare condition.</p>
+<p>Before collecting data, experts might believe <span class="math inline">\theta</span> is “probably around <span class="math inline">2\%</span>, and very unlikely to exceed <span class="math inline">10\%</span>”.</p>
+<p>We could express this with a <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-beta" class="quarto-xref">Beta distribution&nbsp;<span>3.10</span></a></span> prior.</p>
 <details>
   <summary><strong> Show Plot </strong></summary>
 <div class="cell">
@@ -1103,7 +1123,7 @@ Figure&nbsp;6.2: Prior for the average exam mark. A Normal prior centred at <spa
 <span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">text</span>(</span>
 <span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>      [</span>
 <span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">x</span><span class="op">:</span> <span class="fl">0.02</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="fu">betaPDF</span>(<span class="fl">0.02</span><span class="op">,</span> alpha_prior<span class="op">,</span> beta_prior)<span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Prior mean ≈ 2%"</span> }<span class="op">,</span></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">x</span><span class="op">:</span> capThreshold<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"10% upper cap (unlikely)"</span> }</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">x</span><span class="op">:</span> capThreshold<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"10% threshold (very unlikely above)"</span> }</span>
 <span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>      ]<span class="op">,</span></span>
 <span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>      { <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">text</span><span class="op">:</span> <span class="st">"label"</span><span class="op">,</span> <span class="dt">dy</span><span class="op">:</span> <span class="op">-</span><span class="dv">10</span> }</span>
 <span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    )</span>
@@ -1134,7 +1154,7 @@ Figure&nbsp;6.3: Prior for disease prevalence <span class="math inline">\theta</
 <p>The Bayesian approach to inference has three ingredients:</p>
 <ol type="1">
 <li><strong>Prior</strong> — a probability distribution that captures what we believe about <span class="math inline">\theta</span> <em>before</em> seeing the data.</li>
-<li><strong>Likelihood</strong> — the distribution of the data <span class="math inline">\underline{x}</span> given <span class="math inline">\theta</span>.</li>
+<li><strong>Likelihood</strong> — the sampling model evaluated at the observed data, viewed as a function of <span class="math inline">\theta</span>.</li>
 <li><strong>Posterior</strong> — the updated distribution for <span class="math inline">\theta</span> that combines prior information with the evidence from the data.</li>
 </ol>
 <p>The update is performed using <strong>Bayes’ theorem</strong> (introduced in the next section). Intuitively:</p>
@@ -1169,7 +1189,7 @@ f(x \mid y) = \frac{f(y \mid x)\,f(x)}{f(y)}.
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1178,9 +1198,9 @@ f(x \mid y) = \frac{f(y \mid x)\,f(x)}{f(y)}.
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="prf-bayes" class="prf proof">
+<div id="prf-bayes-density" class="prf proof">
 <p><span class="proof-title"><em>Proof 6.1</em>. </span>By the definition of conditional density:</p>
 <p><span class="math display">
 f(x \mid y) = \frac{f(x,y)}{f(y)},
@@ -1211,7 +1231,7 @@ f(\underline{x} \mid \theta).
 \text{Wanted: } \pi(\theta \mid \underline{x})
 </span></p>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1220,7 +1240,7 @@ f(\underline{x} \mid \theta).
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="proof remark">
 <p><span class="proof-title"><em>Remark</em> (Likelihood vs.&nbsp;Likelihood Function). </span>Here we use <strong>likelihood</strong> to mean the joint density/PMF <span class="math inline">f(\underline{x}\mid\theta)</span> itself.</p>
@@ -1230,7 +1250,7 @@ f(\underline{x} \mid \theta).
 </div>
 </div>
 <div id="imp-notation-bayes" class="callout callout-style-simple callout-important callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1239,7 +1259,7 @@ Important&nbsp;6.1: Notation in Bayesian Statistics
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Both frequentist and Bayesian inference involve probability distributions for the <strong>data</strong>.</p>
 <ul>
@@ -1313,7 +1333,9 @@ X_i \mid \theta \sim \mathrm{Distribution}(\theta),
 <ul>
 <li>The <strong>likelihood</strong> <span class="math inline">f(\underline{x} \mid \theta)</span> is the term where data and parameter appear together; it is this dependence that updates the prior into the posterior.</li>
 <li>The <strong>prior</strong> <span class="math inline">\pi(\theta)</span> reflects what we believed about <span class="math inline">\theta</span> before seeing the data.</li>
-<li>The denominator <span class="math inline">f(\underline{x})</span> is a normalising constant ensuring the posterior integrates to <span class="math inline">1</span>.</li>
+<li>The denominator <span class="math display">
+f(\underline{x})=\int_{\Theta}f(\underline{x}\mid\theta)\pi(\theta)\,d\theta
+</span> is the <strong>prior predictive density</strong> (or evidence) for the observed data and normalises the posterior to integrate to <span class="math inline">1</span>.</li>
 </ul>
 </div>
 </div>
@@ -1332,12 +1354,13 @@ X_i \mid \theta \sim \mathrm{Distribution}(\theta),
 <div id="exm-biased-coin" class="example theorem">
 <p><span class="theorem-title"><strong>Example 6.4 (Biased Coin)</strong></span> Let <span class="math inline">\theta = \Pr(\text{Head})</span> for a possibly biased coin.</p>
 <ul>
-<li><p><strong>Prior:</strong> Before seeing data, we express no preference over <span class="math inline">\theta \in (0,1)</span> by choosing a <strong>uniform prior</strong>:</p>
+<li><p><strong>Prior:</strong> Before seeing data, we choose a density that is flat on the <span class="math inline">\theta</span> scale:</p>
 <p><span class="math display">
 \theta \sim \mathrm{Uniform}(0,1) \equiv \mathrm{Beta}(1,1),
 \qquad \pi(\theta) = 1 \text{ for } 0&lt;\theta&lt;1.
 </span></p>
-<p>This prior has mean <span class="math inline">\mathrm{E}[\theta]=0.5</span>.</p></li>
+<p>This prior has mean <span class="math inline">\mathrm{E}[\theta]=0.5</span>.</p>
+<p>Calling this prior “uniform” describes its shape in this parameterisation; it is not automatically “no information,” because a transformation of <span class="math inline">\theta</span> would not generally remain uniform.</p></li>
 <li><p><strong>Data:</strong> We toss the coin <span class="math inline">n=5</span> times and observe <span class="math inline">x=1</span> head.</p></li>
 <li><p><strong>Posterior:</strong> Bayes’ theorem combines the Binomial likelihood with the prior to give <span class="math inline">\pi(\theta \mid x)</span>.</p></li>
 </ul>
@@ -1348,7 +1371,7 @@ X_i \mid \theta \sim \mathrm{Distribution}(\theta),
 </span> Note that there is only a <strong>single observation</strong> here: one experiment is “tossing the coin <span class="math inline">5</span> times and seeing how many come up heads”. The probability of observing <span class="math inline">X=1</span> is <span class="math display">
     f(x = 1 \mid \theta) = 5\theta(1-\theta)^4
 </span> If we plot this:</p>
-<div id="8bb80445" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="2">
+<div id="bd49744c" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="2">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -1423,6 +1446,7 @@ f(x=1) &amp;=\int_\Theta\pi(\theta)f(x=1\, |\,\theta)\,d\theta = \int_0^1 1\time
 <p>So, after seeing the data, our beliefs about <span class="math inline">\theta</span> have been updated: we now think small values of <span class="math inline">\theta</span> are more plausible, but not as extremely as the raw data alone would suggest.</p>
 <details>
   <summary><strong> Show Plot </strong></summary>
+<p>Before opening the plot, predict where the likelihood, prior, and posterior will each be centred. After opening it, explain why the posterior mode is <span class="math inline">0.2</span> but the posterior mean is larger. The written interpretation above is the text-only equivalent of the plot.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb9" data-startfrom="1" data-source-offset="-19"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>mDomain <span class="op">=</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>pdfXs <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleLinear</span>()<span class="op">.</span><span class="fu">domain</span>(mDomain)<span class="op">.</span><span class="fu">ticks</span>(<span class="dv">200</span>)  <span class="co">// 201 points including 0 and 1</span></span>
@@ -1531,6 +1555,25 @@ Figure&nbsp;6.4: Prior and posterior distributions for the coin bias parameter <
 </div>
 </div>
 </div>
+<div id="tip-bernoulli-freq-bayes" class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;6.1: Recurring Bernoulli example: frequentist and Bayesian estimates
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For <span class="math inline">x</span> successes in <span class="math inline">n</span> Bernoulli trials, Chapter 4 studied <span class="math inline">\hat p=\bar Y=x/n</span> through its bias and variance, and Chapter 5 showed that it is the MLE. With a <span class="math inline">\mathrm{Beta}(a,b)</span> prior, <span class="math display">
+p\mid x\sim\mathrm{Beta}(a+x,b+n-x).
+</span> The three common point summaries are <span class="math display">
+\hat p_{\mathrm{MLE}}=\frac{x}{n},\qquad
+\hat p_{\mathrm{mean}}=\frac{a+x}{a+b+n},\qquad
+\hat p_{\mathrm{MAP}}=\frac{a+x-1}{a+b+n-2},
+</span> where the MAP formula assumes an interior mode. The prior contributes pseudo-successes and pseudo-failures: <span class="math inline">a,b</span> in the posterior mean, or <span class="math inline">a-1,b-1</span> in the MAP. As <span class="math inline">n</span> grows with the prior fixed, the influence of these prior counts diminishes and all three estimates tend to agree.</p>
+</div>
+</div>
 <p>The main difficulty in calculating the posterior distribution was in obtaining the <span class="math inline">f(x)</span> term. However, in many cases we can recognise the posterior distribution without the need to calculate this constant term (constant with respect to <span class="math inline">\theta</span>). In this example, we can calculate the posterior distribution as</p>
 <p><span class="math display">\begin{align*}
 \pi(\theta|\underline{x})&amp;\propto\pi(\theta)f(x=1|\theta) \\
@@ -1540,7 +1583,7 @@ Figure&nbsp;6.4: Prior and posterior distributions for the coin bias parameter <
 <p>As <span class="math inline">\theta</span> is a continuous quantity, what we would like to know is what continuous distribution defined on <span class="math inline">(0,1)</span> has a probability density function which takes the form <span class="math inline">k\theta^{g-1}(1-\theta)^{h-1}</span>. The answer is the <span class="math inline">\textrm{Beta}(g,h)</span> distribution. Therefore, choosing <span class="math inline">g</span> and <span class="math inline">h</span> appropriately, we can see that the posterior distribution is <span class="math inline">\theta|x=1\sim \textrm{Beta}(2,5)</span>.</p>
 <p>This leads us to following method of computing posteriors:</p>
 <div id="imp-bayes-proportionality" class="callout callout-style-simple callout-important callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1549,7 +1592,7 @@ Important&nbsp;6.2: Posterior Density Up to a Constant of Proportionality
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>In <strong>practice</strong>, when deriving Bayesian posteriors, we only need to identify the posterior density <strong>up to a constant of proportionality</strong>: <span class="math display">
 \pi(\theta \mid \underline{x}) \;\propto\; f(\underline{x}\mid \theta)\,\pi(\theta).
@@ -1557,7 +1600,7 @@ Important&nbsp;6.2: Posterior Density Up to a Constant of Proportionality
 <p>The proportionality symbol <span class="math inline">\propto</span> literally means that <span class="math display">
 \pi(\theta \mid \underline{x})
 = k\, f(\underline{x}\mid \theta)\,\pi(\theta),
-</span> for some constant <span class="math inline">k \in \mathbb{R}</span> that does <strong>not</strong> depend on <span class="math inline">\theta</span>.</p>
+</span> for some positive constant <span class="math inline">k&gt;0</span> that does <strong>not</strong> depend on <span class="math inline">\theta</span>.</p>
 <p>This works because:</p>
 <ol type="1">
 <li><p>The posterior density must integrate to 1: <span class="math display">
@@ -1593,7 +1636,7 @@ f(\underline{x}) = \int f(\underline{x}\mid \theta)\,\pi(\theta)\, d\theta,
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="e8f8fba3" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="3">
+<div id="e98eadfb" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="3">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1692,12 +1735,13 @@ plot(theta_grid, pdf_values, type = "l",
   \theta \mid x=5 \sim \mathrm{Beta}(82, 10).
   </span></li>
 </ol>
+<p><strong>Interpretation and sensitivity.</strong> The prior is strong: <span class="math inline">a+b=82</span> acts like roughly 82 prior observations in the posterior-mean calculation, compared with only 10 new responses. The prior mean is <span class="math inline">77/82\approx0.939</span>, the data proportion is <span class="math inline">5/10=0.5</span>, and the posterior mean is <span class="math inline">82/92\approx0.891</span>. The posterior therefore remains close to the prior despite a clear prior–data conflict. With the much weaker <span class="math inline">\mathrm{Beta}(1,1)</span> prior, the same data would give <span class="math inline">\mathrm{Beta}(6,6)</span> with posterior mean <span class="math inline">0.5</span>. Reporting this comparison makes the influence of the prior visible rather than treating the update as purely mechanical.</p>
 <p>A graph of the posterior density is given as follows:</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="c37952f0" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="4">
+<div id="30ee31df" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="4">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1706,7 +1750,7 @@ plot(theta_grid, pdf_values, type = "l",
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>set_plot_theme(<span class="st">"light"</span>)</span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Beta(α, β) with α=77, β=5  →  π(θ) ∝ θ^(76) (1-θ)^(4)</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Posterior Beta(82, 10)  →  π(θ | x) ∝ θ^(81) (1-θ)^(9)</span></span>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>alpha, beta <span class="op">=</span> <span class="dv">82</span>, <span class="dv">10</span></span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co"># B(α,β) = Γ(α)Γ(β)/Γ(α+β)  ⇒  1/B = exp(lgamma(α+β) - lgamma(α) - lgamma(β))</span></span>
@@ -1794,14 +1838,13 @@ plot(theta_grid, pdf_values, type = "l",
 <p>The <strong>click-through rate</strong> is the proportion of clicks out of the total number of impressions of an online advertisement.</p>
 <p>The engineers assess the click-through rate by testing their recommender on users of Instagram. They obtain a total of <span class="math inline">n</span> impressions.</p>
 <ol type="a">
-<li>Using a <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-beta" class="quarto-xref">Beta prior&nbsp;<span>2.10</span></a></span>, quantify your prior beliefs about <span class="math inline">\theta</span>.</li>
+<li>Using a <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-beta" class="quarto-xref">Beta prior&nbsp;<span>3.10</span></a></span>, quantify your prior beliefs about <span class="math inline">\theta</span>.</li>
 <li>After running the test, the engineers obtained a total of <span class="math inline">X=47</span> successful clicks out of a total of <span class="math inline">n=10,000</span> impressions. Using a <strong>Binomial</strong> model and your prior specified in part (a), obtain the posterior distribution for <span class="math inline">\theta</span>.</li>
 </ol>
 <details>
   <summary><strong> Solution </strong></summary>
 <p><strong>a.</strong></p>
-<p>I personally never click on adverts, apart from on accident. I don’t think many people do. So, I believe that the click-through rate <span class="math inline">\theta</span> should be close to <span class="math inline">0</span>.</p>
-<p>I am not very confident, so I will pick:</p>
+<p>Suppose previous campaigns suggest that click-through rates are low, but there is still substantial uncertainty. As an illustrative, moderately informative prior, take</p>
 <p><span class="math display">
 \theta \sim \text{Beta}(5,\,100).
 </span></p>
@@ -1810,6 +1853,7 @@ plot(theta_grid, pdf_values, type = "l",
 \frac{5}{5+100} \approx 0.047,
 </span></p>
 <p>and places the vast majority of its probability mass on values <span class="math inline">\theta &lt; 0.1</span>.</p>
+<p>Its concentration <span class="math inline">5+100=105</span> is comparable to roughly one hundred prior Bernoulli observations in the posterior-mean calculation, so it should not be described as a nearly information-free prior.</p>
 <hr>
 <p><strong>b.</strong></p>
 <p>The data model is</p>
@@ -1859,7 +1903,8 @@ f(x=47 \mid \theta)
 </span></p>
 <p>which is about <strong>0.52% click-through rate</strong>.</p>
 <ul>
-<li>The posterior variance is very small because <span class="math inline">n=10{,}000</span> is large, so the engineers can be quite confident that <span class="math inline">\theta</span> is very close to <span class="math inline">0.5%</span>.</li>
+<li><p>With a weak <span class="math inline">\mathrm{Beta}(1,1)</span> prior, the posterior mean would be <span class="math inline">48/10002\approx0.0048</span>, close to both the observed rate <span class="math inline">47/10000=0.0047</span> and the result above. This sensitivity comparison shows that the large dataset dominates these two priors.</p></li>
+<li><p><strong>Conditional on the i.i.d. Binomial model and a representative sample</strong>, the posterior variance is very small because <span class="math inline">n=10{,}000</span> is large. A large <span class="math inline">n</span> reduces sampling uncertainty but does not repair dependence between impressions, selection bias, or changes in click-through rate across users and adverts.</p></li>
 </ul>
 <details>
   <summary><strong> Show Plot </strong></summary>
@@ -1882,17 +1927,16 @@ f(x=47 \mid \theta)
 </div>
 <div class="callout-body-container">
 <div id="exm-particle-speed" class="example theorem">
-<p><span class="theorem-title"><strong>Example 6.7 (Measuring a particle’s speed)</strong></span> You are attempting to measure the <strong>speed of a particle</strong> <span class="math inline">\theta</span> and quantify the uncertainty in the measurement. The experiment is set up such that the particle <strong>travels</strong> <span class="math inline">1</span> km and the measurements are the speeds <span class="math inline">X_i \mid \theta</span> for <span class="math inline">i=1,\ldots,n</span> in kilometres per second (km/s).</p>
-<p>There are a <strong>multitude of factors</strong> that additively result in <strong>measurement error</strong> for the speed of the particle.</p>
+<p><span class="theorem-title"><strong>Example 6.7 (Measuring a calibration signal)</strong></span> You are attempting to measure an unknown <strong>calibration signal level</strong> <span class="math inline">\theta</span> and quantify the uncertainty in the measurement. Repeated instrument readings are denoted by <span class="math inline">X_i\mid\theta</span>, for <span class="math inline">i=1,\ldots,n</span>, in arbitrary signal units.</p>
+<p>Many small factors contribute additively to the measurement error.</p>
 <p><strong>(a)</strong> Using a <strong>normal prior</strong>, quantify <strong>your prior beliefs</strong> about <span class="math inline">\theta</span>.</p>
 <details>
   <summary><strong>Solution (a)</strong></summary>
-<p>Since speed is physically constrained, a normal prior is imperfect because it places mass on the whole real line. For speed we should have <span class="math inline">0&lt; \theta &lt; c</span>, where <span class="math inline">c=299{,}792 \text{km/s}</span> (speed of light).</p>
-<p>Nonetheless, if we are asked to use a normal prior and have little prior knowledge about the particle type, a weakly informative prior is reasonable, e.g.</p>
+<p>Suppose historical calibrations suggest a signal level around <span class="math inline">150{,}000</span>, with substantial between-run uncertainty. A possible prior is</p>
 <p><span class="math display">
 \theta \sim \mathcal{N}\!\big(1.5\times 10^5,\ (4\times 10^4)^2\big).
 </span></p>
-<p>This concentrates most mass in the physically plausible range while remaining diffuse.</p>
+<p>This prior makes its scale and uncertainty explicit. A different scientific context would require a different elicitation; in particular, a parameter with hard physical bounds should not be assigned an unconstrained Normal prior without checking the mass outside those bounds.</p>
 </details>
 <hr>
 <p><strong>(b)</strong> Why is a <strong>normal distribution</strong> appropriate for the likelihood? Write down the likelihood.</p>
@@ -1930,13 +1974,18 @@ f(\underline{x}\mid\theta,\sigma)\ \propto\
 \qquad
 M = V\left(\frac{n\bar{x}}{\sigma^2}+\frac{\mu_0}{\sigma_0^2}\right).
 </span></p>
+<p>Equivalently, <span class="math display">
+M=w\bar x+(1-w)\mu_0,
+\qquad
+w=\frac{n/\sigma^2}{n/\sigma^2+1/\sigma_0^2}.
+</span> The posterior mean is therefore a <strong>precision-weighted average</strong> of the data mean and prior mean: the more precise source receives more weight. This is Bayesian shrinkage in a directly visible form.</p>
 <p>Therefore,</p>
 <p><span class="math display">
 \boxed{\ \theta\mid \underline{x}\ \sim\ \mathcal{N}(M,V)\ }.
 </span></p>
 </details>
 <hr>
-<p><strong>(d)</strong> Suppose you measured the speed <span class="math inline">4</span> times and obtained (km/s): <span class="math inline">306135,\ 293227,\ 307985,\ 301298</span>. Using the prior from (a), set <span class="math inline">\sigma=5000</span> and derive your <strong>posterior distribution</strong>.</p>
+<p><strong>(d)</strong> Suppose you measured the signal <span class="math inline">4</span> times and obtained: <span class="math inline">306135,\ 293227,\ 307985,\ 301298</span>. Using the prior from (a), set <span class="math inline">\sigma=5000</span> and derive your <strong>posterior distribution</strong>.</p>
 <details>
   <summary><strong>Solution (d)</strong></summary>
 <p>Compute <span class="math inline">\bar{x}=(306135+293227+307985+301298)/4=302{,}161.25</span>. With <span class="math inline">\mu_0=150{,}000</span>, <span class="math inline">\sigma_0^2=(40{,}000)^2</span>, <span class="math inline">\sigma^2=(5{,}000)^2</span>, <span class="math inline">n=4</span>:</p>
@@ -1955,8 +2004,9 @@ M = V\left(\frac{n\bar{x}}{\sigma^2}+\frac{\mu_0}{\sigma_0^2}\right)
 <p>Thus,</p>
 <p><span class="math display">
 \boxed{\ \theta\mid \underline{x}\ \sim\ \mathcal{N}\!\big(301{,}569.2,\ 6{,}225{,}681\big)\ }
-\quad \text{(i.e., SD } \approx 2{,}495.1\text{ km/s)}.
+\quad \text{(i.e., SD } \approx 2{,}495.1\text{ signal units)}.
 </span></p>
+<p>The posterior is far from the prior mean. That may be genuine learning, but it should also prompt a model check: did the calibration regime change, was the prior based on a comparable instrument, and are the stated measurement errors credible? The calculation is conditional on those modelling choices.</p>
 </details>
 </div>
 </div>
@@ -1986,7 +2036,7 @@ M = V\left(\frac{n\bar{x}}{\sigma^2}+\frac{\mu_0}{\sigma_0^2}\right)
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1995,7 +2045,7 @@ M = V\left(\frac{n\bar{x}}{\sigma^2}+\frac{\mu_0}{\sigma_0^2}\right)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div id="rem-conjugcay" class="proof remark">
 <p><span class="proof-title"><em>Remark 6.1</em> (Why is conjugacy useful?). </span></p>
@@ -2010,7 +2060,7 @@ M = V\left(\frac{n\bar{x}}{\sigma^2}+\frac{\mu_0}{\sigma_0^2}\right)
 <p>Since <strong>every example in this course uses a conjugate prior</strong>, posterior computation follows a simple and repeatable recipe.<br>
 Conjugacy guarantees that the posterior has the <em>same family</em> as the prior, so once you recognise the form, the calculation becomes mechanical.</p>
 <div id="imp-compute-posterior" class="callout callout-style-simple callout-important callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -2019,7 +2069,7 @@ Important&nbsp;6.3: Computing Posterior Distributions
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ol type="1">
 <li><p><strong>Compute the Likelihood.</strong><br>
@@ -2044,6 +2094,7 @@ Because all priors used in this course are <span class="xref-no-num"><a href="#d
 </div>
 <section id="summary-of-conjugate-priors-and-posterior-updates" class="level4 unnumbered">
 <h4 class="unnumbered anchored" data-anchor-id="summary-of-conjugate-priors-and-posterior-updates">Summary of Conjugate Priors and Posterior Updates</h4>
+<p>In this table, <span class="math inline">\mathrm{Gamma}(a,b)</span> uses shape <span class="math inline">a</span> and <strong>rate</strong> <span class="math inline">b</span>, while <span class="math inline">\mathrm{InvGamma}(a,b)</span> is defined by a density proportional to <span class="math inline">x^{-(a+1)}e^{-b/x}</span>. Always check these conventions when consulting software or another text.</p>
 <div class="small-table">
 <table class="caption-top table">
 <colgroup>
@@ -2065,43 +2116,43 @@ Because all priors used in this course are <span class="xref-no-num"><a href="#d
 <td><span class="math inline">X \mid p \sim \;  \mathrm{Binomial}(n,p)</span></td>
 <td><span class="math inline">p \sim \mathrm{Beta}(a,b)</span></td>
 <td><span class="math inline">p \mid x \sim \mathrm{Beta}(a + x,\; b + n - x)</span></td>
-<td><span class="xref-no-num"><a href="../../appendix/question-bank.html#q-beta-binom" class="quarto-xref">Link&nbsp;<span>40</span></a></span></td>
+<td><span class="xref-no-num"><a href="../../appendix/question-bank.html#q-beta-binom" class="quarto-xref">Worked update&nbsp;<span>40</span></a></span></td>
 </tr>
 <tr class="even">
 <td><span class="math inline">X_i \mid \lambda \; \overset{\text{i.i.d.}}{\sim} \;  \mathrm{Poisson}(\lambda)</span></td>
 <td><span class="math inline">\lambda \sim \mathrm{Gamma}(a,b)</span></td>
 <td><span class="math inline">\lambda \mid \underline{x} \sim \mathrm{Gamma}(a + n\bar{x},\; b + n)</span></td>
-<td><span class="xref-no-num"><a href="../../appendix/question-bank.html#q-gamma-pois" class="quarto-xref">Link&nbsp;<span>41</span></a></span></td>
+<td><span class="xref-no-num"><a href="../../appendix/question-bank.html#q-gamma-pois" class="quarto-xref">Worked update&nbsp;<span>41</span></a></span></td>
 </tr>
 <tr class="odd">
 <td><span class="math inline">X_i \mid p \; \overset{\text{i.i.d.}}{\sim} \;  \mathrm{Geom}(p)</span></td>
 <td><span class="math inline">p \sim \mathrm{Beta}(a,b)</span></td>
 <td><span class="math inline">p \mid \underline{x} \sim \mathrm{Beta}(a + n,\; b + n(\bar{x}-1))</span></td>
-<td><span class="xref-no-num"><a href="../../appendix/question-bank.html#q-beta-geom" class="quarto-xref">Link&nbsp;<span>42</span></a></span></td>
+<td><span class="xref-no-num"><a href="../../appendix/question-bank.html#q-beta-geom" class="quarto-xref">Worked update&nbsp;<span>42</span></a></span></td>
 </tr>
 <tr class="even">
 <td><span class="math inline">X_i \mid \mu \; \overset{\text{i.i.d.}}{\sim} \;  \mathcal{N}(\mu,\sigma^2)</span> (known <span class="math inline">\sigma^2</span>)</td>
 <td><span class="math inline">\mu \sim \mathcal{N}(\mu_0,\sigma_0^2)</span></td>
 <td><span class="math inline">\mu \mid \underline{x} \sim \mathcal{N}(M,V)</span></td>
-<td><span class="xref-no-num"><a href="../../appendix/question-bank.html#q-normal-normal" class="quarto-xref">Link&nbsp;<span>43</span></a></span></td>
+<td><span class="xref-no-num"><a href="../../appendix/question-bank.html#q-normal-normal" class="quarto-xref">Worked update&nbsp;<span>43</span></a></span></td>
 </tr>
 <tr class="odd">
-<td><span class="math inline">X \mid \gamma \; \overset{\text{i.i.d.}}{\sim} \; \mathcal{N}(\mu,\gamma)</span> (known <span class="math inline">\mu</span>)</td>
+<td><span class="math inline">X_i \mid \gamma \; \overset{\text{i.i.d.}}{\sim} \; \mathcal{N}(\mu,\gamma)</span> (known <span class="math inline">\mu</span>)</td>
 <td><span class="math inline">\gamma \sim \operatorname{InvGamma}(a,b)</span></td>
 <td><span class="math inline">\gamma \mid \underline{x} \sim \mathrm{InvGamma}\!\left(a + n/2,\; b + \tfrac12 \sum (x_i - \mu)^2\right)</span></td>
-<td><span class="xref-no-num"><a href="../../appendix/question-bank.html#q-normal-invgamma" class="quarto-xref">Link&nbsp;<span>44</span></a></span></td>
+<td><span class="xref-no-num"><a href="../../appendix/question-bank.html#q-normal-invgamma" class="quarto-xref">Worked update&nbsp;<span>44</span></a></span></td>
 </tr>
 <tr class="even">
 <td><span class="math inline">X_i \mid \lambda \; \overset{\text{i.i.d.}}{\sim} \;  \mathrm{Exponential}(\lambda)</span></td>
 <td><span class="math inline">\lambda \sim \mathrm{Gamma}(a,b)</span></td>
 <td><span class="math inline">\lambda \mid \underline{x} \sim \mathrm{Gamma}\left(a + n,\; b + n\bar{x}  \right)</span></td>
-<td><span class="xref-no-num"><a href="../../appendix/question-bank.html#q-exp-gamma" class="quarto-xref">Link&nbsp;<span>45</span></a></span></td>
+<td><span class="xref-no-num"><a href="../../appendix/question-bank.html#q-exp-gamma" class="quarto-xref">Worked update&nbsp;<span>45</span></a></span></td>
 </tr>
 <tr class="odd">
 <td><span class="math inline">X_i \mid \theta \; \overset{\text{i.i.d.}}{\sim} \;  \mathrm{Weibull}(\beta, \theta)</span> (known <span class="math inline">\beta</span>)</td>
 <td><span class="math inline">\theta \sim \mathrm{InvGamma}(a,b)</span></td>
 <td><span class="math inline">\theta \mid \underline{x} \sim \mathrm{InvGamma}\left(a + n,\; b + \sum_{i=1}^n x_i^\beta  \right)</span></td>
-<td><span class="xref-no-num"><a href="../../appendix/question-bank.html#q-weib-invgamma" class="quarto-xref">Link&nbsp;<span>46</span></a></span></td>
+<td><span class="xref-no-num"><a href="../../appendix/question-bank.html#q-weib-invgamma" class="quarto-xref">Worked update&nbsp;<span>46</span></a></span></td>
 </tr>
 </tbody>
 </table>
@@ -2111,13 +2162,11 @@ Because all priors used in this course are <span class="xref-no-num"><a href="#d
 </section>
 <section id="bayesian-estimators" class="level2" data-number="6.4">
 <h2 data-number="6.4" class="anchored" data-anchor-id="bayesian-estimators"><span class="header-section-number">6.4</span> Bayesian Estimators</h2>
-<p>In Bayesian inference, <strong>estimators</strong> are obtained by summarising the <strong>posterior distribution</strong> <span class="math display">
+<p>In Bayesian inference, point <strong>estimators</strong> are obtained by summarising the <strong>posterior distribution</strong> <span class="math display">
 \pi(\theta \mid \underline{x})
 = \frac{f(\underline{x}\mid\theta)\, \pi(\theta)}{f(\underline{x})}.
 </span></p>
-<p>We often choose a single value to represent our updated belief about the parameter.<br>
-Different summaries of the posterior lead to different Bayesian estimators.<br>
-Three common examples are:</p>
+<p>As in Chapter 4, an estimator is a rule depending on the random data <span class="math inline">\underline X</span>; after observing <span class="math inline">\underline x</span>, its numerical output is an estimate. We often choose a single value to summarise the posterior, but the appropriate summary depends on how estimation errors will be judged. Different loss functions lead to different Bayesian estimators. Three common examples are:</p>
 <ol type="1">
 <li><p><strong>Maximum a Posteriori (MAP) Estimator:</strong><br>
 Estimate <span class="math inline">\theta</span> using the <em>mode</em> of the posterior: <span class="math display">
@@ -2135,6 +2184,24 @@ Estimate <span class="math inline">\theta</span> using the <strong>middle</stron
 </span></p></li>
 </ol>
 <p>Among these, the <strong>MAP estimator</strong> is particularly important and is given its own formal definition below.</p>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Point summaries and loss
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Under <strong>squared-error loss</strong>, the posterior mean minimises posterior expected loss. This connects directly to the MSE criterion in Chapter 4.</li>
+<li>Under <strong>absolute-error loss</strong>, the posterior median is optimal.</li>
+<li>The MAP selects the highest posterior density and can be motivated by an increasingly narrow zero-one-style loss.</li>
+</ul>
+<p>There is therefore no universally best posterior summary without stating the decision goal. In particular, for a continuous parameter the MAP is a density mode, not a point with positive posterior probability, and it can change under reparameterisation.</p>
+</div>
+</div>
 <div class="callout callout-style-simple callout-note no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -2318,7 +2385,7 @@ Figure&nbsp;6.5: A Normal posterior density <span class="math inline">\pi(\theta
 </details>
 <hr>
 <div id="imp-compute-map" class="callout callout-style-simple callout-important callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -2327,7 +2394,7 @@ Important&nbsp;6.4: Computing the MAP estimator
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>To compute a MAP estimator, we follow almost exactly the same steps used to compute an MLE.<br>
 The only difference is that the likelihood is replaced by the <strong>posterior</strong>.</p>
@@ -2341,13 +2408,10 @@ The logarithm turns products into sums, simplifying differentiation: <span class
 \log \pi(\theta \mid \underline{x})
 = C + \log f(\underline{x}\mid\theta) + \log \pi(\theta),
 </span> where <span class="math inline">C</span> is a constant not depending on <span class="math inline">\theta</span>.</p></li>
-<li><p><strong>Differentiate and solve:</strong><br>
-We differentiate with respect to <span class="math inline">\theta</span> and set the derivative equal to zero: <span class="math display">
+<li><p><strong>Find interior candidates:</strong> Differentiate with respect to <span class="math inline">\theta</span> and set the derivative equal to zero: <span class="math display">
 \frac{\partial}{\partial\theta}\,\log \pi(\theta \mid \underline{x}) = 0.
-</span> Solving this equation yields the MAP estimator: <span class="math display">
-\hat{\theta}_{\mathrm{MAP}}
-= \arg\max_{\theta}\, \pi(\theta \mid \underline{x}).
-</span></p></li>
+</span> Solutions are stationary-point candidates, not automatically maxima.</p></li>
+<li><p><strong>Check the global maximum:</strong> Compare candidates, verify curvature or the global shape, and inspect the boundaries of the parameter space. The MAP is the value that actually maximises the posterior.</p></li>
 </ol>
 <p>In short:</p>
 <ul>
@@ -2357,9 +2421,9 @@ We differentiate with respect to <span class="math inline">\theta</span> and set
 </li>
 <li>differentiate,<br>
 </li>
-<li>solve for the maximiser.</li>
+<li>find candidates and check which is the global maximiser, including boundaries.</li>
 </ul>
-<p>This is <strong>identical</strong> to the MLE procedure — except the prior contributes an extra term.</p>
+<p>This parallels the MLE procedure, except that the prior contributes an extra <span class="math inline">\log\pi(\theta)</span> term. With a prior that is constant on the chosen parameter scale, an interior MAP and MLE coincide; with an informative prior they generally differ.</p>
 </div>
 </div>
 </div>
@@ -2371,7 +2435,7 @@ We differentiate with respect to <span class="math inline">\theta</span> and set
 <li>The <span class="xref-no-num"><a href="4-freq-point-estimation.html#thm-clt" class="quarto-xref">Central Limit Theorem&nbsp;<span>4.1</span></a></span> showed that the sampling distribution of the <span class="xref-no-num"><a href="4-freq-point-estimation.html#def-sample-mean" class="quarto-xref">sample mean&nbsp;<span>4.1</span></a></span> is approximately Normal for large <span class="math inline">n</span>.</li>
 <li>The <span class="xref-no-num"><a href="5-likelihood.html#thm-asymp-mle" class="quarto-xref">Asymptotic Distribution of the MLE&nbsp;<span>5.3</span></a></span> showed that the sampling distribution of the maximum likelihood estimator is approximately Normal for large <span class="math inline">n</span>.</li>
 </ol>
-<p>A similar phenomenon occurs in <strong>Bayesian inference</strong>: for large samples, the <strong>posterior distribution</strong> itself becomes approximately Normal, regardless of the prior (as long as it is not too extreme).</p>
+<p>A similar phenomenon occurs in <strong>Bayesian inference</strong>: in a regular, identifiable, fixed-dimensional model, the <strong>posterior distribution</strong> becomes approximately Normal when the prior has positive, smooth density near the true parameter. This can fail at boundaries, in non-identifiable models, or when the prior rules out the truth.</p>
 <p>This important result is known as the <strong>Bernstein–von Mises theorem</strong>. However, we will refer to it simply as the <strong>asymptotic posterior distribution</strong>:</p>
 <div class="callout callout-style-simple callout-note no-icon">
 <div class="callout-body d-flex">
@@ -2396,6 +2460,32 @@ We differentiate with respect to <span class="math inline">\theta</span> and set
 </span> obtained by replacing <span class="math inline">\theta_0</span> with <span class="math inline">\hat{\theta}_n</span> in the Fisher information.</p>
 </div>
 </div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Same Normal shape, different probability statements
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The MLE approximation in Chapter 5 describes the <strong>sampling distribution of <span class="math inline">\hat\theta_n</span> when new datasets are repeatedly generated with <span class="math inline">\theta_0</span> fixed</strong>. The approximation above describes the <strong>posterior distribution of <span class="math inline">\theta</span> conditional on the dataset that was observed</strong>. Under regularity conditions they have approximately the same centre and information-based variance, but they condition on different things and support different interpretations.</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Chapter summary
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Bayesian updating combines a likelihood shared with frequentist inference and an explicit prior. Conjugacy makes some updates algebraic, but prior strength, parameter support, and model assumptions still require interpretation. A posterior is the main inferential output; its mean, median, and mode answer different decision questions, and large samples often—but not always—reduce prior influence.</p>
 </div>
 </div>
 
@@ -5631,7 +5721,7 @@ if (document.body.classList.contains('reading-mode')) {
 })();
 </script>
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImJvZHlGb250ID0gZ2V0Q29tcHV0ZWRTdHlsZShkb2N1bWVudC5ib2R5KS5mb250RmFtaWx5XG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTIiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiIvLyA9PT0gKEEpIFVtYnJlbGxhIGRlY2lzaW9uOiA3MCUgY2hhbmNlIG9mIHJhaW4gKGV2ZXJ5ZGF5IHVuY2VydGFpbnR5KSA9PT1cbi8vIEJ1aWxkIGEgc2luZ2xlIGhvcml6b250YWwgYmFyIHNwbGl0IGludG8gXCJSYWluXCIgKDAuNykgYW5kIFwiTm8gcmFpblwiICgwLjMpXG5cbnJhaW5QID0gMC43XG5ub1JhaW5QID0gMSAtIHJhaW5QXG5cbnVtYnJlbGxhU2VnbWVudHMgPSBbXG4gIHsgbGFiZWw6IFwiUmFpbiAoNzAlKVwiLCAgICB4MTogMCwgICAgIHgyOiByYWluUCwgIHdoaWNoOiBcIlJhaW5cIiB9LFxuICB7IGxhYmVsOiBcIk5vIHJhaW4gKDMwJSlcIiwgeDE6IHJhaW5QLCB4MjogMSwgICAgICB3aGljaDogXCJObyByYWluXCIgfVxuXVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0zIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiXG5QbG90LnBsb3Qoe1xuICBoZWlnaHQ6IDEyMCxcbiAgbWFyZ2luTGVmdDogNTAsXG4gIG1hcmdpblJpZ2h0OiAyMCxcbiAgbWFyZ2luQm90dG9tOiA0NSxcbiAgeDogeyBsYWJlbDogXCJQcm9iYWJpbGl0eVwiLCBkb21haW46IFswLCAxXSwgbmljZTogZmFsc2UgfSxcbiAgeTogeyBheGlzOiBudWxsIH0sXG4gICAgc3R5bGU6IHtcbiAgICAgIHdpZHRoOiBcIjEwMCVcIixcbiAgICAgIGRpc3BsYXk6IFwiYmxvY2tcIiwgXG4gICAgICBtYXJnaW46IFwiMCBhdXRvXCIsIFxuICAgICAgbWF4V2lkdGg6IFwiOTYwcHhcIixcbiAgICAgIGJhY2tncm91bmQ6IFwidmFyKC0tcGxvdC1iZylcIixcbiAgICAgIGNvbG9yOiBcInZhcigtLXBsb3QtZmcpXCIsXG4gICAgICBmb250RmFtaWx5OiBib2R5Rm9udCwgXG4gICAgICBmb250U2l6ZTogMTJcbiAgICB9LFxuICBtYXJrczogW1xuICAgIFBsb3QucnVsZVkoWzBdLCB7IHN0cm9rZTogXCJ2YXIoLS1wbG90LWdyaWQpXCIsIHN0cm9rZU9wYWNpdHk6IDAuNiB9KSxcbiAgICAvLyB0d28gc3RhY2tlZCByZWN0YW5nbGVzIGZvcm1pbmcgb25lIGJhclxuICAgIFBsb3QucmVjdFgodW1icmVsbGFTZWdtZW50cywge1xuICAgICAgeDE6IFwieDFcIixcbiAgICAgIHgyOiBcIngyXCIsXG4gICAgICB5OiAwLFxuICAgICAgaGVpZ2h0OiAyNCxcbiAgICAgIGZpbGw6IGQgPT4gZC53aGljaCA9PT0gXCJSYWluXCIgPyBcInZhcigtLXBsb3Qtc2VyaWVzLTEpXCIgOiBcInZhcigtLXBsb3Qtc2VyaWVzLTQpXCIsXG4gICAgICBmaWxsT3BhY2l0eTogZCA9PiBkLndoaWNoID09PSBcIlJhaW5cIiA/IDAuMzUgOiAwLjE1LFxuICAgICAgc3Ryb2tlOiBcInZhcigtLXBsb3QtZmcpXCJcbiAgICB9KSxcbiAgICAvLyBsYWJlbHNcbiAgICBQbG90LnRleHQodW1icmVsbGFTZWdtZW50cywge1xuICAgICAgeDogZCA9PiAoZC54MSArIGQueDIpIC8gMixcbiAgICAgIHk6IDAsXG4gICAgICB0ZXh0OiBcImxhYmVsXCIsXG4gICAgICBkeTogLThcbiAgICB9KVxuICBdXG59KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC00IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiLy8gPT09IChCKSBFeGFtLW1hcmsgcHJpb3I6IE5vcm1hbCjOvD02MCwgz4M9MTApID09PVxuLy8gRG9tYWluIGFuZCBncmlkXG5tYXJrRG9tYWluID0gWzAsIDEwMF1cbm1hcmtYcyA9IGQzLnNjYWxlTGluZWFyKCkuZG9tYWluKG1hcmtEb21haW4pLnRpY2tzKDQwMClcblxuLy8gTm9ybWFsIFBERiBoZWxwZXJcbmZ1bmN0aW9uIG5vcm1hbFBERih4LCBtdSwgc2lnbWEpe1xuICBjb25zdCB6ID0gKHggLSBtdSkgLyBzaWdtYTtcbiAgcmV0dXJuIE1hdGguZXhwKC0wLjUgKiB6ICogeikgLyAoc2lnbWEgKiBNYXRoLnNxcnQoMiAqIE1hdGguUEkpKTtcbn1cblxuLy8gUHJpb3IgcGFyYW1ldGVycyBhbmQgY3VydmVcbm11X3ByaW9yID0gNjBcbnNkX3ByaW9yID0gMTBcblxubWFya1ByaW9yID0gbWFya1hzLm1hcCh4ID0+ICh7IHgsIHk6IG5vcm1hbFBERih4LCBtdV9wcmlvciwgc2RfcHJpb3IpLCB3aGljaDogXCJQcmlvciAgTig2MCwgMTDCsilcIiB9KSlcblxuLy8gU2hhZGluZyBib3VuZHMgZm9yIFwicGxhdXNpYmxlXCIgNTDigJM3MCByZWdpb25cbmxvQmFuZCA9IDUwXG5oaUJhbmQgPSA3MFxuYmFuZEZpbGwgPSBtYXJrWHNcbiAgLmZpbHRlcih4ID0+IHggPj0gbG9CYW5kICYmIHggPD0gaGlCYW5kKVxuICAubWFwKHggPT4gKHsgeCwgeTogbm9ybWFsUERGKHgsIG11X3ByaW9yLCBzZF9wcmlvcikgfSkpXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTUiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJcblBsb3QucGxvdCh7XG4gIGhlaWdodDogMzIwLFxuICBtYXJnaW5MZWZ0OiA0OCxcbiAgbWFyZ2luQm90dG9tOiA0NSxcbiAgeDogeyBsYWJlbDogXCJBdmVyYWdlIG1hcmsgzrhcIiwgZG9tYWluOiBtYXJrRG9tYWluIH0sXG4gIHk6IHsgbGFiZWw6IFwiRGVuc2l0eVwiIH0sXG4gIHN0eWxlOiB7XG4gICAgd2lkdGg6IFwiMTAwJVwiLFxuICAgIGRpc3BsYXk6IFwiYmxvY2tcIiwgXG4gICAgbWFyZ2luOiBcIjAgYXV0b1wiLCBcbiAgICBtYXhXaWR0aDogXCI5NjBweFwiLFxuICAgIGJhY2tncm91bmQ6IFwidmFyKC0tcGxvdC1iZylcIixcbiAgICBjb2xvcjogXCJ2YXIoLS1wbG90LWZnKVwiLFxuICAgIGZvbnRGYW1pbHk6IGJvZHlGb250LCBcbiAgICBmb250U2l6ZTogMTJcbiAgfSxcbiAgbWFya3M6IFtcbiAgICBQbG90LnJ1bGVZKFswXSwgeyBzdHJva2U6IFwidmFyKC0tcGxvdC1ncmlkKVwiLCBzdHJva2VPcGFjaXR5OiAwLjYgfSksXG4gICAgLy8gc2hhZGUgdGhlIDUw4oCTNzAgcGxhdXNpYmxlIGJhbmRcbiAgICBQbG90LmFyZWFZKGJhbmRGaWxsLCB7IHg6IFwieFwiLCB5OiBcInlcIiwgZmlsbDogXCJ2YXIoLS1wbG90LXNlcmllcy0xKVwiLCBmaWxsT3BhY2l0eTogMC4xMiB9KSxcbiAgICAvLyBtYWluIHByaW9yIGN1cnZlXG4gICAgUGxvdC5saW5lWShtYXJrUHJpb3IsIHsgeDogXCJ4XCIsIHk6IFwieVwiLCBzdHJva2U6IFwidmFyKC0tcGxvdC1zZXJpZXMtMSlcIiwgc3Ryb2tlV2lkdGg6IDIgfSksXG4gICAgLy8gYW5ub3RhdGlvbnNcbiAgICBQbG90LnJ1bGVYKFttdV9wcmlvcl0sIHsgc3Ryb2tlOiBcInZhcigtLXBsb3QtZmcpXCIsIHN0cm9rZVdpZHRoOiAyLCBzdHJva2VEYXNoYXJyYXk6IFwiMywzXCIsIHN0cm9rZU9wYWNpdHk6IDAuNCB9KSxcbiAgICBQbG90LnRleHQoXG4gICAgICBbXG4gICAgICAgIHsgeDogbXVfcHJpb3IgKyA4LCB5OiBub3JtYWxQREYobXVfcHJpb3IsIG11X3ByaW9yLCBzZF9wcmlvcikgKiAwLjk5LCBsYWJlbDogXCJQcmlvciBtZWFuIDYwXCIgfSxcbiAgICAgICAgeyB4OiAobG9CYW5kK2hpQmFuZCkvMiwgeTogbm9ybWFsUERGKChsb0JhbmQraGlCYW5kKS8yLCBtdV9wcmlvciwgc2RfcHJpb3IpIC8gMywgbGFiZWw6IFwiUGxhdXNpYmxlIDUw4oCTNzBcIiB9XG4gICAgICBdLFxuICAgICAgeyB4OiBcInhcIiwgeTogXCJ5XCIsIHRleHQ6IFwibGFiZWxcIiwgZHk6IC0xMCB9XG4gICAgKVxuICBdXG59KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC02IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiLy8gPT09IChDKSBEaXNlYXNlIHByZXZhbGVuY2UgcHJpb3I6IEJldGEoMiwgOTgpIH4gbWVhbiAwLjAyLCBtYXNzIDwgMC4xMCA9PT1cbi8vIERvbWFpbiBhbmQgZ3JpZFxucERvbWFpbiA9IFswLCAwLjEyXSAgLy8gem9vbSBpbiB0byBzaG93IHRoZSBzbWFsbCBwcm9iYWJpbGl0aWVzIGNsZWFybHlcbnBYcyA9IGQzLnNjYWxlTGluZWFyKCkuZG9tYWluKHBEb21haW4pLnRpY2tzKDQwMClcblxuLy8gQmV0YSBQREYgaGVscGVyICh1c2luZyBsb2ctc3BhY2UgZm9yIHN0YWJpbGl0eSlcbmZ1bmN0aW9uIGxvZ0dhbW1hKHopeyAvLyBMYW5jem9zIGFwcHJveGltYXRpb24gdmlhIGQzPyBrZWVwIHNpbXBsZTogdXNlIE1hdGgubGdhbW1hIGZhbGxiYWNrIGlmIHByZXNlbnQ7IGVsc2UgY3J1ZGUgU3RpcmxpbmdcbiAgLy8gTWluaW1hbCBTdGlybGluZyBmb3IgdGVhY2hpbmcgdmlzdWFscyAoZmluZSBmb3Igc21hbGwgzrEszrIgaGVyZSlcbiAgcmV0dXJuICh6LTAuNSkqTWF0aC5sb2coeikgLSB6ICsgMC41Kk1hdGgubG9nKDIqTWF0aC5QSSk7XG59XG5mdW5jdGlvbiBiZXRhTG9nUERGKHgsIGEsIGIpe1xuICBpZiAoeCA8PSAwIHx8IHggPj0gMSkgcmV0dXJuIC1JbmZpbml0eTtcbiAgcmV0dXJuIChhLTEpKk1hdGgubG9nKHgpICsgKGItMSkqTWF0aC5sb2coMS14KSAtIChsb2dHYW1tYShhKStsb2dHYW1tYShiKS1sb2dHYW1tYShhK2IpKTtcbn1cbmZ1bmN0aW9uIGJldGFQREYoeCwgYSwgYil7XG4gIGNvbnN0IGxnID0gYmV0YUxvZ1BERih4LCBhLCBiKTtcbiAgcmV0dXJuIE51bWJlci5pc0Zpbml0ZShsZykgPyBNYXRoLmV4cChsZykgOiAwO1xufVxuXG4vLyBQcmlvciBwYXJhbWV0ZXJzIGFuZCBjdXJ2ZVxuYWxwaGFfcHJpb3IgPSAyXG5iZXRhX3ByaW9yICA9IDk4XG5cbmJldGFQcmlvciA9IHBYcy5tYXAoeCA9PiAoeyB4LCB5OiBiZXRhUERGKHgsIGFscGhhX3ByaW9yLCBiZXRhX3ByaW9yKSwgd2hpY2g6IFwiUHJpb3IgIEJldGEoMiwgOTgpXCIgfSkpXG5cbi8vIE9wdGlvbmFsIOKAnDwgMTAl4oCdIHZpc3VhbCBtYXJrZXJcbmNhcFRocmVzaG9sZCA9IDAuMTBcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNyIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IlxuUGxvdC5wbG90KHtcbiAgaGVpZ2h0OiAzMjAsXG4gIG1hcmdpbkxlZnQ6IDQ4LFxuICBtYXJnaW5Cb3R0b206IDQ1LFxuICB4OiB7IGxhYmVsOiBcIlByZXZhbGVuY2UgzrhcIiwgZG9tYWluOiBwRG9tYWluIH0sXG4gIHk6IHsgbGFiZWw6IFwiRGVuc2l0eVwiIH0sXG4gIHN0eWxlOiB7XG4gICAgd2lkdGg6IFwiMTAwJVwiLFxuICAgIGRpc3BsYXk6IFwiYmxvY2tcIiwgXG4gICAgbWFyZ2luOiBcIjAgYXV0b1wiLCBcbiAgICBtYXhXaWR0aDogXCI5NjBweFwiLFxuICAgIGJhY2tncm91bmQ6IFwidmFyKC0tcGxvdC1iZylcIixcbiAgICBjb2xvcjogXCJ2YXIoLS1wbG90LWZnKVwiLFxuICAgIGZvbnRGYW1pbHk6IGJvZHlGb250LCBcbiAgICBmb250U2l6ZTogMTRcbiAgfSxcbiAgbWFya3M6IFtcbiAgICBQbG90LnJ1bGVZKFswXSwgeyBzdHJva2U6IFwidmFyKC0tcGxvdC1ncmlkKVwiLCBzdHJva2VPcGFjaXR5OiAwLjYgfSksXG4gICAgUGxvdC5saW5lWShiZXRhUHJpb3IsIHsgeDogXCJ4XCIsIHk6IFwieVwiLCBzdHJva2U6IFwidmFyKC0tcGxvdC1zZXJpZXMtNClcIiwgc3Ryb2tlV2lkdGg6IDIsIHN0cm9rZU9wYWNpdHk6IDAuOSB9KSxcbiAgICBQbG90LmFyZWFZKGJldGFQcmlvciwgeyB4OiBcInhcIiwgeTogXCJ5XCIsIGZpbGw6IFwidmFyKC0tcGxvdC1zZXJpZXMtNClcIiwgZmlsbE9wYWNpdHk6IDAuMTUgfSksXG4gICAgLy8gdmlzdWFsIGNhcCBhdCAxMCVcbiAgICBQbG90LnJ1bGVYKFtjYXBUaHJlc2hvbGRdLCB7IHN0cm9rZTogXCJ2YXIoLS1wbG90LWZnKVwiLCBzdHJva2VEYXNoYXJyYXk6IFwiMywzXCIsIHN0cm9rZU9wYWNpdHk6IDAuNiB9KSxcbiAgICBQbG90LnRleHQoXG4gICAgICBbXG4gICAgICAgIHsgeDogMC4wMiwgeTogYmV0YVBERigwLjAyLCBhbHBoYV9wcmlvciwgYmV0YV9wcmlvciksIGxhYmVsOiBcIlByaW9yIG1lYW4g4omIIDIlXCIgfSxcbiAgICAgICAgeyB4OiBjYXBUaHJlc2hvbGQsIHk6IDAsIGxhYmVsOiBcIjEwJSB1cHBlciBjYXAgKHVubGlrZWx5KVwiIH1cbiAgICAgIF0sXG4gICAgICB7IHg6IFwieFwiLCB5OiBcInlcIiwgdGV4dDogXCJsYWJlbFwiLCBkeTogLTEwIH1cbiAgICApXG4gIF1cbn0pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTgiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiIvLyBEb21haW4gYW5kIGdyaWRcbm1Eb21haW4gPSBbMCwgMV1cbnBkZlhzID0gZDMuc2NhbGVMaW5lYXIoKS5kb21haW4obURvbWFpbikudGlja3MoMjAwKSAgLy8gMjAxIHBvaW50cyBpbmNsdWRpbmcgMCBhbmQgMVxuXG4vLyBQREZzIChjbG9zZWQtZm9ybSlcbmZ1bmN0aW9uIHByaW9yUERGKHgpICAgICB7IHJldHVybiAoeCA+IDAgJiYgeCA8IDEpID8gMSA6IDA7IH1cbmZ1bmN0aW9uIHBvc3RlcmlvclBERih4KSB7IHJldHVybiAoeCA+IDAgJiYgeCA8IDEpID8gMzAgKiB4ICogKDEgLSB4KSAqKiA0IDogMDsgfVxuXG4vLyBEYXRhICh1c2UgdGhlIHNjYWxhciB4IGZyb20gbWFwISlcbnByaW9yID0gcGRmWHMubWFwKHggPT4gKHsgeCwgeTogcHJpb3JQREYoeCksIHdoaWNoOiBcIlByaW9yICBCZXRhKDEsMSlcIiB9KSlcbnBvc3QgID0gcGRmWHMubWFwKHggPT4gKHsgeCwgeTogcG9zdGVyaW9yUERGKHgpLCB3aGljaDogXCJQb3N0ZXJpb3IgIEJldGEoMiw1KVwiIH0pKVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC05IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiXG4vLyBDcmVhdGUgdGhlIHBsb3QgZGlyZWN0bHkgd2l0aG91dCB2aWV3b2ZcblBsb3QucGxvdCh7XG4gIC8vIG9taXQgd2lkdGggdG8gbGV0IGl0IGJlIHJlc3BvbnNpdmVcbiAgaGVpZ2h0OiAzMjAsXG4gIG1hcmdpbkxlZnQ6IDQ4LFxuICBtYXJnaW5Cb3R0b206IDQ1LFxuICB4OiB7IGxhYmVsOiBcIs64XCIsIGRvbWFpbjogWzAsIDFdIH0sXG4gIHk6IHsgbGFiZWw6IFwiRGVuc2l0eVwiIH0sXG4gIHN0eWxlOiB7XG4gICAgd2lkdGg6IFwiMTAwJVwiLFxuICAgIGRpc3BsYXk6IFwiYmxvY2tcIiwgXG4gICAgbWFyZ2luOiBcIjAgYXV0b1wiLCBcbiAgICBtYXhXaWR0aDogXCI5NjBweFwiLFxuICAgIGJhY2tncm91bmQ6IFwidmFyKC0tcGxvdC1iZylcIixcbiAgICBjb2xvcjogXCJ2YXIoLS1wbG90LWZnKVwiLFxuICAgIGZvbnRGYW1pbHk6IGJvZHlGb250LCBcbiAgICBmb250U2l6ZTogMTRcbiAgfSxcbiAgbWFya3M6IFtcbiAgICBQbG90LnJ1bGVZKFswXSwgeyBzdHJva2U6IFwidmFyKC0tcGxvdC1ncmlkKVwiLCBzdHJva2VPcGFjaXR5OiAwLjYgfSksXG4gICAgUGxvdC5saW5lWShwcmlvciwgeyB4OiBcInhcIiwgeTogXCJ5XCIsIHN0cm9rZTogXCJ2YXIoLS1wbG90LXNlcmllcy00KVwiLCAgc3Ryb2tlV2lkdGg6IDIsIHN0cm9rZU9wYWNpdHk6IDAuODUgfSksXG4gICAgUGxvdC5hcmVhWShwcmlvciwgeyB4OiBcInhcIiwgeTogXCJ5XCIsIGZpbGw6IFwidmFyKC0tcGxvdC1zZXJpZXMtNClcIiwgZmlsbE9wYWNpdHk6IDAuMDUgfSksXG4gICAgUGxvdC5saW5lWShwb3N0LCAgeyB4OiBcInhcIiwgeTogXCJ5XCIsIHN0cm9rZTogXCJ2YXIoLS1wbG90LXNlcmllcy0xKVwiLCBzdHJva2VXaWR0aDogMiB9KSxcbiAgICBQbG90LmFyZWFZKHBvc3QsICB7IHg6IFwieFwiLCB5OiBcInlcIiwgZmlsbDogXCJ2YXIoLS1wbG90LXNlcmllcy0xKVwiLCBmaWxsT3BhY2l0eTogMC4yIH0pLFxuICAgIFBsb3QudGV4dChcbiAgICAgIFtcbiAgICAgICAgeyB4OiAwLjgsIHk6IHByaW9yUERGKDAuOCksICAgICBsYWJlbDogXCJQcmlvclwiIH0sXG4gICAgICAgIHsgeDogMC4zNSwgeTogcG9zdGVyaW9yUERGKDAuMyksIGxhYmVsOiBcIlBvc3RlcmlvclwiIH1cbiAgICAgIF0sXG4gICAgICB7IHg6IFwieFwiLCB5OiBcInlcIiwgdGV4dDogXCJsYWJlbFwiLCBkeTogLTggfVxuICAgIClcbiAgXVxufSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMTAiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJcbi8vIFBhcmFtZXRlcnMgZm9yIHRoZSAocG9zdGVyaW9yKSBOb3JtYWwgZGlzdHJpYnV0aW9uXG5tdV9wb3N0ID0gMSAgICAgICAgLy8gcG9zdGVyaW9yIG1lYW4gKGFuZCBNQVApXG5zaWdtYV9wb3N0ID0gMC40ICAgLy8gcG9zdGVyaW9yIHN0YW5kYXJkIGRldmlhdGlvblxuXG4vLyBHcmlkIG92ZXIgdGhlIHJlYWwgbGluZSAoYWJvdXQgwrEzz4MgYXJvdW5kIHRoZSBtZWFuKVxubm9ybWFsWHMgPSBkMy5yYW5nZShtdV9wb3N0IC0gMyAqIHNpZ21hX3Bvc3QsIG11X3Bvc3QgKyAzICogc2lnbWFfcG9zdCwgKDYgKiBzaWdtYV9wb3N0KSAvIDIwMClcblxuXG5cbi8vIERhdGEgZm9yIHBsb3R0aW5nXG5wb3N0ZXJpb3JOb3JtYWwgPSBub3JtYWxYcy5tYXAoeCA9PiAoeyB4LCB5OiBub3JtYWxQREYoeCwgbXVfcG9zdCwgc2lnbWFfcG9zdCkgfSkpXG5cbi8vIE1BUCBwb2ludCAobW9kZSBvZiB0aGUgcG9zdGVyaW9yKVxubWFwUG9pbnQgPSAoeyB4OiBtdV9wb3N0LCB5OiBub3JtYWxQREYobXVfcG9zdCwgbXVfcG9zdCwgc2lnbWFfcG9zdCkgfSlcblxuUGxvdC5wbG90KHtcbiAgaGVpZ2h0OiAzMjAsXG4gIG1hcmdpbkxlZnQ6IDQ4LFxuICBtYXJnaW5Cb3R0b206IDQ1LFxuICB4OiB7IGxhYmVsOiBcIs64XCIsIG5pY2U6IHRydWUgfSxcbiAgeTogeyBsYWJlbDogXCJQb3N0ZXJpb3IgZGVuc2l0eVwiIH0sXG4gIHN0eWxlOiB7XG4gICAgd2lkdGg6IFwiMTAwJVwiLFxuICAgIGRpc3BsYXk6IFwiYmxvY2tcIixcbiAgICBtYXJnaW46IFwiMCBhdXRvXCIsXG4gICAgbWF4V2lkdGg6IFwiOTYwcHhcIixcbiAgICBiYWNrZ3JvdW5kOiBcInZhcigtLXBsb3QtYmcpXCIsXG4gICAgY29sb3I6IFwidmFyKC0tcGxvdC1mZylcIixcbiAgICBmb250RmFtaWx5OiBib2R5Rm9udCxcbiAgICBmb250U2l6ZTogMTRcbiAgfSxcbiAgbWFya3M6IFtcbiAgICBQbG90LnJ1bGVZKFswXSwgeyBzdHJva2U6IFwidmFyKC0tcGxvdC1ncmlkKVwiLCBzdHJva2VPcGFjaXR5OiAwLjYgfSksXG4gICAgUGxvdC5saW5lWShwb3N0ZXJpb3JOb3JtYWwsIHsgXG4gICAgICB4OiBcInhcIiwgXG4gICAgICB5OiBcInlcIiwgXG4gICAgICBzdHJva2U6IFwidmFyKC0tcGxvdC1zZXJpZXMtMSlcIixcbiAgICAgIHN0cm9rZVdpZHRoOiAyIFxuICAgIH0pLFxuICAgIFBsb3QuYXJlYVkocG9zdGVyaW9yTm9ybWFsLCB7IFxuICAgICAgeDogXCJ4XCIsIFxuICAgICAgeTogXCJ5XCIsIFxuICAgICAgZmlsbDogXCJ2YXIoLS1wbG90LXNlcmllcy0xKVwiLFxuICAgICAgZmlsbE9wYWNpdHk6IDAuMTUgXG4gICAgfSksXG4gICAgUGxvdC5ydWxlWChbbWFwUG9pbnQueF0sIHsgXG4gICAgICBzdHJva2U6IFwidmFyKC0tcGxvdC1zZXJpZXMtNClcIixcbiAgICAgIHN0cm9rZVdpZHRoOiAyLCBcbiAgICAgIHN0cm9rZURhc2hhcnJheTogXCI0LDJcIiBcbiAgICB9KSxcbiAgICBQbG90LnRleHQoXG4gICAgICBbeyB4OiBtYXBQb2ludC54LCB5OiBtYXBQb2ludC55LCBsYWJlbDogXCJNQVBcIiB9XSxcbiAgICAgIHsgXG4gICAgICAgIHg6IFwieFwiLCBcbiAgICAgICAgeTogXCJ5XCIsIFxuICAgICAgICB0ZXh0OiBcImxhYmVsXCIsIFxuICAgICAgICBkeTogLTEwLCBcbiAgICAgICAgZmlsbDogXCJ2YXIoLS1wbG90LXNlcmllcy00KVwiLFxuICAgICAgICBmb250V2VpZ2h0OiBcImJvbGRcIiBcbiAgICAgIH1cbiAgICApXG4gIF1cbn0pXG4ifV19
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImJvZHlGb250ID0gZ2V0Q29tcHV0ZWRTdHlsZShkb2N1bWVudC5ib2R5KS5mb250RmFtaWx5XG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTIiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiIvLyA9PT0gKEEpIFVtYnJlbGxhIGRlY2lzaW9uOiA3MCUgY2hhbmNlIG9mIHJhaW4gKGV2ZXJ5ZGF5IHVuY2VydGFpbnR5KSA9PT1cbi8vIEJ1aWxkIGEgc2luZ2xlIGhvcml6b250YWwgYmFyIHNwbGl0IGludG8gXCJSYWluXCIgKDAuNykgYW5kIFwiTm8gcmFpblwiICgwLjMpXG5cbnJhaW5QID0gMC43XG5ub1JhaW5QID0gMSAtIHJhaW5QXG5cbnVtYnJlbGxhU2VnbWVudHMgPSBbXG4gIHsgbGFiZWw6IFwiUmFpbiAoNzAlKVwiLCAgICB4MTogMCwgICAgIHgyOiByYWluUCwgIHdoaWNoOiBcIlJhaW5cIiB9LFxuICB7IGxhYmVsOiBcIk5vIHJhaW4gKDMwJSlcIiwgeDE6IHJhaW5QLCB4MjogMSwgICAgICB3aGljaDogXCJObyByYWluXCIgfVxuXVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0zIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiXG5QbG90LnBsb3Qoe1xuICBoZWlnaHQ6IDEyMCxcbiAgbWFyZ2luTGVmdDogNTAsXG4gIG1hcmdpblJpZ2h0OiAyMCxcbiAgbWFyZ2luQm90dG9tOiA0NSxcbiAgeDogeyBsYWJlbDogXCJQcm9iYWJpbGl0eVwiLCBkb21haW46IFswLCAxXSwgbmljZTogZmFsc2UgfSxcbiAgeTogeyBheGlzOiBudWxsIH0sXG4gICAgc3R5bGU6IHtcbiAgICAgIHdpZHRoOiBcIjEwMCVcIixcbiAgICAgIGRpc3BsYXk6IFwiYmxvY2tcIiwgXG4gICAgICBtYXJnaW46IFwiMCBhdXRvXCIsIFxuICAgICAgbWF4V2lkdGg6IFwiOTYwcHhcIixcbiAgICAgIGJhY2tncm91bmQ6IFwidmFyKC0tcGxvdC1iZylcIixcbiAgICAgIGNvbG9yOiBcInZhcigtLXBsb3QtZmcpXCIsXG4gICAgICBmb250RmFtaWx5OiBib2R5Rm9udCwgXG4gICAgICBmb250U2l6ZTogMTJcbiAgICB9LFxuICBtYXJrczogW1xuICAgIFBsb3QucnVsZVkoWzBdLCB7IHN0cm9rZTogXCJ2YXIoLS1wbG90LWdyaWQpXCIsIHN0cm9rZU9wYWNpdHk6IDAuNiB9KSxcbiAgICAvLyB0d28gc3RhY2tlZCByZWN0YW5nbGVzIGZvcm1pbmcgb25lIGJhclxuICAgIFBsb3QucmVjdFgodW1icmVsbGFTZWdtZW50cywge1xuICAgICAgeDE6IFwieDFcIixcbiAgICAgIHgyOiBcIngyXCIsXG4gICAgICB5OiAwLFxuICAgICAgaGVpZ2h0OiAyNCxcbiAgICAgIGZpbGw6IGQgPT4gZC53aGljaCA9PT0gXCJSYWluXCIgPyBcInZhcigtLXBsb3Qtc2VyaWVzLTEpXCIgOiBcInZhcigtLXBsb3Qtc2VyaWVzLTQpXCIsXG4gICAgICBmaWxsT3BhY2l0eTogZCA9PiBkLndoaWNoID09PSBcIlJhaW5cIiA/IDAuMzUgOiAwLjE1LFxuICAgICAgc3Ryb2tlOiBcInZhcigtLXBsb3QtZmcpXCJcbiAgICB9KSxcbiAgICAvLyBsYWJlbHNcbiAgICBQbG90LnRleHQodW1icmVsbGFTZWdtZW50cywge1xuICAgICAgeDogZCA9PiAoZC54MSArIGQueDIpIC8gMixcbiAgICAgIHk6IDAsXG4gICAgICB0ZXh0OiBcImxhYmVsXCIsXG4gICAgICBkeTogLThcbiAgICB9KVxuICBdXG59KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC00IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiLy8gPT09IChCKSBFeGFtLW1hcmsgcHJpb3I6IE5vcm1hbCjOvD02MCwgz4M9MTApID09PVxuLy8gRG9tYWluIGFuZCBncmlkXG5tYXJrRG9tYWluID0gWzAsIDEwMF1cbm1hcmtYcyA9IGQzLnNjYWxlTGluZWFyKCkuZG9tYWluKG1hcmtEb21haW4pLnRpY2tzKDQwMClcblxuLy8gTm9ybWFsIFBERiBoZWxwZXJcbmZ1bmN0aW9uIG5vcm1hbFBERih4LCBtdSwgc2lnbWEpe1xuICBjb25zdCB6ID0gKHggLSBtdSkgLyBzaWdtYTtcbiAgcmV0dXJuIE1hdGguZXhwKC0wLjUgKiB6ICogeikgLyAoc2lnbWEgKiBNYXRoLnNxcnQoMiAqIE1hdGguUEkpKTtcbn1cblxuLy8gUHJpb3IgcGFyYW1ldGVycyBhbmQgY3VydmVcbm11X3ByaW9yID0gNjBcbnNkX3ByaW9yID0gMTBcblxubWFya1ByaW9yID0gbWFya1hzLm1hcCh4ID0+ICh7IHgsIHk6IG5vcm1hbFBERih4LCBtdV9wcmlvciwgc2RfcHJpb3IpLCB3aGljaDogXCJQcmlvciAgTig2MCwgMTDCsilcIiB9KSlcblxuLy8gU2hhZGluZyBib3VuZHMgZm9yIFwicGxhdXNpYmxlXCIgNTDigJM3MCByZWdpb25cbmxvQmFuZCA9IDUwXG5oaUJhbmQgPSA3MFxuYmFuZEZpbGwgPSBtYXJrWHNcbiAgLmZpbHRlcih4ID0+IHggPj0gbG9CYW5kICYmIHggPD0gaGlCYW5kKVxuICAubWFwKHggPT4gKHsgeCwgeTogbm9ybWFsUERGKHgsIG11X3ByaW9yLCBzZF9wcmlvcikgfSkpXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTUiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJcblBsb3QucGxvdCh7XG4gIGhlaWdodDogMzIwLFxuICBtYXJnaW5MZWZ0OiA0OCxcbiAgbWFyZ2luQm90dG9tOiA0NSxcbiAgeDogeyBsYWJlbDogXCJBdmVyYWdlIG1hcmsgzrhcIiwgZG9tYWluOiBtYXJrRG9tYWluIH0sXG4gIHk6IHsgbGFiZWw6IFwiRGVuc2l0eVwiIH0sXG4gIHN0eWxlOiB7XG4gICAgd2lkdGg6IFwiMTAwJVwiLFxuICAgIGRpc3BsYXk6IFwiYmxvY2tcIiwgXG4gICAgbWFyZ2luOiBcIjAgYXV0b1wiLCBcbiAgICBtYXhXaWR0aDogXCI5NjBweFwiLFxuICAgIGJhY2tncm91bmQ6IFwidmFyKC0tcGxvdC1iZylcIixcbiAgICBjb2xvcjogXCJ2YXIoLS1wbG90LWZnKVwiLFxuICAgIGZvbnRGYW1pbHk6IGJvZHlGb250LCBcbiAgICBmb250U2l6ZTogMTJcbiAgfSxcbiAgbWFya3M6IFtcbiAgICBQbG90LnJ1bGVZKFswXSwgeyBzdHJva2U6IFwidmFyKC0tcGxvdC1ncmlkKVwiLCBzdHJva2VPcGFjaXR5OiAwLjYgfSksXG4gICAgLy8gc2hhZGUgdGhlIDUw4oCTNzAgcGxhdXNpYmxlIGJhbmRcbiAgICBQbG90LmFyZWFZKGJhbmRGaWxsLCB7IHg6IFwieFwiLCB5OiBcInlcIiwgZmlsbDogXCJ2YXIoLS1wbG90LXNlcmllcy0xKVwiLCBmaWxsT3BhY2l0eTogMC4xMiB9KSxcbiAgICAvLyBtYWluIHByaW9yIGN1cnZlXG4gICAgUGxvdC5saW5lWShtYXJrUHJpb3IsIHsgeDogXCJ4XCIsIHk6IFwieVwiLCBzdHJva2U6IFwidmFyKC0tcGxvdC1zZXJpZXMtMSlcIiwgc3Ryb2tlV2lkdGg6IDIgfSksXG4gICAgLy8gYW5ub3RhdGlvbnNcbiAgICBQbG90LnJ1bGVYKFttdV9wcmlvcl0sIHsgc3Ryb2tlOiBcInZhcigtLXBsb3QtZmcpXCIsIHN0cm9rZVdpZHRoOiAyLCBzdHJva2VEYXNoYXJyYXk6IFwiMywzXCIsIHN0cm9rZU9wYWNpdHk6IDAuNCB9KSxcbiAgICBQbG90LnRleHQoXG4gICAgICBbXG4gICAgICAgIHsgeDogbXVfcHJpb3IgKyA4LCB5OiBub3JtYWxQREYobXVfcHJpb3IsIG11X3ByaW9yLCBzZF9wcmlvcikgKiAwLjk5LCBsYWJlbDogXCJQcmlvciBtZWFuIDYwXCIgfSxcbiAgICAgICAgeyB4OiAobG9CYW5kK2hpQmFuZCkvMiwgeTogbm9ybWFsUERGKChsb0JhbmQraGlCYW5kKS8yLCBtdV9wcmlvciwgc2RfcHJpb3IpIC8gMywgbGFiZWw6IFwiUGxhdXNpYmxlIDUw4oCTNzBcIiB9XG4gICAgICBdLFxuICAgICAgeyB4OiBcInhcIiwgeTogXCJ5XCIsIHRleHQ6IFwibGFiZWxcIiwgZHk6IC0xMCB9XG4gICAgKVxuICBdXG59KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC02IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiLy8gPT09IChDKSBEaXNlYXNlIHByZXZhbGVuY2UgcHJpb3I6IEJldGEoMiwgOTgpIH4gbWVhbiAwLjAyLCBtYXNzIDwgMC4xMCA9PT1cbi8vIERvbWFpbiBhbmQgZ3JpZFxucERvbWFpbiA9IFswLCAwLjEyXSAgLy8gem9vbSBpbiB0byBzaG93IHRoZSBzbWFsbCBwcm9iYWJpbGl0aWVzIGNsZWFybHlcbnBYcyA9IGQzLnNjYWxlTGluZWFyKCkuZG9tYWluKHBEb21haW4pLnRpY2tzKDQwMClcblxuLy8gQmV0YSBQREYgaGVscGVyICh1c2luZyBsb2ctc3BhY2UgZm9yIHN0YWJpbGl0eSlcbmZ1bmN0aW9uIGxvZ0dhbW1hKHopeyAvLyBMYW5jem9zIGFwcHJveGltYXRpb24gdmlhIGQzPyBrZWVwIHNpbXBsZTogdXNlIE1hdGgubGdhbW1hIGZhbGxiYWNrIGlmIHByZXNlbnQ7IGVsc2UgY3J1ZGUgU3RpcmxpbmdcbiAgLy8gTWluaW1hbCBTdGlybGluZyBmb3IgdGVhY2hpbmcgdmlzdWFscyAoZmluZSBmb3Igc21hbGwgzrEszrIgaGVyZSlcbiAgcmV0dXJuICh6LTAuNSkqTWF0aC5sb2coeikgLSB6ICsgMC41Kk1hdGgubG9nKDIqTWF0aC5QSSk7XG59XG5mdW5jdGlvbiBiZXRhTG9nUERGKHgsIGEsIGIpe1xuICBpZiAoeCA8PSAwIHx8IHggPj0gMSkgcmV0dXJuIC1JbmZpbml0eTtcbiAgcmV0dXJuIChhLTEpKk1hdGgubG9nKHgpICsgKGItMSkqTWF0aC5sb2coMS14KSAtIChsb2dHYW1tYShhKStsb2dHYW1tYShiKS1sb2dHYW1tYShhK2IpKTtcbn1cbmZ1bmN0aW9uIGJldGFQREYoeCwgYSwgYil7XG4gIGNvbnN0IGxnID0gYmV0YUxvZ1BERih4LCBhLCBiKTtcbiAgcmV0dXJuIE51bWJlci5pc0Zpbml0ZShsZykgPyBNYXRoLmV4cChsZykgOiAwO1xufVxuXG4vLyBQcmlvciBwYXJhbWV0ZXJzIGFuZCBjdXJ2ZVxuYWxwaGFfcHJpb3IgPSAyXG5iZXRhX3ByaW9yICA9IDk4XG5cbmJldGFQcmlvciA9IHBYcy5tYXAoeCA9PiAoeyB4LCB5OiBiZXRhUERGKHgsIGFscGhhX3ByaW9yLCBiZXRhX3ByaW9yKSwgd2hpY2g6IFwiUHJpb3IgIEJldGEoMiwgOTgpXCIgfSkpXG5cbi8vIE9wdGlvbmFsIOKAnDwgMTAl4oCdIHZpc3VhbCBtYXJrZXJcbmNhcFRocmVzaG9sZCA9IDAuMTBcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNyIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IlxuUGxvdC5wbG90KHtcbiAgaGVpZ2h0OiAzMjAsXG4gIG1hcmdpbkxlZnQ6IDQ4LFxuICBtYXJnaW5Cb3R0b206IDQ1LFxuICB4OiB7IGxhYmVsOiBcIlByZXZhbGVuY2UgzrhcIiwgZG9tYWluOiBwRG9tYWluIH0sXG4gIHk6IHsgbGFiZWw6IFwiRGVuc2l0eVwiIH0sXG4gIHN0eWxlOiB7XG4gICAgd2lkdGg6IFwiMTAwJVwiLFxuICAgIGRpc3BsYXk6IFwiYmxvY2tcIiwgXG4gICAgbWFyZ2luOiBcIjAgYXV0b1wiLCBcbiAgICBtYXhXaWR0aDogXCI5NjBweFwiLFxuICAgIGJhY2tncm91bmQ6IFwidmFyKC0tcGxvdC1iZylcIixcbiAgICBjb2xvcjogXCJ2YXIoLS1wbG90LWZnKVwiLFxuICAgIGZvbnRGYW1pbHk6IGJvZHlGb250LCBcbiAgICBmb250U2l6ZTogMTRcbiAgfSxcbiAgbWFya3M6IFtcbiAgICBQbG90LnJ1bGVZKFswXSwgeyBzdHJva2U6IFwidmFyKC0tcGxvdC1ncmlkKVwiLCBzdHJva2VPcGFjaXR5OiAwLjYgfSksXG4gICAgUGxvdC5saW5lWShiZXRhUHJpb3IsIHsgeDogXCJ4XCIsIHk6IFwieVwiLCBzdHJva2U6IFwidmFyKC0tcGxvdC1zZXJpZXMtNClcIiwgc3Ryb2tlV2lkdGg6IDIsIHN0cm9rZU9wYWNpdHk6IDAuOSB9KSxcbiAgICBQbG90LmFyZWFZKGJldGFQcmlvciwgeyB4OiBcInhcIiwgeTogXCJ5XCIsIGZpbGw6IFwidmFyKC0tcGxvdC1zZXJpZXMtNClcIiwgZmlsbE9wYWNpdHk6IDAuMTUgfSksXG4gICAgLy8gdmlzdWFsIGNhcCBhdCAxMCVcbiAgICBQbG90LnJ1bGVYKFtjYXBUaHJlc2hvbGRdLCB7IHN0cm9rZTogXCJ2YXIoLS1wbG90LWZnKVwiLCBzdHJva2VEYXNoYXJyYXk6IFwiMywzXCIsIHN0cm9rZU9wYWNpdHk6IDAuNiB9KSxcbiAgICBQbG90LnRleHQoXG4gICAgICBbXG4gICAgICAgIHsgeDogMC4wMiwgeTogYmV0YVBERigwLjAyLCBhbHBoYV9wcmlvciwgYmV0YV9wcmlvciksIGxhYmVsOiBcIlByaW9yIG1lYW4g4omIIDIlXCIgfSxcbiAgICAgICAgeyB4OiBjYXBUaHJlc2hvbGQsIHk6IDAsIGxhYmVsOiBcIjEwJSB0aHJlc2hvbGQgKHZlcnkgdW5saWtlbHkgYWJvdmUpXCIgfVxuICAgICAgXSxcbiAgICAgIHsgeDogXCJ4XCIsIHk6IFwieVwiLCB0ZXh0OiBcImxhYmVsXCIsIGR5OiAtMTAgfVxuICAgIClcbiAgXVxufSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtOCIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Ii8vIERvbWFpbiBhbmQgZ3JpZFxubURvbWFpbiA9IFswLCAxXVxucGRmWHMgPSBkMy5zY2FsZUxpbmVhcigpLmRvbWFpbihtRG9tYWluKS50aWNrcygyMDApICAvLyAyMDEgcG9pbnRzIGluY2x1ZGluZyAwIGFuZCAxXG5cbi8vIFBERnMgKGNsb3NlZC1mb3JtKVxuZnVuY3Rpb24gcHJpb3JQREYoeCkgICAgIHsgcmV0dXJuICh4ID4gMCAmJiB4IDwgMSkgPyAxIDogMDsgfVxuZnVuY3Rpb24gcG9zdGVyaW9yUERGKHgpIHsgcmV0dXJuICh4ID4gMCAmJiB4IDwgMSkgPyAzMCAqIHggKiAoMSAtIHgpICoqIDQgOiAwOyB9XG5cbi8vIERhdGEgKHVzZSB0aGUgc2NhbGFyIHggZnJvbSBtYXAhKVxucHJpb3IgPSBwZGZYcy5tYXAoeCA9PiAoeyB4LCB5OiBwcmlvclBERih4KSwgd2hpY2g6IFwiUHJpb3IgIEJldGEoMSwxKVwiIH0pKVxucG9zdCAgPSBwZGZYcy5tYXAoeCA9PiAoeyB4LCB5OiBwb3N0ZXJpb3JQREYoeCksIHdoaWNoOiBcIlBvc3RlcmlvciAgQmV0YSgyLDUpXCIgfSkpXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTkiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJcbi8vIENyZWF0ZSB0aGUgcGxvdCBkaXJlY3RseSB3aXRob3V0IHZpZXdvZlxuUGxvdC5wbG90KHtcbiAgLy8gb21pdCB3aWR0aCB0byBsZXQgaXQgYmUgcmVzcG9uc2l2ZVxuICBoZWlnaHQ6IDMyMCxcbiAgbWFyZ2luTGVmdDogNDgsXG4gIG1hcmdpbkJvdHRvbTogNDUsXG4gIHg6IHsgbGFiZWw6IFwizrhcIiwgZG9tYWluOiBbMCwgMV0gfSxcbiAgeTogeyBsYWJlbDogXCJEZW5zaXR5XCIgfSxcbiAgc3R5bGU6IHtcbiAgICB3aWR0aDogXCIxMDAlXCIsXG4gICAgZGlzcGxheTogXCJibG9ja1wiLCBcbiAgICBtYXJnaW46IFwiMCBhdXRvXCIsIFxuICAgIG1heFdpZHRoOiBcIjk2MHB4XCIsXG4gICAgYmFja2dyb3VuZDogXCJ2YXIoLS1wbG90LWJnKVwiLFxuICAgIGNvbG9yOiBcInZhcigtLXBsb3QtZmcpXCIsXG4gICAgZm9udEZhbWlseTogYm9keUZvbnQsIFxuICAgIGZvbnRTaXplOiAxNFxuICB9LFxuICBtYXJrczogW1xuICAgIFBsb3QucnVsZVkoWzBdLCB7IHN0cm9rZTogXCJ2YXIoLS1wbG90LWdyaWQpXCIsIHN0cm9rZU9wYWNpdHk6IDAuNiB9KSxcbiAgICBQbG90LmxpbmVZKHByaW9yLCB7IHg6IFwieFwiLCB5OiBcInlcIiwgc3Ryb2tlOiBcInZhcigtLXBsb3Qtc2VyaWVzLTQpXCIsICBzdHJva2VXaWR0aDogMiwgc3Ryb2tlT3BhY2l0eTogMC44NSB9KSxcbiAgICBQbG90LmFyZWFZKHByaW9yLCB7IHg6IFwieFwiLCB5OiBcInlcIiwgZmlsbDogXCJ2YXIoLS1wbG90LXNlcmllcy00KVwiLCBmaWxsT3BhY2l0eTogMC4wNSB9KSxcbiAgICBQbG90LmxpbmVZKHBvc3QsICB7IHg6IFwieFwiLCB5OiBcInlcIiwgc3Ryb2tlOiBcInZhcigtLXBsb3Qtc2VyaWVzLTEpXCIsIHN0cm9rZVdpZHRoOiAyIH0pLFxuICAgIFBsb3QuYXJlYVkocG9zdCwgIHsgeDogXCJ4XCIsIHk6IFwieVwiLCBmaWxsOiBcInZhcigtLXBsb3Qtc2VyaWVzLTEpXCIsIGZpbGxPcGFjaXR5OiAwLjIgfSksXG4gICAgUGxvdC50ZXh0KFxuICAgICAgW1xuICAgICAgICB7IHg6IDAuOCwgeTogcHJpb3JQREYoMC44KSwgICAgIGxhYmVsOiBcIlByaW9yXCIgfSxcbiAgICAgICAgeyB4OiAwLjM1LCB5OiBwb3N0ZXJpb3JQREYoMC4zKSwgbGFiZWw6IFwiUG9zdGVyaW9yXCIgfVxuICAgICAgXSxcbiAgICAgIHsgeDogXCJ4XCIsIHk6IFwieVwiLCB0ZXh0OiBcImxhYmVsXCIsIGR5OiAtOCB9XG4gICAgKVxuICBdXG59KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0xMCIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IlxuLy8gUGFyYW1ldGVycyBmb3IgdGhlIChwb3N0ZXJpb3IpIE5vcm1hbCBkaXN0cmlidXRpb25cbm11X3Bvc3QgPSAxICAgICAgICAvLyBwb3N0ZXJpb3IgbWVhbiAoYW5kIE1BUClcbnNpZ21hX3Bvc3QgPSAwLjQgICAvLyBwb3N0ZXJpb3Igc3RhbmRhcmQgZGV2aWF0aW9uXG5cbi8vIEdyaWQgb3ZlciB0aGUgcmVhbCBsaW5lIChhYm91dCDCsTPPgyBhcm91bmQgdGhlIG1lYW4pXG5ub3JtYWxYcyA9IGQzLnJhbmdlKG11X3Bvc3QgLSAzICogc2lnbWFfcG9zdCwgbXVfcG9zdCArIDMgKiBzaWdtYV9wb3N0LCAoNiAqIHNpZ21hX3Bvc3QpIC8gMjAwKVxuXG5cblxuLy8gRGF0YSBmb3IgcGxvdHRpbmdcbnBvc3Rlcmlvck5vcm1hbCA9IG5vcm1hbFhzLm1hcCh4ID0+ICh7IHgsIHk6IG5vcm1hbFBERih4LCBtdV9wb3N0LCBzaWdtYV9wb3N0KSB9KSlcblxuLy8gTUFQIHBvaW50IChtb2RlIG9mIHRoZSBwb3N0ZXJpb3IpXG5tYXBQb2ludCA9ICh7IHg6IG11X3Bvc3QsIHk6IG5vcm1hbFBERihtdV9wb3N0LCBtdV9wb3N0LCBzaWdtYV9wb3N0KSB9KVxuXG5QbG90LnBsb3Qoe1xuICBoZWlnaHQ6IDMyMCxcbiAgbWFyZ2luTGVmdDogNDgsXG4gIG1hcmdpbkJvdHRvbTogNDUsXG4gIHg6IHsgbGFiZWw6IFwizrhcIiwgbmljZTogdHJ1ZSB9LFxuICB5OiB7IGxhYmVsOiBcIlBvc3RlcmlvciBkZW5zaXR5XCIgfSxcbiAgc3R5bGU6IHtcbiAgICB3aWR0aDogXCIxMDAlXCIsXG4gICAgZGlzcGxheTogXCJibG9ja1wiLFxuICAgIG1hcmdpbjogXCIwIGF1dG9cIixcbiAgICBtYXhXaWR0aDogXCI5NjBweFwiLFxuICAgIGJhY2tncm91bmQ6IFwidmFyKC0tcGxvdC1iZylcIixcbiAgICBjb2xvcjogXCJ2YXIoLS1wbG90LWZnKVwiLFxuICAgIGZvbnRGYW1pbHk6IGJvZHlGb250LFxuICAgIGZvbnRTaXplOiAxNFxuICB9LFxuICBtYXJrczogW1xuICAgIFBsb3QucnVsZVkoWzBdLCB7IHN0cm9rZTogXCJ2YXIoLS1wbG90LWdyaWQpXCIsIHN0cm9rZU9wYWNpdHk6IDAuNiB9KSxcbiAgICBQbG90LmxpbmVZKHBvc3Rlcmlvck5vcm1hbCwgeyBcbiAgICAgIHg6IFwieFwiLCBcbiAgICAgIHk6IFwieVwiLCBcbiAgICAgIHN0cm9rZTogXCJ2YXIoLS1wbG90LXNlcmllcy0xKVwiLFxuICAgICAgc3Ryb2tlV2lkdGg6IDIgXG4gICAgfSksXG4gICAgUGxvdC5hcmVhWShwb3N0ZXJpb3JOb3JtYWwsIHsgXG4gICAgICB4OiBcInhcIiwgXG4gICAgICB5OiBcInlcIiwgXG4gICAgICBmaWxsOiBcInZhcigtLXBsb3Qtc2VyaWVzLTEpXCIsXG4gICAgICBmaWxsT3BhY2l0eTogMC4xNSBcbiAgICB9KSxcbiAgICBQbG90LnJ1bGVYKFttYXBQb2ludC54XSwgeyBcbiAgICAgIHN0cm9rZTogXCJ2YXIoLS1wbG90LXNlcmllcy00KVwiLFxuICAgICAgc3Ryb2tlV2lkdGg6IDIsIFxuICAgICAgc3Ryb2tlRGFzaGFycmF5OiBcIjQsMlwiIFxuICAgIH0pLFxuICAgIFBsb3QudGV4dChcbiAgICAgIFt7IHg6IG1hcFBvaW50LngsIHk6IG1hcFBvaW50LnksIGxhYmVsOiBcIk1BUFwiIH1dLFxuICAgICAgeyBcbiAgICAgICAgeDogXCJ4XCIsIFxuICAgICAgICB5OiBcInlcIiwgXG4gICAgICAgIHRleHQ6IFwibGFiZWxcIiwgXG4gICAgICAgIGR5OiAtMTAsIFxuICAgICAgICBmaWxsOiBcInZhcigtLXBsb3Qtc2VyaWVzLTQpXCIsXG4gICAgICAgIGZvbnRXZWlnaHQ6IFwiYm9sZFwiIFxuICAgICAgfVxuICAgIClcbiAgXVxufSlcbiJ9XX0=
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }

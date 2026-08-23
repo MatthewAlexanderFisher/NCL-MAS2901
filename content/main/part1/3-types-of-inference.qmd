@@ -4,16 +4,23 @@ tbl-cap-location: bottom
 
 # Types of Inference {#sec-types-of-inference}
 
-Statistical inference is about using a **sample** to learn about a **population**. There are two fundamentally different philosophies of inference, and several types of inferential tasks that appear in both.
+::: {.callout-note title="Learning objectives"}
+- Explain how frequentist and Bayesian inference represent uncertainty differently.
+- Interpret probability statements about procedures, data, and parameters without mixing the two frameworks.
+- Distinguish point estimation, interval estimation, hypothesis testing, and prediction.
+- Match each assessed inferential task to the later chapter where it is developed.
+:::
+
+Statistical inference is about using **observed data** to learn about a **target population or its distribution**. This chapter first compares frequentist and Bayesian frameworks, then uses the recurring study-space proportion $p$ to organise the principal inferential tasks. The methods differ, but they begin with the same need for a clear target population and a defensible model.
 
 
 ## Philosophies of Inference {#sec-philo-inference}
 
 ### Frequentist Inference {#sec-philo-freq}
 
-Frequentist inference is based on the idea of **long-run frequency**.
+Frequentist inference evaluates uncertainty through the behaviour of data and procedures under repeated use of the sampling model.
 
-* The **data** are considered random, as they represent one possible outcome of repeated sampling from the population.
+* Before observation, the random sample $\underline{X}$ represents one of many datasets the model could generate; after observation, the realised data $\underline{x}$ are fixed.
 * The **parameter** $\theta$ is fixed but unknown.
 * Inference is about constructing procedures (estimators, tests, intervals) that perform well under repeated sampling.
 
@@ -21,56 +28,70 @@ Frequentist inference is based on the idea of **long-run frequency**.
 
 ### Bayesian Inference {#sec-philo-bayesian}
 
-Bayesian inference is based on **subjective probability as degree of belief**.
+Bayesian inference uses probability distributions to represent uncertainty about unknown quantities.
 
-* The **data** are fixed once observed.
-* The **parameter** $\theta$ is treated as a random variable, with uncertainty described by a **prior distribution** $\pi(\theta)$.
+* The same sampling model describes possible data before observation; the realised data are fixed afterwards.
+* Uncertainty about the **parameter** $\theta$ is described by a **prior distribution** $\pi(\theta)$.
 * Inference updates this prior in light of the data, giving a **posterior distribution** $\pi(\theta \mid \text{data})$.
+
+Bayesian probability is often interpreted as a degree of uncertainty or belief. Priors may encode substantive information, deliberately weak information, or a reference convention; Bayesian inference is therefore not restricted to purely personal judgements.
 
 **Preview examples (we will return to these later):** a posterior mean as an estimator of $\mu$, a $95\%$ credible interval, or comparing hypotheses via posterior probabilities.
 
 ### Key Differences
 
-| Perspective         | Frequentist Inference                          | Bayesian Inference                         |
-| ------------------- | ---------------------------------------------- | ------------------------------------------ |
-| **Parameter**       | Fixed but unknown                              | Random variable with a prior               |
-| **Sample**          | Random (from repeated sampling)                | Fixed (once observed)                      |
-| **Probability**     | Long-run frequency                             | Degree of belief                           |
-| **Goal**            | Construct estimators, tests, CIs               | Update beliefs via posterior               |
-| **Prior Knowledge** | Ignored or minimal (e.g. non-informative)      | Explicitly modelled via prior distribution |
-| **Output**          | Estimators, confidence intervals, $p$-values | Posterior distribution, credible intervals |
+| Perspective | Frequentist inference | Bayesian inference |
+|:--|:--|:--|
+| **Unknown parameter** | Fixed but unknown | Uncertainty represented by a prior, then a posterior distribution |
+| **Observed data** | Fixed after observation; procedure assessed over hypothetical repeated samples | Fixed after observation; posterior conditions on these data |
+| **Probability statements** | Concern possible data, statistics, or long-run performance with $\theta$ fixed | May concern $\theta$ or future outcomes conditional on observed data and the model |
+| **Scientific information** | Can inform design, model, constraints, and choice of procedure, but is not encoded as a prior probability distribution for $\theta$ | Can additionally be represented explicitly through the prior for $\theta$ |
+| **Typical summaries** | Estimates, standard errors, confidence intervals, tests, $p$-values | Posterior estimates, credible intervals, posterior probabilities, Bayes factors |
 
 : {#tbl-bayes-vs-freq}
 
+::: {.callout-tip title="Checkpoint: what does the probability describe?"}
+For the study-space proportion $p$, identify the framework and the object to which probability applies.
+
+1. “Over repeated samples, this interval-producing method contains the fixed $p$ in $95\%$ of cases.”
+2. “Given these data and the stated prior, the posterior probability that $p>0.5$ is $0.91$.”
+
+```{=html}
+<details>
+  <summary><strong>Check your answer</strong></summary>
+```
+
+Statement 1 is frequentist: $95\%$ describes the long-run performance of a random interval procedure. Statement 2 is Bayesian: $0.91$ describes posterior uncertainty about $p$ conditional on the observed data and prior.
+
+```{=html}
+</details>
+```
+:::
+
 ## Inference Tasks {#sec-inference-tasks}
 
-Regardless of philosophy, the core tasks of inference are similar. Suppose we want to infer a parameter $\theta$ from data:
+Regardless of framework, the core tasks are similar. In the study-space survey, $\theta=p$; the examples below show how the same scientific question can lead to different inferential outputs.
 
 1. **Point Estimation**
    Give a single “best guess” $\hat{\theta}$ for the parameter.
 
-   * Frequentist: choose an estimator with good properties (e.g. unbiasedness).
-   * Bayesian: often the posterior mean, median, or mode.
+   * Frequentist: choose an estimator with good sampling properties, such as the sample proportion $\hat p=\overline{X}$.
+   * Bayesian: summarise the posterior, often using its mean, median, or mode.
 2. **Interval Estimation**
    Quantify uncertainty in $\theta$ by reporting a range.
 
-   * Frequentist: **confidence interval**
+   * Frequentist: a **confidence interval procedure** $[L(\underline{X}),U(\underline{X})]$ is random before data are observed and is designed to have a stated long-run coverage probability. Once $\underline{x}$ is observed, the reported endpoints $[L(\underline{x}),U(\underline{x})]$ are fixed.
 
-     $$
-     L \leq \theta \leq U
-     $$
-
-     with a given long-run coverage probability.
-   * Bayesian: **credible interval**, the posterior probability that $\theta$ lies in $[L,U]$ is, say, $95\%$.
+   * Bayesian: a **credible interval** $[L,U]$ can be chosen so that the posterior probability $\mathrm{Pr}(\theta\in[L,U]\mid\underline{x})$ is, say, $95\%$.
 
 3. **Hypothesis Testing**
-    Ask a **yes/no question** about the parameter $\theta$. This is done by formalising a claim (the *null hypothesis*) such as
+    Formalise and assess a claim about the parameter $\theta$, such as the *null hypothesis*
     $$
         H_0: \theta \in \Theta_0,
     $$
-    and then using the data to judge whether this claim is **compatible with the evidence**.
+    and then use the data to judge whether this claim is **compatible with the evidence**.
 
-   * **Frequentist approach:** base the decision on a **test statistic** and its distribution under $H_0$, leading to a **$p$-value** or a comparison with a **significance level**.
+   * **Frequentist approach:** base the decision on a **test statistic** and its distribution under $H_0$, leading to a **$p$-value** or a comparison with a **significance level**. The possible conclusions are to *reject* or *fail to reject* $H_0$; failure to reject does not prove that $H_0$ is true.
    * **Bayesian approach:** compare hypotheses using **posterior probabilities** or **Bayes factors**, quantifying how much the data shift our beliefs.
 
 4. **Prediction**
@@ -85,3 +106,32 @@ This course considers **point estimation**, **interval estimation** and **hypoth
 
 Prediction will be covered in future courses.
 :::
+
+::: {.callout-tip title="Checkpoint: identify the task"}
+Classify each goal as point estimation, interval estimation, hypothesis testing, or prediction.
+
+1. Report one value for the proportion who prefer space $A$.
+2. Report an interval to quantify uncertainty about that proportion.
+3. Assess the claim that the two spaces are equally popular.
+4. Predict how many of the next 50 students will prefer $A$.
+
+```{=html}
+<details>
+  <summary><strong>Check your answer</strong></summary>
+```
+
+The tasks are, respectively: **point estimation**, **interval estimation**, **hypothesis testing**, and **prediction**. The first three are assessed in this course; prediction is included only to complete the wider picture.
+
+```{=html}
+</details>
+```
+:::
+
+## Part I summary
+
+- Begin with a target population and distinguish the random sample $\underline{X}$ from the observed data $\underline{x}$.
+- State a model and its unknown parameter $\theta$, then examine whether its assumptions support the intended generalisation.
+- Choose an inferential task and interpret its output within the framework that produced it.
+- Frequentist probability evaluates possible samples and procedures with $\theta$ fixed; Bayesian probability can describe uncertainty about $\theta$ conditional on data and a prior.
+
+Part II begins with <span class="xref-no-num">[Frequentist Point Estimation @sec-freq-point-estimate]</span>, where we construct estimators and study their repeated-sampling properties.

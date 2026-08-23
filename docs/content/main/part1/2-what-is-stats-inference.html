@@ -671,6 +671,8 @@ window.Quarto = {
   <li><a href="#categorical-data" id="toc-categorical-data" class="nav-link" data-scroll-target="#categorical-data"><span class="header-section-number">2.2.3</span> Categorical data</a></li>
   </ul></li>
   <li><a href="#sec-statistical-models" id="toc-sec-statistical-models" class="nav-link" data-scroll-target="#sec-statistical-models"><span class="header-section-number">2.3</span> Statistical Models</a></li>
+  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding"><span class="header-section-number">2.4</span> Check your understanding</a></li>
+  <li><a href="#chapter-summary" id="toc-chapter-summary" class="nav-link" data-scroll-target="#chapter-summary"><span class="header-section-number">2.5</span> Chapter summary</a></li>
   </ul>
 </nav>
     </div>
@@ -698,26 +700,23 @@ window.Quarto = {
 
 
 <div class="callout callout-style-default callout-note callout-titled" title="Learning objectives">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
 <span class="screen-reader-only">Note</span>Learning objectives
 </div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
-<li>Define <em>population</em> and <em>sample</em>, and identify each in simple scenarios.</li>
-<li>State the <em>goal</em> of statistical inference: using a sample to learn about a population distribution.</li>
-<li>Recognise the idea of a <em>random sample</em> <span class="math inline">X_1,\dots,X_n</span> and the iid assumption.</li>
-<li>Define a <em>statistical model</em> as a set of distributions <span class="math inline">\{P_\theta:\theta\in\Theta\}</span>.</li>
-<li>Identify the <em>parameter(s)</em> <span class="math inline">\theta</span> and the <em>parameter space</em> <span class="math inline">\Theta</span> for a given model.</li>
-<li>Write down a suitable statistical model for a short verbal problem.</li>
+<li>Distinguish a <em>target population</em>, the random variables in a <em>sample</em>, and their observed data values.</li>
+<li>State the goal of statistical inference: using observed data to learn about a population distribution.</li>
+<li>Explain the iid assumption and why it is not the same as representative sampling.</li>
+<li>Read a provided statistical model and identify its parameter(s) <span class="math inline">\theta</span> and parameter space <span class="math inline">\Theta</span>.</li>
+<li>Connect common univariate data types to plausible probability models, while recognising that models are approximations.</li>
 </ul>
-</div>
+<p>Constructing a model from scratch and the fully formal definition of a model are useful context, but are explicitly marked <strong>non-examinable</strong> later in the chapter.</p>
 </div>
 </div>
 <div class="cell">
@@ -728,14 +727,27 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Statistical inference underpins experimental science, machine learning, clinical trials, and more. The overall aim is:</p>
+<p>Statistical inference underpins experimental science, machine learning, clinical trials, and more. This chapter first separates population, sample, and observed data; then classifies common data; and finally shows how a statistical model connects data to an unknown parameter. The overall aim is:</p>
 <ul>
-<li>Given a <strong>sample</strong> (the data you have) from a <strong>population</strong> (the broader group you care about),</li>
+<li>Given <strong>observed data</strong> from a sample connected to a clearly defined <strong>target population</strong>,</li>
 <li>Draw a justified <strong>conclusion about the population’s distribution</strong>.</li>
 </ul>
 <p>Typical conclusions include estimating a proportion or mean, quantifying uncertainty, comparing groups, or predicting future outcomes.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Recurring example: study-space preferences">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Recurring example: study-space preferences
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suppose the target population is all students eligible to use two campus study spaces this term. For student <span class="math inline">i</span>, let <span class="math inline">X_i=1</span> if they prefer space <span class="math inline">A</span> and <span class="math inline">X_i=0</span> if they prefer space <span class="math inline">B</span>. The population proportion <span class="math inline">p</span> who prefer <span class="math inline">A</span> will provide a simple thread through this chapter and the next.</p>
+</div>
+</div>
 <div id="imp-notation-dist" class="callout callout-style-simple callout-important callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -744,7 +756,7 @@ Important&nbsp;2.1: Notation: <span class="math inline">\mathrm{Distribution}(\t
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>In the following, we use <span class="math inline">\mathrm{Distribution}(\theta)</span> as a <strong>placeholder</strong> to mean:</p>
 <blockquote class="blockquote">
@@ -760,79 +772,98 @@ Important&nbsp;2.1: Notation: <span class="math inline">\mathrm{Distribution}(\t
 </div>
 </div>
 <div id="imp-terminology-sample" class="callout callout-style-simple callout-important callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
 Important&nbsp;2.2: Terminology: Population, Sample, Data
 </div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
-<li><strong>Population:</strong> the entire group we want to study (conceptual, often infinite).<br>
-</li>
-<li><strong>Sample:</strong> the <span class="math inline">n</span> random variables we actually collect from the population <span class="math inline">X_1,X_2,\ldots, X_n</span>.<br>
-</li>
-<li><strong>Data:</strong> the realised values of the sample once observed <span class="math inline">x_1,x_2,\ldots, x_n</span>.<br>
-</li>
-<li><strong>Observation / data point:</strong> a single element of the sample, e.g.&nbsp;<span class="math inline">X_i</span> (random) or <span class="math inline">x_i</span> (observed).</li>
+<li><strong>Target population:</strong> the broader group or collection of outcomes to which we want our conclusion to apply. It may be concrete, such as current students, or conceptual, such as future comparable patients.</li>
+<li><strong>Population distribution:</strong> the probability distribution describing a randomly selected outcome from that target population under our assumptions.</li>
+<li><strong>Sample (before observation):</strong> the random variables <span class="math inline">X_1,X_2,\ldots,X_n</span> used to represent the measurements we will observe.</li>
+<li><strong>Observed sample / data:</strong> the realised values <span class="math inline">x_1,x_2,\ldots,x_n</span> after measurement.</li>
+<li><strong>Observation / data point:</strong> one measurement, represented by <span class="math inline">X_i</span> before observation and <span class="math inline">x_i</span> afterwards.</li>
 </ul>
-<p><strong>Note:</strong> In practice, the terms <em>data</em>, <em>observations</em>, and <em>data points</em> are often used interchangeably. In these notes, we’ll do the same unless we need to be precise about whether something is random (sample) or fixed (data).</p>
-</div>
+<p><strong>Note:</strong> In everyday usage, <em>sample</em> often means the observed dataset itself. In mathematical derivations we distinguish the random sample <span class="math inline">\underline{X}=(X_1,\ldots,X_n)</span> from its realised value <span class="math inline">\underline{x}=(x_1,\ldots,x_n)</span>.</p>
 </div>
 </div>
 <section id="sec-stat-inf-as-inv-prob" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="sec-stat-inf-as-inv-prob"><span class="header-section-number">2.1</span> Statistical Inference as “Inverse Probability”</h2>
 <p>In <strong>probability theory</strong>, the usual direction is:</p>
 <ul>
-<li>Start with a distribution <span class="math inline">f(x \mid \theta)</span> (the model, with known parameter <span class="math inline">\theta</span>).</li>
+<li>Start with a distribution <span class="math inline">f(x \mid \theta)</span> for one outcome (the model, with known parameter <span class="math inline">\theta</span>).</li>
 <li>Use it to generate random samples, or calculate probabilities of events involving the data.</li>
 </ul>
 <p>In <strong>statistical inference</strong>, we reverse the problem:</p>
 <ul>
 <li>We observe data <span class="math inline">\underline{x} = (x_1,\ldots,x_n)</span>.</li>
 <li>The distribution <span class="math inline">f(x \mid \theta)</span> is only partially known, through the unknown parameter <span class="math inline">\theta</span>.</li>
-<li>Our task is to use the sample to learn about <span class="math inline">\theta</span>, and hence about the population distribution.</li>
+<li>Our task is to use the observed data to learn about <span class="math inline">\theta</span>, and hence about the population distribution.</li>
 </ul>
 <p>Formally, we (<em>usually</em>) assume our data are an <strong>i.i.d. sample</strong>:</p>
 <p><span class="math display">
 X_1,\ldots,X_n \stackrel{\text{iid}}{\sim} \mathrm{Distribution}(\theta).
 </span></p>
 <ul>
-<li><em>Independent</em>: knowing the value of one <span class="math inline">X_i</span> gives no information about any other.<br>
-</li>
+<li><em>Independent</em>: observing one <span class="math inline">X_i</span> does not change the distribution of any other.</li>
 <li><em>Identically distributed</em>: each <span class="math inline">X_i</span> comes from the same population distribution <span class="math inline">f(x \mid \theta)</span>.</li>
 </ul>
 <p>The goal of <em>statistical inference</em> is to use the observed sample to learn about <span class="math inline">\theta</span>, and hence about the underlying population.</p>
 <div id="imp-term-random-sample" class="callout callout-style-simple callout-important callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
 Important&nbsp;2.3: Terminology: Random Sample
 </div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
-<li><p>A <span class="xref-no-num"><a href="#imp-terminology-sample" class="quarto-xref">sample&nbsp;<span>2.2</span></a></span> means the <span class="math inline">n</span> random variables we collect from the population, <span class="math inline">X_1,\dots,X_n</span>. These need not be independent or identically distributed.</p></li>
+<li><p>A <span class="xref-no-num"><a href="#imp-terminology-sample" class="quarto-xref">sample&nbsp;<span>2.2</span></a></span> means the <span class="math inline">n</span> random variables used to represent our measurements before observation, <span class="math inline">X_1,\dots,X_n</span>. These need not be independent or identically distributed.</p></li>
 <li><p>A <strong>random sample</strong> is the special case where the <span class="math inline">X_i</span> are assumed <em>independent and identically distributed (i.i.d.)</em> from the same distribution: <span class="math display">
 X_1, \dots, X_n \stackrel{\text{iid}}{\sim} \mathrm{Distribution}(\theta).
 </span></p></li>
 </ul>
 <p>Most of the inference procedures in this course are developed under the random-sample (iid) assumption.</p>
+<p>The mathematical term <strong>random sample</strong> does not by itself guarantee that the observed people or objects represent the target population. Selection bias, under-coverage, or non-response can make an iid model inappropriate for the target of interest. Conversely, a simple random sample drawn <em>without replacement</em> from a finite population is not exactly independent, although the iid approximation is often reasonable when the population is much larger than the sample.</p>
 </div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Checkpoint: identify the ingredients">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Checkpoint: identify the ingredients
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Return to the study-space survey. Suppose 20 students volunteer through a social-media post and 12 prefer space <span class="math inline">A</span>.</p>
+<ol type="1">
+<li>What are the target population, <span class="math inline">X_i</span>, observed value <span class="math inline">x_i</span>, and parameter <span class="math inline">p</span>?</li>
+<li>Does “20 volunteers” alone make the sample representative or justify an iid model for the target population?</li>
+</ol>
+<details>
+  <summary><strong>Check your answer</strong></summary>
+<p>The target population is the eligible students defined above; <span class="math inline">X_i</span> is the preference indicator before observation; each <span class="math inline">x_i</span> is an observed 0 or 1; and <span class="math inline">p</span> is the population probability of preferring <span class="math inline">A</span>. Volunteering may be related to preference, so the recruitment method can create selection bias. An iid calculation may describe the volunteer mechanism without supporting generalisation to all eligible students.</p>
+</details>
 </div>
 </div>
 <section id="sec-inference-eye" class="level3" data-number="2.1.1">
 <h3 data-number="2.1.1" class="anchored" data-anchor-id="sec-inference-eye"><span class="header-section-number">2.1.1</span> Statistical Inference by Eye</h3>
 <p>As an informal starting point, suppose <span class="math inline">X_1,\ldots,X_n</span> are sampled from a <span class="math inline">\mathcal{N}(\mu,\sigma^2)</span> distribution, with <span class="math inline">\mu</span> and <span class="math inline">\sigma^2</span> unknown.</p>
 <p>Try to “guess” <span class="math inline">\mu</span> and <span class="math inline">\sigma^2</span> by eye from the data:</p>
+<p>Use a <strong>predict–observe–explain</strong> sequence:</p>
+<ol type="1">
+<li>Before opening the simulation controls, place the fitted curve by estimating the centre <span class="math inline">\mu</span> and variance <span class="math inline">\sigma^2</span>.</li>
+<li>Reveal the simulation settings and compare your estimate with the true values.</li>
+<li>Resimulate at the same settings. Explain why your estimate changes even though <span class="math inline">\mu</span> and <span class="math inline">\sigma^2</span> do not, then compare a small and a large sample size.</li>
+</ol>
 <hr>
 <details>
   <summary> Show Visualisation </summary>
@@ -937,119 +968,120 @@ X_1, \dots, X_n \stackrel{\text{iid}}{\sim} \mathrm{Distribution}(\theta).
 <span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Initial value</span></span>
 <span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> state <span class="op">=</span> {</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="dt">approxMu</span><span class="op">:</span> <span class="fu">clamp</span>(mu_true<span class="op">,</span> mu_min<span class="op">,</span> mu_max)<span class="op">,</span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="dt">approxVar</span><span class="op">:</span> <span class="fu">clamp</span>((var_max <span class="op">-</span> var_min) <span class="op">*</span> <span class="fl">0.4</span><span class="op">,</span> var_min<span class="op">,</span> var_max)</span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> bg <span class="op">=</span> <span class="st">"var(--plot-bg)"</span><span class="op">;</span></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> grid <span class="op">=</span> <span class="st">"var(--plot-grid)"</span><span class="op">;</span></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> colHandle <span class="op">=</span> <span class="st">"var(--plot-series-4)"</span><span class="op">;</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> colAccent <span class="op">=</span> <span class="st">"var(--plot-series-1)"</span><span class="op">;</span></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Wrapper that controls responsive size</span></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> wrap <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="</span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="vs">    width: 100%;</span></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="vs">    max-width: 320px;      /* cap size; tweak as you like */</span></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="vs">    aspect-ratio: 1 / 1;   /* keep it square */</span></span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="vs">    display: block;</span></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="vs">  "&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>  <span class="co">// SVG uses logical coords; CSS scales it</span></span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> svg <span class="op">=</span> d3<span class="op">.</span><span class="fu">create</span>(<span class="st">"svg"</span>)</span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"viewBox"</span><span class="op">,</span> <span class="vs">`0 0 </span><span class="sc">${</span>width<span class="sc">}</span><span class="vs"> </span><span class="sc">${</span>height<span class="sc">}</span><span class="vs">`</span>)</span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"preserveAspectRatio"</span><span class="op">,</span> <span class="st">"xMidYMid meet"</span>)</span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"width"</span><span class="op">,</span> <span class="st">"100%"</span>)</span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"height"</span><span class="op">,</span> <span class="st">"100%"</span>)</span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"background"</span><span class="op">,</span> <span class="st">"transparent"</span>)</span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"color"</span><span class="op">,</span> <span class="st">"var(--plot-fg)"</span>)</span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-opacity"</span><span class="op">,</span> <span class="fl">0.</span>)</span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-family"</span><span class="op">,</span> bodyFont)</span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-size"</span><span class="op">,</span> <span class="st">"14px"</span>)<span class="op">;</span></span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> g <span class="op">=</span> svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"g"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"transform"</span><span class="op">,</span> <span class="vs">`translate(</span><span class="sc">${</span>margin<span class="op">.</span><span class="at">left</span><span class="sc">}</span><span class="vs">,</span><span class="sc">${</span>margin<span class="op">.</span><span class="at">top</span><span class="sc">}</span><span class="vs">)`</span>)<span class="op">;</span></span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Background panel</span></span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>  g<span class="op">.</span><span class="fu">append</span>(<span class="st">"rect"</span>)</span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> W)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> H)</span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"rx"</span><span class="op">,</span> <span class="dv">10</span>)</span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> bg)</span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> grid)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-opacity"</span><span class="op">,</span> <span class="fl">0.5</span>)<span class="op">;</span></span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Crosshairs</span></span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> crossX <span class="op">=</span> g<span class="op">.</span><span class="fu">append</span>(<span class="st">"line"</span>)</span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> colAccent)</span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-opacity"</span><span class="op">,</span> <span class="fl">0.7</span>)</span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-width"</span><span class="op">,</span> <span class="fl">1.5</span>)<span class="op">;</span></span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> crossY <span class="op">=</span> g<span class="op">.</span><span class="fu">append</span>(<span class="st">"line"</span>)</span>
-<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> colAccent)</span>
-<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-opacity"</span><span class="op">,</span> <span class="fl">0.7</span>)</span>
-<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-width"</span><span class="op">,</span> <span class="fl">1.5</span>)<span class="op">;</span></span>
-<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Handle</span></span>
-<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> handle <span class="op">=</span> g<span class="op">.</span><span class="fu">append</span>(<span class="st">"circle"</span>)</span>
-<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"r"</span><span class="op">,</span> <span class="dv">5</span>)</span>
-<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> colHandle)</span>
-<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> <span class="st">"var(--plot-on-accent)"</span>)</span>
-<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-width"</span><span class="op">,</span> <span class="fl">1.5</span>)</span>
-<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"cursor"</span><span class="op">,</span> <span class="st">"grab"</span>)<span class="op">;</span></span>
-<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Readout</span></span>
-<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> readout <span class="op">=</span> svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"text"</span>)</span>
-<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> width <span class="op">/</span> <span class="dv">2</span>)        <span class="co">// center horizontally</span></span>
-<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> margin<span class="op">.</span><span class="at">top</span> <span class="op">/</span> <span class="fl">1.5</span>) <span class="co">// just above the chart area</span></span>
-<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"text-anchor"</span><span class="op">,</span> <span class="st">"middle"</span>)</span>
-<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"var(--plot-fg)"</span>)</span>
-<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-weight"</span><span class="op">,</span> <span class="dv">400</span>)<span class="op">;</span></span>
-<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">updateVisual</span>() {</span>
-<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> cx <span class="op">=</span> <span class="fu">x</span>(state<span class="op">.</span><span class="at">approxMu</span>)<span class="op">,</span> cy <span class="op">=</span> <span class="fu">y</span>(state<span class="op">.</span><span class="at">approxVar</span>)<span class="op">;</span></span>
-<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a>    crossX<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x1"</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x2"</span><span class="op">,</span> W)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y1"</span><span class="op">,</span> cy)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y2"</span><span class="op">,</span> cy)<span class="op">;</span></span>
-<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a>    crossY<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x1"</span><span class="op">,</span> cx)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x2"</span><span class="op">,</span> cx)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y1"</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y2"</span><span class="op">,</span> H)<span class="op">;</span></span>
-<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a>    handle<span class="op">.</span><span class="fu">attr</span>(<span class="st">"cx"</span><span class="op">,</span> cx)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"cy"</span><span class="op">,</span> cy)<span class="op">;</span></span>
-<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a>    readout<span class="op">.</span><span class="fu">text</span>(<span class="vs">`μ≈ </span><span class="sc">${</span>state<span class="op">.</span><span class="at">approxMu</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">,        σ²≈ </span><span class="sc">${</span>state<span class="op">.</span><span class="at">approxVar</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
-<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">setFromPointer</span>(evt) {</span>
-<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> [px<span class="op">,</span> py] <span class="op">=</span> d3<span class="op">.</span><span class="fu">pointer</span>(evt<span class="op">,</span> g<span class="op">.</span><span class="fu">node</span>())<span class="op">;</span> <span class="co">// in SVG user units (matches viewBox)</span></span>
-<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> mu <span class="op">=</span> <span class="fu">clamp</span>(x<span class="op">.</span><span class="fu">invert</span>(px)<span class="op">,</span> mu_min<span class="op">,</span> mu_max)<span class="op">;</span></span>
-<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> vv <span class="op">=</span> <span class="fu">clamp</span>(y<span class="op">.</span><span class="fu">invert</span>(py)<span class="op">,</span> var_min<span class="op">,</span> var_max)<span class="op">;</span></span>
-<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a>    state <span class="op">=</span> { <span class="dt">approxMu</span><span class="op">:</span> mu<span class="op">,</span> <span class="dt">approxVar</span><span class="op">:</span> vv }<span class="op">;</span></span>
-<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a>    <span class="bu">root</span><span class="op">.</span><span class="at">value</span> <span class="op">=</span> { <span class="dt">approxMu</span><span class="op">:</span> state<span class="op">.</span><span class="at">approxMu</span><span class="op">,</span> <span class="dt">approxVar</span><span class="op">:</span> state<span class="op">.</span><span class="at">approxVar</span> }<span class="op">;</span></span>
-<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a>    <span class="bu">root</span><span class="op">.</span><span class="fu">dispatchEvent</span>(<span class="kw">new</span> <span class="bu">CustomEvent</span>(<span class="st">"input"</span><span class="op">,</span> {<span class="dt">bubbles</span><span class="op">:</span> <span class="kw">true</span>}))<span class="op">;</span></span>
-<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a>    <span class="fu">updateVisual</span>()<span class="op">;</span></span>
-<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Interaction overlay</span></span>
-<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a>  g<span class="op">.</span><span class="fu">append</span>(<span class="st">"rect"</span>)</span>
-<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> W)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> H)</span>
-<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"transparent"</span>)</span>
-<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"cursor"</span><span class="op">,</span> <span class="st">"crosshair"</span>)</span>
-<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">on</span>(<span class="st">"pointerdown"</span><span class="op">,</span> <span class="kw">function</span>(evt) {</span>
-<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a>      <span class="kw">this</span><span class="op">.</span><span class="at">setPointerCapture</span><span class="op">?.</span>(evt<span class="op">.</span><span class="at">pointerId</span>)<span class="op">;</span></span>
-<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a>      handle<span class="op">.</span><span class="fu">style</span>(<span class="st">"cursor"</span><span class="op">,</span> <span class="st">"grabbing"</span>)<span class="op">;</span></span>
-<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a>      <span class="fu">setFromPointer</span>(evt)<span class="op">;</span></span>
-<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">on</span>(<span class="st">"pointermove"</span><span class="op">,</span> <span class="kw">function</span>(evt) {</span>
-<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (evt<span class="op">.</span><span class="at">pressure</span> <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">||</span> evt<span class="op">.</span><span class="at">buttons</span>) <span class="fu">setFromPointer</span>(evt)<span class="op">;</span></span>
-<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">on</span>(<span class="st">"pointerup"</span><span class="op">,</span> <span class="kw">function</span>(evt) {</span>
-<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a>      <span class="kw">this</span><span class="op">.</span><span class="at">releasePointerCapture</span><span class="op">?.</span>(evt<span class="op">.</span><span class="at">pointerId</span>)<span class="op">;</span></span>
-<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a>      handle<span class="op">.</span><span class="fu">style</span>(<span class="st">"cursor"</span><span class="op">,</span> <span class="st">"grab"</span>)<span class="op">;</span></span>
-<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
-<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Root element with .value is the wrapper (so CSS controls size)</span></span>
-<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> <span class="bu">root</span> <span class="op">=</span> wrap<span class="op">;</span></span>
-<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a>  <span class="bu">root</span><span class="op">.</span><span class="fu">append</span>(svg<span class="op">.</span><span class="fu">node</span>())<span class="op">;</span></span>
-<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a>  <span class="bu">root</span><span class="op">.</span><span class="at">value</span> <span class="op">=</span> { <span class="dt">approxMu</span><span class="op">:</span> state<span class="op">.</span><span class="at">approxMu</span><span class="op">,</span> <span class="dt">approxVar</span><span class="op">:</span> state<span class="op">.</span><span class="at">approxVar</span> }<span class="op">;</span></span>
-<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-129"><a href="#cb3-129" aria-hidden="true" tabindex="-1"></a>  <span class="fu">updateVisual</span>()<span class="op">;</span></span>
-<span id="cb3-130"><a href="#cb3-130" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">root</span><span class="op">;</span></span>
-<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-132"><a href="#cb3-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-133"><a href="#cb3-133" aria-hidden="true" tabindex="-1"></a><span class="co">// Reactive outputs</span></span>
-<span id="cb3-134"><a href="#cb3-134" aria-hidden="true" tabindex="-1"></a>approxMu <span class="op">=</span> muVar2D<span class="op">.</span><span class="at">approxMu</span></span>
-<span id="cb3-135"><a href="#cb3-135" aria-hidden="true" tabindex="-1"></a>approxVar <span class="op">=</span> muVar2D<span class="op">.</span><span class="at">approxVar</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Start from a neutral guess rather than revealing the generating values.</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="dt">approxMu</span><span class="op">:</span> <span class="fu">clamp</span>(<span class="dv">0</span><span class="op">,</span> mu_min<span class="op">,</span> mu_max)<span class="op">,</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="dt">approxVar</span><span class="op">:</span> <span class="fu">clamp</span>(<span class="dv">1</span><span class="op">,</span> var_min<span class="op">,</span> var_max)</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> bg <span class="op">=</span> <span class="st">"var(--plot-bg)"</span><span class="op">;</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> grid <span class="op">=</span> <span class="st">"var(--plot-grid)"</span><span class="op">;</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> colHandle <span class="op">=</span> <span class="st">"var(--plot-series-4)"</span><span class="op">;</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> colAccent <span class="op">=</span> <span class="st">"var(--plot-series-1)"</span><span class="op">;</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Wrapper that controls responsive size</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> wrap <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="vs">    width: 100%;</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="vs">    max-width: 320px;      /* cap size; tweak as you like */</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="vs">    aspect-ratio: 1 / 1;   /* keep it square */</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="vs">    display: block;</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="vs">  "&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>  <span class="co">// SVG uses logical coords; CSS scales it</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> svg <span class="op">=</span> d3<span class="op">.</span><span class="fu">create</span>(<span class="st">"svg"</span>)</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"viewBox"</span><span class="op">,</span> <span class="vs">`0 0 </span><span class="sc">${</span>width<span class="sc">}</span><span class="vs"> </span><span class="sc">${</span>height<span class="sc">}</span><span class="vs">`</span>)</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"preserveAspectRatio"</span><span class="op">,</span> <span class="st">"xMidYMid meet"</span>)</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"width"</span><span class="op">,</span> <span class="st">"100%"</span>)</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"height"</span><span class="op">,</span> <span class="st">"100%"</span>)</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"background"</span><span class="op">,</span> <span class="st">"transparent"</span>)</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"color"</span><span class="op">,</span> <span class="st">"var(--plot-fg)"</span>)</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-opacity"</span><span class="op">,</span> <span class="fl">0.</span>)</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-family"</span><span class="op">,</span> bodyFont)</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-size"</span><span class="op">,</span> <span class="st">"14px"</span>)<span class="op">;</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> g <span class="op">=</span> svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"g"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"transform"</span><span class="op">,</span> <span class="vs">`translate(</span><span class="sc">${</span>margin<span class="op">.</span><span class="at">left</span><span class="sc">}</span><span class="vs">,</span><span class="sc">${</span>margin<span class="op">.</span><span class="at">top</span><span class="sc">}</span><span class="vs">)`</span>)<span class="op">;</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Background panel</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>  g<span class="op">.</span><span class="fu">append</span>(<span class="st">"rect"</span>)</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> W)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> H)</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"rx"</span><span class="op">,</span> <span class="dv">10</span>)</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> bg)</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> grid)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-opacity"</span><span class="op">,</span> <span class="fl">0.5</span>)<span class="op">;</span></span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Crosshairs</span></span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> crossX <span class="op">=</span> g<span class="op">.</span><span class="fu">append</span>(<span class="st">"line"</span>)</span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> colAccent)</span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-opacity"</span><span class="op">,</span> <span class="fl">0.7</span>)</span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-width"</span><span class="op">,</span> <span class="fl">1.5</span>)<span class="op">;</span></span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> crossY <span class="op">=</span> g<span class="op">.</span><span class="fu">append</span>(<span class="st">"line"</span>)</span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> colAccent)</span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-opacity"</span><span class="op">,</span> <span class="fl">0.7</span>)</span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-width"</span><span class="op">,</span> <span class="fl">1.5</span>)<span class="op">;</span></span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Handle</span></span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> handle <span class="op">=</span> g<span class="op">.</span><span class="fu">append</span>(<span class="st">"circle"</span>)</span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"r"</span><span class="op">,</span> <span class="dv">5</span>)</span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> colHandle)</span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> <span class="st">"var(--plot-on-accent)"</span>)</span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-width"</span><span class="op">,</span> <span class="fl">1.5</span>)</span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"cursor"</span><span class="op">,</span> <span class="st">"grab"</span>)<span class="op">;</span></span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Readout</span></span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> readout <span class="op">=</span> svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"text"</span>)</span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> width <span class="op">/</span> <span class="dv">2</span>)        <span class="co">// center horizontally</span></span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> margin<span class="op">.</span><span class="at">top</span> <span class="op">/</span> <span class="fl">1.5</span>) <span class="co">// just above the chart area</span></span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"text-anchor"</span><span class="op">,</span> <span class="st">"middle"</span>)</span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"var(--plot-fg)"</span>)</span>
+<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-weight"</span><span class="op">,</span> <span class="dv">400</span>)<span class="op">;</span></span>
+<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">updateVisual</span>() {</span>
+<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> cx <span class="op">=</span> <span class="fu">x</span>(state<span class="op">.</span><span class="at">approxMu</span>)<span class="op">,</span> cy <span class="op">=</span> <span class="fu">y</span>(state<span class="op">.</span><span class="at">approxVar</span>)<span class="op">;</span></span>
+<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a>    crossX<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x1"</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x2"</span><span class="op">,</span> W)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y1"</span><span class="op">,</span> cy)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y2"</span><span class="op">,</span> cy)<span class="op">;</span></span>
+<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a>    crossY<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x1"</span><span class="op">,</span> cx)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x2"</span><span class="op">,</span> cx)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y1"</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y2"</span><span class="op">,</span> H)<span class="op">;</span></span>
+<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a>    handle<span class="op">.</span><span class="fu">attr</span>(<span class="st">"cx"</span><span class="op">,</span> cx)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"cy"</span><span class="op">,</span> cy)<span class="op">;</span></span>
+<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a>    readout<span class="op">.</span><span class="fu">text</span>(<span class="vs">`μ≈ </span><span class="sc">${</span>state<span class="op">.</span><span class="at">approxMu</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">,        σ²≈ </span><span class="sc">${</span>state<span class="op">.</span><span class="at">approxVar</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
+<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">setFromPointer</span>(evt) {</span>
+<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> [px<span class="op">,</span> py] <span class="op">=</span> d3<span class="op">.</span><span class="fu">pointer</span>(evt<span class="op">,</span> g<span class="op">.</span><span class="fu">node</span>())<span class="op">;</span> <span class="co">// in SVG user units (matches viewBox)</span></span>
+<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> mu <span class="op">=</span> <span class="fu">clamp</span>(x<span class="op">.</span><span class="fu">invert</span>(px)<span class="op">,</span> mu_min<span class="op">,</span> mu_max)<span class="op">;</span></span>
+<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> vv <span class="op">=</span> <span class="fu">clamp</span>(y<span class="op">.</span><span class="fu">invert</span>(py)<span class="op">,</span> var_min<span class="op">,</span> var_max)<span class="op">;</span></span>
+<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a>    state <span class="op">=</span> { <span class="dt">approxMu</span><span class="op">:</span> mu<span class="op">,</span> <span class="dt">approxVar</span><span class="op">:</span> vv }<span class="op">;</span></span>
+<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a>    <span class="bu">root</span><span class="op">.</span><span class="at">value</span> <span class="op">=</span> { <span class="dt">approxMu</span><span class="op">:</span> state<span class="op">.</span><span class="at">approxMu</span><span class="op">,</span> <span class="dt">approxVar</span><span class="op">:</span> state<span class="op">.</span><span class="at">approxVar</span> }<span class="op">;</span></span>
+<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a>    <span class="bu">root</span><span class="op">.</span><span class="fu">dispatchEvent</span>(<span class="kw">new</span> <span class="bu">CustomEvent</span>(<span class="st">"input"</span><span class="op">,</span> {<span class="dt">bubbles</span><span class="op">:</span> <span class="kw">true</span>}))<span class="op">;</span></span>
+<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a>    <span class="fu">updateVisual</span>()<span class="op">;</span></span>
+<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Interaction overlay</span></span>
+<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a>  g<span class="op">.</span><span class="fu">append</span>(<span class="st">"rect"</span>)</span>
+<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> W)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> H)</span>
+<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"transparent"</span>)</span>
+<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"cursor"</span><span class="op">,</span> <span class="st">"crosshair"</span>)</span>
+<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">on</span>(<span class="st">"pointerdown"</span><span class="op">,</span> <span class="kw">function</span>(evt) {</span>
+<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a>      <span class="kw">this</span><span class="op">.</span><span class="at">setPointerCapture</span><span class="op">?.</span>(evt<span class="op">.</span><span class="at">pointerId</span>)<span class="op">;</span></span>
+<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a>      handle<span class="op">.</span><span class="fu">style</span>(<span class="st">"cursor"</span><span class="op">,</span> <span class="st">"grabbing"</span>)<span class="op">;</span></span>
+<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a>      <span class="fu">setFromPointer</span>(evt)<span class="op">;</span></span>
+<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">on</span>(<span class="st">"pointermove"</span><span class="op">,</span> <span class="kw">function</span>(evt) {</span>
+<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (evt<span class="op">.</span><span class="at">pressure</span> <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">||</span> evt<span class="op">.</span><span class="at">buttons</span>) <span class="fu">setFromPointer</span>(evt)<span class="op">;</span></span>
+<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">on</span>(<span class="st">"pointerup"</span><span class="op">,</span> <span class="kw">function</span>(evt) {</span>
+<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a>      <span class="kw">this</span><span class="op">.</span><span class="at">releasePointerCapture</span><span class="op">?.</span>(evt<span class="op">.</span><span class="at">pointerId</span>)<span class="op">;</span></span>
+<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a>      handle<span class="op">.</span><span class="fu">style</span>(<span class="st">"cursor"</span><span class="op">,</span> <span class="st">"grab"</span>)<span class="op">;</span></span>
+<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
+<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Root element with .value is the wrapper (so CSS controls size)</span></span>
+<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> <span class="bu">root</span> <span class="op">=</span> wrap<span class="op">;</span></span>
+<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a>  <span class="bu">root</span><span class="op">.</span><span class="fu">append</span>(svg<span class="op">.</span><span class="fu">node</span>())<span class="op">;</span></span>
+<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a>  <span class="bu">root</span><span class="op">.</span><span class="at">value</span> <span class="op">=</span> { <span class="dt">approxMu</span><span class="op">:</span> state<span class="op">.</span><span class="at">approxMu</span><span class="op">,</span> <span class="dt">approxVar</span><span class="op">:</span> state<span class="op">.</span><span class="at">approxVar</span> }<span class="op">;</span></span>
+<span id="cb3-129"><a href="#cb3-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-130"><a href="#cb3-130" aria-hidden="true" tabindex="-1"></a>  <span class="fu">updateVisual</span>()<span class="op">;</span></span>
+<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">root</span><span class="op">;</span></span>
+<span id="cb3-132"><a href="#cb3-132" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-133"><a href="#cb3-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-134"><a href="#cb3-134" aria-hidden="true" tabindex="-1"></a><span class="co">// Reactive outputs</span></span>
+<span id="cb3-135"><a href="#cb3-135" aria-hidden="true" tabindex="-1"></a>approxMu <span class="op">=</span> muVar2D<span class="op">.</span><span class="at">approxMu</span></span>
+<span id="cb3-136"><a href="#cb3-136" aria-hidden="true" tabindex="-1"></a>approxVar <span class="op">=</span> muVar2D<span class="op">.</span><span class="at">approxVar</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-3-1" data-nodetype="declaration">
@@ -1156,10 +1188,10 @@ X_1, \dots, X_n \stackrel{\text{iid}}{\sim} \mathrm{Distribution}(\theta).
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">bins</span><span class="op">:</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">10</span><span class="op">,</span> <span class="dv">60</span>]<span class="op">,</span> { <span class="dt">value</span><span class="op">:</span> <span class="dv">12</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Histogram bins"</span> })</span>
 <span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span> { <span class="dt">submit</span><span class="op">:</span> <span class="kw">false</span> })<span class="op">;</span></span>
 <span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> <span class="bu">root</span> <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;details class="controls-root" open&gt;</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;summary&gt;Simulation controls&lt;/summary&gt;</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> <span class="bu">root</span> <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;details class="controls-root"&gt;</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;summary&gt;Reveal simulation controls and true values&lt;/summary&gt;</span></span>
 <span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="controls-grid"&gt;</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;div class="controls-col"&gt;&lt;h4&gt;Data &amp; truth&lt;/h4&gt;&lt;/div&gt;</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;div class="controls-col"&gt;&lt;h4&gt;Data-generating values&lt;/h4&gt;&lt;/div&gt;</span></span>
 <span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;div class="controls-col"&gt;&lt;h4&gt;Grid &amp; display&lt;/h4&gt;&lt;/div&gt;</span></span>
 <span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;</span></span>
 <span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/details&gt;`</span><span class="op">;</span></span>
@@ -1247,15 +1279,29 @@ X_1, \dots, X_n \stackrel{\text{iid}}{\sim} \mathrm{Distribution}(\theta).
 </div>
 </details>
 <hr>
+<p>In words, <span class="math inline">\mu</span> controls the distribution’s centre, <span class="math inline">\sigma</span> controls its typical spread, and <span class="math inline">\sigma^2</span> is the variance. A finite sample will not reproduce either feature exactly, and estimates usually stabilise as <span class="math inline">n</span> increases.</p>
 </section>
 </section>
 <section id="sec-types-of-data" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="sec-types-of-data"><span class="header-section-number">2.2</span> Types of Data</h2>
 <p>Before we build <strong>statistical models</strong>, it helps to think about the kinds of data we might collect. Different data types naturally lead to different models.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Scope of this course
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The assessed methods in this course focus on <strong>univariate data</strong>: one measurement per observational unit. Multivariate and high-dimensional examples below provide context for later courses and may be skimmed on a first reading.</p>
+</div>
+</div>
 <section id="univariate-vs.-multivariate-data" class="level3" data-number="2.2.1">
 <h3 data-number="2.2.1" class="anchored" data-anchor-id="univariate-vs.-multivariate-data"><span class="header-section-number">2.2.1</span> Univariate vs.&nbsp;Multivariate data</h3>
 <div id="imp-term-unit" class="callout callout-style-simple callout-important callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1264,7 +1310,7 @@ Important&nbsp;2.4: Terminology: Unit
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>An <strong>observational unit</strong> (or simply <em>unit</em>) is a single element of the population on which we make a measurement.</p>
 <ul>
@@ -1414,7 +1460,19 @@ Table&nbsp;2.2: <strong>Weather data.</strong> Average rainfall, wind speed, and
 </div>
 </div>
 </div>
-<p>Some data is <strong>extremely high-dimensional</strong>:</p>
+<p>Some data are <strong>extremely high-dimensional</strong>. The following example is enrichment rather than assessed content.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Enrichment: image data">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Enrichment: image data
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <div class="callout callout-style-simple callout-caution no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -1434,7 +1492,7 @@ Figure&nbsp;2.1: A 32×32 image of a cat, broken into its three colour channels 
 </figcaption>
 </figure>
 </div>
-<p>Each pixel has <strong>multiple measurements</strong> (one per channel), so images are an example of <strong>high-dimensional multivariate data</strong>. To see why, consider the size of real images:</p>
+<p>If the whole image is one observational unit, each pixel–channel position is one variable. An image is therefore a <strong>high-dimensional multivariate observation</strong>. To see why, consider the size of real images:</p>
 <ul>
 <li>A tiny image of size <span class="math inline">32\times 32</span> pixels with 3 channels (RGB) already has <span class="math inline">32\times 32 \times 3 = 3072</span> measurements.</li>
 <li>A small image of size <span class="math inline">128 \times 128</span> pixels with 3 channels (RGB) has<br>
@@ -1448,18 +1506,7 @@ Figure&nbsp;2.1: A 32×32 image of a cat, broken into its three colour channels 
 </div>
 </div>
 </div>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
 </div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Non-Examinable Content: Multivariate Data
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>In this course we focus <strong>only on univariate data</strong> (one measurement per observational unit).</p>
-<p>Although many real-world problems involve <strong>multivariate data</strong> (two or more measurements on the same unit), this topic will be studied in later statistics courses.</p>
 </div>
 </div>
 </section>
@@ -1516,7 +1563,7 @@ Figure&nbsp;2.1: A 32×32 image of a cat, broken into its three colour channels 
 </table>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-tbl" id="tbl-astronomy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2.3: <strong>Astronomy data.</strong> The brightness of a star (its <em>magnitude</em>) is measured on a continuous scale. .
+Table&nbsp;2.3: <strong>Astronomy data.</strong> The brightness of a star (its <em>magnitude</em>) is measured on a continuous scale.
 </figcaption>
 </figure>
 </div>
@@ -1593,13 +1640,13 @@ Table&nbsp;2.3: <strong>Astronomy data.</strong> The brightness of a star (its <
 </table>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-tbl" id="tbl-goals-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2.4: <strong>Sports analytics.</strong> Goals scored in football matches are discrete counts. Each match provides <em>multivariate discrete data</em> (two counts per unit).
+Table&nbsp;2.4: <strong>Sports analytics.</strong> Goals scored in football matches are discrete counts. Each match provides <em>multivariate discrete data</em> (two counts per unit); analysing home goals alone would give a univariate count. The values shown are illustrative.
 </figcaption>
 </figure>
 </div>
 </div>
 <div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
-<p>In practice, most datasets are <strong>mixed</strong></p>
+<p>In practice, most datasets are <strong>mixed</strong>.</p>
 <div id="tbl-mixed" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <div aria-describedby="tbl-mixed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1647,7 +1694,7 @@ Table&nbsp;2.4: <strong>Sports analytics.</strong> Goals scored in football matc
 </table>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-tbl" id="tbl-mixed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2.5: <strong>Medical study.</strong> Here each patient (unit) has both continuous and discrete measurements.
+Table&nbsp;2.5: <strong>Medical study.</strong> Here each patient (unit) has two numerical measurements and one categorical measurement. The values shown are illustrative.
 </figcaption>
 </figure>
 </div>
@@ -1699,7 +1746,7 @@ Table&nbsp;2.5: <strong>Medical study.</strong> Here each patient (unit) has bot
 </tr>
 </tbody>
 </table>
-<p>This simple <em>one-way</em> table leads naturally to the <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-multinomial" class="quarto-xref">multinomial model&nbsp;<span>1.3</span></a></span>.</p>
+<p>This simple <em>one-way</em> table leads naturally to the <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-multinomial" class="quarto-xref">multinomial model&nbsp;<span>2.3</span></a></span>.</p>
 </div>
 <div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
 <p>Suppose we also record the <em>shop</em> where each sweet was bought (Shop A or Shop B).<br>
@@ -1748,11 +1795,29 @@ Now we cross-classify by both colour and shop:</p>
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Checkpoint: classify before modelling">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Checkpoint: classify before modelling
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Classify each variable as continuous numerical, discrete numerical, nominal categorical, or ordinal categorical: measured reaction time; number of goals; preferred study space <span class="math inline">A/B</span>; satisfaction rating from “poor” to “excellent”.</p>
+<details>
+  <summary><strong>Check your answer</strong></summary>
+<p>In the idealised models used here these are, respectively: <strong>continuous numerical</strong>, <strong>discrete numerical</strong>, <strong>nominal categorical</strong>, and <strong>ordinal categorical</strong>. Recorded measurements may be rounded, but the model can still treat the underlying quantity as continuous.</p>
+</details>
+</div>
+</div>
 </section>
 </section>
 <section id="sec-statistical-models" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="sec-statistical-models"><span class="header-section-number">2.3</span> Statistical Models</h2>
 <p>Whenever we perform statistical inference, we must specify a <strong>model</strong>.</p>
+<p>A model records assumptions about both the distribution of each observation and how observations relate to one another. Choosing a named distribution is therefore only one part of modelling; assumptions such as independence and a common parameter matter too.</p>
 <p>In <a href="#sec-stat-inf-as-inv-prob" class="quarto-xref"><span>Section 2.1</span></a> we wrote <span class="math display">
 X_1,\ldots,X_n \stackrel{\text{iid}}{\sim} \mathrm{Distribution}(\theta)
 </span> using <span class="math inline">\mathrm{Distribution}(\theta)</span> as a placeholder for “some distribution indexed by <span class="math inline">\theta</span>”.</p>
@@ -1769,7 +1834,7 @@ Concretely, it is a <strong>family of possible distributions</strong>, one for e
 <div class="callout-body-container">
 <div id="exm-exponential-model" class="example theorem">
 <p><span class="theorem-title"><strong>Example 2.2 (Exponential model)</strong></span> Suppose we are interested in modelling <strong>waiting times</strong> until some event occurs (e.g.&nbsp;the time between customer arrivals at a service desk).</p>
-<p>A natural assumption is that the data are i.i.d. <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-exp" class="quarto-xref">exponential&nbsp;<span>2.2</span></a></span>: <span class="math display">
+<p>A natural assumption is that the data are i.i.d. <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-exp" class="quarto-xref">exponential&nbsp;<span>3.2</span></a></span>: <span class="math display">
 X_1,\ldots, X_n \stackrel{\text{iid}}{\sim}\mathrm{Exponential}(\lambda).
 </span></p>
 <ul>
@@ -1777,7 +1842,7 @@ X_1,\ldots, X_n \stackrel{\text{iid}}{\sim}\mathrm{Exponential}(\lambda).
 <li><strong>Parameter:</strong> <span class="math inline">\theta = \lambda</span></li>
 <li><strong>Parameter space</strong><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> <strong>:</strong> <span class="math inline">\Theta = \{ \lambda \mid \lambda &gt; 0\} = (0,\infty)</span></li>
 </ul>
-<p>The exponential model often arises in <em>Poisson processes</em>, where events occur independently at a constant rate (e.g.&nbsp;radioactive decay, arrivals at a bus stop).</p>
+<p>The exponential model often arises in <em>Poisson processes</em>, where events occur independently at a constant rate (e.g.&nbsp;radioactive decay or customer arrivals at a service desk).</p>
 </div>
 </div>
 </div>
@@ -1803,6 +1868,30 @@ X_1,\ldots, X_n \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2).
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Checkpoint: question the model">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Checkpoint: question the model
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A useful model need not be literally true, but its assumptions should be reasonable for the intended purpose.</p>
+<ol type="1">
+<li>Why might an exponential model be poor for waiting times when the arrival rate changes sharply during the day?</li>
+<li>What feature of a Normal model makes it only an approximation for human height?</li>
+</ol>
+<details>
+  <summary><strong>Check your answer</strong></summary>
+<ol type="1">
+<li>A single exponential rate assumes a constant event rate (and the associated memoryless waiting-time structure); a changing rate violates that assumption.</li>
+<li>A Normal distribution is symmetric and has unbounded support, so it assigns some probability to impossible negative heights. It can nevertheless approximate the central part of a height distribution well.</li>
+</ol>
+</details>
+</div>
+</div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1818,9 +1907,9 @@ X_1,\ldots, X_n \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2).
 A <em>parameter</em> <span class="math inline">\theta</span> describes a feature of the population (e.g.&nbsp;<span class="math inline">p, \mu, \sigma^2</span>).<br>
 A <em>statistic</em> (e.g.&nbsp;<span class="math inline">\bar{X}</span>, a sample proportion) is calculated from the sample and used to learn about <span class="math inline">\theta</span>.</p></li>
 <li><p><strong>“Random sample” is not just “whatever data we found”.</strong><br>
-A random sample means data collected in a way that makes the i.i.d. assumption reasonable (e.g.&nbsp;independent trials, simple random sampling).</p>
+In this course, a random sample is the mathematical iid model for <span class="math inline">X_1,\ldots,X_n</span>. Whether that model supports inference to the target population also depends on the recruitment or sampling mechanism.</p>
 <blockquote class="blockquote">
-<p>Example: If your population is <em>all humans on the planet</em>, then sampling only your family would not be random and could bias inference.</p>
+<p>Example: If the target population is <em>all humans on the planet</em>, observations from one family may be dependent and will not represent the full target population.</p>
 </blockquote></li>
 <li><p><strong>Models are approximations.</strong><br>
 In practice you should treat models as <em>useful simplifications</em>, not as exact descriptions of reality. It’s important to choose them sensibly, and be prepared to adjust if they don’t fit the data well.</p></li>
@@ -1834,19 +1923,18 @@ In practice you should treat models as <em>useful simplifications</em>, not as e
 </div>
 <div class="callout-body-container">
 <div id="exm-identify-model" class="example theorem">
-<p><span class="theorem-title"><strong>Example 2.4 (From words to a model)</strong></span> A questionnaire records whether each respondent would recommend a service (“yes” or “no”). Write down a simple model and identify the parameter.</p>
+<p><span class="theorem-title"><strong>Example 2.4 (From words to a model)</strong></span> Return to the study-space survey. A response is recorded as <span class="math inline">1</span> for preference <span class="math inline">A</span> and <span class="math inline">0</span> for preference <span class="math inline">B</span>. Write down a simple model and identify the parameter.</p>
 <details>
   <summary><strong> Solution </strong></summary>
-<p>Let <span class="math inline">X_i=1</span> if respondent <span class="math inline">i</span> says “yes”, and <span class="math inline">0</span> otherwise.</p>
+<p>Let <span class="math inline">X_i=1</span> if respondent <span class="math inline">i</span> prefers <span class="math inline">A</span>, and <span class="math inline">0</span> otherwise.</p>
 <p>Assume <span class="math inline">X_1,\ldots,X_n \stackrel{\text{iid}}{\sim}\mathrm{Bernoulli}(p)</span>.</p>
 <ul>
-<li><strong>Model:</strong> <span class="math inline">\mathcal{P} = \{ \mathrm{Bernoulli}(p) : 0 &lt; p &lt; 1 \}</span><br>
-</li>
+<li><strong>Model:</strong> <span class="math inline">\mathcal{P} = \{ \mathrm{Bernoulli}(p) : 0 \leq p \leq 1 \}</span></li>
 <li><strong>Parameter:</strong> <span class="math inline">\theta = p</span><br>
 </li>
-<li><strong>Parameter space:</strong> <span class="math inline">\Theta = (0,1)</span></li>
+<li><strong>Parameter space:</strong> <span class="math inline">\Theta = [0,1]</span></li>
 </ul>
-<p>Here <span class="math inline">p</span> is the long-run proportion of “yes” responses.</p>
+<p>Here <span class="math inline">p</span> is the probability that a randomly selected member of the target population prefers <span class="math inline">A</span>. The common-<span class="math inline">p</span> and independence assumptions would be questionable if recruitment favoured one type of student or responses influenced one another.</p>
 </details>
 </div>
 </div>
@@ -1863,7 +1951,7 @@ In practice you should treat models as <em>useful simplifications</em>, not as e
 <details>
   <summary><strong> Solution </strong></summary>
 <p>Each <em>draw</em> is an independent categorical outcome with probabilities <span class="math inline">(p_R,p_B,p_G)</span> for red/blue/green. After <span class="math inline">n</span> draws, we observe the <em>count vector</em> <span class="math inline">(R,B,G)</span>.</p>
-<p>A natural model is the <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-multinomial" class="quarto-xref">multinomial&nbsp;<span>1.3</span></a></span> distribution:</p>
+<p>A natural model is the <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-multinomial" class="quarto-xref">multinomial&nbsp;<span>2.3</span></a></span> distribution:</p>
 <ul>
 <li><strong>Model:</strong> <span class="math inline">(R,B,G) \sim \mathrm{Multinomial}\!\left(n;\,p_R,p_B,p_G\right)</span> with <span class="math inline">p_R+p_B+p_G=1</span><br>
 <em>(equivalently, <span class="math inline">X_1,\dots,X_n \stackrel{\text{iid}}{\sim} \mathrm{Categorical}(p_R,p_B,p_G)</span> and <span class="math inline">(R,B,G)</span> are the totals).</em></li>
@@ -1871,12 +1959,25 @@ In practice you should treat models as <em>useful simplifications</em>, not as e
 </li>
 <li><strong>Parameter space:</strong> the 2-simplex <span class="math inline">\;\Theta=\{(p_R,p_B,p_G)\in[0,1]^3 \mid \,p_R+p_B+p_G=1\}</span></li>
 </ul>
-<p>If you only had two colours, the multinomial distribution would become the <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-binom" class="quarto-xref">binomial distribution&nbsp;<span>1.2</span></a></span>.</p>
+<p>Although three probabilities are written down, only two are free: the third is determined by the constraint that they sum to one.</p>
+<p>If you only had two colours, the multinomial distribution would become the <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-binom" class="quarto-xref">binomial distribution&nbsp;<span>2.2</span></a></span>.</p>
 </details>
 </div>
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-note callout-titled" title="Enrichment: a conditional model in machine learning">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Enrichment: a conditional model in machine learning
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <div class="callout callout-style-simple callout-caution no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -1893,15 +1994,18 @@ In practice you should treat models as <em>useful simplifications</em>, not as e
 <ul>
 <li><strong>Sample:</strong> the dataset <span class="math inline">\{(X_i,Y_i)\}_{i=1}^n</span>.<br>
 </li>
-<li><strong>Population:</strong> the (conceptual) set of all image–label pairs of interest; equivalently, the joint distribution of <span class="math inline">(X,Y)</span> in the real world we care about.<br>
-</li>
-<li><strong>Model:</strong> we specify the conditional distribution of <span class="math inline">Y</span> given <span class="math inline">X</span>, <span class="math display">Y \mid X \sim \mathrm{Bernoulli}\big(g_\theta(X)\big),</span> i.e. <span class="math display">\operatorname{Pr}_\theta(Y=1\mid X=x)=g_\theta(x).</span></li>
+<li><strong>Target population:</strong> the conceptual collection of image–label pairs to which we want the classifier to generalise. Its real-world distribution determines how frequently different pairs occur.</li>
+<li><strong>Model:</strong> we specify the conditional distribution of <span class="math inline">Y</span> given <span class="math inline">X</span>, <span class="math display">Y \mid X \sim \mathrm{Bernoulli}\big(g_\theta(X)\big),</span> i.e. <span class="math display">\mathrm{Pr}_\theta(Y=1\mid X=x)=g_\theta(x).</span></li>
 <li><strong>Parameter:</strong> <span class="math inline">\theta</span> indexes the function <span class="math inline">g_\theta</span> (e.g.&nbsp;regression coefficients or neural-network weights).<br>
 </li>
 <li><strong>Parameter space:</strong> <span class="math inline">\Theta\subseteq\mathbb{R}^d</span> (dimension <span class="math inline">d</span> depends on the chosen model class).</li>
 </ul>
+<p>This is a <strong>conditional</strong> model: it specifies <span class="math inline">Y\mid X</span> while treating the input images as given. It does not by itself specify a marginal distribution for <span class="math inline">X</span> or a full joint model for <span class="math inline">(X,Y)</span>.</p>
 <p><em>Common misconception:</em> confusing the <em>training sample</em> (finite) with the <em>population</em> (conceptual/infinite). The goal of inference is to use the sample to learn <span class="math inline">\theta</span> so that the model generalises to the population.</p>
 </details>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1946,14 +2050,35 @@ Warning&nbsp;2.1: Non-Examinable Content: Specifying Statistical Models
 </div>
 </div>
 </div>
-<!-- ---
-
-## Exercises
-
-1. For a study recording daily counts of emails received by a helpdesk, propose a one-parameter model and state the parameter space.
-2. In a satisfaction survey with responses $\{\text{poor},\text{OK},\text{good}\}$, suggest a simple probabilistic model and identify the parameter(s).
-3. State what “iid” means in one sentence, and give one example of how it could fail in practice.
-4. Revisit @sec-inference-eye: if the spread of points increases, which parameter of $\mathcal{N}(\mu,\sigma^2)$ has changed, and how would you describe that change informally? -->
+</section>
+<section id="check-your-understanding" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="check-your-understanding"><span class="header-section-number">2.4</span> Check your understanding</h2>
+<p>Attempt these from memory before opening the answers.</p>
+<ol type="1">
+<li>In the study-space survey, distinguish the target population, random sample <span class="math inline">X_1,\ldots,X_n</span>, observed data <span class="math inline">x_1,\ldots,x_n</span>, parameter <span class="math inline">p</span>, and statistic <span class="math inline">\hat p</span>.</li>
+<li>Daily helpdesk email counts are modelled as <span class="math inline">X_1,\ldots,X_n\stackrel{\mathrm{iid}}{\sim}\mathrm{Poisson}(\lambda)</span>. State the parameter space and one practical reason the iid assumption might fail.</li>
+<li>For <span class="math inline">X_i\stackrel{\mathrm{iid}}{\sim}\mathcal{N}(\mu,\sigma^2)</span>, which parameter changes the centre and which changes the spread? Why can two samples from the same model look different?</li>
+<li>Explain why an iid model for a volunteer survey does not, by itself, justify generalising to the target population.</li>
+</ol>
+<details>
+  <summary><strong>Check your answers</strong></summary>
+<ol type="1">
+<li>The target population is the group to which the conclusion should apply; <span class="math inline">X_i</span> is the random preference indicator before observation; <span class="math inline">x_i</span> is its realised 0/1 value; <span class="math inline">p</span> is the fixed but unknown population proportion under this model; and <span class="math inline">\hat p=n^{-1}\sum_i X_i</span> is a statistic calculated from the sample.</li>
+<li><span class="math inline">\Theta=\{\lambda\mid\lambda&gt;0\}</span>. Counts may have different distributions on weekdays and weekends, or successive days may be dependent.</li>
+<li><span class="math inline">\mu</span> controls the centre and <span class="math inline">\sigma^2</span> controls the spread. Samples differ because each is a different random realisation from the same distribution.</li>
+<li>The iid model describes variation under an assumed sampling mechanism; it does not remove selection bias or under-coverage caused by how volunteers were recruited.</li>
+</ol>
+</details>
+</section>
+<section id="chapter-summary" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="chapter-summary"><span class="header-section-number">2.5</span> Chapter summary</h2>
+<ul>
+<li>A target population states where we want to generalise; the random sample <span class="math inline">\underline{X}</span> represents uncertain measurements and <span class="math inline">\underline{x}</span> denotes the values actually observed.</li>
+<li>An iid model assumes independence and a common distribution, but representativeness also depends on how observations enter the sample.</li>
+<li>A statistical model links possible data distributions to parameter values in <span class="math inline">\Theta</span>. The parameter describes the population; a statistic is computed from a sample.</li>
+<li>Data type and scientific context guide model choice, while model criticism asks which assumptions are useful approximations and which may be damaging.</li>
+</ul>
+<p>Next, <span class="xref-no-num"><a href="3-types-of-inference.html" class="quarto-xref">Types of Inference&nbsp;<span>3</span></a></span> separates the frequentist and Bayesian frameworks and organises the course around point estimation, interval estimation, and hypothesis testing.</p>
 
 
 </section>
@@ -1976,7 +2101,7 @@ Warning&nbsp;2.1: Non-Examinable Content: Specifying Statistical Models
   </span> The parameter space can then be written as <span class="math display">
     \Theta = \{(\theta_1,\ldots,\theta_p) \mid \theta_1 \in S_1,\ \ldots,\ \theta_p \in S_p\}.
   </span></p>
-<p>Here each <span class="math inline">S_j</span> is the set of allowed values for parameter <span class="math inline">\theta_j</span>. To construct <span class="math inline">\Theta</span>, simply <strong>read off the constraints</strong> on each parameter from the definition of the distribution (see the <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-formula-sheet" class="quarto-xref">Formula Sheet&nbsp;<span>0.0.0.0.1</span></a></span>).</p>
+<p>Here each <span class="math inline">S_j</span> is the set of allowed values for parameter <span class="math inline">\theta_j</span>. To construct <span class="math inline">\Theta</span>, simply <strong>read off the constraints</strong> on each parameter from the definition of the distribution (see the <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-formula-sheet" class="quarto-xref">Formula Sheet&nbsp;<span>1</span></a></span>).</p>
 <p>For example, in the Normal model:</p>
 <ul>
 <li><span class="math inline">\mu \in \mathbb{R}</span> (any real number),<br>
@@ -5216,7 +5341,7 @@ if (document.body.classList.contains('reading-mode')) {
 })();
 </script>
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImJvZHlGb250ID0gZ2V0Q29tcHV0ZWRTdHlsZShkb2N1bWVudC5ib2R5KS5mb250RmFtaWx5XG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTIiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiIvLyBoZWxwZXIgZm9yIGN1cnZlIHNjYWxlXG5hcHByb3hTaWdtYSA9IE1hdGguc3FydChhcHByb3hWYXIpXG5cbi8vIGRlbnNpdHkgaGlzdG9ncmFtICsgbm9ybWFsIHBkZiAocmV0dXJucyBhbiBTVkcgbm9kZSlcbmhpc3RWaXMgPSB7XG4gIGNvbnN0IGNvbEhpc3QgID0gXCJ2YXIoLS1wbG90LXNlcmllcy0xKVwiO1xuICBjb25zdCBjb2xDdXJ2ZSA9IFwidmFyKC0tcGxvdC1zZXJpZXMtNClcIjtcbiAgY29uc3QgZ3JpZENvbCAgPSBcInZhcigtLXBsb3QtZ3JpZClcIjtcblxuICAvLyAtLS0geC1kb21haW4gYmFzZWQgb24gZGF0YSAod2l0aCBwYWRkaW5nKSAtLS1cbiAgY29uc3QgeE1pbiA9IGQzLm1pbihkYXRhKSwgeE1heCA9IGQzLm1heChkYXRhKTtcbiAgY29uc3QgcGFkID0gMC40ICogKHhNYXggLSB4TWluIHx8IDEpO1xuICBjb25zdCBkb21haW4gPSBbeE1pbiAtIHBhZCwgeE1heCArIHBhZF07XG5cbiAgY29uc3QgYmluQ291bnQgPSBiaW5zID8/IDMwO1xuXG4gIC8vIC0tLSBjb21wdXRlIGRlbnNpdHkgYmlucyBtYW51YWxseTogZGVuc2l0eSA9IGNvdW50IC8gKG4gKiBiaW5XaWR0aCkgLS0tXG4gIGNvbnN0IGJpbiA9IGQzLmJpbigpLmRvbWFpbihkb21haW4pLnRocmVzaG9sZHMoYmluQ291bnQpO1xuICBjb25zdCBCID0gYmluKGRhdGEpO1xuICBjb25zdCBuID0gZGF0YS5sZW5ndGg7XG4gIGZvciAoY29uc3QgYiBvZiBCKSBiLmRlbnNpdHkgPSBiLmxlbmd0aCAvIChuICogKGIueDEgLSBiLngwKSk7XG5cbiAgLy8gLS0tIG5vcm1hbCBwZGYgb24gc2FtZSBkb21haW4gLS0tXG4gIGNvbnN0IHhzID0gZDMucmFuZ2UoZG9tYWluWzBdLCBkb21haW5bMV0sIChkb21haW5bMV0gLSBkb21haW5bMF0pIC8gNDAwKTtcbiAgY29uc3Qgbm9ybWFsUGRmID0gKHgsIG11LCBzaWdtYSkgPT4gKDEvKHNpZ21hKk1hdGguc3FydCgyKk1hdGguUEkpKSkgKiBNYXRoLmV4cCgtMC41KigoeC1tdSkvc2lnbWEpKioyKTtcbiAgY29uc3QgY3VydmUgPSB4cy5tYXAoeCA9PiAoeyB4LCB5OiBub3JtYWxQZGYoeCwgYXBwcm94TXUsIGFwcHJveFNpZ21hKSB9KSk7XG5cbiAgLy8gLS0tIHNoYXJlZCB5LWRvbWFpbiAobWF4IG9mIGJvdGgpIC0tLVxuICBjb25zdCB5bWF4ID0gMS4xICogTWF0aC5tYXgoXG4gICAgZDMubWF4KEIsIGQgPT4gZC5kZW5zaXR5KSA/PyAwLFxuICAgIGQzLm1heChjdXJ2ZSwgZCA9PiBkLnkpID8/IDBcbiAgKTtcblxuICByZXR1cm4gUGxvdC5wbG90KHtcbiAgICBoZWlnaHQ6IDM2MCxcbiAgICBtYXJnaW5MZWZ0OiA1MCxcbiAgICBtYXJnaW5Cb3R0b206IDUwLFxuICAgIHg6IHsgbGFiZWw6IFwieFwiLCBkb21haW4gfSxcbiAgICB5OiB7IGxhYmVsOiBcIkRlbnNpdHlcIiwgZ3JpZDogdHJ1ZSwgZG9tYWluOiBbMCwgeW1heF0sIHRpY2tTaXplOiA2IH0sXG4gICAgc3R5bGU6IHtcbiAgICAgIGJhY2tncm91bmQ6IFwidmFyKC0tcGxvdC1iZylcIixcbiAgICAgIGZvbnRTaXplOiAxNCxcbiAgICAgIGZvbnRGYW1pbHk6IGJvZHlGb250LFxuICAgICAgd2lkdGg6IFwiMTAwJVwiLFxuICAgICAgZGlzcGxheTogXCJibG9ja1wiLFxuICAgICAgbWFyZ2luOiBcIjAgYXV0b1wiLFxuICAgICAgbWF4V2lkdGg6IFwiMTIwMHB4XCIsXG4gICAgICBjb2xvcjogXCJ2YXIoLS1wbG90LWZnKVwiXG4gICAgfSxcbiAgICBtYXJrczogW1xuICAgICAgLy8gZGVuc2l0eSBoaXN0b2dyYW0gKHRlYWwpXG4gICAgICBQbG90LnJlY3RZKFxuICAgICAgICBCLFxuICAgICAgICB7IHgxOiBkID0+IGQueDAsIHgyOiBkID0+IGQueDEsIHk6IGQgPT4gZC5kZW5zaXR5LFxuICAgICAgICAgIGZpbGw6IGNvbEhpc3QsIGZpbGxPcGFjaXR5OiAwLjM1LCBzdHJva2U6IGNvbEhpc3QsIHN0cm9rZU9wYWNpdHk6IDAuNyB9XG4gICAgICApLFxuICAgICAgLy8gZml0dGVkIG5vcm1hbCBkZW5zaXR5XG4gICAgICBQbG90LmxpbmUoY3VydmUsIHsgeDogXCJ4XCIsIHk6IFwieVwiLCBzdHJva2U6IGNvbEN1cnZlLCBzdHJva2VXaWR0aDogMi41IH0pLFxuICAgICAgLy8gYmFzZWxpbmVcbiAgICAgIFBsb3QucnVsZVkoWzBdLCB7IHN0cm9rZTogZ3JpZENvbCwgc3Ryb2tlT3BhY2l0eTogMC40IH0pXG4gICAgXVxuICB9KTtcbn1cbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMyIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Ii8vIFJhbmdlcyBzb3VyY2VkIGZyb20geW91ciBjb250cm9sc1xubXVfbWluID0gbXVfdHJ1ZSAtIG11SGFsZldpZHRoXG5tdV9tYXggPSBtdV90cnVlICsgbXVIYWxmV2lkdGhcbnZhcl9taW4gPSAwXG52YXJfbWF4ID0gc2lnMk1heFxuXG4vLyBSZXNwb25zaXZlIDJEIHNsaWRlciAoc2NhbGVzIHdpdGggaXRzIGNvbnRhaW5lcilcbnZpZXdvZiBtdVZhcjJEID0ge1xuICAvLyBMb2dpY2FsIGRyYXdpbmcgc2l6ZSAobm90IENTUyBwaXhlbHMpXG4gIGNvbnN0IHdpZHRoID0gMjIwLCBoZWlnaHQgPSAyMjA7XG4gIGNvbnN0IG1hcmdpbiA9IHt0b3A6IDIwLCByaWdodDogNSwgYm90dG9tOiA1LCBsZWZ0OiA1fTtcbiAgY29uc3QgVyA9IHdpZHRoIC0gbWFyZ2luLmxlZnQgLSBtYXJnaW4ucmlnaHQ7XG4gIGNvbnN0IEggPSBoZWlnaHQgLSBtYXJnaW4udG9wIC0gbWFyZ2luLmJvdHRvbTtcblxuICAvLyAtLS0gaGVscGVyOiBjbGFtcCBudW1iZXIgdG8gW2xvLCBoaV0gLS0tXG4gIGNvbnN0IGNsYW1wID0gKHYsIGxvLCBoaSkgPT4gTWF0aC5taW4oaGksIE1hdGgubWF4KGxvLCB2KSk7XG5cbiAgLy8gU2NhbGVzICh5IGluY3JlYXNlcyB1cHdhcmQgaW4gZGF0YSBzcGFjZSlcbiAgY29uc3QgeCA9IGQzLnNjYWxlTGluZWFyKCkuZG9tYWluKFttdV9taW4sIG11X21heF0pLnJhbmdlKFswLCBXXSkuY2xhbXAodHJ1ZSk7XG4gIGNvbnN0IHkgPSBkMy5zY2FsZUxpbmVhcigpLmRvbWFpbihbdmFyX21pbiwgdmFyX21heF0pLnJhbmdlKFtILCAwXSkubmljZSgpLmNsYW1wKHRydWUpO1xuXG4gIC8vIEluaXRpYWwgdmFsdWVcbiAgbGV0IHN0YXRlID0ge1xuICAgIGFwcHJveE11OiBjbGFtcChtdV90cnVlLCBtdV9taW4sIG11X21heCksXG4gICAgYXBwcm94VmFyOiBjbGFtcCgodmFyX21heCAtIHZhcl9taW4pICogMC40LCB2YXJfbWluLCB2YXJfbWF4KVxuICB9O1xuXG4gIGNvbnN0IGJnID0gXCJ2YXIoLS1wbG90LWJnKVwiO1xuICBjb25zdCBncmlkID0gXCJ2YXIoLS1wbG90LWdyaWQpXCI7XG4gIGNvbnN0IGNvbEhhbmRsZSA9IFwidmFyKC0tcGxvdC1zZXJpZXMtNClcIjtcbiAgY29uc3QgY29sQWNjZW50ID0gXCJ2YXIoLS1wbG90LXNlcmllcy0xKVwiO1xuXG4gIC8vIFdyYXBwZXIgdGhhdCBjb250cm9scyByZXNwb25zaXZlIHNpemVcbiAgY29uc3Qgd3JhcCA9IGh0bWxgPGRpdiBzdHlsZT1cIlxuICAgIHdpZHRoOiAxMDAlO1xuICAgIG1heC13aWR0aDogMzIwcHg7ICAgICAgLyogY2FwIHNpemU7IHR3ZWFrIGFzIHlvdSBsaWtlICovXG4gICAgYXNwZWN0LXJhdGlvOiAxIC8gMTsgICAvKiBrZWVwIGl0IHNxdWFyZSAqL1xuICAgIGRpc3BsYXk6IGJsb2NrO1xuICBcIj48L2Rpdj5gO1xuXG4gIC8vIFNWRyB1c2VzIGxvZ2ljYWwgY29vcmRzOyBDU1Mgc2NhbGVzIGl0XG4gIGNvbnN0IHN2ZyA9IGQzLmNyZWF0ZShcInN2Z1wiKVxuICAgIC5hdHRyKFwidmlld0JveFwiLCBgMCAwICR7d2lkdGh9ICR7aGVpZ2h0fWApXG4gICAgLmF0dHIoXCJwcmVzZXJ2ZUFzcGVjdFJhdGlvXCIsIFwieE1pZFlNaWQgbWVldFwiKVxuICAgIC5zdHlsZShcIndpZHRoXCIsIFwiMTAwJVwiKVxuICAgIC5zdHlsZShcImhlaWdodFwiLCBcIjEwMCVcIilcbiAgICAuc3R5bGUoXCJiYWNrZ3JvdW5kXCIsIFwidHJhbnNwYXJlbnRcIilcbiAgICAuc3R5bGUoXCJjb2xvclwiLCBcInZhcigtLXBsb3QtZmcpXCIpXG4gICAgLmF0dHIoXCJzdHJva2Utb3BhY2l0eVwiLCAwLilcbiAgICAuc3R5bGUoXCJmb250LWZhbWlseVwiLCBib2R5Rm9udClcbiAgICAuc3R5bGUoXCJmb250LXNpemVcIiwgXCIxNHB4XCIpO1xuXG4gIGNvbnN0IGcgPSBzdmcuYXBwZW5kKFwiZ1wiKS5hdHRyKFwidHJhbnNmb3JtXCIsIGB0cmFuc2xhdGUoJHttYXJnaW4ubGVmdH0sJHttYXJnaW4udG9wfSlgKTtcblxuICAvLyBCYWNrZ3JvdW5kIHBhbmVsXG4gIGcuYXBwZW5kKFwicmVjdFwiKVxuICAgIC5hdHRyKFwieFwiLCAwKS5hdHRyKFwieVwiLCAwKS5hdHRyKFwid2lkdGhcIiwgVykuYXR0cihcImhlaWdodFwiLCBIKVxuICAgIC5hdHRyKFwicnhcIiwgMTApXG4gICAgLmF0dHIoXCJmaWxsXCIsIGJnKVxuICAgIC5hdHRyKFwic3Ryb2tlXCIsIGdyaWQpLmF0dHIoXCJzdHJva2Utb3BhY2l0eVwiLCAwLjUpO1xuXG4gIC8vIENyb3NzaGFpcnNcbiAgY29uc3QgY3Jvc3NYID0gZy5hcHBlbmQoXCJsaW5lXCIpXG4gICAgLmF0dHIoXCJzdHJva2VcIiwgY29sQWNjZW50KVxuICAgIC5hdHRyKFwic3Ryb2tlLW9wYWNpdHlcIiwgMC43KVxuICAgIC5hdHRyKFwic3Ryb2tlLXdpZHRoXCIsIDEuNSk7XG5cbiAgY29uc3QgY3Jvc3NZID0gZy5hcHBlbmQoXCJsaW5lXCIpXG4gICAgLmF0dHIoXCJzdHJva2VcIiwgY29sQWNjZW50KVxuICAgIC5hdHRyKFwic3Ryb2tlLW9wYWNpdHlcIiwgMC43KVxuICAgIC5hdHRyKFwic3Ryb2tlLXdpZHRoXCIsIDEuNSk7XG5cbiAgLy8gSGFuZGxlXG4gIGNvbnN0IGhhbmRsZSA9IGcuYXBwZW5kKFwiY2lyY2xlXCIpXG4gICAgLmF0dHIoXCJyXCIsIDUpXG4gICAgLmF0dHIoXCJmaWxsXCIsIGNvbEhhbmRsZSlcbiAgICAuYXR0cihcInN0cm9rZVwiLCBcInZhcigtLXBsb3Qtb24tYWNjZW50KVwiKVxuICAgIC5hdHRyKFwic3Ryb2tlLXdpZHRoXCIsIDEuNSlcbiAgICAuc3R5bGUoXCJjdXJzb3JcIiwgXCJncmFiXCIpO1xuXG4gIC8vIFJlYWRvdXRcbiAgY29uc3QgcmVhZG91dCA9IHN2Zy5hcHBlbmQoXCJ0ZXh0XCIpXG4gICAgLmF0dHIoXCJ4XCIsIHdpZHRoIC8gMikgICAgICAgIC8vIGNlbnRlciBob3Jpem9udGFsbHlcbiAgICAuYXR0cihcInlcIiwgbWFyZ2luLnRvcCAvIDEuNSkgLy8ganVzdCBhYm92ZSB0aGUgY2hhcnQgYXJlYVxuICAgIC5hdHRyKFwidGV4dC1hbmNob3JcIiwgXCJtaWRkbGVcIilcbiAgICAuYXR0cihcImZpbGxcIiwgXCJ2YXIoLS1wbG90LWZnKVwiKVxuICAgIC5zdHlsZShcImZvbnQtd2VpZ2h0XCIsIDQwMCk7XG5cbiAgZnVuY3Rpb24gdXBkYXRlVmlzdWFsKCkge1xuICAgIGNvbnN0IGN4ID0geChzdGF0ZS5hcHByb3hNdSksIGN5ID0geShzdGF0ZS5hcHByb3hWYXIpO1xuICAgIGNyb3NzWC5hdHRyKFwieDFcIiwgMCkuYXR0cihcIngyXCIsIFcpLmF0dHIoXCJ5MVwiLCBjeSkuYXR0cihcInkyXCIsIGN5KTtcbiAgICBjcm9zc1kuYXR0cihcIngxXCIsIGN4KS5hdHRyKFwieDJcIiwgY3gpLmF0dHIoXCJ5MVwiLCAwKS5hdHRyKFwieTJcIiwgSCk7XG4gICAgaGFuZGxlLmF0dHIoXCJjeFwiLCBjeCkuYXR0cihcImN5XCIsIGN5KTtcbiAgICByZWFkb3V0LnRleHQoYM684omIICR7c3RhdGUuYXBwcm94TXUudG9GaXhlZCgyKX0sICAgICAgICDPg8Ky4omIICR7c3RhdGUuYXBwcm94VmFyLnRvRml4ZWQoMil9YCk7XG4gIH1cblxuICBmdW5jdGlvbiBzZXRGcm9tUG9pbnRlcihldnQpIHtcbiAgICBjb25zdCBbcHgsIHB5XSA9IGQzLnBvaW50ZXIoZXZ0LCBnLm5vZGUoKSk7IC8vIGluIFNWRyB1c2VyIHVuaXRzIChtYXRjaGVzIHZpZXdCb3gpXG4gICAgY29uc3QgbXUgPSBjbGFtcCh4LmludmVydChweCksIG11X21pbiwgbXVfbWF4KTtcbiAgICBjb25zdCB2diA9IGNsYW1wKHkuaW52ZXJ0KHB5KSwgdmFyX21pbiwgdmFyX21heCk7XG4gICAgc3RhdGUgPSB7IGFwcHJveE11OiBtdSwgYXBwcm94VmFyOiB2diB9O1xuICAgIHJvb3QudmFsdWUgPSB7IGFwcHJveE11OiBzdGF0ZS5hcHByb3hNdSwgYXBwcm94VmFyOiBzdGF0ZS5hcHByb3hWYXIgfTtcbiAgICByb290LmRpc3BhdGNoRXZlbnQobmV3IEN1c3RvbUV2ZW50KFwiaW5wdXRcIiwge2J1YmJsZXM6IHRydWV9KSk7XG4gICAgdXBkYXRlVmlzdWFsKCk7XG4gIH1cblxuICAvLyBJbnRlcmFjdGlvbiBvdmVybGF5XG4gIGcuYXBwZW5kKFwicmVjdFwiKVxuICAgIC5hdHRyKFwieFwiLCAwKS5hdHRyKFwieVwiLCAwKS5hdHRyKFwid2lkdGhcIiwgVykuYXR0cihcImhlaWdodFwiLCBIKVxuICAgIC5hdHRyKFwiZmlsbFwiLCBcInRyYW5zcGFyZW50XCIpXG4gICAgLnN0eWxlKFwiY3Vyc29yXCIsIFwiY3Jvc3NoYWlyXCIpXG4gICAgLm9uKFwicG9pbnRlcmRvd25cIiwgZnVuY3Rpb24oZXZ0KSB7XG4gICAgICB0aGlzLnNldFBvaW50ZXJDYXB0dXJlPy4oZXZ0LnBvaW50ZXJJZCk7XG4gICAgICBoYW5kbGUuc3R5bGUoXCJjdXJzb3JcIiwgXCJncmFiYmluZ1wiKTtcbiAgICAgIHNldEZyb21Qb2ludGVyKGV2dCk7XG4gICAgfSlcbiAgICAub24oXCJwb2ludGVybW92ZVwiLCBmdW5jdGlvbihldnQpIHtcbiAgICAgIGlmIChldnQucHJlc3N1cmUgPiAwIHx8IGV2dC5idXR0b25zKSBzZXRGcm9tUG9pbnRlcihldnQpO1xuICAgIH0pXG4gICAgLm9uKFwicG9pbnRlcnVwXCIsIGZ1bmN0aW9uKGV2dCkge1xuICAgICAgdGhpcy5yZWxlYXNlUG9pbnRlckNhcHR1cmU/LihldnQucG9pbnRlcklkKTtcbiAgICAgIGhhbmRsZS5zdHlsZShcImN1cnNvclwiLCBcImdyYWJcIik7XG4gICAgfSk7XG5cbiAgLy8gUm9vdCBlbGVtZW50IHdpdGggLnZhbHVlIGlzIHRoZSB3cmFwcGVyIChzbyBDU1MgY29udHJvbHMgc2l6ZSlcbiAgY29uc3Qgcm9vdCA9IHdyYXA7XG4gIHJvb3QuYXBwZW5kKHN2Zy5ub2RlKCkpO1xuICByb290LnZhbHVlID0geyBhcHByb3hNdTogc3RhdGUuYXBwcm94TXUsIGFwcHJveFZhcjogc3RhdGUuYXBwcm94VmFyIH07XG5cbiAgdXBkYXRlVmlzdWFsKCk7XG4gIHJldHVybiByb290O1xufVxuXG4vLyBSZWFjdGl2ZSBvdXRwdXRzXG5hcHByb3hNdSA9IG11VmFyMkQuYXBwcm94TXVcbmFwcHJveFZhciA9IG11VmFyMkQuYXBwcm94VmFyXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTQiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiIvLyBMYXlvdXQgY29udGFpbmVyIHBsYWNpbmcgdGhlIGhpc3RvZ3JhbSAobGVmdCwgMmZyKSBhbmQgc2xpZGVyIChyaWdodCwgMWZyKVxue1xuICBjb25zdCB3cmFwID0gaHRtbGA8ZGl2IHN0eWxlPVwiXG4gICAgZGlzcGxheTogZ3JpZDtcbiAgICBncmlkLXRlbXBsYXRlLWNvbHVtbnM6IDNmciAxZnI7ICAvKiBjaGFuZ2UgdG8gM2ZyIDFmciBmb3IgfjM6MSAqL1xuICAgIGdhcDogMC41cmVtO1xuICAgIGFsaWduLWl0ZW1zOiBzdGFydDsgLyogbGVmdCBwbG90IHN0YXlzIHRvcC1hbGlnbmVkICovXG4gIFwiPjwvZGl2PmA7XG5cbiAgLy8gSGlzdG9ncmFtIChsZWZ0KVxuICB3cmFwLmFwcGVuZChoaXN0VmlzKTtcblxuICAvLyBTbGlkZXIgKHJpZ2h0LCB2ZXJ0aWNhbGx5IGNlbnRlcmVkKVxuICBjb25zdCBzbGlkZXJCb3ggPSBodG1sYDxkaXYgc3R5bGU9XCJkaXNwbGF5OmZsZXg7IGFsaWduLWl0ZW1zOmNlbnRlcjsgaGVpZ2h0OjEwMCVcIj48L2Rpdj5gO1xuICBzbGlkZXJCb3guYXBwZW5kKHZpZXdvZiBtdVZhcjJEKTtcbiAgd3JhcC5hcHBlbmQoc2xpZGVyQm94KTtcblxuICByZXR1cm4gd3JhcDtcbn1cbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Ii8vIGRhdGFcbmRhdGEgPSB7XG4gIHJlc2FtcGxlOyAvLyByZWFjdHMgdG8gdGhlIFwiUmVzaW11bGF0ZSBkYXRhXCIgYnV0dG9uXG4gIGNvbnN0IHJuZCA9IGQzLnJhbmRvbU5vcm1hbChtdV90cnVlLCBzaWdtYV90cnVlKTtcbiAgcmV0dXJuIEFycmF5LmZyb20oeyBsZW5ndGg6IG4gfSwgKCkgPT4gcm5kKCkpO1xufVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC02IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiLy8gLS0tIEJ1aWxkIG9uZSBtZXJnZWQsIGNvbGxhcHNpYmxlIGNvbnRyb2wgXCJpbnB1dFwiIC0tLVxudmlld29mIGNvbnRyb2xzID0ge1xuICBjb25zdCByZXNpbUJ0biA9IElucHV0cy5idXR0b24oXCJSZXNpbXVsYXRlIGRhdGFcIik7XG4gIHJlc2ltQnRuLmNsYXNzTGlzdC5hZGQoXCJidG4tcmVzaW1cIik7XG5cbiAgY29uc3QgbGVmdEZvcm0gPSBJbnB1dHMuZm9ybSh7XG4gICAgbjogSW5wdXRzLnJhbmdlKFsxLCA0MDBdLCB7IHZhbHVlOiA1MCwgc3RlcDogMSwgbGFiZWw6IG1kYCR7dGV4YG5gfWAgfSksXG4gICAgbXVfdHJ1ZTogSW5wdXRzLnJhbmdlKFstNSwgNV0sIHsgdmFsdWU6IDAuNSwgc3RlcDogMC4wNSwgbGFiZWw6IG1kYCR7dGV4YFxcbXVfe1xcdGV4dHt0cnVlfX1gfWAgfSksXG4gICAgc2lnbWFfdHJ1ZTogSW5wdXRzLnJhbmdlKFswLjMsIDRdLCB7IHZhbHVlOiAxLjIsIHN0ZXA6IDAuMDUsIGxhYmVsOiBtZGAke3RleGBcXHNpZ21hX3tcXHRleHR7dHJ1ZX19YH1gIH0pXG4gIH0sIHsgc3VibWl0OiBmYWxzZSB9KTtcblxuICBjb25zdCByaWdodEZvcm0gPSBJbnB1dHMuZm9ybSh7XG4gICAgbXVIYWxmV2lkdGg6IElucHV0cy5yYW5nZShbMSwgMTBdLCB7IHZhbHVlOiA1LCBzdGVwOiAwLjA1LCBsYWJlbDogbWRgJHt0ZXhgXFxtdVxcdGV4dHstcmFuZ2V9YH1gIH0pLFxuICAgIHNpZzJNYXg6IElucHV0cy5yYW5nZShbMC4yLCAxMF0sIHsgdmFsdWU6IDUsIHN0ZXA6IDAuMDUsIGxhYmVsOiBtZGAke3RleGBcXHNpZ21hXjJcXHRleHR7IG1heH1gfWAgfSksXG4gICAgYmluczogSW5wdXRzLnJhbmdlKFsxMCwgNjBdLCB7IHZhbHVlOiAxMiwgc3RlcDogMSwgbGFiZWw6IFwiSGlzdG9ncmFtIGJpbnNcIiB9KVxuICB9LCB7IHN1Ym1pdDogZmFsc2UgfSk7XG5cbiAgY29uc3Qgcm9vdCA9IGh0bWxgPGRldGFpbHMgY2xhc3M9XCJjb250cm9scy1yb290XCIgb3Blbj5cbiAgICA8c3VtbWFyeT5TaW11bGF0aW9uIGNvbnRyb2xzPC9zdW1tYXJ5PlxuICAgIDxkaXYgY2xhc3M9XCJjb250cm9scy1ncmlkXCI+XG4gICAgICA8ZGl2IGNsYXNzPVwiY29udHJvbHMtY29sXCI+PGg0PkRhdGEgJiB0cnV0aDwvaDQ+PC9kaXY+XG4gICAgICA8ZGl2IGNsYXNzPVwiY29udHJvbHMtY29sXCI+PGg0PkdyaWQgJiBkaXNwbGF5PC9oND48L2Rpdj5cbiAgICA8L2Rpdj5cbiAgPC9kZXRhaWxzPmA7XG5cbiAgY29uc3QgZ3JpZCA9IHJvb3QucXVlcnlTZWxlY3RvcihcIi5jb250cm9scy1ncmlkXCIpO1xuICBncmlkLmNoaWxkcmVuWzBdLmFwcGVuZChsZWZ0Rm9ybSk7XG4gIGdyaWQuY2hpbGRyZW5bMV0uYXBwZW5kKHJpZ2h0Rm9ybSk7XG5cbiAgY29uc3QgYnRuV3JhcCA9IGh0bWxgPGRpdiBzdHlsZT1cImRpc3BsYXk6ZmxleDsganVzdGlmeS1jb250ZW50OmZsZXgtc3RhcnQ7IG1hcmdpbi10b3A6NnB4O1wiPjwvZGl2PmA7XG4gIGJ0bldyYXAuYXBwZW5kKHJlc2ltQnRuKTtcbiAgZ3JpZC5jaGlsZHJlblsxXS5hcHBlbmQoYnRuV3JhcCk7XG5cbiAgY29uc3QgZ2V0VmFsdWUgPSAoKSA9PiAoeyAuLi5sZWZ0Rm9ybS52YWx1ZSwgLi4ucmlnaHRGb3JtLnZhbHVlLCByZXNpbTogcmVzaW1CdG4udmFsdWUgfSk7XG4gIGNvbnN0IHVwZGF0ZSA9ICgpID0+IHsgcm9vdC52YWx1ZSA9IGdldFZhbHVlKCk7IHJvb3QuZGlzcGF0Y2hFdmVudChuZXcgQ3VzdG9tRXZlbnQoXCJpbnB1dFwiLCB7IGJ1YmJsZXM6IHRydWUgfSkpOyB9O1xuXG4gIGdyaWQuYWRkRXZlbnRMaXN0ZW5lcihcImlucHV0XCIsIHVwZGF0ZSk7XG4gIHF1ZXVlTWljcm90YXNrKHVwZGF0ZSk7XG4gIHJldHVybiByb290O1xufVxuXG4vLyAtLS0gRXhwb3NlIHJlYWN0aXZlIHZhcnNcbm4gPSBjb250cm9scy5uXG5tdV90cnVlID0gY29udHJvbHMubXVfdHJ1ZVxuc2lnbWFfdHJ1ZSA9IGNvbnRyb2xzLnNpZ21hX3RydWVcbm11SGFsZldpZHRoID0gY29udHJvbHMubXVIYWxmV2lkdGhcbnNpZzJNYXggPSBjb250cm9scy5zaWcyTWF4XG5iaW5zID0gY29udHJvbHMuYmluc1xucmVzYW1wbGUgPSBjb250cm9scy5yZXNpbVxuXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ211VmFyMkQnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnY29udHJvbHMnKSJ9XX0=
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImJvZHlGb250ID0gZ2V0Q29tcHV0ZWRTdHlsZShkb2N1bWVudC5ib2R5KS5mb250RmFtaWx5XG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTIiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiIvLyBoZWxwZXIgZm9yIGN1cnZlIHNjYWxlXG5hcHByb3hTaWdtYSA9IE1hdGguc3FydChhcHByb3hWYXIpXG5cbi8vIGRlbnNpdHkgaGlzdG9ncmFtICsgbm9ybWFsIHBkZiAocmV0dXJucyBhbiBTVkcgbm9kZSlcbmhpc3RWaXMgPSB7XG4gIGNvbnN0IGNvbEhpc3QgID0gXCJ2YXIoLS1wbG90LXNlcmllcy0xKVwiO1xuICBjb25zdCBjb2xDdXJ2ZSA9IFwidmFyKC0tcGxvdC1zZXJpZXMtNClcIjtcbiAgY29uc3QgZ3JpZENvbCAgPSBcInZhcigtLXBsb3QtZ3JpZClcIjtcblxuICAvLyAtLS0geC1kb21haW4gYmFzZWQgb24gZGF0YSAod2l0aCBwYWRkaW5nKSAtLS1cbiAgY29uc3QgeE1pbiA9IGQzLm1pbihkYXRhKSwgeE1heCA9IGQzLm1heChkYXRhKTtcbiAgY29uc3QgcGFkID0gMC40ICogKHhNYXggLSB4TWluIHx8IDEpO1xuICBjb25zdCBkb21haW4gPSBbeE1pbiAtIHBhZCwgeE1heCArIHBhZF07XG5cbiAgY29uc3QgYmluQ291bnQgPSBiaW5zID8/IDMwO1xuXG4gIC8vIC0tLSBjb21wdXRlIGRlbnNpdHkgYmlucyBtYW51YWxseTogZGVuc2l0eSA9IGNvdW50IC8gKG4gKiBiaW5XaWR0aCkgLS0tXG4gIGNvbnN0IGJpbiA9IGQzLmJpbigpLmRvbWFpbihkb21haW4pLnRocmVzaG9sZHMoYmluQ291bnQpO1xuICBjb25zdCBCID0gYmluKGRhdGEpO1xuICBjb25zdCBuID0gZGF0YS5sZW5ndGg7XG4gIGZvciAoY29uc3QgYiBvZiBCKSBiLmRlbnNpdHkgPSBiLmxlbmd0aCAvIChuICogKGIueDEgLSBiLngwKSk7XG5cbiAgLy8gLS0tIG5vcm1hbCBwZGYgb24gc2FtZSBkb21haW4gLS0tXG4gIGNvbnN0IHhzID0gZDMucmFuZ2UoZG9tYWluWzBdLCBkb21haW5bMV0sIChkb21haW5bMV0gLSBkb21haW5bMF0pIC8gNDAwKTtcbiAgY29uc3Qgbm9ybWFsUGRmID0gKHgsIG11LCBzaWdtYSkgPT4gKDEvKHNpZ21hKk1hdGguc3FydCgyKk1hdGguUEkpKSkgKiBNYXRoLmV4cCgtMC41KigoeC1tdSkvc2lnbWEpKioyKTtcbiAgY29uc3QgY3VydmUgPSB4cy5tYXAoeCA9PiAoeyB4LCB5OiBub3JtYWxQZGYoeCwgYXBwcm94TXUsIGFwcHJveFNpZ21hKSB9KSk7XG5cbiAgLy8gLS0tIHNoYXJlZCB5LWRvbWFpbiAobWF4IG9mIGJvdGgpIC0tLVxuICBjb25zdCB5bWF4ID0gMS4xICogTWF0aC5tYXgoXG4gICAgZDMubWF4KEIsIGQgPT4gZC5kZW5zaXR5KSA/PyAwLFxuICAgIGQzLm1heChjdXJ2ZSwgZCA9PiBkLnkpID8/IDBcbiAgKTtcblxuICByZXR1cm4gUGxvdC5wbG90KHtcbiAgICBoZWlnaHQ6IDM2MCxcbiAgICBtYXJnaW5MZWZ0OiA1MCxcbiAgICBtYXJnaW5Cb3R0b206IDUwLFxuICAgIHg6IHsgbGFiZWw6IFwieFwiLCBkb21haW4gfSxcbiAgICB5OiB7IGxhYmVsOiBcIkRlbnNpdHlcIiwgZ3JpZDogdHJ1ZSwgZG9tYWluOiBbMCwgeW1heF0sIHRpY2tTaXplOiA2IH0sXG4gICAgc3R5bGU6IHtcbiAgICAgIGJhY2tncm91bmQ6IFwidmFyKC0tcGxvdC1iZylcIixcbiAgICAgIGZvbnRTaXplOiAxNCxcbiAgICAgIGZvbnRGYW1pbHk6IGJvZHlGb250LFxuICAgICAgd2lkdGg6IFwiMTAwJVwiLFxuICAgICAgZGlzcGxheTogXCJibG9ja1wiLFxuICAgICAgbWFyZ2luOiBcIjAgYXV0b1wiLFxuICAgICAgbWF4V2lkdGg6IFwiMTIwMHB4XCIsXG4gICAgICBjb2xvcjogXCJ2YXIoLS1wbG90LWZnKVwiXG4gICAgfSxcbiAgICBtYXJrczogW1xuICAgICAgLy8gZGVuc2l0eSBoaXN0b2dyYW0gKHRlYWwpXG4gICAgICBQbG90LnJlY3RZKFxuICAgICAgICBCLFxuICAgICAgICB7IHgxOiBkID0+IGQueDAsIHgyOiBkID0+IGQueDEsIHk6IGQgPT4gZC5kZW5zaXR5LFxuICAgICAgICAgIGZpbGw6IGNvbEhpc3QsIGZpbGxPcGFjaXR5OiAwLjM1LCBzdHJva2U6IGNvbEhpc3QsIHN0cm9rZU9wYWNpdHk6IDAuNyB9XG4gICAgICApLFxuICAgICAgLy8gZml0dGVkIG5vcm1hbCBkZW5zaXR5XG4gICAgICBQbG90LmxpbmUoY3VydmUsIHsgeDogXCJ4XCIsIHk6IFwieVwiLCBzdHJva2U6IGNvbEN1cnZlLCBzdHJva2VXaWR0aDogMi41IH0pLFxuICAgICAgLy8gYmFzZWxpbmVcbiAgICAgIFBsb3QucnVsZVkoWzBdLCB7IHN0cm9rZTogZ3JpZENvbCwgc3Ryb2tlT3BhY2l0eTogMC40IH0pXG4gICAgXVxuICB9KTtcbn1cbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMyIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Ii8vIFJhbmdlcyBzb3VyY2VkIGZyb20geW91ciBjb250cm9sc1xubXVfbWluID0gbXVfdHJ1ZSAtIG11SGFsZldpZHRoXG5tdV9tYXggPSBtdV90cnVlICsgbXVIYWxmV2lkdGhcbnZhcl9taW4gPSAwXG52YXJfbWF4ID0gc2lnMk1heFxuXG4vLyBSZXNwb25zaXZlIDJEIHNsaWRlciAoc2NhbGVzIHdpdGggaXRzIGNvbnRhaW5lcilcbnZpZXdvZiBtdVZhcjJEID0ge1xuICAvLyBMb2dpY2FsIGRyYXdpbmcgc2l6ZSAobm90IENTUyBwaXhlbHMpXG4gIGNvbnN0IHdpZHRoID0gMjIwLCBoZWlnaHQgPSAyMjA7XG4gIGNvbnN0IG1hcmdpbiA9IHt0b3A6IDIwLCByaWdodDogNSwgYm90dG9tOiA1LCBsZWZ0OiA1fTtcbiAgY29uc3QgVyA9IHdpZHRoIC0gbWFyZ2luLmxlZnQgLSBtYXJnaW4ucmlnaHQ7XG4gIGNvbnN0IEggPSBoZWlnaHQgLSBtYXJnaW4udG9wIC0gbWFyZ2luLmJvdHRvbTtcblxuICAvLyAtLS0gaGVscGVyOiBjbGFtcCBudW1iZXIgdG8gW2xvLCBoaV0gLS0tXG4gIGNvbnN0IGNsYW1wID0gKHYsIGxvLCBoaSkgPT4gTWF0aC5taW4oaGksIE1hdGgubWF4KGxvLCB2KSk7XG5cbiAgLy8gU2NhbGVzICh5IGluY3JlYXNlcyB1cHdhcmQgaW4gZGF0YSBzcGFjZSlcbiAgY29uc3QgeCA9IGQzLnNjYWxlTGluZWFyKCkuZG9tYWluKFttdV9taW4sIG11X21heF0pLnJhbmdlKFswLCBXXSkuY2xhbXAodHJ1ZSk7XG4gIGNvbnN0IHkgPSBkMy5zY2FsZUxpbmVhcigpLmRvbWFpbihbdmFyX21pbiwgdmFyX21heF0pLnJhbmdlKFtILCAwXSkubmljZSgpLmNsYW1wKHRydWUpO1xuXG4gIC8vIEluaXRpYWwgdmFsdWVcbiAgbGV0IHN0YXRlID0ge1xuICAgIC8vIFN0YXJ0IGZyb20gYSBuZXV0cmFsIGd1ZXNzIHJhdGhlciB0aGFuIHJldmVhbGluZyB0aGUgZ2VuZXJhdGluZyB2YWx1ZXMuXG4gICAgYXBwcm94TXU6IGNsYW1wKDAsIG11X21pbiwgbXVfbWF4KSxcbiAgICBhcHByb3hWYXI6IGNsYW1wKDEsIHZhcl9taW4sIHZhcl9tYXgpXG4gIH07XG5cbiAgY29uc3QgYmcgPSBcInZhcigtLXBsb3QtYmcpXCI7XG4gIGNvbnN0IGdyaWQgPSBcInZhcigtLXBsb3QtZ3JpZClcIjtcbiAgY29uc3QgY29sSGFuZGxlID0gXCJ2YXIoLS1wbG90LXNlcmllcy00KVwiO1xuICBjb25zdCBjb2xBY2NlbnQgPSBcInZhcigtLXBsb3Qtc2VyaWVzLTEpXCI7XG5cbiAgLy8gV3JhcHBlciB0aGF0IGNvbnRyb2xzIHJlc3BvbnNpdmUgc2l6ZVxuICBjb25zdCB3cmFwID0gaHRtbGA8ZGl2IHN0eWxlPVwiXG4gICAgd2lkdGg6IDEwMCU7XG4gICAgbWF4LXdpZHRoOiAzMjBweDsgICAgICAvKiBjYXAgc2l6ZTsgdHdlYWsgYXMgeW91IGxpa2UgKi9cbiAgICBhc3BlY3QtcmF0aW86IDEgLyAxOyAgIC8qIGtlZXAgaXQgc3F1YXJlICovXG4gICAgZGlzcGxheTogYmxvY2s7XG4gIFwiPjwvZGl2PmA7XG5cbiAgLy8gU1ZHIHVzZXMgbG9naWNhbCBjb29yZHM7IENTUyBzY2FsZXMgaXRcbiAgY29uc3Qgc3ZnID0gZDMuY3JlYXRlKFwic3ZnXCIpXG4gICAgLmF0dHIoXCJ2aWV3Qm94XCIsIGAwIDAgJHt3aWR0aH0gJHtoZWlnaHR9YClcbiAgICAuYXR0cihcInByZXNlcnZlQXNwZWN0UmF0aW9cIiwgXCJ4TWlkWU1pZCBtZWV0XCIpXG4gICAgLnN0eWxlKFwid2lkdGhcIiwgXCIxMDAlXCIpXG4gICAgLnN0eWxlKFwiaGVpZ2h0XCIsIFwiMTAwJVwiKVxuICAgIC5zdHlsZShcImJhY2tncm91bmRcIiwgXCJ0cmFuc3BhcmVudFwiKVxuICAgIC5zdHlsZShcImNvbG9yXCIsIFwidmFyKC0tcGxvdC1mZylcIilcbiAgICAuYXR0cihcInN0cm9rZS1vcGFjaXR5XCIsIDAuKVxuICAgIC5zdHlsZShcImZvbnQtZmFtaWx5XCIsIGJvZHlGb250KVxuICAgIC5zdHlsZShcImZvbnQtc2l6ZVwiLCBcIjE0cHhcIik7XG5cbiAgY29uc3QgZyA9IHN2Zy5hcHBlbmQoXCJnXCIpLmF0dHIoXCJ0cmFuc2Zvcm1cIiwgYHRyYW5zbGF0ZSgke21hcmdpbi5sZWZ0fSwke21hcmdpbi50b3B9KWApO1xuXG4gIC8vIEJhY2tncm91bmQgcGFuZWxcbiAgZy5hcHBlbmQoXCJyZWN0XCIpXG4gICAgLmF0dHIoXCJ4XCIsIDApLmF0dHIoXCJ5XCIsIDApLmF0dHIoXCJ3aWR0aFwiLCBXKS5hdHRyKFwiaGVpZ2h0XCIsIEgpXG4gICAgLmF0dHIoXCJyeFwiLCAxMClcbiAgICAuYXR0cihcImZpbGxcIiwgYmcpXG4gICAgLmF0dHIoXCJzdHJva2VcIiwgZ3JpZCkuYXR0cihcInN0cm9rZS1vcGFjaXR5XCIsIDAuNSk7XG5cbiAgLy8gQ3Jvc3NoYWlyc1xuICBjb25zdCBjcm9zc1ggPSBnLmFwcGVuZChcImxpbmVcIilcbiAgICAuYXR0cihcInN0cm9rZVwiLCBjb2xBY2NlbnQpXG4gICAgLmF0dHIoXCJzdHJva2Utb3BhY2l0eVwiLCAwLjcpXG4gICAgLmF0dHIoXCJzdHJva2Utd2lkdGhcIiwgMS41KTtcblxuICBjb25zdCBjcm9zc1kgPSBnLmFwcGVuZChcImxpbmVcIilcbiAgICAuYXR0cihcInN0cm9rZVwiLCBjb2xBY2NlbnQpXG4gICAgLmF0dHIoXCJzdHJva2Utb3BhY2l0eVwiLCAwLjcpXG4gICAgLmF0dHIoXCJzdHJva2Utd2lkdGhcIiwgMS41KTtcblxuICAvLyBIYW5kbGVcbiAgY29uc3QgaGFuZGxlID0gZy5hcHBlbmQoXCJjaXJjbGVcIilcbiAgICAuYXR0cihcInJcIiwgNSlcbiAgICAuYXR0cihcImZpbGxcIiwgY29sSGFuZGxlKVxuICAgIC5hdHRyKFwic3Ryb2tlXCIsIFwidmFyKC0tcGxvdC1vbi1hY2NlbnQpXCIpXG4gICAgLmF0dHIoXCJzdHJva2Utd2lkdGhcIiwgMS41KVxuICAgIC5zdHlsZShcImN1cnNvclwiLCBcImdyYWJcIik7XG5cbiAgLy8gUmVhZG91dFxuICBjb25zdCByZWFkb3V0ID0gc3ZnLmFwcGVuZChcInRleHRcIilcbiAgICAuYXR0cihcInhcIiwgd2lkdGggLyAyKSAgICAgICAgLy8gY2VudGVyIGhvcml6b250YWxseVxuICAgIC5hdHRyKFwieVwiLCBtYXJnaW4udG9wIC8gMS41KSAvLyBqdXN0IGFib3ZlIHRoZSBjaGFydCBhcmVhXG4gICAgLmF0dHIoXCJ0ZXh0LWFuY2hvclwiLCBcIm1pZGRsZVwiKVxuICAgIC5hdHRyKFwiZmlsbFwiLCBcInZhcigtLXBsb3QtZmcpXCIpXG4gICAgLnN0eWxlKFwiZm9udC13ZWlnaHRcIiwgNDAwKTtcblxuICBmdW5jdGlvbiB1cGRhdGVWaXN1YWwoKSB7XG4gICAgY29uc3QgY3ggPSB4KHN0YXRlLmFwcHJveE11KSwgY3kgPSB5KHN0YXRlLmFwcHJveFZhcik7XG4gICAgY3Jvc3NYLmF0dHIoXCJ4MVwiLCAwKS5hdHRyKFwieDJcIiwgVykuYXR0cihcInkxXCIsIGN5KS5hdHRyKFwieTJcIiwgY3kpO1xuICAgIGNyb3NzWS5hdHRyKFwieDFcIiwgY3gpLmF0dHIoXCJ4MlwiLCBjeCkuYXR0cihcInkxXCIsIDApLmF0dHIoXCJ5MlwiLCBIKTtcbiAgICBoYW5kbGUuYXR0cihcImN4XCIsIGN4KS5hdHRyKFwiY3lcIiwgY3kpO1xuICAgIHJlYWRvdXQudGV4dChgzrziiYggJHtzdGF0ZS5hcHByb3hNdS50b0ZpeGVkKDIpfSwgICAgICAgIM+DwrLiiYggJHtzdGF0ZS5hcHByb3hWYXIudG9GaXhlZCgyKX1gKTtcbiAgfVxuXG4gIGZ1bmN0aW9uIHNldEZyb21Qb2ludGVyKGV2dCkge1xuICAgIGNvbnN0IFtweCwgcHldID0gZDMucG9pbnRlcihldnQsIGcubm9kZSgpKTsgLy8gaW4gU1ZHIHVzZXIgdW5pdHMgKG1hdGNoZXMgdmlld0JveClcbiAgICBjb25zdCBtdSA9IGNsYW1wKHguaW52ZXJ0KHB4KSwgbXVfbWluLCBtdV9tYXgpO1xuICAgIGNvbnN0IHZ2ID0gY2xhbXAoeS5pbnZlcnQocHkpLCB2YXJfbWluLCB2YXJfbWF4KTtcbiAgICBzdGF0ZSA9IHsgYXBwcm94TXU6IG11LCBhcHByb3hWYXI6IHZ2IH07XG4gICAgcm9vdC52YWx1ZSA9IHsgYXBwcm94TXU6IHN0YXRlLmFwcHJveE11LCBhcHByb3hWYXI6IHN0YXRlLmFwcHJveFZhciB9O1xuICAgIHJvb3QuZGlzcGF0Y2hFdmVudChuZXcgQ3VzdG9tRXZlbnQoXCJpbnB1dFwiLCB7YnViYmxlczogdHJ1ZX0pKTtcbiAgICB1cGRhdGVWaXN1YWwoKTtcbiAgfVxuXG4gIC8vIEludGVyYWN0aW9uIG92ZXJsYXlcbiAgZy5hcHBlbmQoXCJyZWN0XCIpXG4gICAgLmF0dHIoXCJ4XCIsIDApLmF0dHIoXCJ5XCIsIDApLmF0dHIoXCJ3aWR0aFwiLCBXKS5hdHRyKFwiaGVpZ2h0XCIsIEgpXG4gICAgLmF0dHIoXCJmaWxsXCIsIFwidHJhbnNwYXJlbnRcIilcbiAgICAuc3R5bGUoXCJjdXJzb3JcIiwgXCJjcm9zc2hhaXJcIilcbiAgICAub24oXCJwb2ludGVyZG93blwiLCBmdW5jdGlvbihldnQpIHtcbiAgICAgIHRoaXMuc2V0UG9pbnRlckNhcHR1cmU/LihldnQucG9pbnRlcklkKTtcbiAgICAgIGhhbmRsZS5zdHlsZShcImN1cnNvclwiLCBcImdyYWJiaW5nXCIpO1xuICAgICAgc2V0RnJvbVBvaW50ZXIoZXZ0KTtcbiAgICB9KVxuICAgIC5vbihcInBvaW50ZXJtb3ZlXCIsIGZ1bmN0aW9uKGV2dCkge1xuICAgICAgaWYgKGV2dC5wcmVzc3VyZSA+IDAgfHwgZXZ0LmJ1dHRvbnMpIHNldEZyb21Qb2ludGVyKGV2dCk7XG4gICAgfSlcbiAgICAub24oXCJwb2ludGVydXBcIiwgZnVuY3Rpb24oZXZ0KSB7XG4gICAgICB0aGlzLnJlbGVhc2VQb2ludGVyQ2FwdHVyZT8uKGV2dC5wb2ludGVySWQpO1xuICAgICAgaGFuZGxlLnN0eWxlKFwiY3Vyc29yXCIsIFwiZ3JhYlwiKTtcbiAgICB9KTtcblxuICAvLyBSb290IGVsZW1lbnQgd2l0aCAudmFsdWUgaXMgdGhlIHdyYXBwZXIgKHNvIENTUyBjb250cm9scyBzaXplKVxuICBjb25zdCByb290ID0gd3JhcDtcbiAgcm9vdC5hcHBlbmQoc3ZnLm5vZGUoKSk7XG4gIHJvb3QudmFsdWUgPSB7IGFwcHJveE11OiBzdGF0ZS5hcHByb3hNdSwgYXBwcm94VmFyOiBzdGF0ZS5hcHByb3hWYXIgfTtcblxuICB1cGRhdGVWaXN1YWwoKTtcbiAgcmV0dXJuIHJvb3Q7XG59XG5cbi8vIFJlYWN0aXZlIG91dHB1dHNcbmFwcHJveE11ID0gbXVWYXIyRC5hcHByb3hNdVxuYXBwcm94VmFyID0gbXVWYXIyRC5hcHByb3hWYXJcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNCIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Ii8vIExheW91dCBjb250YWluZXIgcGxhY2luZyB0aGUgaGlzdG9ncmFtIChsZWZ0LCAyZnIpIGFuZCBzbGlkZXIgKHJpZ2h0LCAxZnIpXG57XG4gIGNvbnN0IHdyYXAgPSBodG1sYDxkaXYgc3R5bGU9XCJcbiAgICBkaXNwbGF5OiBncmlkO1xuICAgIGdyaWQtdGVtcGxhdGUtY29sdW1uczogM2ZyIDFmcjsgIC8qIGNoYW5nZSB0byAzZnIgMWZyIGZvciB+MzoxICovXG4gICAgZ2FwOiAwLjVyZW07XG4gICAgYWxpZ24taXRlbXM6IHN0YXJ0OyAvKiBsZWZ0IHBsb3Qgc3RheXMgdG9wLWFsaWduZWQgKi9cbiAgXCI+PC9kaXY+YDtcblxuICAvLyBIaXN0b2dyYW0gKGxlZnQpXG4gIHdyYXAuYXBwZW5kKGhpc3RWaXMpO1xuXG4gIC8vIFNsaWRlciAocmlnaHQsIHZlcnRpY2FsbHkgY2VudGVyZWQpXG4gIGNvbnN0IHNsaWRlckJveCA9IGh0bWxgPGRpdiBzdHlsZT1cImRpc3BsYXk6ZmxleDsgYWxpZ24taXRlbXM6Y2VudGVyOyBoZWlnaHQ6MTAwJVwiPjwvZGl2PmA7XG4gIHNsaWRlckJveC5hcHBlbmQodmlld29mIG11VmFyMkQpO1xuICB3cmFwLmFwcGVuZChzbGlkZXJCb3gpO1xuXG4gIHJldHVybiB3cmFwO1xufVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC01IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiLy8gZGF0YVxuZGF0YSA9IHtcbiAgcmVzYW1wbGU7IC8vIHJlYWN0cyB0byB0aGUgXCJSZXNpbXVsYXRlIGRhdGFcIiBidXR0b25cbiAgY29uc3Qgcm5kID0gZDMucmFuZG9tTm9ybWFsKG11X3RydWUsIHNpZ21hX3RydWUpO1xuICByZXR1cm4gQXJyYXkuZnJvbSh7IGxlbmd0aDogbiB9LCAoKSA9PiBybmQoKSk7XG59XG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTYiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiIvLyAtLS0gQnVpbGQgb25lIG1lcmdlZCwgY29sbGFwc2libGUgY29udHJvbCBcImlucHV0XCIgLS0tXG52aWV3b2YgY29udHJvbHMgPSB7XG4gIGNvbnN0IHJlc2ltQnRuID0gSW5wdXRzLmJ1dHRvbihcIlJlc2ltdWxhdGUgZGF0YVwiKTtcbiAgcmVzaW1CdG4uY2xhc3NMaXN0LmFkZChcImJ0bi1yZXNpbVwiKTtcblxuICBjb25zdCBsZWZ0Rm9ybSA9IElucHV0cy5mb3JtKHtcbiAgICBuOiBJbnB1dHMucmFuZ2UoWzEsIDQwMF0sIHsgdmFsdWU6IDUwLCBzdGVwOiAxLCBsYWJlbDogbWRgJHt0ZXhgbmB9YCB9KSxcbiAgICBtdV90cnVlOiBJbnB1dHMucmFuZ2UoWy01LCA1XSwgeyB2YWx1ZTogMC41LCBzdGVwOiAwLjA1LCBsYWJlbDogbWRgJHt0ZXhgXFxtdV97XFx0ZXh0e3RydWV9fWB9YCB9KSxcbiAgICBzaWdtYV90cnVlOiBJbnB1dHMucmFuZ2UoWzAuMywgNF0sIHsgdmFsdWU6IDEuMiwgc3RlcDogMC4wNSwgbGFiZWw6IG1kYCR7dGV4YFxcc2lnbWFfe1xcdGV4dHt0cnVlfX1gfWAgfSlcbiAgfSwgeyBzdWJtaXQ6IGZhbHNlIH0pO1xuXG4gIGNvbnN0IHJpZ2h0Rm9ybSA9IElucHV0cy5mb3JtKHtcbiAgICBtdUhhbGZXaWR0aDogSW5wdXRzLnJhbmdlKFsxLCAxMF0sIHsgdmFsdWU6IDUsIHN0ZXA6IDAuMDUsIGxhYmVsOiBtZGAke3RleGBcXG11XFx0ZXh0ey1yYW5nZX1gfWAgfSksXG4gICAgc2lnMk1heDogSW5wdXRzLnJhbmdlKFswLjIsIDEwXSwgeyB2YWx1ZTogNSwgc3RlcDogMC4wNSwgbGFiZWw6IG1kYCR7dGV4YFxcc2lnbWFeMlxcdGV4dHsgbWF4fWB9YCB9KSxcbiAgICBiaW5zOiBJbnB1dHMucmFuZ2UoWzEwLCA2MF0sIHsgdmFsdWU6IDEyLCBzdGVwOiAxLCBsYWJlbDogXCJIaXN0b2dyYW0gYmluc1wiIH0pXG4gIH0sIHsgc3VibWl0OiBmYWxzZSB9KTtcblxuICBjb25zdCByb290ID0gaHRtbGA8ZGV0YWlscyBjbGFzcz1cImNvbnRyb2xzLXJvb3RcIj5cbiAgICA8c3VtbWFyeT5SZXZlYWwgc2ltdWxhdGlvbiBjb250cm9scyBhbmQgdHJ1ZSB2YWx1ZXM8L3N1bW1hcnk+XG4gICAgPGRpdiBjbGFzcz1cImNvbnRyb2xzLWdyaWRcIj5cbiAgICAgIDxkaXYgY2xhc3M9XCJjb250cm9scy1jb2xcIj48aDQ+RGF0YS1nZW5lcmF0aW5nIHZhbHVlczwvaDQ+PC9kaXY+XG4gICAgICA8ZGl2IGNsYXNzPVwiY29udHJvbHMtY29sXCI+PGg0PkdyaWQgJiBkaXNwbGF5PC9oND48L2Rpdj5cbiAgICA8L2Rpdj5cbiAgPC9kZXRhaWxzPmA7XG5cbiAgY29uc3QgZ3JpZCA9IHJvb3QucXVlcnlTZWxlY3RvcihcIi5jb250cm9scy1ncmlkXCIpO1xuICBncmlkLmNoaWxkcmVuWzBdLmFwcGVuZChsZWZ0Rm9ybSk7XG4gIGdyaWQuY2hpbGRyZW5bMV0uYXBwZW5kKHJpZ2h0Rm9ybSk7XG5cbiAgY29uc3QgYnRuV3JhcCA9IGh0bWxgPGRpdiBzdHlsZT1cImRpc3BsYXk6ZmxleDsganVzdGlmeS1jb250ZW50OmZsZXgtc3RhcnQ7IG1hcmdpbi10b3A6NnB4O1wiPjwvZGl2PmA7XG4gIGJ0bldyYXAuYXBwZW5kKHJlc2ltQnRuKTtcbiAgZ3JpZC5jaGlsZHJlblsxXS5hcHBlbmQoYnRuV3JhcCk7XG5cbiAgY29uc3QgZ2V0VmFsdWUgPSAoKSA9PiAoeyAuLi5sZWZ0Rm9ybS52YWx1ZSwgLi4ucmlnaHRGb3JtLnZhbHVlLCByZXNpbTogcmVzaW1CdG4udmFsdWUgfSk7XG4gIGNvbnN0IHVwZGF0ZSA9ICgpID0+IHsgcm9vdC52YWx1ZSA9IGdldFZhbHVlKCk7IHJvb3QuZGlzcGF0Y2hFdmVudChuZXcgQ3VzdG9tRXZlbnQoXCJpbnB1dFwiLCB7IGJ1YmJsZXM6IHRydWUgfSkpOyB9O1xuXG4gIGdyaWQuYWRkRXZlbnRMaXN0ZW5lcihcImlucHV0XCIsIHVwZGF0ZSk7XG4gIHF1ZXVlTWljcm90YXNrKHVwZGF0ZSk7XG4gIHJldHVybiByb290O1xufVxuXG4vLyAtLS0gRXhwb3NlIHJlYWN0aXZlIHZhcnNcbm4gPSBjb250cm9scy5uXG5tdV90cnVlID0gY29udHJvbHMubXVfdHJ1ZVxuc2lnbWFfdHJ1ZSA9IGNvbnRyb2xzLnNpZ21hX3RydWVcbm11SGFsZldpZHRoID0gY29udHJvbHMubXVIYWxmV2lkdGhcbnNpZzJNYXggPSBjb250cm9scy5zaWcyTWF4XG5iaW5zID0gY29udHJvbHMuYmluc1xucmVzYW1wbGUgPSBjb250cm9scy5yZXNpbVxuXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ211VmFyMkQnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnY29udHJvbHMnKSJ9XX0=
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }

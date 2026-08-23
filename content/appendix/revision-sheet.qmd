@@ -7,6 +7,39 @@ tbl-cap-location: bottom
 
 This page provides a concise summary of all **examinable material** for the MAS2901 exam. If a topic appears in the main notes **but is not included here**, you may assume it is **not examinable**. A dedicated section at the end lists all **non-examinable** content explicitly.
 
+Use the page in two layers. Begin with the **fast route** below to select a
+method and recall its interpretation. Then open the detailed checklist entries
+only for topics you cannot yet explain or apply without help.
+
+::: {.callout-important}
+## Fast revision route
+
+For every problem, identify these four things before calculating:
+
+1. **Model and assumptions:** distribution, parameter space, independence and
+   whether the data are identically distributed.
+2. **Target:** which parameter or population feature is being learned about.
+3. **Task:** point estimate, interval estimate or hypothesis test.
+4. **Framework and approximation:** frequentist or Bayesian; exact or
+   large-sample.
+
+| Question asks for... | Main route | Essential interpretation/check |
+|---|---|---|
+| a single frequentist estimate | sampling properties or MLE | distinguish the random estimator from its observed value |
+| a single Bayesian estimate | posterior mean, median or MAP | state the posterior summary and the prior/model used |
+| uncertainty about a mean | Normal $z/t$ interval or a CLT interval | exact $t$ needs Normal data; CLT methods need suitable large-sample behaviour |
+| uncertainty about a general parameter | MLE/Fisher-information approximation | check regularity and remember coverage is approximate |
+| evidence against a simple null | $z$, $t$, CLT or likelihood-ratio test | choose the tail in advance; report the statistic, $p$-value and contextual conclusion |
+| posterior uncertainty or model evidence | credible region/HD region or Bayes factor | posterior probability is conditional on the prior and model |
+
+Three interpretation checks catch many errors:
+
+- a confidence level describes a **repeated-sampling procedure**, not the
+  probability that a fixed parameter lies in one realised interval;
+- a $p$-value is **not** $\Pr(H_0\mid x)$ and is not an effect size;
+- failing to reject $H_0$ is **not** the same as accepting or proving it.
+:::
+
 The revision sheet is organised as follows:
 
 1. @sec-exam-details: Addresses common questions about the structure and format of the exam.

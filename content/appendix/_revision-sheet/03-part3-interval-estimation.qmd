@@ -5,6 +5,16 @@
 <details class="essential-points">
 <summary> Assessment Focus </summary>
 
+- Define confidence through repeated-sampling coverage and interpret a realised
+  interval without assigning frequentist probability to the fixed parameter.
+- Select between an exact Normal $z$ interval, an exact Normal-theory $t$
+  interval, a CLT interval and an MLE/Fisher-information approximation by first
+  checking the model and assumptions.
+- Use the course-wide quantile convention $z_p=\Phi^{-1}(p)$, so a two-sided
+  Normal interval uses $z_{1-\alpha/2}$.
+- Distinguish exact, conservative and approximate coverage, and state when the
+  reported method is approximate.
+
 </details>
 
 <div class="revision-entry">
@@ -16,6 +26,14 @@
 </div>
 
 <div class="revision-content" id="rev-ci-random-interval" hidden>
+
+Before observing the data,
+$$
+C(\underline X)=[L(\underline X),U(\underline X)]
+$$
+is random because its endpoints are statistics. Repeating the sampling process
+would produce different intervals. After observing $\underline x$, the realised
+interval $C(\underline x)$ is fixed, as is the unknown frequentist parameter.
 
 </div>
 </div>
@@ -30,11 +48,17 @@ Be able to recall the <span class="xref-no-num">[definition @def-confidence-inte
 
 <div class="revision-content" id="rev-ci-def" hidden>
 
-A $100(1-\alpha)\%$ confidence interval is defined by a *random interval* $L(\underline{X})$ and $U(\underline{X})$ such that:
+A level-$100(1-\alpha)\%$ confidence procedure is defined by a *random
+interval* $C(\underline X)=[L(\underline X),U(\underline X)]$ such that, for
+each relevant $\theta$,
 $$
-\Pr\big(L(\underline{X}) < \theta < U(\underline{X})\big) = 1 - \alpha.
+\Pr_\theta\!\big\{\theta\in C(\underline X)\big\}\geq 1-\alpha.
 $$
 Here, the **random quantities** are the statistics $L(\underline{X})$ and $U(\underline{X})$; the parameter $\theta$ is fixed (but unknown).
+
+An exact continuous procedure often attains equality. A discrete exact
+procedure may be conservative, while an approximate procedure has coverage that
+approaches the nominal level under its large-sample conditions.
 
 </div>
 </div>
@@ -165,7 +189,7 @@ $$
 
 **Computing Confidence Intervals**
 
-Suppose we observe $n$ i.i.d. data points $x_1,\ldots,x_n$ from **any** distribution with finite variance. A $100(1-\alpha)\%$ <span class="xref-no-num">[approximate CLT-based confidence interval @def-approx-ci-clt]</span> for the **population mean** takes the form:
+Suppose we observe $n$ i.i.d. data points $x_1,\ldots,x_n$ from a distribution satisfying the finite-variance CLT conditions. A $100(1-\alpha)\%$ <span class="xref-no-num">[approximate CLT-based confidence interval @def-approx-ci-clt]</span> for the **population mean** takes the form:
 
 1. **Known variance:** If the population variance $\sigma^2$ is known, the confidence interval is
   $$
@@ -281,7 +305,15 @@ where:
 <details class="essential-points">
 <summary> Assessment Focus </summary>
 
-
+- Interpret the posterior distribution as the complete Bayesian update
+  conditional on the stated model, prior and observed data.
+- Define a credible region and explain why many regions can contain the same
+  posterior mass.
+- Define and interpret a highest-density region; understand that it may be
+  disjoint for a multimodal posterior.
+- Contrast posterior probability in a credible region with repeated-sampling
+  coverage of a confidence procedure. Analytic HDI calculations are not
+  examinable unless a question explicitly supplies the needed form.
 </details>
 
 <div class="revision-entry">
@@ -293,6 +325,16 @@ Understand that a Bayesian inference outputs the posterior distribution $\pi(\th
 </div>
 
 <div class="revision-content" id="rev-posterior-inference" hidden>
+
+Bayesian inference begins with
+$$
+\pi(\theta\mid\underline x)
+\propto f(\underline x\mid\theta)\pi(\theta).
+$$
+Posterior means, medians, MAP estimates, credible regions and posterior
+probabilities are summaries of this distribution. Their conclusions are
+conditional on the likelihood/model, the prior and the observations; changing
+a consequential prior can change the result.
 
 </div>
 </div>
@@ -307,12 +349,15 @@ Understand, and be able to recall, the definition of a <span class="xref-no-num"
 
 <div class="revision-content" id="rev-credible-interval" hidden>
   
-A $100(1-\alpha)\%$ Bayesian credible interval is **any** region $C_\alpha$ such that
+A $100(1-\alpha)\%$ Bayesian credible **region** is a set $C_\alpha$ such that
 $$
 \Pr(\theta \in C_\alpha \mid \underline{x})
 = \int_{C_\alpha} \pi(\theta \mid \underline{x})\,\mathrm{d}\theta
 = 1 - \alpha.
 $$
+When $C_\alpha$ is connected on the real line, it is a credible interval. For a
+discrete posterior, exactly $1-\alpha$ mass may be unattainable, so a region with
+at least the requested mass is used.
 
 </div>
 </div>
@@ -329,7 +374,10 @@ Be able to recall, explain, and apply the definition of a <span class="xref-no-n
 
 - See the visualisation in the <span class="xref-no-num">[definition @def-hdi]</span> for intuition.
 
-- A $100(1-\alpha)\%$ **Highest Density Interval (HDI)** is the *narrowest* credible interval containing posterior probability $1-\alpha$.
+- A $100(1-\alpha)\%$ **highest-density region** contains the parameter values
+  with greatest posterior density until probability $1-\alpha$ is accumulated.
+  Under suitable regularity conditions it minimises total length/measure among
+  credible regions with that mass.
 
 - It is defined by choosing a constant $\gamma$ such that
   $$
@@ -342,13 +390,17 @@ Be able to recall, explain, and apply the definition of a <span class="xref-no-n
   = 1 - \alpha.
   $$
 
+- For a unimodal posterior this region is usually one interval. For a
+  multimodal posterior it may be a union of disjoint intervals, so "highest
+  density interval" is common terminology but "region" is more general.
+
 <!-- - If the posterior distribution is normal,
   $$
   \theta \mid \underline{x} \sim \mathcal{N}(M, V),
   $$
   then the $100(1-\alpha)\%$ HDI coincides with the equal–tailed interval and is given by
   $$
-  M \pm z_{\alpha/2}\sqrt{V}.
+  M \pm z_{1-\alpha/2}\sqrt{V}.
   $$ -->
 
 ---
@@ -378,5 +430,3 @@ In the exam, HDIs will be assessed through understanding of the definition and i
 :::
 
 </details>
-
-

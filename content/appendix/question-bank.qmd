@@ -7,6 +7,30 @@ tbl-cap-location: bottom
 
 # Question Bank {.unnumbered}
 
+The bank is deliberately broad: it is a place to **practise**, not a list of
+questions that should all be completed from top to bottom. Try a question before
+opening its solution, mark the step at which you became stuck, and then retry it
+without the solution a day or two later.
+
+::: {.callout-tip}
+## Choose a practice route
+
+| If you are... | Start with... | Then move to... |
+|---|---|---|
+| checking the foundations | `probability`, `expectation`, `estimator` at **Easy** or **Medium** | `bias`, `variance`, `mse` |
+| revising estimation | `likelihood` and `mle` at **Medium** | `fisher-information`, `consistency`, `asymptotic-mle` |
+| revising uncertainty and tests | `confidence-interval` and `hypothesis-test` at **Medium** | `t-test`, `lrt`, then `exam-style` |
+| revising Bayesian methods | `bayes` and `conjugacy` at **Medium** | `map`, `hdi`, then `exam-style` |
+
+Use **Challenge** questions for extension or after you can complete the core
+route unaided. Some questions include coding because it can help you explore the
+ideas; writing or interpreting code is not required in the exam.
+:::
+
+The filters below combine tags using **AND**: selecting `bayes` and `binomial`
+shows questions carrying both tags. Difficulty runs from **Easy** through
+**Challenge**.
+
 ```{python}
 #| echo: false
 
@@ -78,7 +102,8 @@ allTags = Array.from(new Set(
       // Always show, but only add peppers if >0
       const span = document.createElement('span');
       span.className = `difficulty-peppers level-${level}`;
-      span.setAttribute('aria-label', `Difficulty ${level}`);
+      const difficultyName = ["Easy", "Medium", "Hard", "Challenge"][level] ?? "Unrated";
+      span.setAttribute('aria-label', `Difficulty: ${difficultyName}`);
       span.textContent = level > 0 ? `(${ "🌶".repeat(level) })` : "( )";
       header.appendChild(span);
     }
@@ -246,7 +271,7 @@ viewof levels = Inputs.checkbox(
   {
     label: md`Difficulty:`,
     value: [0, 1, 2, 3],                 // default: show all
-    format: d => ["Easy", "Medium", "Hard", "Too hard"][d]
+    format: d => ["Easy", "Medium", "Hard", "Challenge"][d]
   }
 )
 
@@ -359,7 +384,7 @@ Let $X_1,\dots,X_n \stackrel{iid}{\sim} \mathcal{N}(\mu,1)$. Find the MLE of $\m
 The likelihood is
 
 $$
-L(\mu ; \underline{x}) = \mathrm{Pr}od_{i=1}^n \frac{1}{\sqrt{2\pi}} 
+L(\mu ; \underline{x}) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi}}
   \exp\!\left(-\tfrac{1}{2}(x_i - \mu)^2\right) = (2\pi)^{-n/2} \exp\left( -\frac{1}{2}\sum_{i=1}^n (x_i - \mu)^2 \right) .
 $$
 
@@ -380,10 +405,11 @@ Setting equal to $0$:
 $$
 \sum_{i=1}^n (x_i - \mu) = 0
 \quad\Longrightarrow\quad 
-\hat\mu = \frac{1}{n}\sum_{i=1}^n x_i = \bar X.
+\hat\mu_{\mathrm{obs}} = \frac{1}{n}\sum_{i=1}^n x_i = \bar x.
 $$
 
-So the MLE of $\mu$ is the **sample mean** $\bar X$.
+So the MLE is the sample-mean estimator $\bar X$; for these observed data its
+value is $\bar x$.
 
 </details>
 

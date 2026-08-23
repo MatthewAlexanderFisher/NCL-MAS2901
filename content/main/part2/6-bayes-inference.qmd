@@ -41,6 +41,19 @@ def set_plot_theme(mode="light"):
 {{< include ../../_figures/part2/bayes-inference-shared.qmd >}}
 :::
 
+::: {.callout-note appearance="simple"}
+## Learning objectives and route through this chapter
+
+By the end of this chapter, you should be able to:
+
+1. identify the prior, likelihood, evidence, and posterior in Bayes' theorem;
+2. derive conjugate posteriors up to proportionality and interpret prior strength;
+3. compare the MLE, posterior mean, posterior median, and MAP estimate;
+4. explain why frequentist and Bayesian Normal approximations can look similar while describing different sources of uncertainty.
+
+The **core route** is prior $\rightarrow$ likelihood $\rightarrow$ posterior $\rightarrow$ interpretation. Code and longer algebra are supporting material; first focus on what each distribution represents and how the update changes uncertainty.
+:::
+
 
 ## Introduction to the Bayesian Approach {#sec-intro-bayes-approach}
 
@@ -64,9 +77,9 @@ Rather than saying “*the parameter is a fixed number we don’t know*”, we d
 
 Imagine the weather forecast says there is a $70\%$ chance of rain tomorrow.
 
-* The sky doesn’t “rain in $70\%$ of parallel universes.”
+* For a particular tomorrow, rain either occurs or it does not.
 
-* Instead, the number $70\%$ reflects our uncertainty given current information (satellite data, forecasts, etc.).
+* The number $70\%$ can express our uncertainty given current information; across well-calibrated forecasts issued at $70\%$, rain should also occur about $70\%$ of the time.
 
 ::: {.content-visible unless-format="pdf"}
 
@@ -114,10 +127,10 @@ We could represent this belief as a Normal prior distribution centred at $60$ wi
 :::
 
 ::: {#exm-bayes-disease}
-#### Disease Prevalance
+#### Disease Prevalence
 Let $\theta$ be the proportion of people with a rare condition.
 
-Before collecting data, experts might believe $\theta$ is “probably around $2\%$, but definitely less than $10\%$”.
+Before collecting data, experts might believe $\theta$ is “probably around $2\%$, and very unlikely to exceed $10\%$”.
 
 We could express this with a <span class="xref-no-num">[Beta distribution @sec-beta]</span> prior.
 
@@ -145,7 +158,7 @@ This provides a **language of degrees of belief**: probability distributions des
 The Bayesian approach to inference has three ingredients:
 
 1. **Prior** — a probability distribution that captures what we believe about $\theta$ *before* seeing the data.
-2. **Likelihood** — the distribution of the data $\underline{x}$ given $\theta$.
+2. **Likelihood** — the sampling model evaluated at the observed data, viewed as a function of $\theta$.
 3. **Posterior** — the updated distribution for $\theta$ that combines prior information with the evidence from the data.
 
 The update is performed using **Bayes’ theorem** (introduced in the next section). Intuitively:
@@ -181,7 +194,7 @@ $$
 
 :::
 
-::: {.prf #prf-bayes}
+::: {.prf #prf-bayes-density}
 By the definition of conditional density:
 
 $$
@@ -307,7 +320,11 @@ $$
 
 - The **likelihood** $f(\underline{x} \mid \theta)$ is the term where data and parameter appear together; it is this dependence that updates the prior into the posterior.
 - The **prior** $\pi(\theta)$ reflects what we believed about $\theta$ before seeing the data.
-- The denominator $f(\underline{x})$ is a normalising constant ensuring the posterior integrates to $1$.
+- The denominator
+  $$
+  f(\underline{x})=\int_{\Theta}f(\underline{x}\mid\theta)\pi(\theta)\,d\theta
+  $$
+  is the **prior predictive density** (or evidence) for the observed data and normalises the posterior to integrate to $1$.
 :::
 
 
@@ -321,7 +338,7 @@ We now work through a simple example to see how this update works.
 
 Let $\theta = \Pr(\text{Head})$ for a possibly biased coin.
 
-* **Prior:** Before seeing data, we express no preference over $\theta \in (0,1)$ by choosing a **uniform prior**:
+* **Prior:** Before seeing data, we choose a density that is flat on the $\theta$ scale:
 
   $$
   \theta \sim \mathrm{Uniform}(0,1) \equiv \mathrm{Beta}(1,1), 
@@ -329,6 +346,8 @@ Let $\theta = \Pr(\text{Head})$ for a possibly biased coin.
   $$
 
   This prior has mean $\mathrm{E}[\theta]=0.5$.
+
+  Calling this prior “uniform” describes its shape in this parameterisation; it is not automatically “no information,” because a transformation of $\theta$ would not generally remain uniform.
 
 * **Data:** We toss the coin $n=5$ times and observe $x=1$ head.
 
@@ -432,6 +451,8 @@ So, after seeing the data, our beliefs about $\theta$ have been updated: we now 
   <summary><strong> Show Plot </strong></summary>
 ```
 
+Before opening the plot, predict where the likelihood, prior, and posterior will each be centred. After opening it, explain why the posterior mode is $0.2$ but the posterior mean is larger. The written interpretation above is the text-only equivalent of the plot.
+
 {{< include ../../_figures/part2/beta-posterior.qmd >}}
 
 ```{=html}
@@ -447,6 +468,23 @@ So, after seeing the data, our beliefs about $\theta$ have been updated: we now 
 </details>
 ```
 
+:::
+
+
+::: {.callout-tip #tip-bernoulli-freq-bayes appearance="simple"}
+### Recurring Bernoulli example: frequentist and Bayesian estimates
+
+For $x$ successes in $n$ Bernoulli trials, Chapter 4 studied $\hat p=\bar Y=x/n$ through its bias and variance, and Chapter 5 showed that it is the MLE. With a $\mathrm{Beta}(a,b)$ prior,
+$$
+p\mid x\sim\mathrm{Beta}(a+x,b+n-x).
+$$
+The three common point summaries are
+$$
+\hat p_{\mathrm{MLE}}=\frac{x}{n},\qquad
+\hat p_{\mathrm{mean}}=\frac{a+x}{a+b+n},\qquad
+\hat p_{\mathrm{MAP}}=\frac{a+x-1}{a+b+n-2},
+$$
+where the MAP formula assumes an interior mode. The prior contributes pseudo-successes and pseudo-failures: $a,b$ in the posterior mean, or $a-1,b-1$ in the MAP. As $n$ grows with the prior fixed, the influence of these prior counts diminishes and all three estimates tend to agree.
 :::
 
 
@@ -479,7 +517,7 @@ $$
 \pi(\theta \mid \underline{x})
 = k\, f(\underline{x}\mid \theta)\,\pi(\theta),
 $$
-for some constant $k \in \mathbb{R}$ that does **not** depend on $\theta$.
+for some positive constant $k>0$ that does **not** depend on $\theta$.
 
 This works because:
 
@@ -625,6 +663,8 @@ plot(theta_grid, pdf_values, type = "l",
   \theta \mid x=5 \sim \mathrm{Beta}(82, 10).
   $$
 
+**Interpretation and sensitivity.** The prior is strong: $a+b=82$ acts like roughly 82 prior observations in the posterior-mean calculation, compared with only 10 new responses. The prior mean is $77/82\approx0.939$, the data proportion is $5/10=0.5$, and the posterior mean is $82/92\approx0.891$. The posterior therefore remains close to the prior despite a clear prior–data conflict. With the much weaker $\mathrm{Beta}(1,1)$ prior, the same data would give $\mathrm{Beta}(6,6)$ with posterior mean $0.5$. Reporting this comparison makes the influence of the prior visible rather than treating the update as purely mechanical.
+
 A graph of the posterior density is given as follows:
 
 ::: {.panel-tabset}
@@ -645,7 +685,7 @@ import matplotlib.pyplot as plt
 
 set_plot_theme("light")
 
-# Beta(α, β) with α=77, β=5  →  π(θ) ∝ θ^(76) (1-θ)^(4)
+# Posterior Beta(82, 10)  →  π(θ | x) ∝ θ^(81) (1-θ)^(9)
 alpha, beta = 82, 10
 
 # B(α,β) = Γ(α)Γ(β)/Γ(α+β)  ⇒  1/B = exp(lgamma(α+β) - lgamma(α) - lgamma(β))
@@ -731,9 +771,7 @@ The engineers assess the click-through rate by testing their recommender on user
 
 **a.**
 
-I personally never click on adverts, apart from on accident. I don’t think many people do. So, I believe that the click-through rate $\theta$ should be close to $0$.
-
-I am not very confident, so I will pick:
+Suppose previous campaigns suggest that click-through rates are low, but there is still substantial uncertainty. As an illustrative, moderately informative prior, take
 
 $$
 \theta \sim \text{Beta}(5,\,100).
@@ -746,6 +784,8 @@ $$
 $$
 
 and places the vast majority of its probability mass on values $\theta < 0.1$.
+
+Its concentration $5+100=105$ is comparable to roughly one hundred prior Bernoulli observations in the posterior-mean calculation, so it should not be described as a nearly information-free prior.
 
 ---
 
@@ -816,7 +856,9 @@ $$
 
 which is about **0.52% click-through rate**.
 
-* The posterior variance is very small because $n=10{,}000$ is large, so the engineers can be quite confident that $\theta$ is very close to $0.5%$.
+* With a weak $\mathrm{Beta}(1,1)$ prior, the posterior mean would be $48/10002\approx0.0048$, close to both the observed rate $47/10000=0.0047$ and the result above. This sensitivity comparison shows that the large dataset dominates these two priors.
+
+* **Conditional on the i.i.d. Binomial model and a representative sample**, the posterior variance is very small because $n=10{,}000$ is large. A large $n$ reduces sampling uncertainty but does not repair dependence between impressions, selection bias, or changes in click-through rate across users and adverts.
 
 ```{=html}
 <details>
@@ -840,28 +882,26 @@ which is about **0.52% click-through rate**.
 
 
 ::: {.example #exm-particle-speed}
-### Measuring a particle’s speed
+### Measuring a calibration signal
 
-You are attempting to measure the **speed of a particle** $\theta$ and quantify the uncertainty in the measurement. The experiment is set up such that the particle **travels** $1$ km and the measurements are the speeds $X_i \mid \theta$ for $i=1,\ldots,n$ in kilometres per second (km/s).
+You are attempting to measure an unknown **calibration signal level** $\theta$ and quantify the uncertainty in the measurement. Repeated instrument readings are denoted by $X_i\mid\theta$, for $i=1,\ldots,n$, in arbitrary signal units.
 
-There are a **multitude of factors** that additively result in **measurement error** for the speed of the particle.
+Many small factors contribute additively to the measurement error.
 
 **(a)** Using a **normal prior**, quantify **your prior beliefs** about $\theta$.
 
 ```{=html}
 <details>
   <summary><strong>Solution (a)</strong></summary>
-````
+```
 
-Since speed is physically constrained, a normal prior is imperfect because it places mass on the whole real line. For speed we should have $0< \theta < c$, where $c=299{,}792 \text{km/s}$ (speed of light).
-
-Nonetheless, if we are asked to use a normal prior and have little prior knowledge about the particle type, a weakly informative prior is reasonable, e.g.
+Suppose historical calibrations suggest a signal level around $150{,}000$, with substantial between-run uncertainty. A possible prior is
 
 $$
 \theta \sim \mathcal{N}\!\big(1.5\times 10^5,\ (4\times 10^4)^2\big).
 $$
 
-This concentrates most mass in the physically plausible range while remaining diffuse.
+This prior makes its scale and uncertainty explicit. A different scientific context would require a different elicitation; in particular, a parameter with hard physical bounds should not be assigned an unconstrained Normal prior without checking the mass outside those bounds.
 
 ```{=html}
 </details>
@@ -924,6 +964,14 @@ $$
 M = V\left(\frac{n\bar{x}}{\sigma^2}+\frac{\mu_0}{\sigma_0^2}\right).
 $$
 
+Equivalently,
+$$
+M=w\bar x+(1-w)\mu_0,
+\qquad
+w=\frac{n/\sigma^2}{n/\sigma^2+1/\sigma_0^2}.
+$$
+The posterior mean is therefore a **precision-weighted average** of the data mean and prior mean: the more precise source receives more weight. This is Bayesian shrinkage in a directly visible form.
+
 Therefore,
 
 $$
@@ -936,7 +984,7 @@ $$
 
 ---
 
-**(d)** Suppose you measured the speed $4$ times and obtained (km/s):
+**(d)** Suppose you measured the signal $4$ times and obtained:
 $306135,\ 293227,\ 307985,\ 301298$.
 Using the prior from (a), set $\sigma=5000$ and derive your **posterior distribution**.
 
@@ -966,8 +1014,10 @@ Thus,
 
 $$
 \boxed{\ \theta\mid \underline{x}\ \sim\ \mathcal{N}\!\big(301{,}569.2,\ 6{,}225{,}681\big)\ }
-\quad \text{(i.e., SD } \approx 2{,}495.1\text{ km/s)}.
+\quad \text{(i.e., SD } \approx 2{,}495.1\text{ signal units)}.
 $$
+
+The posterior is far from the prior mean. That may be genuine learning, but it should also prompt a model check: did the calibration regime change, was the prior based on a comparable instrument, and are the stated measurement errors credible? The calculation is conditional on those modelling choices.
 
 ```{=html}
 </details>
@@ -1045,30 +1095,32 @@ Conjugacy guarantees that the posterior has the *same family* as the prior, so o
 
 #### Summary of Conjugate Priors and Posterior Updates {.unnumbered}
 
+In this table, $\mathrm{Gamma}(a,b)$ uses shape $a$ and **rate** $b$, while $\mathrm{InvGamma}(a,b)$ is defined by a density proportional to $x^{-(a+1)}e^{-b/x}$. Always check these conventions when consulting software or another text.
+
 ::: {.small-table}
 | Likelihood Model | Prior | Posterior | Link |
 |------------------|--------|------------|-------|
-| $X \mid p \sim \;  \mathrm{Binomial}(n,p)$ | $p \sim \mathrm{Beta}(a,b)$ | $p \mid x \sim \mathrm{Beta}(a + x,\; b + n - x)$ | <span class="xref-no-num">[Link @q-beta-binom]</span> |
-| $X_i \mid \lambda \; \overset{\text{i.i.d.}}{\sim} \;  \mathrm{Poisson}(\lambda)$  | $\lambda \sim \mathrm{Gamma}(a,b)$ | $\lambda \mid \underline{x} \sim \mathrm{Gamma}(a + n\bar{x},\; b + n)$ | <span class="xref-no-num">[Link @q-gamma-pois]</span> |
-| $X_i \mid p \; \overset{\text{i.i.d.}}{\sim} \;  \mathrm{Geom}(p)$  | $p \sim \mathrm{Beta}(a,b)$ | $p \mid \underline{x} \sim \mathrm{Beta}(a + n,\; b + n(\bar{x}-1))$ | <span class="xref-no-num">[Link @q-beta-geom]</span> |
-| $X_i \mid \mu \; \overset{\text{i.i.d.}}{\sim} \;  \mathcal{N}(\mu,\sigma^2)$ (known $\sigma^2$) | $\mu \sim \mathcal{N}(\mu_0,\sigma_0^2)$ | $\mu \mid \underline{x} \sim \mathcal{N}(M,V)$ |  <span class="xref-no-num">[Link @q-normal-normal]</span> |
-| $X \mid \gamma \; \overset{\text{i.i.d.}}{\sim} \; \mathcal{N}(\mu,\gamma)$ (known $\mu$) | $\gamma \sim \operatorname{InvGamma}(a,b)$ | $\gamma \mid \underline{x} \sim \mathrm{InvGamma}\!\left(a + n/2,\; b + \tfrac12 \sum (x_i - \mu)^2\right)$ | <span class="xref-no-num">[Link @q-normal-invgamma]</span> |
-| $X_i \mid \lambda \; \overset{\text{i.i.d.}}{\sim} \;  \mathrm{Exponential}(\lambda)$  | $\lambda \sim \mathrm{Gamma}(a,b)$ | $\lambda \mid \underline{x} \sim \mathrm{Gamma}\left(a + n,\; b + n\bar{x}  \right)$ | <span class="xref-no-num">[Link @q-exp-gamma]</span> |
-| $X_i \mid \theta \; \overset{\text{i.i.d.}}{\sim} \;  \mathrm{Weibull}(\beta, \theta)$ (known $\beta$) | $\theta \sim \mathrm{InvGamma}(a,b)$ | $\theta \mid \underline{x} \sim \mathrm{InvGamma}\left(a + n,\; b + \sum_{i=1}^n x_i^\beta  \right)$ | <span class="xref-no-num">[Link @q-weib-invgamma]</span> |
+| $X \mid p \sim \;  \mathrm{Binomial}(n,p)$ | $p \sim \mathrm{Beta}(a,b)$ | $p \mid x \sim \mathrm{Beta}(a + x,\; b + n - x)$ | <span class="xref-no-num">[Worked update @q-beta-binom]</span> |
+| $X_i \mid \lambda \; \overset{\text{i.i.d.}}{\sim} \;  \mathrm{Poisson}(\lambda)$  | $\lambda \sim \mathrm{Gamma}(a,b)$ | $\lambda \mid \underline{x} \sim \mathrm{Gamma}(a + n\bar{x},\; b + n)$ | <span class="xref-no-num">[Worked update @q-gamma-pois]</span> |
+| $X_i \mid p \; \overset{\text{i.i.d.}}{\sim} \;  \mathrm{Geom}(p)$  | $p \sim \mathrm{Beta}(a,b)$ | $p \mid \underline{x} \sim \mathrm{Beta}(a + n,\; b + n(\bar{x}-1))$ | <span class="xref-no-num">[Worked update @q-beta-geom]</span> |
+| $X_i \mid \mu \; \overset{\text{i.i.d.}}{\sim} \;  \mathcal{N}(\mu,\sigma^2)$ (known $\sigma^2$) | $\mu \sim \mathcal{N}(\mu_0,\sigma_0^2)$ | $\mu \mid \underline{x} \sim \mathcal{N}(M,V)$ |  <span class="xref-no-num">[Worked update @q-normal-normal]</span> |
+| $X_i \mid \gamma \; \overset{\text{i.i.d.}}{\sim} \; \mathcal{N}(\mu,\gamma)$ (known $\mu$) | $\gamma \sim \operatorname{InvGamma}(a,b)$ | $\gamma \mid \underline{x} \sim \mathrm{InvGamma}\!\left(a + n/2,\; b + \tfrac12 \sum (x_i - \mu)^2\right)$ | <span class="xref-no-num">[Worked update @q-normal-invgamma]</span> |
+| $X_i \mid \lambda \; \overset{\text{i.i.d.}}{\sim} \;  \mathrm{Exponential}(\lambda)$  | $\lambda \sim \mathrm{Gamma}(a,b)$ | $\lambda \mid \underline{x} \sim \mathrm{Gamma}\left(a + n,\; b + n\bar{x}  \right)$ | <span class="xref-no-num">[Worked update @q-exp-gamma]</span> |
+| $X_i \mid \theta \; \overset{\text{i.i.d.}}{\sim} \;  \mathrm{Weibull}(\beta, \theta)$ (known $\beta$) | $\theta \sim \mathrm{InvGamma}(a,b)$ | $\theta \mid \underline{x} \sim \mathrm{InvGamma}\left(a + n,\; b + \sum_{i=1}^n x_i^\beta  \right)$ | <span class="xref-no-num">[Worked update @q-weib-invgamma]</span> |
 
 : {tbl-colwidths="[30,30,30,10]"}
 :::
 
 ## Bayesian Estimators
 
-In Bayesian inference, **estimators** are obtained by summarising the **posterior distribution**
+In Bayesian inference, point **estimators** are obtained by summarising the **posterior distribution**
 $$
 \pi(\theta \mid \underline{x})
 = \frac{f(\underline{x}\mid\theta)\, \pi(\theta)}{f(\underline{x})}.
 $$
 
-We often choose a single value to represent our updated belief about the parameter.  
-Different summaries of the posterior lead to different Bayesian estimators.  
+As in Chapter 4, an estimator is a rule depending on the random data $\underline X$; after observing $\underline x$, its numerical output is an estimate. We often choose a single value to summarise the posterior, but the appropriate summary depends on how estimation errors will be judged.
+Different loss functions lead to different Bayesian estimators.
 Three common examples are:
 
 1. **Maximum a Posteriori (MAP) Estimator:**  
@@ -1092,6 +1144,16 @@ Three common examples are:
    $$
 
 Among these, the **MAP estimator** is particularly important and is given its own formal definition below.
+
+::: {.callout-tip appearance="simple"}
+### Point summaries and loss
+
+- Under **squared-error loss**, the posterior mean minimises posterior expected loss. This connects directly to the MSE criterion in Chapter 4.
+- Under **absolute-error loss**, the posterior median is optimal.
+- The MAP selects the highest posterior density and can be motivated by an increasingly narrow zero-one-style loss.
+
+There is therefore no universally best posterior summary without stating the decision goal. In particular, for a continuous parameter the MAP is a density mode, not a point with positive posterior probability, and it can change under reparameterisation.
+:::
 
 ::: {#def-map .definition}
 
@@ -1149,25 +1211,24 @@ The only difference is that the likelihood is replaced by the **posterior**.
    $$
    where $C$ is a constant not depending on $\theta$.
 
-3. **Differentiate and solve:**  
-   We differentiate with respect to $\theta$ and set the derivative equal to zero:
+3. **Find interior candidates:**
+   Differentiate with respect to $\theta$ and set the derivative equal to zero:
    $$
    \frac{\partial}{\partial\theta}\,\log \pi(\theta \mid \underline{x}) = 0.
    $$
-   Solving this equation yields the MAP estimator:
-   $$
-   \hat{\theta}_{\mathrm{MAP}}
-   = \arg\max_{\theta}\, \pi(\theta \mid \underline{x}).
-   $$
+   Solutions are stationary-point candidates, not automatically maxima.
+
+4. **Check the global maximum:**
+   Compare candidates, verify curvature or the global shape, and inspect the boundaries of the parameter space. The MAP is the value that actually maximises the posterior.
 
 In short:
 
 - compute the posterior up to proportionality,  
 - take logs,  
 - differentiate,  
-- solve for the maximiser.
+- find candidates and check which is the global maximiser, including boundaries.
 
-This is **identical** to the MLE procedure — except the prior contributes an extra term.
+This parallels the MLE procedure, except that the prior contributes an extra $\log\pi(\theta)$ term. With a prior that is constant on the chosen parameter scale, an interior MAP and MLE coincide; with an informative prior they generally differ.
 
 :::
 
@@ -1179,7 +1240,7 @@ In **frequentist statistics**, we saw two important results about the <span clas
 1. The <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span> showed that the sampling distribution of the <span class="xref-no-num">[sample mean @def-sample-mean]</span> is approximately Normal for large $n$.
 2. The <span class="xref-no-num">[Asymptotic Distribution of the MLE @thm-asymp-mle]</span> showed that the sampling distribution of the maximum likelihood estimator is approximately Normal for large $n$.
 
-A similar phenomenon occurs in **Bayesian inference**: for large samples, the **posterior distribution** itself becomes approximately Normal, regardless of the prior (as long as it is not too extreme). 
+A similar phenomenon occurs in **Bayesian inference**: in a regular, identifiable, fixed-dimensional model, the **posterior distribution** becomes approximately Normal when the prior has positive, smooth density near the true parameter. This can fail at boundaries, in non-identifiable models, or when the prior rules out the truth.
 
 This important result is known as the **Bernstein–von Mises theorem**. However, we will refer to it simply as the **asymptotic posterior distribution**:
 
@@ -1206,6 +1267,18 @@ $$
 \mathcal{N}\Big(\hat{\theta}_n,\, \mathcal{I}_n(\hat{\theta}_n)^{-1}\Big),
 $$
 obtained by replacing $\theta_0$ with $\hat{\theta}_n$ in the Fisher information. 
+:::
+
+::: {.callout-important appearance="simple"}
+### Same Normal shape, different probability statements
+
+The MLE approximation in Chapter 5 describes the **sampling distribution of $\hat\theta_n$ when new datasets are repeatedly generated with $\theta_0$ fixed**. The approximation above describes the **posterior distribution of $\theta$ conditional on the dataset that was observed**. Under regularity conditions they have approximately the same centre and information-based variance, but they condition on different things and support different interpretations.
+:::
+
+::: {.callout-tip appearance="simple"}
+### Chapter summary
+
+Bayesian updating combines a likelihood shared with frequentist inference and an explicit prior. Conjugacy makes some updates algebraic, but prior strength, parameter support, and model assumptions still require interpretation. A posterior is the main inferential output; its mean, median, and mode answer different decision questions, and large samples often—but not always—reduce prior influence.
 :::
 
 

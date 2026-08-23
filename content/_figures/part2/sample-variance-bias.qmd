@@ -286,7 +286,7 @@ biasRightPlot = {
       fontFamily: bodyFont,
       fontSize: 14
     },
-    x: { label: "sₙ²", domain: varDomain },
+    x: { label: "naive variance (1/n)", domain: varDomain },
     y: { label: "Density", domain: [0, biasRightYMax * 1.1] },
     marks: [
       variances.length > 0 ? Plot.rectY(
@@ -334,7 +334,7 @@ biasRightPlot = {
     items.push({ label: `σ² = ${trueVariance.toFixed(2)}`, stroke: "var(--plot-series-3)", strokeWidth: 3 });
   }
   if (empiricalMean !== null && biasControls.biasShowTrue) {
-    items.push({ label: `E[Sₙ²] ≈ ${empiricalMean.toFixed(3)}`, stroke: "var(--plot-series-4)", strokeWidth: 2, dasharray: "6,3" });
+    items.push({ label: `E[naive variance] ≈ ${empiricalMean.toFixed(3)}`, stroke: "var(--plot-series-4)", strokeWidth: 2, dasharray: "6,3" });
   }
 
   if (items.length) addLegendTopRight(svg, items, { fontFamily: bodyFont, fontSize: 12, corner: 10 });
@@ -358,8 +358,8 @@ biasRightPlot = {
     <div class="left">${viewof biasResample}</div>
     <div class="center">
       ${empiricalBias !== null && biasControls.biasShowTrue ? html`
-      <div>${tex`s_n^2 = ${sampleVar.toFixed(3)} \,`}  and  ${tex`\, \text{Bias}(S_n^2) \approx ${empiricalBias.toFixed(3)}`}</div>
-      ` : html`<div>${tex`s^2 = ${sampleVar.toFixed(3)}`}</div>`}
+      <div>${tex`\widetilde s_n^2 = ${sampleVar.toFixed(3)} \,`}  and  ${tex`\, \text{Bias}(\widetilde S_n^2) \approx ${empiricalBias.toFixed(3)}`}</div>
+      ` : html`<div>${tex`\widetilde s_n^2 = ${sampleVar.toFixed(3)}`}</div>`}
       <div style="font-size:0.8em; opacity:0.7">
         ${variances.length} sample${variances.length !== 1 ? 's' : ''} collected
       </div>

@@ -166,10 +166,13 @@ $$
      $$
      \mathcal{I}_n(p) = n\frac{(1-p)^2 - p^2 + p}{p^2(1-p)^2} = \frac{n}{p^2(1-p)}.
      $$
-     Substituting in $p = \hat{p}_{\mathrm{MLE}} = 1/\bar{x}$, the **observed Fisher information** is
+     Substituting $p = \hat{p}_{\mathrm{MLE}} = 1/\bar{x}$ into the
+     **expected Fisher information** gives
      $$
      \mathcal{I}_n(\hat{p}_{\mathrm{MLE}}) = \frac{n \bar{x}^2}{(1-1/\bar{x})} = \frac{n\bar{x}^3}{\bar{x} - 1}.
      $$
+     For this model, the realised observed information evaluated at the MLE has
+     the same value, but the two definitions are conceptually distinct.
    * **Step 5: Compute Approximate CI**
      The <span class="xref-no-num">[asymptotic distribution of the MLE @def-asymp-mle-approx]</span> implies that, for large $n$,
      $$
@@ -1150,5 +1153,4 @@ Both tests lead to the same conclusion. The t-test is slightly more conservative
 </details>
 
 :::
-
 

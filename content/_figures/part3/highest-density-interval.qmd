@@ -51,7 +51,7 @@ function findHDIBounds(gamma, alpha, beta, tol = 1e-6) {
 ```{ojs}
 // Main HDI visualization
 {
-  const width = 960;
+  const plotWidth = Math.min(960, Math.max(320, width));
   const height = 400;
   const marginTop = 40;
   const marginBottom = 60;
@@ -90,7 +90,7 @@ function findHDIBounds(gamma, alpha, beta, tol = 1e-6) {
   
   // Create the plot
   const plot = Plot.plot({
-    width,
+    width: plotWidth,
     height,
     marginTop,
     marginBottom,
@@ -231,7 +231,7 @@ function findHDIBounds(gamma, alpha, beta, tol = 1e-6) {
           <strong>γ threshold:</strong> ${gammaLevel.toFixed(3)}
         </div>
         <div>
-          <strong style="color: var(--brand-teal);">HDI coverage:</strong> ${(hdiProbability * 100).toFixed(2)}%
+          <strong style="color: var(--brand-teal);">Posterior mass in region:</strong> ${(hdiProbability * 100).toFixed(2)}%
         </div>
       </div>
       ${hdiBounds.valid ? html`
@@ -283,7 +283,7 @@ viewof hdiControls = {
   
   const root = html`<details class="controls-root" open>
     <summary style="cursor: pointer; font-weight: 600;">HDI Controls</summary>
-    <div class="controls-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 15px;">
+    <div class="controls-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;padding:15px;">
       <div class="controls-col">
         <h4 style="margin-bottom: 10px;">Density Threshold</h4>
         ${gammaSlider}

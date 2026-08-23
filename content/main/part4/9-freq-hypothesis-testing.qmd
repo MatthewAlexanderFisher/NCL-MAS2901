@@ -7,13 +7,24 @@ tbl-cap-location: bottom
 {{< include ../../_figures/part4/frequentist-testing-shared.qmd >}}
 Recalling the <span class="xref-no-num">[main inference tasks @sec-inference-tasks]</span>, we now move from *interval estimation* to *hypothesis testing*.
 
+::: {.callout-note appearance="simple"}
+**By the end of this chapter, you should be able to:**
+
+- state null and alternative hypotheses and choose a direction before examining the result;
+- distinguish Type I error, Type II error, significance level, size, $p$-value and power;
+- select and carry out the appropriate one-sample Z, $t$, CLT or likelihood-ratio test; and
+- report statistical evidence alongside effect size, uncertainty and modelling assumptions.
+:::
+
+The chapter has two stages. First we develop the logic common to all tests: rejection regions, $p$-values and power. We then apply one common reporting template to the examinable tests.
+
 The term **hypothesis testing** reflects the logic of the scientific method:
 
 1. Propose a hypothesis about the world.  
 2. Collect data through experiment or observation.  
 3. Assess whether the data are consistent with that hypothesis.
 
-If the data look typical of what the hypothesis predicts, this provides some **support** (though never proof). If the data would be very unlikely were the hypothesis true, this is evidence *against* it.
+If the data look typical of what the hypothesis predicts, they do not provide evidence against it—but this alone is not positive evidence that it is true. If the data would be very unlikely were the hypothesis true, this is evidence *against* it.
 
 Whereas **interval estimation** gives a range of plausible parameter values, hypothesis testing poses a **yes/no question** about a specific value of the parameter $\theta$.
 
@@ -41,7 +52,7 @@ In practice we consider two standard forms:
   \qquad \text{or} \qquad
   H_1 : \theta < \theta_0.
   $$
-  These express the belief that only increases (or only decreases) in $\theta$ are relevant alternatives.
+  These express a scientific question for which only increases (or only decreases) in $\theta$ are relevant alternatives. The direction must be chosen **before looking at the data**.
 
 :::
 
@@ -84,25 +95,27 @@ In this course we will use **“fail to reject”**, because it emphasises that 
 
 ```{=html}
 <details>
-<summary><strong>Show Visualisation</strong></summary>
+<summary><strong>Explore rejection and non-rejection</strong></summary>
 ```
 Suppose our model is
 
 $$
-X_i \mid \gamma \sim \mathcal{N}(200, \gamma),
+X_i \mid \mu \sim \mathcal{N}(\mu, 10^2),
 $$
 
-where $\gamma$ is the variance.
-
-We want to test whether $\gamma = 10$. That is:
+and we observe $n=30$ measurements. We want to test
 
 $$
-H_0: \gamma = 10.
+H_0: \mu=200
+\qquad\text{against}\qquad
+H_1:\mu\neq200.
 $$
 
-The frequentist approach is: *assume $H_0$ is true* and then check whether the observed data are typical of a normal distribution with variance $10$.
+**Predict.** Where must the observed sample mean fall for a $5\%$ two-sided test to reject? Then move the observed-mean control and compare your prediction with the displayed decision.
 
 {{< include ../../_figures/part4/reject-versus-accept.qmd >}}
+
+**Explain.** Moving outside the rejection region makes the data unusual under $H_0$; remaining inside means only that this test has not found sufficiently strong evidence against $H_0$.
 
 ```{=html}
 </details>
@@ -139,10 +152,10 @@ Given this interpretation, the interaction between the **true state of nature** 
 - **Analogy:** The fire alarm goes off, but there is **no fire**.  
 - **Consequence:** We incorrectly claim evidence of an effect when none exists.
 
-This error is controlled by the **size** (or **significance level**) $\alpha$ of the test:
+This error is controlled by choosing a **significance level** $\alpha$:
 
 $$
-\alpha = \Pr(\text{reject } H_0 \mid H_0 \text{ true}).
+\Pr(\text{reject } H_0 \mid H_0 \text{ true})\leq\alpha.
 $$
 
 ---
@@ -167,10 +180,12 @@ The relationship between reality (the truth) and our decision is summarised belo
 
 :::
 
-The **size** (also called the **significance level**) of a test is the probability of a Type I error:
+The **significance level** $\alpha$ is an upper bound on the probability of a Type I error. A test is level $\alpha$ if
 $$
-\alpha = \Pr(\text{reject } H_0 \mid H_0 \text{ true}).
+\Pr(\text{reject } H_0 \mid H_0 \text{ true})\leq\alpha.
 $$
+
+The **size** is the actual Type I error probability (or its maximum over a composite null). For the simple, continuous tests used below, the rejection region is chosen so that the size equals $\alpha$; for discrete tests it may be smaller.
 
 A good test keeps this probability small, while aiming for a high probability of rejecting $H_0$ when $H_1$ is true. This probability is called the <span class="xref-no-num">[power @def-power]</span> of the test.
 
@@ -182,7 +197,7 @@ chosen so that its values tend to move in a predictable way when $H_0$ is false.
 
 ### General Recipe {#sec-general-testing-strategy}
 
-To construct a test of **size** $\alpha$ for $H_0 : \theta = \theta_0$, we proceed as follows.
+To construct a test of **level** $\alpha$ for $H_0 : \theta = \theta_0$, we proceed as follows.
 
 1. **Specify the hypotheses.**  
    Write down the simple null hypothesis
@@ -198,11 +213,11 @@ To construct a test of **size** $\alpha$ for $H_0 : \theta = \theta_0$, we proce
    Determine (exactly or approximately) the sampling distribution of $T(\underline{X})$ assuming $H_0$ is true.
 
 4. **Define a rejection region $R_\alpha$.**  
-   For the chosen size $\alpha$, choose a set $R_\alpha$ of “extreme” values of $T$ such that
+   For the chosen level $\alpha$, choose a set $R_\alpha$ of “extreme” values of $T$ such that
    $$
-   \Pr\big(T \in R_\alpha \mid H_0\big) = \alpha,
+   \Pr\big(T \in R_\alpha \mid H_0\big) \leq \alpha,
    $$
-   when possible.  
+   with equality when possible.
 
    With a continuous test statistic and a simple null, this is usually straightforward:  
    - a **one-sided test** uses one tail of the distribution of $T$ under $H_0$,  
@@ -241,13 +256,13 @@ This distribution may be obtained exactly or approximated using <span class="xre
 ::: {.definition #def-rejection-region}
 ### Rejection Region
 
-Given a test statistic $T(\underline{X})$ and a chosen **size** $\alpha$, a **rejection region** is a subset $R_\alpha$ of the possible values of $T$ such that
+Given a test statistic $T(\underline{X})$ and a chosen **significance level** $\alpha$, a **rejection region** is a subset $R_\alpha$ of the possible values of $T$ such that
 $$
-\Pr\big(T \in R_\alpha \mid H_0\big) = \alpha,
+\Pr\big(T \in R_\alpha \mid H_0\big) \leq \alpha,
 $$
-whenever this is possible.
+with equality whenever this is possible.
 
-This ensures that the probability of a Type I error (rejecting a true $H_0$) is exactly $\alpha$.
+This ensures that the probability of a Type I error (rejecting a true $H_0$) is at most $\alpha$.
 
 - With a **simple null** and a **continuous** test statistic, the equality above is usually achievable.  
 - With a **discrete** statistic, the probability may be strictly less than $\alpha$, making the test *conservative* — although discrete test statistics are **not examinable** in this module.
@@ -295,14 +310,14 @@ Under $H_0$ note that $T \sim \mathcal{N}(0,1)$.
   R_\alpha^{(1)} = \{\, |T| > z_{1-\alpha/2} \,\}.
   $$
 
-* **Unconventional one-sided test:**
+* **One-tail rule poorly matched to the stated two-sided alternative:**
   Reject if $T$ is very large and positive only:
   $$
   R_\alpha^{(2)} = \{\,T > z_{1-\alpha}\,\}.
   $$
-  This region also has probability $\alpha$ under $H_0$, but it only detects positive departures from $0$.
+  This region also has probability $\alpha$ under $H_0$, but it only detects positive departures from $0$. It is therefore a valid level-$\alpha$ rule but a poor test of the stated two-sided alternative.
 
-There are an infinite number choices that are mathematically possible (e.g. a left-tail test, or even a symmetric band around $0$ with total mass $\alpha$), but these would be poor at detecting the alternatives we care about.
+There are infinitely many choices that are mathematically possible (e.g. a left-tail test, or even a symmetric band around $0$ with total mass $\alpha$), but these would be poor at detecting the alternatives we care about.
 
 **b. Observed value**
 
@@ -336,14 +351,14 @@ So in both cases you would only reject $H_0$ at extremely large (non-standard) s
 
 In @exm-bad-test-statistic we were essentially asking:
 
-> *“How small would the size (significance level) $\alpha$ have to be for the observed test statistic to fall inside the rejection region?”*
+> *“What is the smallest significance level $\alpha$ at which the observed test statistic would fall inside the rejection region?”*
 
 This leads naturally to the definition of the **$p$-value**.
 
 ::: {.definition #def-p-value}
 ### $p$-value
 
-Given an observed test statistic $T_{\text{obs}}$, the **$p$-value** is the smallest size $\alpha$ for which $T_{\text{obs}}$ would lie in the rejection region $R_\alpha$.
+Given an observed test statistic $T_{\text{obs}}$, the **$p$-value** is the smallest significance level $\alpha$ for which $T_{\text{obs}}$ would lie in the rejection region $R_\alpha$.
 
 Equivalently, it is the probability, under $H_0$, of obtaining a test statistic at least as extreme as $T_{\text{obs}}$:
 $$
@@ -352,6 +367,10 @@ $$
 
 - For a **two-sided** test, “extreme” means very large or very small values of $T$.  
 - For a **one-sided** test, “extreme” refers only to the tail specified by $H_1$.
+:::
+
+::: {.callout-warning appearance="simple"}
+**What a $p$-value is not.** It is not $\Pr(H_0\mid\underline{x})$, the probability that the result occurred “by chance,” or a measure of effect size. It measures how extreme the observed statistic is **under the null model**. Choose $\alpha$ and the direction of $H_1$ before inspecting the result; changing them afterwards invalidates the advertised Type I error control.
 :::
 
 Almost all tests in practice are either **one-sided** or **two-sided**.  
@@ -383,14 +402,14 @@ Restricting to these two cases fixes the *shape* of the rejection region.
     R_\alpha = \{\, T \mid |T| \ge c_\alpha \,\}.
     $$
 
-  * The total size $\alpha$ is usually split between the two tails, giving probability $\alpha/2$ to each under $H_0$.
+  * The total significance level $\alpha$ is usually split between the two tails, giving probability $\alpha/2$ to each under $H_0$.
 
 :::
 
 ::: {.remark #rem-rejec-regs}
 #### Why these regions? 
 
-For a given test statistic, there are infinitely many possible rejection regions of size $\alpha$.  
+For a given test statistic, there are infinitely many possible rejection regions of level $\alpha$.
 In practice we choose the regions above because:
 
 - they contain the **most extreme values** of $T$ in the direction(s) where $H_1$ differs from $H_0$;  
@@ -410,15 +429,17 @@ To study both errors within a single framework, we introduce the **power functio
 ::: {#def-power}
 #### Power Function
 
-The **power function** of a test is
+At each parameter value $\theta$, define the non-rejection probability and power by
 $$
-\beta(\theta) = \Pr\big(T \in R_\alpha \mid \theta\big), \qquad \theta \in \Theta.
+\beta(\theta)=\Pr_\theta(T\notin R_\alpha),
+\qquad
+\pi(\theta)=1-\beta(\theta)=\Pr_\theta(T\in R_\alpha).
 $$
 
-- If $\theta \in H_0$, this equals the **Type I error probability**, which by construction is at most $\alpha$.  
-- If $\theta \in H_1$, it is the probability of **correctly rejecting $H_0$** at that value of $\theta$.
+- If $\theta \in H_0$, $\pi(\theta)$ is the **Type I error probability**, which by construction is at most $\alpha$.
+- If $\theta \in H_1$, $\beta(\theta)$ is the **Type II error probability** and $\pi(\theta)$ is the probability of **correctly rejecting $H_0$** at that value of $\theta$.
 
-Thus the power function links both types of error in a single quantity:  it should be small on $H_0$ and (ideally) large on $H_1$.
+Thus the power function $\pi(\theta)$ links both types of error in a single quantity: it should be small on $H_0$ and ideally large on $H_1$.
 :::
 
 * **High power** means the test is good at detecting departures from $H_0$.  
@@ -496,18 +517,18 @@ $$
 
 For the **two-sided test**,
 $$
-\beta(\mu)
+\pi(\mu)
 = 1 - \big[ \Phi(z_{1-\alpha/2} - \mu)
             - \Phi(-z_{1-\alpha/2} - \mu) \big].
 $$
 
 For the **one-sided test**,
 $$
-\beta(\mu)
+\pi(\mu)
 = 1 - \Phi(z_{1-\alpha} - \mu).
 $$
 
-Both satisfy $\beta(0) = \alpha$ when $\mu = 0$, as required for a test of size $\alpha$.
+Both satisfy $\pi(0) = \alpha$ when $\mu = 0$, as required for an exact level-$\alpha$ test.
 
 
 ```{=html}
@@ -524,15 +545,18 @@ Both satisfy $\beta(0) = \alpha$ when $\mu = 0$, as required for a test of size 
 
 ```{=html}
 <details>
-  <summary><strong> Show Visualisation </strong></summary>
+  <summary><strong>Explore power and significance level</strong></summary>
 ```
 
 The following plot displays the two power curves in @exm-bad-test-statistic-power. 
 
 The blue line plots $\mathrm{Power}(\mu) = 1 - \Big[ \Phi(z_{1-\alpha/2} - \mu) - \Phi(-z_{1-\alpha/2} - \mu)\Big]$ and the red line plots $\mathrm{Power}(\mu)  = 1 - \Phi(z_{1-\alpha} - \mu)$.
 
+**Predict.** Which test should have greater power for a positive departure, and what cost is paid when $\alpha$ is reduced?
 
 {{< include ../../_figures/part4/test-power.qmd >}}
+
+**Observe and explain.** A correctly directed one-sided test concentrates its rejection probability in one tail. Reducing $\alpha$ reduces false alarms but also lowers power; increasing sample size or effect size usually raises power.
 
 ```{=html}
 </details>
@@ -543,6 +567,17 @@ The blue line plots $\mathrm{Power}(\mu) = 1 - \Big[ \Phi(z_{1-\alpha/2} - \mu) 
 :::
 
 ## Examinable Hypothesis Tests
+
+Use the assumptions to select a method before inserting numbers:
+
+| Setting | Test statistic under $H_0$ | Status |
+|---|---|---|
+| Normal mean, $\sigma^2$ known | $Z=(\bar X-\mu_0)/(\sigma/\sqrt n)$ | Exact Z-test |
+| Normal mean, $\sigma^2$ unknown | $T=(\bar X-\mu_0)/(S/\sqrt n)$ | Exact $t_{n-1}$ test |
+| General population mean, large $n$ | Studentised sample mean | CLT approximation |
+| General regular parametric model | $-2\log\lambda$ | Asymptotic likelihood-ratio test |
+
+For every worked test, use the same reporting template: **hypotheses and direction; assumptions; statistic and null distribution; $p$-value or rejection rule; contextual conclusion, effect size and uncertainty.**
 
 ### Exact Hypothesis Tests
 
@@ -582,7 +617,7 @@ and the fact that under $H_0$ we have
 $$
 \bar{X} \sim \mathcal{N}\!\left(\mu_0, \frac{\sigma^2}{n}\right),
 $$
-derive the **one-sided** and **two-sided** rejection regions for a test of size $\alpha$.
+derive the **one-sided** and **two-sided** rejection regions for a test of level $\alpha$.
 
 *(Hint: standardise $\bar{X}$ to obtain a $\mathcal{N}(0,1)$ test statistic.)*
 
@@ -602,7 +637,7 @@ $$
 Z = \frac{T - \mu_0}{\sigma/\sqrt{n}} \sim \mathcal{N}(0,1).
 $$
 
-A two-sided test of size $\alpha$ rejects when $|Z|$ is too large:
+A two-sided level-$\alpha$ test rejects when $|Z|$ is too large:
 $$
 \Pr(|Z| > z_{1-\alpha/2}) = \alpha.
 $$
@@ -626,7 +661,7 @@ $$
 Z = \frac{T - \mu_0}{\sigma/\sqrt{n}} \sim \mathcal{N}(0,1).
 $$
 
-A size–$\alpha$ upper-tail test rejects when
+A level-$\alpha$ upper-tail test rejects when
 $$
 Z > z_{1-\alpha}.
 $$
@@ -645,7 +680,7 @@ Using the same standardised statistic
 $$
 Z = \frac{T - \mu_0}{\sigma/\sqrt{n}} \sim \mathcal{N}(0,1),
 $$
-a size–$\alpha$ lower-tail test rejects when
+a level-$\alpha$ lower-tail test rejects when
 $$
 Z < z_{\alpha}.
 $$
@@ -674,7 +709,7 @@ X_1,\ldots, X_n \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu,\sigma^2)
 $$ 
 with $\sigma^2$ **known**, and let $\bar{X}$ be the <span class="xref-no-num">[sample mean @def-sample-mean]</span>.
 
-A size–$\alpha$ test of $H_0 : \mu = \mu_0$ uses the statistic
+A level-$\alpha$ test of $H_0 : \mu = \mu_0$ uses the statistic
 $$
 T = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}},
 $$
@@ -684,7 +719,7 @@ which satisfies $T \sim \mathcal{N}(0,1)$ under $H_0$.
 
 ###### Performing the Test {.unnumbered}
 
-Given $H_0 : \mu = \mu_0$ and a chosen  <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span> $H_1$, a size–$\alpha$ test proceeds as follows:
+Given $H_0 : \mu = \mu_0$ and a chosen  <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span> $H_1$, a level-$\alpha$ test proceeds as follows:
 
 1. **Compute the observed test statistic**
    $$
@@ -729,7 +764,7 @@ so the standard deviation is $\sigma = 0.2 \text{ mm}$.
 
 Some researchers claim that this dinosaur species had eggshell thickness similar to its modern relatives, with mean $\mu_0 = 2.0 \text{ mm}.$
 
-We want to test whether the fossil evidence is consistent with this claim. Perform a **two-sided Z-test** of size $\alpha = 0.05$:
+We want to test whether the fossil evidence is consistent with this claim. Perform a **two-sided Z-test** at level $\alpha = 0.05$:
 $$
 H_0 : \mu = 2.0,
 \qquad
@@ -751,29 +786,26 @@ Compute the denominator:
 $$
 \frac{0.2}{\sqrt{24}}
 = \frac{0.2}{4.89898}
-\approx 0.0408.
+\approx 0.0408248.
 $$
 
 Thus the observed statistic is
 $$
 Z_{\text{obs}}
-= \frac{0.08}{0.0408}
-\approx 1.96.
+= \frac{0.08}{0.0408248}
+\approx 1.95959.
 $$
 
 For a two-sided test with $\alpha = 0.05$, the rejection region is
 $$
-|Z| > z_{1-\alpha/2} = 1.96.
+|Z| > z_{1-\alpha/2} = z_{0.975}\approx 1.95996.
 $$
 
-Since
+Since $1.95959<1.95996$, we **fail to reject** $H_0$ at the $5\%$ level. Equivalently, the two-sided $p$-value is
 $$
-|Z_{\text{obs}}| \approx 1.96,
+p=2\{1-\Phi(1.95959)\}\approx0.05004,
 $$
-the observed value lies **exactly on the boundary** of the rejection region.  
-By convention, a test rejects **only when the statistic exceeds** the critical value (not when it equals it).  
-
-Therefore we **fail to reject** $H_0$ at the 5% level.
+which is just above $0.05$. Carrying sufficient precision matters in a deliberately borderline example.
 
 There is not enough statistical evidence to conclude that the mean eggshell thickness differs from  
 $2.0$ mm in this dinosaur population.
@@ -783,6 +815,10 @@ $2.0$ mm in this dinosaur population.
 </details>
 ```
 
+:::
+
+::: {.callout-important appearance="simple"}
+**Confidence-interval duality.** For a two-sided level-$\alpha$ Z-test, $H_0:\mu=\mu_0$ is rejected exactly when the corresponding $100(1-\alpha)\%$ confidence interval excludes $\mu_0$. Here the $95\%$ interval just contains $2.0$ mm, agreeing with the test. This equivalence links the methods, but neither statistical significance nor interval exclusion says whether the difference is scientifically important.
 :::
 
 #### One-Sample Normal (unknown variance) {#sec-one-sample-normal-unknown-var}
@@ -799,7 +835,7 @@ X_1,\ldots, X_n \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu,\sigma^2)
 $$ 
 with $\sigma^2$ **unknown**.
 
-A size–$\alpha$ test of $H_0 : \mu = \mu_0$ uses the statistic
+A level-$\alpha$ test of $H_0 : \mu = \mu_0$ uses the statistic
 $$
 T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}},
 $$
@@ -813,7 +849,7 @@ where $t_{n-1}$ is the Student-$t$ distribution with $n-1$ degrees of freedom.
 
 ###### Performing the Test {.unnumbered}
 
-Given $H_0 : \mu = \mu_0$ and a chosen  <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span> $H_1$, a size–$\alpha$ test proceeds as follows:
+Given $H_0 : \mu = \mu_0$ and a chosen  <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span> $H_1$, a level-$\alpha$ test proceeds as follows:
 
 1. **Compute the observed test statistic**
    $$
@@ -845,7 +881,7 @@ Given $H_0 : \mu = \mu_0$ and a chosen  <span class="xref-no-num">[one-sided or 
 ### Dinosaur Eggshell Thickness: $t$-Test with Unknown Variance
 Continuing from @exm-dino-egg-z-test-known-var, Dr. Ian Malcolm now realises that the variance in eggshell thickness is **not** reliably known for this extinct species. We therefore treat both $\mu$ and $\sigma^2$ as unknown.
 
-We now perform a **two-sided $t$-test** of size $\alpha = 0.05$:
+We now perform a **two-sided $t$-test** at level $\alpha = 0.05$:
 $$
 H_0 : \mu = 2.0, \qquad H_1 : \mu \neq 2.0.
 $$
@@ -908,7 +944,7 @@ $$
 \qquad \text{for large } n.
 $$
 
-Therefore, we can perform an **approximate hypothesis test for the population mean** of *any* distribution:
+Therefore, for i.i.d. data with finite variance and a sufficiently large sample, we can perform an **approximate hypothesis test for the population mean** without assuming a Normal population:
 $$
 H_0 : \mu = \mu_0,
 $$
@@ -941,21 +977,13 @@ $$
 T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}}.
 $$
 
-For large $n$, two approximations are valid:
+For large $n$, the studentised statistic has an approximate standard Normal distribution:
 
-1. **Normal Approximation:**
-   $$
-   T \;\overset{\text{approx.}}{\sim}\; \mathcal{N}(0,1).
-   $$
-   so we may directly apply the <span class="xref-no-num">[one-sample Z-test @def-one-sample-z-test]</span>.
+$$
+T \;\overset{\text{approx.}}{\sim}\; \mathcal{N}(0,1).
+$$
 
-2. **Student-$t$ Approximation:**  
-   $$
-   T \;\overset{\text{approx.}}{\sim}\; t_{n-1}.
-   $$
-   so we may directly apply the <span class="xref-no-num">[one-sample t-test @def-one-sample-t-test]</span>.
-
-Both approximations become accurate as $n$ grows. In practice, using the **Student-$t$ critical values** is slightly more conservative and is the conventional choice, although both are valid.
+One may use Normal critical values directly. In practice, using **Student-$t_{n-1}$ critical values** is a conventional, slightly more conservative choice. For a non-Normal population this does not mean that $T$ has an exact $t$ distribution: the Normal and $t_{n-1}$ reference distributions simply become indistinguishable as $n$ grows.
 
 ::: {.remark #rem-student-t-normal}
 #### Why do both approximations hold?
@@ -964,14 +992,14 @@ Both approximations become accurate as $n$ grows. In practice, using the **Stude
 
 - The sample variance $S^2$ is a <span class="xref-no-num">[consistent estimator @prp-consistency-samplevariance]</span> of $\sigma^2$, so replacing $\sigma$ with $S$ does not change the asymptotic distribution.
 
-- The Student-$t$ distribution converges to the standard normal distribution as $n \to \infty$, so using $t_{n-1}$ critical values remains valid and is often preferred.
+- The Student-$t$ distribution converges to the standard Normal distribution as $n \to \infty$, so using $t_{n-1}$ critical values is asymptotically equivalent.
 
 Thus,
 $$
 \frac{\bar{X} - \mu_0}{S/\sqrt{n}}
 \;\overset{d}{\longrightarrow}\; \mathcal{N}(0,1),
 $$
-regardless of the underlying population distribution (provided it has finite variance).
+for i.i.d. populations satisfying the stated finite-variance conditions.
 :::
 
 
@@ -991,9 +1019,7 @@ Let $X_1,\ldots,X_n$ be i.i.d. with unknown mean $\mu$ and finite variance $\mat
   $$
   T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}},
   $$  
-  which satisfies both 
-  1. $T \overset{\text{approx.}}{\sim} \mathcal{N}(0,1)$ for large $n$.
-  2. $T \overset{\text{approx.}}{\sim} t_{n-1}$ for large $n$.
+  which satisfies $T \overset{\text{approx.}}{\sim} \mathcal{N}(0,1)$ for large $n$. Normal or asymptotically equivalent $t_{n-1}$ critical values may be used.
 
 In both cases, one-sided or two-sided rejection regions are defined exactly as in the <span class="xref-no-num">[one-sample Z-test @def-one-sample-z-test]</span> or <span class="xref-no-num">[one-sample t-test @def-one-sample-t-test]</span>.
 :::
@@ -1019,7 +1045,7 @@ H_0 : p = 0.30,
 H_1 : p > 0.30,
 $$
 
-using an **approximate CLT-based test** of size $\alpha = 0.05$.
+using an **approximate CLT-based test** at level $\alpha = 0.05$.
 
 ```{=html}
 <details>
@@ -1056,13 +1082,6 @@ and this approximation forms the basis of the **approximate Binomial test**.
 
 ---
 
-The sample proportion $\hat{p}$ has mean $p$ and variance $p(1-p)/n$. The CLT tells us that, **for large $n$**,
-$$
-\hat{p} 
-\;\overset{\text{approx.}}{\sim}\;
-\mathcal{N}\!\left(p,\; \frac{p(1-p)}{n}\right).
-$$
-
 Under $H_0 : p = p_0$, the **CLT Z-statistic** is
 $$
 T
@@ -1089,9 +1108,9 @@ T_{\text{obs}}
 \approx 2.47.
 $$
 
-Under $H_0$, and for large $n$,  
+The approximation is reasonable under $H_0$ because $np_0=60$ and $n(1-p_0)=140$ are both comfortably large. The **random statistic** satisfies, approximately,
 $$
-T_{\text{obs}} \overset{\text{approx.}}{\sim} \mathcal{N}(0,1).
+T\mid H_0 \;\overset{\text{approx.}}{\sim}\; \mathcal{N}(0,1).
 $$
 
 **Decision**
@@ -1103,13 +1122,18 @@ $$
 
 Since
 $$
-|T_{\text{obs}}| \approx 2.47 > 1.645.
+T_{\text{obs}} \approx 2.47 > 1.645,
 $$
-we **reject** $H_0$ at the 5% level.
+we **reject** $H_0$ at the 5% level. The upper-tail $p$-value is approximately
+$$
+p=1-\Phi(2.47)\approx0.0068.
+$$
 
 **Conclusion**
 
-There is statistically significant evidence that the true proportion of frogs with the beneficial genetic marker is greater than the historical value $p_0 = 0.30$ after the conservation intervention.
+There is statistically significant evidence that the sampled population proportion exceeds the historical value $p_0=0.30$. The estimated difference is $0.38-0.30=0.08$, or eight percentage points. Whether that is biologically important requires subject-matter judgement, and attributing the change to the intervention requires an appropriate causal design rather than this test alone.
+
+**Assumption check.** The Binomial model also requires independent observations with a common marker probability and a sampling process representative of the target population.
 
 ```{=html}
 </details>
@@ -1120,7 +1144,7 @@ There is statistically significant evidence that the true proportion of frogs wi
 #### Likelihood Ratio Test (Simple Null) {#sec-lrt}
 
 
-Previous tests (Z-tests, $t$-tests, CLT tests) required choosing a test statistic by hand. The **Likelihood Ratio Test** (LRT) instead gives a general rule for building hypothesis tests for parameter values directly from **any statistical model**.
+Previous tests (Z-tests, $t$-tests, CLT tests) required choosing a test statistic by hand. The **Likelihood Ratio Test** (LRT) instead gives a general rule for building hypothesis tests in regular parametric models.
 
 Suppose we observe data $\underline{x}$ from a statistical model with likelihood
 $$
@@ -1205,7 +1229,7 @@ $$
 T \;\overset{\text{approx.}}{\sim}\; \chi^2_{1}.
 $$
 
-For a test of size $\alpha$, we **reject** $H_0$ whenever
+For a level-$\alpha$ test, we **reject** $H_0$ whenever
 $$
 -2 \log \lambda(\underline{x}) > \chi^2_{1,\,1-\alpha},
 $$
@@ -1225,7 +1249,9 @@ $$
 where $\ell(\theta \,; \underline{x}) = \log L(\theta ; \underline{x})$ is the log-likelihood.
 :::
 
-::: {#prf-lrt-test-statistic}
+::: {#prf-lrt-test-statistic .callout-note collapse="true"}
+#### Optional derivation
+
 We start from the definition of the likelihood ratio statistic
 $$
 \lambda(\underline{x})
@@ -1299,7 +1325,7 @@ H_0 : \mu = 5
 \qquad \text{vs.} \qquad
 H_1 : \mu \neq 5,
 $$
-using the **likelihood ratio test** at size $\alpha = 0.05$.
+using the **likelihood ratio test** at level $\alpha = 0.05$.
 
 ```{=html}
 <details>
@@ -1354,12 +1380,18 @@ T_{\text{obs}}
 = 0.45.
 $$
 
-Under $H_0$, and for large $n$, Wilks’ theorem gives
+In this particular Normal known-variance model,
+$$
+T=\left\{\frac{\bar X-5}{\sigma/\sqrt n}\right\}^2=Z^2,
+$$
+so $T\sim\chi^2_1$ under $H_0$ **exactly**. Wilks’ theorem supplies the corresponding approximation in more general models.
+
+More generally, under $H_0$ and for large $n$, Wilks’ theorem gives
 $$
 T \;\overset{\text{approx.}}{\sim}\; \chi^2_1.
 $$
 
-For a two-sided test of size $\alpha = 0.05$, the rejection region is
+For a two-sided test at level $\alpha = 0.05$, the rejection region is
 $$
 T > \chi^2_{1,\,0.95} \approx 3.84.
 $$
@@ -1382,9 +1414,7 @@ There is no statistically significant evidence that the mean $\mu$ differs from 
 
 ## Non-Examinable Hypothesis Tests
 
-### Two-sample $t$-test
-
-### $\chi^2$ Contingency Table Tests
+Other courses develop two-sample $t$-tests for comparing means and $\chi^2$ contingency-table tests for association. They are signposted here for context but are not developed or examined in this module. The optional Wald material below shows how the same large-sample logic extends beyond sample means.
 
 
 ### Asymptotic MLE Tests {#sec-mle-approx-test}
@@ -1420,7 +1450,7 @@ which motivates the **Wald statistic**
 $$
 T \;=\;\frac{\hat{\theta}_n - \theta_0}{\sqrt{\mathcal{I}_n(\hat{\theta}_n)^{-1}}}.
 $$
-Which uses the usual plug-in estimator of the asymptotic variance.
+This uses the usual plug-in estimator of the asymptotic variance.
 
 
 ::: {#def-wald-test .definition}
@@ -1451,14 +1481,22 @@ be the **Wald statistic**.
 
 The Wald test is **asymptotically valid**, meaning that its size approaches $\alpha$ as $n \to \infty$.
 
-The Wald test extends the <span class="xref-no-num">[one-sample Z-test @def-one-sample-z-test]</span> to **any parametric model** where:
+The Wald test extends the <span class="xref-no-num">[one-sample Z-test @def-one-sample-z-test]</span> to regular parametric models where:
 
 1. you can compute the MLE $\hat{\theta}_n$,
 2. you can compute (or approximate) the Fisher information.
 
 
-### Likelihood Ratio Test (Composite Null) {#sec-lrt-general}
+For a composite null, the likelihood-ratio numerator is maximised over $\Theta_0$ rather than evaluated at a single point. Under suitable regularity conditions, the degrees of freedom equal the difference between the dimensions of the full and null parameter spaces; see the accompanying footnote.[^lrt]
 
+
+::: {.callout-tip appearance="simple"}
+**Final checkpoint.** For a new problem, ask in order: What parameter is being tested? Are the hypotheses one- or two-sided? Which assumptions justify the null distribution? What is the observed effect and its standard error? What does the $p$-value say—and not say? A defensible conclusion answers all five questions.
+:::
+
+::: {.callout-note appearance="simple"}
+**Chapter summary.** A level-$\alpha$ test controls false rejections under $H_0$; power describes detection under specified alternatives. A $p$-value measures extremeness under the null model, not the probability that $H_0$ is true. Exact Z and $t$ tests require their Normal-model assumptions, while CLT, Wald and likelihood-ratio tests rely on large-sample approximations. Always report the estimated effect, uncertainty and modelling assumptions alongside the decision.
+:::
 
 
 

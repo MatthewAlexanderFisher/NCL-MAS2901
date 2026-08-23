@@ -2,14 +2,18 @@
 tbl-cap-location: bottom
 ---
 
-# Formula Sheet {.unnumbered #sec-formula-sheet}
+# Formula Sheet {.unnumbered}
 
-###### {#sec-formula-sheet}
+## Conventions {#sec-formula-sheet}
+
+This sheet uses the parameterisations shown below. In particular, Gamma second
+parameters are **rates**, Weibull second parameters are **scales**, and
+$z_p=\Phi^{-1}(p)$ denotes a lower-tail standard-Normal quantile.
 
 ## Discrete distributions 
 
 ### Bernoulli {#sec-bern}
-**Model.** $X \sim \operatorname{Bernoulli}(p)$ with $0<p<1$.  
+**Model.** $X \sim \operatorname{Bernoulli}(p)$ with $0\leq p\leq1$.
 **Support.** $x \in \{0,1\}$.  
 **PMF.**
 $$
@@ -20,7 +24,7 @@ $$
 ---
 
 ### Binomial {#sec-binom}
-**Model.** $X \sim \operatorname{Binomial}(n,p)$, $n\in \mathbb{N}$, $0<p<1$.  
+**Model.** $X \sim \operatorname{Binomial}(n,p)$, $n\in \mathbb{N}$, $0\leq p\leq1$.
 **Support.** $x=0,1,\ldots,n$.  
 **PMF.**
 $$
@@ -83,7 +87,7 @@ Some texts start at $x=0$ (failures before the first success).
 ---
 
 ### Negative Binomial {#sec-negbin}
-**Model.** $X \sim \operatorname{NegBin}(r,p)$: number of trials to achieve the $r$-th success (counts the successes), $r>0$ (often integer), $0<p<1$.  
+**Model.** $X \sim \operatorname{NegBin}(r,p)$: number of trials to achieve the $r$-th success (counts the successes), $r\in\mathbb{N}$, $0<p<1$.
 **Support.** $x=r,r+1,\ldots$.  
 **PMF.**
 $$
@@ -145,7 +149,13 @@ Many sources use **scale** $\beta=1/b$: then $f(x)=\frac{1}{\Gamma(a)\beta^a}x^{
 $$
 f_X(x;a,b)=\frac{b^a}{\Gamma(a)} x^{-(a+1)} e^{-bx^{-1}}.
 $$
-**Statistics.** $\operatorname{E}[X]=\frac{b}{a-1},\quad \operatorname{Var}(X)=\frac{b^2}{(a-1)^2(a-2)}$ and $\text{Mode}(X) = \frac{b}{a+1}$ if $a > 2$.
+**Statistics.**
+$$
+\operatorname{E}[X]=\frac{b}{a-1}\quad(a>1),\qquad
+\operatorname{Var}(X)=\frac{b^2}{(a-1)^2(a-2)}\quad(a>2),
+$$
+and $\operatorname{Mode}(X)=b/(a+1)$ for $a>0$. The mean is undefined for
+$a\leq1$; the variance is infinite for $1<a\leq2$ and undefined for $a\leq1$.
 
 ---
 
@@ -160,7 +170,20 @@ $$
 **Mean/Var.** $\operatorname{E}[X]=\mu,\quad \operatorname{Var}(X)=\sigma^2.$
 
 #### Properties {#sec-normal-properties}
-Suppose $X_1,\ldots, X_n$ are independent normal random variables, then:
+If $X_i\sim\mathcal N(\mu_i,\sigma_i^2)$ are independent, then for constants
+$a_1,\ldots,a_n$,
+$$
+\sum_{i=1}^n a_iX_i
+\sim \mathcal N\!\left(\sum_{i=1}^n a_i\mu_i,
+                         \sum_{i=1}^n a_i^2\sigma_i^2\right).
+$$
+Consequently, if $X_1,\ldots,X_n\overset{\mathrm{iid}}\sim
+\mathcal N(\mu,\sigma^2)$, then
+$$
+\bar X\sim\mathcal N\!\left(\mu,\frac{\sigma^2}{n}\right),
+\qquad
+\frac{\bar X-\mu}{\sigma/\sqrt n}\sim\mathcal N(0,1).
+$$
 
 ---
 
@@ -229,12 +252,29 @@ $$
 ---
 
 ### Weibull {#sec-weibull}
-**Model.** $X \sim \operatorname{Weibull}(\beta,\theta)$, $\beta>0, \theta>0$.  
+**Model.** $X \sim \operatorname{Weibull}(k,\lambda)$ with **shape** $k>0$ and
+**scale** $\lambda>0$.
 **Support.** $x > 0$.  
 **PDF.**
 $$
-f_X(x) = \frac{\beta}{\theta}x^{\beta - 1} \exp\left(-\frac{x^\beta}{\theta}\right)
+f_X(x;k,\lambda)
+=\frac{k}{\lambda}\left(\frac{x}{\lambda}\right)^{k-1}
+ \exp\!\left[-\left(\frac{x}{\lambda}\right)^k\right].
 $$
+**Mean/Var.**
+$$
+\operatorname{E}[X]=\lambda\,\Gamma\!\left(1+\frac1k\right),\qquad
+\operatorname{Var}(X)=\lambda^2\!\left[
+\Gamma\!\left(1+\frac2k\right)
+-\Gamma\!\left(1+\frac1k\right)^2\right].
+$$
+
+::: {.callout-warning}
+### Parameterisation alert
+Some sources write $\theta=\lambda^k$ and use
+$f(x)=(k/\theta)x^{k-1}e^{-x^k/\theta}$. Check whether the second parameter is
+a scale or a scale raised to the power $k$.
+:::
 
 ---
 
@@ -248,6 +288,6 @@ $$
 f_{\mathbf{X}}(\mathbf{x};\boldsymbol{\mu},\Sigma)=\frac{1}{(2\pi)^{p/2}(\det\Sigma)^{1/2}}
 \exp\!\left(-\tfrac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^\top \Sigma^{-1}(\mathbf{x}-\boldsymbol{\mu})\right).
 $$
-**Mean/Cov.** $\operatorname{E}[\mathbf{X}]=\boldsymbol{\mu},\quad \operatorname{Var}(\mathbf{X})=\Sigma.$
+**Mean/Cov.** $\operatorname{E}[\mathbf{X}]=\boldsymbol{\mu},\quad \operatorname{Cov}(\mathbf{X})=\Sigma.$
 
 ---

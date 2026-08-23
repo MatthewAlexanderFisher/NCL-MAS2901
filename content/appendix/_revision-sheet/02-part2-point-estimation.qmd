@@ -5,6 +5,14 @@
 <details class="essential-points">
 <summary> Assessment Focus </summary>
 
+- Distinguish a statistic, estimator and observed estimate, and describe an
+  estimator through its sampling distribution.
+- Be able to compute bias, variance, standard error and MSE, and use the
+  bias--variance decomposition to compare estimators.
+- Know when the Normal sampling distribution of $\bar X$ is exact and when the
+  CLT supplies only a large-sample approximation.
+- Recall asymptotic unbiasedness and consistency, and prove consistency using
+  vanishing bias and variance when those sufficient conditions are convenient.
 
 </details>
 
@@ -322,6 +330,20 @@ Be able to recall the definitions of <span class="xref-no-num">[asymptotic unbia
 
 <div class="revision-content" id="rev-asymp-unbiased-consistent" hidden>
 
+An estimator sequence $\hat\theta_n$ is **asymptotically unbiased** if
+$$
+\operatorname{Bias}_\theta(\hat\theta_n)
+=\operatorname{E}_\theta[\hat\theta_n]-\theta\longrightarrow0.
+$$
+It is **consistent** if, for every $\varepsilon>0$,
+$$
+\Pr_\theta\!\left(|\hat\theta_n-\theta|>\varepsilon\right)
+\longrightarrow0.
+$$
+These are different properties: asymptotic unbiasedness alone does not control
+spread, whereas consistency requires the estimator to concentrate near
+$\theta$.
+
 </div>
 </div>
 
@@ -400,7 +422,9 @@ the **joint density (or PMF)** of the observed data $\underline{x}$, viewed as a
 $$
 L(\theta;\,\underline{x}) = f(\underline{x}\mid\theta).
 $$
-The data are treated as fixed, and the likelihood expresses how plausible different values of $\theta$ are in light of those observations.
+The observations are fixed, and the likelihood provides **relative support**
+for different values of $\theta$. It is not generally a probability density over
+$\theta$ and need not integrate to $1$ over the parameter space.
 
 </div>
 </div>
@@ -447,6 +471,15 @@ Be able to <span class="xref-no-num">[compute @sec-computing-likelihoods]</span>
 
 <div class="revision-content" id="rev-compute-likelihood" hidden>
 
+1. State the model, the data support and the parameter space $\Theta$.
+2. Write the joint PMF/PDF of the observations. Under independence this is a
+   product; under i.i.d. sampling every factor has the same form.
+3. Substitute the observed values and collect all factors that depend on
+   $\theta$. Retain parameter-free factors unless you explicitly write
+   proportionality.
+4. Check that impossible observations or parameter values receive likelihood
+   zero where appropriate.
+
 </div>
 </div>
 
@@ -479,6 +512,15 @@ Be able to compute <span class="xref-no-num">[log-likelihood functions @def-log-
 </div>
 
 <div class="revision-content" id="rev-log-likelihood" hidden>
+
+The log-likelihood is
+$$
+\ell(\theta;\underline{x})=\log L(\theta;\underline{x}).
+$$
+Because the logarithm is increasing, $L$ and $\ell$ have the same maximisers.
+Logs turn products into sums and are usually easier to differentiate. Terms
+that do not depend on $\theta$ may be dropped **for maximisation**, but doing so
+produces a log-likelihood only up to an additive constant.
 
 </div>
 </div>
@@ -531,8 +573,8 @@ Be able to compute <span class="xref-no-num">[univariate MLEs @sec-computing-uni
    \frac{\partial}{\partial \theta}\,\ell(\theta;\underline{x}).
    $$
 
-4. **Set the derivative equal to zero and solve**  
-   Find all solutions to  
+4. **Find and compare candidates**
+   Interior stationary-point candidates solve
    $$
    \frac{\partial}{\partial \theta}\,\ell(\theta;\underline{x}) = 0.
    $$
@@ -541,8 +583,10 @@ Be able to compute <span class="xref-no-num">[univariate MLEs @sec-computing-uni
 
 **Notes:**
 
-- Unless the question explicitly states otherwise, you do **not** need to check whether the solution corresponds to a maximum.  
-  For this module, you may assume any solution you find is the global maximiser.
+- A score-equation solution is only a candidate: also respect the parameter
+  space and consider boundaries, non-differentiable points and global behaviour.
+  In an exam, a question may state that these checks are not required, but they
+  remain part of the mathematical definition of the MLE.
 
 - Computing **multivariate MLEs** is *not examinable*.
 
@@ -603,6 +647,17 @@ There are two versions to distinguish:
   $$
   where $\ell(\theta;\underline{X})$ is the log-likelihood of all $n$ observations.
 
+- **Observed information for the realised sample**
+  $$
+  j_n(\theta;\underline{x})
+  =-\frac{\partial^2}{\partial\theta^2}
+       \ell(\theta;\underline{x}).
+  $$
+  Unlike $\mathcal I_n(\theta)$, this uses the realised curvature and contains
+  no expectation. Evaluating expected information at an estimate,
+  $\mathcal I_n(\hat\theta)$, is a **plug-in estimate of expected information**;
+  it is not the observed information.
+
 ---
 
 **Note:** In this module, you will almost always be asked to compute the **Fisher information for the whole sample**. For consistency and simplicity, we recommend using **Approach 1** described <span class="xref-no-num">[here @imp-compute-fisher-info]</span>.
@@ -637,17 +692,18 @@ Be able to recall the <span class="xref-no-num">[Cramér–Rao Lower Bound @thm-
 
 <div class="revision-content" id="rev-crlb" hidden>
 
-- The Cramér–Rao inequality states that for **any unbiased estimator** $\hat{\theta}$ of a parameter $\theta$,
+- Under its regularity conditions, the Cramér–Rao inequality states that for **any unbiased estimator** $\hat{\theta}$ of a parameter $\theta$,
   $$
   \mathrm{Var}(\hat{\theta}) \;\ge\; \mathcal{I}_n(\theta)^{-1},
   $$
   where $\mathcal{I}_n(\theta)^{-1}$ is the **Cramér–Rao Lower Bound (CRLB)**.
 
-- This result is extremely important because, for unbiased estimators,
+- Under the theorem's regularity conditions, this result is useful because, for unbiased estimators,
   $$
   \mathrm{MSE}(\hat{\theta}) = \mathrm{Var}(\hat{\theta}).
   $$
-  So, the CRLB provides a theoretical minimum: it tells us the best possible performance an unbiased estimator can achieve.
+  The CRLB is a lower benchmark for variance. Equality need not be attainable
+  for a given model and parameter.
 
 - If an unbiased estimator **achieves** the CRLB, it is called <span class="xref-no-num">[efficient @def-efficiency]</span>, meaning no other unbiased estimator has smaller variance.
 
@@ -700,7 +756,7 @@ This result states that for data
 $$
 X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\theta),
 $$
-from **any model**, the <span class="xref-no-num">[maximum likelihood estimator @def-mle]</span> satisfies
+from a **regular model**, the <span class="xref-no-num">[maximum likelihood estimator @def-mle]</span> satisfies
 $$
 \hat{\theta}_{\mathrm{MLE}}
 \;\overset{\text{approx.}}{\sim}\;
@@ -715,9 +771,14 @@ $$
 
 **Notes:** 
 
-- In practice, we usually replace the unknown parameter $\theta$ with its estimate $\hat{\theta}_{\mathrm{MLE}}$ inside the Fisher information. 
-- So, for the exam, it is sufficient to remember the **plug-in form** $\mathcal{I}_n\big(\hat{\theta}_{\mathrm{MLE}}\big)$. 
-- This **plug-in form** $\mathcal{I}_n\big(\hat{\theta}_{\mathrm{MLE}}\big)$, is called the <span class="xref-no-num">[observed Fisher information @def-observed-fisher]</span>.
+- In practice, we often replace the unknown parameter $\theta$ by
+  $\hat{\theta}_{\mathrm{MLE}}$ inside the **expected** Fisher information. This
+  gives the plug-in quantity $\mathcal{I}_n(\hat{\theta}_{\mathrm{MLE}})$.
+- The distinct **observed information** is
+  $j_n(\hat\theta_{\mathrm{MLE}};\underline{x})
+  =-\ell''(\hat\theta_{\mathrm{MLE}};\underline{x})$.
+- The approximation requires regularity conditions and can be poor near a
+  boundary or in a small sample.
 
 </div>
 </div>
@@ -822,7 +883,7 @@ Bayesian inference is built around three core components:
 <div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-bayes-theorem-density">
 <span class="toggle-icon" aria-hidden="true"></span>
 <span class="revision-topic">
-Be able to <span class="xref-no-num">[prove @prf-bayes]</span> and recall <span class="xref-no-num">[Bayes theorem for densities @thm-bayes-density]</span> and understand how this yields the **posterior density**:
+Be able to <span class="xref-no-num">[prove @prf-bayes-density]</span> and recall <span class="xref-no-num">[Bayes theorem for densities @thm-bayes-density]</span> and understand how this yields the **posterior density**:
 $$
 \pi(\theta \mid \underline{x}) = \frac{\pi(\theta) \, f(\underline{x}\mid \theta)}{f(\underline{x})}.
 $$
@@ -934,6 +995,9 @@ $$
 \theta \mid \underline{x} \sim \mathcal{N}(M, V),
 $$
 then the posterior is maximised at its mean, so the MAP estimator is $M$.
+When differentiating a posterior density, score-equation solutions are only
+candidates: respect the parameter support and check boundaries and the global
+maximum.
 
 </div>
 </div>
@@ -962,7 +1026,11 @@ Be able to recall and compute the <span class="xref-no-num">[asymptotic posterio
 
 <div class="revision-content" id="rev-asymp-posterior" hidden>
 
-**Note:** The method for computing the asymptotic posterior distribution is *exactly the same* as the approach for the <span class="xref-no-num">[asymptotic distribution of the MLE @def-asymp-mle-approx]</span>.
+**Note:** Under suitable regularity conditions, the posterior and the MLE's
+sampling distribution can have similar large-sample Normal centres and
+variances. They remain different objects: the former describes uncertainty in
+$\theta$ conditional on the observed data, while the latter describes repeated
+values of an estimator under repeated sampling.
 
 </div>
 </div>
@@ -982,5 +1050,3 @@ Be able to recall and compute the <span class="xref-no-num">[asymptotic posterio
 :::
 
 </details>
-
-

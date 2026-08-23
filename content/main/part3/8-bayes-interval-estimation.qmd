@@ -8,6 +8,15 @@ tbl-cap-location: bottom
 
 We now consider the **Bayesian analogue** of frequentist confidence intervals.
 
+::: {.callout-note appearance="simple"}
+**By the end of this chapter, you should be able to:**
+
+- interpret posterior probability statements about a parameter;
+- distinguish a credible interval from a confidence interval;
+- explain why many credible sets can contain the same posterior probability; and
+- construct and interpret a highest-density region in simple cases.
+:::
+
 ## The Bayesian perspective
 
 Recall from @sec-bayes-inference that Bayesian inference returns a *full distribution* over the parameter - the
@@ -16,20 +25,20 @@ $$
 \pi(\theta \mid \underline{x}) \ \propto\ \pi(\theta)\, f(\underline{x}\mid\theta).
 $$
 
-From this posterior we can construct a **Bayesian credible interval**, which represents a range of parameter values that are *plausible* given the data and prior assumptions.
+From this posterior we can construct a **Bayesian credible interval**, which represents a range of parameter values that are plausible given the data, the sampling model and the prior assumptions.
 
 ::: {#def-credible-interval .definition}
 ### Credible interval
-A $100(1-\alpha)\%$ **credible interval** for $\theta$ is any set $C_\alpha$ such that
+A $100(1-\alpha)\%$ **credible set** for $\theta$ is a set $C_\alpha$ such that
 $$
 \Pr(\theta \in C_\alpha \mid \underline{x})
 \;=\;\int_{C_\alpha}\!\pi(\theta\mid \underline{x})\,\mathrm{d}\theta
 \;=\;1-\alpha .
 $$
-For discrete $\theta$, replace the integral by a sum.
+When $C_\alpha$ is connected, we call it a **credible interval**. For discrete $\theta$, replace the integral by a sum; exact equality may be impossible, in which case a set with posterior probability at least $1-\alpha$ is commonly reported.
 :::
 
-For any posterior distribution there are infinitely many valid $(1-\alpha)$ credible intervals.
+For a continuous posterior distribution, there are generally infinitely many valid $(1-\alpha)$ credible sets, and often many credible intervals.
 
 ::: {.content-visible unless-format="pdf"}
 
@@ -37,11 +46,14 @@ For any posterior distribution there are infinitely many valid $(1-\alpha)$ cred
 
 ```{=html}
 <details>
-<summary><strong>Show Visualisation</strong></summary>
+<summary><strong>Explore non-unique credible sets</strong></summary>
 ```
 
+**Predict.** Can two very different sets both contain $95\%$ posterior probability?
 
 {{< include ../../_figures/part3/credible-intervals.qmd >}}
+
+**Observe and explain.** The posterior probability alone does not choose a unique set. This motivates additional conventions such as equal-tailed intervals and highest-density regions.
 
 ```{=html}
 </details>
@@ -51,7 +63,7 @@ For any posterior distribution there are infinitely many valid $(1-\alpha)$ cred
 
 ---
 
-This mirrors the frequentist setting, where infinitely many $(1-\alpha)$ confidence intervals also exist, though in practice one often chooses a canonical version (for example, the symmetric interval around the estimator).
+This mirrors the frequentist setting, where many procedures can have the same nominal coverage, though in practice one often chooses a canonical version (for example, the symmetric interval around the estimator).
 
 ## Interpreting Credible Intervals
 
@@ -59,13 +71,22 @@ A $95\%$ **credible interval** means that, *given the observed data and the prio
 
 In contrast, a $95\%$ **confidence interval** is a procedure: if we were to repeatedly draw new samples and reconstruct a confidence interval each time, then $95\%$ of those intervals would cover the true parameter. It does **not** mean there is a $95\%$ chance that $\theta$ lies inside the one interval we have.
 
-Thus, credible intervals are often more natural to interpret, but they depend explicitly on the prior as well as the data.
+Thus, credible intervals are often more natural to interpret, but they depend explicitly on the prior, sampling model and data. They do not automatically have $95\%$ repeated-sampling coverage.
+
+::: {.callout-tip appearance="simple"}
+**Checkpoint.** Decide whether each statement describes a $95\%$ confidence interval or a $95\%$ credible interval:
+
+1. “Conditional on this model, prior and dataset, the posterior probability that $\theta$ lies in the interval is $0.95$.”
+2. “Across repeated samples, the construction method covers the fixed $\theta$ on $95\%$ of occasions.”
+
+The first is Bayesian; the second is frequentist. Numerically identical endpoints do not make the interpretations identical.
+:::
 
 ## Highest Density Intervals
 
 ::: {#def-hdi}
-### Highest Density Interval (HDI)
-A $100(1-\alpha)\%$ **highest density interval (HDI)** for $\theta$ is the region
+### Highest Density Region (HDR)
+A $100(1-\alpha)\%$ **highest density region (HDR)** for $\theta$ is the region
 
 $$
 C_\alpha = \{\theta :~ \pi(\theta \mid \underline{x}) \geq \gamma \},
@@ -73,16 +94,20 @@ $$
 
 where $\gamma$ is chosen so that $\mathrm{Pr}(\theta \in C_\alpha \mid \underline{x}) = 1-\alpha$.  
 
-Among all $(1-\alpha)$ <span class="xref-no-num">[credible intervals @def-credible-interval]</span>, the HDI has **shortest length**.
+Under standard regularity conditions, an HDR has the smallest total length among regions containing posterior probability $1-\alpha$. For a continuous unimodal posterior it is usually one interval, often called a **highest density interval (HDI)**.
 
 ---
 
 ```{=html}
 <details>
-<summary><strong>Show Visualisation</strong></summary>
+<summary><strong>Explore a highest-density region</strong></summary>
 ```
 
+**Predict.** As the density threshold $\gamma$ rises, should the included posterior mass and region width increase or decrease?
+
 {{< include ../../_figures/part3/highest-density-interval.qmd >}}
+
+**Observe and explain.** The region retains parameter values whose posterior density exceeds the threshold. For a requested credibility, $\gamma$ is chosen so that the included posterior mass is $1-\alpha$.
 
 ```{=html}
 </details>
@@ -93,7 +118,7 @@ Among all $(1-\alpha)$ <span class="xref-no-num">[credible intervals @def-credib
 ::: 
 
 
-If the posterior distribution has many modes, then it is possible that the HDI will be the union of several disjoint regions. For example,
+If the posterior distribution has several separated modes, then an HDR may be the union of several disjoint intervals. For example,
 
 $$
 C_\alpha = (a,b)\cup(c,d)\cup(e,f), \quad a<b<c<d<e<f.
@@ -116,7 +141,7 @@ Determine the $100(1-\alpha)\%$ HDI for $\theta$.
 <details>
   <summary><strong> Solution </strong></summary>
 ```
-The HDI must include those values of $\theta$ with highest posterior density and so must take the form $C_\alpha=(0,b)$. The end-point $b$ must satisfy
+The HDR must include those values of $\theta$ with highest posterior density and so, up to endpoints of posterior probability zero, takes the form $C_\alpha=[0,b]$. The endpoint $b$ must satisfy
 
 $$
 \int_0^b 24(1-\theta)^{23}\,d\theta = 1-\alpha.
@@ -142,8 +167,10 @@ $$
 Therefore, a $100(1-\alpha)\%$ HDI for $\theta$ is
 
 $$
-(0,\, 1-\alpha^{1/24}).
+[0,\, 1-\alpha^{1/24}].
 $$
+
+For example, the $95\%$ HDI is approximately $[0,0.117]$. Conditional on the model, prior and data that produced this posterior, there is $0.95$ posterior probability that $\theta$ lies in this interval.
 
 ```{=html}
 </details>
@@ -174,13 +201,12 @@ Determine the $100(1-\alpha)\%$ HDI for $\mu$.
 This distribution has a symmetric bell shape and so the HDI takes the form $C_\alpha=(a,b)$ with end-points
 
 $$
-a=\bar x - \frac{z_{\alpha/2}}{\sqrt{n\tau}}, 
+a=\bar x - \frac{z_{1-\alpha/2}}{\sqrt{n\tau}},
 \qquad
-b=\bar x + \frac{z_{\alpha/2}}{\sqrt{n\tau}},
+b=\bar x + \frac{z_{1-\alpha/2}}{\sqrt{n\tau}},
 $$
 
-where $z_\alpha$ is the upper $\alpha$-quantile of the $\mathcal{N}(0,1)$
-distribution.  
+where $z_p=\Phi^{-1}(p)$ is the lower-tail $p$-quantile of the $\mathcal{N}(0,1)$ distribution.
 
 Therefore, the $95\%$ HDI for $\mu$ is 
 
@@ -198,4 +224,53 @@ However, the interpretation is very different.
 </details>
 ```
 
+:::
+
+
+::: {.example #exm-matched-bayes-skeleton-ci}
+### Revisiting the Skeleton-Length Example
+
+In @exm-normal-ci-known-var, $n=30$, $\bar{x}=161.72$ cm and the sampling variance was assumed known to be $\sigma^2=100$ cm$^2$. Suppose a Bayesian analysis instead uses the prior
+$$
+\mu\sim\mathcal N(160,25).
+$$
+Find the posterior distribution and a $95\%$ credible interval.
+
+```{=html}
+<details>
+<summary><strong>Solution</strong></summary>
+```
+
+Because $\bar X\mid\mu\sim\mathcal N(\mu,100/30)$, Normal--Normal conjugacy gives
+$$
+V_{\mathrm{post}}
+=\left(\frac{1}{25}+\frac{30}{100}\right)^{-1}
+=2.941,
+$$
+and
+$$
+m_{\mathrm{post}}
+=V_{\mathrm{post}}
+\left(\frac{160}{25}+\frac{30(161.72)}{100}\right)
+=161.518.
+$$
+Hence
+$$
+\mu\mid\underline{x}\sim\mathcal N(161.518,2.941),
+$$
+and the $95\%$ equal-tailed interval (also the HDI here) is
+$$
+161.518\pm1.96\sqrt{2.941}
+=\boxed{[158.16,164.88]}\ \text{cm}.
+$$
+
+Given the Normal model, this prior and the observed data, the posterior probability that $\mu$ lies in this interval is $0.95$. The frequentist interval in @exm-normal-ci-known-var is numerically similar, but it describes the repeated-sampling coverage of a procedure. The Bayesian interval is slightly pulled towards the prior mean $160$ cm.
+
+```{=html}
+</details>
+```
+:::
+
+::: {.callout-note appearance="simple"}
+**Chapter summary.** Credible intervals make posterior probability statements conditional on a model, prior and observed data. A credibility level does not uniquely determine a set, so conventions such as equal-tailed intervals and highest-density regions are used. Confidence and credible intervals can occasionally share endpoints, but they answer different probability questions.
 :::
