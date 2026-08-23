@@ -1,0 +1,348 @@
+```{ojs}
+viewof cltControls = Inputs.form({
+  distribution: Inputs.select(
+    ["Normal", "Uniform", "Exponential", "Bimodal mixture"],
+    {value: "Exponential", label: "Population distribution"}
+  ),
+  n: Inputs.range([1, 100], {
+    value: 1,
+    step: 1,
+    label: md`Sample size ${tex`n`}`
+  }),
+  replications: Inputs.range([200, 4000], {
+    value: 2000,
+    step: 200,
+    label: md`Repeated samples ${tex`N`}`
+  }),
+  bins: Inputs.range([10, 60], {
+    value: 32,
+    step: 1,
+    label: "Histogram bins"
+  })
+}, {submit: false})
+
+viewof cltNewSimulation = Inputs.button("Draw new samples", {
+  reduce: value => (value ?? 0) + 1
+})
+```
+
+```{ojs}
+cltPopulation = {
+  const name = cltControls.distribution;
+
+  if (name === "Uniform") {
+    return {
+      name,
+      mean: 0,
+      sd: 1,
+      domain: [-2.1, 2.1],
+      makeSampler: rng => () => Math.sqrt(3) * (2 * rng() - 1)
+    };
+  }
+
+  if (name === "Exponential") {
+    return {
+      name,
+      mean: 1,
+      sd: 1,
+      domain: [0, 7],
+      makeSampler: rng => () => -Math.log(Math.max(1e-12, 1 - rng()))
+    };
+  }
+
+  if (name === "Bimodal mixture") {
+    const componentMean = 1.6;
+    const componentSd = 0.35;
+    return {
+      name,
+      mean: 0,
+      sd: Math.sqrt(componentMean ** 2 + componentSd ** 2),
+      domain: [-3.2, 3.2],
+      makeSampler: rng => {
+        const normal = d3.randomNormal.source(rng)(0, componentSd);
+        return () => (rng() < 0.5 ? -componentMean : componentMean) + normal();
+      }
+    };
+  }
+
+  return {
+    name: "Normal",
+    mean: 0,
+    sd: 1,
+    domain: [-4, 4],
+    makeSampler: rng => d3.randomNormal.source(rng)(0, 1)
+  };
+}
+
+cltSimulation = {
+  const run = Number(cltNewSimulation ?? 0);
+  const meanSeed = (0.137 + 0.173 * run) % 1;
+  const populationSeed = (0.619 + 0.197 * run) % 1;
+  const meanRng = d3.randomLcg(meanSeed || 0.137);
+  const populationRng = d3.randomLcg(populationSeed || 0.619);
+  const drawForMeans = cltPopulation.makeSampler(meanRng);
+  const drawForPopulation = cltPopulation.makeSampler(populationRng);
+  const means = new Array(cltControls.replications);
+
+  for (let repetition = 0; repetition < cltControls.replications; repetition++) {
+    let total = 0;
+    for (let observation = 0; observation < cltControls.n; observation++) {
+      total += drawForMeans();
+    }
+    means[repetition] = total / cltControls.n;
+  }
+
+  return {
+    means,
+    populationDraws: d3.range(5000).map(drawForPopulation)
+  };
+}
+```
+
+```{ojs}
+cltPopulationBins = d3.bin()
+  .domain(cltPopulation.domain)
+  .thresholds(36)(cltSimulation.populationDraws)
+
+cltPopulationDensities = cltPopulationBins.map(bin =>
+  bin.length / cltSimulation.populationDraws.length /
+  Math.max(1e-9, bin.x1 - bin.x0)
+)
+
+cltPopulationYMax = Math.max(0.1, d3.max(cltPopulationDensities) || 0.1)
+
+cltPopulationPlot = Plot.plot({
+  width: Math.min(520, Math.max(320, width / 2 - 18)),
+  height: 330,
+  marginLeft: 56,
+  style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)",
+    fontFamily: bodyFont,
+    fontSize: 13
+  },
+  x: {label: "One observation X", domain: cltPopulation.domain},
+  y: {label: "Density", domain: [0, cltPopulationYMax * 1.12], grid: true},
+  marks: [
+    Plot.rectY(cltPopulationBins, {
+      x1: bin => bin.x0,
+      x2: bin => bin.x1,
+      y: bin => bin.length / cltSimulation.populationDraws.length /
+        Math.max(1e-9, bin.x1 - bin.x0),
+      fill: "var(--plot-fill-1)",
+      stroke: "var(--plot-series-1)",
+      strokeWidth: 0.7
+    }),
+    Plot.ruleX([cltPopulation.mean], {
+      stroke: "var(--plot-reference)",
+      strokeWidth: 2,
+      strokeDasharray: "5,4"
+    }),
+    Plot.text([{x: cltPopulation.mean, y: cltPopulationYMax * 1.04}], {
+      x: "x",
+      y: "y",
+      text: () => "population mean μ",
+      dx: 7,
+      textAnchor: "start",
+      fill: "var(--plot-fg)",
+      fontSize: 12
+    }),
+    Plot.ruleY([0], {stroke: "var(--plot-reference)"})
+  ]
+})
+
+cltMeanExtent = d3.extent(cltSimulation.means)
+cltStandardError = cltPopulation.sd / Math.sqrt(cltControls.n)
+cltMeanDomain = {
+  const theoreticalLow = cltPopulation.mean - 4.25 * cltStandardError;
+  const theoreticalHigh = cltPopulation.mean + 4.25 * cltStandardError;
+  const low = Math.min(cltMeanExtent[0], theoreticalLow);
+  const high = Math.max(cltMeanExtent[1], theoreticalHigh);
+  const padding = Math.max((high - low) * 0.04, 1e-3);
+  return [low - padding, high + padding];
+}
+
+cltMeanBins = d3.bin()
+  .domain(cltMeanDomain)
+  .thresholds(cltControls.bins)(cltSimulation.means)
+
+cltMeanDensities = cltMeanBins.map(bin =>
+  bin.length / cltSimulation.means.length /
+  Math.max(1e-9, bin.x1 - bin.x0)
+)
+
+cltNormalDensity = x =>
+  Math.exp(-0.5 * ((x - cltPopulation.mean) / cltStandardError) ** 2) /
+  (cltStandardError * Math.sqrt(2 * Math.PI))
+
+cltNormalCurve = d3.range(241).map(index => {
+  const x = cltMeanDomain[0] +
+    index * (cltMeanDomain[1] - cltMeanDomain[0]) / 240;
+  return {x, y: cltNormalDensity(x)};
+})
+
+cltMeanYMax = Math.max(
+  d3.max(cltMeanDensities) || 0.1,
+  d3.max(cltNormalCurve, point => point.y) || 0.1
+)
+
+cltMeansPlot = Plot.plot({
+  width: Math.min(520, Math.max(320, width / 2 - 18)),
+  height: 330,
+  marginLeft: 56,
+  style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)",
+    fontFamily: bodyFont,
+    fontSize: 13
+  },
+  x: {label: "Sample mean x̄", domain: cltMeanDomain},
+  y: {label: "Density", domain: [0, cltMeanYMax * 1.12], grid: true},
+  marks: [
+    Plot.rectY(cltMeanBins, {
+      x1: bin => bin.x0,
+      x2: bin => bin.x1,
+      y: bin => bin.length / cltSimulation.means.length /
+        Math.max(1e-9, bin.x1 - bin.x0),
+      fill: "var(--plot-fill-3)",
+      stroke: "var(--plot-series-3)",
+      strokeWidth: 0.7
+    }),
+    Plot.line(cltNormalCurve, {
+      x: "x",
+      y: "y",
+      stroke: "var(--plot-series-4)",
+      strokeWidth: 2.8
+    }),
+    Plot.ruleX([cltPopulation.mean], {
+      stroke: "var(--plot-reference)",
+      strokeWidth: 2,
+      strokeDasharray: "5,4"
+    }),
+    Plot.ruleY([0], {stroke: "var(--plot-reference)"})
+  ]
+})
+```
+
+```{ojs}
+{
+  const simulatedMean = d3.mean(cltSimulation.means);
+  const simulatedSd = d3.deviation(cltSimulation.means);
+  const button = viewof cltNewSimulation.querySelector("button");
+  if (button) button.classList.add("clt-resample-button");
+
+  return html`<div class="clt-figure-shell">
+    <div class="clt-controls-row">
+      <div>${viewof cltControls}</div>
+      <div class="clt-action">${viewof cltNewSimulation}</div>
+    </div>
+
+    <div class="clt-plot-titles">
+      <strong>Population: ${cltPopulation.name}</strong>
+      <strong>Sampling distribution from ${cltControls.replications.toLocaleString()} means</strong>
+    </div>
+    <div class="clt-plots">
+      <div>${cltPopulationPlot}</div>
+      <div>${cltMeansPlot}</div>
+    </div>
+
+    <div class="clt-legend" aria-label="Plot legend">
+      <span><i class="clt-swatch clt-histogram"></i> Simulated sample means</span>
+      <span><i class="clt-line"></i> ${tex`\mathcal N(\mu,\sigma^2/n)`} approximation</span>
+      <span><i class="clt-reference"></i> True mean ${tex`\mu`}</span>
+    </div>
+
+    <div class="clt-metrics">
+      <div><span>Population</span><strong>${tex`\mu=${cltPopulation.mean.toFixed(2)},\;\sigma=${cltPopulation.sd.toFixed(2)}`}</strong></div>
+      <div><span>Simulated means</span><strong>${tex`\operatorname{mean}(\bar X)=${simulatedMean.toFixed(3)}`}</strong></div>
+      <div><span>Simulated spread</span><strong>${tex`\operatorname{sd}(\bar X)=${simulatedSd.toFixed(3)}`}</strong></div>
+      <div><span>CLT standard error</span><strong>${tex`\sigma/\sqrt n=${cltStandardError.toFixed(3)}`}</strong></div>
+    </div>
+
+    <p class="clt-prompt"><strong>Try this:</strong> start with ${tex`n=1`} and the Exponential or Bimodal population, then increase ${tex`n`}. The histogram changes shape and narrows; the red Normal curve uses the theorem, not the simulated histogram.</p>
+  </div>
+
+  <style>
+    .clt-figure-shell { color: var(--plot-fg); }
+    .clt-controls-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 1rem;
+      align-items: end;
+      padding: .85rem 1rem;
+      margin-bottom: .75rem;
+      background: var(--plot-bg);
+      border: 1px solid var(--border);
+      border-radius: .4rem;
+    }
+    .clt-controls-row form { margin: 0; }
+    .clt-action { padding-bottom: .2rem; }
+    .clt-resample-button {
+      background: var(--plot-series-1) !important;
+      color: var(--plot-on-accent) !important;
+      border: 0 !important;
+    }
+    .clt-plot-titles,
+    .clt-plots {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+    .clt-plot-titles { text-align: center; margin: .2rem 0 .35rem; }
+    .clt-plots > div { min-width: 0; overflow-x: auto; }
+    .clt-legend {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: .65rem 1.25rem;
+      font-size: .88rem;
+      margin: .65rem 0;
+    }
+    .clt-legend span { display: inline-flex; align-items: center; gap: .4rem; }
+    .clt-swatch { width: 1rem; height: .72rem; display: inline-block; }
+    .clt-histogram { background: var(--plot-fill-3); border: 1px solid var(--plot-series-3); }
+    .clt-line { width: 1.35rem; border-top: 3px solid var(--plot-series-4); display: inline-block; }
+    .clt-reference { width: 1.35rem; border-top: 2px dashed var(--plot-reference); display: inline-block; }
+    .clt-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: .55rem;
+      margin-top: .7rem;
+    }
+    .clt-metrics > div {
+      display: flex;
+      flex-direction: column;
+      gap: .15rem;
+      padding: .55rem .65rem;
+      background: var(--plot-bg);
+      border: 1px solid var(--border);
+      border-radius: .35rem;
+      text-align: center;
+    }
+    .clt-metrics span { color: var(--plot-muted); font-size: .78rem; }
+    .clt-metrics strong { font-size: .9rem; font-weight: 600; }
+    .clt-prompt {
+      margin: .75rem 0 0;
+      padding: .65rem .8rem;
+      border-left: .25rem solid var(--plot-series-2);
+      background: var(--plot-fill-2);
+    }
+    @media (max-width: 760px) {
+      .clt-controls-row,
+      .clt-plot-titles,
+      .clt-plots { grid-template-columns: 1fr; }
+      .clt-plot-titles { display: none; }
+      .clt-plots > div::before {
+        display: block;
+        text-align: center;
+        font-weight: 600;
+        margin-bottom: .3rem;
+      }
+      .clt-plots > div:first-child::before { content: "Population distribution"; }
+      .clt-plots > div:last-child::before { content: "Sampling distribution of the mean"; }
+      .clt-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .clt-action { padding-bottom: 0; }
+    }
+  </style>`;
+}
+```

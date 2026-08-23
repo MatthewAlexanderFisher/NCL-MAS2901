@@ -1,0 +1,288 @@
+```{ojs}
+viewof consControls = Inputs.form({
+  scenario: Inputs.select([
+    "Consistent (biased at finite n)",
+    "Asymptotically unbiased only",
+    "Unbiased but not consistent"
+  ], {
+    value: "Consistent (biased at finite n)",
+    label: "Estimator sequence"
+  }),
+  n: Inputs.range([1, 100], {
+    value: 1,
+    step: 1,
+    label: md`Sample size ${tex`n`}`
+  }),
+  epsilon: Inputs.range([0.2, 1.2], {
+    value: 0.5,
+    step: 0.1,
+    label: md`Tolerance ${tex`\varepsilon`}`
+  })
+}, {submit: false})
+```
+
+```{ojs}
+consTarget = 0
+
+consParametersAt = (scenario, n) => {
+  if (scenario === "Asymptotically unbiased only") {
+    return {mean: 2 / Math.sqrt(n), sd: 0.8};
+  }
+  if (scenario === "Unbiased but not consistent") {
+    return {mean: 0, sd: 0.8};
+  }
+  return {mean: 1 / Math.sqrt(n), sd: 1 / Math.sqrt(n)};
+}
+
+consErf = value => {
+  const sign = value < 0 ? -1 : 1;
+  const x = Math.abs(value);
+  const t = 1 / (1 + 0.3275911 * x);
+  const polynomial = (((((1.061405429 * t - 1.453152027) * t) +
+    1.421413741) * t - 0.284496736) * t + 0.254829592) * t;
+  return sign * (1 - polynomial * Math.exp(-x * x));
+}
+
+consNormalCdf = value => 0.5 * (1 + consErf(value / Math.sqrt(2)))
+
+consOutsideProbability = (scenario, n, epsilon) => {
+  const parameters = consParametersAt(scenario, n);
+  const lowerZ = (consTarget - epsilon - parameters.mean) / parameters.sd;
+  const upperZ = (consTarget + epsilon - parameters.mean) / parameters.sd;
+  return consNormalCdf(lowerZ) + 1 - consNormalCdf(upperZ);
+}
+
+consParameters = consParametersAt(consControls.scenario, consControls.n)
+consProbabilityOutside = consOutsideProbability(
+  consControls.scenario,
+  consControls.n,
+  consControls.epsilon
+)
+
+consDensityDomain = [-3, 5]
+consDensity = d3.range(321).map(index => {
+  const x = consDensityDomain[0] + index *
+    (consDensityDomain[1] - consDensityDomain[0]) / 320;
+  const y = Math.exp(-0.5 * ((x - consParameters.mean) / consParameters.sd) ** 2) /
+    (consParameters.sd * Math.sqrt(2 * Math.PI));
+  return {x, y};
+})
+
+consDensityYMax = Math.max(0.52, d3.max(consDensity, point => point.y) * 1.12)
+
+consProbabilityPath = d3.range(1, 101).map(n => ({
+  n,
+  probability: consOutsideProbability(
+    consControls.scenario,
+    n,
+    consControls.epsilon
+  )
+}))
+```
+
+```{ojs}
+consDensityPlot = Plot.plot({
+  width: Math.min(520, Math.max(320, width / 2 - 18)),
+  height: 325,
+  marginLeft: 54,
+  style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)",
+    fontFamily: bodyFont,
+    fontSize: 13
+  },
+  x: {label: "Possible estimate θ̂ₙ", domain: consDensityDomain},
+  y: {label: "Density", domain: [0, consDensityYMax], grid: true},
+  marks: [
+    Plot.rect([{
+      x1: consTarget - consControls.epsilon,
+      x2: consTarget + consControls.epsilon,
+      y1: 0,
+      y2: consDensityYMax
+    }], {
+      x1: "x1",
+      x2: "x2",
+      y1: "y1",
+      y2: "y2",
+      fill: "var(--plot-fill-5)",
+      fillOpacity: 0.7
+    }),
+    Plot.areaY(consDensity, {
+      x: "x",
+      y: "y",
+      fill: "var(--plot-fill-1)",
+      fillOpacity: 0.85
+    }),
+    Plot.line(consDensity, {
+      x: "x",
+      y: "y",
+      stroke: "var(--plot-series-1)",
+      strokeWidth: 2.5
+    }),
+    Plot.ruleX([consTarget], {
+      stroke: "var(--plot-reference)",
+      strokeWidth: 2,
+      strokeDasharray: "5,4"
+    }),
+    Plot.ruleX([consParameters.mean], {
+      stroke: "var(--plot-series-4)",
+      strokeWidth: 2.3
+    }),
+    Plot.text([{x: consTarget, y: consDensityYMax * 0.94}], {
+      x: "x",
+      y: "y",
+      text: () => "target θ",
+      dx: 7,
+      textAnchor: "start",
+      fill: "var(--plot-fg)",
+      fontSize: 12
+    }),
+    Plot.ruleY([0], {stroke: "var(--plot-reference)"})
+  ]
+})
+
+consProbabilityPlot = Plot.plot({
+  width: Math.min(520, Math.max(320, width / 2 - 18)),
+  height: 325,
+  marginLeft: 62,
+  style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)",
+    fontFamily: bodyFont,
+    fontSize: 13
+  },
+  x: {label: "Sample size n", domain: [1, 100], grid: true},
+  y: {
+    label: "Probability outside ε-band",
+    domain: [0, 1],
+    tickFormat: value => `${Math.round(100 * value)}%`,
+    grid: true
+  },
+  marks: [
+    Plot.areaY(consProbabilityPath, {
+      x: "n",
+      y: "probability",
+      fill: "var(--plot-fill-4)"
+    }),
+    Plot.line(consProbabilityPath, {
+      x: "n",
+      y: "probability",
+      stroke: "var(--plot-series-4)",
+      strokeWidth: 2.5
+    }),
+    Plot.ruleY([0], {
+      stroke: "var(--plot-reference)",
+      strokeWidth: 2,
+      strokeDasharray: "5,4"
+    }),
+    Plot.dot([{
+      n: consControls.n,
+      probability: consProbabilityOutside
+    }], {
+      x: "n",
+      y: "probability",
+      r: 6,
+      fill: "var(--plot-series-3)",
+      stroke: "var(--plot-on-accent)",
+      strokeWidth: 1.3
+    })
+  ]
+})
+```
+
+```{ojs}
+consConclusion = consControls.scenario === "Consistent (biased at finite n)"
+  ? html`The centre approaches ${tex`\theta`}, the spread shrinks, and the outside probability tends to zero: this sequence is <strong>consistent</strong>.`
+  : consControls.scenario === "Asymptotically unbiased only"
+    ? html`The centre approaches ${tex`\theta`}, but the spread remains. The outside probability does not tend to zero: asymptotic unbiasedness alone is <strong>not consistency</strong>.`
+    : html`The estimator is centred exactly on ${tex`\theta`} for every ${tex`n`}, but its spread remains. Unbiasedness alone is <strong>not consistency</strong>.`
+
+html`<div class="cons-figure-shell">
+  <div class="cons-control">${viewof consControls}</div>
+  <div class="cons-titles">
+    <strong>Sampling distribution and the ${tex`\varepsilon`}-band</strong>
+    <strong>Probability of missing the band</strong>
+  </div>
+  <div class="cons-plots">
+    <div>${consDensityPlot}</div>
+    <div>${consProbabilityPlot}</div>
+  </div>
+  <div class="cons-legend" aria-label="Plot legend">
+    <span><i class="cons-band"></i> ${tex`\theta\pm\varepsilon`} tolerance band</span>
+    <span><i class="cons-density"></i> Sampling distribution of ${tex`\hat\theta_n`}</span>
+    <span><i class="cons-centre"></i> Centre ${tex`\mathrm E[\hat\theta_n]`}</span>
+  </div>
+  <div class="cons-metrics">
+    <div>E[θ̂ₙ] = ${consParameters.mean.toFixed(3)}</div>
+    <div>sd(θ̂ₙ) = ${consParameters.sd.toFixed(3)}</div>
+    <div>Pr(|θ̂ₙ − θ| &gt; ε) = ${consProbabilityOutside.toFixed(3)}</div>
+  </div>
+  <p class="cons-message">${consConclusion}</p>
+  <p class="cons-prompt"><strong>Compare:</strong> increase ${tex`n`} under each estimator sequence. Only consistency requires the probability outside <em>every fixed</em> ${tex`\varepsilon`}-band to approach zero.</p>
+</div>
+
+<style>
+  .cons-figure-shell { color: var(--plot-fg); }
+  .cons-control {
+    padding: .75rem 1rem;
+    margin-bottom: .7rem;
+    background: var(--plot-bg);
+    border: 1px solid var(--border);
+    border-radius: .4rem;
+  }
+  .cons-control form { margin: 0; }
+  .cons-titles,
+  .cons-plots {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  .cons-titles { text-align: center; margin: .2rem 0 .35rem; }
+  .cons-plots > div { min-width: 0; overflow-x: auto; }
+  .cons-legend,
+  .cons-metrics {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .55rem 1.1rem;
+    margin: .65rem 0;
+    font-size: .88rem;
+  }
+  .cons-legend span { display: inline-flex; align-items: center; gap: .4rem; }
+  .cons-band { width: 1rem; height: .72rem; background: var(--plot-fill-5); border: 1px solid var(--plot-series-5); display: inline-block; }
+  .cons-density { width: 1.2rem; border-top: 3px solid var(--plot-series-1); display: inline-block; }
+  .cons-centre { width: 1.2rem; border-top: 2px solid var(--plot-series-4); display: inline-block; }
+  .cons-metrics > div {
+    padding: .35rem .65rem;
+    background: var(--plot-bg);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+  }
+  .cons-message,
+  .cons-prompt {
+    margin: .55rem 0 0;
+    padding: .65rem .8rem;
+  }
+  .cons-message {
+    border-left: .25rem solid var(--plot-series-1);
+    background: var(--plot-fill-1);
+  }
+  .cons-prompt {
+    border-left: .25rem solid var(--plot-series-2);
+    background: var(--plot-fill-2);
+  }
+  @media (max-width: 760px) {
+    .cons-titles,
+    .cons-plots { grid-template-columns: 1fr; }
+    .cons-titles { display: none; }
+    .cons-plots > div::before {
+      display: block;
+      text-align: center;
+      font-weight: 600;
+      margin-bottom: .3rem;
+    }
+    .cons-plots > div:first-child::before { content: "Sampling distribution and tolerance band"; }
+    .cons-plots > div:last-child::before { content: "Probability outside the band"; }
+  }
+</style>`
+```

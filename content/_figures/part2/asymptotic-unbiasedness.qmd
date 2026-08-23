@@ -1,0 +1,190 @@
+```{ojs}
+viewof auSampleSize = Inputs.range([1, 100], {
+  value: 1,
+  step: 1,
+  label: md`Sample size ${tex`n`}`
+})
+
+auTarget = 0
+auFixedSd = 0.8
+auBias = 2 / Math.sqrt(auSampleSize)
+auExpectedValue = auTarget + auBias
+
+auDensity = d3.range(281).map(index => {
+  const x = -3 + index * 8 / 280;
+  const y = Math.exp(-0.5 * ((x - auExpectedValue) / auFixedSd) ** 2) /
+    (auFixedSd * Math.sqrt(2 * Math.PI));
+  return {x, y};
+})
+
+auBiasPath = d3.range(1, 101).map(n => ({
+  n,
+  bias: 2 / Math.sqrt(n)
+}))
+```
+
+```{ojs}
+auDensityPlot = Plot.plot({
+  width: Math.min(520, Math.max(320, width / 2 - 18)),
+  height: 315,
+  marginLeft: 54,
+  style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)",
+    fontFamily: bodyFont,
+    fontSize: 13
+  },
+  x: {label: "Possible estimate θ̂ₙ", domain: [-3, 5]},
+  y: {label: "Density", domain: [0, 0.57], grid: true},
+  marks: [
+    Plot.areaY(auDensity, {
+      x: "x",
+      y: "y",
+      fill: "var(--plot-fill-2)"
+    }),
+    Plot.line(auDensity, {
+      x: "x",
+      y: "y",
+      stroke: "var(--plot-series-2)",
+      strokeWidth: 2.5
+    }),
+    Plot.ruleX([auTarget], {
+      stroke: "var(--plot-reference)",
+      strokeWidth: 2,
+      strokeDasharray: "5,4"
+    }),
+    Plot.ruleX([auExpectedValue], {
+      stroke: "var(--plot-series-4)",
+      strokeWidth: 2.5
+    }),
+    Plot.text([
+      {x: auTarget, y: 0.53, label: "target θ"},
+      {x: auExpectedValue, y: 0.46, label: "centre E[θ̂ₙ]"}
+    ], {
+      x: "x",
+      y: "y",
+      text: "label",
+      textAnchor: "start",
+      dx: 7,
+      fill: point => point.label === "target θ" ?
+        "var(--plot-fg)" : "var(--plot-series-4)",
+      fontSize: 12
+    }),
+    Plot.ruleY([0], {stroke: "var(--plot-reference)"})
+  ]
+})
+
+auBiasPlot = Plot.plot({
+  width: Math.min(520, Math.max(320, width / 2 - 18)),
+  height: 315,
+  marginLeft: 58,
+  style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)",
+    fontFamily: bodyFont,
+    fontSize: 13
+  },
+  x: {label: "Sample size n", domain: [1, 100], grid: true},
+  y: {label: "Bias E[θ̂ₙ] − θ", domain: [0, 2.12], grid: true},
+  marks: [
+    Plot.areaY(auBiasPath, {
+      x: "n",
+      y: "bias",
+      fill: "var(--plot-fill-3)"
+    }),
+    Plot.line(auBiasPath, {
+      x: "n",
+      y: "bias",
+      stroke: "var(--plot-series-3)",
+      strokeWidth: 2.5
+    }),
+    Plot.ruleY([0], {
+      stroke: "var(--plot-reference)",
+      strokeWidth: 2,
+      strokeDasharray: "5,4"
+    }),
+    Plot.dot([{n: auSampleSize, bias: auBias}], {
+      x: "n",
+      y: "bias",
+      r: 6,
+      fill: "var(--plot-series-4)",
+      stroke: "var(--plot-on-accent)",
+      strokeWidth: 1.3
+    })
+  ]
+})
+```
+
+```{ojs}
+html`<div class="au-figure-shell">
+  <div class="au-control">${viewof auSampleSize}</div>
+  <div class="au-titles">
+    <strong>Sampling distribution at the selected ${tex`n`}</strong>
+    <strong>What happens to the bias as ${tex`n`} grows?</strong>
+  </div>
+  <div class="au-plots">
+    <div>${auDensityPlot}</div>
+    <div>${auBiasPlot}</div>
+  </div>
+  <div class="au-metrics">
+    <div>θ = ${auTarget}</div>
+    <div>E[θ̂ₙ] = ${auExpectedValue.toFixed(3)}</div>
+    <div>Bias(θ̂ₙ) = ${auBias.toFixed(3)}</div>
+    <div>sd(θ̂ₙ) = ${auFixedSd.toFixed(1)}</div>
+  </div>
+  <p class="au-message"><strong>Watch the centre, not the width.</strong> As ${tex`n`} increases, the red centre moves towards ${tex`\theta`} and the bias approaches zero. The spread is deliberately held fixed: this sequence is asymptotically unbiased, but it is <em>not</em> consistent.</p>
+</div>
+
+<style>
+  .au-figure-shell { color: var(--plot-fg); }
+  .au-control {
+    padding: .75rem 1rem;
+    margin-bottom: .7rem;
+    background: var(--plot-bg);
+    border: 1px solid var(--border);
+    border-radius: .4rem;
+  }
+  .au-control form { margin: 0; max-width: 30rem; }
+  .au-titles,
+  .au-plots {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  .au-titles { text-align: center; margin: .2rem 0 .35rem; }
+  .au-plots > div { min-width: 0; overflow-x: auto; }
+  .au-metrics {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .5rem;
+    margin: .6rem 0;
+  }
+  .au-metrics > div {
+    padding: .35rem .65rem;
+    background: var(--plot-bg);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: .88rem;
+  }
+  .au-message {
+    margin: .65rem 0 0;
+    padding: .65rem .8rem;
+    border-left: .25rem solid var(--plot-series-3);
+    background: var(--plot-fill-3);
+  }
+  @media (max-width: 760px) {
+    .au-titles,
+    .au-plots { grid-template-columns: 1fr; }
+    .au-titles { display: none; }
+    .au-plots > div::before {
+      display: block;
+      text-align: center;
+      font-weight: 600;
+      margin-bottom: .3rem;
+    }
+    .au-plots > div:first-child::before { content: "Sampling distribution"; }
+    .au-plots > div:last-child::before { content: "Bias against sample size"; }
+  }
+</style>`
+```

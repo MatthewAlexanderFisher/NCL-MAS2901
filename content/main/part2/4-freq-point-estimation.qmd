@@ -968,6 +968,19 @@ which proves the result.
 
 The CLT is remarkable: subject to the conditions in @thm-clt—most importantly i.i.d. observations with finite variance—the **sample mean** becomes approximately Normal as $n$ increases. It does not apply to every possible population distribution.
 
+The following simulation makes the two effects of increasing $n$ visible. For each setting it draws $N$ independent random samples, computes their $N$ sample means, and compares the resulting histogram with the Normal approximation from @thm-clt. Try a clearly non-Normal population first.
+
+```{=html}
+<details>
+<summary><strong>Show Visualisation: the Central Limit Theorem</strong></summary>
+```
+
+{{< include ../../_figures/part2/central-limit-theorem.qmd >}}
+
+```{=html}
+</details>
+```
+
 In practice, for a *reasonable* sample size we may write
 $$
 \bar X_n \;\overset{\text{approx.}}{\sim}\; \mathcal N\!\left(\mu,\ \frac{\sigma^2}{n}\right),
@@ -1027,6 +1040,19 @@ $$
 If an estimator is unbiased for every $n$, then it is automatically asymptotically unbiased.  
 However, some biased estimators may still “correct themselves” in the limit and become asymptotically unbiased.
 
+Asymptotic unbiasedness concerns only the **centre** of the sampling distribution. The visualisation below deliberately keeps the distribution's width fixed so that this point is not confused with consistency.
+
+```{=html}
+<details>
+<summary><strong>Show Visualisation: asymptotic unbiasedness</strong></summary>
+```
+
+{{< include ../../_figures/part2/asymptotic-unbiasedness.qmd >}}
+
+```{=html}
+</details>
+```
+
 ::: {.definition #def-consistency}
 ### Consistency
 
@@ -1041,6 +1067,19 @@ that is, it <span class="xref-no-num">[converges in probability @def-convergence
 :::
 
 Intuitively, a consistent estimator will “home in” on the true parameter as the sample size grows.
+
+The definition is about the probability of missing any fixed tolerance band around $	heta$. The next visualisation shows that probability directly and lets you compare consistency with two tempting counterexamples.
+
+```{=html}
+<details>
+<summary><strong>Show Visualisation: consistency and an epsilon band</strong></summary>
+```
+
+{{< include ../../_figures/part2/consistency.qmd >}}
+
+```{=html}
+</details>
+```
 
 Using @def-consistency directly to prove an estimator is consistent can be difficult. The following gives a **sufficient condition** that is *usually* easier to verify in practice.
 
