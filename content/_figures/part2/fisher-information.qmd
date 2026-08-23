@@ -1,0 +1,232 @@
+```{ojs}
+fiMu0 = 0
+fiDelta = 0.5
+fiN = fiControls.n
+fiSigma = fiControls.sigma
+fiSe = fiSigma / Math.sqrt(fiN)
+fiInformation = fiN / fiSigma ** 2
+fiReciprocalInformation = 1 / fiInformation
+
+fiNormalPdf = (x, mean, sd) =>
+  Math.exp(-0.5 * ((x - mean) / sd) ** 2) /
+  (sd * Math.sqrt(2 * Math.PI))
+
+fiErf = x => {
+  const sign = x < 0 ? -1 : 1;
+  const value = Math.abs(x);
+  const t = 1 / (1 + 0.3275911 * value);
+  const polynomial = (((((1.061405429 * t - 1.453152027) * t) +
+    1.421413741) * t - 0.284496736) * t + 0.254829592) * t;
+  return sign * (1 - polynomial * Math.exp(-value * value));
+}
+
+fiNormalCdf = x => 0.5 * (1 + fiErf(x / Math.sqrt(2)))
+fiOverlap = 2 * fiNormalCdf(-Math.abs(fiDelta) / (2 * fiSe))
+
+fiDensityDomain = [
+  fiMu0 - 4.25 * fiSe,
+  fiMu0 + fiDelta + 4.25 * fiSe
+]
+
+fiDensityData = d3.range(401).map(index => {
+  const x = fiDensityDomain[0] + index *
+    (fiDensityDomain[1] - fiDensityDomain[0]) / 400;
+  const trueDensity = fiNormalPdf(x, fiMu0, fiSe);
+  const nearbyDensity = fiNormalPdf(x, fiMu0 + fiDelta, fiSe);
+  return {
+    x,
+    trueDensity,
+    nearbyDensity,
+    overlapDensity: Math.min(trueDensity, nearbyDensity)
+  };
+})
+
+fiDensityYMax = d3.max(fiDensityData, point =>
+  Math.max(point.trueDensity, point.nearbyDensity)
+)
+
+fiLikelihoodDomain = [-1.5, 1.5]
+fiExpectedLogLikelihood = d3.range(501).map(index => {
+  const mu = fiLikelihoodDomain[0] + index *
+    (fiLikelihoodDomain[1] - fiLikelihoodDomain[0]) / 500;
+  return {
+    mu,
+    relativeLogLikelihood: -0.5 * fiInformation * (mu - fiMu0) ** 2
+  };
+}).filter(point => point.relativeLogLikelihood >= -12)
+```
+
+```{ojs}
+fiDistinguishabilityPlot = Plot.plot({
+  width: Math.min(520, Math.max(320, width / 2 - 18)),
+  height: 330,
+  marginLeft: 58,
+  style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)",
+    fontFamily: bodyFont,
+    fontSize: 13
+  },
+  x: {label: "Possible sample mean x̄", domain: fiDensityDomain},
+  y: {label: "Density", domain: [0, 1.12 * fiDensityYMax], grid: true},
+  marks: [
+    Plot.areaY(fiDensityData, {
+      x: "x",
+      y: "overlapDensity",
+      fill: "var(--plot-fill-5)"
+    }),
+    Plot.line(fiDensityData, {
+      x: "x",
+      y: "trueDensity",
+      stroke: "var(--plot-series-1)",
+      strokeWidth: 2.7
+    }),
+    Plot.line(fiDensityData, {
+      x: "x",
+      y: "nearbyDensity",
+      stroke: "var(--plot-series-4)",
+      strokeWidth: 2.7,
+      strokeDasharray: "6,4"
+    }),
+    Plot.ruleX([fiMu0], {
+      stroke: "var(--plot-series-1)",
+      strokeWidth: 1.7
+    }),
+    Plot.ruleX([fiMu0 + fiDelta], {
+      stroke: "var(--plot-series-4)",
+      strokeWidth: 1.7,
+      strokeDasharray: "6,4"
+    }),
+    Plot.ruleY([0], {stroke: "var(--plot-reference)"})
+  ]
+})
+
+fiCurvaturePlot = Plot.plot({
+  width: Math.min(520, Math.max(320, width / 2 - 18)),
+  height: 330,
+  marginLeft: 62,
+  style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)",
+    fontFamily: bodyFont,
+    fontSize: 13
+  },
+  x: {label: "Candidate mean μ", domain: fiLikelihoodDomain, grid: true},
+  y: {
+    label: "Expected log-likelihood relative to maximum",
+    domain: [-12, 0.6],
+    grid: true
+  },
+  marks: [
+    Plot.areaY(fiExpectedLogLikelihood, {
+      x: "mu",
+      y1: "relativeLogLikelihood",
+      y2: 0,
+      fill: "var(--plot-fill-1)"
+    }),
+    Plot.line(fiExpectedLogLikelihood, {
+      x: "mu",
+      y: "relativeLogLikelihood",
+      stroke: "var(--plot-series-1)",
+      strokeWidth: 2.8
+    }),
+    Plot.ruleX([fiMu0], {
+      stroke: "var(--plot-reference)",
+      strokeWidth: 2,
+      strokeDasharray: "5,4"
+    }),
+    Plot.ruleY([0], {stroke: "var(--plot-reference)"})
+  ]
+})
+```
+
+```{ojs}
+fiReadout = md`${tex`\mathcal I_n(\mu)=\frac{n}{\sigma^2}=${fiInformation.toFixed(3)};\qquad
+  \frac{1}{\mathcal I_n(\mu)}=\frac{\sigma^2}{n}=${fiReciprocalInformation.toFixed(3)};\qquad
+  \operatorname{overlap}=${fiOverlap.toFixed(3)}`}`
+
+html`<div class="fi-figure-shell ojs-figure-shell">
+  <div class="fi-plots ojs-plot-grid">
+    <div class="fi-plot-panel ojs-plot-panel">
+      <strong>Can two nearby means be told apart?</strong>
+      ${fiDistinguishabilityPlot}
+    </div>
+    <div class="fi-plot-panel ojs-plot-panel">
+      <strong>How sharply does expected log-likelihood peak?</strong>
+      ${fiCurvaturePlot}
+    </div>
+  </div>
+
+  <div class="fi-legend" aria-label="Plot legend">
+    <span><i class="fi-true"></i> ${tex`\bar X\mid\mu=0`}</span>
+    <span><i class="fi-nearby"></i> ${tex`\bar X\mid\mu=0.5`}</span>
+    <span><i class="fi-overlap"></i> Shared probability area</span>
+    <span><i class="fi-reference"></i> True mean</span>
+  </div>
+
+  <div class="fi-readout" role="status" aria-live="polite">${fiReadout}</div>
+</div>
+
+<style>
+  .fi-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .55rem 1.1rem;
+    margin: .65rem 0;
+    font-size: .88rem;
+  }
+  .fi-legend > span { display: inline-flex; align-items: center; gap: .4rem; }
+  .fi-true { width: 1.25rem; border-top: 3px solid var(--plot-series-1); display: inline-block; }
+  .fi-nearby { width: 1.25rem; border-top: 3px dashed var(--plot-series-4); display: inline-block; }
+  .fi-overlap { width: 1rem; height: .72rem; background: var(--plot-fill-5); border: 1px solid var(--plot-series-5); display: inline-block; }
+  .fi-reference { width: 1.25rem; border-top: 2px dashed var(--plot-reference); display: inline-block; }
+  .fi-readout {
+    margin: .65rem 0 0;
+    text-align: center;
+    font-size: .9rem;
+  }
+  .fi-readout > p { margin: 0; }
+</style>`
+```
+
+```{ojs}
+// Keep the controls mounted beneath the reactive figure.
+viewof fiControls = {
+  const sampleForm = Inputs.form({
+    n: Inputs.range([1, 100], {
+      value: 10,
+      step: 1,
+      label: md`Sample size ${tex`n`}`
+    })
+  }, {submit: false});
+
+  const noiseForm = Inputs.form({
+    sigma: Inputs.range([0.5, 3], {
+      value: 1.5,
+      step: 0.1,
+      label: md`Known standard deviation ${tex`\sigma`}`
+    })
+  }, {submit: false});
+
+  const root = html`<div class="controls-wrap">
+    <details class="controls-root" open>
+      <summary>Information controls</summary>
+      <div class="controls-grid">
+        <div class="controls-col"><h4>Sample</h4></div>
+        <div class="controls-col"><h4>Observation noise</h4></div>
+      </div>
+    </details>
+  </div>`;
+
+  const columns = root.querySelectorAll(".controls-col");
+  columns[0].append(sampleForm);
+  columns[1].append(noiseForm);
+
+  Object.defineProperty(root, "value", {
+    get: () => ({...sampleForm.value, ...noiseForm.value})
+  });
+
+  return root;
+}
+```

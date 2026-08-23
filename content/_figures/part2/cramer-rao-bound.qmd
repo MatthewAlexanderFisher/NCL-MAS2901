@@ -1,0 +1,266 @@
+```{ojs}
+crlbMu = 0
+crlbN = crlbControls.n
+crlbSigma = crlbControls.sigma
+crlbRelativeWeight = crlbControls.relativeWeight
+crlbBound = crlbSigma ** 2 / crlbN
+crlbEfficientSd = Math.sqrt(crlbBound)
+crlbSelectedVariance = crlbSigma ** 2 *
+  (crlbRelativeWeight ** 2 + crlbN - 1) /
+  (crlbRelativeWeight + crlbN - 1) ** 2
+crlbSelectedSd = Math.sqrt(crlbSelectedVariance)
+crlbEfficiency = crlbBound / crlbSelectedVariance
+crlbAttainsBound = Math.abs(crlbRelativeWeight - 1) < 1e-9
+
+crlbNormalPdf = (x, mean, sd) =>
+  Math.exp(-0.5 * ((x - mean) / sd) ** 2) /
+  (sd * Math.sqrt(2 * Math.PI))
+
+crlbDensityHalfWidth = 4.25 * Math.max(crlbEfficientSd, crlbSelectedSd)
+crlbDensityDomain = [crlbMu - crlbDensityHalfWidth, crlbMu + crlbDensityHalfWidth]
+
+crlbDensityData = d3.range(401).map(index => {
+  const x = crlbDensityDomain[0] + index *
+    (crlbDensityDomain[1] - crlbDensityDomain[0]) / 400;
+  return {
+    x,
+    efficientDensity: crlbNormalPdf(x, crlbMu, crlbEfficientSd),
+    selectedDensity: crlbNormalPdf(x, crlbMu, crlbSelectedSd)
+  };
+})
+
+crlbDensityYMax = d3.max(crlbDensityData, point =>
+  Math.max(point.efficientDensity, point.selectedDensity)
+)
+
+crlbVarianceCurve = d3.range(241).map(index => {
+  const relativeWeight = 20 * index / 240;
+  const variance = crlbSigma ** 2 *
+    (relativeWeight ** 2 + crlbN - 1) /
+    (relativeWeight + crlbN - 1) ** 2;
+  return {relativeWeight, variance, bound: crlbBound};
+})
+
+crlbVarianceYMax = d3.max(crlbVarianceCurve, point => point.variance)
+```
+
+```{ojs}
+crlbSamplingPlot = Plot.plot({
+  width: Math.min(520, Math.max(320, width / 2 - 18)),
+  height: 330,
+  marginLeft: 58,
+  style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)",
+    fontFamily: bodyFont,
+    fontSize: 13
+  },
+  x: {label: "Possible estimate", domain: crlbDensityDomain},
+  y: {label: "Density", domain: [0, 1.12 * crlbDensityYMax], grid: true},
+  marks: [
+    Plot.areaY(crlbDensityData, {
+      x: "x",
+      y: "efficientDensity",
+      fill: "var(--plot-fill-1)"
+    }),
+    Plot.areaY(crlbDensityData, {
+      x: "x",
+      y: "selectedDensity",
+      fill: "var(--plot-fill-4)"
+    }),
+    Plot.line(crlbDensityData, {
+      x: "x",
+      y: "efficientDensity",
+      stroke: "var(--plot-series-1)",
+      strokeWidth: 2.7
+    }),
+    Plot.line(crlbDensityData, {
+      x: "x",
+      y: "selectedDensity",
+      stroke: "var(--plot-series-4)",
+      strokeWidth: 2.7,
+      strokeDasharray: "6,4"
+    }),
+    Plot.ruleX([crlbMu], {
+      stroke: "var(--plot-reference)",
+      strokeWidth: 2,
+      strokeDasharray: "5,4"
+    }),
+    Plot.ruleY([0], {stroke: "var(--plot-reference)"})
+  ]
+})
+
+crlbVariancePlot = Plot.plot({
+  width: Math.min(520, Math.max(320, width / 2 - 18)),
+  height: 330,
+  marginLeft: 62,
+  style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)",
+    fontFamily: bodyFont,
+    fontSize: 13
+  },
+  x: {label: "Relative weight on first observation r", domain: [0, 20], grid: true},
+  y: {
+    label: "Estimator variance",
+    domain: [0, 1.08 * crlbVarianceYMax],
+    grid: true
+  },
+  marks: [
+    Plot.areaY(crlbVarianceCurve, {
+      x: "relativeWeight",
+      y1: "bound",
+      y2: "variance",
+      fill: "var(--plot-fill-2)"
+    }),
+    Plot.line(crlbVarianceCurve, {
+      x: "relativeWeight",
+      y: "variance",
+      stroke: "var(--plot-series-4)",
+      strokeWidth: 2.8
+    }),
+    Plot.ruleY([crlbBound], {
+      stroke: "var(--plot-series-1)",
+      strokeWidth: 2.4,
+      strokeDasharray: "6,4"
+    }),
+    Plot.ruleX([1], {
+      stroke: "var(--plot-series-1)",
+      strokeWidth: 1.8,
+      strokeDasharray: "6,4"
+    }),
+    Plot.ruleX([crlbRelativeWeight], {
+      stroke: "var(--plot-reference)",
+      strokeWidth: 1.8
+    }),
+    Plot.dot([{
+      relativeWeight: crlbRelativeWeight,
+      variance: crlbSelectedVariance
+    }], {
+      x: "relativeWeight",
+      y: "variance",
+      r: 6,
+      fill: "var(--plot-series-4)",
+      stroke: "var(--plot-on-accent)",
+      strokeWidth: 1.2
+    }),
+    Plot.text([{
+      relativeWeight: 19.5,
+      variance: crlbBound,
+      label: "CRLB"
+    }], {
+      x: "relativeWeight",
+      y: "variance",
+      text: "label",
+      textAnchor: "end",
+      dy: -8,
+      fill: "var(--plot-series-1)",
+      fontSize: 12
+    }),
+    Plot.ruleY([0], {stroke: "var(--plot-reference)"})
+  ]
+})
+```
+
+```{ojs}
+crlbReadout = md`${tex`\operatorname{Var}(T_r)=${crlbSelectedVariance.toFixed(4)};\qquad
+  \mathrm{CRLB}=\frac{\sigma^2}{n}=${crlbBound.toFixed(4)};\qquad
+  \frac{\mathrm{CRLB}}{\operatorname{Var}(T_r)}=${crlbEfficiency.toFixed(3)}`}`
+
+crlbInsight = crlbAttainsBound
+  ? md`**Bound attained:** ${tex`r=1`} gives every observation equal weight, so ${tex`T_1=\bar X`}.`
+  : md`**Above the bound:** ${tex`T_r`} remains unbiased, but unequal weighting creates excess variance.`
+
+html`<div class="crlb-figure-shell ojs-figure-shell">
+  <div class="crlb-plots ojs-plot-grid">
+    <div class="crlb-plot-panel ojs-plot-panel">
+      <strong>Sampling distributions of two unbiased estimators</strong>
+      ${crlbSamplingPlot}
+    </div>
+    <div class="crlb-plot-panel ojs-plot-panel">
+      <strong>How unequal weighting moves variance above the bound</strong>
+      ${crlbVariancePlot}
+    </div>
+  </div>
+
+  <div class="crlb-legend" aria-label="Plot legend">
+    <span><i class="crlb-efficient"></i> Efficient ${tex`\bar X`}</span>
+    <span><i class="crlb-selected"></i> Selected ${tex`T_r`}</span>
+    <span><i class="crlb-excess"></i> Excess variance above the CRLB</span>
+    <span><i class="crlb-reference"></i> Selected ${tex`r`}</span>
+  </div>
+
+  <div class="crlb-readout" role="status" aria-live="polite">${crlbReadout}</div>
+  <div class="crlb-insight">${crlbInsight}</div>
+</div>
+
+<style>
+  .crlb-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .55rem 1.1rem;
+    margin: .65rem 0;
+    font-size: .88rem;
+  }
+  .crlb-legend > span { display: inline-flex; align-items: center; gap: .4rem; }
+  .crlb-efficient { width: 1.25rem; border-top: 3px solid var(--plot-series-1); display: inline-block; }
+  .crlb-selected { width: 1.25rem; border-top: 3px dashed var(--plot-series-4); display: inline-block; }
+  .crlb-excess { width: 1rem; height: .72rem; background: var(--plot-fill-2); border: 1px solid var(--plot-series-2); display: inline-block; }
+  .crlb-reference { width: 1.25rem; border-top: 2px solid var(--plot-reference); display: inline-block; }
+  .crlb-readout,
+  .crlb-insight {
+    margin: .65rem 0 0;
+    text-align: center;
+    font-size: .9rem;
+  }
+  .crlb-readout > p,
+  .crlb-insight > p { margin: 0; }
+</style>`
+```
+
+```{ojs}
+// Keep the controls mounted beneath the reactive figure.
+viewof crlbControls = {
+  const estimatorForm = Inputs.form({
+    relativeWeight: Inputs.range([0, 20], {
+      value: 1,
+      step: 0.5,
+      label: md`Relative weight ${tex`r`}`
+    })
+  }, {submit: false});
+
+  const sampleForm = Inputs.form({
+    n: Inputs.range([2, 50], {
+      value: 10,
+      step: 1,
+      label: md`Sample size ${tex`n`}`
+    }),
+    sigma: Inputs.range([0.5, 3], {
+      value: 1.5,
+      step: 0.1,
+      label: md`Known standard deviation ${tex`\sigma`}`
+    })
+  }, {submit: false});
+
+  const root = html`<div class="controls-wrap">
+    <details class="controls-root" open>
+      <summary>Estimator controls</summary>
+      <div class="controls-grid">
+        <div class="controls-col"><h4>Estimator weighting</h4></div>
+        <div class="controls-col"><h4>Sample</h4></div>
+      </div>
+    </details>
+  </div>`;
+
+  const columns = root.querySelectorAll(".controls-col");
+  columns[0].append(estimatorForm);
+  columns[1].append(sampleForm);
+
+  Object.defineProperty(root, "value", {
+    get: () => ({...estimatorForm.value, ...sampleForm.value})
+  });
+
+  return root;
+}
+```

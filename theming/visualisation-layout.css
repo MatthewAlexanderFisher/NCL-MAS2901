@@ -81,6 +81,17 @@
   min-width: 0;
 }
 
+/* Quarto gives display outputs overflow-x:auto by default. On tall OJS
+   figures that also creates a distracting vertical scrollbar. */
+.cell-output-display:has(.ojs-figure-shell),
+.cell-output-display:has(.observablehq svg),
+.cell:has(.ojs-figure-shell),
+.observablehq:has(.ojs-figure-shell),
+details:has(.ojs-figure-shell) {
+  max-height: none !important;
+  overflow: visible !important;
+}
+
 body.reading-mode .ojs-figure-shell,
 body.reading-mode .ojs-plot-grid,
 body.lecture-zoom .ojs-figure-shell,
