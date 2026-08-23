@@ -1,0 +1,48 @@
+<script>
+(function () {
+  if (window.__mas2901KnowledgeGraphLoading) return;
+  window.__mas2901KnowledgeGraphLoading = true;
+
+  const offset = document.querySelector('meta[name="quarto:offset"]')?.content || './';
+  const siteRoot = new URL(offset, document.baseURI);
+  window.MAS2901_KNOWLEDGE_GRAPH_ROOT = siteRoot.href;
+
+  const loadStylesheet = (href) => new Promise((resolve, reject) => {
+    const existing = document.querySelector(`link[data-mas2901-knowledge-graph="${href}"]`);
+    if (existing) return resolve();
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = href;
+    link.dataset.mas2901KnowledgeGraph = href;
+    link.onload = resolve;
+    link.onerror = reject;
+    document.head.appendChild(link);
+  });
+
+  const loadScript = (src) => new Promise((resolve, reject) => {
+    const existing = document.querySelector(`script[data-mas2901-knowledge-graph="${src}"]`);
+    if (existing) {
+      if (existing.dataset.loaded === 'true') return resolve();
+      existing.addEventListener('load', resolve, { once: true });
+      existing.addEventListener('error', reject, { once: true });
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = src;
+    script.dataset.mas2901KnowledgeGraph = src;
+    script.onload = () => {
+      script.dataset.loaded = 'true';
+      resolve();
+    };
+    script.onerror = reject;
+    document.body.appendChild(script);
+  });
+
+  const asset = (path) => new URL(path, siteRoot).href;
+  window.MAS2901_KNOWLEDGE_GRAPH_CYTOSCAPE = asset('knowledge-graph/vendor/cytoscape-3.34.1.min.js');
+
+  loadStylesheet(asset('knowledge-graph/knowledge-graph.css'))
+    .then(() => loadScript(asset('knowledge-graph/knowledge-graph.js')))
+    .catch((error) => console.error('Unable to load the course map.', error));
+})();
+</script>

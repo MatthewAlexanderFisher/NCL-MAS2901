@@ -1,0 +1,1353 @@
+::: {.callout-important .question appearance="minimal" data-tags="bayes map beta binomial" data-difficulty="2" #q-map-factory-defects}
+
+## MAP Estimation in a Defect-Rate Problem
+
+A factory produces electronic components, each of which may be defective with some unknown probability $p$.  
+To assess the defect rate, engineers inspect a random sample of $n = 40$ components and find that  
+$$
+x = 7
+$$  
+are defective.
+
+To incorporate previous experience, the quality-control team places a prior distribution  
+$$
+p \sim \mathrm{Beta}(a,b), \qquad a = 2,\; b = 8.
+$$
+
+You may assume the data follow the model
+$$
+X \mid p \sim \mathrm{Binomial}(n,p).
+$$
+
+1. **Derive the posterior distribution** $\pi(p \mid x)$.
+2. **Compute the Maximum a Posteriori (MAP) estimator** $\hat{p}_{\mathrm{MAP}}$.
+3. **Interpret your MAP estimate** in the context of the defect-rate problem.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+1. **Posterior Distribution**
+
+   The likelihood is
+   $$
+   f(x \mid p) = \binom{n}{x} p^{\,x} (1-p)^{\,n-x}.
+   $$
+
+   The prior is
+   $$
+   \pi(p) = \frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)} p^{\,a-1}(1-p)^{\,b-1}.
+   $$
+
+   Therefore the posterior (dropping constants not depending on $p$) is
+   $$
+   \pi(p \mid x) \propto p^{\,x+a-1} (1-p)^{\,n-x+b-1}.
+   $$
+
+   This is recognised as a Beta distribution:
+   $$
+   p \mid x \sim \mathrm{Beta}(a + x,\; b + n - x)
+   = \mathrm{Beta}(2 + 7,\; 8 + 40 - 7)
+   = \mathrm{Beta}(9,\; 41).
+   $$
+
+2. **MAP Estimator**
+
+   For a $\mathrm{Beta}(\alpha,\beta)$ distribution with $\alpha>1$ and $\beta>1$, the mode is provided in closed form, yielding the MAP:
+   $$
+   \hat{p}_{\mathrm{MAP}} 
+   = \frac{\alpha - 1}{\alpha + \beta - 2}.
+   $$
+
+   Here $\alpha = 9$ and $\beta = 41$, so
+   $$
+   \hat{p}_{\mathrm{MAP}}
+   = \frac{9 - 1}{9 + 41 - 2}
+   = \frac{8}{48}
+   = \frac{1}{6}
+   \approx 0.1667.
+   $$
+
+   Alternatively, we can derive this using the approach outlined <span class="xref-no-num">[here @imp-compute-map]</span>:
+
+    We have
+    $$
+    \pi(p \mid x) \propto p^{\,x+a-1} (1-p)^{\,n-x+b-1}.
+    $$
+    Taking logs:
+    $$
+    \log \pi(p \mid x) = (x + a - 1)\log p + (n - x + b - 1)\log(1 - p) + C,
+    $$
+    for some $p$-independent constant $C$.
+
+    Differentiating with respect to $p$:
+    $$
+    \frac{\partial}{\partial p} \log \pi(p \mid x)
+    = \frac{x + a - 1}{p} - \frac{n - x + b - 1}{1 - p}.
+    $$
+
+    Setting this equal to $0$ and solving for $p$:
+    $$
+    \begin{align*}
+    \frac{x + a - 1}{p} - \frac{n - x + b - 1}{1 - p} &= 0 \\[4pt]
+    \frac{x + a - 1}{p} &= \frac{n - x + b - 1}{1 - p} \\[4pt]
+    (x + a - 1)(1 - p) &= (n - x + b - 1)p \\[4pt]
+    x + a - 1 &= (n - x + b - 1)p + (x + a - 1)p \\[4pt]
+    x + a - 1 &= (n + a + b - 2)p \\[4pt]
+    \Rightarrow\quad \hat{p}_{\text{MAP}} &= \frac{x + a - 1}{n + a + b - 2}.
+    \end{align*}
+    $$
+
+    Plugging in $n = 40,\; x = 7,\; a = 2,\; b = 8$ gives
+    $$
+    \hat{p}_{\text{MAP}}
+    = \frac{7 + 2 - 1}{40 + 2 + 8 - 2}
+    = \frac{8}{48}
+    = \frac{1}{6}
+    \approx 0.1667.
+    $$
+
+
+
+
+3. **Interpretation**
+
+   Based on both prior information and the observed data, the MAP estimator suggests that the defect probability is approximately
+   $$
+   \hat{p}_{\mathrm{MAP}} \approx 0.17.
+   $$
+
+   This is slightly lower than the raw sample proportion  
+   $$
+   \frac{x}{n} = \frac{7}{40} = 0.175,
+   $$
+   reflecting the influence of the prior belief that defects are relatively uncommon.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="bayes map poisson gamma" data-difficulty="2" #q-map-call-rate}
+
+## MAP Estimation for a Call-Arrival Rate
+
+A customer support centre receives phone calls according to a Poisson process with unknown rate $\lambda$ (calls per hour).  
+
+To model the long-run arrival rate, analysts place a prior distribution
+$$
+\lambda \sim \mathrm{Gamma}(a,b), 
+\qquad a = 3,\; b = 1.5,
+$$
+where we use the **shape–rate** parameterisation:
+$$
+\lambda \sim \mathrm{Gamma}(a,b)
+\quad\Longrightarrow\quad
+\pi(\lambda) \propto \lambda^{a-1} e^{-b\lambda}.
+$$
+
+Over a monitoring period of $T = 10$ hours, they observe a total of $y = 47$ calls.
+
+Assume that, conditional on $\lambda$, the total number of calls in $T$ hours follows
+$$
+Y \mid \lambda \sim \mathrm{Poisson}(T\lambda).
+$$
+
+1. **Derive the posterior distribution** $\pi(\lambda \mid y)$.
+2. **Compute the Maximum a Posteriori (MAP) estimator** $\hat{\lambda}_{\mathrm{MAP}}$.
+3. **Interpret your MAP estimate** in the context of the call-arrival rate (give its units and practical meaning).
+
+<details class="solution">
+  <summary>Solution</summary>
+
+1. **Posterior Distribution**
+
+   The likelihood for the total number of calls $Y$ in $T$ hours, given $\lambda$, is
+   $$
+   f(y \mid \lambda)
+   = \Pr(Y = y \mid \lambda)
+   = \frac{(T\lambda)^y e^{-T\lambda}}{y!}.
+   $$
+
+   The prior is
+   $$
+   \pi(\lambda)
+   = \frac{b^a}{\Gamma(a)} \lambda^{a-1} e^{-b\lambda},
+   \qquad a = 3,\; b = 1.5,
+   $$
+   using the **shape–rate** parameterisation.
+
+   Therefore, the posterior density (dropping constants not depending on $\lambda$) is
+   $$
+   \pi(\lambda \mid y)
+   \propto
+   \lambda^{\,y} e^{-T\lambda} \cdot \lambda^{\,a-1} e^{-b\lambda}
+   = \lambda^{\,y+a-1} e^{-(T+b)\lambda}.
+   $$
+
+   This is recognised as a Gamma distribution with updated shape and rate:
+   $$
+   \lambda \mid y \sim \mathrm{Gamma}(a + y,\; b + T)
+   = \mathrm{Gamma}(3 + 47,\; 1.5 + 10)
+   = \mathrm{Gamma}(50,\; 11.5).
+   $$
+
+2. **MAP Estimator**
+
+   For a $\mathrm{Gamma}(\alpha,\beta)$ distribution (shape–rate) with $\alpha > 1$, the mode is
+   $$
+   \lambda_{\text{mode}}
+   = \frac{\alpha - 1}{\beta},
+   $$
+   which is also the **MAP estimator** in this conjugate setting:
+   $$
+   \hat{\lambda}_{\mathrm{MAP}}
+   = \frac{\alpha - 1}{\beta}.
+   $$
+
+   Here $\alpha = 50$ and $\beta = 11.5$, so
+   $$
+   \hat{\lambda}_{\mathrm{MAP}}
+   = \frac{50 - 1}{11.5}
+   = \frac{49}{11.5}
+   \approx 4.26 \;\text{calls per hour}.
+   $$
+
+   Alternatively, we can derive this by maximising the log-posterior directly (as in <span class="xref-no-num">[the general MAP procedure @imp-compute-map]</span>):
+
+   From above,
+   $$
+   \pi(\lambda \mid y)
+   \propto \lambda^{\,y+a-1} e^{-(T+b)\lambda}.
+   $$
+   Taking logs,
+   $$
+   \log \pi(\lambda \mid y)
+   = (y + a - 1)\log \lambda - (T + b)\lambda + C,
+   $$
+   for some $\lambda$-independent constant $C$.
+
+   Differentiating with respect to $\lambda$:
+   $$
+   \frac{\partial}{\partial \lambda} \log \pi(\lambda \mid y)
+   = \frac{y + a - 1}{\lambda} - (T + b).
+   $$
+
+   Setting this equal to $0$ and solving:
+   $$
+   \begin{align*}
+   \frac{y + a - 1}{\lambda} - (T + b) &= 0 \\[4pt]
+   \frac{y + a - 1}{\lambda} &= T + b \\[4pt]
+   \lambda &= \frac{y + a - 1}{T + b}.
+   \end{align*}
+   $$
+
+   Substituting $y = 47,\; a = 3,\; T = 10,\; b = 1.5$ gives
+   $$
+   \hat{\lambda}_{\mathrm{MAP}}
+   = \frac{47 + 3 - 1}{10 + 1.5}
+   = \frac{49}{11.5}
+   \approx 4.26,
+   $$
+   consistent with the mode formula above.
+
+3. **Interpretation**
+
+   The MAP estimate suggests that the underlying call-arrival rate is approximately
+   $$
+   \hat{\lambda}_{\mathrm{MAP}} \approx 4.26 \;\text{calls per hour}.
+   $$
+
+   For comparison, the **MLE** based only on the data is
+   $$
+   \hat{\lambda}_{\mathrm{MLE}} = \frac{y}{T} = \frac{47}{10} = 4.7 \;\text{calls per hour}.
+   $$
+
+   The MAP estimate is slightly lower than the MLE, reflecting the influence of the prior belief  
+   (encoded by the $\mathrm{Gamma}(3,1.5)$ prior) that the call rate is somewhat smaller than what the current data alone would suggest.
+
+</details>
+
+:::
+
+
+
+::: {.callout-important .question appearance="minimal" data-tags="estimator bias variance mse fisher-information cramer-rao normal exam-style" data-difficulty="3" #q-efficiency-hard-normal}
+
+## Unbiased Estimation and Efficiency in the Normal Model
+
+Suppose that $X_1, \ldots, X_n$ are independent $\mathcal{N}(\mu, \theta)$ random variables, where $\mu$ is a **known constant** and $\theta$ is the **unknown parameter of interest**. Let $\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i$.
+
+1. Let
+   $$
+   \hat{\theta} = \frac{1}{c}\sum_{i=1}^n (X_i - \bar{X})^2
+   $$
+   be an estimator of $\theta$.
+
+   (a) Determine the distribution of $\bar{X}$ and hence show that  
+   $\mathrm{E}[\bar{X}] = \mu$ and $\mathrm{E}[\bar{X}^2] = \theta/n + \mu^2.$  
+
+   (b) Show that $\mathrm{E}[X_i^2] = \theta + \mu^2$ for any $i = 1, \ldots, n.$  
+   
+   (c) Using the fact that $\mathrm{E}[X_i\bar{X}] = \theta/n + \mu^2$ for any $i$, or by another method,  
+   derive the value of $c$ that ensures $\hat{\theta}$ is unbiased.  
+
+2. Show that for **any** unbiased estimator $\hat{\theta}$ of $\theta$, it holds that
+   $$
+   \mathrm{Var}[\hat{\theta}] \geq \frac{2\theta^2}{n}.
+   $$
+
+3. Let
+   $$
+   \hat{\theta}' = \frac{1}{n+2}\sum_{i=1}^n (X_i - \mu)^2
+   $$
+   be another estimator of $\theta$.
+
+   Determine whether $\hat{\theta}'$ has a **lower mean-squared error (MSE)** than any unbiased estimator of $\theta$.
+
+   *Hint:* If $X \sim \mathcal{N}(\mu, \theta)$, then $\mathrm{Var}[(X-\mu)^2] = 2\theta^2.$  
+
+<details class="solution">
+<summary>Solution</summary>
+
+
+**(1a)**  
+Since $\bar{X}$ is the sample mean of i.i.d. normals, it follows that  
+$\bar{X} \sim \mathcal{N}(\mu, \theta/n)$.  
+Hence:
+$$
+\mathrm{E}[\bar{X}] = \mu, 
+\qquad
+\mathrm{E}[\bar{X}^2] = \mathrm{Var}[\bar{X}] + \mathrm{E}[\bar{X}]^2 
+= \frac{\theta}{n} + \mu^2.
+$$
+
+---
+
+**(1b)**  
+For any $i$,
+$$
+\mathrm{E}[X_i^2] = \mathrm{Var}[X_i] + \mathrm{E}[X_i]^2 = \theta + \mu^2.
+$$
+
+---
+
+**(1c)**  
+We have:
+$$
+\mathrm{E}[\hat{\theta}] 
+= \frac{1}{c}\sum_{i=1}^n \mathrm{E}[(X_i - \bar{X})^2]
+= \frac{1}{c}\sum_{i=1}^n \Big(\mathrm{E}[X_i^2] - 2\mathrm{E}[X_i\bar{X}] + \mathrm{E}[\bar{X}^2]\Big).
+$$
+
+Substituting known expectations:
+$$
+\mathrm{E}[\hat{\theta}] 
+= \frac{1}{c}\sum_{i=1}^n \big(\theta+\mu^2 - 2(\theta/n+\mu^2) + \theta/n + \mu^2\big)
+= \frac{n-1}{c}\theta.
+$$
+
+Thus, $\hat{\theta}$ is unbiased if and only if $c = n-1.$
+
+---
+
+**(2)**
+
+The likelihood is:
+$$
+L(\theta) = (2\pi\theta)^{-n/2} 
+\exp\!\left[-\frac{1}{2\theta}\sum_{i=1}^n (x_i-\mu)^2\right].
+$$
+
+Hence the log-likelihood:
+$$
+\ell(\theta) = -\frac{n}{2}\log(2\pi) - \frac{n}{2}\log(\theta) 
+- \frac{1}{2\theta}\sum_{i=1}^n (x_i-\mu)^2.
+$$
+
+Differentiating twice:
+$$
+\frac{\partial^2 \ell}{\partial \theta^2}
+= \frac{n}{2\theta^2} - \frac{1}{\theta^3}\sum_{i=1}^n (x_i - \mu)^2.
+$$
+
+The Fisher information is:
+$$
+\mathcal{I}(\theta) 
+= -\mathrm{E}\!\left[\frac{\partial^2 \ell}{\partial \theta^2}\right]
+= \frac{n}{2\theta^2}.
+$$
+
+By the **Cramér–Rao inequality**:
+$$
+\mathrm{Var}[\hat{\theta}] \ge \frac{1}{\mathcal{I}(\theta)} = \frac{2\theta^2}{n}.
+$$
+
+---
+
+**(3)**
+
+Compute the bias:
+$$
+\mathrm{E}[\hat{\theta}'] 
+= \frac{1}{n+2}\sum_{i=1}^n \mathrm{E}[(X_i - \mu)^2]
+= \frac{n\theta}{n+2},
+\qquad
+\text{Bias}(\hat{\theta}') = -\frac{2\theta}{n+2}.
+$$
+
+Variance:
+$$
+\mathrm{Var}[\hat{\theta}'] 
+= \frac{1}{(n+2)^2}\sum_{i=1}^n \mathrm{Var}[(X_i - \mu)^2]
+= \frac{2n\theta^2}{(n+2)^2}.
+$$
+
+Hence:
+$$
+\mathrm{MSE}(\hat{\theta}') 
+= \mathrm{Var}[\hat{\theta}'] + \mathrm{Bias}(\hat{\theta}')^2
+= \frac{2n\theta^2}{(n+2)^2} + \frac{4\theta^2}{(n+2)^2}
+= \frac{2\theta^2}{n+2}.
+$$
+
+Since
+$$
+\frac{2\theta^2}{n+2} < \frac{2\theta^2}{n}
+$$
+for all $n > 0$,  
+$\hat{\theta}'$ has a **smaller mean-squared error** than any unbiased estimator of $\theta.$
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="poisson lrt hypothesis-test exam-style" data-difficulty="2" #q-lrt-weather}
+
+## Likelihood Ratio Test for Extreme Weather Events
+
+The number of extreme weather events observed over a year is denoted by $x$,  
+modelled as a Poisson random variable $X \sim \mathrm{Poisson}(\theta)$.
+
+We wish to test the hypothesis $H_0: \theta = 10$,  
+where $\theta = 10$ represents “standard weather conditions.”
+
+
+1. Show that the maximum likelihood estimate for $\theta$ is $\hat{\theta} = x.$  
+   (You may assume that any local optimum is a global maximum.)  
+
+2. Suppose $x = 15$ extreme weather events are observed. Show that
+   $$
+   \max_{\theta \in \Theta} L(\theta; x) = \frac{15^{15} e^{-15}}{15!}, 
+   \qquad
+   L(\theta = 10; x) = \frac{10^{15} e^{-10}}{15!},
+   $$
+   where $L(\theta; x)$ is the likelihood for $\theta$ given $x = 15.$  
+
+3. Show that the likelihood ratio test statistic is
+   $$
+   \lambda(x) = e^5 \left(\tfrac{2}{3}\right)^{15},
+   $$
+   and compute $T_{\mathrm{obs}} = -2\log \lambda(x)$ to 3 significant figures.  
+
+4. Is there sufficient evidence to reject $H_0$ at the $10\%$ significance level?  
+
+<details class="solution">
+<summary>Solution</summary>
+
+**1. Maximum likelihood estimate**
+
+Since we only have a single $\mathrm{Poisson}(\lambda)$ observation, the likelihood is:
+$$
+L(\theta; x) = \frac{\theta^x e^{-\theta}}{x!}.
+$$
+The log-likelihood:
+$$
+\ell(\theta; x) = x \log \theta - \theta - \log(x!).
+$$
+Differentiating:
+$$
+\frac{\partial }{\partial \theta} \ell(\theta; x) = \frac{x}{\theta} - 1 = 0 
+\quad \Rightarrow \quad \hat{\theta} = x.
+$$
+Hence, the MLE is $\hat{\theta} = x.$
+
+---
+
+**2. Evaluate the likelihoods**
+
+Given $x = 15$:
+$$
+\max_{\theta \in \Theta} L(\theta; x) = L(15; x) = \frac{15^{15} e^{-15}}{15!},
+\qquad
+L(\theta = 10) = \frac{10^{15} e^{-10}}{15!}.
+$$
+
+---
+
+**3. Likelihood ratio statistic**
+
+$$
+\lambda(x) = \frac{L(10; x)}{L(15; x)} 
+= \frac{10^{15} e^{-10}}{15^{15} e^{-15}} 
+= e^5 \left(\frac{2}{3}\right)^{15}.
+$$
+Hence:
+$$
+T_{\mathrm{obs}} = -2 \log \lambda 
+= -2[15 \log(2/3) + 5] 
+= 2.16 \quad (\text{3 s.f.}).
+$$
+
+---
+
+**4. Hypothesis decision**
+
+By Wilk's theorem, under $H_0$, the test statistic is approximately $T \sim \chi^2_1$.  
+
+The 10% upper-tail critical value is $2.71.$
+
+Since $T_{\mathrm{obs}} = 2.16 < 2.71,$ there is **insufficient evidence to reject $H_0$** at the 10% level.
+
+Therefore, we do **not** reject the hypothesis of standard weather conditions.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="bias variance mse exam-style" data-difficulty="1"}
+
+## Bias, Variance, and Mean Squared Error
+
+1. Let $\hat{\theta}$ be an estimator of a parameter $\theta$. Provide definitions for the following:
+   - The bias of $\hat{\theta}$.
+   - The variance of $\hat{\theta}$.
+   - The mean squared error (MSE) of $\hat{\theta}$.
+
+2. Is an unbiased estimator always preferred to a biased estimator? Justify your answer.
+
+3. Prove that the mean squared error of $\hat{\theta}$ is equal to its variance plus its squared bias:
+   $$
+   \mathrm{MSE}(\hat{\theta}) = \mathrm{Var}(\hat{\theta}) + \mathrm{Bias}(\hat{\theta})^2.
+   $$
+
+<details class="solution">
+<summary>Solution</summary>
+
+**(1)**
+
+- $\mathrm{Bias}(\hat{\theta}) = \mathrm{E}[\hat{\theta}] - \theta$  
+- $\mathrm{Var}[\hat{\theta}] = \mathrm{E}[(\hat{\theta} - \mathrm{E}[\hat{\theta}])^2]$  
+- $\mathrm{MSE}(\hat{\theta}) = \mathrm{E}[(\hat{\theta} - \theta)^2]$
+
+---
+
+**(2)**
+
+An unbiased estimator is **not always preferred**.  
+If a biased estimator has a smaller MSE than an unbiased one, the biased estimator may be preferable because MSE accounts for both variance and bias.
+
+---
+
+**(3)**
+
+Let $\bar{\theta} = \mathrm{E}[\hat{\theta}]$. Then:
+\begin{align*}
+\mathrm{E}[(\hat{\theta} - \theta)^2]
+&= \mathrm{E}[(\hat{\theta} - \bar{\theta} + \bar{\theta} - \theta)^2] \\
+&= \mathrm{E}[(\hat{\theta} - \bar{\theta})^2] 
++ 2(\bar{\theta} - \theta)\mathrm{E}[\hat{\theta} - \bar{\theta}]
++ (\bar{\theta} - \theta)^2.
+\end{align*}
+
+Since $\mathrm{E}[\hat{\theta} - \bar{\theta}] = 0$, this simplifies to:
+$$
+\mathrm{E}[(\hat{\theta} - \theta)^2]
+= \mathrm{Var}[\hat{\theta}] + (\bar{\theta} - \theta)^2
+= \mathrm{Var}[\hat{\theta}] + \mathrm{Bias}(\hat{\theta})^2.
+$$
+
+Thus,
+$$
+\boxed{\mathrm{MSE}(\hat{\theta}) = \mathrm{Var}(\hat{\theta}) + \mathrm{Bias}(\hat{\theta})^2.}
+$$
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="exponential lrt hypothesis-test exam-style" data-difficulty="2" #q-lrt-lifespan}
+
+## Likelihood Ratio Test for the Lifespan of a Magical Artefact
+
+The time (in years) until a magical artefact loses its power is modelled as an exponential random variable $X \sim \mathrm{Exponential}(1/\theta)$, where $\theta > 0$ is the mean lifespan.
+
+According to archived lore, an authentic artifact should have mean lifespan $\theta_0 = 50$ years.
+
+We wish to test the hypothesis  
+$$
+H_0 : \theta = 50
+$$  
+against the alternative that the true lifespan differs.
+
+1. Show that the maximum likelihood estimate of $\theta$ is $\hat{\theta} = x$, where $x$ is the observed lifespan.  
+   (You may assume that any critical point is a global maximum.)
+
+2. Suppose a recovered artifact is observed to last $x = 60$ years. Show that
+   $$
+   \max_{\theta \in \Theta} L(\theta; x) 
+   = \frac{1}{60} e^{-1}, 
+   \qquad
+   L(\theta = 50; x)
+   = \frac{1}{50} e^{-60/50},
+   $$
+   where $L(\theta; x)$ denotes the likelihood under mean $\theta$.
+
+3. Show that the likelihood ratio statistic is
+   $$
+   \lambda(x) 
+   = \frac{5}{6} \, e^{-1/5},
+   $$
+   and compute the observed statistic $T_{\mathrm{obs}} = -2 \log \lambda(x)$ to 3 significant figures.
+
+4. Based on the asymptotic $\chi^2_1$ distribution of $T_{\mathrm{obs}}$, is there sufficient evidence to reject $H_0$ at the $10\%$ significance level?
+
+<details class="solution">
+<summary>Solution</summary>
+
+**1. Maximum likelihood estimate**
+
+Exponential density:
+$$
+f(x \mid \theta) = \frac{1}{\theta} e^{-x/\theta}, \qquad x \ge 0.
+$$
+Likelihood for a single observation:
+$$
+L(\theta; x) = \frac{1}{\theta} e^{-x/\theta}.
+$$
+Log-likelihood:
+$$
+\ell(\theta; x) = -\log \theta - \frac{x}{\theta}.
+$$
+Differentiate:
+$$
+\frac{\partial \ell}{\partial \theta}
+= -\frac{1}{\theta} + \frac{x}{\theta^2}
+= 0
+\quad \Rightarrow \quad
+\hat{\theta} = x.
+$$
+
+---
+
+**2. Evaluate the likelihoods**
+
+At the MLE $\theta = 60$:
+$$
+L(60; x) 
+= \frac{1}{60} e^{-60/60}
+= \frac{1}{60} e^{-1}.
+$$
+At $\theta = 50$:
+$$
+L(50; x)
+= \frac{1}{50} e^{-60/50}
+= \frac{1}{50} e^{-6/5}.
+$$
+
+---
+
+**3. Likelihood ratio statistic**
+
+$$
+\lambda(x)
+= \frac{L(50; x)}{L(60; x)}
+= 
+\frac{\tfrac{1}{50} e^{-6/5}}
+     {\tfrac{1}{60} e^{-1}}
+= \frac{60}{50} \, e^{-6/5 + 1}
+= \frac{6}{5} e^{-1/5}.
+$$
+
+Thus:
+$$
+\lambda(x) = \frac{5}{6} e^{-1/5}.
+$$
+
+Then:
+$$
+T_{\mathrm{obs}} = -2 \log \lambda(x)
+= -2\left[\log(5/6) - \frac{1}{5}\right]
+= 0.514 \quad (\text{3 s.f.}).
+$$
+
+---
+
+**4. Hypothesis decision**
+
+Under $H_0$, $T \sim \chi^2_1$ approximately.
+
+The $10\%$ upper-tail critical value is $2.71$.
+
+Since:
+$$
+T_{\mathrm{obs}} = 0.514 < 2.71,
+$$
+we **do not reject $H_0$** at the $10\%$ significance level.
+
+There is insufficient evidence that the artifact's lifespan differs from $50$ years.
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="mle bias consistency exam-style" data-difficulty="2" #q-mle-property}
+
+## Properties of the Maximum Likelihood Estimator
+
+Let $\underline{X} = (X_1, X_2, \ldots, X_n)$ be a random sample from a continuous random variable $X$ whose probability density function is given by
+$$
+f(x \mid \theta) =
+\begin{cases}
+\big(\theta(1 + x)^{\frac{1+\theta}{\theta}} \big)^{-1}, & x \ge 0, \\
+0, & \text{otherwise},
+\end{cases}
+$$
+where $0 < \theta < 1$.
+
+Answer the following:
+
+(a) Show that the **log-likelihood** can be written as  
+$$
+\ell(\theta \mid \underline{x}) = -n \log \theta - \frac{1+\theta}{\theta}\sum_{i=1}^n \log(1 + x_i).
+$$
+
+(b) Show that the **maximum likelihood estimator** (MLE) of $\theta$ is  
+$$
+\hat{\theta} = 
+\frac{1}{n}\sum_{i=1}^n \log(1 + x_i).
+$$
+
+(c) Using the fact that $\mathrm{E}[\log(1 + X)] = \theta$, show that $\hat{\theta}$ is an **unbiased** estimator for $\theta$.
+
+(d) Is $\hat{\theta}$ also an **asymptotically unbiased** estimator for $\theta$?
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a) Derivation of the log-likelihood**
+
+The likelihood function is  
+$$
+L(\theta; \underline{x}) = \prod_{i=1}^n f(x_i \mid \theta) = \theta^{-n} \prod_{i=1}^n (1 + x_i)^{-\frac{1+\theta}{\theta}}.
+$$
+Taking logs gives  
+$$
+\ell(\theta \mid \underline{x}) = -n \log \theta - \frac{1+\theta}{\theta}\sum_{i=1}^n \log(1 + x_i).
+$$
+
+---
+
+**(b) Finding the MLE**
+
+Differentiate with respect to $\theta$:  
+$$
+\frac{\partial \ell}{\partial \theta} = -\frac{n}{\theta} + \frac{1}{\theta^2}\sum_{i=1}^n \log(1 + x_i).
+$$
+Setting this equal to zero:  
+$$
+-\frac{n}{\hat{\theta}} + \frac{1}{\hat{\theta}^2}\sum_{i=1}^n \log(1 + x_i) = 0 \quad \Rightarrow \quad \hat{\theta} = \frac{1}{n}\sum_{i=1}^n \log(1 + x_i).
+$$
+
+---
+
+**(c) Unbiasedness**
+
+Given $\mathrm{E}[\log(1 + X)] = \theta$,  
+$$
+\mathrm{E}[\hat{\theta}]
+= \frac{1}{n}\sum_{i=1}^n \mathrm{E}[\log(1 + X_i)]
+= \frac{1}{n} \cdot n\theta
+= \theta.
+$$
+Hence, $\hat{\theta}$ is **unbiased**.
+
+---
+
+**(d) Asymptotic unbiasedness**
+
+Since $\hat{\theta}$ is unbiased for every finite $n$,  
+$$
+\lim_{n \to \infty} \mathrm{E}[\hat{\theta}] = \theta.
+$$
+Therefore, $\hat{\theta}$ is also **asymptotically unbiased**.  
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="uniform estimator consistency exam-style" data-difficulty="3" #q-uniform-hard-consistent}
+
+## Estimation from a Uniform Distribution
+
+Suppose that $X_1, \ldots, X_n$ are independent random variables with $X_i \sim U(\theta, 1)$, where $\theta$ is an unknown parameter of interest.  
+
+Consider the estimator
+$$
+\hat{\theta} = \min(X_1, \ldots, X_n).
+$$
+
+1. Suppose $X \sim U(\theta, 1)$. Write down the CDF of $X$.
+
+2. Show that the CDF of $\hat{\theta}$ is given by
+   $$
+   F_{\hat{\theta}}(x) =
+   \begin{cases}
+   0, & x < \theta, \\
+   1 - \left( \dfrac{1 - x}{1 - \theta} \right)^n, & \theta \le x \le 1, \\
+   1, & x > 1.
+   \end{cases}
+   $$
+
+3. Derive the pdf $f_{\hat{\theta}}(x)$ of $\hat{\theta}$.
+
+4. Let $Y \sim \mathrm{Beta}(1, n)$.  
+   Show that for $Z = (1 - \theta)Y + \theta$, the pdf of $Z$ is, for $\theta < z < 1$,
+   $$
+   f_Z(z) = n \frac{(1 - z)^{n - 1}}{(1 - \theta)^n},
+   $$
+   and hence conclude that $f_{\hat{\theta}}(x) = f_Z(x)$ for all $x \in \mathbb{R}$.
+
+5. Is $\hat{\theta}$ a consistent estimator of $\theta$? Justify your answer.
+
+<details class="solution">
+<summary>Solution</summary>
+
+**(1)**
+
+The CDF of $X \sim U(\theta, 1)$ is
+$$
+F_X(x) =
+\begin{cases}
+0, & x < \theta, \\
+\dfrac{x - \theta}{1 - \theta}, & \theta \le x \le 1, \\
+1, & x > 1.
+\end{cases}
+$$
+
+---
+
+**(2)**
+
+\begin{align*}
+P(\hat{\theta} \le x)
+&= 1 - P(\hat{\theta} > x)
+= 1 - P(X_1 > x, \ldots, X_n > x) \\
+&= 1 - (1 - F_X(x))^n.
+\end{align*}
+
+For $x \in (\theta, 1)$:
+$$
+P(\hat{\theta} \le x)
+= 1 - \left( \frac{1 - x}{1 - \theta} \right)^n.
+$$
+
+Hence,
+$$
+F_{\hat{\theta}}(x) =
+\begin{cases}
+0, & x < \theta, \\
+1 - \left( \dfrac{1 - x}{1 - \theta} \right)^n, & \theta \le x \le 1, \\
+1, & x > 1.
+\end{cases}
+$$
+
+---
+
+**(3)**
+
+Differentiating the CDF for $x \in (\theta, 1)$:
+\begin{align*}
+f_{\hat{\theta}}(x)
+&= \frac{\partial}{\partial x} F_{\hat{\theta}}(x)
+= n \frac{(1 - x)^{n - 1}}{(1 - \theta)^n}.
+\end{align*}
+
+---
+
+**(4)**
+
+Let $Y \sim \mathrm{Beta}(1, n)$, and define $Z = (1 - \theta)Y + \theta$.  
+Then for $z \in (\theta, 1)$:
+\begin{align*}
+F_Z(z) &= P(Z \le z) = P(Y \le (z - \theta)/(1 - \theta)), \\
+f_Z(z) &= \frac{1}{1 - \theta} f_Y\left( \frac{z - \theta}{1 - \theta} \right).
+\end{align*}
+
+Since $f_Y(y) = n(1 - y)^{n - 1}$ for $0 < y < 1$,
+\begin{align*}
+f_Z(z)
+&= \frac{1}{1 - \theta} n \left( 1 - \frac{z - \theta}{1 - \theta} \right)^{n - 1} \\
+&= n \frac{(1 - z)^{n - 1}}{(1 - \theta)^n}.
+\end{align*}
+
+Thus, $f_Z(z) = f_{\hat{\theta}}(z)$ for all $z \in \mathbb{R}$, so $\hat{\theta}$ has the same distribution as $Z$.
+
+---
+
+**(5)**
+
+Since $Z \overset{d}{=} \hat{\theta}$, we have $\mathrm{E}[Z] = \mathrm{E}[\hat{\theta}]$ and $\mathrm{Var}[Z] = \mathrm{Var}[\hat{\theta}]$.
+
+**Bias:**
+\begin{align*}
+\mathrm{E}[\hat{\theta}]
+&= \mathrm{E}[Z]
+= \mathrm{E}[(1 - \theta)Y + \theta]
+= (1 - \theta)\mathrm{E}[Y] + \theta \\
+&= (1 - \theta)\frac{1}{n + 1} + \theta.
+\end{align*}
+
+Hence,
+$$
+\mathrm{Bias}(\hat{\theta}) = (1 - \theta)\frac{1}{n + 1}.
+$$
+
+**Variance:**
+\begin{align*}
+\mathrm{Var}[\hat{\theta}]
+&= \mathrm{Var}[Z]
+= (1 - \theta)^2 \mathrm{Var}[Y]
+= (1 - \theta)^2 \frac{n}{(n + 1)^2 (n + 2)}.
+\end{align*}
+
+As $n \to \infty$, both the bias and variance tend to $0$:
+$$
+\lim_{n \to \infty} \mathrm{Bias}(\hat{\theta}) = 0,
+\qquad
+\lim_{n \to \infty} \mathrm{Var}[\hat{\theta}] = 0.
+$$
+
+Therefore, $\hat{\theta}$ is a **consistent estimator** of $\theta$.
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="t-test hypothesis-test" data-difficulty="2"}
+
+## Two-Sample $t$-Test for Difference in Means
+
+Two regions in a country have taken different approaches to promoting healthy lifestyles.  
+We are interested in comparing the **mean systolic blood pressure** (in mm Hg) of adult females in the two regions, denoted by $\mu_1$ and $\mu_2$.
+
+Data from small independent random samples of adult females yield the following summary statistics:
+
+| Region | $n_i$ | $\bar{x}_i$ | $s_i^2$ |
+|:-------|:------:|:------------:|:--------:|
+| 1 |$9$ | $130.222$ | $23.944$ |
+| 2 | $8$ | $125.000$ | $45.429$ |
+
+Conduct a **two-sample $t$-test** (assuming equal variances) with a **two-tailed alternative hypothesis** to test  
+$$
+H_0: \mu_1 = \mu_2 \quad \text{against} \quad H_1: \mu_1 \neq \mu_2.
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**Step 1: Pooled variance**
+
+The pooled variance is  
+$$
+s_{\text{pooled}}^2 =
+\frac{(n_1 - 1)s_1^2 + (n_2 - 1)s_2^2}{n_1 + n_2 - 2}
+= \frac{(9 - 1)(23.944) + (8 - 1)(45.429)}{9 + 8 - 2}
+= 33.9704.
+$$
+
+---
+
+**Step 2: Test statistic**
+
+The test statistic is  
+$$
+t =
+\frac{\bar{x}_1 - \bar{x}_2}
+{s_{\text{pooled}}\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}
+=
+\frac{130.222 - 125.000}
+{\sqrt{33.9704}\sqrt{\frac{1}{9} + \frac{1}{8}}}
+= 1.844.
+$$
+
+---
+
+**Step 3: Degrees of freedom**
+
+The degrees of freedom are  
+$$
+\nu = n_1 + n_2 - 2 = 15.
+$$
+
+---
+
+**Step 4: Decision and conclusion**
+
+From $t$-tables with $\nu = 15$,
+$$
+0.05 < p < 0.10.
+$$
+Thus, we **fail to reject** $H_0$ at the 5% significance level.
+
+There is **insufficient evidence** to conclude that the mean systolic blood pressure differs between the two regions.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="bayes weibull inverse-gamma likelihood conjugacy exam-style" data-difficulty="3"}
+
+## Bayesian Reliability Analysis with a Weibull Model
+
+A reliability engineer is studying the lifespan of a machine part under varying stress conditions.  
+
+The engineer collects data from a random sample of $5$ machine parts. Each data point $T_i$ represents the **time to failure** (in hours) of part $i$ under stress level $d_i$.
+
+The time to failure is assumed to follow a <span class="xref-no-num">[Weibull distribution @sec-weibull]</span>:
+$$
+T_i \mid \theta \sim \mathrm{Weibull}(\lambda, \theta / d_i), \quad \lambda > 0, \, \theta > 0,
+$$
+where $d_i$ is the known stress level for the $i$th part, $\lambda = 1$ is the known scale parameter, and $\theta$ is the unknown shape parameter of interest.
+
+1. Derive the likelihood function for $n$ independent observations.
+
+2. Suppose the prior for $\theta$ is <span class="xref-no-num">[Inverse Gamma @sec-inv-gamma]</span>, that is $\theta \sim \mathrm{InvGamma}(a, b)$.  
+   
+   Show that this prior is **conjugate** within the Inverse Gamma family.
+
+3. The engineer records the following time-to-failure data (in hours) and stress levels:
+
+   | **Stress level** $(d_i)$ | $1$ | $5$ | $10$ | $15$ | $20$ |
+   |:-----|:-:|:-:|:-:|:-:|:-:|
+   | **Time to failure** $(T_i)$ | $3.1$ | $1.4$ | $0.8$ | $0.6$ | $0.7$ |
+
+   Using $a = 20$ and $b = 3$, determine the posterior distribution for $\theta$.
+
+4. Using the prior and posterior parameters obtained above, complete the following table to summarise the engineer’s updated beliefs about $\theta$:
+
+   | Quantity | Prior | Posterior |
+   |-----------|:------:|:----------:|
+   | $\mathrm{Mode}(\theta)$ | ? | ? |
+   | $\mathrm{E}[\theta]$ | ? | ? |
+   | $\mathrm{SD}(\theta)$ | ? | ? |
+
+<details class="solution">
+<summary>Solution</summary>
+
+**(1)**
+
+For $n$ independent observations,
+\begin{align*}
+f(\underline{t} \mid \theta)
+&= \prod_{i=1}^n \frac{\lambda}{\theta / d_i} t_i^{\lambda - 1}
+    \exp\!\left(-\frac{t_i^\lambda}{\theta / d_i}\right) \\
+&= \frac{\lambda^n}{\theta^n}
+   \left( \prod_{i=1}^n d_i t_i^{\lambda - 1} \right)
+   \exp\!\left( -\frac{1}{\theta} \sum_{i=1}^n d_i t_i^\lambda \right).
+\end{align*}
+
+---
+
+**(2)**
+
+The prior is
+$$
+\pi(\theta) \propto \theta^{-(a+1)} e^{-b / \theta}.
+$$
+
+Combining with the likelihood:
+\begin{align*}
+\pi(\theta \mid \underline{t})
+&\propto \theta^{-n} 
+   \exp\!\left(-\frac{1}{\theta}\sum_{i=1}^n d_i t_i^\lambda\right)
+   \times \theta^{-(a+1)} e^{-b / \theta} \\
+&\propto \theta^{-(a + n + 1)} 
+   \exp\!\left(-\frac{1}{\theta}\bigg[b + \sum_{i=1}^n d_i t_i^\lambda\bigg]\right).
+\end{align*}
+
+Hence,
+$$
+\theta \mid \underline{t} \sim \mathrm{InvGamma}\!\left(a + n,\, b + \sum_{i=1}^n d_i t_i^\lambda\right).
+$$
+
+Since the posterior is also an Inverse Gamma, the prior is **conjugate**.
+
+---
+
+**(3)**
+
+For the given data:
+\begin{align*}
+\sum_{i=1}^n d_i t_i
+&= 1(3.1) + 5(1.4) + 10(0.8) + 15(0.6) + 20(0.7) = 41.1.
+\end{align*}
+
+With $a = 20$ and $b = 3$, we have
+$$
+\theta \mid \underline{t} \sim \mathrm{InvGamma}(25, 44.1).
+$$
+
+---
+
+**(4)**
+
+For $\theta \sim \mathrm{InvGamma}(a, b)$:
+$$
+\mathrm{Mode}(\theta) = \frac{b}{a + 1}, \quad
+\mathrm{E}[\theta] = \frac{b}{a - 1}, \quad
+\mathrm{SD}(\theta) = \frac{b}{a - 1}\sqrt{\frac{1}{a - 2}}.
+$$
+
+Thus:
+
+| Quantity | Prior $(a=20,b=3)$ | Posterior $(a=25,b=44.1)$ |
+|-----------|:-----------------:|:---------------------------:|
+| $\mathrm{Mode}(\theta)$ | $3/21 \approx 0.143$ | $44.1/26 \approx 1.696$ |
+| $\mathrm{E}[\theta]$ | $3/19 \approx 0.158$ | $44.1/24 \approx 1.838$ |
+| $\mathrm{SD}(\theta)$ | $\approx 0.037$ | $\approx 0.383$ |
+
+After observing the data, the engineer’s belief shifts toward a larger value of $\theta$, reflecting an increase in the estimated shape parameter, while uncertainty also grows due to the relatively small sample size.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="mle uniform" data-difficulty="2" #q-unif-mle1}
+
+## MLE for the Uniform Distribution $U(\theta, 2\theta)$
+
+Let $X_1, X_2, \ldots, X_n$ be independent and identically distributed random variables from the <span class="xref-no-num">[Uniform distribution @sec-unif]</span>:
+$$
+X_i \sim U(\theta, 2\theta), \qquad \theta > 0.
+$$
+
+Obtain the **maximum likelihood estimator** $\hat{\theta}$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**Step 1: Write down the PDF**
+
+The probability density function is  
+$$
+f(x \mid \theta) =
+\begin{cases}
+\dfrac{1}{\theta}, & \theta \le x \le 2\theta, \$$6pt]
+0, & \text{otherwise.}
+\end{cases}
+$$
+
+---
+
+**Step 2: Construct the likelihood**
+
+For a random sample $x_1, x_2, \ldots, x_n$,  
+$$
+L(\theta; \underline{x})
+= \prod_{i=1}^n f(x_i \mid \theta)
+= 
+\begin{cases}
+\theta^{-n}, & \theta \le \min(x_i), \; 2\theta \ge \max(x_i), \$$4pt]
+0, & \text{otherwise.}
+\end{cases}
+$$
+
+This condition can be rewritten as  
+$$
+\frac{1}{2}\max(x_i) \le \theta \le \min(x_i).
+$$
+
+---
+
+**Step 3: Identify the MLE**
+
+Within this interval, $L(\theta) = \theta^{-n}$, which is a **decreasing** function of $\theta$.  
+Hence, the likelihood is maximized by taking the **smallest allowable** value of $\theta$:
+$$
+\hat{\theta} = \frac{1}{2}\max(X_i).
+$$
+
+---
+
+**Step 4: Conclusion**
+
+The maximum likelihood estimator is  
+$$
+\boxed{\hat{\theta} = \tfrac{1}{2}\max(X_1, X_2, \ldots, X_n).}
+$$
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="estimator bias variance mse exam-style" data-difficulty="1"}
+
+## Bias, Mean Squared Error, and Estimator Comparison
+
+(a) Define the **bias** and **mean squared error (MSE)** of an estimator $\hat{\theta}$ of a parameter $\theta$. Given the bias and variance of an estimator, explain how you would find the mean squared error.
+
+(b) Suppose a random variable $X$ has  
+$$
+\mathrm{E}[X] = 2\theta + 1, \quad \mathrm{Var}(X) = 2\theta^2 + 1,
+$$
+    and another independent random variable $Y$ has  
+$$
+\mathrm{E}[Y] = 3\theta - 2, \quad \mathrm{Var}(Y) = 3\theta^2.
+$$
+    Two estimators of $\theta$ are proposed:
+$$
+\hat{\theta}_1 = \frac{3X - Y - 5}{3}, \qquad
+\hat{\theta}_2 = \frac{2Y - X + 4}{4}.
+$$
+    Which of these estimators would you recommend? Justify your answer.
+
+<details class="solution">
+<summary>Solution</summary>
+
+**(a) Definitions**
+
+- **Bias:**  
+  $$
+  \mathrm{Bias}(\hat{\theta}) = \mathrm{E}[\hat{\theta}] - \theta
+  $$
+
+- **Mean Squared Error (MSE):**  
+  $$
+  \mathrm{MSE}(\hat{\theta}) = \mathrm{E}[(\hat{\theta} - \theta)^2]
+  $$
+
+- **Relationship:**  
+  $$
+  \mathrm{MSE}(\hat{\theta}) = \mathrm{Var}(\hat{\theta}) + \mathrm{Bias}(\hat{\theta})^2
+  $$
+
+---
+
+**(b) Computation of properties**
+
+| Estimator | $\mathrm{E}[\hat{\theta}]$ | $\mathrm{Var}(\hat{\theta})$ | Bias | MSE |
+|:-----------|:---------------------------:|:------------------------------:|:-----:|:----:|
+| $\hat{\theta}_1 = \dfrac{3X - Y - 5}{3}$ | $\theta$ | $\dfrac{21\theta^2 + 9}{9}$ | $0$ | $\dfrac{21\theta^2 + 9}{9}$ |
+| $\hat{\theta}_2 = \dfrac{2Y - X + 4}{4}$ | $\theta - \tfrac{1}{4}$ | $\dfrac{14\theta^2 + 1}{16}$ | $-\tfrac{1}{4}$ | $\dfrac{14\theta^2 + 2}{16}$ |
+
+---
+
+**(c) Recommendation**
+
+Comparing the MSEs:
+$$
+\frac{14}{16} < \frac{21}{9}, \qquad \frac{2}{16} < 1,
+$$
+so $\hat{\theta}_2$ has the smaller MSE **for all values of $\theta$**.
+
+Therefore, $\hat{\theta}_2$ is preferred.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="estimator bias t-test hypothesis-test exam-style" data-difficulty="3"}
+
+## Unbiasedness of the Sample Variance and Pooled Variance; Hypothesis Test for Means
+
+1. The sample variance for a random sample $X_1, X_2, \ldots, X_n$ can be written as  
+   $$
+   S^2 = \frac{1}{n-1} \left( \sum_{i=1}^n X_i^2 - n\bar{X}^2 \right).
+   $$
+   Show that $S^2$ is **unbiased** for the population variance $\sigma^2$.  
+   
+
+2. Suppose we have two Normal random samples, of sizes $n_1$ and $n_2$, with the same population variance $\sigma^2$. The pooled variance estimator is
+   $$
+   S^2_{\text{pooled}} = \frac{(n_1 - 1)S_1^2 + (n_2 - 1)S_2^2}{n_1 + n_2 - 2},
+   $$
+   where $S_1^2$ and $S_2^2$ are the two sample variances.  
+   Show that $S^2_{\text{pooled}}$ is unbiased for $\sigma^2$.  
+   
+
+3. Download speeds (in megabits per second) were measured for customers of two internet providers. The summary statistics were:  
+   $$
+   n_1 = 20, \; \bar{x}_1 = 289.3, \; s_1 = 10.8, \qquad
+   n_2 = 10, \; \bar{x}_2 = 298.1, \; s_2 = 15.7.
+   $$
+   Assuming Normal random samples and equal population variances, test the hypothesis that the two providers have the same average download speed.  
+   
+<details class="solution">
+<summary>Solution</summary>
+
+1. **Unbiasedness of the sample variance**
+
+   For any random variable $X$,
+   $$
+   \mathrm{Var}(X) = \mathrm{E}[X^2] - (\mathrm{E}[X])^2 \quad \Rightarrow \quad \mathrm{E}[X^2] = \mathrm{Var}(X) + (\mathrm{E}[X])^2.
+   $$
+   Then,
+   \begin{align*}
+   \mathrm{E}[S^2] &= \frac{1}{n-1}\left(\sum_{i=1}^n \mathrm{E}[X_i^2] - n \mathrm{E}[\bar{X}^2]\right) \\
+   &= \frac{1}{n-1}\left(\sum_{i=1}^n (\sigma^2 + \mu^2) - n\left(\frac{\sigma^2}{n} + \mu^2\right)\right) \\
+   &= \sigma^2.
+   \end{align*}
+   Hence, $S^2$ is **unbiased** for $\sigma^2$.
+
+2. **Unbiasedness of the pooled variance**
+
+   Since each sample variance is unbiased:
+   $$
+   \mathrm{E}[S_1^2] = \sigma^2 \quad \text{and} \quad \mathrm{E}[S_2^2] = \sigma^2.
+   $$
+   Thus,
+   $$
+   \mathrm{E}[(n_1 - 1)S_1^2 + (n_2 - 1)S_2^2] = (n_1 + n_2 - 2)\sigma^2,
+   $$
+   and dividing both sides by $(n_1 + n_2 - 2)$ gives
+   $$
+   \mathrm{E}[S^2_{\text{pooled}}] = \sigma^2.
+   $$
+   Therefore, $S^2_{\text{pooled}}$ is unbiased.
+
+3. **Hypothesis test for equality of means**
+
+   Compute the pooled variance:
+   $$
+   s^2_{\text{pooled}} = \frac{(n_1 - 1)s_1^2 + (n_2 - 1)s_2^2}{n_1 + n_2 - 2}
+   = \frac{19(10.8)^2 + 9(15.7)^2}{28} = 158.38.
+   $$
+
+   The test statistic is:
+   $$
+   t = \frac{\bar{x}_1 - \bar{x}_2}{\sqrt{s^2_{\text{pooled}}\left(\frac{1}{n_1} + \frac{1}{n_2}\right)}}
+   = \frac{289.3 - 298.1}{\sqrt{158.38\left(\frac{1}{20} + \frac{1}{10}\right)}} = -1.805.
+   $$
+
+   Degrees of freedom: $n_1 + n_2 - 2 = 28$.
+
+   Since the question does not specify an alternative, use the **two-sided** test:
+   $$
+   H_0: \mu_1 = \mu_2, \qquad H_1: \mu_1 \neq \mu_2.
+   $$
+
+   From the $t$-table:
+   $$
+   t_{0.9, 28} = 1.701, \quad t_{0.95, 28} = 2.048.
+   $$
+
+   As $|t| = 1.805$ lies between these values, the difference is significant at the 10% level but not at 5%.  
+   Therefore, there is **insufficient evidence at the 5% level** to conclude that the providers have different mean download speeds.
+
+</details>
+
+:::
+
+

@@ -1,0 +1,34 @@
+```{ojs}
+
+{
+  const n = binom_n, p = binom_p;
+  const data = Array.from({ length: n + 1 }, (_, k) => ({ x: k, y: binomPMF(n, p, k) }));
+  const xDomain = Array.from({ length: n + 1 }, (_, k) => k);  // <-- 0..n categories
+
+  const stats = md`**Mean** ${tex`= np`} = ${(n * p).toFixed(2)}; 
+  **Var** ${tex`= np(1-p)`} = ${(n * p * (1 - p)).toFixed(2)}.`;
+
+  const plot = Plot.plot({
+        width, height: 260,
+    style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)"           // drives 'currentColor'
+    },
+    y: { label: "PMF" },
+    x: { label: "x", type: "band", domain: xDomain, padding: 0.05 },  // <-- band scale
+    marks: [
+      Plot.barY(data, { x: "x", y: "y", fill: ACCENT }),
+      Plot.ruleY([0], { stroke: GRID, strokeOpacity: 0.6 })
+    ]
+  });
+
+  return html`<div class="dist-panel"><div class="stats">${stats}</div>${plot}</div>`;
+}
+
+```
+
+```{ojs}
+viewof binom_n = Inputs.range([1, 200], { value: 20, step: 1,  label: md`${tex`n`}` })
+viewof binom_p = Inputs.range([0.01, 0.99], { value: 0.3, step: 0.01, label: md`${tex`p`}` })
+
+```

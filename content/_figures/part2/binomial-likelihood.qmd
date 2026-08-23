@@ -1,0 +1,240 @@
+```{ojs}
+// Add custom CSS for the slider styling (without the details.controls-root requirement)
+html`<style>
+/* Style all range sliders in the document */
+input[type="range"] {
+  /* Reset browser defaults */
+  -webkit-appearance: none;
+  appearance: none;
+  
+  /* Layout */
+  width: 100%;
+  height: 18px;
+  background: transparent;
+  vertical-align: middle;
+  
+  /* Brand theming */
+  accent-color: var(--ctrl-brand);
+}
+
+/* Hide the number input box that appears with Inputs.range */
+form:has(input[type="range"]) input[type="number"] {
+  display: none !important;
+}
+
+/* Center the slider container */
+form:has(input[type="range"]) {
+  margin: 0 auto;
+  max-width: 600px; /* Adjust as needed */
+  padding: 10px 0;
+}
+
+/* Slider track - WebKit */
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ctrl-brand, #667eea) 35%, transparent);
+}
+
+/* Slider thumb - WebKit */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--ctrl-brand, #667eea);
+  
+  /* Center thumb over 4px track */
+  margin-top: -4px;
+}
+
+/* Slider track - Firefox */
+input[type="range"]::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ctrl-brand, #667eea) 35%, transparent);
+}
+
+/* Slider thumb - Firefox */
+input[type="range"]::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--ctrl-brand, #667eea);
+}
+
+/* Firefox progress styling */
+input[type="range"]::-moz-range-progress {
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ctrl-brand, #667eea) 35%, transparent);
+}
+</style>`
+```
+
+```{ojs}
+// Text readout: Pr(X = 2 | θ) = θ^2
+probabilityText = {
+  const fmt = d3.format(".3f");
+  const val = theta ** 2;
+  return md`${tex`\Pr(X=2 \mid \theta=${fmt(theta)}) = ${fmt(val)}`}`;
+}
+```
+
+```{ojs}
+// Probability view: PMF of X ~ Binomial(n=2, θ)
+pmfPlot = {
+  // Data: x ∈ {0,1,2}, P(X=x | θ) = C(2,x) θ^x (1-θ)^{2-x}
+  const pmf = [
+    {x: 0, p: (1 - theta) ** 2},
+    {x: 1, p: 2 * theta * (1 - theta)},
+    {x: 2, p: theta ** 2}
+  ];
+
+  return Plot.plot({
+    width: dynamicPlotW, height: plotH,
+    marginLeft: marginLeft,
+    marginBottom: marginBottom,
+    style: {
+        fontFamily: bodyFont, 
+        fontSize: 14.,
+        background: "var(--plot-bg)",
+        color: "var(--plot-fg)",
+    }, 
+    x: {
+      label: "x (number of heads)", 
+      domain: [-0.5, 2.5], 
+      ticks: [0, 1, 2],
+      tickFormat: d => d.toFixed(0)
+    },
+    y: {
+      label: "Probability", 
+      domain: [0, 1],
+      grid: true
+    },
+    marks: [
+      Plot.ruleY([0]),
+      Plot.rectY(pmf, {
+        x: "x", 
+        y: "p", 
+        x1: d => d.x - 0.4,
+        x2: d => d.x + 0.4,
+        fill: "var(--plot-series-1)",
+        inset: 0.5
+      }),
+      Plot.dot(pmf, {
+        x: "x", 
+        y: "p", 
+        r: 4, 
+        fill: "var(--plot-muted)",
+        fillOpacity: 0.
+      }),
+      Plot.text(pmf, {
+        x: "x",
+        y: "p",
+        text: d => d3.format(".3f")(d.p),
+        dy: -10,
+        fontSize: 11
+      })
+    ]
+  });
+}
+```
+
+```{ojs}
+// Likelihood view: L(θ; x=2) = θ^2 for θ ∈ [0,1]
+likelihoodPlot = {
+  // Curve samples
+  const T = d3.range(0, 1.001, 0.005).map(t => ({theta: t, L: t ** 2}));
+  const point = {theta: theta, L: theta ** 2};
+
+  return Plot.plot({
+    width: dynamicPlotW, height: plotH,
+    marginLeft: marginLeft,
+    marginBottom: marginBottom,
+    style: {
+        fontFamily: bodyFont, 
+        fontSize: 14.,
+        background: "var(--plot-bg)",
+        color: "var(--plot-fg)",
+    }, 
+    x: {
+      label: "θ", 
+      domain: [0, 1],
+      grid: true
+    },
+    y: {
+      label: "Likelihood", 
+      domain: [0, 1],
+      grid: true
+    },
+    marks: [
+      Plot.line(T, {
+        x: "theta", 
+        y: "L",
+        stroke: "var(--plot-series-4)",
+        strokeWidth: 2
+      }),
+      Plot.ruleY([0]),
+      Plot.ruleX([theta], {
+        stroke: "var(--plot-muted)",
+        strokeDasharray: "4 2"
+      }),
+      Plot.dot([point], {
+        x: "theta", 
+        y: "L",
+        r: 5,
+        fill: "var(--plot-series-4)"
+      }),
+      Plot.text([point], {
+        x: "theta",
+        y: "L",
+        text: d => `(${d3.format(".2f")(d.theta)}, ${d3.format(".3f")(d.L)})`,
+        dy: -10,
+        fontSize: 11,
+        fill: "var(--plot-fg)"
+      })
+    ]
+  });
+}
+```
+
+```{ojs}
+dynamicPlotW = Math.min(400, width * 0.45)  // Each plot takes ~45% of available width
+```
+
+
+```{ojs}
+// Combined side-by-side view - responsive, with titles
+html`<div style="width:100%; box-sizing:border-box;">
+  <div style="display:flex; gap:${gap}px; align-items:flex-start; flex-wrap:wrap; justify-content:center;">
+    
+    <div style="flex:0 1 ${dynamicPlotW}px; min-width:300px; text-align:center;">
+      <div style="margin-bottom:6px; font-weight:600; font-size:15px;">Binomial PMF</div>
+      ${pmfPlot}
+    </div>
+    
+    <div style="flex:0 1 ${dynamicPlotW}px; min-width:300px; text-align:center;">
+      <div style="margin-bottom:6px; font-weight:600; font-size:15px;">Likelihood Function</div>
+      ${likelihoodPlot}
+    </div>
+    
+  </div>
+  <div style="margin-top:15px; text-align:center; font-size:14px;">
+    ${probabilityText}
+  </div>
+</div>`
+
+```
+
+```{ojs}
+// Simple slider with tex label, no input box
+viewof theta = Inputs.range([0, 1], {
+  value: 0.5,
+  step: 0.01
+})
+```

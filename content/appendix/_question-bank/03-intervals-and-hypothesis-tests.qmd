@@ -1,0 +1,1154 @@
+::: {.callout-important .question appearance="minimal" data-tags="bayes hdi beta binomial exam-style" data-difficulty="2"}
+
+## Bayesian Inference for the Click-through Rate on Instagram
+
+Software engineers at *Meta* are interested in the click-through rate $\theta$ of a new method of displaying advertisements on *Instagram*. The click-through rate is the proportion of clicks out of the total number of impressions of an online advertisement.
+
+They test the new method on users of their website, obtaining a total of $20$ impressions. From prior experience, they specify $\theta \sim \mathrm{Beta}(1,200)$.
+
+1. Let $X \mid \theta$ denote the number of clicks out of the total number of impressions. What is an appropriate model for $X \mid \theta$?  
+2. After running the test, the posterior obtained was
+   $$
+   \theta \mid x \sim \mathrm{Beta}(1,220).
+   $$
+   Determine the number of successful clicks $x$.  
+3. Construct a $90\%$ highest density interval (HDI) for $\theta$.
+
+*Hint:* The following plot may be helpful.
+
+```{python}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show code"
+#| fig-align: center
+#| renderings: [light, dark]
+
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.stats import beta
+
+set_plot_theme("light")
+
+theta_grid = np.linspace(0, 0.03, 100)
+beta_pdf = beta.pdf(theta_grid, 1, 220)
+
+plt.figure(figsize=(5,3))
+plt.plot(theta_grid, beta_pdf)
+plt.xlabel(r"$\theta$")
+plt.ylabel("Density")
+plt.title(r"PDF of $\theta \mid x \sim \mathrm{Beta}(1,220)$")
+plt.xlim(0, 0.03)
+plt.tight_layout()
+plt.show()  
+
+set_plot_theme("dark")
+
+plt.figure(figsize=(5,3))
+plt.plot(theta_grid, beta_pdf)
+plt.xlabel(r"$\theta$")
+plt.ylabel("Density")
+plt.title(r"PDF of $\theta \mid x \sim \mathrm{Beta}(1,220)$")
+plt.xlim(0, 0.03)
+plt.tight_layout()
+plt.show()  
+
+
+```
+
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**1. Likelihood model**
+
+An appropriate model is the Binomial:
+$$
+X \mid \theta \sim \mathrm{Binomial}(n=20,\ \theta).
+$$
+
+---
+
+**2. Recovering $x$ from the posterior**
+
+We have
+\begin{align*}
+    \pi(\theta|x) &\propto \theta^x(1-\theta)^{20-x} \times \theta^0 (1-\theta)^{199} \\
+    &\propto \theta^{x + 1 -1}(1-\theta)^{220-x - 1}.
+\end{align*}
+The posterior being $\theta \mid x \sim \textrm{Beta}(1, 220)$ implies $x = 0$.
+
+---
+
+**3. A $90\%$ highest density interval for $\theta$**
+
+From the provided plot, a $90\%$ highest density interval would be of the form $0 < \theta < c$, where $c$ is the solution of the equation
+$$ 
+\int_0^c \pi(\theta|x)\,\mathrm{d}\theta = 0.9. 
+$$
+Note that
+$$ \frac{\Gamma(220 + 1)}{\Gamma(1) \Gamma(220)} = \frac{220!}{219!} = 220. $$
+Therefore,
+\begin{align*}
+    \int_0^c \pi(\theta|x)\,\mathrm{d}\theta &= \int_0^c 220(1-\theta)^{219}\,\mathrm{d}\theta \\
+    &= \left[-(1-\theta)^{220}\right]_{0}^c \\
+    &= 1-(1-c)^{220}.
+\end{align*}
+Therefore, we seek $c$ such that
+\begin{align*}
+    1-(1-c)^{220} &= 0.9 \\
+    (1-c)^{220} &= 0.1 \\
+    c  &= 1 - 0.1^{1/220} = 0.01041 \text{ (4 s.f.)}.
+\end{align*}
+So, the $90\%$ highest density interval is $\theta \in (0, 0.01041)$.
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="likelihood geometric" data-difficulty="2" #q-geom-approx-ci}
+
+## Approximate MLE-based Confidence Interval for Geometric Data
+
+Suppose we have $n$ i.i.d. <span class="xref-no-num">[geometric @sec-geom]</span> observations
+$$
+X_1,\dots,X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Geometric}(p).
+$$
+
+1. Using the <span class="xref-no-num">[asymptotic distribution of the MLE @def-asymp-mle-approx]</span>, construct a general $100(1-\alpha)\%$ <span class="xref-no-num">[approximate CI @def-approx-ci-mle]</span> for $p$.
+2. Suppose we observe a random sample of size $n = 100$ from a geometric distribution, and the sample mean is $\bar{x} = 9.84$. Using the asymptotic normal approximation of the MLE, compute an approximate $95\%$ confidence interval for the parameter $p$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+1. **Approximate CI.**
+  Note that, in order to compute the approximate CI we require both the MLE of $p$ and the Fisher information.
+   * **Step 1: Compute Log Likelihood**
+     For i.i.d. geometric data, the likelihood is
+     $$
+     \begin{align*}
+     L(p; \underline{x}) &= \prod_{i=1}^n p(1-p)^{x_i - 1} \\
+     &= p^n(1-p)^{n(\bar{x} - 1)}.
+     \end{align*}
+     $$
+     The log-likelihood is thus
+     $$
+     \ell(p; \underline{x}) = n \log p + n(\bar{x} - 1) \log(1-p).
+     $$
+   * **Step 2: Compute Derivates of Log-Likelihood**
+     The derivatives of the log-likelihood are
+     $$
+     \begin{align*}
+     \frac{\partial}{\partial p} \ell(p; \underline{x})  &= \frac{n}{p} - \frac{n(\bar{x} - 1)}{1 - p}, \\
+     \frac{\partial^2}{\partial p^2} \ell(p; \underline{x})  &= -\frac{n}{p^2} - \frac{n(\bar{x} - 1)}{(1 - p)^2}.
+     \end{align*}
+     $$
+   * **Step 3: Compute MLE**
+     We compute the MLE by solving 
+     $$
+     \begin{align*}
+     \frac{n}{p} - \frac{n(\bar{x} - 1)}{1 - p} &= 0 \\
+     n(1-p) - n(\bar{x} - 1)p &= 0 \\
+     n\bar{x} p &= n \\
+     \Rightarrow \hat{p}_{\mathrm{MLE}} &= \frac{1}{\bar{x}}.
+     \end{align*}
+     $$
+   * **Step 4: Compute Fisher Information**
+     The Fisher information for the *whole sample* is:
+     $$
+     \begin{align*}
+     \mathcal{I}_n(p) &= -\mathrm{E}\left[-\frac{n}{p^2} - \frac{n(\bar{X} - 1)}{(1 - p)^2}\right] \\
+     &= \frac{n}{p^2} - \frac{n}{(1-p)^2} + \frac{n}{(1-p)^2}\mathrm{E}[\bar{X}] \\
+     &= \frac{n}{p^2} - \frac{n}{(1-p)^2} + \frac{n}{p(1-p)^2},
+     \end{align*}
+     $$
+     since $\mathrm{E}[X_i] = 1/p$ and so $\frac{1}{n}\sum_{i=1}^n \mathrm{E}[X_i] = 1/p$. Simplifying further, we obtain
+     $$
+     \mathcal{I}_n(p) = n\frac{(1-p)^2 - p^2 + p}{p^2(1-p)^2} = \frac{n}{p^2(1-p)}.
+     $$
+     Substituting in $p = \hat{p}_{\mathrm{MLE}} = 1/\bar{x}$, the **observed Fisher information** is
+     $$
+     \mathcal{I}_n(\hat{p}_{\mathrm{MLE}}) = \frac{n \bar{x}^2}{(1-1/\bar{x})} = \frac{n\bar{x}^3}{\bar{x} - 1}.
+     $$
+   * **Step 5: Compute Approximate CI**
+     The <span class="xref-no-num">[asymptotic distribution of the MLE @def-asymp-mle-approx]</span> implies that, for large $n$,
+     $$
+     \hat{p}_{\mathrm{MLE}} \overset{\text{approx.}}{\sim} \mathcal{N}(p, \mathcal{I}_n(\hat{p}_{\mathrm{MLE}})^{-1}).
+     $$
+     Therefore, an approximate $100(1-\alpha)\%$ confidence interval takes the form:
+     $$
+     \frac{1}{\bar{x}} \pm z_{1-\alpha/2} \sqrt{\frac{\bar{x} - 1}{n \bar{x}^3}}.
+     $$
+
+2. **Compute the Approximate CI using data.**
+    Using the derived formula from the first part
+     $$
+     \frac{1}{\bar{x}} \pm z_{1-\alpha/2} \sqrt{\frac{\bar{x} - 1}{n \bar{x}^3}}.
+     $$
+     we plug in the given values $\bar{x} = 9.84$ and $n=100$. The relevant quantile is $z_{0.975} = 1.96$. Therefore, we obtain
+     $$
+     0.1016 \pm 1.96×0.0096≈0.1016±0.0189.
+     $$
+     Therefore, an approximate $95\%$ confidence interval for $p$ is
+     $$
+    \boxed{
+      (0.083, 0.121), \quad \text{(to three decimal places)}.
+    }
+     $$
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="asymptotic-mle exponential" data-difficulty="1" #q-asymp-mle-exp}
+
+### Asymptotic Distribution of the Exponential MLE
+
+Suppose $X_1, X_2, \dots, X_n$ is an i.i.d. random sample from an $\mathrm{Exp}(\lambda)$ distribution, with density
+$$
+f(x \mid \lambda) = \lambda e^{-\lambda x}, \qquad x \ge 0.
+$$
+
+The maximum likelihood estimator for $\lambda$ is known to be
+$$
+\hat{\lambda}_{\mathrm{MLE}} = \frac{1}{\bar{X}}.
+$$
+Compute the approximate <span class="xref-no-num">[sampling distribution @def-asymp-mle-approx]</span> of $\hat{\lambda}_{\mathrm{MLE}}$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**Step 1: Recall the general asymptotic MLE result**
+
+From the asymptotic normality of the MLE, for regular models:
+$$
+\hat{\lambda}_{\mathrm{MLE}}
+\;\overset{\text{approx.}}{\sim}\;
+\mathcal{N}\!\left(
+  \lambda,\;
+  \mathcal{I}_n(\lambda)^{-1}
+\right),
+\quad \text{for large } n,
+$$
+where $\mathcal{I}_n(\lambda)$ is the **Fisher information for the whole sample**.
+
+---
+
+**Step 2: Compute the Fisher information**
+
+The log-likelihood is
+$$
+\ell(\lambda; \underline{x}) = n\log \lambda - n\lambda \bar{x}.
+$$
+
+Differentiate:
+$$
+\frac{\partial}{\partial \lambda} \ell(\lambda; \underline{x}) 
+= \frac{n}{\lambda} - n\bar{x},
+\qquad
+\frac{\partial^2 }{\partial \lambda^2} \ell(\lambda; \underline{x}) 
+= -\frac{n}{\lambda^2}.
+$$
+
+So the Fisher information for **the whole sample** is
+$$
+\mathcal{I}_n(\lambda) = -\mathrm{E}\left[-\frac{n}{\lambda^2}\right] = \frac{n}{\lambda^2}.
+$$
+
+Thus
+$$
+\mathcal{I}_n(\lambda)^{-1}
+= \frac{\lambda^2}{n}.
+$$
+
+---
+
+**Step 3: Asymptotic distribution of the MLE**
+
+Plugging this into the general asymptotic MLE result:
+$$
+\hat{\lambda}_{\mathrm{MLE}}
+\;\overset{\text{approx.}}{\sim}\;
+\mathcal{N}\!\left(
+  \lambda,\;
+  \frac{\lambda^2}{n}
+\right),
+\quad \text{as } n \to \infty.
+$$
+
+In practice, since $\lambda$ is unknown, we use the **plug-in** $\hat{\lambda}_{\mathrm{MLE}} = 1/\bar{x}$ into the Fisher information, resulting in:
+$$
+\hat{\lambda}_{\mathrm{MLE}}
+\;\overset{\text{approx.}}{\sim}\;
+\mathcal{N} \left(
+  \lambda,\;
+  \frac{1}{n\bar{x}^2}
+\right),
+$$
+
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="asymptotic-mle normal variance" data-difficulty="1" #q-asymp-mle-norm-var}
+
+### Normal Data: Asymptotic Distribution of the MLE of the variance
+
+Suppose 
+$$
+X_1,\ldots, X_n \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu, \gamma),
+$$
+with mean $\mu$ known.
+
+The maximum likelihood estimator for $\gamma$ is known to be
+$$
+\hat{\gamma}_{\mathrm{MLE}} = \frac{1}{n}\sum_{i=1}^n (x_i - \mu)^2.
+$$
+Compute the approximate <span class="xref-no-num">[sampling distribution @def-asymp-mle-approx]</span> of $\hat{\gamma}_{\mathrm{MLE}}$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**Step 1: Recall the general asymptotic MLE result**
+
+From the asymptotic normality of the MLE, for regular models:
+$$
+\hat{\gamma}_{\mathrm{MLE}}
+\;\overset{\text{approx.}}{\sim}\;
+\mathcal{N}\!\left(
+  \gamma,\;
+  \mathcal{I}_n(\gamma)^{-1}
+\right),
+\quad \text{for large } n,
+$$
+where $\mathcal{I}_n(\gamma)$ is the **Fisher information for the whole sample**.
+
+---
+
+**Step 2: Compute the Fisher information**
+
+The log-likelihood is
+$$
+\ell(\gamma; \underline{x}) = -\frac{n}{2} \log(2\pi\gamma) - \frac{1}{2\gamma}\sum_{i=1}^n (x_i - \mu)^2
+$$
+
+Differentiate:
+$$
+\frac{\partial}{\partial \gamma} \ell(\gamma; \underline{x}) 
+=  -\frac{n}{2\gamma} + \frac{1}{2\gamma^2} \sum_{i=1}^n (x_i - \mu)^2
+\qquad
+\frac{\partial^2 }{\partial \gamma^2} \ell(\gamma; \underline{x}) 
+= \frac{n}{2\gamma^2} - \frac{1}{\gamma^3} \sum_{i=1}^n (x_i - \mu)^2.
+$$
+
+So the Fisher information for **the whole sample** is
+$$
+\begin{align*}
+\mathcal{I}_n(\gamma) &= -\mathrm{E}\left[\frac{n}{2\gamma^2} - \frac{1}{\gamma^3} \sum_{i=1}^n (X_i - \mu)^2\right] \\
+&= -\frac{n}{2\gamma^2} + \frac{1}{\gamma^3}\sum_{i=1}^n \mathrm{E}[(X_i - \mu)^2] \\
+&= \frac{n}{2\gamma^2},
+\end{align*}
+$$
+since $\mathrm{E}[(X_i - \mu)^2] = \mathrm{Var}(X_i) = \gamma$. 
+
+Thus
+$$
+\mathcal{I}_n(\lambda)^{-1} = \frac{2\gamma^2}{n}.
+$$
+
+---
+
+**Step 3: Asymptotic distribution of the MLE**
+
+Plugging this into the general asymptotic MLE result:
+$$
+\hat{\gamma}_{\mathrm{MLE}}
+\;\overset{\text{approx.}}{\sim}\;
+\mathcal{N}\!\left(
+  \gamma,\;
+  \frac{2\gamma^2}{n}
+\right).
+$$
+
+In practice, since $\gamma$ is unknown, we use the **plug-in** $\hat{\gamma}_{\mathrm{MLE}} =  \frac{1}{n}\sum_{i=1}^n (x_i - \mu)^2$ into the Fisher information, resulting in:
+$$
+\hat{\gamma}_{\mathrm{MLE}}
+\;\overset{\text{approx.}}{\sim}\;
+\mathcal{N} \left(
+  \gamma,\;
+  \frac{2(\hat{\gamma}_{\mathrm{MLE}})^2}{n}
+\right) = \mathcal{N} \left(
+  \gamma,\;
+  \frac{2\left(\sum_{i=1}^n (x_i - \mu)^2\right)^2}{n^3}
+\right),
+$$
+
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="binomial clt confidence-interval" data-difficulty="1" #q-clt-ci-bin1}
+
+## Large-Sample Approximate Confidence Interval for a Proportion
+
+A university careers office surveys a random sample of $n = 200$ graduates to estimate the proportion who found full-time employment within 3 months of graduation. Out of the $200$ respondents, $146$ report being in full-time employment.
+
+Assuming a <span class="xref-no-num">[Binomial model @sec-binom]</span> 
+$$
+X \sim \mathrm{Binomial}(n = 200 , \,  p),
+$$
+where $p$ is the true employment rate, use the <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span>  to construct an **approximate 95% confidence interval** for $p$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+
+**Step 1: Model and estimator**
+
+The sample proportion is
+$$
+\hat{p} = \frac{X}{n} = \frac{146}{200} = 0.73.
+$$
+
+**Step 2: Approximate distribution (CLT)**
+
+For large $n$,
+$$
+\hat{p} \overset{\text{approx.}}{\sim} \mathcal{N}\!\left(p,\, \frac{p(1-p)}{n}\right).
+$$
+Replacing $p$ by $\hat{p}$ gives the estimated standard error
+$$
+\mathrm{SE}(\hat{p}) = \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}
+= \sqrt{\frac{0.73(0.27)}{200}} \approx 0.0317.
+$$
+
+**Step 3: Construct 95% confidence interval**
+
+Using the Normal quantile $z_{0.975} = 1.96$,
+$$
+\hat{p} \pm z_{0.975}\,\mathrm{SE}(\hat{p})
+= 0.73 \pm 1.96(0.0317)
+= (0.668,\, 0.792).
+$$
+
+**Step 4: Interpretation**
+
+We are approximately 95% confident that the true proportion of graduates in full-time employment within 3 months lies between **66.8% and 79.2%**.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="binomial clt hypothesis-test" data-difficulty="1" #q-clt-hypothesis-bin1}
+
+## Large-Sample Hypothesis Test for a Proportion
+
+A public health agency claims that at least 70% of adults in a city receive an annual flu vaccination. To assess this claim, a random sample of $n = 180$ adults is surveyed. Of these, $117$ report having received a flu vaccination in the past year.
+
+Assuming a <span class="xref-no-num">[Binomial model @sec-binom]</span>
+$$
+X \sim \mathrm{Binomial}(n = 180,\, p),
+$$
+where $p$ is the true proportion of adults who receive an annual flu vaccination, use the <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span> to perform a **5% significance level hypothesis test** of the agency’s claim.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+
+The sample proportion is
+$$
+\hat{p} = \frac{X}{n} = \frac{146}{200} = 0.73,
+$$
+
+and, for large $n$, the CLT gives us
+$$
+\hat{p} \overset{\text{approx.}}{\sim} \mathcal{N}\!\left(p,\, \frac{p(1-p)}{n}\right).
+$$
+
+**Step 1: State the hypotheses**
+
+The claim “at least 70%” corresponds to
+$$
+H_0: p = 0.70, \qquad H_1: p < 0.70.
+$$
+This is a **one-sided (left-tailed) test**.
+
+**Step 2: Compute the test statistic**
+
+The sample proportion is
+$$
+\hat{p} = \frac{117}{180} = 0.65.
+$$
+
+Under the null hypothesis, the standard error is
+$$
+\mathrm{SE}_0 = \sqrt{\frac{p_0(1-p_0)}{n}}
+= \sqrt{\frac{0.7(0.3)}{180}} \approx 0.0342.
+$$
+
+The observed test statistic is
+$$
+T_{\mathrm{obs}}= \frac{\hat{p} - p_0}{\mathrm{SE}_0}
+= \frac{0.65 - 0.70}{0.0342}
+\approx -1.46.
+$$
+
+**Step 3: Determine the rejection region / p-value**
+
+At the 5% significance level for a one-sided test, the critical value is
+$$
+z_{0.05} = -1.645.
+$$
+
+Since
+$$
+-1.46 > -1.645,
+$$
+the test statistic does **not** fall in the rejection region.
+
+Equivalently, the $p$-value is
+$$
+\mathrm{Pr}(Z \le -1.46) \approx 0.072,
+$$
+which is greater than $0.05$.
+
+**Step 4: Conclusion**
+
+There is **insufficient evidence at the 5% significance level** to reject the agency’s claim.
+The data do not provide strong enough evidence to conclude that fewer than 70% of adults receive an annual flu vaccination.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="poisson clt hypothesis-test" data-difficulty="1" #q-clt-hypothesis-pois1}
+
+## Large-Sample Hypothesis Test for a Poisson Rate
+
+A city council claims that the average number of pothole reports received per day is **at least 12**. To assess this claim, the number of pothole reports is recorded for a random sample of $n = 50$ days. Across these 50 days, a total of $X = 540$ pothole reports are logged.
+
+Assuming a <span class="xref-no-num">[Poisson model @sec-pois]</span>
+$$
+X_i \stackrel{\text{iid}}{\sim} \mathrm{Poisson}(\lambda), \qquad i=1,\dots,n,
+$$
+where $\lambda$ is the true mean number of pothole reports per day, use the <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span> to perform a **5% significance level hypothesis test** of the council’s claim.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+Let $X_1,\dots,X_n$ be the daily counts. The observed sample mean is
+$$
+\bar{x} = \frac{1}{n}\sum_{i=1}^n x_i = \frac{540}{50} = 10.8.
+$$
+
+For a Poisson random variable, $\mathrm{E}[X_i]=\lambda$ and $\mathrm{Var}(X_i)=\lambda$.
+For large $n$, the CLT gives
+$$
+\bar{X} \overset{\text{approx.}}{\sim} \mathcal{N} \left(\lambda, \frac{\lambda}{n}\right).
+$$
+
+**Step 1: State the hypotheses**
+
+The claim “at least 12 per day” corresponds to
+$$
+H_0: \lambda = 12, \qquad H_1: \lambda < 12.
+$$
+This is a **one-sided (left-tailed) test**.
+
+**Step 2: Compute the test statistic**
+
+Under the null, the standard error is
+$$
+\mathrm{SE}_0 = \sqrt{\frac{\lambda_0}{n}}
+= \sqrt{\frac{12}{50}} \approx 0.490.
+$$
+
+The observed test statistic is
+$$
+T_{\mathrm{obs}} = \frac{\bar{X} - \lambda_0}{\mathrm{SE}_0}
+= \frac{10.8 - 12}{0.490}
+\approx -2.45.
+$$
+
+**Step 3: Determine the rejection region / p-value**
+
+At the 5% significance level for a one-sided test, the critical value is
+$$
+z_{0.05} = -1.645.
+$$
+
+Since
+$$
+-2.45 < -1.645,
+$$
+the test statistic falls in the rejection region.
+
+Equivalently, the $p$-value is
+$$
+\mathrm{Pr}(Z \le -2.45) \approx 0.007.
+$$
+
+**Step 4: Conclusion**
+
+There is **sufficient evidence at the 5% significance level** to reject the council’s claim.
+The data provide evidence that the true mean number of pothole reports per day is **less than 12**.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="poisson clt hypothesis-test two-sided" data-difficulty="1" #q-clt-hypothesis-pois2}
+
+## Large-Sample Two-Sided Hypothesis Test for a Poisson Rate
+
+A call centre manager claims that the average number of customer complaint calls received per hour is **5**. To assess this claim, the number of complaint calls is recorded over a random sample of $n = 60$ one-hour periods. Across these 60 hours, a total of $X = 360$ complaint calls are received.
+
+Assuming a <span class="xref-no-num">[Poisson model @sec-pois]</span>
+$$
+X_i \stackrel{\text{iid}}{\sim} \mathrm{Poisson}(\lambda), \qquad i=1,\dots,n,
+$$
+where $\lambda$ is the true mean number of complaint calls per hour, use the <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span> to perform a **1% significance level** **two-sided** hypothesis test of the manager’s claim.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+Let $X_1,\dots,X_n$ be the hourly counts. The sample mean is
+$$
+\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i = \frac{360}{60} = 6.
+$$
+
+For a Poisson random variable, $\mathrm{E}[X_i]=\lambda$ and $\mathrm{Var}(X_i)=\lambda$.
+For large $n$, the CLT gives
+$$
+\bar{X} \overset{\text{approx.}}{\sim} \mathcal{N}\left(\lambda, \frac{\lambda}{n}\right).
+$$
+
+**Step 1: State the hypotheses**
+
+The claim “$\lambda = 5$ per hour” corresponds to
+$$
+H_0: \lambda = 5, \qquad H_1: \lambda \neq 5.
+$$
+This is a **two-sided** test.
+
+**Step 2: Compute the test statistic**
+
+Under the null, the standard error is
+$$
+\mathrm{SE}_0 = \sqrt{\frac{\lambda_0}{n}}
+= \sqrt{\frac{5}{60}} \approx 0.289.
+$$
+
+The observed test statistic is
+$$
+T_{\mathrm{obs}} = \frac{\bar{X} - \lambda_0}{\mathrm{SE}_0}
+= \frac{6 - 5}{0.289}
+\approx 3.46.
+$$
+
+**Step 3: Determine the rejection region / p-value**
+
+At the 1% significance level for a two-sided test, the critical values are
+$$
+\pm z_{0.995} = \pm 2.576.
+$$
+
+Since
+$$
+|3.46| > 2.576,
+$$
+the test statistic falls in the rejection region.
+
+Equivalently, the $p$-value is
+$$
+2\,\mathrm{Pr}(Z \ge 3.46) \approx 2(0.00027) \approx 0.00054.
+$$
+
+**Step 4: Conclusion**
+
+There is **sufficient evidence at the 1% significance level** to reject the manager’s claim.
+The data provide evidence that the true mean number of complaint calls per hour is **different from 5**.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="exponential clt hypothesis-test" data-difficulty="1" #q-clt-hypothesis-exp1}
+
+## Large-Sample Two-Sided Hypothesis Test for an Exponential Rate
+
+A hospital administrator claims that the **average waiting time** for a non-urgent blood test is **20 minutes**. To assess this, a random sample of $n = 64$ waiting times is collected. The sample mean waiting time is $\bar{X} = 24.0$ minutes.
+
+Assuming an <span class="xref-no-num">[Exponential model @sec-exp]</span>
+$$
+X_i \stackrel{\text{iid}}{\sim} \mathrm{Exponential}(\lambda), \qquad i=1,\dots,n,
+$$
+where $\lambda$ is the **rate parameter** (so that $\mathrm{E}[X_i]=1/\lambda$), use the <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span> to perform a **5% significance level** **two-sided** hypothesis test of the administrator’s claim.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+For an exponential random variable with rate $\lambda$,
+$$
+\mathrm{E}[X_i] = \frac{1}{\lambda},
+\qquad
+\mathrm{Var}(X_i) = \frac{1}{\lambda^2}.
+$$
+
+For large $n$, the CLT gives
+$$
+\bar{X} \overset{\text{approx.}}{\sim} \mathcal{N}\left(\frac{1}{\lambda}, \frac{1}{n\lambda^2}\right).
+$$
+
+**Step 1: State the hypotheses**
+
+The claim “mean waiting time is 20 minutes” is
+$$
+H_0: \frac{1}{\lambda} = 20
+\quad \Longleftrightarrow \quad
+H_0: \lambda = \lambda_0 = \frac{1}{20} = 0.05,
+$$
+with the two-sided alternative
+$$
+H_1: \lambda \neq 0.05.
+$$
+
+**Step 2: Compute the test statistic**
+
+Under the null hypothesis, the standard error of $\bar{X}$ is
+$$
+\mathrm{SE}_0 = \sqrt{\frac{1}{n\lambda_0^2}}
+= \frac{1}{\lambda_0\sqrt{n}}
+= \frac{1}{0.05\sqrt{64}}
+= \frac{1}{0.05\cdot 8}
+= 2.5.
+$$
+
+The observed test statistic is
+$$
+T_{\mathrm{obs}} = \frac{\bar{X} - 1/\lambda_0}{\mathrm{SE}_0}
+= \frac{24 - 20}{2.5}
+= 1.60.
+$$
+
+**Step 3: Determine the rejection region / p-value**
+
+At the 5% significance level for a two-sided test, the critical values are
+$$
+\pm z_{0.975} = \pm 1.96.
+$$
+
+Since
+$$
+|1.60| < 1.96,
+$$
+the test statistic does **not** fall in the rejection region.
+
+Equivalently, the $p$-value is approximately
+$$
+2\,\mathrm{Pr}(Z \ge 1.60) \approx 2(0.0548) \approx 0.110.
+$$
+
+**Step 4: Conclusion**
+
+There is **insufficient evidence at the 5% significance level** to reject the administrator’s claim.
+The data do not provide strong evidence that the mean waiting time differs from **20 minutes**.
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="normal z-test t-test hypothesis-test" data-difficulty="1" #q-normal-z-t1}
+
+## One-Sample Z-test and t-test for a Normal Mean
+
+A materials scientist is studying the **tensile strength** (in MPa) of a newly developed polymer. From a random sample of
+$n = 25$ specimens, the observed sample mean strength is
+$$
+\bar{X} = 52.4 \text{ MPa}.
+$$
+
+It is reasonable to assume that tensile strength measurements are normally distributed and independent:
+$$
+X \sim \mathcal{N}(\mu, \sigma^2),
+$$
+where $\mu$ is the true mean tensile strength.
+
+The manufacturer claims that the mean tensile strength of the polymer is
+$$
+\mu_0 = 50 \text{ MPa}.
+$$
+
+You are asked to assess this claim at the **5% significance level** under two different assumptions.
+
+---
+
+**(a)** Assume that the population variance is **known** to be $\sigma^2 = 16$ MPa$^2$.
+
+**(b)** Assume instead that the population variance is **unknown**, and the sample standard deviation is
+$$
+s = 4.5 \text{ MPa}.
+$$
+
+In each case, perform an appropriate **two-sided hypothesis test** of
+$$
+H_0 : \mu = 50,
+\qquad
+H_1 : \mu \neq 50.
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a) Z-test (known variance)**
+
+Since $\sigma^2$ is known and the data are normally distributed, a **one-sample Z-test** is appropriate.
+
+The standard error of the sample mean is
+$$
+\mathrm{SE} = \frac{\sigma}{\sqrt{n}} = \frac{4}{\sqrt{25}} = 0.8.
+$$
+
+The observed Z-statistic is
+$$
+Z_{\mathrm{obs}} = \frac{\bar{X} - \mu_0}{\mathrm{SE}}
+= \frac{52.4 - 50}{0.8}
+= 3.00.
+$$
+
+At the 5% significance level for a two-sided test, the critical values are
+$$
+\pm z_{0.975} = \pm 1.96.
+$$
+
+Since
+$$
+|3.00| > 1.96,
+$$
+we reject $H_0$.
+
+Equivalently, the p-value is
+$$
+2\,\mathrm{Pr}(Z \ge 3.00) \approx 0.0027,
+$$
+which is less than $0.05$.
+
+**Conclusion (Z-test):**
+There is **strong evidence** that the mean tensile strength differs from 50 MPa.
+
+---
+
+**(b) t-test (unknown variance)**
+
+When $\sigma^2$ is unknown and estimated from the data, we use a **one-sample t-test**.
+
+The estimated standard error is
+$$
+\widehat{\mathrm{SE}} = \frac{s}{\sqrt{n}} = \frac{4.5}{\sqrt{25}} = 0.9.
+$$
+
+The observed t-statistic is
+$$
+T_{\mathrm{obs}} = \frac{\bar{X} - \mu_0}{\widehat{\mathrm{SE}}}
+= \frac{52.4 - 50}{0.9}
+\approx 2.67.
+$$
+
+Under $H_0$, this statistic follows a $t$-distribution with
+$$
+n - 1 = 24
+$$
+degrees of freedom.
+
+At the 5% significance level for a two-sided test, the critical values are
+$$
+\pm t_{0.975,,24} \approx \pm 2.064.
+$$
+
+Since
+$$
+|2.67| > 2.064,
+$$
+we reject $H_0$.
+
+The $p$-value is approximately
+$$
+2\,\mathrm{Pr}(T_{24} \ge 2.67) \approx 0.013,
+$$
+which is less than $0.05$.
+
+**Conclusion (t-test):**
+There is **sufficient evidence** to conclude that the mean tensile strength differs from 50 MPa.
+
+---
+
+**Final remark**
+
+Both tests lead to rejection of $H_0$, but the **t-test is more conservative**, reflecting the additional uncertainty introduced by estimating the variance from the data.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="normal z-test t-test hypothesis-test one-sided" data-difficulty="1" #q-normal-z-t-onesided}
+
+## VO$_2$ Max: One-Sided One-Sample Z-Test and t-Test for a Normal Mean
+
+A sports physiologist is evaluating whether a new training programme increases athletes’ **VO$_2$ max** (in mL/kg/min). From a random sample of $n = 41$ athletes who completed the programme, the sample mean VO$_2$ max is
+$$
+\bar{X} = 47.2 \text{ mL/kg/min}.
+$$
+
+It is reasonable to assume the VO$_2$ max measurements are normally distributed and independent across athletes:
+$$
+X \sim \mathcal{N}(\mu, \sigma^2),
+$$
+where $\mu$ is the true mean VO$_2$ max after completing the programme.
+
+Previous seasons’ data suggest the historical mean is
+$$
+\mu_0 = 45 \text{ mL/kg/min}.
+$$
+
+You are asked to test whether the programme **increases** mean VO$_2$ max, using a **one-sided test at significance level $\alpha = 0.01$**, under two different assumptions.
+
+---
+
+**(a)** Assume the population variance is **known** to be $\sigma^2 = 36$ (so $\sigma = 6$).
+
+**(b)** Assume instead the population variance is **unknown**, and the sample standard deviation is
+$$
+s = 6.4.
+$$
+
+In each case, perform the appropriate hypothesis test of
+$$
+H_0 : \mu = 45,
+\qquad
+H_1 : \mu > 45.
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a) Z-test (known variance)**
+
+With known $\sigma$, use the **one-sample Z-test**.
+
+The standard error is
+$$
+\mathrm{SE} = \frac{\sigma}{\sqrt{n}} = \frac{6}{\sqrt{41}} \approx 0.937.
+$$
+
+The observed Z-statistic is
+$$
+Z_{\mathrm{obs}} = \frac{\bar{X} - \mu_0}{\mathrm{SE}}
+= \frac{47.2 - 45}{0.937}
+\approx 2.35.
+$$
+
+At significance level $\alpha = 0.01$ for a **right-tailed** test, the critical value is
+$$
+z_{0.99} \approx 2.326.
+$$
+
+Since
+$$
+2.35 > 2.326,
+$$
+we **reject** $H_0$.
+
+Equivalently, the p-value is
+$$
+\mathrm{Pr}(Z \ge 2.35) \approx 0.0094,
+$$
+which is less than $0.01$.
+
+**Conclusion (Z-test):**
+There is **sufficient evidence at the 1% level** to conclude that the programme increases mean VO$_2$ max.
+
+---
+
+**(b) t-test (unknown variance)**
+
+With unknown $\sigma$, use the **one-sample t-test**.
+
+The estimated standard error is
+$$
+\widehat{\mathrm{SE}} = \frac{s}{\sqrt{n}} = \frac{6.4}{\sqrt{41}} \approx 1.00.
+$$
+
+The observed t-statistic is
+$$
+T_{\mathrm{obs}} = \frac{\bar{X} - \mu_0}{\widehat{\mathrm{SE}}}
+= \frac{47.2 - 45}{1.00}
+\approx 2.20.
+$$
+
+Under $H_0$, this statistic follows a $t$-distribution with
+$$
+n-1 = 40
+$$
+degrees of freedom.
+
+At $\alpha = 0.01$ (right-tailed), the critical value is
+$$
+t_{40,,0.99} \approx 2.423.
+$$
+
+Since
+$$
+2.20 < 2.423,
+$$
+we **do not reject** $H_0$.
+
+The $p$-value is approximately
+$$
+\mathrm{Pr}(T_{40} \ge 2.20) \approx 0.017,
+$$
+which is greater than $0.01$.
+
+**Conclusion (t-test):**
+There is **insufficient evidence at the 1% level** to conclude that the programme increases mean VO$_2$ max.
+
+---
+
+**Final remark**
+
+The Z-test rejects while the t-test does not at the 1% level. This illustrates how accounting for uncertainty in the variance (via the t-test use of the sample variance) leads to a more conservative inference.
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="normal z-test t-test hypothesis-test one-sided" data-difficulty="1" #q-normal-z-t-onesided-left}
+
+## Sodium Content: One-Sided One-Sample Z-Test and t-Test for a Normal Mean
+
+A food manufacturer monitors the **average sodium content** (in mg) of a packaged soup product. Regulations require that the mean sodium content should **not exceed 820 mg** per serving. To check compliance, a random sample of $n = 40$ servings is tested, yielding a sample mean of
+$$
+\bar{X} = 790 \text{ mg}.
+$$
+
+It is reasonable to model sodium content as independent normal observations
+$$
+X \sim \mathcal{N}(\mu, \sigma^2),
+$$
+where $\mu$ is the true mean sodium content per serving.
+
+You are asked to test whether the product’s mean sodium content is **below** the regulatory limit, using a **one-sided test at significance level $\alpha = 0.01$**, under two different assumptions.
+
+---
+
+**(a)** Assume the population variance is **known** to be $\sigma^2 = 10{,}000$ mg$^2$ (so $\sigma = 100$ mg).
+
+**(b)** Assume instead that the population variance is **unknown**, and the sample standard deviation is
+$$
+s = 110 \text{ mg}.
+$$
+
+In each case, perform the appropriate hypothesis test of
+$$
+H_0 : \mu = 820,
+\qquad
+H_1 : \mu < 820.
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a) Z-test (known variance)**
+
+With known $\sigma$, use the **one-sample Z-test**.
+
+The standard error is
+$$
+\mathrm{SE} = \frac{\sigma}{\sqrt{n}} = \frac{100}{\sqrt{40}} \approx 15.81.
+$$
+
+The observed Z-statistic is
+$$
+Z_{\mathrm{obs}} = \frac{\bar{X} - \mu_0}{\mathrm{SE}}
+= \frac{790 - 820}{15.81}
+\approx -1.90.
+$$
+
+At significance level $\alpha = 0.01$ for a **left-tailed** test, the critical value is
+$$
+z_{0.01} \approx -2.326.
+$$
+
+Since
+$$
+-1.90 > -2.326,
+$$
+we **do not reject** $H_0$.
+
+Equivalently, the p-value is
+$$
+\mathrm{Pr}(Z \le -1.90) \approx 0.029,
+$$
+which is greater than $0.01$.
+
+**Conclusion (Z-test):**
+There is **insufficient evidence at the 1% level** to conclude that the mean sodium content is below 820 mg.
+
+---
+
+**(b) t-test (unknown variance)**
+
+With unknown $\sigma$, use the **one-sample t-test**.
+
+The estimated standard error is
+$$
+\widehat{\mathrm{SE}} = \frac{s}{\sqrt{n}} = \frac{110}{\sqrt{40}} \approx 17.39.
+$$
+
+The observed t-statistic is
+$$
+T_{\mathrm{obs}} = \frac{\bar{X} - \mu_0}{\widehat{\mathrm{SE}}}
+= \frac{790 - 820}{17.39}
+\approx -1.73.
+$$
+
+Under $H_0$, this statistic follows a $t$-distribution with
+$$
+n-1 = 39
+$$
+degrees of freedom.
+
+At $\alpha = 0.01$ (left-tailed), the critical value is
+$$
+t_{39,\,0.01} \approx -2.426.
+$$
+
+Since
+$$
+-1.73 > -2.426,
+$$
+we **do not reject** $H_0$.
+
+The $p$-value is approximately
+$$
+\mathrm{Pr}(T_{39} \le -1.73) \approx 0.046,
+$$
+which is greater than $0.01$.
+
+**Conclusion (t-test):**
+There is **insufficient evidence at the 1% significance level** to conclude that the product’s mean sodium content is below the regulatory limit.
+
+---
+
+**Final remark**
+
+Both tests lead to the same conclusion. The t-test is slightly more conservative due to the additional uncertainty in estimating the variance.
+
+</details>
+
+:::
+
+

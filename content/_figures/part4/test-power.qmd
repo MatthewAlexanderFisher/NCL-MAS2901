@@ -1,0 +1,296 @@
+```{ojs}
+// Alpha slider
+viewof alphaValue = Inputs.range([0.01, 0.8], {
+  value: 0.05,
+  step: 0.005,
+  label: ''
+})
+```
+
+```{ojs}
+// === Power curves for one- vs two-sided tests ===
+
+// Domain for μ and grid
+muDomain = [-4, 4]
+muXs = d3.scaleLinear().domain(muDomain).ticks(401)
+
+// Standard normal PDF/CDF helpers
+SQRT2 = Math.sqrt(2)
+SQRT2PI = Math.sqrt(2 * Math.PI)
+
+// erf approximation (Abramowitz & Stegun 7.1.26)
+erf = (x) => {
+  const sign = Math.sign(x);
+  x = Math.abs(x);
+  const a1 = 0.254829592, a2 = -0.284496736, a3 = 1.421413741;
+  const a4 = -1.453152027, a5 = 1.061405429, p = 0.3275911;
+  const t = 1 / (1 + p * x);
+  const y = 1 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-x*x);
+  return sign * y;
+}
+
+normalCDF = (x) => 0.5 * (1 + erf(x / SQRT2))
+
+// Inverse normal CDF (Acklam's approximation, high accuracy)
+function normalInvCDF(p){
+  // Coefficients
+  const a = [-3.969683028665376e+01,  2.209460984245205e+02, -2.759285104469687e+02,
+              1.383577518672690e+02, -3.066479806614716e+01,  2.506628277459239e+00];
+  const b = [-5.447609879822406e+01,  1.615858368580409e+02, -1.556989798598866e+02,
+              6.680131188771972e+01, -1.328068155288572e+01];
+  const c = [-7.784894002430293e-03, -3.223964580411365e-01, -2.400758277161838e+00,
+             -2.549732539343734e+00,  4.374664141464968e+00,  2.938163982698783e+00];
+  const d = [ 7.784695709041462e-03,  3.224671290700398e-01,  2.445134137142996e+00,
+              3.754408661907416e+00];
+  // Break-points
+  const plow = 0.02425, phigh = 1 - plow;
+  let q, r, x;
+  if (p < plow){
+    q = Math.sqrt(-2 * Math.log(p));
+    x = (((((c[0]*q + c[1])*q + c[2])*q + c[3])*q + c[4])*q + c[5]) /
+        ((((d[0]*q + d[1])*q + d[2])*q + d[3])*q + 1);
+  } else if (p > phigh){
+    q = Math.sqrt(-2 * Math.log(1 - p));
+    x = -(((((c[0]*q + c[1])*q + c[2])*q + c[3])*q + c[4])*q + c[5]) /
+          ((((d[0]*q + d[1])*q + d[2])*q + d[3])*q + 1);
+  } else {
+    q = p - 0.5; r = q*q;
+    x = (((((a[0]*r + a[1])*r + a[2])*r + a[3])*r + a[4])*r + a[5]) * q /
+        (((((b[0]*r + b[1])*r + b[2])*r + b[3])*r + b[4])*r + 1);
+  }
+  // One step of Halley refinement
+  const e = normalCDF(x) - p;
+  const u = e * Math.sqrt(2*Math.PI) * Math.exp(x*x/2);
+  return x - u / (1 + x*u/2);
+}
+// Critical values based on current alpha
+z_twoSided = normalInvCDF(1 - alphaValue / 2)
+z_oneSided = normalInvCDF(1 - alphaValue)
+
+// Power functions using dynamic critical values
+powerTwoSided = (mu) => {
+  // Power(μ) = P(|T| > z | μ) = Φ(μ - z) + Φ(-μ - z)
+  return normalCDF(mu - z_twoSided) + normalCDF(-mu - z_twoSided);
+}
+
+powerOneSided = (mu) => {
+  // Power(μ) = P(T > z | μ) = 1 - Φ(z - μ)
+  return 1 - normalCDF(z_oneSided - mu);
+}
+
+// Build curves
+twoSided = muXs.map(mu => ({ mu, y: powerTwoSided(mu), which: "Two-sided" }))
+oneSided = muXs.map(mu => ({ mu, y: powerOneSided(mu), which: "One-sided" }))
+
+// Mark the μ=0 point (both equal α)
+at0 = [
+  { mu: 0, y: powerTwoSided(0), which: "Two-sided" },
+  { mu: 0, y: powerOneSided(0), which: "One-sided" }
+]
+
+
+// On-curve label anchors (choose different μ to avoid overlap)
+muLabelTwo = 2.4
+muLabelOne = 1.2
+labelDots = [
+  { mu: muLabelTwo, y: powerTwoSided(muLabelTwo), label: "Two-sided", color: "var(--plot-series-1)" },
+  { mu: muLabelOne, y: powerOneSided(muLabelOne), label: "One-sided", color: "var(--plot-series-4)" }
+]
+
+
+```
+
+```{ojs}
+//| label: fig-power-one-vs-two
+//| fig-cap: Power curves for one-sided and two-sided z-tests, testing $H_0\colon \mu = 0$ using $T\sim\mathcal{N}(\mu, 1)$. The one-sided test is more powerful in the correct direction; the two-sided test splits α across both tails.
+//| fig-align: center
+//| echo: false
+
+{
+  const plot = Plot.plot({
+    height: 340,
+    marginLeft: 52,
+    marginBottom: 46,
+    marginTop: 40,
+    x: { label: "Effect size μ", domain: muDomain },
+    y: { label: "Power", domain: [0, 1] },
+    style: {
+      background: "var(--plot-bg)",
+      color: "var(--plot-fg)",
+      fontFamily: bodyFont,
+      fontSize: 12
+    },
+    marks: [
+      // baseline and bands
+      Plot.ruleY([0], { stroke: "var(--plot-grid)", strokeOpacity: 0.6 }),
+      Plot.ruleY([1], { stroke: "var(--plot-grid)", strokeOpacity: 0.15 }),
+      Plot.ruleY([alphaValue], { 
+        stroke: "var(--plot-fg)",
+        strokeWidth: 1, 
+        strokeOpacity: 0.3, 
+        strokeDasharray: "6,3" 
+      }),
+      Plot.ruleX([0], { 
+        stroke: "var(--plot-fg)",
+        strokeWidth: 1.5, 
+        strokeOpacity: 0.35, 
+        strokeDasharray: "3,3" 
+      }),
+
+      // two-sided curve & light fill
+      Plot.areaY(twoSided, { 
+        x: "mu", 
+        y: "y", 
+        fill: "var(--plot-series-1)",
+        fillOpacity: 0.10 
+      }),
+      Plot.lineY(twoSided, { 
+        x: "mu", 
+        y: "y", 
+        stroke: "var(--plot-series-1)",
+        strokeWidth: 2 
+      }),
+
+      // one-sided curve & light fill
+      Plot.areaY(oneSided, { 
+        x: "mu", 
+        y: "y", 
+        fill: "var(--plot-series-4)",
+        fillOpacity: 0.10 
+      }),
+      Plot.lineY(oneSided, { 
+        x: "mu", 
+        y: "y", 
+        stroke: "var(--plot-series-4)",
+        strokeWidth: 2 
+      }),
+
+      // points at μ=0 (both equal α)
+      Plot.dot(at0, { 
+        x: "mu", 
+        y: "y", 
+        r: 4, 
+        fill: "var(--plot-fg)",
+        stroke: "var(--plot-bg)",
+        strokeWidth: 2
+      }),
+      
+      // On-curve labels (placed at different μ values)
+      Plot.dot(labelDots, { x: "mu", y: "y", r: 2, fill: d => d.color }),
+      Plot.text(labelDots, { 
+        x: "mu", y: "y", text: "label", 
+        dx: -30, dy: -20, 
+        fill: d => d.color, 
+        fontWeight: "bold"
+      }),
+
+      
+      // Alpha level annotation
+      Plot.text([{x: -3.5, y: alphaValue}], {
+        x: "x",
+        y: "y",
+        text: d => `α = ${alphaValue.toFixed(2)}`,
+        dx: 0,
+        dy: -8,
+        fontSize: 11,
+        fill: "var(--plot-fg)",
+        fillOpacity: 0.7
+      })
+    ]
+  });
+  
+  // Display info about current settings
+  const info = html`
+    <div style="margin-top: 10px; padding: 10px; background: var(--header-bg); border-radius: 4px; font-size: 13px;">
+      <strong>Settings:</strong> α = ${alphaValue.toFixed(3)} | 
+      Critical values: z<sub>${(1 - alphaValue/2).toFixed(3)}</sub> = ${z_twoSided.toFixed(3)} (two-sided), 
+      z<sub>${(1 - alphaValue).toFixed(3)}</sub> = ${z_oneSided.toFixed(3)} (one-sided) |
+      Power at μ=0: ${(alphaValue).toFixed(3)}
+    </div>
+  `;
+  
+  return html`<div style="width: 100%; max-width: 960px; margin: 0 auto;">
+    ${plot}
+    ${info}
+  </div>`;
+
+}
+```
+
+```{ojs}
+// Add custom CSS for the slider styling (without the details.controls-root requirement)
+html`<style>
+/* Style all range sliders in the document */
+input[type="range"] {
+  /* Reset browser defaults */
+  -webkit-appearance: none;
+  appearance: none;
+  
+  /* Layout */
+  width: 100%;
+  height: 18px;
+  background: transparent;
+  vertical-align: middle;
+  
+  /* Brand theming */
+  accent-color: var(--ctrl-brand);
+}
+
+/* Hide the number input box that appears with Inputs.range */
+form:has(input[type="range"]) input[type="number"] {
+  display: none !important;
+}
+
+/* Center the slider container */
+form:has(input[type="range"]) {
+  margin: 0 auto;
+  max-width: 600px; /* Adjust as needed */
+  padding: 10px 0;
+}
+
+/* Slider track - WebKit */
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ctrl-brand, #667eea) 35%, transparent);
+}
+
+/* Slider thumb - WebKit */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--ctrl-brand, #667eea);
+  
+  /* Center thumb over 4px track */
+  margin-top: -4px;
+}
+
+/* Slider track - Firefox */
+input[type="range"]::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ctrl-brand, #667eea) 35%, transparent);
+}
+
+/* Slider thumb - Firefox */
+input[type="range"]::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--ctrl-brand, #667eea);
+}
+
+/* Firefox progress styling */
+input[type="range"]::-moz-range-progress {
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ctrl-brand, #667eea) 35%, transparent);
+}
+</style>`
+```

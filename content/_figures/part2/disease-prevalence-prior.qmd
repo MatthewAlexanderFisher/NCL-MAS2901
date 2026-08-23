@@ -1,0 +1,68 @@
+```{ojs}
+// === (C) Disease prevalence prior: Beta(2, 98) ~ mean 0.02, mass < 0.10 ===
+// Domain and grid
+pDomain = [0, 0.12]  // zoom in to show the small probabilities clearly
+pXs = d3.scaleLinear().domain(pDomain).ticks(400)
+
+// Beta PDF helper (using log-space for stability)
+function logGamma(z){ // Lanczos approximation via d3? keep simple: use Math.lgamma fallback if present; else crude Stirling
+  // Minimal Stirling for teaching visuals (fine for small α,β here)
+  return (z-0.5)*Math.log(z) - z + 0.5*Math.log(2*Math.PI);
+}
+function betaLogPDF(x, a, b){
+  if (x <= 0 || x >= 1) return -Infinity;
+  return (a-1)*Math.log(x) + (b-1)*Math.log(1-x) - (logGamma(a)+logGamma(b)-logGamma(a+b));
+}
+function betaPDF(x, a, b){
+  const lg = betaLogPDF(x, a, b);
+  return Number.isFinite(lg) ? Math.exp(lg) : 0;
+}
+
+// Prior parameters and curve
+alpha_prior = 2
+beta_prior  = 98
+
+betaPrior = pXs.map(x => ({ x, y: betaPDF(x, alpha_prior, beta_prior), which: "Prior  Beta(2, 98)" }))
+
+// Optional “< 10%” visual marker
+capThreshold = 0.10
+```
+
+```{ojs}
+//| label: fig-beta-prevalence-prior
+//| fig-cap: Prior for disease prevalence $\theta$ using a $\mathrm{Beta}(2, 98)$. This encodes “likely around $2\%$, very unlikely above $10\%$.”
+//| fig-align: center
+//| echo: false
+
+Plot.plot({
+  height: 320,
+  marginLeft: 48,
+  marginBottom: 45,
+  x: { label: "Prevalence θ", domain: pDomain },
+  y: { label: "Density" },
+  style: {
+    width: "100%",
+    display: "block", 
+    margin: "0 auto", 
+    maxWidth: "960px",
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)",
+    fontFamily: bodyFont, 
+    fontSize: 14
+  },
+  marks: [
+    Plot.ruleY([0], { stroke: "var(--plot-grid)", strokeOpacity: 0.6 }),
+    Plot.lineY(betaPrior, { x: "x", y: "y", stroke: "var(--plot-series-4)", strokeWidth: 2, strokeOpacity: 0.9 }),
+    Plot.areaY(betaPrior, { x: "x", y: "y", fill: "var(--plot-series-4)", fillOpacity: 0.15 }),
+    // visual cap at 10%
+    Plot.ruleX([capThreshold], { stroke: "var(--plot-fg)", strokeDasharray: "3,3", strokeOpacity: 0.6 }),
+    Plot.text(
+      [
+        { x: 0.02, y: betaPDF(0.02, alpha_prior, beta_prior), label: "Prior mean ≈ 2%" },
+        { x: capThreshold, y: 0, label: "10% upper cap (unlikely)" }
+      ],
+      { x: "x", y: "y", text: "label", dy: -10 }
+    )
+  ]
+})
+```

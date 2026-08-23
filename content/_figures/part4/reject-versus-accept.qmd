@@ -1,0 +1,49 @@
+```{ojs}
+// Parameters
+n = 30
+mu0 = 200       // null mean
+sigma = 10      // std deviation under null
+alpha = 0.05
+
+// Slider for observed sample mean
+viewof xbar_obs = Inputs.range([mu0 - 3*sigma, mu0 + 3*sigma], 
+  {step: 0.5, value: mu0, label: md`Observed sample mean ${tex`\bar{x}_{obs}`}`} )
+
+// Null sampling distribution
+xgrid = d3.range(mu0 - 4*sigma, mu0 + 4*sigma, 0.1)
+pdf = xgrid.map(x => ({x, y: d3.randomNormal(mu0, sigma/Math.sqrt(n))() })) // or use normal pdf
+
+// Compute rejection region bounds
+zcrit = d3.quantile(d3.range(-5,5,0.01), alpha/2) // could just hardcode 1.96
+lower = mu0 - 1.96 * sigma/Math.sqrt(n)
+upper = mu0 + 1.96 * sigma/Math.sqrt(n)
+
+// Plot
+Plot.plot({
+  width: 600, height: 300,
+  style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)",
+    fontFamily: bodyFont,
+    fontSize: 14
+  },
+  x: {label: "Sample mean"},
+  y: {label: "Density"},
+  marks: [
+    // Null distribution
+    Plot.line(xgrid.map(x => ({x, y: 1/(sigma/Math.sqrt(n)*Math.sqrt(2*Math.PI)) 
+                                    * Math.exp(-0.5*((x-mu0)/(sigma/Math.sqrt(n)))**2)})), 
+              {x:"x", y:"y", stroke: "var(--plot-series-4)" }),
+
+    // Shaded rejection regions
+    Plot.areaY(xgrid.map(x => ({x, y: (x<lower||x>upper) ? 
+       1/(sigma/Math.sqrt(n)*Math.sqrt(2*Math.PI)) 
+         * Math.exp(-0.5*((x-mu0)/(sigma/Math.sqrt(n)))**2) : 0})), 
+       {x:"x", y:"y", fill: "var(--plot-series-4)", fillOpacity:0.3}),
+    
+    // Observed value
+    Plot.ruleX([xbar_obs], {stroke:"var(--plot-reference)", strokeWidth:2}),
+  ]
+})
+
+```

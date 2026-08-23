@@ -1,0 +1,54 @@
+```{ojs}
+// Domain and grid
+mDomain = [0, 1]
+pdfXs = d3.scaleLinear().domain(mDomain).ticks(200)  // 201 points including 0 and 1
+
+// PDFs (closed-form)
+function priorPDF(x)     { return (x > 0 && x < 1) ? 1 : 0; }
+function posteriorPDF(x) { return (x > 0 && x < 1) ? 30 * x * (1 - x) ** 4 : 0; }
+
+// Data (use the scalar x from map!)
+prior = pdfXs.map(x => ({ x, y: priorPDF(x), which: "Prior  Beta(1,1)" }))
+post  = pdfXs.map(x => ({ x, y: posteriorPDF(x), which: "Posterior  Beta(2,5)" }))
+```
+
+```{ojs}
+//| label: fig-beta-posterior
+//| fig-cap: Prior and posterior distributions for the coin bias parameter $\theta=\Pr(\text{Head})$ after observing 1 head in 5 tosses. The posterior is more concentrated, reflecting reduced uncertainty about $\theta$ compared to the uniform prior
+//| fig-align: center
+//| echo: false
+
+// Create the plot directly without viewof
+Plot.plot({
+  // omit width to let it be responsive
+  height: 320,
+  marginLeft: 48,
+  marginBottom: 45,
+  x: { label: "θ", domain: [0, 1] },
+  y: { label: "Density" },
+  style: {
+    width: "100%",
+    display: "block", 
+    margin: "0 auto", 
+    maxWidth: "960px",
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)",
+    fontFamily: bodyFont, 
+    fontSize: 14
+  },
+  marks: [
+    Plot.ruleY([0], { stroke: "var(--plot-grid)", strokeOpacity: 0.6 }),
+    Plot.lineY(prior, { x: "x", y: "y", stroke: "var(--plot-series-4)",  strokeWidth: 2, strokeOpacity: 0.85 }),
+    Plot.areaY(prior, { x: "x", y: "y", fill: "var(--plot-series-4)", fillOpacity: 0.05 }),
+    Plot.lineY(post,  { x: "x", y: "y", stroke: "var(--plot-series-1)", strokeWidth: 2 }),
+    Plot.areaY(post,  { x: "x", y: "y", fill: "var(--plot-series-1)", fillOpacity: 0.2 }),
+    Plot.text(
+      [
+        { x: 0.8, y: priorPDF(0.8),     label: "Prior" },
+        { x: 0.35, y: posteriorPDF(0.3), label: "Posterior" }
+      ],
+      { x: "x", y: "y", text: "label", dy: -8 }
+    )
+  ]
+})
+```

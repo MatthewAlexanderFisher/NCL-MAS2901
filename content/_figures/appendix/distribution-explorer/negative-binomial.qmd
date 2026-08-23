@@ -1,0 +1,36 @@
+```{ojs}
+
+{
+  const r = Math.round(negbin_r), p = negbin_p;
+  const mean = r / p, sd = Math.sqrt(r * (1 - p)) / p;
+  const xmax = Math.min(400, Math.ceil(mean + 6 * sd));
+
+  const data = Array.from({ length: Math.max(0, xmax - r + 1) }, (_, i) => {
+    const x = r + i;
+    return { x, y: negbinPMF(r, p, x) };
+  });
+
+  const stats = md`**Mean** ${tex`= r/p`} = ${(r/p).toFixed(2)}; 
+  **Var** ${tex`= r(1-p)/p^2`} = ${((r*(1-p))/(p**2)).toFixed(2)}.`;
+
+  const plot = Plot.plot({
+        width, height: 260,
+    style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)"           // drives 'currentColor'
+    },
+ y: { label: "PMF" }, x: { label: "x" },
+    marks: [
+      Plot.barY(data, { x: "x", y: "y", fill: ACCENT }),
+      Plot.ruleY([0], { stroke: GRID, strokeOpacity: 0.6 })
+    ]
+  });
+
+  return html`<div class="dist-panel"><div class="stats">${stats}</div>${plot}</div>`;
+}
+```
+
+```{ojs}
+viewof negbin_r = Inputs.range([1, 30], {value: 5, step: 1, label: md`${tex`r`}`})
+viewof negbin_p = Inputs.range([0.02, 0.98], {value: 0.4, step: 0.02, label: md`${tex`p`}`})
+```

@@ -1,0 +1,91 @@
+# Non-Examinable Content {#sec-non-examinable-content}
+
+This section covers all the non-examinable content in the course notes.
+
+## Part I - Foundations
+
+### Chapter 1 - Probability Theory
+
+- You will not be examined on <span class="xref-no-num">[covariance @def-covariance]</span>.
+- You will not be examined on <span class="xref-no-num">[correlation @def-correlation]</span>.
+- The material in the section named <span class="xref-no-num">[Non-Examinable material @sec-prob-theory-non-examinable]</span> section is **not examinable**.
+
+
+### Chapter 2 - What is Statistical Inference?
+
+- You will <span class="xref-no-num">[not be examined @sec-types-of-data]</span> on the following **types of data**:
+  - **Multivariate data:** All exam questions involve **univariate data**, where each observation $x_i$ is a *single numerical value*.  
+  - **Categorical data:** All exam questions involve **numerical data** only; no problems will require modelling categories, labels, or qualitative outcomes.
+
+- You will <span class="xref-no-num">[not be examined @wrn-nonexaminable-specifying-models]</span> on how to *specify a statistical model* (i.e. choosing an appropriate distribution for the data). All exam questions will **explicitly state** the statistical model whenever it is required.
+- You will <span class="xref-no-num">[not be examined @def-model]</span> on the formal definition of a **statistical model**.
+
+### Chapter 3 - Types of Inference
+
+- **Prediction** and predictive distributions are <span class="xref-no-num">[not examinable @wrn-nonexaminable-prediction]</span>.
+
+## Part II - Point Estimation
+
+### Chapter 4 - Frequentist Point Estimation
+
+
+### Chapter 5 - Likelihood
+
+- You will <span class="xref-no-num">[not be examined @wrn-nonexaminable-dependent-likelihood]</span> on computing likelihood functions for **dependent data**.
+- You will <span class="xref-no-num">[not be examined @sec-sufficiency]</span> on the concept of **sufficiency**.
+  - It is useful background, but no questions will require you to use or prove results about sufficient statistics.
+
+### Chapter 6 - Bayesian Inference
+
+
+## Part III - Interval Estimation
+
+### Chapter 7 - Frequentist Interval Estimation
+
+- You will <span class="xref-no-num">[not be examined @wrn-nonexaminable-ci-general-strategy]</span> on the <span class="xref-no-num">[general strategy @sec-general-ci-strategy]</span> for **deriving confidence intervals**.
+- You will **not be examined** on the derivations of the confidence intervals for Normally distributed data with either:
+
+  - <span class="xref-no-num">[Known Variance @sec-normal-ci-known-var]</span>
+  - <span class="xref-no-num">[Unknown Variance @sec-normal-ci-unknown-var]</span>  
+  
+  However, understanding these derivations can be helpful for **remembering and applying** the confidence interval formulae.
+
+### Chapter 8 - Bayesian Intervals
+
+- You will **not be examined** on **computing analytic HDIs** for any posterior distribution. The exam will only require you to understand, interpret and apply the <span class="xref-no-num">[definition @def-hdi]</span> of an HDI in context.
+
+## Part IV - Hypothesis Testing
+
+### Chapter 9 - Frequentist Hypothesis Testing
+
+- For the <span class="xref-no-num">[likelihood ratio test @sec-lrt]</span>, you do **not** need to remember the name <span class="xref-no-num">[Wilks' Theorem @thm-wilks]</span>. It is sufficient to only remember that **the likelihood ratio test statistic is asymptotically distributed as $\chi^2_1$.**
+
+### Chapter 10 - Bayesian Hypothesis Testing
+
+- Chapter 10 is **not examinable**.
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.revision-header').forEach(header => {
+    const toggle = (e) => {
+      // Don't toggle if clicking a link
+      if (e.target.closest('a')) return;
+      
+      const expanded = header.getAttribute('aria-expanded') === 'true';
+      header.setAttribute('aria-expanded', !expanded);
+      const content = document.getElementById(header.getAttribute('aria-controls'));
+      content.hidden = expanded;
+    };
+    
+    header.addEventListener('click', toggle);
+    header.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggle(e);
+      }
+    });
+  });
+});
+</script>

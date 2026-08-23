@@ -13,6 +13,30 @@ $brand-fg:        #333333;
 $brand-bg:        #f8f8f8;
 $plot-panel-bg:   #f0f1f2;
 
+/* ===== Figure palette =====
+   Lines, points, labels and axes use contrast-checked plot tokens. Areas may
+   use the matching fill token, or the series colour with reduced opacity. */
+$plot-bg:              $plot-panel-bg;
+$plot-fg:              #2B3035;
+$plot-grid:            #74808A;
+$plot-muted:           #68737D;
+$plot-reference:       #3F4851;
+$plot-on-accent:       #FFFFFF;
+
+$plot-series-1:        #007C91; // blue-teal
+$plot-series-2:        #A84D00; // orange
+$plot-series-3:        #6F42C1; // purple
+$plot-series-4:        #B52A3A; // red
+$plot-series-5:        #2F7D52; // green
+
+$plot-fill-1:          mix($plot-series-1, $plot-bg, 24%);
+$plot-fill-2:          mix($plot-series-2, $plot-bg, 24%);
+$plot-fill-3:          mix($plot-series-3, $plot-bg, 24%);
+$plot-fill-4:          mix($plot-series-4, $plot-bg, 24%);
+$plot-fill-5:          mix($plot-series-5, $plot-bg, 24%);
+$plot-sequential-low:  #D3E3E6;
+$plot-sequential-high: #00586B;
+
 $brand-teal:      #55C3CB;
 $brand-orange:    #F39C65;
 $brand-purple:    #6836bd;
@@ -38,6 +62,26 @@ $thumb-scrollbar-bg: rgb(170, 181, 184);
   --brand-fg:        #{$brand-fg};
   --brand-bg:        #{$brand-bg};
   --plot-panel-bg:   #{$plot-panel-bg};
+
+  /* Stable API for every OJS/Observable Plot figure. */
+  --plot-bg:              #{$plot-bg};
+  --plot-fg:              #{$plot-fg};
+  --plot-grid:            #{$plot-grid};
+  --plot-muted:           #{$plot-muted};
+  --plot-reference:       #{$plot-reference};
+  --plot-on-accent:       #{$plot-on-accent};
+  --plot-series-1:        #{$plot-series-1};
+  --plot-series-2:        #{$plot-series-2};
+  --plot-series-3:        #{$plot-series-3};
+  --plot-series-4:        #{$plot-series-4};
+  --plot-series-5:        #{$plot-series-5};
+  --plot-fill-1:          #{$plot-fill-1};
+  --plot-fill-2:          #{$plot-fill-2};
+  --plot-fill-3:          #{$plot-fill-3};
+  --plot-fill-4:          #{$plot-fill-4};
+  --plot-fill-5:          #{$plot-fill-5};
+  --plot-sequential-low:  #{$plot-sequential-low};
+  --plot-sequential-high: #{$plot-sequential-high};
 
   --brand-teal:      #{$brand-teal};
   --brand-orange:    #{$brand-orange};

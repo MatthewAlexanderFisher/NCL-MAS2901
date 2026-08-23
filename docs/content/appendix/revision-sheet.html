@@ -44,9 +44,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-f5ee150fb4bd363b356d51bef3bf57f5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-d5e987d2a49f81d99d3c6d2c04d8a2aa.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-f5ee150fb4bd363b356d51bef3bf57f5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8fb485cf94e4d5e4901ea4dc05e24a05.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-219a089c5cb161a3888b836ebc17e238.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-8fb485cf94e4d5e4901ea4dc05e24a05.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -242,7 +242,6 @@ window.Quarto = {
 <link rel="stylesheet" href="../../theming/visualisation-controls.css">
 <link rel="stylesheet" href="../../theming/tables.css">
 <link rel="stylesheet" href="../../theming/small-table.css">
-<link rel="stylesheet" href="theming/print-button.css">
 <link rel="stylesheet" href="../../theming/reading-mode.css">
 </head>
 
@@ -524,7 +523,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
- <span class="menu-text">Part III - Interval Estimation</span></a>
+ <span class="menu-text">Part III — Interval Estimation</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -6266,6 +6265,54 @@ if (document.body.classList.contains('reading-mode')) {
   });
 }
 
+</script>
+<script>
+(function () {
+  if (window.__mas2901KnowledgeGraphLoading) return;
+  window.__mas2901KnowledgeGraphLoading = true;
+
+  const offset = document.querySelector('meta[name="quarto:offset"]')?.content || './';
+  const siteRoot = new URL(offset, document.baseURI);
+  window.MAS2901_KNOWLEDGE_GRAPH_ROOT = siteRoot.href;
+
+  const loadStylesheet = (href) => new Promise((resolve, reject) => {
+    const existing = document.querySelector(`link[data-mas2901-knowledge-graph="${href}"]`);
+    if (existing) return resolve();
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = href;
+    link.dataset.mas2901KnowledgeGraph = href;
+    link.onload = resolve;
+    link.onerror = reject;
+    document.head.appendChild(link);
+  });
+
+  const loadScript = (src) => new Promise((resolve, reject) => {
+    const existing = document.querySelector(`script[data-mas2901-knowledge-graph="${src}"]`);
+    if (existing) {
+      if (existing.dataset.loaded === 'true') return resolve();
+      existing.addEventListener('load', resolve, { once: true });
+      existing.addEventListener('error', reject, { once: true });
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = src;
+    script.dataset.mas2901KnowledgeGraph = src;
+    script.onload = () => {
+      script.dataset.loaded = 'true';
+      resolve();
+    };
+    script.onerror = reject;
+    document.body.appendChild(script);
+  });
+
+  const asset = (path) => new URL(path, siteRoot).href;
+  window.MAS2901_KNOWLEDGE_GRAPH_CYTOSCAPE = asset('knowledge-graph/vendor/cytoscape-3.34.1.min.js');
+
+  loadStylesheet(asset('knowledge-graph/knowledge-graph.css'))
+    .then(() => loadScript(asset('knowledge-graph/knowledge-graph.js')))
+    .catch((error) => console.error('Unable to load the course map.', error));
+})();
 </script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {

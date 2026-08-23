@@ -1,0 +1,40 @@
+```{ojs}
+
+{
+  // compute locally (no exported names)
+  const L     = pois_lambda;
+  const kmax  = Math.max(15, Math.ceil(L + 6*Math.sqrt(L)));
+  const pois_data = Array.from({length: kmax + 1}, (_, k) => ({ x: k, y: poisPMF(L, k) }));
+
+  // build the UI bits
+  const stats = md`**Mean** ${tex`= \lambda`} = ${L.toFixed(2)}; 
+  **Var** ${tex`= \lambda`} = ${L.toFixed(2)}.`;
+
+  const plot = Plot.plot({
+        width, height: 260,
+    style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)"           // drives 'currentColor'
+    },
+
+    y: { label: "PMF" },
+    x: { label: "x" },
+    marks: [
+      Plot.barY(pois_data, { x: "x", y: "y", fill: "var(--plot-series-1)" }),
+      Plot.ruleY([0], { stroke: "var(--plot-grid)", strokeOpacity: 0.6 })
+    ]
+  });
+
+  // return both in a single wrapper
+  return html`<div class="dist-panel">
+    <div class="stats">${stats}</div>
+    ${plot}
+  </div>`;
+}
+```
+
+```{ojs}
+viewof pois_lambda = Inputs.range([0.2, 30], {
+  value: 6, step: 0.2, label: md`${tex`\lambda`}`
+})
+```

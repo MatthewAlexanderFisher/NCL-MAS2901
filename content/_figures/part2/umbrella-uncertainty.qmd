@@ -1,0 +1,58 @@
+```{ojs}
+// === (A) Umbrella decision: 70% chance of rain (everyday uncertainty) ===
+// Build a single horizontal bar split into "Rain" (0.7) and "No rain" (0.3)
+
+rainP = 0.7
+noRainP = 1 - rainP
+
+umbrellaSegments = [
+  { label: "Rain (70%)",    x1: 0,     x2: rainP,  which: "Rain" },
+  { label: "No rain (30%)", x1: rainP, x2: 1,      which: "No rain" }
+]
+```
+
+```{ojs}
+//| label: fig-umbrella-uncertainty
+//| fig-cap: Everyday uncertainty — a 70% chance of rain means our **belief** favours rain over no rain given current information.
+//| fig-align: center
+//| echo: false
+
+Plot.plot({
+  height: 120,
+  marginLeft: 50,
+  marginRight: 20,
+  marginBottom: 45,
+  x: { label: "Probability", domain: [0, 1], nice: false },
+  y: { axis: null },
+    style: {
+      width: "100%",
+      display: "block", 
+      margin: "0 auto", 
+      maxWidth: "960px",
+      background: "var(--plot-bg)",
+      color: "var(--plot-fg)",
+      fontFamily: bodyFont, 
+      fontSize: 12
+    },
+  marks: [
+    Plot.ruleY([0], { stroke: "var(--plot-grid)", strokeOpacity: 0.6 }),
+    // two stacked rectangles forming one bar
+    Plot.rectX(umbrellaSegments, {
+      x1: "x1",
+      x2: "x2",
+      y: 0,
+      height: 24,
+      fill: d => d.which === "Rain" ? "var(--plot-series-1)" : "var(--plot-series-4)",
+      fillOpacity: d => d.which === "Rain" ? 0.35 : 0.15,
+      stroke: "var(--plot-fg)"
+    }),
+    // labels
+    Plot.text(umbrellaSegments, {
+      x: d => (d.x1 + d.x2) / 2,
+      y: 0,
+      text: "label",
+      dy: -8
+    })
+  ]
+})
+```

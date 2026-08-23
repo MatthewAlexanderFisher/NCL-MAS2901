@@ -1,0 +1,33 @@
+```{ojs}
+{
+  const μ = norm_mu, σ = norm_sig;
+  const [lo, hi] = domainNormal(μ, σ);
+  const data = linspace(lo, hi).map(x => ({ x, y: normPDF(x, μ, σ) }));
+
+  const stats = md`**Mean** ${tex`= \mu`} = ${μ.toFixed(2)}; 
+  **Var** ${tex`= \sigma^2`} = ${(σ**2).toFixed(2)}.`;
+
+  const plot = Plot.plot({
+    width, height: 260,
+    style: { background: "var(--plot-bg)", color: "var(--plot-fg)" },
+    x: { label: "x" }, y: { label: "PDF" },
+    marks: [
+      // shaded area under the PDF:
+      Plot.areaY(data, { x: "x", y: "y", fill: AREA }),
+
+      // PDF outline:
+      Plot.lineY(data, { x: "x", y: "y", stroke: ACCENT, strokeWidth: 2 }),
+
+      Plot.ruleY([0], { stroke: GRID, strokeOpacity: 0.6 })
+    ]
+  });
+
+  return html`<div class="dist-panel"><div class="stats">${stats}</div>${plot}</div>`;
+}
+
+```
+
+```{ojs}
+viewof norm_mu  = Inputs.range([-3, 3], {value: 0, step: 0.05, label: md`${tex`\mu`}`})
+viewof norm_sig = Inputs.range([0.05, 3], {value: 1, step: 0.05, label: md`${tex`\sigma`}`})
+```

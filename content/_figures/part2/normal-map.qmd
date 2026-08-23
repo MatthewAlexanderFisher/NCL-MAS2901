@@ -1,0 +1,70 @@
+```{ojs}
+//| label: fig-normal-map
+//| fig-cap: A Normal posterior density $\pi(\theta\mid\underline{x})$ with its MAP estimate indicated by the vertical line at the mode. For a Normal posterior, the MAP coincides with the mean. In this case, the MAP estimate is $\hat{\theta} = 1$.
+//| fig-align: center
+//| echo: false
+
+// Parameters for the (posterior) Normal distribution
+mu_post = 1        // posterior mean (and MAP)
+sigma_post = 0.4   // posterior standard deviation
+
+// Grid over the real line (about ±3σ around the mean)
+normalXs = d3.range(mu_post - 3 * sigma_post, mu_post + 3 * sigma_post, (6 * sigma_post) / 200)
+
+
+
+// Data for plotting
+posteriorNormal = normalXs.map(x => ({ x, y: normalPDF(x, mu_post, sigma_post) }))
+
+// MAP point (mode of the posterior)
+mapPoint = ({ x: mu_post, y: normalPDF(mu_post, mu_post, sigma_post) })
+
+Plot.plot({
+  height: 320,
+  marginLeft: 48,
+  marginBottom: 45,
+  x: { label: "θ", nice: true },
+  y: { label: "Posterior density" },
+  style: {
+    width: "100%",
+    display: "block",
+    margin: "0 auto",
+    maxWidth: "960px",
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)",
+    fontFamily: bodyFont,
+    fontSize: 14
+  },
+  marks: [
+    Plot.ruleY([0], { stroke: "var(--plot-grid)", strokeOpacity: 0.6 }),
+    Plot.lineY(posteriorNormal, { 
+      x: "x", 
+      y: "y", 
+      stroke: "var(--plot-series-1)",
+      strokeWidth: 2 
+    }),
+    Plot.areaY(posteriorNormal, { 
+      x: "x", 
+      y: "y", 
+      fill: "var(--plot-series-1)",
+      fillOpacity: 0.15 
+    }),
+    Plot.ruleX([mapPoint.x], { 
+      stroke: "var(--plot-series-4)",
+      strokeWidth: 2, 
+      strokeDasharray: "4,2" 
+    }),
+    Plot.text(
+      [{ x: mapPoint.x, y: mapPoint.y, label: "MAP" }],
+      { 
+        x: "x", 
+        y: "y", 
+        text: "label", 
+        dy: -10, 
+        fill: "var(--plot-series-4)",
+        fontWeight: "bold" 
+      }
+    )
+  ]
+})
+```

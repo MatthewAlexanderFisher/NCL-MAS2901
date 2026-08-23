@@ -1,6 +1,5 @@
 ---
-execute:
-  echo: false
+# This page also displays R examples, so declare the Python engine explicitly.
 jupyter: mas2901
 ---
 
@@ -39,9 +38,7 @@ def set_plot_theme(mode="light"):
 ```
 
 ::: {.content-visible unless-format="pdf"}
-```{ojs}
-bodyFont = getComputedStyle(document.body).fontFamily
-```
+{{< include ../../_figures/part2/bayes-inference-shared.qmd >}}
 :::
 
 
@@ -78,64 +75,7 @@ Imagine the weather forecast says there is a $70\%$ chance of rain tomorrow.
   <summary><strong> Show Plot </strong></summary>
 ```
 
-```{ojs}
-// === (A) Umbrella decision: 70% chance of rain (everyday uncertainty) ===
-// Build a single horizontal bar split into "Rain" (0.7) and "No rain" (0.3)
-
-rainP = 0.7
-noRainP = 1 - rainP
-
-umbrellaSegments = [
-  { label: "Rain (70%)",    x1: 0,     x2: rainP,  which: "Rain" },
-  { label: "No rain (30%)", x1: rainP, x2: 1,      which: "No rain" }
-]
-```
-
-```{ojs}
-//| label: fig-umbrella-uncertainty
-//| fig-cap: Everyday uncertainty — a 70% chance of rain means our **belief** favours rain over no rain given current information.
-//| fig-align: center
-//| echo: false
-
-Plot.plot({
-  height: 120,
-  marginLeft: 50,
-  marginRight: 20,
-  marginBottom: 45,
-  x: { label: "Probability", domain: [0, 1], nice: false },
-  y: { axis: null },
-    style: {
-      width: "100%",
-      display: "block", 
-      margin: "0 auto", 
-      maxWidth: "960px",
-      background: "var(--brand-bg)",
-      color: "var(--brand-fg)",
-      fontFamily: bodyFont, 
-      fontSize: 12
-    },
-  marks: [
-    Plot.ruleY([0], { stroke: "var(--border)", strokeOpacity: 0.6 }),
-    // two stacked rectangles forming one bar
-    Plot.rectX(umbrellaSegments, {
-      x1: "x1",
-      x2: "x2",
-      y: 0,
-      height: 24,
-      fill: d => d.which === "Rain" ? "var(--brand-teal)" : "var(--brand-red)",
-      fillOpacity: d => d.which === "Rain" ? 0.35 : 0.15,
-      stroke: "var(--brand-fg)"
-    }),
-    // labels
-    Plot.text(umbrellaSegments, {
-      x: d => (d.x1 + d.x2) / 2,
-      y: 0,
-      text: "label",
-      dy: -8
-    })
-  ]
-})
-```
+{{< include ../../_figures/part2/umbrella-uncertainty.qmd >}}
 
 ```{=html}
 </details>
@@ -163,72 +103,7 @@ We could represent this belief as a Normal prior distribution centred at $60$ wi
   <summary><strong> Show Plot </strong></summary>
 ```
 
-```{ojs}
-// === (B) Exam-mark prior: Normal(μ=60, σ=10) ===
-// Domain and grid
-markDomain = [0, 100]
-markXs = d3.scaleLinear().domain(markDomain).ticks(400)
-
-// Normal PDF helper
-function normalPDF(x, mu, sigma){
-  const z = (x - mu) / sigma;
-  return Math.exp(-0.5 * z * z) / (sigma * Math.sqrt(2 * Math.PI));
-}
-
-// Prior parameters and curve
-mu_prior = 60
-sd_prior = 10
-
-markPrior = markXs.map(x => ({ x, y: normalPDF(x, mu_prior, sd_prior), which: "Prior  N(60, 10²)" }))
-
-// Shading bounds for "plausible" 50–70 region
-loBand = 50
-hiBand = 70
-bandFill = markXs
-  .filter(x => x >= loBand && x <= hiBand)
-  .map(x => ({ x, y: normalPDF(x, mu_prior, sd_prior) }))
-```
-
-```{ojs}
-//| label: fig-exam-prior-normal
-//| fig-cap: Prior for the average exam mark. A Normal prior centred at $60$ with standard deviation $10$ encodes “likely around $60$, plausibly $50–70$”.
-//| fig-align: center
-//| echo: false
-
-Plot.plot({
-  height: 320,
-  marginLeft: 48,
-  marginBottom: 45,
-  x: { label: "Average mark θ", domain: markDomain },
-  y: { label: "Density" },
-  style: {
-    width: "100%",
-    display: "block", 
-    margin: "0 auto", 
-    maxWidth: "960px",
-    background: "var(--brand-bg)",
-    color: "var(--brand-fg)",
-    fontFamily: bodyFont, 
-    fontSize: 12
-  },
-  marks: [
-    Plot.ruleY([0], { stroke: "var(--border)", strokeOpacity: 0.6 }),
-    // shade the 50–70 plausible band
-    Plot.areaY(bandFill, { x: "x", y: "y", fill: "var(--brand-teal)", fillOpacity: 0.12 }),
-    // main prior curve
-    Plot.lineY(markPrior, { x: "x", y: "y", stroke: "var(--brand-teal)", strokeWidth: 2 }),
-    // annotations
-    Plot.ruleX([mu_prior], { stroke: "var(--brand-fg)", strokeWidth: 2, strokeDasharray: "3,3", strokeOpacity: 0.4 }),
-    Plot.text(
-      [
-        { x: mu_prior + 8, y: normalPDF(mu_prior, mu_prior, sd_prior) * 0.99, label: "Prior mean 60" },
-        { x: (loBand+hiBand)/2, y: normalPDF((loBand+hiBand)/2, mu_prior, sd_prior) / 3, label: "Plausible 50–70" }
-      ],
-      { x: "x", y: "y", text: "label", dy: -10 }
-    )
-  ]
-})
-```
+{{< include ../../_figures/part2/exam-mark-prior.qmd >}}
 
 ```{=html}
 </details>
@@ -253,74 +128,7 @@ We could express this with a <span class="xref-no-num">[Beta distribution @sec-b
   <summary><strong> Show Plot </strong></summary>
 ```
 
-```{ojs}
-// === (C) Disease prevalence prior: Beta(2, 98) ~ mean 0.02, mass < 0.10 ===
-// Domain and grid
-pDomain = [0, 0.12]  // zoom in to show the small probabilities clearly
-pXs = d3.scaleLinear().domain(pDomain).ticks(400)
-
-// Beta PDF helper (using log-space for stability)
-function logGamma(z){ // Lanczos approximation via d3? keep simple: use Math.lgamma fallback if present; else crude Stirling
-  // Minimal Stirling for teaching visuals (fine for small α,β here)
-  return (z-0.5)*Math.log(z) - z + 0.5*Math.log(2*Math.PI);
-}
-function betaLogPDF(x, a, b){
-  if (x <= 0 || x >= 1) return -Infinity;
-  return (a-1)*Math.log(x) + (b-1)*Math.log(1-x) - (logGamma(a)+logGamma(b)-logGamma(a+b));
-}
-function betaPDF(x, a, b){
-  const lg = betaLogPDF(x, a, b);
-  return Number.isFinite(lg) ? Math.exp(lg) : 0;
-}
-
-// Prior parameters and curve
-alpha_prior = 2
-beta_prior  = 98
-
-betaPrior = pXs.map(x => ({ x, y: betaPDF(x, alpha_prior, beta_prior), which: "Prior  Beta(2, 98)" }))
-
-// Optional “< 10%” visual marker
-capThreshold = 0.10
-```
-
-```{ojs}
-//| label: fig-beta-prevalence-prior
-//| fig-cap: Prior for disease prevalence $\theta$ using a $\mathrm{Beta}(2, 98)$. This encodes “likely around $2\%$, very unlikely above $10\%$.”
-//| fig-align: center
-//| echo: false
-
-Plot.plot({
-  height: 320,
-  marginLeft: 48,
-  marginBottom: 45,
-  x: { label: "Prevalence θ", domain: pDomain },
-  y: { label: "Density" },
-  style: {
-    width: "100%",
-    display: "block", 
-    margin: "0 auto", 
-    maxWidth: "960px",
-    background: "var(--brand-bg)",
-    color: "var(--brand-fg)",
-    fontFamily: bodyFont, 
-    fontSize: 14
-  },
-  marks: [
-    Plot.ruleY([0], { stroke: "var(--border)", strokeOpacity: 0.6 }),
-    Plot.lineY(betaPrior, { x: "x", y: "y", stroke: "var(--brand-red)", strokeWidth: 2, strokeOpacity: 0.9 }),
-    Plot.areaY(betaPrior, { x: "x", y: "y", fill: "var(--brand-red)", fillOpacity: 0.15 }),
-    // visual cap at 10%
-    Plot.ruleX([capThreshold], { stroke: "var(--brand-fg)", strokeDasharray: "3,3", strokeOpacity: 0.6 }),
-    Plot.text(
-      [
-        { x: 0.02, y: betaPDF(0.02, alpha_prior, beta_prior), label: "Prior mean ≈ 2%" },
-        { x: capThreshold, y: 0, label: "10% upper cap (unlikely)" }
-      ],
-      { x: "x", y: "y", text: "label", dy: -10 }
-    )
-  ]
-})
-```
+{{< include ../../_figures/part2/disease-prevalence-prior.qmd >}}
 
 ```{=html}
 </details>
@@ -624,60 +432,7 @@ So, after seeing the data, our beliefs about $\theta$ have been updated: we now 
   <summary><strong> Show Plot </strong></summary>
 ```
 
-```{ojs}
-// Domain and grid
-mDomain = [0, 1]
-pdfXs = d3.scaleLinear().domain(mDomain).ticks(200)  // 201 points including 0 and 1
-
-// PDFs (closed-form)
-function priorPDF(x)     { return (x > 0 && x < 1) ? 1 : 0; }
-function posteriorPDF(x) { return (x > 0 && x < 1) ? 30 * x * (1 - x) ** 4 : 0; }
-
-// Data (use the scalar x from map!)
-prior = pdfXs.map(x => ({ x, y: priorPDF(x), which: "Prior  Beta(1,1)" }))
-post  = pdfXs.map(x => ({ x, y: posteriorPDF(x), which: "Posterior  Beta(2,5)" }))
-```
-
-```{ojs}
-//| label: fig-beta-posterior
-//| fig-cap: Prior and posterior distributions for the coin bias parameter $\theta=\Pr(\text{Head})$ after observing 1 head in 5 tosses. The posterior is more concentrated, reflecting reduced uncertainty about $\theta$ compared to the uniform prior
-//| fig-align: center
-//| echo: false
-
-// Create the plot directly without viewof
-Plot.plot({
-  // omit width to let it be responsive
-  height: 320,
-  marginLeft: 48,
-  marginBottom: 45,
-  x: { label: "θ", domain: [0, 1] },
-  y: { label: "Density" },
-  style: {
-    width: "100%",
-    display: "block", 
-    margin: "0 auto", 
-    maxWidth: "960px",
-    background: "var(--brand-bg)",
-    color: "var(--brand-fg)",
-    fontFamily: bodyFont, 
-    fontSize: 14
-  },
-  marks: [
-    Plot.ruleY([0], { stroke: "var(--border)", strokeOpacity: 0.6 }),
-    Plot.lineY(prior, { x: "x", y: "y", stroke: "var(--brand-red)",  strokeWidth: 2, strokeOpacity: 0.85 }),
-    Plot.areaY(prior, { x: "x", y: "y", fill: "var(--brand-red)", fillOpacity: 0.05 }),
-    Plot.lineY(post,  { x: "x", y: "y", stroke: "var(--brand-teal)", strokeWidth: 2 }),
-    Plot.areaY(post,  { x: "x", y: "y", fill: "var(--brand-teal)", fillOpacity: 0.2 }),
-    Plot.text(
-      [
-        { x: 0.8, y: priorPDF(0.8),     label: "Prior" },
-        { x: 0.35, y: posteriorPDF(0.3), label: "Posterior" }
-      ],
-      { x: "x", y: "y", text: "label", dy: -8 }
-    )
-  ]
-})
-```
+{{< include ../../_figures/part2/beta-posterior.qmd >}}
 
 ```{=html}
 </details>
@@ -1365,76 +1120,7 @@ Thus, the MAP estimator is the value of $\theta$ that is **most plausible** afte
   <summary><strong> Show Visualisation </strong></summary>
 ```
 
-```{ojs}
-//| label: fig-normal-map
-//| fig-cap: A Normal posterior density $\pi(\theta\mid\underline{x})$ with its MAP estimate indicated by the vertical line at the mode. For a Normal posterior, the MAP coincides with the mean. In this case, the MAP estimate is $\hat{\theta} = 1$.
-//| fig-align: center
-//| echo: false
-
-// Parameters for the (posterior) Normal distribution
-mu_post = 1        // posterior mean (and MAP)
-sigma_post = 0.4   // posterior standard deviation
-
-// Grid over the real line (about ±3σ around the mean)
-normalXs = d3.range(mu_post - 3 * sigma_post, mu_post + 3 * sigma_post, (6 * sigma_post) / 200)
-
-
-
-// Data for plotting
-posteriorNormal = normalXs.map(x => ({ x, y: normalPDF(x, mu_post, sigma_post) }))
-
-// MAP point (mode of the posterior)
-mapPoint = ({ x: mu_post, y: normalPDF(mu_post, mu_post, sigma_post) })
-
-Plot.plot({
-  height: 320,
-  marginLeft: 48,
-  marginBottom: 45,
-  x: { label: "θ", nice: true },
-  y: { label: "Posterior density" },
-  style: {
-    width: "100%",
-    display: "block",
-    margin: "0 auto",
-    maxWidth: "960px",
-    background: "var(--brand-bg)",
-    color: "var(--brand-fg)",
-    fontFamily: bodyFont,
-    fontSize: 14
-  },
-  marks: [
-    Plot.ruleY([0], { stroke: "var(--border)", strokeOpacity: 0.6 }),
-    Plot.lineY(posteriorNormal, { 
-      x: "x", 
-      y: "y", 
-      stroke: "var(--brand-teal)", 
-      strokeWidth: 2 
-    }),
-    Plot.areaY(posteriorNormal, { 
-      x: "x", 
-      y: "y", 
-      fill: "var(--brand-teal)", 
-      fillOpacity: 0.15 
-    }),
-    Plot.ruleX([mapPoint.x], { 
-      stroke: "var(--brand-red)", 
-      strokeWidth: 2, 
-      strokeDasharray: "4,2" 
-    }),
-    Plot.text(
-      [{ x: mapPoint.x, y: mapPoint.y, label: "MAP" }],
-      { 
-        x: "x", 
-        y: "y", 
-        text: "label", 
-        dy: -10, 
-        fill: "var(--brand-red)", 
-        fontWeight: "bold" 
-      }
-    )
-  ]
-})
-```
+{{< include ../../_figures/part2/normal-map.qmd >}}
 
 ```{=html}
 </details>
@@ -1528,5 +1214,3 @@ obtained by replacing $\theta_0$ with $\hat{\theta}_n$ in the Fisher information
     $$
         X \mid \theta \sim \textrm{Bin}(5,\theta).
     $$
-
-

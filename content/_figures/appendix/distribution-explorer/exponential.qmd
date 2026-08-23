@@ -1,0 +1,31 @@
+```{ojs}
+
+{
+  const λ = exp_lambda;
+  const [lo, hi] = domainExp(λ);
+  const data = linspace(lo, hi).map(x => ({ x, y: expPDF(x, λ) }));
+
+  const stats = md`**Mean** ${tex`= 1/\lambda`} = ${(1/λ).toFixed(2)}; 
+  **Var** ${tex`= 1/\lambda^2`} = ${((1/(λ**2))).toFixed(2)}.`;
+
+  const plot = Plot.plot({
+        width, height: 260,
+    style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)"           // drives 'currentColor'
+    },
+ y: { label: "PDF" }, x: { label: "x" },
+    marks: [
+      Plot.lineY(data, { x: "x", y: "y", stroke: ACCENT, strokeWidth: 2 }),
+      Plot.areaY(data, { x: "x", y: "y", fill: AREA }),
+      Plot.ruleY([0], { stroke: GRID, strokeOpacity: 0.6 })
+    ]
+  });
+
+  return html`<div class="dist-panel"><div class="stats">${stats}</div>${plot}</div>`;
+}
+```
+
+```{ojs}
+viewof exp_lambda = Inputs.range([0.2, 5], {value: 1, step: 0.1, label: md`${tex`\lambda`}`})
+```

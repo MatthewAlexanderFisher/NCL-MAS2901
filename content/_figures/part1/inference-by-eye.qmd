@@ -1,0 +1,288 @@
+```{ojs}
+// helper for curve scale
+approxSigma = Math.sqrt(approxVar)
+
+// density histogram + normal pdf (returns an SVG node)
+histVis = {
+  const colHist  = "var(--plot-series-1)";
+  const colCurve = "var(--plot-series-4)";
+  const gridCol  = "var(--plot-grid)";
+
+  // --- x-domain based on data (with padding) ---
+  const xMin = d3.min(data), xMax = d3.max(data);
+  const pad = 0.4 * (xMax - xMin || 1);
+  const domain = [xMin - pad, xMax + pad];
+
+  const binCount = bins ?? 30;
+
+  // --- compute density bins manually: density = count / (n * binWidth) ---
+  const bin = d3.bin().domain(domain).thresholds(binCount);
+  const B = bin(data);
+  const n = data.length;
+  for (const b of B) b.density = b.length / (n * (b.x1 - b.x0));
+
+  // --- normal pdf on same domain ---
+  const xs = d3.range(domain[0], domain[1], (domain[1] - domain[0]) / 400);
+  const normalPdf = (x, mu, sigma) => (1/(sigma*Math.sqrt(2*Math.PI))) * Math.exp(-0.5*((x-mu)/sigma)**2);
+  const curve = xs.map(x => ({ x, y: normalPdf(x, approxMu, approxSigma) }));
+
+  // --- shared y-domain (max of both) ---
+  const ymax = 1.1 * Math.max(
+    d3.max(B, d => d.density) ?? 0,
+    d3.max(curve, d => d.y) ?? 0
+  );
+
+  return Plot.plot({
+    height: 360,
+    marginLeft: 50,
+    marginBottom: 50,
+    x: { label: "x", domain },
+    y: { label: "Density", grid: true, domain: [0, ymax], tickSize: 6 },
+    style: {
+      background: "var(--plot-bg)",
+      fontSize: 14,
+      fontFamily: bodyFont,
+      width: "100%",
+      display: "block",
+      margin: "0 auto",
+      maxWidth: "1200px",
+      color: "var(--plot-fg)"
+    },
+    marks: [
+      // density histogram (teal)
+      Plot.rectY(
+        B,
+        { x1: d => d.x0, x2: d => d.x1, y: d => d.density,
+          fill: colHist, fillOpacity: 0.35, stroke: colHist, strokeOpacity: 0.7 }
+      ),
+      // fitted normal density
+      Plot.line(curve, { x: "x", y: "y", stroke: colCurve, strokeWidth: 2.5 }),
+      // baseline
+      Plot.ruleY([0], { stroke: gridCol, strokeOpacity: 0.4 })
+    ]
+  });
+}
+```
+
+```{ojs}
+// Ranges sourced from your controls
+mu_min = mu_true - muHalfWidth
+mu_max = mu_true + muHalfWidth
+var_min = 0
+var_max = sig2Max
+
+// Responsive 2D slider (scales with its container)
+viewof muVar2D = {
+  // Logical drawing size (not CSS pixels)
+  const width = 220, height = 220;
+  const margin = {top: 20, right: 5, bottom: 5, left: 5};
+  const W = width - margin.left - margin.right;
+  const H = height - margin.top - margin.bottom;
+
+  // --- helper: clamp number to [lo, hi] ---
+  const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+
+  // Scales (y increases upward in data space)
+  const x = d3.scaleLinear().domain([mu_min, mu_max]).range([0, W]).clamp(true);
+  const y = d3.scaleLinear().domain([var_min, var_max]).range([H, 0]).nice().clamp(true);
+
+  // Initial value
+  let state = {
+    approxMu: clamp(mu_true, mu_min, mu_max),
+    approxVar: clamp((var_max - var_min) * 0.4, var_min, var_max)
+  };
+
+  const bg = "var(--plot-bg)";
+  const grid = "var(--plot-grid)";
+  const colHandle = "var(--plot-series-4)";
+  const colAccent = "var(--plot-series-1)";
+
+  // Wrapper that controls responsive size
+  const wrap = html`<div style="
+    width: 100%;
+    max-width: 320px;      /* cap size; tweak as you like */
+    aspect-ratio: 1 / 1;   /* keep it square */
+    display: block;
+  "></div>`;
+
+  // SVG uses logical coords; CSS scales it
+  const svg = d3.create("svg")
+    .attr("viewBox", `0 0 ${width} ${height}`)
+    .attr("preserveAspectRatio", "xMidYMid meet")
+    .style("width", "100%")
+    .style("height", "100%")
+    .style("background", "transparent")
+    .style("color", "var(--plot-fg)")
+    .attr("stroke-opacity", 0.)
+    .style("font-family", bodyFont)
+    .style("font-size", "14px");
+
+  const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+  // Background panel
+  g.append("rect")
+    .attr("x", 0).attr("y", 0).attr("width", W).attr("height", H)
+    .attr("rx", 10)
+    .attr("fill", bg)
+    .attr("stroke", grid).attr("stroke-opacity", 0.5);
+
+  // Crosshairs
+  const crossX = g.append("line")
+    .attr("stroke", colAccent)
+    .attr("stroke-opacity", 0.7)
+    .attr("stroke-width", 1.5);
+
+  const crossY = g.append("line")
+    .attr("stroke", colAccent)
+    .attr("stroke-opacity", 0.7)
+    .attr("stroke-width", 1.5);
+
+  // Handle
+  const handle = g.append("circle")
+    .attr("r", 5)
+    .attr("fill", colHandle)
+    .attr("stroke", "var(--plot-on-accent)")
+    .attr("stroke-width", 1.5)
+    .style("cursor", "grab");
+
+  // Readout
+  const readout = svg.append("text")
+    .attr("x", width / 2)        // center horizontally
+    .attr("y", margin.top / 1.5) // just above the chart area
+    .attr("text-anchor", "middle")
+    .attr("fill", "var(--plot-fg)")
+    .style("font-weight", 400);
+
+  function updateVisual() {
+    const cx = x(state.approxMu), cy = y(state.approxVar);
+    crossX.attr("x1", 0).attr("x2", W).attr("y1", cy).attr("y2", cy);
+    crossY.attr("x1", cx).attr("x2", cx).attr("y1", 0).attr("y2", H);
+    handle.attr("cx", cx).attr("cy", cy);
+    readout.text(`μ≈ ${state.approxMu.toFixed(2)},        σ²≈ ${state.approxVar.toFixed(2)}`);
+  }
+
+  function setFromPointer(evt) {
+    const [px, py] = d3.pointer(evt, g.node()); // in SVG user units (matches viewBox)
+    const mu = clamp(x.invert(px), mu_min, mu_max);
+    const vv = clamp(y.invert(py), var_min, var_max);
+    state = { approxMu: mu, approxVar: vv };
+    root.value = { approxMu: state.approxMu, approxVar: state.approxVar };
+    root.dispatchEvent(new CustomEvent("input", {bubbles: true}));
+    updateVisual();
+  }
+
+  // Interaction overlay
+  g.append("rect")
+    .attr("x", 0).attr("y", 0).attr("width", W).attr("height", H)
+    .attr("fill", "transparent")
+    .style("cursor", "crosshair")
+    .on("pointerdown", function(evt) {
+      this.setPointerCapture?.(evt.pointerId);
+      handle.style("cursor", "grabbing");
+      setFromPointer(evt);
+    })
+    .on("pointermove", function(evt) {
+      if (evt.pressure > 0 || evt.buttons) setFromPointer(evt);
+    })
+    .on("pointerup", function(evt) {
+      this.releasePointerCapture?.(evt.pointerId);
+      handle.style("cursor", "grab");
+    });
+
+  // Root element with .value is the wrapper (so CSS controls size)
+  const root = wrap;
+  root.append(svg.node());
+  root.value = { approxMu: state.approxMu, approxVar: state.approxVar };
+
+  updateVisual();
+  return root;
+}
+
+// Reactive outputs
+approxMu = muVar2D.approxMu
+approxVar = muVar2D.approxVar
+```
+
+```{ojs}
+// Layout container placing the histogram (left, 2fr) and slider (right, 1fr)
+{
+  const wrap = html`<div style="
+    display: grid;
+    grid-template-columns: 3fr 1fr;  /* change to 3fr 1fr for ~3:1 */
+    gap: 0.5rem;
+    align-items: start; /* left plot stays top-aligned */
+  "></div>`;
+
+  // Histogram (left)
+  wrap.append(histVis);
+
+  // Slider (right, vertically centered)
+  const sliderBox = html`<div style="display:flex; align-items:center; height:100%"></div>`;
+  sliderBox.append(viewof muVar2D);
+  wrap.append(sliderBox);
+
+  return wrap;
+}
+```
+
+```{ojs}
+// data
+data = {
+  resample; // reacts to the "Resimulate data" button
+  const rnd = d3.randomNormal(mu_true, sigma_true);
+  return Array.from({ length: n }, () => rnd());
+}
+```
+
+```{ojs}
+// --- Build one merged, collapsible control "input" ---
+viewof controls = {
+  const resimBtn = Inputs.button("Resimulate data");
+  resimBtn.classList.add("btn-resim");
+
+  const leftForm = Inputs.form({
+    n: Inputs.range([1, 400], { value: 50, step: 1, label: md`${tex`n`}` }),
+    mu_true: Inputs.range([-5, 5], { value: 0.5, step: 0.05, label: md`${tex`\mu_{\text{true}}`}` }),
+    sigma_true: Inputs.range([0.3, 4], { value: 1.2, step: 0.05, label: md`${tex`\sigma_{\text{true}}`}` })
+  }, { submit: false });
+
+  const rightForm = Inputs.form({
+    muHalfWidth: Inputs.range([1, 10], { value: 5, step: 0.05, label: md`${tex`\mu\text{-range}`}` }),
+    sig2Max: Inputs.range([0.2, 10], { value: 5, step: 0.05, label: md`${tex`\sigma^2\text{ max}`}` }),
+    bins: Inputs.range([10, 60], { value: 12, step: 1, label: "Histogram bins" })
+  }, { submit: false });
+
+  const root = html`<details class="controls-root" open>
+    <summary>Simulation controls</summary>
+    <div class="controls-grid">
+      <div class="controls-col"><h4>Data & truth</h4></div>
+      <div class="controls-col"><h4>Grid & display</h4></div>
+    </div>
+  </details>`;
+
+  const grid = root.querySelector(".controls-grid");
+  grid.children[0].append(leftForm);
+  grid.children[1].append(rightForm);
+
+  const btnWrap = html`<div style="display:flex; justify-content:flex-start; margin-top:6px;"></div>`;
+  btnWrap.append(resimBtn);
+  grid.children[1].append(btnWrap);
+
+  const getValue = () => ({ ...leftForm.value, ...rightForm.value, resim: resimBtn.value });
+  const update = () => { root.value = getValue(); root.dispatchEvent(new CustomEvent("input", { bubbles: true })); };
+
+  grid.addEventListener("input", update);
+  queueMicrotask(update);
+  return root;
+}
+
+// --- Expose reactive vars
+n = controls.n
+mu_true = controls.mu_true
+sigma_true = controls.sigma_true
+muHalfWidth = controls.muHalfWidth
+sig2Max = controls.sig2Max
+bins = controls.bins
+resample = controls.resim
+
+```

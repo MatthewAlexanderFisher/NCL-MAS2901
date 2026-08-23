@@ -1,0 +1,285 @@
+# Examinable Content {#sec-examinable-content-summary}
+
+## Part I - Foundations
+
+<span class="xref-no-num">[Chapter 1 @sec-probability-theory]</span>, <span class="xref-no-num">[Chapter 2 @sec-what-is-statistics]</span>, and <span class="xref-no-num">[Chapter 3 @sec-types-of-inference]</span> provide **introductory background**. They contain important revision material, but introduce very little that is *new* for this course.
+
+### Chapter 1 - Probability Theory
+
+<details class="essential-points">
+<summary> Assessment Focus </summary>
+
+The **core skills** from this chapter that you may be assessed on are:
+
+1. **Computing probabilities** using basic rules
+   (e.g. complements, unions, intersections, conditional probability).
+
+2. **Manipulating expectations**
+   (linearity of expectation, expectations of simple random variables, using PDFs/PMFs).
+
+3. **Rewriting and simplifying probability statements**
+   (e.g. applying the law of total probability, conditioning).
+
+These competencies underpin nearly all later topics.
+
+</details>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-bayes-theorem">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to recall and use <span class="xref-no-num">[Bayes' Theorem for events @thm-bayes]</span>.
+</span>
+</div>
+
+<div class="revision-content" id="rev-bayes-theorem" hidden>
+
+Bayes' theorem gives the probability of event (A) given event (B):
+$$
+\Pr(A \mid B)
+= \frac{\Pr(B \mid A)\Pr(A)}{\Pr(B)}.
+$$
+
+Its <span class="xref-no-num">[proof @prf-bayes]</span> is **not examinable**, but you must be able to **apply** the formula in simple settings.
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-random-variables">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Understand the role of <span class="xref-no-num">[random variables @sec-random-variables]</span> in probability theory.
+</span>
+</div>
+
+<div class="revision-content" id="rev-random-variables" hidden>
+
+A **random variable** is a numerical quantity whose value depends on the outcome of a random experiment.
+
+You should understand:
+
+* The distinction between **discrete** and **continuous** random variables.
+* How random variables are described using **PMFs**, **PDFs**, **CDFs**, and **expectations**.
+* How events such as $X \leq x$ or $X \in A$ are represented in terms of a random variable's distribution. In particular, for a *continuous random variable* with PDF $f_X(x)$, we have
+  $$ 
+  \mathrm{Pr}(X \in A) = \int_A f_X(x) \,\mathrm{d}x.
+  $$
+
+This conceptual understanding is essential for later chapters involving likelihoods, estimators, and posterior distributions.
+
+</div>
+</div>
+
+
+### Chapter 2 - What is Statistical Inference? 
+
+<details class="essential-points">
+<summary> Assessment Focus </summary>
+
+- <span class="xref-no-num">[Chapter 2 @sec-what-is-statistics]</span> presents the **core idea** of statistical inference:
+  1. We 
+
+
+</details>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-statistical-model">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Understand the role played by a <span class="xref-no-num">[statistical model @sec-statistical-models]</span>.
+</span>
+</div>
+
+<div class="revision-content" id="rev-statistical-model" hidden>
+
+A **statistical model** is specified whenever we write something like  
+$$
+X_i \sim \mathrm{Distribution}(\theta).
+$$
+
+This statement encodes our assumptions about how the data are generated. For example, writing  
+$$
+X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu,\sigma^2)
+$$
+tells us:
+
+- which family of distributions we are assuming (here: Normal),
+- what the parameters are (here: $\mu$ and $\sigma^2$),
+- and any structural assumptions (independent, identically distributed).
+
+The statistical model provides the **mathematical structure** needed to compute likelihoods, estimators, posteriors, and hypothesis tests.
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-data-vs-parameters">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Understand the **difference** between data $X_1,\ldots, X_n$ and parameters $\theta$ within a statistical model.
+</span>
+</div>
+
+<div class="revision-content" id="rev-data-vs-parameters" hidden>
+
+In any statistical model:
+
+- The **data** $X_1,\ldots,X_n$ are **random variables**.  
+- The **parameter** $\theta$ controls the distribution of each $X_i$.
+
+</div>
+</div>
+
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-types-of-data">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Understand that different <span class="xref-no-num">[types of data @sec-types-of-data]</span> require different statistical models.
+</span>
+</div>
+
+<div class="revision-content" id="rev-types-of-data" hidden>
+
+For **numerical data**, there are two main categories:
+
+1. **Continuous data**  
+   - Can take *any real value* within an interval.  
+   - Must be modelled using **continuous distributions**, such as:  
+     - Normal  
+     - Uniform  
+     - Exponential  
+     - Gamma  
+     - Log-normal  
+   - These models have **PDFs** and require integration when computing probabilities.
+
+2. **Discrete data**  
+   - Can take only *specific* isolated values (typically integers).  
+   - Must be modelled using **discrete distributions**, such as:  
+     - Binomial  
+     - Geometric  
+     - Poisson  
+     - Negative Binomial  
+   - These models have **PMFs** and require summation when computing probabilities.
+
+Correctly identifying the data type ensures the likelihood function, estimators, and inferential procedures are appropriate for the problem.
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-goal-inference">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Understand that the goal of **statistical inference** is to learn about an unknown parameter $\theta$ using observed data.
+</span>
+</div>
+
+<div class="revision-content" id="rev-goal-inference" hidden>
+
+**Statistical inference** is the process of using data to draw conclusions about an unknown aspect of the population, usually represented by a parameter $\theta$.
+
+The basic setup is:
+
+* We observe data $\underline{x} = (x_1,\ldots,x_n)$.
+* We assume the data come from a distribution $f(x \mid \theta)$, but the value of $\theta$ is unknown.
+* Our aim is to use the sample to learn about $\theta$, and therefore about the population distribution.
+
+Typically, we assume the sample is **i.i.d.**:
+$$
+X_1,\ldots,X_n \stackrel{\text{iid}}{\sim} \mathrm{Distribution}(\theta).
+$$
+
+- **Independent**: knowing one observation tells us nothing about another.  
+- **Identically distributed**: all observations follow the same model $f(x \mid \theta)$.
+
+Under this framework, statistical inference asks:
+
+> Given the data we have, what can we say about the underlying parameter $\theta$?
+
+This includes estimating $\theta$, quantifying uncertainty, and performing hypothesis tests. All of these activities are different ways of using data to learn about the population through the parameter $\theta$.
+
+</div>
+</div>
+
+
+### Chapter 3 - Types of Inference 
+
+<details class="essential-points">
+<summary> Assessment Focus </summary>
+
+- <span class="xref-no-num">[Chapter 3 @sec-types-of-inference]</span> presents a **framework** for organising statistical inference into two approaches (Frequentist vs. Bayesian) and three core tasks (point estimation, interval estimation, and hypothesis testing).
+
+- The key skill is to **recognise this structure** when answering a question. In particular, always identify:
+
+  1. **Which inferential approach is being used?**  
+     Possible answers: *Frequentist* or *Bayesian*.
+
+  2. **Which inference task is the question asking for?**  
+     Possible answers: *point estimation*, *interval estimation*, or *hypothesis testing*.
+
+  Being clear on these two aspects will help you interpret the question correctly and select the appropriate tools and definitions.
+
+- Finally, you **will be examined** on comparing the **interpretation** of Frequentist and Bayesian procedures. The key differences are summarised in @tbl-bayes-vs-freq. In short:
+
+  - **Frequentist perspective:**  
+    The parameter $\theta$ is **non-random** but **unknown**. Probability statements refer only to the *random data*, never to $\theta$ itself. (Hence: confidence intervals do **not** assign probability to $\theta$.)
+
+  - **Bayesian perspective:**  
+    The parameter $\theta$ is treated as a **random variable**, and its randomness represents *uncertainty about its true value*. Probability statements such as  
+    $$
+    \Pr(a < \theta < b \mid \underline{x})
+    $$  
+    *are meaningful*, because the posterior distribution assigns uncertainty directly to $\theta$.
+
+
+</details>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-bayes-vs-freq">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Understand the differences between the <span class="xref-no-num">[Bayesian and Frequentist @sec-philo-inference]</span> approaches to statistical inference .
+</span>
+</div>
+
+<div class="revision-content" id="rev-bayes-vs-freq" hidden>
+
+1. **Frequentist Inference:** 
+   - Data $X_i$ is **treated as random**
+   - The parameter $\theta$ is treated as **fixed** but **unknown**.
+   - Uncertainty arises from repeated experiments.
+2. **Bayesian Inference:**
+   - The **data** are fixed once observed.
+   - The **parameter** $\theta$ is treated as a random variable, with uncertainty described by a **prior distribution** $\pi(\theta)$.
+   - Inference updates this prior in light of the data, giving a **posterior distribution** $\pi(\theta \mid \text{data})$.
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-four-tasks">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Understand that there are <span class="xref-no-num">[four types of task @sec-inference-tasks]</span> in statistical inference.
+</span>
+</div>
+
+<div class="revision-content" id="rev-four-tasks" hidden>
+
+The four types of tasks are:
+
+1. **Point Estimation:**
+   Give a single "best guess" $\hat{\theta}$ for the parameter.
+2. **Interval Estimation:**
+   Quantify uncertainty in $\theta$ by reporting a range of values.
+3. **Hypothesis Testing:**
+    Ask a **yes/no question** about the parameter $\theta$. This is done by formalising a claim (the *null hypothesis*) and then using the data to judge whether this claim is **compatible with the evidence**.
+4. **Prediction:**
+   Use data to predict future or unobserved outcomes. **Prediction is not covered in this course**.
+
+</div>
+</div>
+
+

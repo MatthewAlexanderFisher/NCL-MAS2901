@@ -1,0 +1,198 @@
+```{ojs}
+// --- Define a "likelihood-like" function with multiple bumps ---
+// L(θ) = exp( - (θ^4 - θ^2 + 0.3 θ) )
+L = θ => Math.exp(-(θ**4 - θ**2 + 0.3*θ))
+
+// Sample the function on a grid
+θmin = -2.2
+θmax =  2.2
+N = 801
+Θ = Array.from({length: N}, (_, i) => θmin + i*(θmax - θmin)/(N - 1))
+Y = Θ.map(L)
+
+// Find max (height) and argmax (location)
+imax = Y.reduce((best, y, i) => (y > Y[best] ? i : best), 0)
+θhat = Θ[imax]
+Lmax = Y[imax]
+```
+
+```{ojs}
+// Create the base plot without LaTeX labels
+argmaxPlot = Plot.plot({
+  width: Math.min(720, Math.max(380, width - 40)),
+  height: 340,
+  style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)",
+    fontFamily: bodyFont,
+    fontSize: 14
+  },
+  marginLeft: 65,
+  marginBottom: 50,
+  marginTop: 20,
+  marginRight: 20,
+  x: {label: "", domain: [θmin, θmax]},  
+  y: {label: "", nice: true},       
+  marks: [
+    // Likelihood curve
+    Plot.line(
+      Θ.map((t,i) => ({θ: t, L: Y[i]})), 
+      {x: "θ", y: "L", stroke: "var(--plot-series-4)", strokeWidth: 2}
+    ),
+    
+    // Vertical line at argmax (location)
+    Plot.ruleX([θhat], {strokeDasharray: "4,3", stroke: "var(--plot-fg)", ariaLabel: "argmax", strokeOpacity: 0.8}),
+    
+    // Horizontal line at max (height)
+    Plot.ruleY([Lmax], {strokeDasharray: "4,3", stroke: "var(--plot-fg)", ariaLabel: "max", strokeOpacity: 0.8}),
+
+    // Axes at baseline
+    Plot.ruleX([θmin], {stroke: "var(--plot-fg)"}),
+    Plot.ruleY([0], {stroke: "var(--plot-fg)"}),
+
+    // Point at the maximiser
+    Plot.dot(
+      [{θ: θhat, L: Lmax}], 
+      {x: "θ", y: "L", r: 5, fill: "var(--plot-series-1)"}
+    )
+  ]
+})
+
+```
+
+```{ojs}
+//| fig-cap: Illustration of the difference between $\argmax$ and $\max$. The red curve shows a likelihood function $L(\theta;\underline{x})$. The vertical dashed line marks the $\argmax$ (the parameter value $\hat\theta$ where the maximum occurs), while the horizontal dashed line marks the $\max$ (the maximum likelihood value itself).
+
+// Add LaTeX overlays after plot renders
+plotWithLatex = {
+  // Create container
+  const container = html`<div style="position: relative; display: inline-block;"></div>`;
+  
+  // Add the plot
+  container.append(argmaxPlot);
+  
+  // Function to add labels after render
+  const addLabels = () => {
+    // Get the SVG element
+    const svg = container.querySelector("svg");
+    if (!svg) {
+      requestAnimationFrame(addLabels);
+      return;
+    }
+    
+    // Get dimensions from the SVG
+    const svgRect = svg.getBoundingClientRect();
+    const plotWidth = svgRect.width;
+    const plotHeight = svgRect.height;
+    
+    // Approximate margins from plot config
+    const marginLeft = 74;
+    const marginBottom = 30;
+    const marginTop = 30;
+    const marginRight = 20;
+    
+    // Calculate plot area dimensions
+    const plotAreaWidth = plotWidth - marginLeft - marginRight;
+    const plotAreaHeight = plotHeight - marginTop - marginBottom;
+    
+    // Linear mapping functions for data to pixel coordinates
+    const xToPixel = (x) => marginLeft + ((x - θmin) / (θmax - θmin)) * plotAreaWidth;
+    const yToPixel = (y) => marginTop + (1 - (y / (Math.max(...Y) * 1.05))) * plotAreaHeight;
+    
+    // Calculate positions
+    const θhatPixel = xToPixel(θhat);
+    const LmaxPixel = yToPixel(Lmax);
+    
+    // Create and add LaTeX labels with boxes
+    const labels = [
+      // X-axis label
+      {
+        element: tex`\theta`,
+        style: `
+          position: absolute;
+          bottom: 8px;
+          left: ${plotWidth / 2}px;
+          transform: translateX(-50%);
+          pointer-events: none;
+        `
+      },
+      // Y-axis label  
+      {
+        element: tex`L(\theta;\,\underline{x})`,
+        style: `
+          position: absolute;
+          left: 8px;
+          top: ${(plotHeight - marginBottom) / 2}px;
+          transform: rotate(-90deg) translateY(5px);
+          transform-origin: left center;
+          pointer-events: none;
+        `
+      },
+      // Argmax label at bottom - positioned on x-axis
+      {
+        element: tex`\arg\max\, L(\theta;\,\underline{x})`,
+        style: `
+          position: absolute;
+          top: ${plotHeight - marginBottom}px;
+          left: ${θhatPixel}px;
+          transform: translate(-50%, -50%);
+          font-size: 13px;
+          pointer-events: none;
+          color: var(--plot-fg);
+          background: var(--plot-bg);
+          padding: 3px 6px;
+          border: 1px solid var(--plot-grid);
+          border-radius: 4px;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        `
+      },
+      // Max value label on left - positioned on y-axis
+      {
+        element: tex`\max\, L(\theta;\,\underline{x})`,
+        style: `
+          position: absolute;
+          top: ${LmaxPixel}px;
+          left: ${marginLeft}px;
+          transform: translate(-50%, -50%);
+          font-size: 13px;
+          pointer-events: none;
+          color: var(--plot-fg);
+          background: var(--plot-bg);
+          padding: 3px 6px;
+          border: 1px solid var(--plot-grid);
+          border-radius: 4px;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        `
+      }
+    ];
+    
+    // Add each label to the container
+    labels.forEach(({element, style}) => {
+      const div = html`<div style="${style}"></div>`;
+      div.append(element);
+      container.append(div);
+    });
+    
+    // Hide the original axis labels
+    // X-axis label
+    const xAxisLabel = svg.querySelector('g[aria-label="x-axis label"]');
+    if (xAxisLabel) xAxisLabel.style.display = "none";
+    
+    // Y-axis label
+    const yAxisLabel = svg.querySelector('g[aria-label="y-axis label"]');
+    if (yAxisLabel) yAxisLabel.style.display = "none";
+    
+    // Alternative: hide any text elements that contain θ or L(θ
+    svg.querySelectorAll('text').forEach(text => {
+      if (text.textContent === 'θ' || text.textContent.includes('L(θ')) {
+        text.style.display = 'none';
+      }
+    });
+  };
+  
+  // Schedule label addition
+  requestAnimationFrame(addLabels);
+  
+  return container;
+}
+```

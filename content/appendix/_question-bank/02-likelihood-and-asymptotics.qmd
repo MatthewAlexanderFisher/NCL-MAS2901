@@ -1,0 +1,1271 @@
+::: {.callout-important .question appearance="minimal" data-tags="probability normal student-t chi-squared" data-difficulty="3"}
+## Deriving the Student-$t$ distribution
+
+Let $X_1,\ldots, X_n \stackrel{\text{i.i.d.}}{\sim} \mathcal{N}(\mu,\sigma^2)$. From @prp-normal-sample-mean and @prp-normal-sample-variance, we saw that
+
+1. $\bar{X} \sim \mathcal{N}(\mu, \sigma^2/n)$,
+2. $\dfrac{(n-1)S^2}{\sigma^2} \;\sim\; \chi^2_{\,n-1}$, and
+3. The sample variance $S^2$ was independent of the sample mean $\bar{X}$.
+
+Derive the PDF of the random variable
+$$
+T = \frac{\bar{X} - \mu}{S / \sqrt{n}}.
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+Set 
+$$
+Z \;=\; \frac{\bar{X}-\mu}{\sigma/\sqrt{n}} \sim \mathcal{N}(0,1), 
+\qquad 
+U \;=\; \frac{(n-1)S^2}{\sigma^2} \sim \chi^2_{\,n-1},
+$$
+with $Z$ independent of $U$. Then
+$$
+T \;=\; \frac{\sigma Z}{\sqrt{(\sigma^2 U)/(n-1)}} \;=\; \frac{Z}{\sqrt{U/\nu}},
+\qquad \nu := n-1.
+$$
+
+**Conditional distribution.** Conditioning on $U=u$,
+$$
+T \mid U=u \;=\; \frac{Z}{\sqrt{u/\nu}}
+\;\sim\; \mathcal{N}\!\left(0,\; \frac{\nu}{u}\right),
+$$
+so its conditional density is
+$$
+f_{T\mid U}(t\mid u)
+= \sqrt{\frac{u}{2\pi\nu}}\;\exp\!\left(-\frac{u}{2\nu}t^2\right), \qquad t\in\mathbb{R}.
+$$
+
+**Mixture over $U$.** The marginal PDF of $T$ is
+$$
+f_T(t) 
+= \int_0^\infty f_{T\mid U}(t\mid u)\, f_U(u)\, \mathrm{d}u,
+$$
+
+where $f_U(u) = \dfrac{1}{2^{\nu/2}\Gamma(\nu/2)}\,u^{\nu/2-1} e^{-u/2}$ for $u>0$. Thus
+
+\begin{align*}
+f_T(t)
+&= \int_0^\infty 
+\left[\sqrt{\frac{u}{2\pi\nu}}\;e^{-\frac{u}{2\nu}t^2}\right]
+\left[\frac{1}{2^{\nu/2}\Gamma(\nu/2)}\,u^{\nu/2-1} e^{-u/2}\right] \mathrm{d}u \\
+&= \frac{1}{\sqrt{2\pi\nu}\,2^{\nu/2}\Gamma(\nu/2)}
+\int_0^\infty 
+u^{\frac{\nu+1}{2}-1}
+\exp\!\left\{-\frac{1}{2}\!\left(1+\frac{t^2}{\nu}\right)u\right\}
+\,\mathrm{d}u.
+\end{align*}
+
+Use the Gamma integral $\displaystyle \int_0^\infty u^{a-1} e^{-b u}\,\mathrm{d}u = \Gamma(a)\,b^{-a}$ with
+$a=\frac{\nu+1}{2}$ and $b=\frac{1}{2}\!\left(1+\frac{t^2}{\nu}\right)$:
+
+\begin{align*}
+f_T(t)
+&= \frac{1}{\sqrt{2\pi\nu}\,2^{\nu/2}\Gamma(\nu/2)}
+\cdot \Gamma\!\left(\frac{\nu+1}{2}\right)
+\left[\frac{1}{2}\!\left(1+\frac{t^2}{\nu}\right)\right]^{-\frac{\nu+1}{2}} \\
+&= \frac{\Gamma\!\left(\frac{\nu+1}{2}\right)}{\sqrt{\nu\pi}\,\Gamma\!\left(\frac{\nu}{2}\right)}
+\left(1+\frac{t^2}{\nu}\right)^{-\frac{\nu+1}{2}}, \qquad t\in\mathbb{R}.
+\end{align*}
+
+This is the **Student-$t$** density with $\nu=n-1$ degrees of freedom:
+$$
+T \sim t_\nu \quad \text{with} \quad
+f_T(t) = \frac{\Gamma\!\left(\frac{\nu+1}{2}\right)}{\sqrt{\nu\pi}\,\Gamma\!\left(\frac{\nu}{2}\right)}
+\left(1+\frac{t^2}{\nu}\right)^{-\frac{\nu+1}{2}}.
+$$
+
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="statistics" data-difficulty="0"}
+## Sample Mean and Standard Deviation
+
+Emergency admissions to $10$ hospitals were recorded on a particular day.  
+
+The summary statistics were:
+
+- $n = 10$  
+- $\sum_{i=1}^n x_i = 207$  
+- $\sum_{i=1}^n x_i^2 = 4501$
+
+Find the **sample mean** $\bar{x}$ and the **sample standard deviation** $s$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+The sample mean is
+$$
+\bar{x} = \frac{1}{n}\sum_{i=1}^n x_i = \frac{207}{10} = 20.7.
+$$
+
+To find the sample variance,
+$$
+s^2 = \frac{1}{n-1}\left(\sum_{i=1}^n x_i^2 - n \bar{x}^2\right).
+$$
+
+Substituting the values:
+$$
+s^2 = \frac{1}{9}\left(4501 - 10 \times (20.7)^2\right)
+= \frac{1}{9}(4501 - 4284.9)
+= 24.011.
+$$
+
+Taking the square root gives the sample standard deviation:
+$$
+s = \sqrt{24.011} \approx 4.900.
+$$
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="clt probability" data-difficulty="1" #q-clt-approx1}
+## Central Limit Theorem Approximation
+
+The scores that responders give on a questionnaire can be assumed to be independent random variables, each with the following probability distribution:
+
+| Score | 1   | 2   | 3   | 4   | 5   |
+|:-------|:-----:|:-----:|:-----:|:-----:|:-----:|
+| Probability | 0.3 | 0.1 | 0.2 | 0.1 | 0.3 |
+
+Use the <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span> to approximate the probability that the average score from $n = 100$ responders lies in the range $(2.8,\,3.2)$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+Let $X$ be the score for a randomly selected responder.  
+We first compute the moments.
+
+**Expected value:**
+$$
+\mathrm{E}[X] = \sum_{i=1}^5 i \Pr(X=i)
+= 1(0.3) + 2(0.1) + 3(0.2) + 4(0.1) + 5(0.3) = 3.
+$$
+
+**Second moment:**
+$$
+\mathrm{E}[X^2] = \sum_{i=1}^5 i^2 \Pr(X=i)
+= 1^2(0.3) + 2^2(0.1) + 3^2(0.2) + 4^2(0.1) + 5^2(0.3) = 11.6.
+$$
+
+**Variance:**
+$$
+\operatorname{Var}(X) = \mathrm{E}[X^2] - (\mathrm{E}[X])^2 = 11.6 - 9 = 2.6.
+$$
+
+---
+
+Let $\bar{X}$ be the sample mean. By the Central Limit Theorem,
+$$
+\bar{X} \overset{\text{approx.}}{\sim} \mathcal{N}\!\left(3,\; \frac{2.6}{100}\right).
+$$
+
+We want:
+$$
+\Pr(2.8 < \bar{X} < 3.2)
+= \Pr\!\left(\frac{2.8-3}{\sqrt{2.6/100}} < Z < \frac{3.2-3}{\sqrt{2.6/100}}\right),
+$$
+where $Z \sim N(0,1)$.
+
+Compute the bounds:
+$$
+\frac{2.8-3}{\sqrt{0.026}} = -1.24, 
+\qquad
+\frac{3.2-3}{\sqrt{0.026}} = 1.24.
+$$
+
+Thus,
+$$
+\Pr(-1.24 < Z < 1.24) 
+= \Pr(Z < 1.24) - \Pr(Z < -1.24).
+$$
+
+Using R, Python or referring to the standard normal tables:
+$$
+\Pr(Z < 1.24) = 0.8925, \qquad \Pr(Z < -1.24) = 0.1075.
+$$
+
+So,
+$$
+\Pr(2.8 < \bar{X} < 3.2) \approx 0.8925 - 0.1075 = 0.785.
+$$
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="clt binomial" data-difficulty="1" #q-binom-clt}
+## Normal Approximation to the Binomial
+
+Use the <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span> to justify the Normal approximation to the <span class="xref-no-num">[Binomial @sec-binom]</span>.  
+
+That is, if $X \sim \mathrm{Bin}(n,p)$, show that for large $n$ (with $p \neq 0,1$),
+$$
+X \overset{\text{approx.}}{\sim} \mathcal{N} \big(np,\; np(1-p)\big).
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+The Binomial distribution counts the number of successes in $n$ independent Bernoulli trials.
+
+For trial $i$, define the indicator
+$$
+I_i =
+\begin{cases}
+1, & \text{if success}, \\
+0, & \text{if failure}.
+\end{cases}
+$$
+
+Each $I_i$ has
+$$
+\mathrm{E}[I_i] = p, \qquad \operatorname{Var}(I_i) = p(1-p).
+$$
+
+The total number of successes is
+$$
+X = \sum_{i=1}^n I_i.
+$$
+
+By the Central Limit Theorem, the sum of independent, identically distributed random variables is approximately Normal when $n$ is large. Therefore,
+$$
+X \overset{\text{approx.}}{\sim} \mathcal{N} \big(np,\; np(1-p)\big).
+$$
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="estimator bias variance" data-difficulty="1" #q-prop-of-estimators1}
+## Properties of an Estimator I
+
+Suppose $X_1, X_2, X_3$ are independent random variables, each with expectation  
+$\mathrm{E}[X] = 2\theta + 1$ and variance $\operatorname{Var}(X) = \theta^2/12$, where $\theta$ is an unknown parameter.  
+
+Consider the estimator $\hat{\theta}$ of $\theta$, where
+$$
+\hat{\theta} = 2X_1 - X_2 + X_3.
+$$
+
+Answer the following:
+
+(a) Find the **expectation** of the estimator $\hat{\theta}$.  
+(b) Find the **variance** of the estimator $\hat{\theta}$.  
+(c) Determine the **bias** of the estimator $\hat{\theta}$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a) Expectation**
+$$
+\mathrm{E}[\hat{\theta}] = \mathrm{E}[2X_1 - X_2 + X_3] 
+= 2\mathrm{E}[X_1] - \mathrm{E}[X_2] + \mathrm{E}[X_3].
+$$
+Since each $X_i$ has the same mean $\mathrm{E}[X] = 2\theta + 1$,
+$$
+\mathrm{E}[\hat{\theta}] = 2(2\theta+1) - (2\theta+1) + (2\theta+1) = 4\theta + 2.
+$$
+
+---
+
+**(b) Variance**
+$$
+\operatorname{Var}(\hat{\theta}) = \operatorname{Var}(2X_1 - X_2 + X_3).
+$$
+Since the $X_i$ are independent,
+$$
+\operatorname{Var}(\hat{\theta}) = 4\operatorname{Var}(X_1) + \operatorname{Var}(X_2) + \operatorname{Var}(X_3).
+$$
+Each has variance $\theta^2/12$, so
+$$
+\operatorname{Var}(\hat{\theta}) = (4+1+1)\frac{\theta^2}{12} = \frac{\theta^2}{2}.
+$$
+
+---
+
+**(c) Bias**
+$$
+\operatorname{Bias}(\hat{\theta}) = \mathrm{E}[\hat{\theta}] - \theta = (4\theta + 2) - \theta = 3\theta + 2.
+$$
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="estimation bias variance" data-difficulty="1" #q-prop-of-estimators2}
+## Properties of an Estimator II
+
+Suppose $X_1, X_2, X_3, X_4$ are independent random variables, each with  
+$\mathrm{E}[X] = 3\theta$ and $\operatorname{Var}(X) = \theta^2/9$, where $\theta$ is an unknown parameter.  
+
+Consider the estimator
+$$
+\hat{\theta} = X_1 + 2X_2 - X_3 + X_4.
+$$
+
+Answer the following:
+
+(a) Find the **expectation** of the estimator $\hat{\theta}$.  
+(b) Find the **variance** of the estimator $\hat{\theta}$.  
+(c) Determine the **bias** of the estimator $\hat{\theta}$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a) Expectation**
+$$
+\mathrm{E}[\hat{\theta}] = \mathrm{E}[X_1] + 2\mathrm{E}[X_2] - \mathrm{E}[X_3] + \mathrm{E}[X_4].
+$$
+Each has mean $3\theta$, so
+$$
+\mathrm{E}[\hat{\theta}] = 3\theta + 2(3\theta) - 3\theta + 3\theta = 9\theta.
+$$
+
+---
+
+**(b) Variance**
+$$
+\operatorname{Var}(\hat{\theta}) = \operatorname{Var}(X_1) + 4\operatorname{Var}(X_2) + \operatorname{Var}(X_3) + \operatorname{Var}(X_4).
+$$
+Each has variance $\theta^2/9$, so
+$$
+\operatorname{Var}(\hat{\theta}) = (1+4+1+1)\frac{\theta^2}{9} = \frac{7\theta^2}{9}.
+$$
+
+---
+
+**(c) Bias**
+$$
+\operatorname{Bias}(\hat{\theta}) = \mathrm{E}[\hat{\theta}] - \theta = 9\theta - \theta = 8\theta.
+$$
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="estimator bias variance expectation" data-difficulty="1" #q-prop-of-estimators3}
+
+## Properties of an Estimator III
+
+Suppose $X_1, X_2, X_3$ are independent random variables, each with  
+$$
+\mathrm{E}[X_i] = \theta - 5, 
+\qquad 
+\mathrm{Var}(X_i) = 2\theta^2,
+$$
+where $\theta$ is an unknown parameter.  
+
+Consider the estimator
+$$
+\hat{\theta} = X_1 + 2X_2 - 4X_3.
+$$
+
+Answer the following:
+
+(a) Find the **expectation** of the estimator $\hat{\theta}$.  
+(b) Find the **variance** of the estimator $\hat{\theta}$.  
+(c) Determine the **bias** of the estimator $\hat{\theta}$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a) Expectation**
+
+Using linearity of expectation:
+$$
+\mathrm{E}[\hat{\theta}]
+= \mathrm{E}[X_1] + 2\,\mathrm{E}[X_2] - 4\,\mathrm{E}[X_3]
+= (\theta - 5) + 2(\theta - 5) - 4(\theta - 5)
+= -\,(\theta - 5)
+= 5 - \theta.
+$$
+
+---
+
+**(b) Variance**
+
+Because $X_1, X_2, X_3$ are independent,
+$$
+\mathrm{Var}(\hat{\theta})
+= \mathrm{Var}(X_1) + 4\,\mathrm{Var}(X_2) + 16\,\mathrm{Var}(X_3)
+= (1 + 4 + 16)\,2\theta^2
+= 42\theta^2.
+$$
+
+---
+
+**(c) Bias**
+
+The bias is
+$$
+\mathrm{Bias}(\hat{\theta})
+= \mathrm{E}[\hat{\theta}] - \theta
+= (5 - \theta) - \theta
+= 5 - 2\theta.
+$$
+
+Hence the estimator is **biased**, and the bias depends linearly on $\theta$.
+
+</details>
+
+:::
+
+
+
+::: {.callout-important .question appearance="minimal" data-tags="poisson estimator bias variance" data-difficulty="1" #q-prop-poisson}
+## Properties of the Poisson distribution
+
+A hospital records the **number of patients arriving at the emergency department per hour**.  
+
+Suppose $X \sim \mathrm{Poisson}(\lambda)$, where $\lambda$ is the (unknown) mean arrival rate.
+
+1. Compute $\mathrm{E}[X]$ and $\mathrm{Var}(X)$.
+2. We estimate $\lambda$ by the **sample mean** $\hat{\lambda} = \tfrac{1}{n}\sum_{i=1}^n X_i$ from $n$ independent hours of observation.  
+   Show that $\mathrm{E}[\hat{\lambda}] = \lambda$ and compute $\mathrm{Var}(\hat{\lambda})$.
+3. Suppose in one hour you observe $x=7$ arrivals.  
+   
+   (i) Compute the estimate $\hat{\lambda}_{\text{obs}}$.  
+   (ii) Using $\hat{\lambda}_{\text{obs}}$ as $\lambda$, compute the pmf value $p(X=7 \mid \hat{\lambda}_{\text{obs}})$.  
+   (iii) Compute $F(7 \mid \lambda = \hat{\lambda}_\text{obs} = \mathrm{Pr}(X \leq 7 \mid \hat{\lambda}_\text{\text{obs}})$ using $\hat{\lambda}_{\text{obs}}$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+1. For $X \sim \mathrm{Poisson}(\lambda)$,
+   $$
+   \mathrm{E}[X] = \lambda, \quad \mathrm{Var}(X) = \lambda.
+   $$
+
+2. If $\hat{\lambda} = \tfrac{1}{n}\sum_{i=1}^n X_i$, then
+   $$
+   \mathrm{E}[\hat{\lambda}] = \frac{1}{n}\sum_{i=1}^n \mathrm{E}[X_i] = \lambda,
+   $$
+   so $\hat{\lambda}$ is unbiased.  
+   Since $\mathrm{Var}(X_i) = \lambda$ and the $X_i$ are independent,
+   $$
+   \mathrm{Var}(\hat{\lambda}) = \frac{\lambda}{n}.
+   $$
+
+3. With $x=7$,  
+   (i) $\hat{\lambda}_{\text{obs}} = 7$.  
+   (ii) The PMF value is
+   $$
+   \mathrm{Pr}(X=7 \mid \lambda=7) = \frac{7^7 e^{-7}}{7!}.
+   $$
+   (iii) The CDF value is
+   $$
+   \mathrm{Pr}(X \leq 7 \mid \lambda=7) = \sum_{k=0}^7 \frac{7^k e^{-7}}{k!}.
+   $$
+
+In Python:
+
+```{python}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show code"
+
+from scipy.stats import poisson
+
+lambd_hat = 7
+part_ii = poisson.pmf(k = 7, mu=lambd_hat) # pmf value at x = 7
+part_iii = poisson.cdf(k = 7, mu=lambd_hat) # cdf value at x = 7
+
+print(f"Part (ii) answer: {part_ii} \nPart (iii) answer: {part_iii}")
+
+```
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="estimator variance covariance" data-difficulty="2"}
+
+## Variance of an Estimator (with dependence)
+
+Let $X_1,\dots,X_n$ be random variables with the **same variance** and **same pairwise covariance**:
+$$
+\operatorname{Var}(X_i)=\sigma^2,\qquad
+\operatorname{Cov}(X_i,X_j)=\tau\quad (i\neq j),
+$$
+where $\sigma^2>0$ and $\tau$ are known constants (no independence is assumed).
+
+For fixed weights $a_1,\dots,a_n\in\mathbb{R}$, consider the linear estimator
+$$
+\hat{\theta}=\sum_{i=1}^n a_i X_i.
+$$
+
+Compute $\operatorname{Var}(\hat{\theta})$ in terms of ${a_i}$, $\sigma^2$, and $\tau$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+Using $\operatorname{Var}\left(\sum_i a_i X_i\right)=\sum_i\sum_j a_i a_j\operatorname{Cov}(X_i,X_j)$ and the structure of the covariances:
+$$
+\operatorname{Var}(\hat{\theta})
+= \sum_{i=1}^n a_i^2 \sigma^2 + \sum_{i\neq j} a_i a_j \tau
+= \sigma^2\sum_{i=1}^n a_i^2 + \tau \left[\Big(\sum_{i=1}^n a_i\Big)^2-\sum_{i=1}^n a_i^2\right].
+$$
+Hence a compact form is
+$$
+\boxed{\operatorname{Var}(\hat{\theta})=(\sigma^2-\tau)\sum_{i=1}^n a_i^2 + \tau\Big(\sum_{i=1}^n a_i\Big)^2.}
+$$
+
+If the $X_i$ were independent, then $\tau=0$ and we recover $\operatorname{Var}(\hat{\theta})=\sigma^2\sum_i a_i^2$.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="consistency bias variance" data-difficulty="2" #q-prove-consistency1}
+
+## Proving Consistency I
+
+Let $X_1,\dots,X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\mu, \sigma^2)$ be a random sample such that each
+$$
+\operatorname{E}[X_i]=\mu,\qquad
+\operatorname{Var}(X_i)=\sigma^2.
+$$
+Consider the following family of estimators of the mean $\mu$:
+$$
+\hat{\mu}_n = \frac{1}{n + c} \sum_{i=1}^n X_i,
+$$
+where $c\in\mathbb{R}$ is a constant.
+
+Show that $\hat{\mu}_n$ is a consistent estimator of $\mu$ for all $c\in\mathbb{R}$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**Bias:** We have
+
+\begin{align*}
+\mathrm{E}[\hat{\mu}_n] &= \mathrm{E}\left[\frac{1}{n + c} \sum_{i=1}^n X_i\right] \\
+&= \frac{1}{n+c} \sum_{i=1}^n \mathrm{E}[X_i] \\
+&= \frac{1}{n+c} \sum_{i=1}^n \mu \\
+&= \frac{n \mu }{n + c}.
+\end{align*}
+
+Therefore, the bias is
+$$
+\mathrm{Bias}(\hat{\mu}_n) = \frac{n \mu }{n + c} - \mu = \frac{n\mu}{n+c} - \frac{(n+c)\mu}{n+c} = -\frac{c \mu}{n + c}.
+$$
+
+**Variance:** Due to independence of the $X_i$, we have
+
+\begin{align*}
+\mathrm{Var}[\hat{\mu}_n] &= \mathrm{Var}\left[\frac{1}{n + c} \sum_{i=1}^n X_i\right] \\
+&= \frac{1}{(n+c)^2} \sum_{i=1}^n \mathrm{Var}[X_i] \\
+&= \frac{1}{(n+c)^2} \sum_{i=1}^n \sigma^2 \\
+&= \frac{n \sigma^2 }{(n + c)^2}.
+\end{align*}
+
+**Consistency:** To show consistency, we use @prp-sufficient-consistency. From the computed bias, we have (for any value of $c\in\mathbb{R}$):
+$$
+\mathrm{Bias}(\hat{\mu}_n) = -\frac{c \mu}{n + c} \rightarrow 0, \quad \text{as } n\rightarrow \infty.
+$$
+Therefore, the estimator is *asymptotically unbiased*. Similarly, the variance converges to $0$ for all $c\in\mathbb{R}$:
+$$
+\mathrm{Var}(\hat{\mu}_n) = \frac{n \sigma^2 }{(n + c)^2} \rightarrow 0, \quad \text{as } n\rightarrow \infty.
+$$
+Therefore, $\hat{\mu}_n$ is a consistent estimator of $\mu$ for all $c\in\mathbb{R}$.
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="likelihood geometric" data-difficulty="1" #q-geom-likelihood}
+
+## Computing Likelihoods I
+
+Let $X_1,\dots,X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Geometric}(p)$ be a random sample.
+
+Derive the **likelihood function**.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+For independent and identically distributed data, the <span class="xref-no-num">[likelihood function @def-likelihood]</span> takes the form
+$$
+L(p ; \underline{x}) = f(\underline{x} \mid p) = \prod_{i=1}^n f(x_i \mid p),
+$$
+where $f(x_i\mid p)$ is PMF of the <span class="xref-no-num">[geometric distribution @sec-geom]</span>:
+$$
+f(x_i \mid p) = p(1-p)^{x_i - 1}.
+$$
+Therefore, the likelihood takes the form
+\begin{align*}
+L(p; \underline{x}) &= \prod_{i=1}^n p(1-p)^{x_i - 1} \\
+&= p(1-p)^{x_1-1}\times p(1-p)^{x_2-1}\times \ldots \times p(1-p)^{x_n-1} \\
+&= p^n(1-p)^{\sum_{i=1}^n (x_i - 1)} \\
+&= p^n(1-p)^{n(\bar{x} - 1)},
+\end{align*}
+where $\bar{x}$ is the <span class="xref-no-num">[sample mean @def-sample-mean]</span>.
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="likelihood normal" data-difficulty="1" #q-normal-var-likelihood}
+
+## Computing Likelihoods II
+
+Let $X_1,\dots,X_n \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu, 1)$ be a random sample.
+
+Derive the **likelihood function**.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+For independent and identically distributed data, the <span class="xref-no-num">[likelihood function @def-likelihood]</span> takes the form
+$$
+L(\mu ; \underline{x}) = f(\underline{x} \mid \mu) = \prod_{i=1}^n f(x_i \mid \mu),
+$$
+where $f(x_i\mid \mu)$ is PDF of the <span class="xref-no-num">[normal distribution @sec-normal]</span> (with variance $\sigma^2=1$):
+$$
+f(x_i \mid \mu) = \frac{1}{\sqrt{2\pi}} \exp\left\{ -\frac{(x_i - \mu)^2}{2} \right\}.
+$$
+Therefore, the likelihood takes the form
+\begin{align*}
+L(\mu; \underline{x}) &= \prod_{i=1}^n \frac{1}{\sqrt{2\pi}} \exp\left\{ -\frac{(x_i - \mu)^2}{2} \right\} \\
+&= \frac{1}{\sqrt{2\pi}} \exp\left\{ -\frac{(x_1 - \mu)^2}{2} \right\} \times \ldots \times \frac{1}{\sqrt{2\pi}} \exp\left\{ -\frac{(x_n - \mu)^2}{2} \right\} \\
+&= (2\pi)^{-n/2} \exp\left\{ \sum_{i=1}^n -\frac{(x_i - \mu)^2}{2}  \right\} \\
+&= (2\pi)^{-n/2} \exp\left\{ -\frac{1}{2 }\sum_{i=1}^n (x_i - \mu)^2 \right\}.
+\end{align*}
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="likelihood log-normal" data-difficulty="1" #q-lognormal-likelihood}
+
+## Computing Likelihoods III
+
+Suppose we have $n$ i.i.d. <span class="xref-no-num">[log normal @sec-lognormal]</span> observations
+$$
+X_1,\dots,X_n \overset{\text{i.i.d.}}{\sim} \mathrm{LogNormal}(\mu, \gamma).
+$$
+
+Derive the **likelihood function**.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+For independent and identically distributed data, the <span class="xref-no-num">[likelihood function @def-likelihood]</span> takes the form
+$$
+L(\mu, \gamma ; \underline{x}) = f(\underline{x} \mid \mu, \gamma) = \prod_{i=1}^n f(x_i \mid \mu, \gamma),
+$$
+where $f(x_i\mid \mu, \gamma)$ is PDF of the <span class="xref-no-num">[log normal distribution @sec-lognormal]</span> (with $\sigma^2 = \gamma$):
+$$
+f(x_i \mid \mu, \gamma) = \frac{1}{x_i\sqrt{2\pi\gamma}} \exp\!\left(-\frac{(\log(x_i)-\mu)^2}{2\gamma}\right).
+$$
+Therefore, the likelihood takes the form
+$$
+\begin{align*}
+L(\mu, \gamma; \underline{x}) &= \prod_{i=1}^n \frac{1}{x_i\sqrt{2\pi\gamma}} \exp\!\left(-\frac{(\log(x_i)-\mu)^2}{2\gamma}\right) \\
+&= (2\pi\gamma)^{-n/2} \exp\left\{-\frac{1}{2\gamma}\sum_{i=1}^n (\log(x_i) - \mu)^2\right\} \left(\prod_{i=1}^n x_i\right)^{-1}.
+\end{align*}
+$$
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="fisher-information binomial" data-difficulty="2" #q-fisher-info-binomial}
+
+## Fisher Information for a Binomial Observation
+
+Suppose we have a single <span class="xref-no-num">[Binomial @sec-binom]</span> observation:
+$$
+X \sim \mathrm{Binomial}(n, \theta),
+$$
+Derive the <span class="xref-no-num">[Fisher information @def-fisher-information]</span> and the <span class="xref-no-num">[observed Fisher information @def-observed-fisher]</span>.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+Note: We want to compute $\mathcal{I}(\theta) = -\mathrm{E}\left[\frac{\partial^2}{\partial\theta^2} \ell(\theta; X)\right]$ for the Fisher information and $\hat{\theta}_{\mathrm{MLE}}$ for the observed Fisher information.
+
+**Step 1: Compute log-likelihood**
+
+Since we have a single observation, the likelihood is just the Binomial PMF:
+$$
+L(\theta ; x) = \binom{n}{x} \theta^x(1-\theta)^{n-x}.
+$$
+Therefore, the log-likelihood takes the form
+$$
+\ell(\theta; x) = \log L(\theta ; x) = \log\left(\binom{n}{x}\right) + x \log \theta + (n-x)\log(1-\theta).
+$$
+
+**Step 2: Compute Derivatives**
+
+We compute the first and second derivatives of the log-likelihood with respect to $\theta$:
+\begin{align*}
+\frac{\partial}{\partial \theta} \ell(\theta; x) &= \frac{x}{\theta} - \frac{n-x}{1-\theta} \\
+\frac{\partial^2}{\partial \theta^2} \ell(\theta; x) &= -\frac{x}{\theta^2} - \frac{n-x}{(1-\theta)^2}.
+\end{align*}
+
+**Step 3: Compute Fisher Information**
+
+We have
+$$
+\mathcal{I}(\theta) = -\mathrm{E}\left[\frac{\partial^2}{\partial\theta^2} \ell(\theta; X)\right] = -\mathrm{E}\left[-\frac{X}{\theta^2} - \frac{n-X}{(1-\theta)^2}\right],
+$$
+where the **random** component of the expectation is $X\sim\mathrm{Binomial}(n, \theta)$. Therefore, manipulating the expectation:
+\begin{align*}
+\mathcal{I}(\theta) &= \mathrm{E}\left[\frac{X}{\theta^2} + \frac{n-X}{(1-\theta)^2}\right] \\
+&= \frac{1}{\theta^2}\mathrm{E}[X] + \frac{1}{(1-\theta)^2} \mathrm{E}[n - X] \\
+&= \frac{n\theta}{\theta^2} + \frac{n - n\theta}{(1-\theta)^2},
+\end{align*}
+using the fact that $\mathrm{E}[X] = n\theta$. Continuing:
+\begin{align*}
+\mathcal{I}(\theta) &= \frac{n}{\theta} + \frac{n}{1-\theta} \\
+&= \frac{n(1-\theta) + n\theta}{\theta(1-\theta)} \\
+&= \frac{n}{\theta(1-\theta)}.
+\end{align*}
+
+**Step 4: Compute MLE**
+
+We require the MLE for the observed Fisher information. We solve:
+\begin{align*}
+\frac{\partial}{\partial \theta} \ell(\theta; x) &= 0 \\
+\frac{x}{\theta} - \frac{n-x}{1-\theta} &= 0 \\
+x(1-\theta) &= \theta(n-x) \\
+x &= n\theta \\
+\Rightarrow \hat{\theta}_{\mathrm{MLE}} &= \frac{x}{n}.
+\end{align*}
+
+**Step 5: Compute observed Fisher information**
+
+Given the MLE $\hat{\theta}_{\mathrm{MLE}} = \frac{x}{n}$ and the derived Fisher information, we have
+\begin{align*}
+\mathcal{I}(\hat{\theta}_{\mathrm{MLE}}) &=  \frac{n}{\hat{\theta}_{\mathrm{MLE}}(1-\hat{\theta}_{\mathrm{MLE}})} \\
+&= \frac{n}{x/n(1-x/n)} \\
+&= \frac{n^3}{x(n - x)}.
+\end{align*}
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="fisher-information geometric" data-difficulty="2" #q-fisher-info-geometric}
+
+## Fisher Information for Geometric Data
+
+Suppose we have a random <span class="xref-no-num">[Geometric @sec-geom]</span> sample:
+$$
+X_1,\ldots, X_n \stackrel{\text{i.i.d.}}{\sim} \mathrm{Geom}(\theta).
+$$
+Derive the <span class="xref-no-num">[Fisher information @def-fisher-information]</span> and the <span class="xref-no-num">[observed Fisher information @def-observed-fisher]</span> for both a **single observation** and the **whole random sample**.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+Since we have i.i.d. observations, we can use @prp-fisher-one-obs to compute the Fisher information for the **whole random sample** by computing $\mathcal{I}_1(\theta)$ for a single observation. However, the observed information requires the MLE using all $n$ data points $x_1,\ldots,x_n$. So, let's compute $\mathcal{I}_n(\theta)$ using the **whole sample** $X_1,\ldots, X_n$:
+
+**Step 1: Compute log-likelihood**
+
+For i.i.d. Geometric data, we have
+\begin{align*}
+L(\theta; \underline{x}) &= \prod_{i=1}^n \theta(1-\theta)^{x_i - 1} \\
+&= \theta^n(1-\theta)^{\sum_{i=1}^n (x_i - 1)} \\
+&= \theta^n(1-\theta)^{n(\bar{x} - 1)}.
+\end{align*}
+Therefore, the log-likelihood takes the form
+$$
+\ell(\theta; \underline{x}) = \log L(\theta ; \underline{x}) = n\log(\theta) + n(\bar{x}-1)\log(1-\theta).
+$$
+
+**Step 2: Compute Derivatives**
+
+We compute the first and second derivatives of the log-likelihood with respect to $\theta$:
+\begin{align*}
+\frac{\partial}{\partial \theta} \ell(\theta; \underline{x}) &= \frac{n}{\theta} - \frac{n(\bar{x} - 1)}{1-\theta} \\
+\frac{\partial^2}{\partial \theta^2} \ell(\theta; \underline{x}) &= -\frac{n}{\theta^2} - \frac{n(\bar{x} - 1)}{(1-\theta)^2}.
+\end{align*}
+
+**Step 3: Compute Fisher Information**
+
+We have
+$$
+\mathcal{I}_n(\theta) = -\mathrm{E}\left[\frac{\partial^2}{\partial\theta^2} \ell(\theta; \underline{X})\right] = -\mathrm{E}\left[-\frac{n}{\theta^2} - \frac{n(\bar{X} - 1)}{(1-\theta)^2}\right],
+$$
+where the **random** component of the expectation is $X_i\sim\mathrm{Geom}(\theta)$. Therefore, manipulating the expectation:
+\begin{align*}
+\mathcal{I}_n(\theta) &= \mathrm{E}\left[\frac{n}{\theta^2} + \frac{n(\bar{X} - 1)}{(1-\theta)^2}\right] \\
+&= \frac{n}{\theta^2} + \frac{n}{(1-\theta)^2} \mathrm{E}[\bar{X}] - \frac{n}{(1-\theta)^2} \\
+&= \frac{n}{\theta^2} + \frac{n}{(1-\theta)^2} \frac{1}{\theta} - \frac{n}{(1-\theta)^2},
+\end{align*}
+where we used the fact that 
+$$
+\mathrm{E}[\bar{X}] = \frac{1}{n}\sum_{i=1}^n \mathrm{E}[X_i] = \frac{1}{n}\sum_{i=1}^n \frac{1}{\theta} = \frac{1}{\theta},
+$$
+and $\mathrm{E}[X_i] = \tfrac{1}{\theta}$. Continuing:
+\begin{align*}
+\mathcal{I}_n(\theta) &= \frac{n (1-\theta)^2}{\theta^2(1-\theta)^2} + \frac{n\theta}{\theta^2(1-\theta)^2}  - \frac{n\theta^2}{\theta^2(1-\theta)^2}\\
+&= \frac{n(1-\theta) +n\theta}{\theta^2(1-\theta)} \\
+&= \frac{n}{\theta^2(1-\theta)}.
+\end{align*}
+This immediately implies the Fisher information for a single observation is
+$$
+\mathcal{I}_1(\theta) = \frac{1}{\theta^2(1-\theta)}.
+$$
+
+**Step 4: Compute MLE**
+
+We require the MLE for the observed Fisher information. We solve:
+\begin{align*}
+\frac{\partial}{\partial \theta} \ell(\theta; \underline{x}) &= 0 \\
+\frac{n}{\theta} - \frac{n(\bar{x} - 1)}{1-\theta} &= 0 \\
+n(1-\theta) &= n \theta (\bar{x} - 1) \\
+1 &= \theta \bar{x} \\
+\Rightarrow \hat{\theta}_{\mathrm{MLE}} &= \frac{1}{\bar{x}}.
+\end{align*}
+
+**Step 5: Compute observed Fisher information**
+
+Given the MLE $\hat{\theta}_{\mathrm{MLE}} = \frac{1}{\bar{x}}$ and the derived Fisher information, we have
+\begin{align*}
+\mathcal{I}_n(\hat{\theta}_{\mathrm{MLE}}) &=  \frac{n}{\hat{\theta}_{\mathrm{MLE}}^2(1-\hat{\theta}_{\mathrm{MLE}})} \\
+&= \frac{n}{\bar{x}^{-2}(1-\bar{x}^{-1})}. \\
+&= \frac{n \bar{x}^3}{\bar{x} - 1}.
+\end{align*}
+This immediately implies the observed Fisher information for a single observation is
+$$
+\mathcal{I}_1(\hat{\theta}_{\mathrm{MLE}}) = \frac{\bar{x}^3}{\bar{x} - 1}.
+$$
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="fisher-information normal" data-difficulty="2" #q-fisher-info-var-normal}
+
+## Fisher Information of the Variance of Normal Data
+
+Suppose we have a random <span class="xref-no-num">[Normal @sec-normal]</span> sample:
+$$
+X_1,\ldots, X_n \stackrel{\text{i.i.d.}}{\sim} \mathcal{N}(\mu, \gamma),
+$$
+where $\mu$ is a *known* value $\gamma$ is *unknown*.
+
+Derive the <span class="xref-no-num">[Fisher information @def-fisher-information]</span> and the <span class="xref-no-num">[observed Fisher information @def-observed-fisher]</span> of $\gamma$ for the **whole random sample**.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+Note: We want to compute $\mathcal{I}(\gamma) = -\mathrm{E}\left[\frac{\partial^2}{\partial\gamma^2} \ell(\gamma; \underline{X})\right]$ for the Fisher information and $\hat{\gamma}_{\mathrm{MLE}}$ for the observed Fisher information.
+
+**Step 1: Compute log-likelihood**
+
+Since we have $n$ i.i.d. $\mathcal{N}(\mu, \gamma)$ with $\mu$ known, the likelihood function is
+$$
+\begin{align*}
+L(\gamma;\underline{x}) &= \prod_{i=1}^n \frac{1}{\sqrt{2\pi\gamma}} \exp\left\{-\frac{(x_i - \mu)^2}{2\gamma}\right\} \\
+&= (2 \pi)^{-n/2} \gamma^{-n/2} \exp\left\{-\frac{1}{2\gamma}\sum_{i=1}^n (x_i - \mu)^2\right\}.
+\end{align*}
+$$
+Therefore, the log-likelihood takes the form
+$$
+\ell(\gamma; \underline{x}) = -\frac{n}{2}\log(2\pi) - \frac{n}{2}\log(\gamma) - \frac{1}{2\gamma}\sum_{i=1}^n (x_i - \mu)^2.
+$$
+
+**Step 2: Compute Derivatives**
+
+We compute the first and second derivatives of the log-likelihood with respect to $\gamma$:
+$$
+\begin{align*}
+\frac{\partial}{\partial \gamma} \ell(\gamma; \underline{x}) &= -\frac{n}{2\gamma} + \frac{1}{2\gamma^2}\sum_{i=1}^n (x_i - \mu)^2,  \\
+\frac{\partial^2}{\partial \gamma^2} \ell(\gamma; \underline{x}) &= \frac{n}{2\gamma^2} - \frac{1}{\gamma^3}\sum_{i=1}^n (x_i - \mu)^2.
+\end{align*}
+$$
+**Step 3: Compute Fisher Information**
+
+We have
+$$
+\mathcal{I}(\gamma) = -\mathrm{E}\left[\frac{\partial^2}{\partial\gamma^2} \ell(\gamma; \underline{X})\right] = -\mathrm{E}\left[\frac{n}{2\gamma^2} - \frac{1}{\gamma^3}\sum_{i=1}^n (X_i - \mu)^2\right],
+$$
+where the **random** component of the expectation is the *random data* $X_i\sim\mathcal{N}(\mu, \gamma)$. Therefore, manipulating the expectation:
+$$
+\begin{align*}
+\mathcal{I}(\gamma) &=  -\frac{n}{2\gamma^2} + \frac{1}{\gamma^3}\sum_{i=1}^n \mathrm{E}[(X_i - \mu)^2] \\
+&= -\frac{n}{2\gamma^2} + \frac{1}{\gamma^3}\sum_{i=1}^n \gamma,
+\end{align*}
+$$
+using the fact that each $X_i - \mu \sim \mathcal{N}(0, \gamma)$ and so $\mathrm{E}[(X_i - \mu)^2] = \mathrm{Var}(X_i) = \gamma$. Continuing:
+$$
+\begin{align*}
+\mathcal{I}(\gamma) &= -\frac{n}{2\gamma^2} + \frac{n\gamma}{\gamma^3} \\
+&= \frac{n}{2\gamma^2}
+\end{align*}
+$$
+
+**Step 4: Compute MLE**
+
+We require the MLE for the observed Fisher information. We solve:
+$$
+\begin{align*}
+\frac{\partial}{\partial \gamma} \ell(\gamma; \underline{x}) &= 0 \\
+-\frac{n}{2\gamma} + \frac{1}{2\gamma^2}\sum_{i=1}^n (x_i - \mu)^2 &= 0 \\
+\Rightarrow \hat{\gamma}_{\mathrm{MLE}} &= \frac{1}{n}\sum_{i=1}^n (x_i - \mu)^2 
+\end{align*}
+$$
+
+**Step 5: Compute observed Fisher information**
+
+Given the MLE $\hat{\gamma}_{\mathrm{MLE}} = \frac{1}{n}\sum_{i=1}^n (x_i - \mu)^2 $ and the derived Fisher information, we have
+$$
+\begin{align*}
+\mathcal{I}(\hat{\gamma}_{\mathrm{MLE}}) &= \frac{n}{2\hat{\gamma}_{\mathrm{MLE}}^2} \\
+&= \frac{n^3}{2\left(\sum_{i=1}^n (x_i - \mu)^2\right)^2}.
+\end{align*}
+$$
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="bayes asymptotic-posterior exam-style" data-difficulty="2" #q-asymp-post-variance}
+
+## Asymptotic Posterior for the Variance Parameter
+
+Suppose we have an independent and identically distributed sample
+$$
+\underline{x} = (x_1, x_2, \ldots, x_n)^\top
+$$
+from a distribution with PDF
+$$
+f(x \mid \gamma) = \frac{1}{\sqrt{2\pi \gamma}}\exp\!\left[-\frac{x^2}{2\gamma}\right], 
+\qquad \gamma > 0.
+$$
+
+Determine the **asymptotic posterior distribution** for $\gamma$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**Step 1: Likelihood**
+
+$$
+f(\underline{x} \mid \gamma)
+= \prod_{i=1}^n \frac{1}{\sqrt{2\pi \gamma}} 
+   \exp\!\left[-\frac{x_i^2}{2\gamma}\right]
+= (2\pi \gamma)^{-n/2} 
+  \exp\!\left[-\frac{1}{2\gamma}\sum_{i=1}^n x_i^2\right].
+$$
+
+**Step 2: Log-likelihood**
+
+$$
+\ell(\gamma; \underline{x})
+= -\frac{n}{2}\log(2\pi) 
+  - \frac{n}{2}\log(\gamma) 
+  - \frac{1}{2\gamma}\sum_{i=1}^n x_i^2.
+$$
+
+**Step 3: Derivatives**
+
+$$
+\frac{\partial \ell}{\partial \gamma}
+= -\frac{n}{2\gamma} 
+  + \frac{1}{2\gamma^2}\sum_{i=1}^n x_i^2,
+$$
+
+$$
+\frac{\partial^2 \ell}{\partial \gamma^2}
+= \frac{n}{2\gamma^2} 
+  - \frac{1}{\gamma^3}\sum_{i=1}^n x_i^2.
+$$
+
+Let  
+$$
+a = \sum_{i=1}^n x_i^2.
+$$
+
+**Step 4: MLE**
+
+Solving $\partial \ell / \partial \gamma = 0$:
+
+$$
+-\frac{n}{2\gamma} + \frac{a}{2\gamma^2} = 0
+\quad\Rightarrow\quad
+\hat{\gamma} = \frac{a}{n} 
+= \frac{1}{n}\sum_{i=1}^n x_i^2.
+$$
+
+**Step 5: Fisher Information**
+
+For one observation:
+
+$$
+\ell(\gamma)
+= -\tfrac12\log(2\pi\gamma) 
+  - \tfrac{x^2}{2\gamma},
+$$
+and so
+$$
+\frac{\partial^2 \ell}{\partial \gamma^2}
+= \frac{1}{2\gamma^2} - \frac{x^2}{\gamma^3}.
+$$
+
+Taking expectation under $X \sim \mathcal{N}(0,\gamma)$:
+
+$$
+\mathcal{I}(\gamma) 
+= -\mathrm{E}\!\left[\frac{\partial^2 \ell}{\partial \gamma^2}\right]
+= -\left(\frac{1}{2\gamma^2} - \frac{\gamma}{\gamma^3}\right)
+= \frac{1}{2\gamma^2}.
+$$
+
+Thus for $n$ observations:
+
+$$
+\mathcal{I}_n(\gamma) = \frac{n}{2\gamma^2}.
+$$
+
+Evaluated at the MLE:
+
+$$
+\mathcal{I}_n(\hat{\gamma}) 
+= \frac{n}{2\hat{\gamma}^2}.
+$$
+
+**Step 6: Asymptotic posterior**
+
+By @thm-bernstein-von-mises
+
+$$
+\gamma \mid \underline{x}
+\approx 
+\mathcal{N}\!\left(
+\hat{\gamma},\;
+I_n(\hat{\gamma})^{-1}
+\right)
+=
+\mathcal{N}\!\left(
+\hat{\gamma},\;
+\frac{2\hat{\gamma}^2}{n}
+\right).
+$$
+
+That is,
+
+$$
+\boxed{
+\gamma \mid \underline{x}
+\overset{\text{approx.}}{\sim} 
+\mathcal{N}\!\left(
+\frac{1}{n}\sum_{i=1}^n x_i^2,\;
+\frac{2}{n}\left(\frac{1}{n}\sum_{i=1}^n x_i^2\right)^2
+\right).
+}
+$$
+
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="bayes asymptotic-posterior poisson" data-difficulty="2" #q-asymp-post-poisson}
+
+## Asymptotic Posterior for Poisson Data
+
+Suppose we have independent <span class="xref-no-num">[Poisson @sec-pois]</span> observations
+$$
+X_1,\ldots, X_n \mid \lambda \sim \mathrm{Pois}(\lambda)
+$$
+
+1. Determine the general <span class="xref-no-num">[asymptotic posterior distribution @thm-bernstein-von-mises]</span> for $\lambda$.
+2. Suppose we observe $n = 100$ data points with sample mean
+   $$
+   \bar{x} = 3.21.
+   $$
+   Compute the **asymptotic posterior distribution**.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+1. **General Asymptotic Posterior.**
+   1. **Log-Likelihood:** Since each observation is independent $X_i \mid \lambda \sim \mathrm{Pois}(\lambda)$, we have
+      $$
+      \begin{align*}
+       f(\underline{x} \mid \lambda) &= \prod_{i=1}^n \frac{\lambda^{x_i} e^{-\lambda}}{x_i!} \\
+       &= \lambda^{n\bar{x}} e^{-n\lambda} \left(\prod_{i=1}^n x_i! \right)^{-1}.
+      \end{align*}
+      $$
+      Therefore, the log-likelihood is
+      $$
+      \log f(\underline{x} \mid \lambda) = n\bar{x} \log(\lambda) - n\lambda - \sum_{i=1}^n \log(x_i!).
+      $$
+    2. **Derivatives:** The derivatives of the log-likelihood are
+      $$
+      \begin{align*}
+       \frac{\partial}{\partial \lambda} \log f(\underline{x} \mid \lambda) &= \frac{n\bar{x}}{\lambda} - n \\
+       \frac{\partial^2}{\partial \lambda^2} \log f(\underline{x} \mid \lambda) &= -\frac{n\bar{x}}{\lambda^2}.
+      \end{align*}
+      $$
+    3. **MLE:** Solving
+      $$
+      \frac{n\bar{x}}{\lambda} - n = 0
+      $$
+      yields the maximum likelihood estimator
+      $$
+      \hat{\lambda} = \bar{X}.
+      $$
+    4. **Fisher Information:** The <span class="xref-no-num">[Fisher information @def-fisher-information]</span> for the **whole sample** is thus
+      $$
+      \begin{align*}
+       \mathcal{I}_n(\lambda) &= -\mathrm{E}\left[-\frac{n\bar{X}}{\lambda^2}\right] \\
+       &= \frac{n}{n\lambda^2}\sum_{i=1}^n\mathrm{E}\left[X_i\right] \\
+       &= \frac{n}{\lambda},
+      \end{align*}
+      $$ 
+      since each $\mathrm{E}[X_i] = \lambda$.
+    4. **Plugging in MLE:** The <span class="xref-no-num">[observed Fisher information @def-observed-fisher]</span> is thus
+      $$
+      \mathcal{I}_n(\hat{\lambda}) = \frac{n}{\bar{x}}.
+      $$
+    5. **Asymptotic Posterior Distribution:** The <span class="xref-no-num">[asymptotic posterior distribution @thm-bernstein-von-mises]</span> is thus
+      $$
+      \lambda \mid \underline{x} \overset{\text{approx.}}{\sim} \mathcal{N}\left(\bar{x}, \frac{\bar{x}}{n}\right)
+      $$
+2. **Plug in data.**
+   Using the derived result from the first part and the provided summaries of the data $n = 100$ and $\bar{x} = 3.21$, we have
+   $$
+   \lambda \mid \underline{x} \overset{\text{approx.}}{\sim} \mathcal{N}\left(3.21, 0.0321\right)
+   $$
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="bayes asymptotic-posterior exponential" data-difficulty="2" #q-asymp-post-exponential}
+
+## Asymptotic Posterior for Exponential Data
+
+Suppose we have independent Exponential observations with rate parameter $\lambda$:
+$$
+X_1,\ldots,X_n \mid \lambda \sim \mathrm{Exp}(\lambda).
+$$
+
+1. Determine the general <span class="xref-no-num">[asymptotic posterior distribution @thm-bernstein-von-mises]</span> for $\lambda$.
+2. Suppose we observe $n = 200$ data points with sample mean
+   $$
+   \bar{x} = 7.14.
+   $$
+   Compute the **asymptotic posterior distribution**.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+1. **General Asymptotic Posterior**
+
+   1. **Likelihood and log-likelihood**
+
+   The density of each $X_i$ is
+   $$
+   f(x_i \mid \lambda) = \lambda e^{-\lambda x_i}.
+   $$
+
+   Thus the likelihood is
+   $$
+   f(\underline{x} \mid \lambda) 
+   = \prod_{i=1}^n \lambda e^{-\lambda x_i}
+   = \lambda^n \exp\!\left(-\lambda\sum_{i=1}^n x_i\right).
+   $$
+
+   The log-likelihood is
+   $$
+   \ell(\lambda; \underline{x})
+   = n\log\lambda - \lambda\sum_{i=1}^n x_i
+   = n\log\lambda - n\lambda \bar{x}.
+   $$
+
+   2. **Derivatives**
+
+   $$
+   \frac{\partial}{\partial \lambda} \ell(\lambda; \underline{x})
+   = \frac{n}{\lambda} - n\bar{x},
+   \qquad
+   \frac{\partial^2}{\partial \lambda^2} \ell(\lambda; \underline{x})
+   = -\frac{n}{\lambda^2}.
+   $$
+
+   3. **MLE**
+
+   Solve
+   $$
+   \frac{n}{\lambda} - n\bar{x} = 0,
+   $$
+   which gives the maximum likelihood estimator
+   $$
+   \hat{\lambda} = \frac{1}{\bar{X}}.
+   $$
+
+   4. **Fisher information**
+
+   The <span class="xref-no-num">[Fisher information @def-fisher-information]</span> for the **whole sample** is thus
+   $$
+   \mathcal{I}_n(\lambda) = -\mathrm{E}\left[-\frac{n}{\lambda^2}\right] = \frac{n}{\lambda^2}.
+   $$
+
+   Evaluated at the MLE, the <span class="xref-no-num">[observed Fisher information @def-observed-fisher]</span> is
+   $$
+   \mathcal{I}_n(\hat{\lambda})
+   = \frac{n}{\hat{\lambda}^2}
+   = n\bar{x}^2.
+   $$
+
+   5. **Asymptotic posterior distribution**
+
+   By @thm-bernstein-von-mises
+   $$
+   \lambda \mid \underline{x}
+   \overset{\text{approx.}}{\sim} \mathcal{N}\!\left(
+     \hat{\lambda},\;
+     \mathcal{I}_n(\hat{\lambda})^{-1}
+   \right)
+   = \mathcal{N}\!\left(
+     \frac{1}{\bar{x}},\;
+     \frac{1}{n\bar{x}^{2}}
+   \right).
+   $$
+
+2. **Plugging in data**
+
+   For $n = 200$ and $\bar{x} =  7.14$,
+   $$
+   \hat{\lambda} = \frac{1}{ 7.14} \approx 0.14,
+   $$
+   and the variance is
+   $$
+   \frac{1}{n\bar{x}^2}
+   = \frac{1}{200 \cdot 7.14^2}
+   \approx 9.807 \times 10^{-5}.
+   $$
+
+   Thus the asymptotic posterior is
+   $$
+   \lambda \mid \underline{x}
+   \approx 
+   \mathcal{N}\!\left(0.14,\; 9.807 \times 10^{-5}\right).
+   $$
+
+</details>
+
+:::
+
+

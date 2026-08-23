@@ -1,0 +1,655 @@
+::: {.callout-important .question appearance="minimal" data-tags="bernoulli mle fisher-information lrt exam-style" data-difficulty="3"}
+
+## Bernoulli Likelihood, Fisher Information, and Inference
+
+1. Suppose $\underline{X} = (X_1, X_2, \ldots, X_n)$ is a random sample from a Bernoulli distribution with probability mass function  
+   $$
+   \Pr(X = x \mid \theta) = \theta^x (1 - \theta)^{1 - x}, \quad x = 0, 1, \; 0 < \theta < 1.
+   $$
+   Write down the log-likelihood function $\ell(\theta ; \underline{x})$ and derive the maximum likelihood estimator (MLE) $\hat{\theta}$ for $\theta$.  
+
+2. Obtain the Fisher information $\mathcal{I}_n(\theta)$ and hence find the asymptotic variance $\mathrm{Var}(\hat{\theta})$.  
+
+3. Out of a random sample of $200$ people from a population, $30$ were found to be left-handed.  
+   
+   Assuming the probability of being left-handed is $\theta$, obtain an approximate 95% confidence interval for $\theta$ using the asymptotic distribution of the MLE.  
+
+4. Use a likelihood ratio test to assess whether there is evidence against the null hypothesis $H_0 : \theta = 0.1$.  
+
+5. The *odds parameter* $\pi$ is a monotonic transformation of $\theta$, given by  
+   $$
+   \pi = \frac{\theta}{1 - \theta}.
+   $$
+    (i) What is the MLE of $\pi$ for the data in part (c)?  
+      (You do not need to consider the likelihood of $\pi$, but you should state any property of MLEs used.)  
+    (ii) Give an approximate 95% confidence interval for $\pi$.  
+
+<details class="solution">
+<summary>Solution</summary>
+
+1. **Log-likelihood and MLE**
+
+   The likelihood is
+   $$
+   L(\theta ; \underline{x}) = \prod_{i=1}^n \theta^{x_i}(1 - \theta)^{1 - x_i}
+   = \theta^{\sum x_i}(1 - \theta)^{n - \sum x_i}
+   = \theta^{n\bar{x}}(1 - \theta)^{n(1 - \bar{x})}.
+   $$
+
+   Hence the log-likelihood:
+   $$
+   \ell(\theta ; \underline{x}) = n\bar{x}\log\theta + n(1 - \bar{x})\log(1 - \theta).
+   $$
+
+   Differentiate:
+   $$
+   \frac{\partial}{\partial \theta} \ell(\theta;\underline{x}) = \frac{n\bar{x}}{\theta} - \frac{n(1 - \bar{x})}{1 - \theta}.
+   $$
+   Setting $\frac{\partial \ell}{\partial \theta} = 0$ gives
+   $$
+   \hat{\theta} = \bar{x}.
+   $$
+   The second derivative:
+   $$
+   \frac{\partial^2}{\partial \theta^2} \ell(\theta;\underline{x}) = -\frac{n\bar{x}}{\theta^2} - \frac{n(1 - \bar{x})}{(1 - \theta)^2}.
+   $$
+    is negative, so this is indeed a maximum.
+
+---
+
+2. **Fisher Information and Asymptotic Variance**
+
+   We have
+
+   \begin{align*}
+   \mathcal{I}_n(\theta) &=  -\mathrm{E}\!\left[\frac{\partial^2}{\partial \theta^2} \ell(\theta;\underline{x})\right] \\
+   &= \mathrm{E}\left[\frac{n\bar{x}}{\theta^2} + \frac{n(1 - \bar{x})}{(1 - \theta)^2}\right] \\
+   &= \frac{n\theta}{\theta^2} + \frac{n(1-\theta)}{(1-\theta)^2} \\
+   &= \frac{n}{\theta(1-\theta)}.
+   \end{align*}
+
+   Hence the asymptotic variance:
+   $$
+   \mathrm{Var}(\hat{\theta}) = \frac{\theta(1 - \theta)}{n}.
+   $$
+
+---
+
+3. **Approximate 95% confidence interval**
+
+   From the data: $\hat{\theta} = \bar{x} = 30/200 = 0.15.$  
+   Estimated variance:
+   $$
+   \widehat{\mathrm{Var}}(\hat{\theta}) = \frac{0.15(0.85)}{200} = 0.0006375.
+   $$
+   Standard error: $\mathrm{SE} = \sqrt{0.0006375} = 0.0253.$  
+   Approximate 95% CI:
+   $$
+   0.15 \pm 1.96(0.0253) = (0.1005, 0.1995).
+   $$
+
+---
+
+4. **Likelihood ratio test**
+
+   Log-likelihood function:
+   $$
+   \ell(\theta \mid x) = n\bar{x}\log\theta + n(1 - \bar{x})\log(1 - \theta)
+   = 30\log\theta + 170\log(1 - \theta).
+   $$
+
+   Compute:
+   $$
+   \ell_A = \ell(\hat{\theta} \mid x) = 30\log(0.15) + 170\log(0.85) = -84.542, \\
+   \ell_B = \ell(0.1 \mid x) = 30\log(0.1) + 170\log(0.9) = -86.989.
+   $$
+   Test statistic:
+   $$
+   D = 2(\ell_A - \ell_B) = 4.894.
+   $$
+   Under $H_0$, $D \sim \chi^2_1$.  
+   Since $4.894 > 3.841$ (the 5% critical value), we reject $H_0$ at the 5% level.  
+   There is evidence that the proportion of left-handed people differs from 0.1.
+
+---
+
+5. **Odds parameter**
+
+   (i) By the *invariance property* of MLEs:
+   $$
+   \hat{\pi} = \frac{\hat{\theta}}{1 - \hat{\theta}} = \frac{0.15}{0.85} = 0.176.
+   $$
+
+   (ii) Since the transformation is monotonic, transform the CI for $\theta$:
+   $$
+   (0.1005, 0.1995) \mapsto \left( \frac{0.1005}{0.8995}, \frac{0.1995}{0.8005} \right) = (0.112, 0.249).
+   $$
+
+   Thus, the 95% CI for $\pi$ is **(0.112, 0.249)**.
+
+</details>
+
+:::
+
+
+
+::: {.callout-important .question appearance="minimal" data-tags="bayes conjugacy beta binomial" data-difficulty="1" #q-beta-binom}
+## Conjugacy: Binomial Model, Beta Prior
+
+Suppose that we observe a single <span class="xref-no-num">[Binomial @sec-binom]</span> observation
+$$
+X \mid p \sim \mathrm{Binomial}(n,p)
+$$
+Show that choosing a <span class="xref-no-num">[Beta @sec-beta]</span> prior
+$$
+p \sim \mathrm{Beta}(a,b)
+$$
+yields the posterior distribution 
+$$
+p \mid x \sim \mathrm{Beta}(a + x, b + n - x).
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+We compute the posterior using Bayes theorem:
+$$
+\pi(p \mid x) \propto \pi(p) f(x\mid p).
+$$
+
+1. **Prior PDF:**
+  Since $p \sim \mathrm{Beta}(a,b)$, its probability density function is
+  $$
+  \pi(p) = \frac{\Gamma(a+b)}{\Gamma(a) \Gamma(b)} p^{a-1}(1-p)^{b-1}.
+  $$
+  Ignoring the normalisation constant, this is proportional to
+  $$
+  \pi(p) \propto p^{a-1}(1-p)^{b-1}.
+  $$
+2. **Likelihood:** 
+   Since $X\mid p \sim \mathrm{Binomial}(n, p)$, the likelihood is
+   $$
+   f(x \mid p) = \binom{n}{x} p^{x}(1-p)^{n-x}.
+   $$
+   Dropping the factors that do not depend on $p$, this is proportional to
+   $$
+   f(x \mid p) \propto p^{x}(1-p)^{n-x}.
+   $$
+3. **Posterior:**
+   Using the prior and likelihood derived above, we have
+   $$
+   \pi(p \mid x) \propto p^{a-1}(1-p)^{b-1} \times p^{x}(1-p)^{n-x} \propto p^{a + x - 1} (1-p)^{b + n - x}.
+   $$
+   This takes the form of a Beta density function and thus
+   $$
+   p \mid x \sim \mathrm{Beta}(a + x, b + n - x),
+   $$
+   and so the Beta distribution is <span class="xref-no-num">[conjugate @def-conjugacy]</span>.
+
+</details>
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="bayes conjugacy poisson gamma" data-difficulty="1" #q-gamma-pois}
+## Conjugacy: Poisson Model, Gamma Prior
+
+Suppose that we observe $n$ i.i.d. <span class="xref-no-num">[Poisson @sec-pois]</span> observations
+$$
+X_i \mid \lambda \; \overset{\text{i.i.d.}}{\sim} \; \mathrm{Poisson}(\lambda)
+$$
+Show that choosing a <span class="xref-no-num">[Gamma @sec-gamma]</span> prior
+$$
+\lambda \sim \mathrm{Gamma}(a,b)
+$$
+yields the posterior distribution 
+$$
+\lambda \mid \underline{x} \sim \mathrm{Gamma}(a + n\bar{x}, b + n).
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+We compute the posterior using Bayes theorem:
+$$
+\pi(\lambda \mid \underline{x}) \propto \pi(\lambda) f(\underline{x}\mid\lambda).
+$$
+
+1. **Prior PDF:**
+  Since $\lambda \sim \mathrm{Gamma}(a,b)$, its probability density function is
+  $$
+  \pi(\lambda) = \frac{b^a}{\Gamma(a)} \lambda^{a-1} e^{-b\lambda}.
+  $$
+  Ignoring the normalisation constant, this is proportional to
+  $$
+  \pi(\lambda) \propto \lambda^{a-1} e^{-b\lambda}.
+  $$
+2. **Likelihood:** 
+   Since we have $n$ i.i.d. observations $X_i \mid \lambda \; \overset{\text{i.i.d.}}{\sim} \; \mathrm{Poisson}(\lambda)$, the likelihood is
+   $$
+   \begin{align*}
+   f(\underline{x} \mid \lambda) &= \prod_{i=1}^n \frac{\lambda^{x_i} e^{-\lambda}}{x_i!} \\
+   &= \lambda^{n\bar{x}} e^{-n\lambda} \left(\prod_{i=1}^n x_i!\right)^{-1}.
+   \end{align*}
+   $$
+   Dropping the factors that do not depend on $\lambda$, this is proportional to
+   $$
+   f(\underline{x} \mid \lambda) \propto \lambda^{n\bar{x}} e^{-n\lambda}.
+   $$
+3. **Posterior:**
+   Using the prior and likelihood derived above, we have
+   $$
+   \begin{align*}
+   \pi(\lambda \mid \underline{x}) &\propto \lambda^{a-1} e^{-b\lambda} \times \lambda^{n\bar{x}} e^{-n\lambda} \\
+   &\propto \lambda^{a + n\bar{x} - 1} e^{-(b + n)\lambda}.
+   \end{align*}
+   $$
+   This takes the form of a Gamma density function and thus
+   $$
+   \lambda \mid \underline{x} \sim \mathrm{Gamma}(a + n\bar{x}, b + n),
+   $$
+   and so the Gamma distribution is <span class="xref-no-num">[conjugate @def-conjugacy]</span>.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="bayes conjugacy geometric beta" data-difficulty="1" #q-beta-geom}
+## Conjugacy: Geometric Model, Beta Prior
+
+Suppose that we observe $n$ i.i.d. <span class="xref-no-num">[Geometric @sec-geom]</span> observations
+$$
+X_i \mid p \; \overset{\text{i.i.d.}}{\sim} \; \mathrm{Geom}(p)
+$$
+Show that choosing a <span class="xref-no-num">[Beta @sec-beta]</span> prior
+$$
+p \sim \mathrm{Beta}(a,b)
+$$
+yields the posterior distribution 
+$$
+p \mid \underline{x} \sim \mathrm{Beta}(a + n, b + n(\bar{x} - 1)).
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+We compute the posterior using Bayes theorem:
+$$
+\pi(p \mid \underline{x}) \propto \pi(p) f(\underline{x}\mid p).
+$$
+
+1. **Prior PDF:**
+  Since $p \sim \mathrm{Beta}(a,b)$, its probability density function is
+  $$
+  \pi(p) = \frac{\Gamma(a+b)}{\Gamma(a) \Gamma(b)} p^{a-1}(1-p)^{b-1}.
+  $$
+  Ignoring the normalisation constant, this is proportional to
+  $$
+  \pi(p) \propto p^{a-1}(1-p)^{b-1}.
+  $$
+2. **Likelihood:** 
+   Since we have $n$ i.i.d. observations $X_i \mid p \; \overset{\text{i.i.d.}}{\sim} \; \mathrm{Geom}(p)$, the likelihood is
+   $$
+   \begin{align*}
+   f(\underline{x} \mid p) &= \prod_{i=1}^n p(1-p)^{x_i-1}\\
+   &= p^n (1-p)^{n(\bar{x} - 1)}.
+   \end{align*}
+   $$
+   Note that there are *no factors* that do not depend on $p$.
+3. **Posterior:**
+   Using the prior and likelihood derived above, we have
+   $$
+   \begin{align*}
+   \pi(p \mid \underline{x}) &\propto p^{a-1}(1-p)^{b-1} \times p^n (1-p)^{n(\bar{x} - 1)} \\
+   &\propto p^{a + n - 1} (1-p)^{b + n(\bar{x} - 1) - 1}.
+   \end{align*}
+   $$
+   This takes the form of a Beta density function and thus
+   $$
+   p \mid \underline{x} \sim \mathrm{Beta}(a + n, b + n(\bar{x} - 1)),
+   $$
+   and so the Beta distribution is <span class="xref-no-num">[conjugate @def-conjugacy]</span>.
+
+</details>
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="bayes conjugacy normal" data-difficulty="2" #q-normal-normal}
+## Conjugacy: Normal Model with known variance, Normal Prior for mean
+
+Suppose that we observe $n$ i.i.d. <span class="xref-no-num">[Normal @sec-normal]</span> observations
+$$
+X_i \mid \mu \; \overset{\text{i.i.d.}}{\sim} \; \mathcal{N}(\mu, \sigma^2),
+$$
+where the observation variance $\sigma^2$ is a known quantity. Show that choosing a <span class="xref-no-num">[Normal @sec-normal]</span> prior
+$$
+\mu \sim \mathcal{N}(\mu_0, \sigma^2_0)
+$$
+yields the posterior distribution 
+$$
+\mu \mid \underline{x} \sim \mathcal{N}(M, V),
+$$
+where
+$$
+M = \frac{\frac{\mu_0}{\sigma^2_0} + \frac{n\bar{x}}{\sigma^2}}{ \frac{1}{\sigma^2_0} + \frac{n}{\sigma^2}}, \qquad V = \frac{1}{\frac{1}{\sigma^2_0} + \frac{n}{\sigma^2}}.
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+We compute the posterior using Bayes theorem:
+$$
+\pi(\mu \mid \underline{x}) \propto \pi(\mu) f(\underline{x}\mid \mu).
+$$
+
+1. **Prior PDF:**
+  Since $\mu \sim \mathcal{N}(\mu_0, \sigma^2_0)$, its probability density function is
+  $$
+  \pi(\mu) = \frac{1}{\sqrt{2 \pi \sigma^2_0}} \exp\left\{ -\frac{1}{2\sigma^2_0}(\mu - \mu_0)^2 \right\}
+  $$
+  Ignoring the factors which do not depend on $\mu$, this is proportional to
+  $$
+  \begin{align*}
+  \pi(\mu) &\propto \exp\left\{ -\frac{1}{2\sigma^2_0}(\mu - \mu_0)^2 \right\} \\
+  &\propto \exp\left\{ -\frac{1}{2\sigma^2_0}(\mu^2 - 2\mu \mu_0 + \mu_0^2) \right\} \\
+  &\propto \exp\left\{ -\frac{1}{2\sigma^2_0}(\mu^2 - 2\mu \mu_0) \right\} \exp\left\{ -\frac{1}{2\sigma^2_0}( \mu_0^2) \right\} \\
+  &\propto \exp\left\{ -\frac{1}{2\sigma^2_0}(\mu^2 - 2\mu \mu_0) \right\}.
+  \end{align*}
+  $$
+1. **Likelihood:** 
+   Since we have $n$ i.i.d. observations $X_i \mid \mu \; \overset{\text{i.i.d.}}{\sim} \; \mathcal{N}(\mu, \sigma^2)$, the likelihood is
+   $$
+   \begin{align*}
+   f(\underline{x} \mid \mu) &= \prod_{i=1}^n  \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left\{-\frac{1}{2\sigma^2}(x_i - \mu)^2\right\}  \\
+   &= (2\pi\sigma^2)^{-n/2} \exp\left\{-\frac{1}{2\sigma^2}\sum_{i=1}^n (x_i - \mu)^2\right\}
+   \end{align*}
+   $$
+   Dropping the factors that do not depend on $\mu$, this is proportional to
+   $$
+   \begin{align*}
+   f(\underline{x} \mid \mu) &\propto \exp\left\{-\frac{1}{2\sigma^2}\sum_{i=1}^n (x_i - \mu)^2\right\} \\
+   &\propto \exp\left\{-\frac{1}{2\sigma^2}\sum_{i=1}^n (x_i^2 - 2\mu x_i + \mu^2)\right\} \\
+   &\propto \exp\left\{-\frac{1}{2\sigma^2}\left[ \sum_{i=1}^n \mu^2 - 2\mu \sum_{i=1}^n x_i + \sum_{i=1}^n x_i^2 \right]\right\} \\
+   &\propto \exp\left\{-\frac{1}{2\sigma^2}\left[ n\mu^2 - 2 \, \mu \, n\bar{x}  \right]\right\} \exp\left\{-\frac{1}{2\sigma^2}\left[ \sum_{i=1}^n x_i^2 \right]\right\} \\
+   &\propto \exp\left\{-\frac{1}{2\sigma^2}\left[ n\mu^2 - 2 \, \mu \, n\bar{x} \right]\right\}.
+   \end{align*}
+   $$
+2. **Posterior:**
+   Using the prior and likelihood derived above, we have
+   $$
+   \begin{align*}
+   \pi(\mu \mid \underline{x}) &\propto \exp\left\{ -\frac{1}{2\sigma^2_0}(\mu^2 - 2\mu \mu_0) \right\} \exp\left\{-\frac{1}{2\sigma^2}\left[ n\mu^2 - 2 \, \mu \, n\bar{x} \right]\right\}  \\
+   &\propto \exp\left\{ -\frac{1}{2}\left[ \frac{\mu^2}{\sigma^2_0} - 2\mu \frac{\mu_0}{\sigma^2_0} + \mu^2 \frac{n}{\sigma^2} - 2 \mu \frac{n\bar{x}}{\sigma^2} \right] \right\} \\
+   &\propto \exp\left\{ -\frac{1}{2}\left[ \mu^2\left( \frac{1}{\sigma^2_0} + \frac{n}{\sigma^2}\right) - 2\mu\left(\frac{\mu_0}{\sigma^2_0} + \frac{n\bar{x}}{\sigma^2}\right)  \right] \right\} \\
+   &\propto \exp\left\{ -\frac{1}{2\left( \frac{1}{\sigma^2_0} + \frac{n}{\sigma^2}\right)^{-1}}\left[ \mu^2 - 2\mu \frac{\left(\frac{\mu_0}{\sigma^2_0} + \frac{n\bar{x}}{\sigma^2}\right)}{\left( \frac{1}{\sigma^2_0} + \frac{n}{\sigma^2}\right)}  \right] \right\}.
+   \end{align*}
+   $$
+   This takes the form of a Normal density function and thus
+   $$
+   \mu \mid \underline{x} \sim \mathcal{N}(M,V), 
+   $$
+   where
+   $$
+   \begin{align*}
+   M &= \frac{\frac{\mu_0}{\sigma^2_0} + \frac{n\bar{x}}{\sigma^2}}{ \frac{1}{\sigma^2_0} + \frac{n}{\sigma^2}}, \\
+   V &= \frac{1}{\frac{1}{\sigma^2_0} + \frac{n}{\sigma^2}}.
+   \end{align*}
+   $$
+   So the Normal distribution is <span class="xref-no-num">[conjugate @def-conjugacy]</span>.
+
+</details>
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="bayes conjugacy normal inv-gamma" data-difficulty="1" #q-normal-invgamma}
+## Conjugacy: Normal Model with known mean, Inverse Gamma Prior for variance
+
+Suppose that we observe $n$ i.i.d. <span class="xref-no-num">[Normal @sec-normal]</span> observations
+$$
+X_i \mid \gamma \; \overset{\text{i.i.d.}}{\sim} \; \mathcal{N}(\mu, \gamma),
+$$
+where the observation mean $\mu$ is a known quantity. Show that choosing a <span class="xref-no-num">[Inverse Gamma @sec-inv-gamma]</span> prior
+$$
+\gamma \sim \operatorname{InvGamma}(a,b)
+$$
+yields the posterior distribution 
+$$
+\gamma \mid \underline{x} \sim  \mathrm{InvGamma}\left(a + n/2,\; b + \frac{1}{2}\sum_{i=1}^n (x_i - \mu)^2  \right).
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+We compute the posterior using Bayes theorem:
+$$
+\pi(\gamma \mid \underline{x}) \propto \pi(\gamma) f(\underline{x}\mid \gamma).
+$$
+
+1. **Prior PDF:**
+   Since $\gamma \sim \operatorname{InvGamma}(a,b)$, its probability density function is
+   $$
+   \pi(\gamma) = \frac{b^a}{\Gamma(a)}  \gamma^{-(a+1)} \exp\left(-\frac{b}{\gamma}\right), \qquad \gamma>0.
+   $$
+   Ignoring the factors which do not depend on $\gamma$, this is proportional to
+   $$
+   \pi(\gamma) \propto  \gamma^{-(a+1)} \exp\left\{-\frac{b}{\gamma}\right\}.
+   $$
+
+2. **Likelihood:** 
+   Since we have $n$ i.i.d. observations $X_i \mid \gamma \; \overset{\text{i.i.d.}}{\sim} \; \mathcal{N}(\mu, \gamma)$, the likelihood is
+   $$
+   \begin{align*}
+   f(\underline{x} \mid \gamma) 
+     &= \prod_{i=1}^n  \frac{1}{\sqrt{2\pi\gamma}} 
+        \exp\left\{-\frac{1}{2\gamma}(x_i - \mu)^2\right\}  \\
+     &= (2\pi\gamma)^{-n/2} 
+        \exp\left\{-\frac{1}{2\gamma}\sum_{i=1}^n (x_i - \mu)^2\right\}.
+   \end{align*}
+   $$
+   Dropping the factors that do not depend on $\gamma$, this is proportional to
+   $$
+   f(\underline{x} \mid \gamma) \propto \gamma^{-n/2} 
+   \exp\left\{-\frac{1}{2\gamma}\sum_{i=1}^n (x_i - \mu)^2\right\}. 
+   $$
+
+3. **Posterior:**
+   Using the prior and likelihood derived above, we have
+   $$
+   \begin{align*}
+   \pi(\gamma \mid \underline{x}) 
+   &\propto  \gamma^{-(a+1)} \exp\left\{-\frac{b}{\gamma}\right\} \;
+               \gamma^{-n/2} \exp\left\{-\frac{1}{2\gamma}\sum_{i=1}^n (x_i - \mu)^2\right\} \\
+   &\propto \gamma^{-(a + n/2 + 1)} 
+            \exp\left\{ -\frac{1}{\gamma}\left( b + \frac{1}{2}\sum_{i=1}^n (x_i - \mu)^2 \right) \right\}.
+   \end{align*}
+   $$
+   This takes the form of an Inverse Gamma density function and thus
+   $$
+   \gamma \mid \underline{x} \sim \mathrm{InvGamma}\left(a + \frac{n}{2},\; 
+   b + \frac{1}{2}\sum_{i=1}^n (x_i - \mu)^2  \right),
+   $$
+   so the Inverse Gamma distribution is <span class="xref-no-num">[conjugate @def-conjugacy]</span>.
+
+</details>
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="bayes conjugacy exponential gamma" data-difficulty="1" #q-exp-gamma}
+## Conjugacy: Exponential Model, Gamma Prior
+
+Suppose that we observe $n$ i.i.d. <span class="xref-no-num">[Exponential @sec-exp]</span> observations
+$$
+X_i \mid \lambda \; \overset{\text{i.i.d.}}{\sim} \; \mathrm{Exponential}(\lambda).
+$$
+Show that choosing a <span class="xref-no-num">[Gamma @sec-gamma]</span> prior
+$$
+\lambda \sim \operatorname{Gamma}(a,b)
+$$
+yields the posterior distribution 
+$$
+\lambda \mid \underline{x} \sim \mathrm{Gamma}\left(a + n,\; 
+   b + n\bar{x}  \right).
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+We compute the posterior using Bayes theorem:
+$$
+\pi(\lambda \mid \underline{x}) \propto \pi(\lambda) \, f(\underline{x}\mid \lambda).
+$$
+
+1. **Prior PDF:**
+   Since $\lambda \sim \operatorname{Gamma}(a,b)$, its probability density function is
+   $$
+   \pi(\lambda) =  \frac{b^a}{\Gamma(a)} \lambda^{a-1} e^{-b\lambda}
+   $$
+   Ignoring the factors which do not depend on $\lambda$, this is proportional to
+   $$
+   \pi(\lambda) \propto  \lambda^{a-1} e^{-b\lambda}.
+   $$
+
+2. **Likelihood:** 
+   Since we have $n$ i.i.d. observations $X_i \mid \lambda \; \overset{\text{i.i.d.}}{\sim} \; \mathrm{Exponential}(\lambda)$, the likelihood is
+   $$
+   \begin{align*}
+   f(\underline{x} \mid \lambda) 
+     &= \prod_{i=1}^n  \lambda \, e^{-\lambda x_i} \\
+     &= \lambda^n \, \exp\left\{-\lambda \, n\bar{x}\right\}
+   \end{align*}
+   $$
+   Note that there are *no factors* that do not depend on $\lambda$.
+
+3. **Posterior:**
+   Using the prior and likelihood derived above, we have
+   $$
+   \begin{align*}
+   \pi(\lambda \mid \underline{x}) 
+   &\propto   \lambda^{a-1} e^{-b\lambda} \; \lambda^n \, \exp\left\{-\lambda \, n\bar{x}\right\} \\
+   &\propto \lambda^{a + n - 1} \exp\left\{ -\lambda(b + n\bar{x}) \right\}
+   \end{align*}
+   $$
+   This takes the form of a Gamma density function and thus
+   $$
+   \lambda \mid \underline{x} \sim \mathrm{Gamma}\left(a + n,\; 
+   b + n\bar{x}  \right),
+   $$
+   so the Gamma distribution is <span class="xref-no-num">[conjugate @def-conjugacy]</span>.
+
+</details>
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="bayes conjugacy weibull inv-gamma" data-difficulty="1" #q-weib-invgamma}
+## Conjugacy: Weibull Model with known rate, Inverse Gamma Prior
+
+Suppose that we observe $n$ i.i.d. <span class="xref-no-num">[Weibull @sec-weibull]</span> observations
+$$
+X_i \mid \theta \; \overset{\text{i.i.d.}}{\sim} \; \operatorname{Weibull}(\beta,\theta),
+$$
+where the parameter $\beta$ is a **known quantity**. Show that choosing a <span class="xref-no-num">[Inverse Gamma @sec-inv-gamma]</span> prior
+$$
+\theta \sim \operatorname{InvGamma}(a,b)
+$$
+yields the posterior distribution 
+$$
+\theta \mid \underline{x} \sim \mathrm{InvGamma}\left(a + n,\; 
+b + \sum_{i=1}^n x_i^\beta  \right).
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+We compute the posterior using Bayes theorem:
+$$
+\pi(\theta \mid \underline{x}) \propto \pi(\theta) \, f(\underline{x}\mid \theta).
+$$
+
+1. **Prior PDF:**
+   Since $\theta \sim \operatorname{InvGamma}(a,b)$, its probability density function is
+   $$
+   \pi(\theta) = \frac{b^a}{\Gamma(a)} \theta^{-(a+1)} e^{-b\theta^{-1}}.
+   $$
+   Ignoring the factors which do not depend on $\theta$, this is proportional to
+   $$
+   \pi(\theta) \propto   \theta^{-(a+1)} \exp\left\{-\frac{b}{\theta}\right\}.
+   $$
+
+2. **Likelihood:** 
+   Since we have $n$ i.i.d. observations $X_i \mid \theta \; \overset{\text{i.i.d.}}{\sim} \; \mathrm{Weibull}(\beta, \theta)$, the likelihood is
+   $$
+   \begin{align*}
+   f(\underline{x} \mid \theta) 
+     &= \prod_{i=1}^n  \frac{\beta}{\theta}x_i^{\beta - 1} \exp\left(-\frac{x_i^\beta}{\theta}\right) \\
+     &=  \frac{\beta^n}{\theta^n} \exp\left\{- \frac{1}{\theta}\sum_{i=1}^n x_i^\beta\right\} \left(\prod_{i=1}^n x_i \right)^{\beta - 1}
+   \end{align*}
+   $$
+   Ignoring the factors which do not depend on $\theta$, this is proportional to
+   $$
+   f(\underline{x} \mid \theta) \propto \theta^{-n} \exp\left\{- \frac{1}{\theta}\sum_{i=1}^n x_i^\beta\right\} .
+   $$
+
+3. **Posterior:**
+   Using the prior and likelihood derived above, we have
+   $$
+   \begin{align*}
+   \pi(\theta \mid \underline{x}) 
+   &\propto  \theta^{-(a+1)} \exp\left\{-\frac{b}{\theta}\right\} \; \theta^{-n} \exp\left\{- \frac{1}{\theta}\sum_{i=1}^n x_i^\beta\right\}\\
+   &\propto  \theta^{-(a + n + 1)}  \exp\left\{-\frac{1}{\theta}\left(b + \sum_{i=1}^n x_i^\beta \right)\right\}.
+   \end{align*}
+   $$
+   This takes the form of an Inverse Gamma density function and thus
+   $$
+   \theta \mid \underline{x} \sim \mathrm{InvGamma}\left(a + n,\; 
+   b + \sum_{i=1}^n x_i^\beta  \right),
+   $$
+   so the Inverse Gamma distribution is <span class="xref-no-num">[conjugate @def-conjugacy]</span>.
+
+</details>
+:::
+
+
+
+::: {.callout-important .question appearance="minimal" data-tags="bayes conjugacy normal" data-difficulty="1" #q-normal-normal-update}
+## Posterior calculation: Normal likelihood, Normal prior
+
+Consider the setup of <span class="xref-no-num">[Conjugacy: Normal Model, Normal Prior @q-normal-normal]</span>.  
+Suppose the observation variance is known and equal to
+$$
+\sigma^2 = 4,
+$$
+and the prior for the mean is
+$$
+\mu \sim \mathcal{N}(\mu_0, \sigma_0^2),
+\qquad
+\mu_0 = 0, \ \sigma_0^2 = 1.
+$$
+
+We observe $n = 10$ i.i.d. observations with sample mean
+$$
+\bar{x} = 1.5.
+$$
+
+Using the closed-form update
+$$
+M = \frac{\frac{\mu_0}{\sigma_0^2} + \frac{n\bar{x}}{\sigma^2}}{ \frac{1}{\sigma_0^2} + \frac{n}{\sigma^2}},
+\qquad
+V = \frac{1}{\frac{1}{\sigma_0^2} + \frac{n}{\sigma^2}},
+$$
+compute the posterior distribution
+$$
+\mu \mid \underline{x} \sim \mathcal{N}(M, V).
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+The prior parameters are $\mu_0 = 0$ and $\sigma^2_0 = 1$, the data terms are $\sigma^2 = 4$, $n=10$ and $\bar{x} = 1.5$.
+
+Therefore, we have
+$$
+\begin{align*}
+M &= \frac{\frac{0}{1} + \frac{10\times 1.5}{4}}{ \frac{1}{1} + \frac{10}{4}} = \frac{15}{14} \\
+V &= \frac{1}{ \frac{1}{1} + \frac{10}{4}} = \frac{4}{14}.
+\end{align*}
+$$
+
+</details>
+
+:::

@@ -1,0 +1,31 @@
+```{ojs}
+
+{
+  const ν = Math.round(chi_nu);
+  const hi = Math.max(5, ν + 6 * Math.sqrt(2 * ν));
+  const data = linspace(0, hi).map(x => ({ x, y: chisqPDF(x, ν) }));
+
+  const stats = md`**Mean** ${tex`= \nu`} = ${ν}; 
+  **Var** ${tex`= 2\nu`} = ${2*ν}.`;
+
+  const plot = Plot.plot({
+        width, height: 260,
+    style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)"           // drives 'currentColor'
+    },
+ y: { label: "PDF" }, x: { label: "x" },
+    marks: [
+      Plot.lineY(data, { x: "x", y: "y", stroke: ACCENT, strokeWidth: 2 }),
+      Plot.areaY(data, { x: "x", y: "y", fill: AREA }),
+      Plot.ruleY([0], { stroke: GRID, strokeOpacity: 0.6 })
+    ]
+  });
+
+  return html`<div class="dist-panel"><div class="stats">${stats}</div>${plot}</div>`;
+}
+```
+
+```{ojs}
+viewof chi_nu = Inputs.range([1, 40], {value: 8, step: 1, label: md`${tex`\nu`}`})
+```

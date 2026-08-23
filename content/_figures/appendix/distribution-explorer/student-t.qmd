@@ -1,0 +1,31 @@
+```{ojs}
+
+{
+  const ν = Math.round(t_nu);
+  const data = linspace(-6, 6).map(x => ({ x, y: tPDF(x, ν) }));
+
+  const stats = md`${tex`\mathrm{E}[X]=0 (\nu>1)`}, 
+  ${tex`\operatorname{Var}(X)=\nu/(\nu-2)\ (\nu>2)`}.  
+  Current: ${ν}.`;
+
+  const plot = Plot.plot({
+        width, height: 260,
+    style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)"           // drives 'currentColor'
+    },
+ y: { label: "PDF" }, x: { label: "x" },
+    marks: [
+      Plot.lineY(data, { x: "x", y: "y", stroke: ACCENT, strokeWidth: 2 }),
+      Plot.areaY(data, { x: "x", y: "y", fill: AREA }),
+      Plot.ruleY([0], { stroke: GRID, strokeOpacity: 0.6 })
+    ]
+  });
+
+  return html`<div class="dist-panel"><div class="stats">${stats}</div>${plot}</div>`;
+}
+```
+
+```{ojs}
+viewof t_nu = Inputs.range([1, 40], {value: 5, step: 1, label: md`${tex`\nu`}`})
+```

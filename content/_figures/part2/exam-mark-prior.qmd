@@ -1,0 +1,66 @@
+```{ojs}
+// === (B) Exam-mark prior: Normal(μ=60, σ=10) ===
+// Domain and grid
+markDomain = [0, 100]
+markXs = d3.scaleLinear().domain(markDomain).ticks(400)
+
+// Normal PDF helper
+function normalPDF(x, mu, sigma){
+  const z = (x - mu) / sigma;
+  return Math.exp(-0.5 * z * z) / (sigma * Math.sqrt(2 * Math.PI));
+}
+
+// Prior parameters and curve
+mu_prior = 60
+sd_prior = 10
+
+markPrior = markXs.map(x => ({ x, y: normalPDF(x, mu_prior, sd_prior), which: "Prior  N(60, 10²)" }))
+
+// Shading bounds for "plausible" 50–70 region
+loBand = 50
+hiBand = 70
+bandFill = markXs
+  .filter(x => x >= loBand && x <= hiBand)
+  .map(x => ({ x, y: normalPDF(x, mu_prior, sd_prior) }))
+```
+
+```{ojs}
+//| label: fig-exam-prior-normal
+//| fig-cap: Prior for the average exam mark. A Normal prior centred at $60$ with standard deviation $10$ encodes “likely around $60$, plausibly $50–70$”.
+//| fig-align: center
+//| echo: false
+
+Plot.plot({
+  height: 320,
+  marginLeft: 48,
+  marginBottom: 45,
+  x: { label: "Average mark θ", domain: markDomain },
+  y: { label: "Density" },
+  style: {
+    width: "100%",
+    display: "block", 
+    margin: "0 auto", 
+    maxWidth: "960px",
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)",
+    fontFamily: bodyFont, 
+    fontSize: 12
+  },
+  marks: [
+    Plot.ruleY([0], { stroke: "var(--plot-grid)", strokeOpacity: 0.6 }),
+    // shade the 50–70 plausible band
+    Plot.areaY(bandFill, { x: "x", y: "y", fill: "var(--plot-series-1)", fillOpacity: 0.12 }),
+    // main prior curve
+    Plot.lineY(markPrior, { x: "x", y: "y", stroke: "var(--plot-series-1)", strokeWidth: 2 }),
+    // annotations
+    Plot.ruleX([mu_prior], { stroke: "var(--plot-fg)", strokeWidth: 2, strokeDasharray: "3,3", strokeOpacity: 0.4 }),
+    Plot.text(
+      [
+        { x: mu_prior + 8, y: normalPDF(mu_prior, mu_prior, sd_prior) * 0.99, label: "Prior mean 60" },
+        { x: (loBand+hiBand)/2, y: normalPDF((loBand+hiBand)/2, mu_prior, sd_prior) / 3, label: "Plausible 50–70" }
+      ],
+      { x: "x", y: "y", text: "label", dy: -10 }
+    )
+  ]
+})
+```

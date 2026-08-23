@@ -1,0 +1,40 @@
+```{ojs}
+//| label: fig-PDF-CDF-example
+//| fig-cap: Probability density function $f(x)$ and cumulative distribution function $F(x)$ for the random variable with PDF $f(x)=6x(1-x)$ on $[0,1]$. The PDF is symmetric about $x=0.5$, and the CDF increases smoothly from 0 to 1.
+//| fig-align: center
+
+// domain
+xs = d3.range(-0.1, 1.1, 0.01)
+
+// PDF
+PDF = xs.map(x => ({
+  x: x,
+  y: (x >= 0 && x <= 1) ? 6*x*(1-x) : 0,
+  which: "PDF f(x)"
+}))
+
+// CDF
+CDF = xs.map(x => {
+  let y;
+  if (x < 0) y = 0;
+  else if (x > 1) y = 1;
+  else y = x**2 * (3 - 2*x);
+  return {x: x, y: y, which: "CDF F(x)"};
+})
+
+viewof chart = Plot.plot({
+  height: 300,
+  width: 500,
+  style: { background: "var(--plot-bg)",
+           color: "var(--plot-fg)",
+           fontSize: 14,
+           fontFamily: bodyFont,  },
+  y: {domain: [0,1.8]},
+  marks: [
+    Plot.line(PDF, {x: "x", y: "y", stroke: "var(--plot-series-1)"}),
+    Plot.line(CDF, {x: "x", y: "y", stroke: "var(--plot-series-2)"}),
+    Plot.ruleY([0]),
+  ],
+  color: {legend: true}
+})
+```

@@ -1,0 +1,345 @@
+```{ojs}
+//| echo: false
+
+/* -----------------------------------------------------------
+   Confidence Intervals for μ (Normal data) — z-interval only
+   Left: current sample + z-CI
+   Right: true μ line + vertical z-CIs added on each resample
+   ----------------------------------------------------------- */
+bodyFont = getComputedStyle(document.body).fontFamily
+
+// ---------- Mutable state ----------
+mutable rngSeed = 1
+mutable resampleClicks = 0
+mutable resetClicks = 0
+
+// history of z-intervals: array of {L, U, covered}
+mutable ciZHistory = []
+
+// last interval (to archive on next click)
+mutable lastZ = null
+
+
+// ---------- Buttons ----------
+function styledButton(label, cls, options = {}) {
+  const el = Inputs.button(label, options);
+  const btn = el.querySelector('button');
+  if (btn) btn.classList.add(cls);
+  return el;
+}
+viewof resample = styledButton("Resample", "btn-resample", { reduce: c => (c ?? 0) + 1 })
+viewof reset    = styledButton("Reset",    "btn-reset",    { reduce: c => (c ?? 0) + 1 })
+
+// ---------- Edge triggers ----------
+{
+  if (reset > resetClicks) {
+    mutable ciZHistory = [];
+    mutable lastZ = null;
+    mutable resetClicks = reset;
+  }
+  return html``;
+}
+{
+  if (resample > resampleClicks) {
+    if (lastZ) {
+      mutable ciZHistory = [...ciZHistory, lastZ];
+    }
+    mutable rngSeed = rngSeed + 1;
+    mutable resampleClicks = resample;
+  }
+  return html``;
+}
+
+// ---------- Quantiles (z only) ----------
+qnorm = (p) => {
+  if (p <= 0 || p >= 1) return NaN;
+  const a = [-3.969683028665376e+01,2.209460984245205e+02,-2.759285104469687e+02,1.383577518672690e+02,-3.066479806614716e+01,2.506628277459239e+00];
+  const b = [-5.447609879822406e+01,1.615858368580409e+02,-1.556989798598866e+02,6.680131188771972e+01,-1.328068155288572e+01];
+  const c = [-7.784894002430293e-03,-3.223964580411365e-01,-2.400758277161838e+00,-2.549732539343734e+00,4.374664141464968e+00,2.938163982698783e+00];
+  const d = [ 7.784695709041462e-03, 3.224671290700398e-01, 2.445134137142996e+00, 3.754408661907416e+00];
+  const plow = 0.02425, phigh = 1 - plow;
+  let q, r, x;
+  if (p < plow) { q = Math.sqrt(-2*Math.log(p));
+    x = (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) / ((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);
+  } else if (phigh < p) { q = Math.sqrt(-2*Math.log(1-p));
+    x = -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) / ((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);
+  } else { q = p - 0.5; r = q*q;
+    x = (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q / (((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);
+  }
+  const erf = x => { const s=Math.sign(x); x=Math.abs(x); const t=1/(1+0.5*x);
+    const tau=t*Math.exp(-x*x-1.26551223+1.00002368*t+0.37409196*t**2+0.09678418*t**3-0.18628806*t**4+0.27886807*t**5-1.13520398*t**6+1.48851587*t**7-0.82215223*t**8+0.17087277*t**9);
+    return s*(1-tau);
+  };
+  const SQRT2 = Math.SQRT2, SQRT2PI = Math.sqrt(2*Math.PI);
+  const e = 0.5 * (1 + erf(x / SQRT2)) - p;
+  const u = e * SQRT2PI * Math.exp(0.5 * x * x);
+  return x - u / (1 + x * u);
+}
+
+// ---------- Sample + statistics ----------
+X = {
+  const r = d3.randomNormal.source(d3.randomLcg(rngSeed))(controls.trueMu, controls.trueSigma);
+  return d3.range(controls.n).map(r);
+}
+xbar = d3.mean(X)
+
+alpha = controls.alpha
+zcrit = qnorm(1 - alpha/2)
+
+// z–CI for μ (known σ)
+ciZ = ({
+  L: xbar - zcrit * (controls.trueSigma / Math.sqrt(controls.n)),
+  U: xbar + zcrit * (controls.trueSigma / Math.sqrt(controls.n))
+})
+
+covers = (ci, theta) => (ci.L <= theta && theta <= ci.U);
+currentCoveredZ = covers(ciZ, controls.trueMu);
+
+// save current z so *next* resample archives it
+{
+  mutable lastZ = { ...ciZ, covered: currentCoveredZ };
+  return html``; // suppresses any output
+}
+
+
+// ---------- Toolbar (above plots) ----------
+
+// ---------- Left panel: data + current z-CI ----------
+makeDensityReducer = (total) => (values, extent) =>
+  values.length / Math.max(1, total) / Math.max(1e-9, extent.x2 - extent.x1);
+
+xExtent = d3.extent(X)
+xPad    = 3 * controls.trueSigma
+xDomain = [xExtent[0] - 0.1*(xPad||1), xExtent[1] + 0.1*(xPad||1)]
+
+bins = d3.bin().domain(xDomain).thresholds(controls.bins)(X);
+densities = bins.map(b => (b.length / Math.max(1, controls.n)) / Math.max(1e-9, (b.x1 - b.x0)));
+yMax = Math.max(0.05, d3.max(densities) ?? 0.05);
+yCI  = yMax * 0.75
+
+leftPlot = Plot.plot({
+  width: Math.min(680, Math.max(360, width/2 - 20)),
+  height: 340,
+  style: { background: "var(--plot-bg)",
+           color: "var(--plot-fg)",
+           fontFamily: bodyFont, 
+           fontSize: 14.
+  }, 
+  x: { label: "Data", domain: xDomain },
+  y: { label: "Density" },
+  marks: [
+    Plot.rectY(X, Plot.binX({ y: makeDensityReducer(controls.n) }, { x: d=>d, thresholds: controls.bins, inset: 0, fillOpacity: 0.4, fill: "var(--plot-series-1)" })),
+    Plot.ruleX(X, { y1: 0, y2: yMax*0.05, stroke: "var(--plot-series-1)", strokeWidth: 3, strokeOpacity: 1 }),
+    Plot.ruleX([controls.trueMu], { stroke: "var(--plot-series-3)", strokeDasharray: "4,3", strokeWidth: 2 }),
+    Plot.ruleX([xbar], { stroke: "currentColor", strokeDasharray: "2,2" }),
+    Plot.dot([{x:xbar,y:0}], {x:"x",y:"y", r:3, fill:"currentColor"}),
+
+    // current z–CI (horizontal link)
+    Plot.link([{x1:ciZ.L, x2:ciZ.U, y1:yCI, y2:yCI}],
+      { x1:"x1", x2:"x2", y1:"y1", y2:"y2", stroke:"var(--plot-series-2)", strokeWidth:4 }),
+    Plot.dot([{x:xbar,y:yCI}], {x:"x", y:"y", r:3, fill:"var(--plot-series-2)"}),
+    Plot.text([{x:(ciZ.L+ciZ.U)/2, y:yCI + 0.05*yMax, label:`CI (${((1-alpha)*100)|0}%)`}],
+      {x:"x",y:"y",text:"label", dy:-4, fontSize:10, fill:"var(--plot-series-2)"}),
+
+    Plot.ruleY([0])
+  ]
+})
+
+// ---------- Right panel: history as vertical z-CI segments ----------
+zHistory   = ciZHistory
+indices    = d3.range(1, zHistory.length + 1)
+coverageZ  = zHistory.length ? d3.mean(zHistory, d => d.covered) : NaN
+
+rightYDomain = (() => {
+  const vals = [
+    controls.trueMu,
+    ...zHistory.flatMap(d => [d.L, d.U]),
+    ciZ.L, ciZ.U
+  ];
+  const lo = d3.min(vals), hi = d3.max(vals);
+  const pad = 0.08 * (hi - lo || 1);
+  return [lo - pad, hi + pad];
+})()
+
+rightPlot = Plot.plot({
+  width: Math.min(680, Math.max(360, width/2 - 20)),
+  height: 340,
+  style: { background: "var(--plot-bg)",
+           color: "var(--plot-fg)",
+           fontFamily: bodyFont, 
+           fontSize: 14.
+  }, 
+  x: { label: "Number of samples taken", domain: [0.5, Math.max(1.5, indices.length + 1.5)] },
+  y: { label: "μ", domain: rightYDomain },
+  marks: [
+    Plot.ruleY([controls.trueMu], { stroke: "var(--plot-series-3)", strokeDasharray: "4,3", strokeWidth: 2 }),
+
+    // archived z-CIs
+    Plot.ruleX(zHistory.map((d,i)=>({x:i+1, y1:d.L, y2:d.U, covered:d.covered})),
+               { x:"x", y1:"y1", y2:"y2", stroke:(d)=> d.covered ? "var(--plot-series-2)" : "var(--plot-muted)", strokeWidth: 3, opacity: 0.9 }),
+
+    // current interval (ghosted) at the next x-position
+    Plot.ruleX([{x:indices.length+1, y1:ciZ.L, y2:ciZ.U}],
+               { x:"x", y1:"y1", y2:"y2", stroke:"var(--plot-series-2)", strokeWidth: 3, strokeOpacity:0.4 }),
+
+    // coverage text
+    Plot.text(
+      [{x: 0.7, y: rightYDomain[1], label: `z-CI coverage: ${isNaN(coverageZ) ? "—" : `${(100*coverageZ).toFixed(0)}%`} (${zHistory.length})`}],
+      {x:"x", y:"y", text:"label", dx: 4, dy: 4, textAnchor: "start", fontSize: 11}
+    )
+  ]
+})
+
+{
+  // Make the forms behave nicely in the grid
+  for (const f of [viewof resample, viewof reset]) {
+    f.style.margin = "0";
+    f.style.width = "100%";
+    f.style.maxWidth = "none";
+    f.style.display = "flex";
+  }
+  viewof resample.style.justifyContent = "flex-start";
+  viewof reset.style.justifyContent    = "flex-end";
+
+  return html`<div class="ojs-toolbar-grid">
+    <div class="left">${viewof resample}</div>
+      <div class="center">
+        ${md`${tex`\big[L(\underline{X}),\, U(\underline{X})\big] = \big[${ciZ.L.toFixed(2)},\; ${ciZ.U.toFixed(2)}\big]`}`}
+      </div>
+    <div class="right">${viewof reset}</div>
+  </div>
+
+  <style>
+    .ojs-toolbar-grid{
+      display:grid;
+      grid-template-columns:1fr auto 1fr; /* left, middle, right */
+      align-items:center;
+      width:100%;
+      box-sizing:border-box;
+      margin:0; padding:0;
+    }
+    .ojs-toolbar-grid form{
+      margin:0 !important;
+      width:100% !important;
+      max-width:none !important;
+      display:flex !important;
+    }
+    .ojs-toolbar-grid .left  form{ justify-content:flex-start !important; }
+    .ojs-toolbar-grid .right form{ justify-content:flex-end   !important; }
+
+    .btn.btn-resample{ background: var(--brand-teal); color:#fff; border:none; }
+    .btn.btn-resample:hover{ background: var(--brand-teal-hover); }
+    .btn.btn-reset{ background: var(--brand-red); color:#fff; border:none; }
+    .btn.btn-reset:hover{ background: var(--brand-red-hover); }
+    .btn.btn-resample:focus-visible,
+    .btn.btn-reset:focus-visible{
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+
+    .ojs-toolbar-grid .center{
+      text-align:center;
+      font-size:0.9rem;
+      color: var(--brand-fg);
+    }
+  </style>`;
+}
+
+html`<div style="max-width:100%; display:flex; gap:14px; align-items:flex-start; flex-wrap:nowrap;">
+  <div>${leftPlot}</div>
+  <div>${rightPlot}</div>
+</div>`
+
+
+```
+
+
+```{ojs}
+// ---------- Controls (to be rendered *below* the plots) ----------
+html`<style>
+details.controls-root > summary {
+  list-style: none; cursor: pointer; user-select: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-weight: 600; font-size: 13px;
+  color: var(--fg-strong);
+  display: flex; align-items: center; gap: 8px;
+}
+/* ---------- Compact Inputs (fixed slider alignment) ---------- */
+.controls-col label { font-size: 12px !important; }
+
+details.controls-root > summary::-webkit-details-marker { display: none; }
+details.controls-root[open] > summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+details.controls-root > summary::before {
+  content: ""; display: inline-block; margin-right: 8px; width: 0; height: 0;
+  border-style: solid; border-width: 3px 0 3px 6px;
+  border-color: transparent transparent transparent var(--fg-strong);
+  transform: rotate(0deg); transform-origin: 3px 50%; transition: transform 60ms ease;
+}
+details.controls-root[open] > summary::before { transform: rotate(90deg); }
+.controls-grid {
+  display: grid;
+  grid-template-columns: minmax(260px,1fr) minmax(260px,1fr);
+  gap: 12px;
+  border: 1px solid var(--border); border-top: none;
+  border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;
+  padding: 10px;
+  background: var(--surface-weak);
+}
+.controls-col { min-width: 260px; }
+.controls-col h4 {
+  margin: 0 0 6px 0; font-size: 12px; font-weight: 700;
+  color: var(--fg-muted);
+}
+.controls-col input[type="range"]{ width:100%; accent-color: var(--brand-teal,#55C3CB); }
+
+/* Toolbar + buttons */
+.btn.btn-resample{ background: var(--brand-teal); color:#fff; border:none; padding:6px 10px; border-radius:8px;}
+.btn.btn-resample:hover{ background: var(--brand-teal-hover,#4da2a8); }
+.btn.btn-reset{ background: var(--brand-red,#e65660); color:#fff; border:none; padding:6px 10px; border-radius:8px;}
+.btn.btn-reset:hover{ background: var(--brand-red-hover,#bd4a52); }
+.toolbar{ display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:8px; margin: 6px 0 10px; }
+.toolbar .left form{ display:flex; justify-content:flex-start; margin:0 }
+.toolbar .right form{ display:flex; justify-content:flex-end;   margin:0 }
+.toolbar .center{ text-align:center; font-size:0.9rem; color:var(--brand-fg) }
+
+/* Plots container: force side-by-side; scroll if too narrow */
+.ci-row {
+  display: flex; gap: 14px; align-items: flex-start;
+  flex-wrap: nowrap; overflow-x: auto; max-width: 100%;
+}
+.ci-panel { flex: 0 0 50%; min-width: 460px; }
+</style>`
+
+viewof controls = {
+  const left = Inputs.form({
+    n: Inputs.range([2, 400], { value: 20, step: 1, label: md`${tex`n`}` }),
+    trueMu: Inputs.range([-2, 2], { value: 0, step: 0.1, label: md`${tex`\mu_{\text{true}}`}` }),
+    trueSigma: Inputs.range([0.3, 3], { value: 1, step: 0.1, label: md`${tex`\sigma\ \text{(known)}`}` })
+  }, { submit: false });
+
+  const right = Inputs.form({
+    alpha: Inputs.range([0.01, 0.2], { value: 0.05, step: 0.01, label: md`${tex`\alpha\ \text{(1−}\alpha\text{ confidence)}`}` }),
+    bins: Inputs.range([10, 60], { value: 24, step: 1, label: "Histogram bins" })});
+
+  const root = html`<details class="controls-root" open>
+    <summary>Simulation controls</summary>
+    <div class="controls-grid">
+      <div class="controls-col"><h4>Data & truth</h4></div>
+      <div class="controls-col"><h4>Confidence level & display</h4></div>
+    </div>
+  </details>`;
+  root.querySelector(".controls-grid").children[0].append(left);
+  root.querySelector(".controls-grid").children[1].append(right);
+
+  const getValue = () => ({ ...left.value, ...right.value });
+  const update = () => { root.value = getValue(); root.dispatchEvent(new CustomEvent("input", { bubbles: true })); };
+  left.addEventListener("input", update);
+  right.addEventListener("input", update);
+  queueMicrotask(update);
+  return root;
+}
+
+```

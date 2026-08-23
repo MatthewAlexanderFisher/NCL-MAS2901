@@ -1,0 +1,35 @@
+```{ojs}
+
+{
+  const p = bern_p;
+  const data = [0, 1].map(x => ({ x, y: x ? p : 1 - p }));
+
+  const stats = md`**Mean** ${tex`= p`} = ${p.toFixed(2)}; 
+  **Var** ${tex`= p(1-p)`} = ${(p * (1 - p)).toFixed(3)}.`;
+
+  const plot = Plot.plot({
+        width, height: 260,
+    style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)"           // drives 'currentColor'
+    },
+
+    y: { label: "PMF", domain: [0, 1] },
+    x: { label: "x", type: "band", domain: [0, 1] },  // <-- band scale
+    marks: [
+      Plot.barY(data, { x: "x", y: "y", fill: ACCENT }),
+      Plot.ruleY([0], { stroke: GRID, strokeOpacity: 0.6 })
+    ]
+  });
+
+  return html`<div class="dist-panel"><div class="stats">${stats}</div>${plot}</div>`;
+}
+
+```
+
+```{ojs}
+viewof bern_p = Inputs.range([0.01, 0.99], {
+  value: 0.6, step: 0.01, label: md`${tex`p`}`
+})
+
+```

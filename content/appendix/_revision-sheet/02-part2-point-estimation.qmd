@@ -1,0 +1,986 @@
+## Part II - Point Estimation
+
+### Chapter 4 - Frequentist Point Estimation
+
+<details class="essential-points">
+<summary> Assessment Focus </summary>
+
+
+</details>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-statistic-estimator">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+<span class="xref-no-num">[Understand @sec-freq-point-estimate]</span> the distinction between a **statistic** and an **estimator**.
+</span>
+</div>
+
+<div class="revision-content" id="rev-statistic-estimator" hidden>
+
+- A **statistic** is any quantity computed from data.  
+  - When computed from random variables $X_1,\ldots,X_n$, it is **random**.  
+  - When computed from observed values $x_1,\ldots,x_n$, it becomes **non-random**.
+- An **estimator** $\hat{\theta}(\underline{X})$ is a statistic specifically designed to approximate a parameter $\theta$.
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-estimator-estimate">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+<span class="xref-no-num">[Understand @sec-estimators-vs-estimates]</span> the difference between an **estimator** and an **estimate**.
+</span>
+</div>
+
+<div class="revision-content" id="rev-estimator-estimate" hidden>
+
+- An **estimator** $\hat{\theta}(\underline{X})$ is a function of the **random sample** and is therefore **random**.
+- An **estimate** $\hat{\theta}(\underline{x})$ is the numerical value obtained after plugging in the **observed data**, and is therefore **non-random**.
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-sample-mean-var">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to recall and use the definitions of the <span class="xref-no-num">[sample mean @def-sample-mean]</span> and the <span class="xref-no-num">[sample variance @def-sample-variance]</span>.
+</span>
+</div>
+
+<div class="revision-content" id="rev-sample-mean-var" hidden>
+
+The <span class="xref-no-num">[sample mean @def-sample-mean]</span> is defined as
+$$
+\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i.
+$$
+The <span class="xref-no-num">[sample variance @def-sample-variance]</span> is defined as
+$$
+S^2 = \frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X})^2.
+$$
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-sampling-distribution">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Understand the concept of the <span class="xref-no-num">[sampling distribution @def-sampling-distribution]</span> of an estimator $\hat{\theta}$.
+</span>
+</div>
+
+<div class="revision-content" id="rev-sampling-distribution" hidden>
+
+The <span class="xref-no-num">[sampling distribution @def-sampling-distribution]</span> of an estimator $\hat{\theta}$ is the probability distribution of $\hat{\theta}(\underline{X})$ when the data are repeatedly sampled from the model.
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-normal-sample-mean">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to <span class="xref-no-num">[recall @prp-normal-sample-mean]</span> and <span class="xref-no-num">[prove @prf-normal-sample-mean]</span> the sampling distribution of the sample mean for i.i.d. normal data.
+</span>
+</div>
+
+<div class="revision-content" id="rev-normal-sample-mean" hidden>
+
+We use three key facts about the normal distribution:
+
+1. The **sum** of normally distributed random variables is also normally distributed.  
+2. Multiplying a normal random variable by a constant $c$ yields another normal random variable.  
+3. A normal distribution is completely determined by its **mean** and **variance**.
+
+Now consider i.i.d. normal data
+$$
+X_1,\ldots, X_n \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu, \sigma^2).
+$$
+
+The sample mean
+$$
+\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i
+$$
+is therefore also normally distributed. To determine its distribution, we compute its mean and variance:
+$$
+\begin{aligned}
+\mathrm{E}[\bar{X}]
+  &= \frac{1}{n}\sum_{i=1}^n \mathrm{E}[X_i]
+   = \frac{n\mu}{n}
+   = \mu, \\[6pt]
+\mathrm{Var}(\bar{X})
+  &= \frac{1}{n^2}\sum_{i=1}^n \mathrm{Var}(X_i)
+   = \frac{n\sigma^2}{n^2}
+   = \frac{\sigma^2}{n}.
+\end{aligned}
+$$
+
+Therefore,
+$$
+\bar{X} \sim \mathcal{N}\!\left(\mu,\, \frac{\sigma^2}{n}\right).
+$$
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-bias-var-se-mse">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to recall the definitions of, and compute, the <span class="xref-no-num">[bias @def-bias]</span>, <span class="xref-no-num">[variance @def-variance]</span>, <span class="xref-no-num">[standard error @def-se]</span> and <span class="xref-no-num">[mean-squared error (MSE) @def-mse]</span> of a given estimator.
+</span>
+</div>
+
+<div class="revision-content" id="rev-bias-var-se-mse" hidden>
+
+1. <span class="xref-no-num">[Bias @def-bias]</span>: The *bias* of an estimator $\hat{\theta}$ of $\theta$ is
+    $$
+    \mathrm{Bias}(\hat{\theta}) = \mathrm{E}[\hat{\theta}] - \theta.
+    $$  
+2. <span class="xref-no-num">[Variance @def-variance]</span>: The *variance* of an estimator $\hat{\theta}$ of $\theta$ is the **usual variance**:
+    $$
+    \mathrm{Var}(\hat{\theta}) = \mathrm{E}[(\hat{\theta} - \mathrm{E}[\hat{\theta}])^2] = \mathrm{E}[\hat{\theta}^2] - \mathrm{E}[\hat{\theta}]^2.
+    $$  
+3. <span class="xref-no-num">[Standard error @def-se]</span>: The *standard error* of an estimator $\hat{\theta}$ of $\theta$ is the *standard deviation* of the estimator:
+    $$
+    \mathrm{S.E.}(\hat{\theta}) = \sqrt{\mathrm{Var}(\hat{\theta})}.
+    $$
+4. <span class="xref-no-num">[Mean-squared error (MSE) @def-mse]</span>: The *mean-squared error* of an estimator $\hat{\theta}$ of $\theta$ is
+    $$
+    \mathrm{MSE}(\hat{\theta})=\mathrm{E}\!\big[(\hat{\theta}-\theta)^2\big].
+    $$
+  **Note:** When computing the MSE, always use the <span class="xref-no-num">[Bias–Variance decomposition @prp-mse-bias-variance]</span>:
+  $$
+  \mathrm{MSE}(\hat{\theta}) = \mathrm{Bias}(\hat{\theta})^2+\mathrm{Var}(\hat{\theta}).
+  $$ 
+
+</div>
+</div>
+
+<details class="practice-details">
+<summary><em>Properties of Estimators — Practice Questions</em></summary>
+
+::: {.smaller-table}
+| Location | Description | Link |
+|------|-------------|-------|
+| Question Bank | Two Poisson observations, bias and MSE | <span class="xref-no-num">[Link @q-poisson-estimator-1]</span> |
+| Question Bank | Properties of Poisson observations, bias | <span class="xref-no-num">[Link @q-prop-poisson]</span> |
+| Question Bank | Properties of an Estimators I: bias, variance and MSE | <span class="xref-no-num">[Link @q-prop-of-estimators1]</span> |
+| Question Bank | Properties of an Estimators II: bias, variance and MSE | <span class="xref-no-num">[Link @q-prop-of-estimators2]</span> |
+| Question Bank | Properties of an Estimators III: bias, variance and MSE | <span class="xref-no-num">[Link @q-prop-of-estimators3]</span> |
+| Examples | Bias of sample mean | @exm-bias-sm |
+| Examples | Variance of sample mean | @exm-variance-sm |
+| Examples | MSE of sample mean |  @exm-mse1 |
+| Examples | Bias of sample variance | @exm-bias-sv |
+| Examples | MSE of three estimators | @exm-mse2 |
+
+: {tbl-colwidths="[17, 70, 13]"}
+:::
+
+</details>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-mse-bias-variance">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to <span class="xref-no-num">[prove @prf-mse-bias-variance]</span> the <span class="xref-no-num">[Bias–Variance decomposition @prp-mse-bias-variance]</span> of the mean-squared error.
+</span>
+</div>
+
+<div class="revision-content" id="rev-mse-bias-variance" hidden>
+
+There are two different approaches you could consider in proving @prp-mse-bias-variance.
+
+--- 
+
+**Approach 1:**
+
+Start from the definition:
+
+$$
+\mathrm{MSE}(\hat{\theta})=\mathrm{E}\!\big[(\hat{\theta}-\theta)^2\big].
+$$
+
+**Step 1 (add–and–subtract the mean).** Let $m=\mathrm{E}[\hat{\theta}]$. Then
+
+$$
+\hat{\theta}-\theta
+=\big(\hat{\theta}-m\big)+\big(m-\theta\big).
+$$
+
+**Step 2 (expand the square).**
+
+$$
+(\hat{\theta}-\theta)^2
+=\big(\hat{\theta}-m\big)^2
++2\big(\hat{\theta}-m\big)\big(m-\theta\big)
++\big(m-\theta\big)^2.
+$$
+
+**Step 3 (take expectations; use linearity).**
+
+$$
+\mathrm{E}\!\big[(\hat{\theta}-\theta)^2\big]
+=\underbrace{\mathrm{E}\!\big[(\hat{\theta}-m)\!^2\big]}_{\mathrm{Var}(\hat{\theta})}
++2\,(m-\theta)\,\underbrace{\mathrm{E}\!\big[\hat{\theta}-m\big]}_{=\,0}
++\underbrace{(m-\theta)^2}_{\mathrm{Bias}(\hat{\theta})^2}.
+$$
+
+The middle term vanishes because $\mathrm{E}[\hat{\theta}-m]=\mathrm{E}[\hat{\theta}]-m=0$. Hence
+
+$$
+\mathrm{MSE}(\hat{\theta})
+=\mathrm{Var}(\hat{\theta})+\big(\mathrm{E}[\hat{\theta}]-\theta\big)^2
+=\mathrm{Var}(\hat{\theta})+\mathrm{Bias}(\hat{\theta})^2.
+$$
+
+--- 
+
+**Approach 2 (simpler):** 
+
+Using the facts that
+$$
+\begin{align*}
+    \mathrm{Bias}(\hat{\theta})^2 &= (\mathrm{E}[\hat{\theta}] - \theta)^2 = \mathrm{E}[\hat{\theta}]^2 - 2\theta \, \mathrm{E}[\hat{\theta}] + \theta^2 \\
+    \mathrm{Var}(\hat{\theta}) &= \mathrm{E}[\hat{\theta}^2] - \mathrm{E}[\hat{\theta}]^2,
+\end{align*}
+$$
+we have
+$$
+\begin{align*}
+\mathrm{MSE}(\hat{\theta}) &= \mathrm{E}\big[(\hat{\theta} - \theta)^2\big] \\
+&= \mathrm{E}\big[\hat{\theta}^2 - 2\,\theta \, \hat{\theta} + \theta^2\big] \\
+&= \mathrm{E}\big[\hat{\theta}^2 \big] -2\theta \mathrm{E}\big[\hat{\theta} \big] + \theta^2 \\ 
+&= \underbrace{\mathrm{E}\big[\hat{\theta}^2 \big] - \mathrm{E}[\hat{\theta}]^2}_{=\mathrm{Var}(\hat{\theta})} + \underbrace{\mathrm{E}[\hat{\theta}]^2-2\theta \mathrm{E}\big[\hat{\theta} \big] + \theta^2}_{=\mathrm{Bias}(\hat{\theta})^2} \\
+&= \mathrm{Var}(\hat{\theta}) + \mathrm{Bias}(\hat{\theta})^2.
+\end{align*}
+$$
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-asymptotic">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Understand the meaning of <span class="xref-no-num">[asymptotic @imp-term-asymptotic]</span> in statistics.
+</span>
+</div>
+
+<div class="revision-content" id="rev-asymptotic" hidden>
+
+ An asymptotic result describes the behaviour of an estimator or statistic as the sample size $n$ (in data $X_1,\ldots,X_n$) becomes **very large**.
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-clt">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to recall and understand the <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span>.  
+</span>
+</div>
+
+<div class="revision-content" id="rev-clt" hidden>
+
+The CLT tells us that for i.i.d. observations $X_1,\ldots,X_n$ from **any distribution** with finite variance $\sigma^2 < \infty$, the **sample mean** becomes approximately normal as $n$ grows:
+$$
+\bar{X} \;\overset{\text{approx.}}{\sim}\;
+\mathcal{N}\!\left(\mu,\, \frac{\sigma^2}{n}\right).
+$$
+
+This **exam requires only this practical form** of the CLT - no proofs or more general statements are needed.
+
+</div>
+</div>
+
+<details class="practice-details">
+<summary><em>CLT Approximations — Practice Questions</em></summary>
+
+::: {.smaller-table}
+| Location | Description | Link |
+|------|-------------|-------|
+| Question Bank | CLT approximation I | <span class="xref-no-num">[Link @q-clt-approx1]</span> |
+| Question Bank | CLT approximation of Binomial | <span class="xref-no-num">[Link @q-binom-clt]</span> |
+
+: {tbl-colwidths="[17, 70, 13]"}
+:::
+
+</details>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-asymp-unbiased-consistent">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to recall the definitions of <span class="xref-no-num">[asymptotic unbiasedness @def-asymptotic-unbiasedness]</span> and <span class="xref-no-num">[consistency @def-consistency]</span>.
+</span>
+</div>
+
+<div class="revision-content" id="rev-asymp-unbiased-consistent" hidden>
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-consistency-proof">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to show that an estimator is <span class="xref-no-num">[consistent @def-consistency]</span>
+  using the <span class="xref-no-num">[sufficient conditions @prp-sufficient-consistency]</span>.
+</span>
+</div>
+
+<div class="revision-content" id="rev-consistency-proof" hidden>
+
+Consider an estimator $\hat{\theta}_n$ of a parameter $\theta$, based on a sample of size $n$. A **consistent estimator** must satisfy:
+
+1. **Asymptotic unbiasedness:**
+    $$
+    \mathrm{Bias}(\hat{\theta}_n) \;\longrightarrow \; 0 \qquad \text{as } n \to \infty,
+    $$
+
+2. **Vanishing variance:**
+    $$
+    \mathrm{Var}(\hat{\theta}_n) \;\longrightarrow\; 0 \qquad \text{as } n \to \infty.
+    $$
+
+Together, these conditions imply that $\hat{\theta}_n$ is a **consistent estimator**.
+
+**Note:** For exam purposes, you can *always* use these sufficient conditions to prove consistency: check the bias tends to $0$ and the variance tends to $0$ as $n$ grows.
+
+</div>
+</div>
+
+<details class="practice-details">
+<summary><em>Showing Consistency — Practice Questions</em></summary>
+
+::: {.smaller-table}
+| Location | Description | Link | 
+|------|-------------|-------|
+| Question Bank | Poisson Data, showing consistency | <span class="xref-no-num">[Link @q-poisson-consistency1]</span> |
+| Question Bank | Proving Consistency I, adjusted sample mean is consistent  | <span class="xref-no-num">[Link @q-prove-consistency1]</span> |
+| Question Bank | Uniform Data, hard consistency question  | <span class="xref-no-num">[Link @q-uniform-hard-consistent]</span> |
+| Examples | Consistency of the Sample Mean | @exm-consistency-samplemean |
+
+: {tbl-colwidths="[17, 70, 13]"}
+:::
+
+</details>
+
+
+
+### Chapter 5 - Likelihood
+
+<details class="essential-points">
+<summary> Assessment Focus </summary>
+
+- The **vast majority** of examinable material involves computing <span class="xref-no-num">[likelihood functions @def-likelihood]</span>. It is therefore **essential** that you are fully confident in computing likelihoods across a range of statistical models.
+
+</details>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-likelihood-def">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Understand the **definition** of the <span class="xref-no-num">[likelihood function @def-likelihood]</span>.
+</span>
+</div>
+
+<div class="revision-content" id="rev-likelihood-def" hidden>
+
+Given a statistical model  
+$$
+X_1,\ldots,X_n \sim \mathrm{Distribution}(\theta),
+$$
+the **joint density (or PMF)** of the observed data $\underline{x}$, viewed as a function of the parameter $\theta$, is the likelihood:
+$$
+L(\theta;\,\underline{x}) = f(\underline{x}\mid\theta).
+$$
+The data are treated as fixed, and the likelihood expresses how plausible different values of $\theta$ are in light of those observations.
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-likelihood-factorisation">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+<span class="xref-no-num">[Understand @sec-likelihood-dependence]</span> how the likelihood function factorises under different assumptions about the data.
+</span>
+</div>
+
+<div class="revision-content" id="rev-likelihood-factorisation" hidden>
+
+There are **three cases**:
+
+1. **Independent and identically distributed (i.i.d.):** If the data satisfy
+   $$
+   X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\theta),
+   $$
+   then each observation has the *same* density (or PMF) $f(x_i \mid \theta)$, and independence gives the factorisation
+   $$
+   L(\theta;\underline{x}) = f(\underline{x}\mid\theta) = \prod_{i=1}^n f(x_i \mid \theta).
+   $$
+
+2. **Independent but not identically distributed:** If the data are independent but may follow different distributions, then
+   $$
+   f(\underline{x}\mid\theta) = \prod_{i=1}^n f_{X_i}(x_i \mid \theta),
+   $$
+   where each $f_{X_i}(x_i \mid \theta)$ is the density (or PMF) for the observation $X_i$.
+
+3. **Dependent data:** The general case, in which the $X_i$ are *not* independent, is **not examinable** in this module.
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-compute-likelihood">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to <span class="xref-no-num">[compute @sec-computing-likelihoods]</span> likelihood functions for general statistical models, under both i.i.d. assumptions and the more general case of independent (but not necessarily identically distributed) data.
+</span>
+</div>
+
+<div class="revision-content" id="rev-compute-likelihood" hidden>
+
+</div>
+</div>
+
+<details class="practice-details">
+<summary><em>Computing Likelihoods — Practice Questions</em></summary>
+The following questions focus solely on **computing likelihood functions**. Many later topics require likelihood computation as a preliminary step, but those applications are covered in their respective sections.
+
+::: {.smaller-table}
+| Location | Description | Link |
+|------|-------------|-------|
+| Question Bank | Computing Likelihoods I: Geometric Likelihood | <span class="xref-no-num">[Link @q-geom-likelihood]</span> |
+| Question Bank | Computing Likelihoods II: Normal Likelihood ($\sigma^2=1$) | <span class="xref-no-num">[Link @q-normal-var-likelihood]</span> |
+| Question Bank | Computing Likelihoods III: Log Normal Likelihood | <span class="xref-no-num">[Link @q-lognormal-likelihood]</span> |
+| Examples | Bernoulli Likelihood | @exm-bern-likelihood |
+| Examples | Bernoulli Likelihood with data | @exm-bern-likelihood-data |
+| Examples | Normal Likelihood | @exm-normal-likelihood |
+| Examples | Poisson Likelihood | @exm-poisson-likelihood |
+
+: {tbl-colwidths="[17, 70, 13]"}
+:::
+
+</details>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-log-likelihood">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to compute <span class="xref-no-num">[log-likelihood functions @def-log-likelihood]</span> and understand their role in computing MLEs.
+</span>
+</div>
+
+<div class="revision-content" id="rev-log-likelihood" hidden>
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-mle-def">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to recall and understand the <span class="xref-no-num">[definition @def-mle]</span> of the **Maximum Likelihood Estimator (MLE)**. In particular, understand the meaning of <span class="xref-no-num">[the argmax notation @imp-term-argmax-max]</span> in the definition.
+</span>
+</div>
+
+<div class="revision-content" id="rev-mle-def" hidden>
+
+The <span class="xref-no-num">[definition @def-mle]</span> of the Maximum Likelihood Estimator (MLE) is
+$$
+\hat{\theta}_{\mathrm{MLE}}
+   = \argmax_{\theta \in \Theta} \, L(\theta;\,\underline{X}),
+$$
+where $\Theta$ denotes the **parameter space** (the set of all permissible values of $\theta$).
+
+- The notation **argmax** means *"the value of $\theta$ that maximises the function"*.  
+- In other words, $\hat{\theta}_{\mathrm{MLE}}$ is the choice of $\theta$ that makes the observed data **most likely** under the model.
+
+</div>
+</div>
+
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-compute-mle">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to compute <span class="xref-no-num">[univariate MLEs @sec-computing-univariate-mles]</span>.
+</span>
+</div>
+
+<div class="revision-content" id="rev-compute-mle" hidden>
+
+**General Procedure**
+
+1. **Write down the likelihood**  
+   $$L(\theta; \underline{x}) = f(\underline{x} \mid \theta).$$
+
+2. **Compute the log-likelihood**  
+   $$\ell(\theta; \underline{x}) = \log L(\theta; \underline{x}).$$
+
+3. **Differentiate the log-likelihood**  
+   Compute  
+   $$
+   \frac{\partial}{\partial \theta}\,\ell(\theta;\underline{x}).
+   $$
+
+4. **Set the derivative equal to zero and solve**  
+   Find all solutions to  
+   $$
+   \frac{\partial}{\partial \theta}\,\ell(\theta;\underline{x}) = 0.
+   $$
+
+---
+
+**Notes:**
+
+- Unless the question explicitly states otherwise, you do **not** need to check whether the solution corresponds to a maximum.  
+  For this module, you may assume any solution you find is the global maximiser.
+
+- Computing **multivariate MLEs** is *not examinable*.
+
+</div>
+</div>
+
+<details class="practice-details">
+<summary><em>Computing MLEs — Practice Questions</em></summary>
+
+The following questions focus solely on **computing MLEs**. Many later topics use MLEs as an intermediate step, but those applications are introduced in their own sections.  
+
+::: {.smaller-table}
+| Location | Description | Link |
+|------|-------------|-------|
+| Question Bank | Normal MLE for $\mu$ ($\sigma^2 = 1$) | <span class="xref-no-num">[Link @q-normal-data-mle]</span> |
+| Question Bank | Gamma MLE for $b$ ($a=1$) | <span class="xref-no-num">[Link @q-gamma-mle]</span> |
+| Question Bank | Uniform MLE, $U(\theta, 2\theta)$ data | <span class="xref-no-num">[Link @q-unif-mle1]</span>
+| Question Bank | Shifted Pareto MLE | <span class="xref-no-num">[Link @q-mle-property]</span>
+| Examples | Bernoulli MLE | @exm-bern-mle |
+| Examples | Binomial MLE | @exm-binom-mle-single |
+| Examples | Another Binomial MLE | @exm-binom-mle |
+| Examples | Poisson MLE | @exm-pois-mle |
+| Examples | Normal MLE for $\mu$ | @exm-normal-mu-mle |
+
+: {tbl-colwidths="[17, 70, 13]"}
+:::
+
+</details>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-fisher-info">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to <span class="xref-no-num">[compute @imp-compute-fisher-info]</span> and recall the <span class="xref-no-num">[definition of Fisher information @def-fisher-information]</span>. 
+</span>
+</div>
+
+<div class="revision-content" id="rev-fisher-info" hidden>
+
+There are two versions to distinguish:
+
+- **Fisher information for a single observation**
+  $$
+  \mathcal{I}_1(\theta)
+    = -\,\mathrm{E}\!\left[
+        \frac{\partial^2}{\partial\theta^2}
+        \log f(X \mid \theta)
+      \right].
+  $$
+
+- **Fisher information for the whole sample**
+  $$
+  \mathcal{I}_n(\theta)
+    = -\,\mathrm{E}\!\left[
+        \frac{\partial^2}{\partial\theta^2}
+        \ell(\theta;\underline{X})
+      \right],
+  $$
+  where $\ell(\theta;\underline{X})$ is the log-likelihood of all $n$ observations.
+
+---
+
+**Note:** In this module, you will almost always be asked to compute the **Fisher information for the whole sample**. For consistency and simplicity, we recommend using **Approach 1** described <span class="xref-no-num">[here @imp-compute-fisher-info]</span>.
+
+</div>
+</div>
+
+<details class="practice-details">
+<summary><em>Computing Fisher Information — Practice Questions</em></summary>
+The following questions focus solely on **computing Fisher Information**. Many later topics use the Fisher Information as an intermediate step, but those applications are introduced in their own sections.
+
+::: {.smaller-table}
+| Location | Description | Link | 
+|------|-------------|-------|
+| Question Bank | Fisher Information for a Binomial Observation | <span class="xref-no-num">[Link @q-fisher-info-binomial]</span> |
+| Question Bank | Fisher Information for Geometric Data | <span class="xref-no-num">[Link @q-fisher-info-geometric]</span> |
+| Question Bank | Fisher Information for the variance of Normal Data | <span class="xref-no-num">[Link @q-fisher-info-var-normal]</span> |
+| Examples | Fisher Information for Poisson Data | @exm-poisson-fisher |
+
+: {tbl-colwidths="[17, 70, 13]"}
+:::
+
+</details>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-crlb">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to recall the <span class="xref-no-num">[Cramér–Rao Lower Bound @thm-crlb]</span>.
+</span>
+</div>
+
+<div class="revision-content" id="rev-crlb" hidden>
+
+- The Cramér–Rao inequality states that for **any unbiased estimator** $\hat{\theta}$ of a parameter $\theta$,
+  $$
+  \mathrm{Var}(\hat{\theta}) \;\ge\; \mathcal{I}_n(\theta)^{-1},
+  $$
+  where $\mathcal{I}_n(\theta)^{-1}$ is the **Cramér–Rao Lower Bound (CRLB)**.
+
+- This result is extremely important because, for unbiased estimators,
+  $$
+  \mathrm{MSE}(\hat{\theta}) = \mathrm{Var}(\hat{\theta}).
+  $$
+  So, the CRLB provides a theoretical minimum: it tells us the best possible performance an unbiased estimator can achieve.
+
+- If an unbiased estimator **achieves** the CRLB, it is called <span class="xref-no-num">[efficient @def-efficiency]</span>, meaning no other unbiased estimator has smaller variance.
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-efficiency">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to show whether a given estimator is <span class="xref-no-num">[efficient @def-efficiency]</span>.
+</span>
+</div>
+
+<div class="revision-content" id="rev-efficiency" hidden>
+
+An <span class="xref-no-num">[efficient @def-efficiency]</span> estimator is an unbiased estimator whose variance is equal to the <span class="xref-no-num">[Cramér–Rao Lower Bound @thm-crlb]</span>. That is, an estimator $\hat{\theta}$ of $\theta$ such that
+$$
+\mathrm{Var}(\hat{\theta}) =  \mathcal{I}_n(\theta)^{-1},
+$$
+and $\mathrm{Bias}(\hat{\theta}) = 0$.
+
+</div>
+</div>
+
+<details class="practice-details">
+<summary><em>Proving Efficiency  — Practice Questions</em></summary>
+
+::: {.smaller-table}
+| Location | Description | Link | 
+|------|-------------|-------|
+| Question Bank | Efficiency of sample variance for Normal data  | <span class="xref-no-num">[Link @q-efficiency-hard-normal]</span> |
+
+: {tbl-colwidths="[17, 70, 13]"}
+:::
+
+</details>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-asymp-mle">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to recall and compute the <span class="xref-no-num">[asymptotic sampling distribution of the MLE @def-asymp-mle-approx]</span>.
+</span>
+</div>
+
+<div class="revision-content" id="rev-asymp-mle" hidden>
+
+This result states that for data  
+$$
+X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\theta),
+$$
+from **any model**, the <span class="xref-no-num">[maximum likelihood estimator @def-mle]</span> satisfies
+$$
+\hat{\theta}_{\mathrm{MLE}}
+\;\overset{\text{approx.}}{\sim}\;
+\mathcal{N}\!\left(
+    \theta,\;
+    \mathcal{I}_n \big(\theta \big)^{-1}
+\right),
+\qquad \text{for large } n.
+$$
+
+---
+
+**Notes:** 
+
+- In practice, we usually replace the unknown parameter $\theta$ with its estimate $\hat{\theta}_{\mathrm{MLE}}$ inside the Fisher information. 
+- So, for the exam, it is sufficient to remember the **plug-in form** $\mathcal{I}_n\big(\hat{\theta}_{\mathrm{MLE}}\big)$. 
+- This **plug-in form** $\mathcal{I}_n\big(\hat{\theta}_{\mathrm{MLE}}\big)$, is called the <span class="xref-no-num">[observed Fisher information @def-observed-fisher]</span>.
+
+</div>
+</div>
+
+<details class="practice-details">
+<summary><em>Asymptotic Distribution of MLE  — Practice Questions</em></summary>
+
+::: {.smaller-table}  
+| Location | Description | Link |
+|------|-------------|-------|
+| Question Bank | Asymptotic Sampling Distribution of MLE, Exponential Data  | <span class="xref-no-num">[Link @q-asymp-mle-exp]</span> |
+| Question Bank | Asymptotic Sampling Distribution of MLE, Variance of Normal Data  | <span class="xref-no-num">[Link @q-asymp-mle-norm-var]</span> |
+| Examples | Asymptotic Sampling Distribution of MLE, Poisson Data | @exm-asymp-mle-pois |
+
+: {tbl-colwidths="[17, 70, 13]"}
+:::
+
+</details>
+
+
+
+### Chapter 6 - Bayesian Inference
+
+<details class="essential-points">
+<summary> Assessment Focus </summary>
+
+1. You will primarily be assessed on your ability to:
+   1. **Compute posterior distributions**, substitute observed data, and interpret the resulting inference.  
+   2. **Assess whether a prior distribution is consistent** with stated prior beliefs.  
+   3. **Interpret and compare** Bayesian and Frequentist approaches to inference.  
+   4. **Compute Maximum a Posteriori (MAP) estimators.**  
+   5. **Obtain asymptotic posteriors** using large-sample approximations.
+
+2. Among all posterior calculations in the course, the most **algebraically involved** is <span class="xref-no-num">[this @q-normal-normal]</span> question, where  
+   $$
+   X_i \mid \mu \sim \mathcal{N}(\mu, \gamma), \qquad \mu \sim \mathcal{N}(m, v).
+   $$
+   Be prepared to work through this derivation carefully.
+
+</details>
+
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-bayes-approach">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+<span class="xref-no-num">[Understand @sec-intro-bayes-approach]</span> how the **Bayesian** approach differs from the **Frequentist** approach.
+</span>
+</div>
+
+<div class="revision-content" id="rev-bayes-approach" hidden>
+
+In the **Bayesian** framework, the parameter $\theta$ is treated as a **random variable**. 
+
+  - Its randomness represents our **uncertainty** about the true value of $\theta$.
+
+In contrast, the **Frequentist** approach treats $\theta$ as a **fixed but unknown constant**.  
+
+  - All randomness comes solely from the data, not from the parameter.
+
+</div>
+</div>
+
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-bayes-procedure">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+<span class="xref-no-num">[Understand @sec-bayes-inference-procedure]</span> the **Bayesian** inference procedure:
+</span>
+</div>
+
+<div class="revision-content" id="rev-bayes-procedure" hidden>
+
+Bayesian inference is built around three core components:
+
+- **Prior:** Describes our beliefs about the parameter $\theta$ *before* seeing any data. Its PDF is written as
+  $$
+  \pi(\theta).
+  $$
+
+- **Likelihood:** Comes from specifying a statistical model  
+  $$
+  X_i \mid \theta \sim \mathrm{Distribution}(\theta).
+  $$  
+  This determines the joint density of the observed data,  
+  $$
+  f(\underline{x} \mid \theta),
+  $$  
+  which tells us how plausible the data are *for each possible value* of $\theta$.
+
+- **Posterior:** Updates the prior using the information in the data. It summarises our **revised beliefs** about $\theta$ after observing $\underline{x}$, and its PDF is written as
+  $$
+  \pi(\theta \mid \underline{x}).
+  $$  
+  This is the quantity from which all Bayesian estimates, intervals, and predictions are derived.
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-bayes-theorem-density">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to <span class="xref-no-num">[prove @prf-bayes]</span> and recall <span class="xref-no-num">[Bayes theorem for densities @thm-bayes-density]</span> and understand how this yields the **posterior density**:
+$$
+\pi(\theta \mid \underline{x}) = \frac{\pi(\theta) \, f(\underline{x}\mid \theta)}{f(\underline{x})}.
+$$
+</span>
+</div>
+
+<div class="revision-content" id="rev-bayes-theorem-density" hidden>
+
+To obtain the posterior, we simply apply Bayes’ theorem to the parameter $\theta$ and the observed data $\underline{x}$.  
+
+The usual density form in @thm-bayes-density is
+$$
+f(x \mid y) = \frac{f(y \mid x)\,f(x)}{f(y)}.
+$$
+It is relabelled as follows:
+
+- **Parameter:** $x = \theta$
+- **Data:** $y = \underline{x}$
+- **Prior:** $f(x) = \pi(\theta)$
+- **Likelihood:** $f(y \mid x) = f(\underline{x} \mid \theta)$
+- **Posterior:** $f(x \mid y) = \pi(\theta \mid \underline{x})$
+
+Substituting these into Bayes’ theorem gives:
+$$
+\pi(\theta \mid \underline{x})
+= \frac{\pi(\theta)\,f(\underline{x}\mid \theta)}
+       {f(\underline{x})},
+$$
+where the denominator
+$$
+f(\underline{x}) = \int \pi(\theta)\,f(\underline{x}\mid \theta)\,d\theta
+$$
+acts only as a **normalising constant**, ensuring the posterior integrates to $1$.
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-proportionality">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Understand that we **do not need to compute** the normalisation constant $f(\underline{x})$. It is **sufficient** to know the posterior up to a <span class="xref-no-num">[constant of proportionality @imp-bayes-proportionality]</span>.
+</span>
+</div>
+
+<div class="revision-content" id="rev-proportionality" hidden>
+
+When computing posterior distributions in Bayesian inference, **always use**
+
+$$
+\pi(\theta \mid \underline{x}) \propto \pi(\theta) \, f(\underline{x}\mid \theta).
+$$
+and the approach outlined <span class="xref-no-num">[here @imp-compute-posterior]</span>.
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-conjugacy">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to compute the distribution of the posterior $\pi(\theta \mid \underline{x})$ using the idea of <span class="xref-no-num">[conjugacy @def-conjugacy]</span>. 
+</span>
+</div>
+
+<div class="revision-content" id="rev-conjugacy" hidden>
+
+The steps to compute a posterior can be found <span class="xref-no-num">[here @imp-compute-posterior]</span>.
+
+</div>
+</div>
+
+<details class="practice-details">
+<summary><em>Computing Posteriors — Practice Questions</em></summary>
+The following questions focus solely on **computing posterior distributions**. Many later topics use the posterior calculation as an intermediate step, but those applications are introduced in their own sections.
+
+::: {.smaller-table}
+| Location | Description | Link |
+|------|-------------|-------|
+| Question Bank | Beta–Binomial model | <span class="xref-no-num">[Link @q-beta-binom]</span> |
+| Question Bank | Gamma–Poisson model | <span class="xref-no-num">[Link @q-gamma-pois]</span> |
+| Question Bank | Beta–Geometric model | <span class="xref-no-num">[Link @q-beta-geom]</span> |
+| Question Bank | Normal–Normal mean model (known variance) | <span class="xref-no-num">[Link @q-normal-normal]</span> |
+| Question Bank | Inverse-Gamma–Normal variance model (known mean) | <span class="xref-no-num">[Link @q-normal-invgamma]</span> |
+| Question Bank | Gamma–Exponential rate model | <span class="xref-no-num">[Link @q-exp-gamma]</span> |
+| Question Bank | Inverse-Gamma–Weibull scale model (known shape) | <span class="xref-no-num">[Link @q-weib-invgamma]</span> |
+| Examples | Biased coin, Beta-Binomial with data |  @exm-biased-coin |
+| Examples | Music expert quiz, Beta-Binomial with data | @exm-music-expert |
+| Examples | Click-through rate, Beta-Binomial with data | @exm-instagram-bin |
+| Examples | Particle speed, Normal-Normal mean model with data | @exm-particle-speed |
+
+: {tbl-colwidths="[17, 70, 13]"}
+:::
+
+</details>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-map">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to recall the definition of, and compute, <span class="xref-no-num">[Maximum a Posteriori (MAP) @def-map]</span> estimators from a given posterior distribution. The steps for computing a MAP estimator are outlined <span class="xref-no-num">[here @imp-compute-map]</span>.
+</span>
+</div>
+
+<div class="revision-content" id="rev-map" hidden>
+
+**Note:** In some cases, the MAP can be read off directly. For example, if 
+$$
+\theta \mid \underline{x} \sim \mathcal{N}(M, V),
+$$
+then the posterior is maximised at its mean, so the MAP estimator is $M$.
+
+</div>
+</div>
+
+<details class="practice-details">
+<summary><em>Computing MAP Estimators — Practice Questions</em></summary>
+
+::: {.smaller-table}
+| Location | Description | Link | 
+|----------|-------------|-------|
+| Question Bank | Beta-Binomial model, MAP with data | <span class="xref-no-num">[Link @q-map-factory-defects]</span> |
+| Question Bank | Gamma-Poisson model, MAP with data | <span class="xref-no-num">[Link @q-map-call-rate]</span> |
+
+: {tbl-colwidths="[17, 70, 13]"}
+:::
+
+</details>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-asymp-posterior">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to recall and compute the <span class="xref-no-num">[asymptotic posterior distribution @thm-bernstein-von-mises]</span>.
+</span>
+</div>
+
+<div class="revision-content" id="rev-asymp-posterior" hidden>
+
+**Note:** The method for computing the asymptotic posterior distribution is *exactly the same* as the approach for the <span class="xref-no-num">[asymptotic distribution of the MLE @def-asymp-mle-approx]</span>.
+
+</div>
+</div>
+
+<details class="practice-details">
+<summary><em>Computing Asymptotic Distributions of Posteriors — Practice Questions</em></summary>
+
+::: {.smaller-table}
+| Location | Description | Link |
+|----------|-------------|-------|
+| Question Bank | Mean-zero Normal model, asymptotic posterior of variance | <span class="xref-no-num">[Link @q-asymp-post-variance]</span> |
+| Question Bank | Poisson model, asymptotic posterior | <span class="xref-no-num">[Link @q-asymp-post-poisson]</span> |
+| Question Bank | Exponential model, asymptotic posterior | <span class="xref-no-num">[Link @q-asymp-post-exponential]</span> |
+
+
+: {tbl-colwidths="[17, 70, 13]"}
+:::
+
+</details>
+
+

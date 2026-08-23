@@ -1,0 +1,31 @@
+```{ojs}
+
+{
+  const a = unif_a, b = unif_b;
+  const data = linspace(a - 1, b + 1, 401).map(x => ({ x, y: unifPDF(x, a, b) }));
+
+  const stats = md`**Mean** ${tex`= (a+b)/2`} = ${(((a+b)/2)).toFixed(2)}; 
+  **Var** ${tex`= (b-a)^2/12`} = ${(((b-a)**2)/12).toFixed(3)}.`;
+
+  const plot = Plot.plot({
+        width, height: 260,
+    style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)"           // drives 'currentColor'
+    },
+ y: { label: "PDF" }, x: { label: "x" },
+    marks: [
+      Plot.lineY(data, { x: "x", y: "y", stroke: ACCENT, strokeWidth: 2 }),
+      Plot.areaY(data, { x: "x", y: "y", fill: AREA }),
+      Plot.ruleY([0], { stroke: GRID, strokeOpacity: 0.6 })
+    ]
+  });
+
+  return html`<div class="dist-panel"><div class="stats">${stats}</div>${plot}</div>`;
+}
+```
+
+```{ojs}
+viewof unif_a = Inputs.range([-5, 5], {value: -2, step: 0.1, label: md`${tex`a`}`})
+viewof unif_b = Inputs.range([unif_a + 0.2, unif_a + 10], {value: 3, step: 0.1, label: md`${tex`b`}`})
+```

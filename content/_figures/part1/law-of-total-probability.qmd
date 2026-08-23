@@ -1,0 +1,205 @@
+```{ojs}
+//| label: fig-lotp-voronoi
+//| fig-cap: Law of Total Probability visualised. An event $A$ (orange) overlaps a partition $B_1,\ldots,B_{k}$ of $\Omega$. The shaded pieces $A\cap B_i$ decompose $\operatorname{Pr}(A)$ as $\operatorname{Pr}(A)= \sum_i \operatorname{Pr}(A \cap B_i)$.
+//| fig-align: center
+{
+  const width = 720, height = 360;
+  const pad = 20;
+
+  // Soft region fills share the same identities as the figure series palette.
+  const fills = [
+    "var(--plot-fill-1)",
+    "var(--plot-fill-3)",
+    "var(--plot-fill-5)",
+    "var(--plot-fill-4)"
+  ];
+  const col = i => fills[i % fills.length];
+  const orangeStroke = "var(--plot-series-2)";
+  const orangeFill = "var(--plot-fill-2)";
+
+  // deterministic RNG
+  const rng = d3.randomLcg(2);
+
+  // Voronoi sites
+  const sites = d3.range(n2).map(i => ({
+    name: `B${i+1}`,
+    x: pad + rng() * (width - 2*pad),
+    y: pad + rng() * (height - 2*pad)
+  }));
+
+  const delaunay = d3.Delaunay.from(sites, d => d.x, d => d.y);
+  const vor = delaunay.voronoi([pad, pad, width - pad, height - pad]);
+
+  const svg = d3.create("svg")
+    .attr("viewBox", [0, 0, width, height])
+    .attr("width", width)
+    .attr("height", height)
+    .style("background", "var(--plot-bg)")
+    .style("color", "var(--plot-fg)")
+    .style("font-family", bodyFont)
+    .style("font-size", "14px");
+
+  // --- defs: rounded-rect clip for Ω + per-cell clipPaths + ellipse for A ---
+  const defs = svg.append("defs");
+
+  defs.append("clipPath")
+    .attr("id", "clipOmega-lotp2")
+    .append("rect")
+      .attr("x", pad).attr("y", pad)
+      .attr("width", width - 2*pad).attr("height", height - 2*pad)
+      .attr("rx", 10);
+
+  // Per-cell clipPaths (so we can draw A∩B_i by clipping the ellipse to each cell)
+  for (let i = 0; i < sites.length; i++) {
+    const poly = vor.cellPolygon(i);
+    if (!poly) continue;
+    defs.append("clipPath")
+      .attr("id", `clipCell-lotp2-${i}`)
+      .append("path")
+      .attr("d", d3.line()(poly));
+  }
+
+  // A: ellipse geometry
+  const Ax = width * 0.50, Ay = height * 0.52;  // centre
+  const Arx = width * 0.42, Ary = height * 0.4;
+
+  // Draw A outline (thin) so learners see the target set even before fills
+  svg.append("ellipse")
+    .attr("cx", Ax).attr("cy", Ay)
+    .attr("rx", Arx).attr("ry", Ary)
+    .attr("fill", "none")
+    .attr("stroke", orangeStroke)
+    .attr("stroke-width", 2)
+    .attr("clip-path", "url(#clipOmega-lotp2)");
+
+  // --- Voronoi cells: visible strokes on TOP of orange pieces ---
+  const strokes = svg.append("g").attr("clip-path", "url(#clipOmega-lotp2)");
+  const polys = [];
+  for (let i = 0; i < sites.length; i++) {
+    const poly = vor.cellPolygon(i);
+    if (!poly) continue;
+    polys.push({ i, poly, name: sites[i].name });
+    strokes.append("path")
+      .attr("d", d3.line()(poly))
+      .attr("stroke", "currentColor")
+      .attr("fill", col(i))
+      .attr("stroke-opacity", 0.55);
+  }
+
+  // Labels at polygon centroids; adaptive font size
+  const fz2 = Math.max(10, Math.min(14, 16 - 0.3 * (n2 - 3)));
+  svg.append("g")
+    .selectAll("text")
+    .data(polys.map(d => {
+      const [cx, cy] = d3.polygonCentroid(d.poly);
+      return { x: cx, y: cy, name: d.name };
+    }))
+    .join("text")
+      .attr("x", d => d.x)
+      .attr("y", d => d.y)
+      .text(d => d.name)
+      .attr("font-weight", 700)
+      .attr("fill", "var(--plot-muted)")
+      .attr("font-size", `${fz2}px`)
+      .attr("text-anchor", "middle")
+      .attr("dominant-baseline", "middle");
+
+  // --- A∩B_i pieces (orange), revealed up to 'frame2' ---
+  const overlaps = svg.append("g").attr("clip-path", "url(#clipOmega-lotp2)");
+  for (let i = 0; i < sites.length; i++) {
+    overlaps.append("ellipse")
+      .attr("cx", Ax).attr("cy", Ay)
+      .attr("rx", Arx).attr("ry", Ary)
+      .attr("fill", orangeFill)
+      .attr("fill-opacity", i < frame2 ? 1. : 0)  // reveal progressively
+      .attr("clip-path", `url(#clipCell-lotp2-${i})`);
+  }
+
+
+  // Ω frame
+  svg.append("rect")
+    .attr("x", pad).attr("y", pad)
+    .attr("width", width - 2*pad).attr("height", height - 2*pad)
+    .attr("rx", 10)
+    .attr("fill", "none")
+    .attr("stroke", "currentColor")
+    .attr("stroke-opacity", 0.55);
+
+  // Ω label
+  svg.append("text")
+    .attr("x", pad + 8).attr("y", pad + 16)
+    .text("Ω")
+    .style("font-weight", 400)
+    .style("font-size", "18px")
+    .attr("fill", "currentColor");
+
+  // A label
+  svg.append("text")
+    .attr("x", Ax).attr("y", Ay)
+    .text("A")
+    .attr("fill", "currentColor")
+    .attr("font-size", 18)
+    .attr("font-weight", 700)
+    .attr("text-anchor", "middle");
+
+  return svg.node();
+}
+
+```
+
+```{ojs}
+// Animation driver: each button click restarts the reveal
+frame2 = {
+  if (!click2) return 0;
+  const delay = 600;
+  let i = 0;
+  while (i <= n2) {
+    yield i;
+    await Promises.delay(delay);
+    i++;
+  }
+  return i;
+}
+
+```
+
+```{ojs}
+// Compact controls BELOW the plot (two inputs): k and Play animation
+
+// Two controls: k (slider) and Play animation (button)
+viewof controls2 = {
+  const leftForm  = Inputs.form(
+    { n: Inputs.range([3, 50], { value: 10, step: 1, label: md`${tex`k`}: number of sets` }) },
+    { submit:false }
+  );
+
+  const playBtn = Inputs.button("▶ Play");
+  playBtn.classList.add("btn-resim");  // reuse your teal button style
+
+  const rightForm = Inputs.form({ click2: playBtn }, { submit:false });
+
+  const root = html`<div class="controls-wrap">
+    <details class="controls-root" open>
+      <summary>Law of Total Probability controls</summary>
+      <div class="controls-grid">
+        <div class="controls-col"><h4>Partition size</h4></div>
+        <div class="controls-col"><h4>Animation</h4></div>
+      </div>
+    </details>
+  </div>`;
+
+  const grid = root.querySelector(".controls-grid");
+  grid.children[0].append(leftForm);
+  grid.children[1].append(rightForm);
+
+  const getValue = () => ({ ...leftForm.value, ...rightForm.value });
+  const update = () => { root.value = getValue(); root.dispatchEvent(new CustomEvent("input", { bubbles:true })); };
+  grid.addEventListener("input", update);
+  queueMicrotask(update);
+  return root;
+}
+
+// reactive
+n2     = controls2.n
+click2 = controls2.click2
+```

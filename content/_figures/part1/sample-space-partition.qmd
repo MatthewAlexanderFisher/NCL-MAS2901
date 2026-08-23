@@ -1,0 +1,149 @@
+```{ojs}
+//| label: fig-partition-voronoi
+//| fig-cap: A decomposition of the sample space $\Omega$ into a partition $B_1,\ldots,B_k$. Subsets $B_i$ are mutually exclusive and exhaustive; every point in $\Omega$ lies in exactly one $B_i$.
+//| fig-align: center
+
+{
+  const width = 720, height = 360;
+  const pad = 20;
+
+  // Soft region fills share the same identities as the figure series palette.
+  const fills = [
+    "var(--plot-fill-1)",
+    "var(--plot-fill-2)",
+    "var(--plot-fill-3)",
+    "var(--plot-fill-5)",
+    "var(--plot-fill-4)"
+  ];
+  const col = i => fills[i % fills.length];
+
+  // seeded RNG so "Reseed" changes layout deterministically per click
+  const rng = d3.randomLcg(reseed || 1);
+
+  // generate n sites inside Ω (inset by padding)
+  const sites = d3.range(n).map(i => ({
+    name: `B${i+1}`,
+    x: pad + rng() * (width - 2*pad),
+    y: pad + rng() * (height - 2*pad)
+  }));
+
+  const delaunay = d3.Delaunay.from(sites, d => d.x, d => d.y);
+  const vor = delaunay.voronoi([pad, pad, width - pad, height - pad]);
+
+  const svg = d3.create("svg")
+    .attr("viewBox", [0, 0, width, height])
+    .attr("width", width)
+    .attr("height", height)
+    .style("background", "var(--plot-bg)")
+    .style("color", "var(--plot-fg)")
+    .style("font-family", bodyFont)
+    .style("font-size", "14px");
+
+  // --- defs: rounded-rect clip for Ω ---
+  const defs = svg.append("defs");
+  defs.append("clipPath")
+    .attr("id", "clipOmega")
+    .append("rect")
+      .attr("x", pad).attr("y", pad)
+      .attr("width", width - 2*pad).attr("height", height - 2*pad)
+      .attr("rx", 10);
+
+  // cells (clipped to rounded Ω so no sharp outer box)
+  const g = svg.append("g").attr("clip-path", "url(#clipOmega)");
+  const polys = [];  // store polygons for centroid labelling
+
+  for (let i = 0; i < sites.length; i++) {
+    const poly = vor.cellPolygon(i);
+    if (!poly) continue;
+    polys.push({ i, poly, name: sites[i].name });
+    g.append("path")
+      .attr("d", d3.line()(poly))
+      .attr("fill", col(i))
+      .attr("stroke", "currentColor")
+      .attr("stroke-opacity", 0.28);
+  }
+
+  // label font size adapts to n (clamped between 10px and 14px)
+  const fz = Math.max(10, Math.min(14, 16 - 0.5 * (n - 3)));
+
+  // labels at polygon centroids (true centre for convex Voronoi cells)
+  svg.append("g")
+    .selectAll("text")
+    .data(polys.map(d => {
+      const [cx, cy] = d3.polygonCentroid(d.poly);
+      return { x: cx, y: cy, name: d.name };
+    }))
+    .join("text")
+      .attr("x", d => d.x)
+      .attr("y", d => d.y)
+      .text(d => d.name)
+      .attr("font-weight", 700)
+      .attr("fill", "currentColor")
+      .attr("font-size", `${fz}px`)
+      .attr("text-anchor", "middle")
+      .attr("dominant-baseline", "middle");
+
+  // Ω frame (single rounded rectangle, drawn last)
+  svg.append("rect")
+    .attr("x", pad).attr("y", pad)
+    .attr("width", width - 2*pad).attr("height", height - 2*pad)
+    .attr("rx", 10)
+    .attr("fill", "none")
+    .attr("stroke", "currentColor")
+    .attr("stroke-opacity", 0.55);
+
+  // Ω label
+  svg.append("text")
+    .attr("x", pad + 8).attr("y", pad + 16)
+    .text("Ω")
+    .style("font-weight", 400)
+    .style("font-size", "18px")
+    .attr("fill", "currentColor");
+
+  return svg.node();
+}
+```
+
+```{ojs}
+
+// Build the two inputs only, in a side-by-side grid
+viewof controls = {
+  const resBtn = Inputs.button("Reseed points");
+  resBtn.classList.add("btn-resim");
+
+  const leftForm = Inputs.form(
+    { n: Inputs.range([3, 50], { value: 10, step: 1, label: md`${tex`k`}: number of sets` }) },
+    { submit: false }
+  );
+  const rightForm = Inputs.form({ reseed: resBtn }, { submit: false });
+
+  const root = html`<div class="controls-wrap">
+    <details class="controls-root" open>
+      <summary>Partition controls</summary>
+      <div class="controls-grid">
+        <div class="controls-col"><h4>Number of regions</h4></div>
+        <div class="controls-col"><h4>Randomisation</h4></div>
+      </div>
+    </details>
+  </div>`;
+
+  const grid = root.querySelector(".controls-grid");
+  const leftCol = grid.children[0];
+  const rightCol = grid.children[1];
+  leftCol.append(leftForm);
+  rightCol.append(rightForm);
+
+  const getValue = () => ({ ...leftForm.value, ...rightForm.value });
+  const update = () => {
+    root.value = getValue();
+    root.dispatchEvent(new CustomEvent("input", { bubbles: true }));
+  };
+  grid.addEventListener("input", update);
+  queueMicrotask(update);
+  return root;
+}
+
+// reactive bindings for the plot
+n = controls.n
+reseed = controls.reseed
+```

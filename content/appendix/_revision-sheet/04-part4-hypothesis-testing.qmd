@@ -1,0 +1,578 @@
+## Part IV - Hypothesis Testing
+
+### Chapter 9 - Frequentist Hypothesis Testing 
+
+<details class="essential-points">
+<summary> Assessment Focus </summary>
+
+
+</details>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-hypothesis-test">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Understand that a <span class="xref-no-num">[hypothesis test @def-simple-hypothesis]</span> answers a **yes/no** question about the value of a parameter $\theta$.
+</span>
+</div>
+
+<div class="revision-content" id="rev-hypothesis-test" hidden>
+To perform a <span class="xref-no-num">[hypothesis test @def-simple-hypothesis]</span> we:
+
+1. **State Hypothesis:** We begin by stating a hypothesis about the parameter, $H_0: \theta = \theta_0$, called the **null hypothesis**.
+2. **Assume the Null is True:** We then **assume** $H_0$ is true.
+3. **Compare Assumption to Data:** We compare this assumption with the observed data and ask whether the data are **consistent** with what $H_0$ would predict.
+
+4. **Make a Decision:**
+   - **Reject $H_0$** if the data look **too inconsistent** with the null.
+   - **Fail to reject $H_0$** if the data are **plausibly consistent** with the null.
+  
+---
+
+**Note:** All examinable hypothesis tests in this module involve <span class="xref-no-num">[simple hypotheses @def-simple-hypothesis]</span>, i.e. the null hypothesis specifies a **single value** of $\theta$.
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-test-outcomes">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Understand the different <span class="xref-no-num">[outcomes @imp-test-outcomes]</span> of a hypothesis test.
+</span>
+</div>
+
+<div class="revision-content" id="rev-test-outcomes" hidden>
+  
+- A hypothesis test always starts by **assuming the null hypothesis $H_0$ is true**.
+ 
+- Under this assumption, the decision to **reject** $H_0$ can be interpreted as 
+  
+  > **"raising an alarm that the assumption $H_0$ is false."**
+
+- There are two possible **states of nature**:
+   1. $H_0$ is actually **true**  
+   2. $H_0$ is actually **false**
+
+- And two possible **decisions**:
+   1. **Reject** $H_0$ (raise an alarm)  
+   2. **Fail to reject** $H_0$ (do not raise an alarm)
+
+- This yields four outcomes:
+
+  - **Correct decisions:**
+    1. We *reject* $H_0$ when it is actually **false**  
+        (Alarm raised correctly.)
+    2. We *fail to reject* $H_0$ when it is actually **true**  
+        (No alarm, and none was needed.)
+
+  - **Errors:**
+    1. **Type I Error (False Alarm):** We **reject** $H_0$ even though it is **true**. Since we assumed $H_0$ is true, rejecting it is equivalent to *raising an alarm that something is wrong — when nothing is wrong*.
+
+    2. **Type II Error (Missed Detection):** We **fail to reject** $H_0$ even though it is **false**. Because rejecting corresponds to raising an alarm, failing to reject here means *missing the chance to detect that our assumption was wrong*.  
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-rejection-region">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Understand what a <span class="xref-no-num">[rejection region @def-rejection-region]</span> is, and be able to compute simple examples for common test statistics.
+</span>
+</div>
+
+<div class="revision-content" id="rev-rejection-region" hidden>
+
+Given:
+
+1. **Hypotheses:** A simple null $H_0 : \theta = \theta_0$ and either a  
+   <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span>.
+2. **Data and Test Statistic:** Random data  
+   $X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\theta)$  
+   and a chosen test statistic $T(\underline{X})$.
+3. **Size (or significance level):** A chosen size $\alpha$.
+
+A **size–$\alpha$ rejection region** is any set $R_\alpha$ such that
+$$
+\Pr(T \in R_\alpha \mid H_0) = \alpha.
+$$
+
+---
+
+**Notes**
+
+- The choice of **rejection region** $R_\alpha$ fully determines the test's decision rule:
+
+  - **Reject $H_0$** if the observed statistic lies in the region:
+    $$
+    T_{\mathrm{obs}} \in R_\alpha.
+    $$
+
+  - **Fail to reject $H_0$** if the observed statistic does *not* lie in the region:
+    $$
+    T_{\mathrm{obs}} \notin R_\alpha.
+    $$
+
+- Any *test* that specifies a size–$\alpha$ rejection region is a **valid hypothesis test**.
+
+  - In principle, there are infinitely many possible regions $R_\alpha$ satisfying $\Pr(T \in R_\alpha \mid H_0) = \alpha$.
+
+  - However, not all valid regions are **good**. Beyond having the correct size, we want a rejection region that gives the test **high ability to detect false nulls**. In other words, we prefer choices of $R_\alpha$ that make the probability of a **Type II error** small — meaning the test is likely to reject $H_0$ when $H_0$ is actually false.
+
+  - This is why, in practice, we choose rejection regions that correspond to the **most extreme** values of the test statistic in the direction(s) specified by the alternative.
+
+</div>
+</div>
+
+<details class="practice-details">
+<summary><em>Computing Rejection Regions — Practice Questions</em></summary>
+
+
+::: {.smaller-table}
+| Location | Description | Link |
+|----------|-------------|-------|
+| Examples | A Terrible Hypothesis Test | @exm-bad-test-statistic|
+
+
+: {tbl-colwidths="[17, 70, 13]"}
+:::
+
+</details>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-p-value">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Understand what a <span class="xref-no-num">[p-value @def-p-value]</span> is, and be able to compute simple examples for common test statistics.
+</span>
+</div>
+
+<div class="revision-content" id="rev-p-value" hidden>
+
+Given null and alternative hypotheses $H_0$ and $H_1$, together with:
+
+1. A **test statistic** $T(\underline{X})$,
+2. A **rejection region** $R_\alpha$ describing which values of $T$ are considered “too inconsistent’’ with $H_0$ at size (significance level) $\alpha$,
+3. The **observed value** $T_{\mathrm{obs}} = T(\underline{x})$ computed from the data,
+
+the **$p$-value** is defined as the **largest value of** $\alpha$ for which
+$$
+T_{\mathrm{obs}} \in R_\alpha.
+$$
+
+Equivalently, it is the probability, under $H_0$, of observing a test statistic **at least as extreme** as the observed value:
+$$
+p = \Pr\!\big( T \text{ is at least as extreme as } T_{\mathrm{obs}} \mid H_0 \big).
+$$
+
+For a chosen test size $\alpha$, **we reject $H_0$ whenever $p < \alpha$**.
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-power-function">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Understand the definition of the <span class="xref-no-num">[power function @def-power]</span>, and be able to compute the power function for simple examples for common test statistics.
+</span>
+</div>
+
+<div class="revision-content" id="rev-power-function" hidden>
+
+Given hypotheses $H_0$ and $H_1$, and:
+
+1. A **test statistic** $T(\underline{X})$,
+2. A **rejection region** $R_\alpha$ specifying when we reject $H_0$ at size $\alpha$,
+3. The sampling distribution of $T$ under different parameter values $\theta$,
+
+the **power function** is defined as
+$$
+\beta(\theta) = \Pr\big(T \in R_\alpha \mid \theta\big).
+$$
+
+That is, $\beta(\theta)$ tells us **how likely our test is to reject $H_0$ when the true parameter value is $\theta$**.
+
+- If $\theta \in H_0$, then  
+  $$
+  \beta(\theta) = \Pr(\text{Type I error at }\theta),
+  $$
+  which is by definition no larger than $\alpha$.
+
+- If $\theta \in H_1$, then  
+  $$
+  \beta(\theta) = \Pr(\text{correctly rejecting } H_0 \mid \theta),
+  $$
+  so larger values of $\beta(\theta)$ mean a more effective test.
+
+In short:
+
+- **On the null**: the power function measures the chance of a false alarm → should be small.  
+- **On the alternative**: the power function measures the chance of detecting a real effect → should be large.
+
+Thus the power function summarises the performance of a test across all possible parameter values.
+
+</div>
+</div>
+
+<details class="practice-details">
+<summary><em>Computing Power Functions — Practice Questions</em></summary>
+
+
+::: {.smaller-table}
+| Location | Description | Link |
+|----------|-------------|-------|
+| Examples | The Power of a Terrible Hypothesis Test | @exm-bad-test-statistic-power|
+
+
+: {tbl-colwidths="[17, 70, 13]"}
+:::
+
+</details>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-z-test">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to perform <span class="xref-no-num">[One-Sample Z tests @def-one-sample-z-test]</span>.
+</span>
+</div>
+
+<div class="revision-content" id="rev-z-test" hidden>
+
+**Assumptions and Setup**
+
+- The <span class="xref-no-num">[One-Sample Z test @def-one-sample-z-test]</span> assumes we have i.i.d. *normally distributed data*
+  $$
+  X_1,\ldots, X_n \overset{i.i.d.}{\sim} \mathcal{N}(\mu, \sigma^2)
+  $$
+  with variance $\sigma^2$ **known**.
+
+- It tests $H_0 : \mu = \mu_0$ against either a <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span> 
+
+- Uses the test statistic
+  $$
+  T = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}}.
+  $$
+
+- Under $H_0$, the test statistic $T\sim \mathcal{N}(0,1)$ is **standard normal** distributed.
+
+---
+
+**Performing the Test**
+
+Given $H_0 : \mu = \mu_0$ and a chosen  <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span> $H_1$, the size–$\alpha$ test proceeds as follows:
+
+1. **Compute the observed test statistic**
+  $$
+  T_{\mathrm{obs}}
+  = \frac{\bar{x} - \mu_0}{\sigma/\sqrt{n}},
+  $$
+  where $\bar{x} = \frac{1}{n}\sum_{i=1}^n x_i$ is the **observed** <span class="xref-no-num">[sample mean @def-sample-mean]</span>
+
+1. **Apply the rejection rule** according to the form of $H_1$:
+
+  - **Two-sided test ($H_1 : \mu \neq \mu_0$):** Reject $H_0$ if  
+    $$
+    |T_{\mathrm{obs}}| > z_{1-\alpha/2}.
+    $$
+
+  - **Upper one-sided test ($H_1 : \mu > \mu_0$):** Reject $H_0$ if  
+    $$
+    T_{\mathrm{obs}} > z_{1-\alpha}.
+    $$
+
+  - **Lower one-sided test ($H_1 : \mu < \mu_0$):** Reject $H_0$ if  
+    $$
+    T_{\mathrm{obs}} < z_{\alpha}.
+    $$
+
+</div>
+</div>
+
+
+
+<details class="practice-details">
+<summary><em>One-sample z-tests — Practice Questions</em></summary>
+
+  
+
+::: {.smaller-table}
+| Location | Description | Link |
+|----------|-------------|-------|
+| Question Bank | Tensile Strength, two-sided Z-test and t-test | <span class="xref-no-num">[Link @q-normal-z-t1]</span> |
+| Question Bank | Sodium Content, one-sided Z-test and t-test | <span class="xref-no-num">[Link @q-normal-z-t-onesided-left]</span> |
+| Question Bank | VO$_2$ Max, one-sided Z-test and t-test | <span class="xref-no-num">[Link @q-normal-z-t-onesided]</span> |
+| Examples | Eggshell thickness, Z-test | @exm-dino-egg-z-test-known-var|
+
+
+: {tbl-colwidths="[17, 70, 13]"}
+:::
+
+</details>
+
+
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-t-test">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to perform <span class="xref-no-num">[One-Sample t tests @def-one-sample-t-test]</span>
+</span>
+</div>
+
+<div class="revision-content" id="rev-t-test" hidden>
+
+**Assumptions and Setup**
+
+- The <span class="xref-no-num">[One-Sample Z test @def-one-sample-z-test]</span> assumes we have i.i.d. *normally distributed data*
+  $$
+  X_1,\ldots, X_n \overset{i.i.d.}{\sim} \mathcal{N}(\mu, \sigma^2)
+  $$
+  with variance $\sigma^2$ **unknown**.
+
+- It tests $H_0 : \mu = \mu_0$ against either a <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span> 
+
+- Uses the test statistic
+  $$
+  T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}},
+  $$
+  where $S^2$ is the <span class="xref-no-num">[sample variance @def-sample-variance]</span>.
+
+- Under $H_0$, the test statistic $T\sim t_{n-1}$ is Student-$t$ distributed with $n-1$ degrees of freedom. 
+  - **Note:** $n$ is the number of data points.
+
+---
+
+**Performing the Test**
+
+Given $H_0 : \mu = \mu_0$ and a chosen  <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span> $H_1$, the size–$\alpha$ test proceeds as follows:
+
+1. **Compute the observed test statistic**
+  $$
+  T_{\mathrm{obs}}
+  = \frac{\bar{x} - \mu_0}{s/\sqrt{n}},
+  $$
+  where $s = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2}$ is the square root of the **observed** <span class="xref-no-num">[sample variance @def-sample-variance]</span>.
+
+1. **Apply the rejection rule** according to the form of $H_1$:
+
+  - **Two-sided test ($H_1 : \mu \neq \mu_0$):** Reject $H_0$ if  
+    $$
+    |T_{\mathrm{obs}}| > t_{n-1, \, 1-\alpha/2}.
+    $$
+
+  - **Upper one-sided test ($H_1 : \mu > \mu_0$):** Reject $H_0$ if  
+    $$
+    T_{\mathrm{obs}} > t_{n-1, \, 1-\alpha}.
+    $$
+
+  - **Lower one-sided test ($H_1 : \mu < \mu_0$):** Reject $H_0$ if  
+    $$
+    T_{\mathrm{obs}} < t_{n-1,\, \alpha}.
+    $$
+
+</div>
+</div>
+
+<details class="practice-details">
+<summary><em>One-sample t-tests — Practice Questions</em></summary>
+
+::: {.smaller-table}
+| Location | Description | Link |
+|----------|-------------|-------| 
+| Question Bank | Tensile Strength, two-sided Z-test and t-test | <span class="xref-no-num">[Link @q-normal-z-t1]</span> |
+| Question Bank | Sodium Content, one-sided Z-test and t-test | <span class="xref-no-num">[Link @q-normal-z-t-onesided-left]</span> |
+| Question Bank | VO$_2$ Max, one-sided Z-test and t-test | <span class="xref-no-num">[Link @q-normal-z-t-onesided]</span> |
+| Examples | Eggshell thickness, t-test | @exm-dino-egg-t-test-unknown-var|
+
+
+: {tbl-colwidths="[17, 70, 13]"}
+:::
+
+</details>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-clt-test">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to perform <span class="xref-no-num">[approximate CLT-based tests for the mean @def-clt-test]</span>.
+</span>
+</div>
+
+<div class="revision-content" id="rev-clt-test" hidden>
+
+**Assumptions and Setup**
+
+- The <span class="xref-no-num">[approximate CLT-based tests for the mean @def-clt-test]</span> may be applied when we have i.i.d. data from **any** distribution with finite variance:
+  $$
+  X_1,\ldots, X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\theta),
+  $$
+  where $\mathrm{Var}(X_i) = \sigma^2$ may be either **known** or **unknown**.
+
+- We write $\mu = \mathrm{E}[X_i]$ and $\sigma^2 = \mathrm{Var}(X_i)$.  
+  - **Note:** Although the distribution is parameterised by $\theta$, the parameter $\theta$ does **not necessarily** coincide with the population mean $\mu$.
+
+- The test relies on the fact that, by the <span class="xref-no-num">[CLT @def-clt-test]</span>, for *large* $n$, we have
+  $$
+  \bar{X} \overset{\text{approx.}}{\sim} \mathcal{N}\left(\mu,\frac{\sigma^2}{n}\right),
+  $$
+  regardless of the original distribution $X_i \sim \mathrm{Distribution}(\theta)$. 
+
+- It tests $H_0 : \mu = \mu_0$ against either a <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span> 
+
+- The test statistic is either:
+  - **Known variance**
+    $$
+    T = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}},
+    $$
+  - **Unknown variance**
+    $$
+    T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}},
+    $$
+    where $S^2$ is the <span class="xref-no-num">[sample variance @def-sample-variance]</span>.
+
+- In both the known- and unknown-variance cases, for large $n$ and under $H_0$, the test statistic
+  $$
+  T \;\overset{\text{approx.}}{\sim}\; \mathcal{N}(0,1)
+  $$
+  is **approximately standard normal**.
+
+- **Note:**  
+  - In the *unknown variance* case, the test statistic may also be approximated by a Student-$t$ distribution with $n-1$ degrees of freedom. This is still an approximation unless the underlying data are exactly normal.  
+  - For the exam, it is sufficient to **always use the $\mathcal{N}(0,1)$ approximation** for these CLT-based tests.
+
+---
+
+**Performing the Test**
+
+Given $H_0 : \mu = \mu_0$ and a chosen  <span class="xref-no-num">[one-sided or two-sided alternative @def-one-two-sided-tests]</span> $H_1$, the size–$\alpha$ test proceeds as follows:
+
+1. **Compute the observed test statistic:** Depending on whether the variance is *known* or *unknown*:
+  $$
+  T_{\mathrm{obs}}
+  = \frac{\bar{x} - \mu_0}{\sigma/\sqrt{n}}, \qquad T_{\mathrm{obs}} = \frac{\bar{x} - \mu_0}{s/\sqrt{n}},
+  $$
+  where $s = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2}$ is the square root of the **observed** <span class="xref-no-num">[sample variance @def-sample-variance]</span>.
+
+1. **Apply the rejection rule** according to the form of $H_1$:
+
+  - **Two-sided test ($H_1 : \mu \neq \mu_0$):** Reject $H_0$ if  
+    $$
+    |T_{\mathrm{obs}}| > z_{1-\alpha/2}.
+    $$
+
+  - **Upper one-sided test ($H_1 : \mu > \mu_0$):** Reject $H_0$ if  
+    $$
+    T_{\mathrm{obs}} > z_{1-\alpha}.
+    $$
+
+  - **Lower one-sided test ($H_1 : \mu < \mu_0$):** Reject $H_0$ if  
+    $$
+    T_{\mathrm{obs}} < z_{\alpha}.
+    $$
+
+</div>
+</div>
+
+<details class="practice-details">
+<summary><em>CLT tests for the mean — Practice Questions</em></summary>
+
+::: {.smaller-table}
+| Location | Description | Link | 
+|----------|-------------|-------|
+| Question Bank | Binomial, CLT approximate test | <span class="xref-no-num">[Link @q-clt-hypothesis-bin1]</span> |
+| Question Bank | Poisson, CLT approximate test I | <span class="xref-no-num">[Link @q-clt-hypothesis-pois1]</span> |
+| Question Bank | Poisson, CLT approximate test II | <span class="xref-no-num">[Link @q-clt-hypothesis-pois2]</span> |
+| Question Bank | Exponential, CLT approximate test | <span class="xref-no-num">[Link @q-clt-hypothesis-exp1]</span> |
+| Examples | Binomial test of proportions, CLT approximate test | @exm-test-of-proportions|
+
+
+: {tbl-colwidths="[17, 70, 13]"}
+:::
+
+</details>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-lrt">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to perform <span class="xref-no-num">[Likelihood Ratio Tests @def-lrt-simple]</span> (with a **simple null hypothesis**).
+</span>
+</div>
+
+<div class="revision-content" id="rev-lrt" hidden>
+
+**Assumptions and Setup**
+
+- The <span class="xref-no-num">[Likelihood Ratio Test @def-lrt-simple]</span> may be applied when we have i.i.d. data from **any** distribution:
+  $$
+  X_1,\ldots, X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Distribution}(\theta).
+  $$
+
+- It tests $H_0 : \theta = \theta_0$ against the two-sided alternative $H_1: \theta \neq \theta_0$. 
+
+- The test statistic is
+  $$
+  T = -2 \log \lambda(\underline{X}),
+  $$
+  where
+  $$
+  \lambda(\underline{X}) = \frac{L(\theta_0; \underline{X})}{L(\hat{\theta}_{\mathrm{MLE}}; \underline{X})} 
+  $$
+  and $L(\theta; \underline{X})$ is the  <span class="xref-no-num">[likelihood function @def-likelihood]</span>.
+
+- A <span class="xref-no-num">[convenient form @prp-lrt-test-statistic]</span> of the test statistic is:
+  $$
+  T = 2\left( \ell(\hat{\theta}_{\mathrm{MLE}} \,; \underline{X}) - \ell(\theta_0\, ; \underline{X})\right),
+  $$
+  where $\ell(\theta; \underline{X})$ is the <span class="xref-no-num">[log likelihood function @def-log-likelihood]</span>.
+
+- By <span class="xref-no-num">[Wilks' theorem @thm-wilks]</span>, for *large* $n$, the test statistic is
+  $$
+  T \; \overset{\text{approx.}}{\sim} \; \chi^2_1,
+  $$
+  approximately $\chi^2_1$ distributed.
+
+---
+
+**Performing the Test**
+
+Given $H_0 : \theta = \theta_0$ and the two-sided alternative $H_1: \theta \neq \theta_0$, the size–$\alpha$ test proceeds as follows:
+
+1. **Compute the observed test statistic:**
+  $$
+  T_{\mathrm{obs}} = 2\left( \ell(\hat{\theta}_{\mathrm{MLE}} \,; \underline{x}) - \ell(\theta_0\, ; \underline{x})\right),
+  $$
+  This can be *broken down into* substeps:
+   1. Compute the log-likelihood function $\ell(\theta; \underline{x})$
+   2. Compute the MLE $\hat{\theta}_{\mathrm{MLE}}$ using the observed data $\underline{x}$.
+   3. Plug both the null $\theta = \theta_0$ and MLE $\theta = \theta_{\mathrm{MLE}}$ into $\ell(\theta; \underline{x})$ and compute the test statistic.
+  
+1. **Apply the rejection rule:** We Reject $H_0$ if  
+  $$
+  T_{\mathrm{obs}} > \chi^2_{1,\,1-\alpha}
+  $$
+  where $\chi^2_{1,\,1-\alpha}$ is the $(1-\alpha)$ quantile of the $\chi^2_1$ distribution.
+
+</div>
+</div>
+
+<details class="practice-details">
+<summary><em>Likelihood Ratio Test — Practice Questions</em></summary>
+
+::: {.smaller-table} 
+| Location | Description | Link | 
+|----------|-------------|-------|
+| Question Bank | Extreme Weather, Poisson Data LRT | <span class="xref-no-num">[Link @q-lrt-weather]</span> |
+| Question Bank | Lifespan of Magical Artefact, Exponential Data LRT | <span class="xref-no-num">[Link @q-lrt-lifespan]</span> |
+| Examples | Normal model, known variance, LRT | @exm-lrt-normal-mean|
+
+
+: {tbl-colwidths="[17, 70, 13]"}
+:::
+
+</details>
+
+

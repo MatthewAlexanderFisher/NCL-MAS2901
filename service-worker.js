@@ -1,5 +1,5 @@
 // Bump this to invalidate old caches after content updates
-const CACHE_VERSION = 'v1.0.8'; // Bumped version
+const CACHE_VERSION = 'v1.0.10';
 const STATIC_CACHE = `static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `runtime-${CACHE_VERSION}`;
 
@@ -20,6 +20,10 @@ const PRECACHE = [
   './pwa/manifest.webmanifest',
   './pwa/icons/icon-192.png',
   './pwa/icons/icon-512.png',
+  './knowledge-graph/course-graph.json',
+  './knowledge-graph/knowledge-graph.css',
+  './knowledge-graph/knowledge-graph.js',
+  './knowledge-graph/vendor/cytoscape-3.34.1.min.js',
 ].filter(url => url); // Remove any undefined entries
 
 // Helper to limit cache size

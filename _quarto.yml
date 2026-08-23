@@ -6,6 +6,10 @@ project:
     - pwa/manifest.webmanifest
     - pwa/offline.html
     - pwa/icons/*
+    - knowledge-graph/course-graph.json
+    - knowledge-graph/knowledge-graph.js
+    - knowledge-graph/knowledge-graph.css
+    - knowledge-graph/vendor/*
 
 crossref:
   custom:
@@ -15,10 +19,7 @@ crossref:
 
 
 execute:
-  engine: jupyter
-  # debug: true
-  # error: true
-  jupyter: mas2901
+  echo: false
 
 book:
   title: "MAS2901: Statistical Inference"
@@ -36,7 +37,7 @@ book:
         - content/main/part2/4-freq-point-estimation.qmd
         - content/main/part2/5-likelihood.qmd
         - content/main/part2/6-bayes-inference.qmd
-    - part: "Part III - Interval Estimation"
+    - part: "Part III — Interval Estimation"
       chapters:
         - content/main/part3/7-freq-interval-estimation.qmd
         - content/main/part3/8-bayes-interval-estimation.qmd
@@ -64,12 +65,9 @@ book:
     type: textbox
     keyboard-shortcut: "F"
 
-# bibliography: references.bib
-
 brand: theming/_brand.yml
 format:
   html:
-    echo: false
     html-math-method: katex
     theme:
       light: light_theme.scss
@@ -93,52 +91,19 @@ format:
       - theming/visualisation-controls.css
       - theming/tables.css
       - theming/small-table.css
-      - theming/print-button.css
       - theming/reading-mode.css
     include-after-body:
       - theming/no-xref-suffix.html
       - theming/close-codefold.html
       - theming/header.html
       - theming/callout-prefix-removal.html
-      # - theming/zoom-button.html
       - theming/print-button.html
       - js/inkpad.html
       - theming/ink-button.html
       - theming/reading-mode-progress.html
-    include-in-header: 
-      # - theming/favicons.html
+      - knowledge-graph/widget.html
+    include-in-header:
       - pwa/pwa-head.html
-
-  # pdf:
-  #   documentclass: scrreprt
-  #   include-in-header:
-  #     text: |
-  #       \usepackage{newunicodechar}
-  #       \usepackage{emoji}
-  #       \newunicodechar{✨}{\emoji{sparkles}}
-  #       \usepackage{amsthm}
-  #       \usepackage{mathtools}
-  #       \usepackage{hyperref}
-  #       \usepackage{cleveref}
-  #       \DeclareMathOperator*{\argmax}{arg\,max}
-  #       \DeclareMathOperator*{\argmin}{arg\,min}
-  #       \makeatletter
-  #       \newenvironment{refproof}[1][]%
-  #         {\if\relax\detokenize{#1}\relax
-  #           \begin{proof}
-  #         \else
-  #           \begin{proof}[Proof of \ref{#1}]
-  #         \fi}%
-  #         {\end{proof}}
-  #       \makeatother
-  #   execute:
-  #     engine: jupyter
-  #     jupyter: mas2901
-  #     echo: false      # hide all code cells
-  #     warning: false   # hide warnings (knitr)
-  #     message: false   # hide messages (knitr)
-  #     output: false
-  #     error: false    # hide errors (knitr)
 
 callouty-theorem:
   thm:
@@ -201,4 +166,3 @@ callouty-theorem:
 
 editor:
   render-on-save: true
-

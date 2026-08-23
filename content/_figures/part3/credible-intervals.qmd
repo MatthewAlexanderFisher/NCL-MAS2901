@@ -1,0 +1,353 @@
+```{ojs}
+// Helper functions for Beta distribution
+function betaPDF(x, alpha, beta) {
+  if (x <= 0 || x >= 1) return 0;
+  // Using the log-gamma function for numerical stability
+  const logBeta = lgamma(alpha) + lgamma(beta) - lgamma(alpha + beta);
+  return Math.exp((alpha - 1) * Math.log(x) + (beta - 1) * Math.log(1 - x) - logBeta);
+}
+
+function lgamma(z) {
+  const g = 7;
+  const p = [0.99999999999980993, 676.5203681218851, -1259.1392167224028,
+             771.32342877765313, -176.61502916214059, 12.507343278686905,
+             -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7];
+  
+  if (z < 0.5) return Math.log(Math.PI) - Math.log(Math.sin(Math.PI * z)) - lgamma(1 - z);
+  
+  z -= 1;
+  let x = p[0];
+  for (let i = 1; i < g + 2; i++) x += p[i] / (z + i);
+  
+  const t = z + g + 0.5;
+  return Math.log(2 * Math.PI) / 2 + (z + 0.5) * Math.log(t) - t + Math.log(x);
+}
+
+// Beta CDF using incomplete beta function (numerical approximation)
+function betaCDF(x, alpha, beta) {
+  if (x <= 0) return 0;
+  if (x >= 1) return 1;
+  
+  // Use regularized incomplete beta function
+  // For simplicity, using numerical integration
+  const n = 1000;
+  const h = x / n;
+  let sum = 0;
+  
+  for (let i = 1; i < n; i++) {
+    const t = i * h;
+    sum += betaPDF(t, alpha, beta);
+  }
+  
+  return h * (betaPDF(0, alpha, beta) / 2 + sum + betaPDF(x, alpha, beta) / 2);
+}
+
+// Inverse CDF using bisection method
+function betaInvCDF(p, alpha, beta) {
+  if (p <= 0) return 0;
+  if (p >= 1) return 1;
+  
+  let low = 0, high = 1;
+  const tol = 1e-6;
+  
+  while (high - low > tol) {
+    const mid = (low + high) / 2;
+    const cdf = betaCDF(mid, alpha, beta);
+    
+    if (cdf < p) {
+      low = mid;
+    } else {
+      high = mid;
+    }
+  }
+  
+  return (low + high) / 2;
+}
+```
+
+```{ojs}
+// Generate intervals based on number of segments
+function generateIntervals(nIntervals, targetProb, alpha, beta) {
+  const intervals = [];
+  const remainingProb = 1 - targetProb; // This is α
+  
+  if (nIntervals === 1) {
+    // Single interval: use equal-tailed interval as default
+    const tailProb = remainingProb / 2;
+    intervals.push({
+      start: betaInvCDF(tailProb, alpha, beta),
+      end: betaInvCDF(1 - tailProb, alpha, beta),
+      prob: targetProb
+    });
+  } else {
+    // Multiple intervals: distribute probability evenly
+    const probPerInterval = targetProb / nIntervals;
+    const gapProb = remainingProb / (nIntervals + 1);
+    
+    let cumProb = gapProb;
+    for (let i = 0; i < nIntervals; i++) {
+      const start = betaInvCDF(cumProb, alpha, beta);
+      cumProb += probPerInterval;
+      const end = betaInvCDF(cumProb, alpha, beta);
+      cumProb += gapProb;
+      
+      intervals.push({ start, end, prob: probPerInterval });
+    }
+  }
+  
+  return intervals;
+}
+```
+
+```{ojs}
+// Main visualization
+{
+  const width = 960;
+  const height = 400;
+  const marginTop = 40;
+  const marginBottom = 60;
+  const marginLeft = 60;
+  const marginRight = 40;
+  
+  // Generate posterior PDF data
+  const xDomain = [0, 1];
+  const nPoints = 500;
+  const xValues = d3.range(nPoints).map(i => i / (nPoints - 1));
+  const pdfData = xValues.map(x => ({
+    x: x,
+    y: betaPDF(x, betaAlpha, betaBeta)
+  }));
+  
+  // Generate intervals
+  const intervals = generateIntervals(numIntervals, 1 - alphaLevel, betaAlpha, betaBeta);
+  
+  // Calculate actual total probability (for display)
+  let totalProb = 0;
+  intervals.forEach(interval => {
+    const prob = betaCDF(interval.end, betaAlpha, betaBeta) - 
+                  betaCDF(interval.start, betaAlpha, betaBeta);
+    totalProb += prob;
+  });
+  
+  // Create color scale for intervals
+  const colors = [
+    "var(--plot-series-1)",
+    "var(--plot-series-2)",
+    "var(--plot-series-3)",
+    "var(--plot-series-4)",
+    "var(--plot-series-1)",
+    "var(--plot-series-2)",
+    "var(--plot-series-3)",
+    "var(--plot-series-4)",
+    "var(--plot-series-1)",
+    "var(--plot-series-2)",
+    "var(--plot-series-3)",
+    "var(--plot-series-4)",
+  ];
+  
+  // Calculate mean and mode for display
+  const posteriorMean = betaAlpha / (betaAlpha + betaBeta);
+  const posteriorMode = betaAlpha > 1 && betaBeta > 1 
+    ? (betaAlpha - 1) / (betaAlpha + betaBeta - 2)
+    : posteriorMean;
+  
+  // Create the plot
+  const plot = Plot.plot({
+    width,
+    height,
+    marginTop,
+    marginBottom,
+    marginLeft,
+    marginRight,
+    style: {
+      background: "var(--plot-bg)",
+      color: "var(--plot-fg)",
+      fontFamily: bodyFont,
+      fontSize: 14
+    },
+    x: {
+      label: "θ",
+      domain: xDomain,
+      grid: false
+    },
+    y: {
+      label: "Posterior density π(θ|x)",
+      domain: [0, Math.max(...pdfData.map(d => d.y)) * 1.1]
+    },
+    marks: [
+      // Grid baseline
+      Plot.ruleY([0], { stroke: "var(--plot-grid)", strokeOpacity: 0.6 }),
+      
+      // Posterior PDF curve
+      Plot.lineY(pdfData, { 
+        x: "x", 
+        y: "y", 
+        stroke: "currentColor", 
+        strokeWidth: 2,
+        strokeOpacity: 0.9
+      }),
+      
+      // Credible intervals (filled areas)
+      ...intervals.map((interval, i) => {
+        const intervalData = pdfData.filter(d => 
+          d.x >= interval.start && d.x <= interval.end
+        );
+        return Plot.areaY(intervalData, {
+          x: "x",
+          y: "y",
+          fill: colors[i % colors.length],
+          fillOpacity: 0.3,
+        });
+      }),
+      
+      // Interval boundaries (vertical lines)
+      ...intervals.flatMap((interval, i) => [
+        Plot.ruleX([interval.start], {
+          stroke: colors[i % colors.length],
+          strokeWidth: 2,
+          strokeDasharray: "3,2"
+        }),
+        Plot.ruleX([interval.end], {
+          stroke: colors[i % colors.length],
+          strokeWidth: 2,
+          strokeDasharray: "3,2"
+        })
+      ]),
+      
+      // Labels for intervals
+      ...intervals.map((interval, i) => {
+        const midpoint = (interval.start + interval.end) / 2;
+        const yValue = betaPDF(midpoint, betaAlpha, betaBeta);
+        return Plot.text([{
+          x: midpoint,
+          y: yValue,
+          text: `C${i + 1}`
+        }], {
+          x: "x",
+          y: "y",
+          text: "text",
+          dy: -30,
+          fontSize: 12,
+          fontWeight: "bold",
+          fill: colors[i % colors.length]
+        });
+      })
+    ]
+  });
+  
+  // Stats display
+  const stats = html`
+    <div style="margin-bottom: 15px; padding: 12px; background: var(--header-bg); border-radius: 6px; font-size: 14px;">
+      <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
+        <div>
+          <strong>Posterior:</strong> Beta(${betaAlpha}, ${betaBeta})
+        </div>
+        <div>
+          <strong>Mean:</strong> ${posteriorMean.toFixed(3)}
+        </div>
+        <div>
+          <strong>Target credibility:</strong> ${((1 - alphaLevel) * 100).toFixed(1)}%
+        </div>
+        <div>
+          <strong>Actual coverage:</strong> ${(totalProb * 100).toFixed(2)}%
+        </div>
+      </div>
+      ${numIntervals > 1 ? html`
+        <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border);">
+          <em style="color: var(--fg-muted);">
+            Note: With ${numIntervals} disjoint intervals, the ${((1 - alphaLevel) * 100).toFixed(0)}% 
+            probability mass is distributed equally across all intervals, with equal-sized gaps between them.
+          </em>
+        </div>
+      ` : html`
+        <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border);">
+          <em style="color: var(--fg-muted);">
+            Note: Single interval uses the equal-tailed credible interval 
+            (${(alphaLevel * 50).toFixed(1)}% in each tail).
+          </em>
+        </div>
+      `}
+    </div>
+  `;
+  
+  return html`<div style="width: 100%; max-width: 960px; margin: 0 auto;">
+    ${stats}
+    ${plot}
+  </div>`;
+}
+```
+
+```{ojs}
+// Controls with posterior parameter sliders added
+viewof credibleControls = {
+  const alphaSlider = Inputs.range([0.01, 0.5], { 
+    value: 0.05, 
+    step: 0.01, 
+    label: tex`\alpha` 
+  });
+  
+  const intervalsSlider = Inputs.range([1, 12], { 
+    value: 1, 
+    step: 1, 
+    label: "Number of intervals" 
+  });
+  
+  const betaAlphaSlider = Inputs.range([1, 30], { 
+    value: 8, 
+    step: 0.5, 
+    label: tex`\text{Beta } \alpha \text{ parameter}` 
+  });
+  
+  const betaBetaSlider = Inputs.range([1, 30], { 
+    value: 3, 
+    step: 0.5, 
+    label: tex`\text{Beta } \beta \text{ parameter}` 
+  });
+  
+  const root = html`<details class="controls-root" open>
+    <summary style="cursor: pointer; font-weight: 600;">Credible Interval Controls</summary>
+    <div class="controls-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 15px;">
+      <div class="controls-col">
+        <h4 style="margin-bottom: 10px;">Interval Configuration</h4>
+        ${alphaSlider}
+        <div style="margin-top: 15px;">
+          ${intervalsSlider}
+        </div>
+      </div>
+      <div class="controls-col">
+        <h4 style="margin-bottom: 10px;">Posterior Parameters</h4>
+        ${betaAlphaSlider}
+        <div style="margin-top: 15px;">
+          ${betaBetaSlider}
+        </div>
+      </div>
+    </div>
+  </details>`;
+  
+  // Set up value forwarding
+  root.value = {
+    alpha: alphaSlider.value,
+    numIntervals: intervalsSlider.value,
+    betaAlpha: betaAlphaSlider.value,
+    betaBeta: betaBetaSlider.value
+  };
+  
+  root.addEventListener("input", () => {
+    root.value = {
+      alpha: alphaSlider.value,
+      numIntervals: intervalsSlider.value,
+      betaAlpha: betaAlphaSlider.value,
+      betaBeta: betaBetaSlider.value
+    };
+    root.dispatchEvent(new CustomEvent("input", { bubbles: true }));
+  });
+  
+  return root;
+}
+
+// Reactive bindings
+alphaLevel = credibleControls.alpha
+numIntervals = credibleControls.numIntervals
+betaAlpha = credibleControls.betaAlpha
+betaBeta = credibleControls.betaBeta
+```

@@ -1,0 +1,345 @@
+```{ojs}
+mutable rngSeed = 1
+mutable meanHistory = []
+mutable resampleClicks = 0
+mutable resetClicks = 0
+mutable lastSamplesPerClick = 1
+```
+
+```{ojs}
+// Edge-trigger the Reset
+{
+  if (reset > resetClicks) {
+    mutable meanHistory = [];
+    mutable resetClicks = reset;
+  }
+  return html``;
+}
+
+// Reset resampleClicks when samplesPerClick changes
+{
+  if (controls.samplesPerClick !== lastSamplesPerClick) {
+    mutable lastSamplesPerClick = controls.samplesPerClick;
+    mutable resampleClicks = 0; // Reset to match the new button's counter
+  }
+  return html``;
+}
+
+// Edge-trigger the Resample: add current mean to history then generate new sample
+{
+  if (resample > resampleClicks) {
+    // Add the current mean to history first
+    mutable meanHistory = [...meanHistory, xbar];
+    
+    // If doing multiple samples, add the additional ones
+    if (controls.samplesPerClick > 1) {
+      const additionalMeans = [];
+      for (let i = 1; i < controls.samplesPerClick; i++) {
+        const rand = d3.randomNormal.source(d3.randomLcg(rngSeed + i))(controls.trueMu, controls.trueSigma);
+        const sample = d3.range(controls.n).map(rand);
+        additionalMeans.push(d3.mean(sample));
+      }
+      mutable meanHistory = [...meanHistory, ...additionalMeans];
+    }
+    
+    // Update seed for next sample (which will be displayed)
+    mutable rngSeed = rngSeed + controls.samplesPerClick;
+    mutable resampleClicks = resample;
+  }
+  return html``;
+}
+```
+
+
+```{ojs}
+// Helper to make a styled Inputs.button
+function styledButton(label, cls, options = {}) {
+  const el = Inputs.button(label, options);
+  const btn = el.querySelector('button');
+  if (btn) btn.classList.add(cls);
+  return el;
+}
+
+// Define themed buttons with updated label for multi-sample
+viewof resample = styledButton(
+  controls.samplesPerClick > 1 
+    ? `Resample (×${controls.samplesPerClick})` 
+    : "Resample", 
+  "btn-resample", 
+  { reduce: c => (c ?? 0) + 1 }
+);
+
+viewof reset = styledButton("Reset", "btn-reset", {
+  reduce: c => (c ?? 0) + 1
+});
+
+// --- Current sample (always visible) ---
+X = {
+  const rand = d3.randomNormal.source(d3.randomLcg(rngSeed))(controls.trueMu, controls.trueSigma);
+  return d3.range(controls.n).map(rand);
+}
+xbar = d3.mean(X)
+
+// ========= Left panel: current sample ========= 
+// Compute histogram bins and densities once 
+leftBins = d3.bin().domain(xDomain).thresholds(controls.bins)(X)
+leftDensities = leftBins.map(b => b.length / controls.n / Math.max(1e-9, b.x1 - b.x0) )
+leftYMax = Math.max(0.1, d3.max(leftDensities) || 0.1);
+
+// ========= Shared computation =========
+xPad = 3 * controls.trueSigma
+xDomain = [controls.trueMu - xPad, controls.trueMu + xPad]
+mid      = 0.5 * (xDomain[0] + xDomain[1]);
+anchor   = xbar < mid ? "start" : "end";   // right of line if on left half, else left
+
+leftPlot = Plot.plot({
+  width: Math.min(600, Math.max(320, width/2 - 20)),
+  height: 320,
+  style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)",
+    fontFamily: bodyFont,
+    fontSize: 14,
+  },
+  x: { label: "Data", domain: xDomain },
+  y: { label: "Density", domain: [0, leftYMax * 1.1] },
+  marks: [
+    // histogram
+    Plot.rectY(leftBins, {
+      x1: d => d.x0,
+      x2: d => d.x1,
+      y: d => d.length / controls.n / Math.max(1e-9, d.x1 - d.x0),
+      fill: "var(--plot-series-1)",
+      fillOpacity: 0.4
+    }),
+
+    // ticks at data points
+    Plot.ruleX(X, {
+      y1: 0,
+      y2: leftYMax * 0.05,
+      stroke: "var(--plot-series-1)",
+      strokeWidth: 2,
+      strokeOpacity: 0.8
+    }),
+
+    // sample mean line + label
+    Plot.ruleX([xbar], {
+      stroke: "currentColor",
+      strokeDasharray: "4,3",
+      strokeWidth: 2
+    }),
+    // label 
+    Plot.text([xbar], {
+      x: d => d,
+      y: leftYMax * 0.95,
+      text: d => `x̄ = ${d.toFixed(2)}`,
+      textAnchor: anchor,
+      dx: xbar < mid ? 8 : -8,
+      dy: -2,
+      fontSize: 14,
+      fill: "currentColor"
+    }),
+    Plot.ruleY([0]),
+  ]
+});
+
+// ========= Right panel: saved sample means =========
+means = meanHistory
+
+// Domain for right panel
+mPad = 3 * controls.trueSigma / Math.sqrt(controls.n)
+mDomain = means.length > 0 
+  ? [
+      Math.min(d3.min(means), controls.trueMu - mPad, xbar - 0.1),
+      Math.max(d3.max(means), controls.trueMu + mPad, xbar + 0.1)
+    ]
+  : [controls.trueMu - mPad, controls.trueMu + mPad]
+
+// True distribution PDF
+sampleMeanPdf = (x) => {
+  const variance = controls.trueSigma ** 2 / controls.n;
+  return (1 / Math.sqrt(2 * Math.PI * variance)) *
+    Math.exp(-((x - controls.trueMu) ** 2) / (2 * variance));
+}
+
+pdfData = d3.range(mDomain[0], mDomain[1], (mDomain[1] - mDomain[0]) / 200)
+  .map(x => ({ x, y: sampleMeanPdf(x) }));
+
+// Compute histogram for means if we have any
+rightBins = means.length > 0 
+  ? d3.bin().domain(mDomain).thresholds(controls.bins)(means)
+  : [];
+rightDensities = rightBins.map(b => 
+  b.length / means.length / Math.max(1e-9, b.x1 - b.x0)
+);
+rightYMax = Math.max(
+  d3.max(rightDensities) || 0.1,
+  controls.showTrue ? d3.max(pdfData, d => d.y) || 0.1 : 0.1
+);
+
+rightPlot = Plot.plot({
+  width: Math.min(600, Math.max(320, width/2 - 20)),
+  height: 320,
+  style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)",
+    fontFamily: bodyFont,
+    fontSize: 14,
+  },
+  x: { label: "x̄", domain: mDomain },
+  y: { label: "Density", domain: [0, rightYMax * 1.1] },
+  marks: [
+    // Histogram of means
+    means.length > 0 ? Plot.rectY(
+      rightBins,
+      {
+        x1: d => d.x0,
+        x2: d => d.x1,
+        y: d => d.length / means.length / (d.x1 - d.x0),
+        fill: "var(--plot-series-4)",
+        fillOpacity: 0.3
+      }
+    ) : null,
+    // Vertical lines for saved means (like left plot)
+    means.length > 0 ? Plot.ruleX(means, {
+      y1: 0,
+      y2: rightYMax * 0.05,
+      stroke: "var(--plot-series-4)",
+      strokeWidth: 2,
+      strokeOpacity: 0.8
+    }) : null,
+    // Current sample mean (not yet in history)
+    Plot.ruleX([xbar], {
+      y1: 0,
+      y2: rightYMax * 0.07,
+      stroke: "currentColor",
+      strokeWidth: 3,
+      strokeOpacity: 1
+    }),
+    // Label for current mean
+    Plot.text([xbar], {
+      x: d => d,
+      y: rightYMax * 0.08,
+      text: "current",
+      textAnchor: "middle",
+      fontSize: 10,
+      fill: "currentColor"
+    }),
+    // True distribution
+    Plot.line(pdfData, {
+      x: "x",
+      y: "y",
+      strokeWidth: 2,
+      stroke: "var(--plot-series-4)",
+      strokeOpacity: controls.showTrue ? 1 : 0
+    }),
+    Plot.ruleY([0])
+  ].filter(d => d !== null)
+})
+
+// ========= Display =========
+{
+  for (const f of [viewof resample, viewof reset]) {
+    f.style.margin = "0";
+    f.style.width = "100%";
+    f.style.maxWidth = "none";
+    f.style.display = "flex";
+  }
+  viewof resample.style.justifyContent = "flex-start";
+  viewof reset.style.justifyContent = "flex-end";
+
+  return html`<div class="ojs-toolbar-grid">
+    <div class="left">${viewof resample}</div>
+    <div class="center">
+      <div>${tex`\bar{x} = ${xbar.toFixed(2)}`}</div>
+      <div style="font-size:0.8em; opacity:0.7">
+        ${means.length} sample${means.length !== 1 ? 's' : ''} collected
+      </div>
+    </div>
+    <div class="right">${viewof reset}</div>
+  </div>
+
+  <style>
+    .ojs-toolbar-grid{
+      display:grid;
+      grid-template-columns:1fr auto 1fr;
+      align-items:center;
+      width:100%;
+      box-sizing:border-box;
+      margin:0; padding:0;
+    }
+    .ojs-toolbar-grid form{
+      margin:0 !important;
+      width:100% !important;
+      max-width:none !important;
+      display:flex !important;
+    }
+    .ojs-toolbar-grid .left form{ justify-content:flex-start !important; }
+    .ojs-toolbar-grid .right form{ justify-content:flex-end !important; }
+
+    .btn.btn-resample{ background: var(--brand-teal); color:#fff; border:none; }
+    .btn.btn-resample:hover{ background: var(--brand-teal-hover); }
+    .btn.btn-reset{ background: var(--brand-red); color:#fff; border:none; }
+    .btn.btn-reset:hover{ background: var(--brand-red-hover); }
+    .btn.btn-resample:focus-visible,
+    .btn.btn-reset:focus-visible{
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+
+    .ojs-toolbar-grid .center{
+      text-align:center;
+      font-size:0.9rem;
+      color: var(--brand-fg);
+    }
+  </style>`;
+}
+
+html`<div style="max-width:100%; display:flex; gap:14px; align-items:flex-start; flex-wrap:nowrap;">
+  <div>${leftPlot}</div>
+  <div>${rightPlot}</div>
+</div>`
+```
+
+```{ojs}
+viewof controls = {
+  const leftForm = Inputs.form({
+    n: Inputs.range([1, 400], { value: 10, step: 1, label: md`${tex`n`}` }),
+    trueMu: Inputs.range([-2, 2], { value: 0, step: 0.1, label: md`${tex`\mu_{\text{true}}`}` }),
+    trueSigma: Inputs.range([0.3, 3], { value: 1, step: 0.1, label: md`${tex`\sigma_{\text{true}}`}` })
+  }, { submit: false });
+
+  const rightForm = Inputs.form({
+    samplesPerClick: Inputs.range([1, 10], { 
+      value: 1, 
+      step: 1, 
+      label: "Samples per click" 
+    }),
+    bins: Inputs.range([10, 60], { value: 24, step: 1, label: "Histogram bins" }),
+    showTrue: Inputs.toggle({ label: md`Show ${tex`\bar{X}`} distribution`, value: false })
+  }, { submit: false });
+
+  const root = html`<details class="controls-root" open>
+    <summary>Simulation controls</summary>
+    <div class="controls-grid">
+      <div class="controls-col"><h4>Data & truth</h4></div>
+      <div class="controls-col"><h4>Display & actions</h4></div>
+    </div>
+  </details>`;
+  
+  root.querySelector(".controls-grid").children[0].append(leftForm);
+  root.querySelector(".controls-grid").children[1].append(rightForm);
+
+  const getValue = () => ({ ...leftForm.value, ...rightForm.value });
+  const update = () => {
+    root.value = getValue();
+    root.dispatchEvent(new CustomEvent("input", { bubbles: true }));
+  };
+
+  leftForm.addEventListener("input", update);
+  rightForm.addEventListener("input", update);
+
+  queueMicrotask(update);
+  return root;
+}
+```

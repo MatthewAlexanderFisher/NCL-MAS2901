@@ -1,0 +1,44 @@
+```{ojs}
+
+{
+  // compute locally
+  const p = geom_p;
+  const raw   = Math.log(1e-4) / Math.log(1 - p);            // tail cutoff
+  const kmax  = Math.max(5, Math.min(200, Math.ceil(raw)));  // clamp for stability
+  const geom_data = Array.from({ length: kmax }, (_, i) => {
+    const k = i + 1; 
+    return { x: k, y: geomPMF1(p, k) }; // PMF = p(1-p)^{k-1}
+  });
+
+  // stats readout
+  const stats = md`**Mean** ${tex`= 1/p`} = ${(1/p).toFixed(2)}; 
+  **Var** ${tex`= (1-p)/p^2`} = ${(((1-p)/(p*p))).toFixed(2)}.`;
+
+  // plot
+  const plot = Plot.plot({
+        width, height: 260,
+    style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)"           // drives 'currentColor'
+    },
+ y: { label: "PMF" },
+    x: { label: "x" },
+    marks: [
+      Plot.barY(geom_data, { x: "x", y: "y", fill: ACCENT }),
+      Plot.ruleY([0], { stroke: GRID, strokeOpacity: 0.6 })
+    ]
+  });
+
+  // return one wrapper node
+  return html`<div class="dist-panel">
+    <div class="stats">${stats}</div>
+    ${plot}
+  </div>`;
+}
+```
+
+```{ojs}
+viewof geom_p = Inputs.range([0.02, 0.98], {
+  value: 0.3, step: 0.02, label: md`${tex`p`}`
+})
+```

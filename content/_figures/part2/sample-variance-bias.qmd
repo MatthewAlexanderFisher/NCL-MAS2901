@@ -1,0 +1,455 @@
+```{ojs}
+addLegendTopRight = (svg, items, {
+  padding = 8,
+  gap = 10,                // you can keep this small now
+  swatch = 17,
+  fontFamily = bodyFont,
+  fontSize = 12,
+  corner = 10,             // distance from top-right
+  bg = "var(--plot-bg)",
+  border = "var(--plot-grid)"
+} = {}) => {
+  const root = d3.select(svg);
+
+  // Build legend; park it off-screen so it still participates in layout.
+  const g = root.append("g")
+    .attr("class", "plot-legend")
+    .attr("font-family", fontFamily)
+    .attr("font-size", fontSize)
+    .attr("pointer-events", "none")
+    .attr("transform", "translate(-1000000,-1000000)");
+
+  const rowGap = 8;
+  const rows = g.selectAll("g.row")
+    .data(items)
+    .join("g")
+      .attr("class", "row")
+      .attr("transform", (d, i) => `translate(0, ${i * (fontSize + rowGap) + fontSize / 2})`);
+
+  // swatch
+  rows.append("line")
+    .attr("x1", 0).attr("x2", swatch)
+    .attr("y1", 0).attr("y2", 0)
+    .attr("stroke", d => d.stroke)
+    .attr("stroke-width", d => d.strokeWidth ?? 2)
+    .attr("stroke-dasharray", d => d.dasharray ?? null)
+    .attr("stroke-linecap", "butt");
+
+  // label
+  rows.append("text")
+    .attr("x", swatch + gap)
+    .attr("y", 0)
+    .attr("dominant-baseline", "middle")
+    .attr("fill", d => d.stroke)
+    .attr("font-weight", "600")
+    .text(d => d.label);
+
+  const labels = rows.select("text");
+
+  // Background (inserted now; sized after measurement)
+  const bgRect = g.insert("rect", ":first-child")
+    .attr("class", "legend-bg")
+    .attr("rx", 8).attr("ry", 8)
+    .attr("fill", bg)
+    .attr("fill-opacity", 0.9)
+    .attr("stroke", border);
+
+  function place() {
+    // 1) Ensure labels' *painted* left edge starts at swatch+gap
+    let adjusted = false;
+    labels.each(function () {
+      const t = this;
+      const b = t.getBBox();
+      const desiredLeft = swatch + gap;   // in the row's coord system
+      const overshoot = desiredLeft - b.x; // >0 means glyph extends left
+      if (overshoot > 0.1) {
+        const x = parseFloat(t.getAttribute("x")) || 0;
+        t.setAttribute("x", x + overshoot);
+        adjusted = true;
+      }
+    });
+
+    // If we adjusted any label, schedule another frame so BBoxes settle
+    if (adjusted) {
+      requestAnimationFrame(place);
+      return;
+    }
+
+    // 2) Size background to content
+    const content = g.node().getBBox();
+    if (!content || content.width === 0 || content.height === 0) {
+      requestAnimationFrame(place);
+      return;
+    }
+
+    const boxW = content.width + 2 * padding;
+    const boxH = content.height + 2 * padding;
+
+    bgRect
+      .attr("x", content.x - padding)
+      .attr("y", content.y - padding)
+      .attr("width", boxW)
+      .attr("height", boxH);
+
+    // 3) Anchor to SVG viewBox top-right
+    const vb = svg.viewBox?.baseVal;
+    const vbx = vb?.x ?? 0;
+    const vby = vb?.y ?? 0;
+    const vbw = vb?.width
+      ?? (+svg.getAttribute("width") || svg.getBBox().width || svg.getBoundingClientRect().width);
+
+    const tx = Math.round(vbx + vbw - boxW - corner);
+    const ty = Math.round(vby + corner);
+
+    g.attr("transform", `translate(${tx}, ${ty})`);
+  }
+
+  requestAnimationFrame(place);
+};
+
+```
+
+```{ojs}
+mutable biasRngSeed = 1
+mutable varianceHistory = []
+mutable biasResampleClicks = 0
+mutable biasResetClicks = 0
+mutable biasLastSamplesPerClick = 1
+```
+
+```{ojs}
+// Edge-trigger the Reset
+{
+  if (biasReset > biasResetClicks) {
+    mutable varianceHistory = [];
+    mutable biasResetClicks = biasReset;
+  }
+  return html``;
+}
+
+// Reset biasResampleClicks when samplesPerClick changes
+{
+  if (biasControls.biasSamplesPerClick !== biasLastSamplesPerClick) {
+    mutable biasLastSamplesPerClick = biasControls.biasSamplesPerClick;
+    mutable biasResampleClicks = 0;
+  }
+  return html``;
+}
+
+// Edge-trigger the Resample: add current variance to history then generate new sample
+{
+  if (biasResample > biasResampleClicks) {
+    // Add the current variance to history first
+    mutable varianceHistory = [...varianceHistory, sampleVar];
+    
+    // If doing multiple samples, add the additional ones
+    if (biasControls.biasSamplesPerClick > 1) {
+      const additionalVariances = [];
+      for (let i = 1; i < biasControls.biasSamplesPerClick; i++) {
+        const rand = d3.randomNormal.source(d3.randomLcg(biasRngSeed + i))(biasControls.biasTrueMu, biasControls.biasTrueSigma);
+        const sample = d3.range(biasControls.biasN).map(rand);
+        const mean = d3.mean(sample);
+        // Biased variance estimator (1/n)
+        const variance = d3.sum(sample, d => (d - mean) ** 2) / biasControls.biasN;
+        additionalVariances.push(variance);
+      }
+      mutable varianceHistory = [...varianceHistory, ...additionalVariances];
+    }
+    
+    // Update seed for next sample (which will be displayed)
+    mutable biasRngSeed = biasRngSeed + biasControls.biasSamplesPerClick;
+    mutable biasResampleClicks = biasResample;
+  }
+  return html``;
+}
+```
+
+
+```{ojs}
+// Helper to make a styled button (reuse from above but with bias prefix)
+function biasStyledButton(label, cls, options = {}) {
+  const el = Inputs.button(label, options);
+  const btn = el.querySelector('button');
+  if (btn) btn.classList.add(cls);
+  return el;
+}
+
+// Define themed buttons with updated label for multi-sample
+viewof biasResample = biasStyledButton(
+  biasControls.biasSamplesPerClick > 1 
+    ? `Resample (×${biasControls.biasSamplesPerClick})` 
+    : "Resample", 
+  "btn-resample", 
+  { reduce: c => (c ?? 0) + 1 }
+);
+
+viewof biasReset = biasStyledButton("Reset", "btn-reset", {
+  reduce: c => (c ?? 0) + 1
+});
+
+// --- Current sample (always visible) ---
+biasX = {
+  const rand = d3.randomNormal.source(d3.randomLcg(biasRngSeed))(biasControls.biasTrueMu, biasControls.biasTrueSigma);
+  return d3.range(biasControls.biasN).map(rand);
+}
+biasXbar = d3.mean(biasX)
+// Biased variance estimator (1/n instead of 1/(n-1))
+sampleVar = d3.sum(biasX, d => (d - biasXbar) ** 2) / biasControls.biasN
+// Unbiased variance for comparison
+unbiasedVar = biasControls.biasN > 1 ? d3.sum(biasX, d => (d - biasXbar) ** 2) / (biasControls.biasN - 1) : 0
+
+// ========= Left panel: current sample ========= 
+biasLeftBins = d3.bin().domain(biasXDomain).thresholds(biasControls.biasBins)(biasX)
+biasLeftDensities = biasLeftBins.map(b => b.length / biasControls.biasN / Math.max(1e-9, b.x1 - b.x0))
+biasLeftYMax = Math.max(0.1, d3.max(biasLeftDensities) || 0.1);
+
+// ========= Shared computation =========
+biasXPad = 3 * biasControls.biasTrueSigma
+biasXDomain = [biasControls.biasTrueMu - biasXPad, biasControls.biasTrueMu + biasXPad]
+
+biasLeftPlot = Plot.plot({
+  width: Math.min(600, Math.max(320, width/2 - 20)),
+  height: 320,
+  marginTop: 20,
+  marginRight: 20,
+  marginBottom: 40,
+  marginLeft: 50,
+  style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)",
+    fontFamily: bodyFont,
+    fontSize: 14,
+  },
+  x: { label: "Data", domain: biasXDomain },
+  y: { label: "Density", domain: [0, biasLeftYMax * 1.1] },
+  marks: [
+    // histogram
+    Plot.rectY(biasLeftBins, {
+      x1: d => d.x0,
+      x2: d => d.x1,
+      y: d => d.length / biasControls.biasN / Math.max(1e-9, d.x1 - d.x0),
+      fill: "var(--plot-series-1)",
+      fillOpacity: 0.4
+    }),
+    Plot.ruleY([0]),
+    // ticks at data points
+    Plot.ruleX(biasX, {
+      y1: 0,
+      y2: biasLeftYMax * 0.05,
+      stroke: "var(--plot-series-1)",
+      strokeWidth: 2,
+      strokeOpacity: 0.8
+    }),
+  ]
+});
+
+// ========= Right panel: saved sample variances =========
+variances = varianceHistory
+trueVariance = biasControls.biasTrueSigma ** 2
+
+// Calculate empirical bias
+empiricalMean = variances.length > 0 ? d3.mean(variances) : null
+empiricalBias = empiricalMean !== null ? empiricalMean - trueVariance : null
+
+// Domain for right panel
+varPad = trueVariance * 2
+varDomain = variances.length > 0 
+  ? [
+      Math.min(d3.min(variances), 0),
+      Math.max(d3.max(variances), trueVariance + varPad, sampleVar + 0.1)
+    ]
+  : [0, trueVariance + varPad]
+
+// Compute histogram for variances if we have any
+biasRightBins = variances.length > 0 
+  ? d3.bin().domain(varDomain).thresholds(biasControls.biasBins)(variances)
+  : [];
+biasRightDensities = biasRightBins.map(b => 
+  b.length / variances.length / Math.max(1e-9, b.x1 - b.x0)
+);
+biasRightYMax = Math.max(
+  d3.max(biasRightDensities) || 0.1,
+  0.1
+);
+
+// ------- usage inside your cell that creates the plot -------
+biasRightPlot = {
+  // Ensure d3 exists in this runtime
+  const d3 = globalThis.d3 ?? await require("d3@7");
+
+  const svg = Plot.plot({
+    width: Math.min(600, Math.max(320, width / 2 - 20)),
+    height: 320,
+    style: {
+      background: "var(--plot-bg)",
+      color: "var(--plot-fg)",
+      fontFamily: bodyFont,
+      fontSize: 14
+    },
+    x: { label: "sₙ²", domain: varDomain },
+    y: { label: "Density", domain: [0, biasRightYMax * 1.1] },
+    marks: [
+      variances.length > 0 ? Plot.rectY(
+        biasRightBins,
+        {
+          x1: d => d.x0,
+          x2: d => d.x1,
+          y: d => d.length / variances.length / (d.x1 - d.x0),
+          fill: "var(--plot-series-4)",
+          fillOpacity: 0.3
+        }
+      ) : null,
+      variances.length > 0 ? Plot.ruleX(variances, {
+        y1: 0,
+        y2: biasRightYMax * 0.05,
+        stroke: "var(--plot-series-4)",
+        strokeWidth: 2,
+        strokeOpacity: 0.8
+      }) : null,
+      Plot.ruleX([sampleVar], {
+        y1: 0,
+        y2: biasRightYMax * 0.07,
+        stroke: "currentColor",
+        strokeWidth: 3,
+        strokeOpacity: 1
+      }),
+      Plot.ruleX([trueVariance], {
+        stroke: "var(--plot-series-3)",
+        strokeWidth: 3,
+        strokeOpacity: biasControls.biasShowTrue ? 1 : 0
+      }),
+      empiricalMean !== null && biasControls.biasShowTrue ? Plot.ruleX([empiricalMean], {
+        stroke: "var(--plot-series-4)",
+        strokeWidth: 2,
+        strokeDasharray: "6,3",
+        strokeOpacity: 1
+      }) : null,
+      Plot.ruleY([0])
+    ].filter(Boolean)
+  });
+
+  // Legend items
+  const items = [];
+  if (biasControls.biasShowTrue) {
+    items.push({ label: `σ² = ${trueVariance.toFixed(2)}`, stroke: "var(--plot-series-3)", strokeWidth: 3 });
+  }
+  if (empiricalMean !== null && biasControls.biasShowTrue) {
+    items.push({ label: `E[Sₙ²] ≈ ${empiricalMean.toFixed(3)}`, stroke: "var(--plot-series-4)", strokeWidth: 2, dasharray: "6,3" });
+  }
+
+  if (items.length) addLegendTopRight(svg, items, { fontFamily: bodyFont, fontSize: 12, corner: 10 });
+
+  return svg;
+}
+
+
+// ========= Display =========
+{
+  for (const f of [viewof biasResample, viewof biasReset]) {
+    f.style.margin = "0";
+    f.style.width = "100%";
+    f.style.maxWidth = "none";
+    f.style.display = "flex";
+  }
+  viewof biasResample.style.justifyContent = "flex-start";
+  viewof biasReset.style.justifyContent = "flex-end";
+
+  return html`<div class="ojs-toolbar-grid">
+    <div class="left">${viewof biasResample}</div>
+    <div class="center">
+      ${empiricalBias !== null && biasControls.biasShowTrue ? html`
+      <div>${tex`s_n^2 = ${sampleVar.toFixed(3)} \,`}  and  ${tex`\, \text{Bias}(S_n^2) \approx ${empiricalBias.toFixed(3)}`}</div>
+      ` : html`<div>${tex`s^2 = ${sampleVar.toFixed(3)}`}</div>`}
+      <div style="font-size:0.8em; opacity:0.7">
+        ${variances.length} sample${variances.length !== 1 ? 's' : ''} collected
+      </div>
+    </div>
+    <div class="right">${viewof biasReset}</div>
+  </div>
+
+  <style>
+    .ojs-toolbar-grid{
+      display:grid;
+      grid-template-columns:1fr auto 1fr;
+      align-items:center;
+      width:100%;
+      box-sizing:border-box;
+      margin:0; padding:0;
+    }
+    .ojs-toolbar-grid form{
+      margin:0 !important;
+      width:100% !important;
+      max-width:none !important;
+      display:flex !important;
+    }
+    .ojs-toolbar-grid .left form{ justify-content:flex-start !important; }
+    .ojs-toolbar-grid .right form{ justify-content:flex-end !important; }
+
+    .btn.btn-resample{ background: var(--brand-teal); color:#fff; border:none; }
+    .btn.btn-resample:hover{ background: var(--brand-teal-hover); }
+    .btn.btn-reset{ background: var(--brand-red); color:#fff; border:none; }
+    .btn.btn-reset:hover{ background: var(--brand-red-hover); }
+    .btn.btn-resample:focus-visible,
+    .btn.btn-reset:focus-visible{
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+
+    .ojs-toolbar-grid .center{
+      text-align:center;
+      font-size:0.9rem;
+      color: var(--brand-fg);
+    }
+  </style>`;
+}
+
+html`<div style="max-width:100%; display:flex; gap:14px; align-items:flex-start; flex-wrap:nowrap;">
+  <div>${biasLeftPlot}</div>
+  <div>${biasRightPlot}</div>
+</div>`
+```
+
+```{ojs}
+viewof biasControls = {
+  const leftForm = Inputs.form({
+    biasN: Inputs.range([2, 100], { value: 5, step: 1, label: md`${tex`n`}` }),
+    biasTrueMu: Inputs.range([-2, 2], { value: 0, step: 0.1, label: md`${tex`\mu_{\text{true}}`}` }),
+    biasTrueSigma: Inputs.range([0.3, 3], { value: 1, step: 0.1, label: md`${tex`\sigma_{\text{true}}`}` })
+  }, { submit: false });
+
+  const rightForm = Inputs.form({
+    biasSamplesPerClick: Inputs.range([1, 10], { 
+      value: 1, 
+      step: 1, 
+      label: "Samples per click" 
+    }),
+    biasBins: Inputs.range([10, 60], { value: 24, step: 1, label: "Histogram bins" }),
+    biasShowTrue: Inputs.toggle({ label: md`Show empirical bias & true ${tex`\sigma^2`}`, value: true })
+  }, { submit: false });
+  
+  const root = html`<div class="controls-wrap">
+    <details class="controls-root" open>
+      <summary>Simulation controls</summary>
+      <div class="controls-grid">
+        <div class="controls-col"><h4>Data & truth size</h4></div>
+        <div class="controls-col"><h4>Display & actions</h4></div>
+      </div>
+    </details>
+  </div>`;
+
+  root.querySelector(".controls-grid").children[0].append(leftForm);
+  root.querySelector(".controls-grid").children[1].append(rightForm);
+
+  const getValue = () => ({ ...leftForm.value, ...rightForm.value });
+  const update = () => {
+    root.value = getValue();
+    root.dispatchEvent(new CustomEvent("input", { bubbles: true }));
+  };
+
+  leftForm.addEventListener("input", update);
+  rightForm.addEventListener("input", update);
+
+  queueMicrotask(update);
+  return root;
+}
+```

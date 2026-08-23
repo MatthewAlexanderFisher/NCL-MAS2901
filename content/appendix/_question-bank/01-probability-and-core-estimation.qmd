@@ -1,0 +1,1181 @@
+::: {.callout-important .question appearance="minimal" data-tags="probability expectation covariance correlation" data-difficulty="1"}
+## Linear combinations of independent random variables
+Suppose that $X_1$ and $X_2$ are **independent** random variables with  
+$$
+\mathrm{E}[X_1] = 4, \mathrm{Var}(X_1) = 5, \mathrm{E}[X_2] = 3, \mathrm{Var}(X_2) = 1.
+$$
+Let
+$$
+Y_1 = 2X_1 + X_2, \qquad Y_2 = X_1 - 2X_2.
+$$
+
+Find:  
+
+(a) $\mathrm{E}[Y_1], \ \mathrm{Var}(Y_1)$  
+(b) $\mathrm{E}[Y_2], \ \mathrm{Var}(Y_2)$  
+(c) $\mathrm{Cov}(Y_1,Y_2)$ and the correlation between $Y_1$ and $Y_2$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**a.**  
+$$
+\mathrm{E}[Y_1] = 2\mathrm{E}[X_1] + \mathrm{E}[X_2] = 2 \times 4 + 3 = 11.
+$$
+$$
+\mathrm{Var}(Y_1) = 4\mathrm{Var}(X_1) + \mathrm{Var}(X_2) 
+= 4 \times 5 + 1 = 21.
+$$
+
+---
+
+**b.**  
+$$
+\mathrm{E}[Y_2] = \mathrm{E}[X_1] - 2\mathrm{E}[X_2] = 4 - 6 = -2.
+$$
+$$
+\mathrm{Var}(Y_2) = \mathrm{Var}(X_1) + 4\mathrm{Var}(X_2) 
+= 5 + 4 \times 1 = 9.
+$$
+
+---
+
+**c.**  
+
+\begin{align*}
+\mathrm{Cov}(Y_1,Y_2) 
+&= \mathrm{Cov}(2X_1+X_2, \, X_1-2X_2) \\
+&= 2\mathrm{Var}(X_1) - 2\mathrm{Var}(X_2) + (-4+1)\mathrm{Cov}(X_1,X_2).
+\end{align*}
+
+Since $X_1$ and $X_2$ are independent, $\mathrm{Cov}(X_1,X_2)=0$. So
+$$
+\mathrm{Cov}(Y_1,Y_2) = 2 \times 5 - 2 \times 1 = 8.
+$$
+
+Finally, the correlation is
+$$
+\mathrm{Corr}(Y_1,Y_2) 
+= \frac{\mathrm{Cov}(Y_1,Y_2)}{\sqrt{\mathrm{Var}(Y_1)\mathrm{Var}(Y_2)}} 
+= \frac{8}{\sqrt{21 \times 9}} \approx 0.582.
+$$
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="probability expectation covariance correlation" data-difficulty="2"}
+## Linear combinations of dependent random variables
+Suppose that $X_1$ and $X_2$ are **dependent** random variables with  
+$$
+\mathrm{E}[X_1] = 4, \mathrm{Var}(X_1) = 5, \mathrm{E}[X_2] = 3, \mathrm{Var}(X_2) = 1
+$$
+and
+$$
+\mathrm{Cov}(X_1, X_2) = 2.
+$$
+Let
+$$
+Y_1 = 2X_1 + X_2, \qquad Y_2 = X_1 - 2X_2.
+$$
+Find:  
+
+(a) $\mathrm{E}[Y_1], \ \mathrm{Var}(Y_1)$  
+(b) $\mathrm{E}[Y_2], \ \mathrm{Var}(Y_2)$  
+(c) $\mathrm{Cov}(Y_1,Y_2)$ and the correlation between $Y_1$ and $Y_2$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**a.**  
+$$
+\mathrm{E}[Y_1] = 2\mathrm{E}[X_1] + \mathrm{E}[X_2] = 11.
+$$
+
+\begin{align*}
+\mathrm{Var}(Y_1) &= \mathrm{Var}(2X_1) + \mathrm{Var}(X_2) + 2\mathrm{Cov}(2X_1,X_2) \\
+&= 4\mathrm{Var}(X_1) + \mathrm{Var}(X_2) + 4\mathrm{Cov}(X_1,X_2) \\
+&= 4\times 5 + 1 + 4\times 2 = 29.
+\end{align*}
+
+---
+
+**b.**  
+$$
+\mathrm{E}[Y_2] = \mathrm{E}[X_1] - 2\mathrm{E}[X_2] = -2.
+$$
+
+\begin{align*}
+\mathrm{Var}(Y_2) &= \mathrm{Var}(X_1) + \mathrm{Var}(2X_2) - 2\mathrm{Cov}(X_1,2X_2) \\
+&= \mathrm{Var}(X_1) + 4\mathrm{Var}(X_2) - 4\mathrm{Cov}(X_1,X_2) \\
+&= 5 + 4 - 8 = 1.
+\end{align*}
+
+---
+
+**c.**  
+
+\begin{align*}
+\mathrm{Cov}(Y_1,Y_2) 
+&= \mathrm{Cov}(2X_1+X_2, \, X_1-2X_2) \\
+&= 2\mathrm{Var}(X_1) - 2\mathrm{Var}(X_2) + (-4+1)\mathrm{Cov}(X_1,X_2) \\
+&= 10 - 2 - 6 = 2.
+\end{align*}
+
+
+So the correlation is
+$$
+\mathrm{Corr}(Y_1,Y_2) = \frac{\mathrm{Cov}(Y_1,Y_2)}{\sqrt{\mathrm{Var}(Y_1)\mathrm{Var}(Y_2)}}
+= \frac{2}{\sqrt{29 \times 1}} \approx 0.371.
+$$
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="probability expectation" data-difficulty="2"}
+## Minimiser of $\mathrm{E}[(X-c)^2]$
+Suppose that $X$ is a continuous random variable. Show that $\mathrm{E}[(X-c)^2]$ is minimised when $c$ is the population **mean**. State any assumptions.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+As $X$ is continuous,
+$$
+\mathrm{E}[(X-c)^2] = \int_{-\infty}^\infty (x-c)^2 f(x)\,dx.
+$$
+
+We assume we can interchange differentiation with respect to $c$ and integration with respect to $x$. Then
+$$
+\frac{\partial}{\partial c}\,\mathrm{E}[(X-c)^2]
+= \mathrm{E}\!\left[\frac{\partial}{\partial c}(X-c)^2\right]
+= \int_{-\infty}^\infty \frac{\partial}{\partial c}(x-c)^2 f(x)\,dx.
+$$
+
+Differentiating:
+$$
+\frac{\partial}{\partial c}\,\mathrm{E}[(X-c)^2]
+= -2\int_{-\infty}^\infty (x-c) f(x)\,dx
+= -2\{\mathrm{E}[X] - c\}.
+$$
+
+This derivative is zero when $c = \mathrm{E}[X]$.  
+
+The second derivative is positive, so this is indeed a minimum.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="probability expectation" data-difficulty="3"}
+## Minimiser of $\mathrm{E}[|X-c|]$
+Suppose that $X$ is a continuous random variable. Show that $\mathrm{E}[|X-c|]$ is minimised when $c$ is the population **median**. State any assumptions.  
+
+*Hint:* The derivative of $|X-c|$ with respect to $c$ is $-1$ when $x>c$ and $+1$ when $x<c$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+We assume the technical conditions allowing us to interchange differentiation with respect to $c$ and integration with respect to $x$.  
+
+Using the hint:
+$$
+\frac{\partial}{\partial c}\,\mathrm{E}[|X-c|] 
+= \mathrm{E}\!\left[\frac{\partial}{\partial c}|X-c|\right] 
+= \mathrm{E}[I(X \leq c) - I(X > c)],
+$$
+where $I(\cdot)$ is the indicator function.
+
+So,
+$$
+\frac{\partial}{\partial c}\,\mathrm{E}[|X-c|]
+= \mathrm{Pr}(X \leq c) - \mathrm{Pr}(X > c).
+$$
+
+Since $\mathrm{Pr}(X > c) = 1 - \mathrm{Pr}(X \leq c)$, this simplifies to
+$$
+\frac{\partial}{\partial c}\,\mathrm{E}[|X-c|] 
+= 2\mathrm{Pr}(X \leq c) - 1.
+$$
+
+This derivative is zero when $\mathrm{Pr}(X \leq c) = \tfrac{1}{2}$, i.e. when $c$ is the **median** of the distribution of $X$.
+
+*(Aside: this argument ignores the non-differentiability of $|X-c|$ at $x=c$ — a more careful treatment requires subgradients.)*
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="binomial probability coding" data-difficulty="0"}
+## Binomial Probabilities
+
+Suppose $X \sim \mathrm{Bin}(n,p)$.
+
+a. When $n=6$ and $p=0.3$, find, either by hand or using R or Python, each of:  
+
+    i. $\mathrm{Pr}(X < 2)$  
+    ii. $\mathrm{Pr}(1 < X \leq 2)$  
+    iii. $\mathrm{Pr}(X > 1)$  
+
+b. When $n=10$ and $p=0.75$, find the probability that $X$ is within one of its population mean.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**a.**  
+As $X$ is binomial, it can only take the values $0,1,2,\ldots,6$.
+
+**i.**
+$$
+\mathrm{Pr}(X<2) = \mathrm{Pr}(X=0) + \mathrm{Pr}(X=1).
+$$
+
+$$
+\mathrm{Pr}(X=0) = \binom{6}{0} (0.3)^0 (0.7)^6 = 0.7^6.
+$$
+
+$$
+\mathrm{Pr}(X=1) = \binom{6}{1} (0.3)^1 (0.7)^5 = 6 \times 0.3 \times 0.7^5.
+$$
+
+So,
+$$
+\mathrm{Pr}(X<2) = 0.7^6 + 6 \times 0.3 \times 0.7^5 \approx 0.4202.
+$$
+
+**ii.**  
+$$
+\mathrm{Pr}(1 < X \leq 2) = \mathrm{Pr}(X=2) 
+= \binom{6}{2} (0.3)^2 (0.7)^4
+= 15 \times 0.09 \times 0.2401
+\approx 0.3241.
+$$
+
+**iii.**  
+$$
+\mathrm{Pr}(X > 1) = 1 - \mathrm{Pr}(X \leq 1) = 1 - \mathrm{Pr}(X<2).
+$$
+
+So,
+$$
+\mathrm{Pr}(X>1) = 1 - 0.4202 = 0.5798.
+$$
+
+---
+
+**b.**  
+For $X \sim \mathrm{Bin}(10,0.75)$:
+
+- The mean is $\mathrm{E}[X] = np = 10 \times 0.75 = 7.5$.
+- “Within one of the mean” means $6.5 \leq X \leq 8.5$.  
+Since $X$ is integer-valued, this corresponds to $X \in \{7,8\}$.
+
+$$
+\mathrm{Pr}(6.5 \leq X \leq 8.5) = \mathrm{Pr}(X=7) + \mathrm{Pr}(X=8).
+$$
+
+$$
+\mathrm{Pr}(X=7) = \binom{10}{7}(0.75)^7(0.25)^3,
+$$
+
+$$
+\mathrm{Pr}(X=8) = \binom{10}{8}(0.75)^8(0.25)^2.
+$$
+
+Numerically,
+$$
+\mathrm{Pr}(X=7) \approx 0.2503, \quad \mathrm{Pr}(X=8) \approx 0.2816.
+$$
+
+So,
+$$
+\mathrm{Pr}(6.5 \leq X \leq 8.5) \approx 0.2503 + 0.2816 = 0.5319.
+$$
+
+---
+
+**In R or Python:**
+
+::: {.panel-tabset}
+
+### Python
+
+```{python}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show code"
+
+from math import comb
+from scipy.stats import binom
+
+# Part (a): n=6, p=0.3
+n, p = 6, 0.3
+
+pr_less_2 = binom.cdf(1, n, p)             # P(X < 2)
+pr_eq_2   = binom.pmf(2, n, p)             # P(X = 2)
+pr_greater_1 = 1 - pr_less_2               # P(X > 1)
+
+# Part (b): n=10, p=0.75
+n, p = 10, 0.75
+
+pr_within_mean = binom.pmf(7, n, p) + binom.pmf(8, n, p)
+
+print(
+    f"Pr(X < 2) = {pr_less_2:.4f}\n"
+    f"Pr(1 < X <= 2) = {pr_eq_2:.4f}\n"
+    f"Pr(X > 1) = {pr_greater_1:.4f}\n"
+    f"Pr(X within 1 of mean) = {pr_within_mean:.4f}"
+)
+```
+
+### R
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show code"
+
+# Part (a): n=6, p=0.3
+n <- 6; p <- 0.3
+
+pr_less_2 <- pbinom(1, n, p)     # P(X < 2)
+pr_eq_2   <- dbinom(2, n, p)     # P(X = 2)
+pr_greater_1 <- 1 - pr_less_2    # P(X > 1)
+
+# Part (b): n=10, p=0.75
+n <- 10; p <- 0.75
+
+pr_within_mean <- dbinom(7, n, p) + dbinom(8, n, p)
+
+cat(
+  "Pr(X < 2) =", round(pr_less_2,4), "\n",
+  "Pr(1 < X <= 2) =", round(pr_eq_2,4), "\n",
+  "Pr(X > 1) =", round(pr_greater_1,4), "\n",
+  "Pr(X within 1 of mean) =", round(pr_within_mean,4), "\n"
+)
+```
+
+:::
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="normal expectation variance probability" data-difficulty="0"}
+## Mean and Standard Deviation of Linear Combinations
+
+Suppose $X \sim \mathcal{N}(3,2)$ and, independently, $Y \sim \mathcal{N}(-2,7)$.  
+Find the population mean and standard deviation of:
+
+(a) $3X + 2$  
+(b) $5 - Y$  
+(c) $3X + 7 - Y$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**a.**
+
+$$
+\mathrm{E}[3X+2] = 3\mathrm{E}[X] + 2 = 3 \times 3 + 2 = 11.
+$$
+
+$$
+\mathrm{Var}(3X+2) = 3^2 \mathrm{Var}(X) = 9 \times 2 = 18.
+$$
+
+So the standard deviation is
+$$
+\sqrt{18} \approx 4.2426.
+$$
+
+---
+
+**b.**
+
+$$
+\mathrm{E}[5-Y] = 5 - \mathrm{E}[Y] = 5 - (-2) = 7.
+$$
+
+$$
+\mathrm{Var}(5-Y) = (-1)^2 \mathrm{Var}(Y) = 1 \times 7 = 7.
+$$
+
+So the standard deviation is
+$$
+\sqrt{7} \approx 2.6458.
+$$
+
+---
+
+**(c)**
+
+$$
+\mathrm{E}[3X+7-Y] = 3\mathrm{E}[X] + 7 - \mathrm{E}[Y] = 3 \times 3 + 7 - (-2) = 18.
+$$
+
+Since $X$ and $Y$ are independent,
+$$
+\mathrm{Var}(3X+7-Y) = 3^2\mathrm{Var}(X) + (-1)^2 \mathrm{Var}(Y)
+= 9 \times 2 + 1 \times 7 = 25.
+$$
+
+So the standard deviation is
+$$
+\sqrt{25} = 5.
+$$
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="poisson expectation variance" data-difficulty="1"}
+## Expectation with a Poisson Distribution
+
+The number of breakdowns per week in a computer cluster is a random variable $Y$ having a **Poisson distribution** with population mean $\mu$.  
+The weekly cost of repairing breakdowns is
+
+$$
+C = 3Y + Y^2.
+$$
+
+Find $\mathrm{E}[C]$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+We have
+$$
+\mathrm{E}[C] = \mathrm{E}[3Y + Y^2] = 3\mathrm{E}[Y] + \mathrm{E}[Y^2].
+$$
+
+Since $Y \sim \mathrm{Poisson}(\mu)$:
+
+- $\mathrm{E}[Y] = \mu$  
+- $\mathrm{Var}(Y) = \mu$  
+- Recall that $\mathrm{Var}(Y) = \mathrm{E}[Y^2] - (\mathrm{E}[Y])^2$, so
+  $$
+  \mathrm{E}[Y^2] = \mu + \mu^2.
+  $$
+
+Therefore,
+$$
+\mathrm{E}[C] = 3\mu + (\mu + \mu^2) = 4\mu + \mu^2.
+$$
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="normal probability chi-squared" data-difficulty="2"}
+## Distribution of a Squared Normal Variable
+
+Suppose $Z \sim \mathcal{N}(0,1)$. 
+
+Find the PDF of $Y = Z^2$.  
+
+*Hint:* start by finding a formula for the CDF $F_Y(y) = \mathrm{Pr}(Y \leq y)$ for any $y > 0$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+For $y > 0$:
+$$
+F_Y(y) = \mathrm{Pr}(Y \leq y) = \mathrm{Pr}(Z^2 \leq y).
+$$
+
+This is equivalent to
+$$
+F_Y(y) = \mathrm{Pr}(-\sqrt{y} \leq Z \leq \sqrt{y}) 
+= \mathrm{Pr}(Z \leq \sqrt{y}) - \mathrm{Pr}(Z \leq -\sqrt{y}).
+$$
+
+Using the standard normal CDF $\Phi$,
+$$
+F_Y(y) = \Phi(\sqrt{y}) - \Phi(-\sqrt{y}).
+$$
+
+**Differentiate to find the PDF:**
+
+$$
+f_Y(y) = \frac{\partial}{\partial y} \Big[ \Phi(\sqrt{y}) - \Phi(-\sqrt{y}) \Big].
+$$
+
+By the chain rule:
+$$
+f_Y(y) = \phi(\sqrt{y}) \cdot \frac{1}{2\sqrt{y}} + \phi(-\sqrt{y}) \cdot \frac{1}{2\sqrt{y}}.
+$$
+
+Since $\phi$ (the standard normal PDF) is symmetric,
+$$
+f_Y(y) = \frac{1}{\sqrt{y}} \, \phi(\sqrt{y}).
+$$
+
+Substitute $\phi(z) = \tfrac{1}{\sqrt{2\pi}} e^{-z^2/2}$:
+$$
+f_Y(y) = \frac{1}{\sqrt{2\pi y}} e^{-y/2}, \quad y > 0.
+$$
+
+For $y \leq 0$, $f_Y(y)=0$.
+
+---
+
+**Aside.**  
+This is exactly the PDF of a $\chi^2_1$ distribution.
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="gamma coding distribution probability" data-difficulty="2"}
+## Customer Waiting Times
+
+Customer waiting times at a call centre can be assumed to be <span class="xref-no-num">[Gamma @sec-gamma]</span> random variables with mean $3$ minutes and standard deviation $2$ minutes.  
+
+What proportion of customers are expected to wait more than $5$ minutes?  
+
+*Hint:* you will need R or Python for this.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+Let the waiting time be $X \sim \mathrm{Gamma}(\alpha, \lambda)$, with shape $\alpha$ and rate $\lambda$.  
+
+From the formulas:  
+$$
+\mathrm{E}[X] = \frac{\alpha}{\lambda}, 
+\qquad \mathrm{Var}(X) = \frac{\alpha}{\lambda^2}.
+$$
+
+We are told:
+$$
+\mathrm{E}[X] = 3, \qquad \mathrm{SD}[X] = 2 \ \Rightarrow \ \mathrm{Var}(X) = 4.
+$$
+
+So:
+$$
+\frac{\alpha}{\lambda} = 3, \qquad \frac{\alpha}{\lambda^2} = 4.
+$$
+
+Divide the second equation by the first:
+$$
+\frac{\alpha/\lambda^2}{\alpha/\lambda} = \frac{4}{3} \quad \Rightarrow \quad \frac{1}{\lambda} = \frac{4}{3}.
+$$
+
+Hence:
+$$
+\lambda = 0.75, \quad \alpha = 3\lambda = 2.25.
+$$
+
+---
+
+We want:
+$$
+\mathrm{Pr}(X > 5) = 1 - F_X(5).
+$$
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="binomial confidence-interval" data-difficulty="3"}
+## Exact Binomial Confidence Interval (Clopper–Pearson)
+
+Suppose we have a single <span class="xref-no-num">[Binomial @sec-binom]</span> observation
+
+$$
+X \mid p \sim \mathrm{Binomial}(n,p).
+$$
+
+Following the <span class="xref-no-num">[general strategy @sec-general-ci-strategy]</span>, construct an *exact* two-sided $(1-\alpha)$ confidence interval for $p$.
+
+**Note on exact (discrete) coverage.** In the discrete case, an “exact” interval $[L(X), U(X)]$ means, for every $0\leq p \leq 1$,
+
+$$
+\operatorname{Pr}\!\big(L(X) \leq p \leq U(X)\big) \ge 1-\alpha, \quad\text{where }X \sim \text{Binomial}(n,p).
+$$
+
+Because of discreteness, equality for all $p$ is impossible; the interval is conservative.
+
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**1. Choose a statistic.** Take $T=X$. Its sampling distribution is
+
+$$
+X \mid p \sim \mathrm{Binomial}(n,p),\qquad f(x\mid p)=\binom{n}{x}p^x(1-p)^{n-x}.
+$$
+
+**2–3. Form a pivot via tail probabilities and fix central mass.**
+Denote $F_p(y) = \mathrm{Pr}(Y \leq y)$ where $Y\sim \mathrm{Binomial}(n,p)$ and denote $\mathrm{Pr}_{p}(X\le x) = F_p(x)$. For a given observed $x$, define endpoints by equating the two tails to $\alpha/2$:
+
+$$
+\mathrm{Pr}_{p_L}(X\le x-1)=\frac{\alpha}{2},\qquad
+\mathrm{Pr}_{p_U}(X\ge x+1)=\frac{\alpha}{2}.
+$$
+
+(Edge cases: if $x=0$ set $p_L=0$; if $x=n$ set $p_U=1$.)
+
+**4. Invert (Clopper–Pearson).**
+These tail equalities are exactly equivalent to **Beta quantiles**, giving closed-form endpoints:
+
+$$
+\boxed{\;
+p_L = B^{-1}\!\left(\tfrac{\alpha}{2};\, x,\; n-x+1\right),\qquad
+p_U = B^{-1}\!\left(1-\tfrac{\alpha}{2};\, x+1,\; n-x\right)\; }
+$$
+
+where $B^{-1}(q;a,b)$ is the $q$-quantile of $\mathrm{Beta}(a,b)$. With the edge-case conventions above:
+
+$$
+p_L=
+\begin{cases}
+0, & x=0,\\
+B^{-1}\!\left(\tfrac{\alpha}{2};\, x,\; n-x+1\right), & x\ge 1,
+\end{cases}
+\quad
+p_U=
+\begin{cases}
+B^{-1}\!\left(1-\tfrac{\alpha}{2};\, x+1,\; n-x\right), & x\le n-1,\\
+1, & x=n.
+\end{cases}
+$$
+
+We obtain the **Clopper–Pearson interval** $[p_L,\,p_U]$, which is an exact (conservative) two-sided $(1-\alpha)$ CI for $p$.
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="probability uniform" data-difficulty="2"}
+## Probability Integral Transform
+
+Suppose $X$ is a continuous random variable with CDF $F(x)$.  
+Define the random variable
+$$
+U = F(X),
+$$
+that is, the CDF evaluated at a random argument.  
+
+Show that $U \sim U(0,1)$.  
+
+*Aside.* This result is fundamental in simulation: if we can generate uniform random variables $U \sim U(0,1)$, then we can simulate $X$ by setting $X = F^{-1}(U)$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+Because $F(\cdot)$ is continuous and strictly increasing, its inverse $F^{-1}(\cdot)$ exists and is also strictly increasing.
+
+Define the CDF of $U$ as
+$$
+G(u) = \operatorname{Pr}(U \leq u).
+$$
+
+Since $U = F(X)$ always lies in $[0,1]$, we have:
+$$
+G(u) = 0 \quad \text{for } u \leq 0, \qquad
+G(u) = 1 \quad \text{for } u \geq 1.
+$$
+
+Now consider $u \in (0,1)$:
+$$
+G(u) = \operatorname{Pr}(U \leq u) 
+= \operatorname{Pr}(F(X) \leq u).
+$$
+
+Because $F$ is increasing,
+$$
+\operatorname{Pr}(F(X) \leq u) = \operatorname{Pr}(X \leq F^{-1}(u)).
+$$
+
+By definition of the CDF $F$,
+$$
+\operatorname{Pr}(X \leq F^{-1}(u)) = F(F^{-1}(u)) = u.
+$$
+
+Thus the CDF of $U$ is
+$$
+G(u) =
+\begin{cases}
+0, & u \leq 0, \\
+u, & 0 < u \leq 1, \\
+1, & u > 1.
+\end{cases}
+$$
+
+This is exactly the CDF of the $\mathrm{Uniform}(0,1)$ distribution.  
+Therefore,
+$$
+U \sim U(0,1).
+$$
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="exponential expectation probability" data-difficulty="2"}
+## Moment Generating Function of the Exponential
+
+We have seen that properties of a random variable $X$ can be described by the CDF, PMF, or PDF.  
+Another way is through the **moment generating function (MGF)** $M(t)$, defined by
+$$
+M(t) = \mathrm{E}[e^{tX}],
+$$
+provided the expectation is finite (which is not always the case).  
+
+If the MGF exists, it is **unique**: two random variables have the same MGF if and only if they have the same distribution.  
+
+---
+
+Suppose $X \sim \mathrm{Exp}(\lambda)$, with PDF
+$$
+f(x) = \lambda e^{-\lambda x}, \quad x \geq 0.
+$$
+
+Show that the MGF of $X$ is
+$$
+M(t) = \frac{\lambda}{\lambda - t}, \qquad 0 \leq t < \lambda.
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+Choose $t$ with $0 \leq t < \lambda$ to ensure convergence. Then
+$$
+M(t) = \mathrm{E}[e^{tX}] 
+= \int_0^\infty e^{tx} \lambda e^{-\lambda x} \, dx.
+$$
+
+Combine exponents:
+$$
+M(t) = \int_0^\infty \lambda e^{-(\lambda - t)x} \, dx.
+$$
+
+Factor out $(\lambda - t)$:
+$$
+M(t) = \frac{\lambda}{\lambda - t} \int_0^\infty (\lambda - t) e^{-(\lambda - t)x} \, dx.
+$$
+
+But the integrand is the PDF of $\mathrm{Exp}(\lambda - t)$, so the integral equals 1.  
+
+Therefore:
+$$
+M(t) = \frac{\lambda}{\lambda - t}, \qquad 0 \leq t < \lambda.
+$$
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="poisson bias mse estimator statistics" data-difficulty="1" #q-poisson-estimator-1}
+## Estimating $\lambda$ from Independent Poisson Samples
+
+Suppose $X \sim \mathrm{Poisson}(\lambda)$ and, independently, $Y \sim \mathrm{Poisson}(2\lambda)$.
+
+
+a. Classify the following as *parameters*, *statistics*, or *neither*: 
+
+    i. $X + 2Y$  
+    ii. $\hat{\lambda} = (X+Y)/3$  
+    iii. $\lambda / \hat{\lambda}$
+    iv. $\operatorname{Pr}(\lambda > \hat{\lambda})$  
+
+b. Find the **bias** and **MSE** of each of the following estimators of $\lambda$. Which would you recommend? 
+
+    i. $X$  
+    ii. $Y-X$
+    iii. $(X+Y)/3$  
+
+c. Consider a general estimator $w_1 X + w_2 Y$. What values of $w_1$ and $w_2$ would you recommend?
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**a. Classification.**
+
+- A *statistic* is a function of data (random variables).  
+- A *parameter* depends only on the population.  
+- *Neither* means it involves both.
+
+(i) $X+2Y$: **Statistic**  
+(ii) $(X+Y)/3$: **Statistic**  
+(iii) $\lambda/\hat{\lambda}$: **Neither**  
+(iv) $\operatorname{Pr}(\lambda > \hat{\lambda})$: **Parameter** (depends on the distribution, not directly observable)
+
+---
+
+**b. Bias and MSE.**
+
+Recall: for Poisson$(\mu)$, $\mathrm{E}[X]=\mathrm{Var}(X)=\mu$.  
+
+- $X \sim \mathrm{Poisson}(\lambda)$, so $\mathrm{E}[X]=\lambda$, $\mathrm{Var}(X)=\lambda$.  
+- $Y \sim \mathrm{Poisson}(2\lambda)$, so $\mathrm{E}[Y]=2\lambda$, $\mathrm{Var}(Y)=2\lambda$.  
+- Independence: $\mathrm{Var}(aX+bY) = a^2\mathrm{Var}(X) + b^2\mathrm{Var}(Y)$.
+
+$$
+\text{Bias}(\hat{\theta}) = \mathrm{E}[\hat{\theta}] - \lambda, 
+\qquad \mathrm{MSE}(\hat{\theta}) = \mathrm{Var}(\hat{\theta}) + \text{Bias}(\hat{\theta})^2.
+$$
+
+(i) $X$:  
+  $\mathrm{E}[X] = \lambda \;\Rightarrow\; \text{Bias}=0$.  
+  $\mathrm{MSE} = \mathrm{Var}(X) = \lambda$.  
+
+(ii) $Y-X$:  
+  $\mathrm{E}[Y-X] = 2\lambda - \lambda = \lambda \;\Rightarrow\; \text{Bias}=0$.  
+  $\mathrm{Var}(Y-X) = \mathrm{Var}(Y)+\mathrm{Var}(X) = 2\lambda + \lambda = 3\lambda$.  
+  $\mathrm{MSE}=3\lambda$.  
+
+(iii) $(X+Y)/3$:  
+  $\mathrm{E}[(X+Y)/3] = (\lambda+2\lambda)/3 = \lambda \;\Rightarrow\; \text{Bias}=0$.  
+  $\mathrm{Var}[(X+Y)/3] = \tfrac{1}{9}(\lambda+2\lambda) = \tfrac{\lambda}{3}$.  
+  $\mathrm{MSE} = \tfrac{\lambda}{3}$.  
+
+**Recommendation:** $(X+Y)/3$ has the smallest MSE.
+
+---
+
+**c. General estimator $w_1X + w_2Y$.**
+
+*Expectation:*
+$$
+\mathrm{E}[w_1X+w_2Y] = (w_1 + 2w_2)\lambda.
+$$
+
+For unbiasedness, require $w_1+2w_2=1$, i.e. $w_1=1-2w_2$.  
+
+*Variance:*
+
+\begin{align*}
+\mathrm{Var}((1-2w_2)X + w_2Y) &= (1-2w_2)^2\lambda + 2w_2^2\lambda \\
+&= (6w_2^2 - 4w_2 + 1)\lambda.
+\end{align*}
+
+This quadratic in $w_2$ is minimised at $w_2=\tfrac{1}{3}$, giving $w_1=\tfrac{1}{3}$.  
+
+Thus the optimal unbiased estimator is:
+$$
+\hat{\lambda} = \tfrac{1}{3}(X+Y),
+$$
+matching part (b).
+
+</details>
+
+:::
+
+
+::: {.callout-important .question appearance="minimal" data-tags="bias mse estimator" data-difficulty="2"}
+## Bias, Variance, and MSE of Estimators
+
+A random variable $X$ has expected value $\mathrm{E}[X] = 2\theta + 6$ and variance $\mathrm{Var}(X) = 2\theta^2$.  
+A random variable $Y$ has expected value $\mathrm{E}[Y] = 3\theta - 12$ and variance $\mathrm{Var}(Y) = 6\theta^2 + 1$.  
+Assume $X$ and $Y$ are **independent**.  
+
+a. Compute the **bias**, **variance**, and **MSE** of the following estimators of $\theta$:  
+
+    (i) $\hat{\theta}_1 = 5X - 3Y - 65$  
+    (ii) $\hat{\theta}_2 = (X+Y)/5$  
+    (iii) $\hat{\theta}_3 = Y/6 + X/4 + 1/2$  
+
+b. Let $\hat{\theta} = aX + bY + c$ be an estimator of $\theta$. Derive a system of linear equations involving $a, b, c$ that ensures $\hat{\theta}$ is **unbiased** for any value of $\theta$.  
+
+c. Suppose $\hat{\theta} = aX + bY + c$ is an **unbiased** estimator of $\theta$. Find the values of $a, b, c$ that minimise the **mean squared error** of $\hat{\theta}$ when the true value of $\theta = 1$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**a. Bias, variance, and MSE.**
+
+$$
+\text{Bias}(\hat{\theta}) = \mathrm{E}[\hat{\theta}] - \theta,
+\qquad 
+\text{MSE}(\hat{\theta}) = \mathrm{Var}(\hat{\theta}) + \text{Bias}(\hat{\theta})^2.
+$$
+
+Using independence of $X$ and $Y$:
+
+$$
+\mathrm{Var}(aX+bY+c) = a^2\mathrm{Var}(X) + b^2\mathrm{Var}(Y).
+$$
+
+$$
+\begin{array}{c|c|c|c|c}
+\text{Estimator } \hat{\theta} & \mathrm{E}[\hat{\theta}] & \mathrm{Var}[\hat{\theta}] & \text{Bias} & \text{MSE} \\ \hline
+5X - 3Y - 65 & \theta+1 & 104\theta^2+9 & 1 & 104\theta^2+10 \\
+(X+Y)/5 & \theta-\tfrac{6}{5} & \tfrac{8\theta^2+1}{25} & -\tfrac{6}{5} & \tfrac{8\theta^2+37}{25} \\
+Y/6 + X/4 + 1/2 & \theta & \tfrac{7}{24}\theta^2 + \tfrac{1}{36} & 0 & \tfrac{7}{24}\theta^2 + \tfrac{1}{36} \\ 
+\end{array}
+$$
+
+---
+
+**b. Unbiasedness condition.**
+
+$$
+\mathrm{E}[\hat{\theta}] = a\,\mathrm{E}[X] + b\,\mathrm{E}[Y] + c 
+= a(2\theta+6) + b(3\theta-12) + c.
+$$
+
+For unbiasedness: $\mathrm{E}[\hat{\theta}] = \theta$ for all $\theta$.  
+
+So
+$$
+(2a+3b-1)\theta + (6a - 12b + c) = 0.
+$$
+
+This gives the system:
+$$
+2a+3b=1, \qquad 6a - 12b + c = 0.
+$$
+
+---
+
+**c. Minimising MSE when $\theta=1$.**
+
+For an unbiased estimator, MSE = variance:
+
+$$
+\mathrm{Var}[\hat{\theta}] = a^2 \mathrm{Var}(X) + b^2 \mathrm{Var}(Y) 
+= 2a^2 \theta^2 + b^2(6\theta^2+1).
+$$
+
+At $\theta=1$:
+$$
+\mathrm{Var}[\hat{\theta}] = 2a^2 + 7b^2.
+$$
+
+From part (b): $a = \tfrac{1-3b}{2}$, $c = 12b - 6a$.  
+
+Substitute $a=(1-3b)/2$:
+$$
+\mathrm{Var}[\hat{\theta}] = 2\Big(\tfrac{1-3b}{2}\Big)^2 + 7b^2 
+= \tfrac{(1-3b)^2}{2} + 7b^2
+= \tfrac{23}{2}b^2 - 3b + \tfrac{1}{2}.
+$$
+
+Minimise by setting derivative $=0$:  
+$$
+23b - 3 = 0 \quad \Rightarrow \quad b = \tfrac{3}{23}.
+$$
+
+Then
+$$
+a = \tfrac{1-3b}{2} = \tfrac{7}{23}, 
+\qquad c = 12b - 6a = -\tfrac{6}{23}.
+$$
+
+**Final recommended estimator:**
+$$
+\hat{\theta} = \frac{7X + 3Y - 6}{23}.
+$$
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="poisson estimator variance consistency" data-difficulty="1" #q-poisson-consistency1}
+## Properties of Poisson Estimators
+
+Suppose that $X_1, X_2, \ldots, X_n$, for $n \geq 1$, are independent $\mathrm{Poisson}(\lambda)$ random variables.  
+
+Two possible estimators of $\lambda$ are:
+$$
+\hat{\lambda}_1 = \frac{1}{n} \sum_{i=1}^n X_i,
+\qquad 
+\hat{\lambda}_2 = \frac{1}{n^2} \sum_{i=1}^n X_i.
+$$
+
+a. Show that $\hat{\lambda}_1$ is unbiased but $\hat{\lambda}_2$ is not.  
+
+b. Show that
+$$
+\mathrm{Var}(\hat{\lambda}_1) = \frac{\lambda}{n}, 
+\qquad 
+\mathrm{Var}(\hat{\lambda}_2) = \frac{\lambda}{n^3}.
+$$
+
+c. For each estimator, determine whether it can be shown to be **consistent** using its mean and variance.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**a. Unbiasedness.**
+
+$$
+\mathrm{E}[\hat{\lambda}_1] = \frac{1}{n}\sum_{i=1}^n \mathrm{E}[X_i] 
+= \frac{1}{n} \cdot n\lambda = \lambda.
+$$
+
+So $\hat{\lambda}_1$ is unbiased.  
+
+$$
+\mathrm{E}[\hat{\lambda}_2] = \frac{1}{n^2}\sum_{i=1}^n \mathrm{E}[X_i] 
+= \frac{1}{n^2} \cdot n\lambda = \frac{\lambda}{n}.
+$$
+
+So $\hat{\lambda}_2$ is biased.
+
+---
+
+**b. Variances.**
+
+Since $X_i \sim \mathrm{Poisson}(\lambda)$, $\mathrm{Var}(X_i) = \lambda$.
+
+$$
+\mathrm{Var}(\hat{\lambda}_1) 
+= \frac{1}{n^2}\sum_{i=1}^n \mathrm{Var}(X_i)
+= \frac{1}{n^2} \cdot n\lambda 
+= \frac{\lambda}{n}.
+$$
+
+$$
+\mathrm{Var}(\hat{\lambda}_2) 
+= \frac{1}{n^4}\sum_{i=1}^n \mathrm{Var}(X_i)
+= \frac{1}{n^4} \cdot n\lambda 
+= \frac{\lambda}{n^3}.
+$$
+
+---
+
+**c. Consistency.**
+
+- $\hat{\lambda}_1$: unbiased and $\mathrm{Var}(\hat{\lambda}_1)\to 0$ as $n\to\infty$, so $\hat{\lambda}_1$ is consistent.  
+- $\hat{\lambda}_2$: $\mathrm{E}[\hat{\lambda}_2] = \lambda/n \to 0$ as $n\to\infty$, so it does not converge to $\lambda$. Therefore it is not consistent.
+
+</details>
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="gamma distribution mle coding likelihood" data-difficulty="2" #q-gamma-mle}
+## MLE for the Gamma Distribution
+
+Suppose that $X_1,\ldots,X_n$ is random sample from a $\mathrm{Gamma}(1, b)$ distribution.  
+
+a. Show that the log-likelihood takes the form
+$$
+\ell(b;\underline{x}) = n\log(b) - b\sum_{i=1}^n x_i.
+$$
+
+b. Using R or Python, plot the likelihood function of $b$ given the data
+$$
+x_1 = 0.043,\quad x_2 = 0.060,\quad x_3 = 0.011,\quad x_4 = 0.142,\quad x_5 = 1.027.
+$$
+
+c. Derive the maximum likelihood estimate $\hat{b}$ of $b$. You do not need to verify it is a maximum.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**a. Likelihood and log-likelihood.**
+
+The PDF of the $\mathrm{Gamma}(1,b)$ distribution is
+
+$$
+f(x \mid b) = b e^{-bx}, \quad x > 0.
+$$
+
+Thus
+
+$$
+L(b;\underline{x}) = \prod_{i=1}^n f(x_i;b) 
+= \prod_{i=1}^n b e^{-bx_i} 
+= b^n \exp\!\left(-b\sum_{i=1}^n x_i\right).
+$$
+
+Therefore
+
+$$
+\ell(b;\underline{x}) = \log L(b;\underline{x})
+= n\log(b) - b\sum_{i=1}^n x_i.
+$$
+
+---
+
+**b. Plotting.**
+
+::: {.panel-tabset}
+
+### Python
+
+```{python}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show code"
+#| fig-align: center
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.array([0.043, 0.060, 0.011, 0.142, 1.027])
+n = len(x)
+
+def likelihood(b):
+    return b**n * np.exp(-b * np.sum(x))
+
+b_mesh = np.linspace(0, 12, 200)
+lik_values = [likelihood(b) for b in b_mesh]
+
+plt.plot(b_mesh, lik_values)
+plt.xlabel("b")
+plt.ylabel("Likelihood")
+plt.title("Likelihood function for b")
+plt.show()
+
+```
+
+### R
+
+```r
+#| echo: true
+#| code-fold: true
+#| code-summary: "Show code"
+#| fig-align: center
+
+x = c(0.043, 0.060, 0.011, 0.142, 1.027)
+
+likelihood = function(b) {
+  n = length(x)
+  return(b^n * exp(-b * sum(x)))
+}
+
+b_mesh = seq(0, 12, length.out = 100)
+plot(b_mesh, likelihood(b_mesh), type = "l", 
+     xlab = "b", ylab = "Likelihood")
+```
+
+
+:::
+
+---
+
+**c. Maximum likelihood estimate.**
+
+Differentiate the log-likelihood:
+
+$$
+\frac{\partial}{\partial b}\ell(b;\underline{x}) = \frac{n}{b} - \sum_{i=1}^n x_i.
+$$
+
+Set equal to 0:
+
+$$
+\frac{n}{b} = \sum_{i=1}^n x_i \quad \Rightarrow \quad \hat{b} = \frac{1}{\bar{x}}.
+$$
+
+So the MLE is $\hat{b} = 1/\bar{x}$.
+
+</details>
+
+:::
+
+

@@ -1,0 +1,382 @@
+## Part III - Interval Estimation
+
+### Chapter 7 - Frequentist Interval Estimation
+
+<details class="essential-points">
+<summary> Assessment Focus </summary>
+
+</details>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-ci-random-interval">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+<span class="xref-no-num">[Understand @sec-freq-persp-interval]</span> that a **frequentist confidence interval** is defined by two statistics $L(\underline{X})$ and $U(\underline{X})$, which together form a *random interval*.
+</span>
+</div>
+
+<div class="revision-content" id="rev-ci-random-interval" hidden>
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-ci-def">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to recall the <span class="xref-no-num">[definition @def-confidence-interval]</span> of a $100(1-\alpha)\%$ confidence interval.
+</span>
+</div>
+
+<div class="revision-content" id="rev-ci-def" hidden>
+
+A $100(1-\alpha)\%$ confidence interval is defined by a *random interval* $L(\underline{X})$ and $U(\underline{X})$ such that:
+$$
+\Pr\big(L(\underline{X}) < \theta < U(\underline{X})\big) = 1 - \alpha.
+$$
+Here, the **random quantities** are the statistics $L(\underline{X})$ and $U(\underline{X})$; the parameter $\theta$ is fixed (but unknown).
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-ci-interpretation">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to <span class="xref-no-num">[interpret @sec-interpreting-ci]</span> a **confidence interval** correctly. 
+</span>
+</div>
+
+<div class="revision-content" id="rev-ci-interpretation" hidden>
+
+After observing data $\underline{x}$, we compute the realised endpoints
+$$
+L_{\mathrm{obs}} = L(\underline{x}), \qquad U_{\mathrm{obs}} = U(\underline{x}).
+$$
+At this point it is **incorrect**, from a frequentist perspective, to write
+$$
+\Pr\big(L_{\mathrm{obs}} < \theta < U_{\mathrm{obs}}\big) = 1 - \alpha.
+$$
+This probability makes no sense because **nothing in the expression is random**: $L_{\mathrm{obs}}$ and $U_{\mathrm{obs}}$ are fixed numbers computed from the data, and $\theta$ is a fixed (non-random) constant.  
+
+</div>
+</div>
+
+
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-normal-ci">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to **recall** and **compute** confidence intervals for the mean of normally distributed data, for both <span class="xref-no-num">[known @def-normal-ci-known-var]</span> and <span class="xref-no-num">[unknown @def-normal-ci-unknown-var]</span> variance.
+</span>
+</div>
+
+<div class="revision-content" id="rev-normal-ci" hidden>
+
+For normally distributed data 
+$$
+X_1,\ldots,X_n \overset{\text{i.i.d.}}{\sim} \mathcal{N}(\mu,\sigma^2),
+$$
+there are two cases:
+
+1. When the variance $\sigma^2$ is <span class="xref-no-num">[known @def-normal-ci-known-var]</span>.
+2. When the variance $\sigma^2$ is <span class="xref-no-num">[unknown @def-normal-ci-unknown-var]</span>.
+
+Compared with the known-variance case, the unknown-variance version differs in only two ways:
+
+1. The <span class="xref-no-num">[sample variance @def-sample-variance]</span> 
+   is substituted for $\sigma^2$.
+2. The normal quantile $z_{1-\alpha/2}$ is replaced by the 
+   Student-$t$ quantile $t_{n-1,\,1-\alpha/2}$.
+
+---
+
+**Computing Confidence Intervals**
+
+Suppose we observe $n$ i.i.d. data points $x_1,\ldots,x_n$ from a normal distribution. A $100(1-\alpha)\%$ confidence interval for the mean depends on whether the variance is known or unknown:
+
+1. **Known variance:** If the population variance $\sigma^2$ is known, the confidence interval is
+  $$
+  \boxed{\bar{x} \pm z_{1-\alpha/2}\,\frac{\sigma}{\sqrt{n}}}
+  $$
+  where:
+
+   - $\bar{x}$ is the **observed** <span class="xref-no-num">[sample mean @def-sample-mean]</span>,
+   - $z_{1-\alpha/2}$ is the $(1-\alpha/2)$ quantile of the **standard normal** distribution:
+    $$
+    \Pr(Z < z_{1-\alpha/2}) = 1 - \alpha/2, \qquad Z \sim \mathcal{N}(0,1).
+    $$
+
+1. **Unknown Variance:** If the population variance is unknown, we estimate it with the **sample standard deviation**
+  $$
+  s = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2},
+  $$
+  and the confidence interval becomes
+  $$
+  \boxed{\bar{x} \pm t_{n-1,\,1-\alpha/2}\,\frac{s}{\sqrt{n}}}
+  $$
+  where:
+
+   - $t_{n-1,\,1-\alpha/2}$ is the $(1-\alpha/2)$ quantile of the **Student-$t$ distribution** with $n-1$ degrees of freedom:
+    $$
+    \Pr(T < t_{n-1,\,1-\alpha/2}) = 1 - \alpha/2,
+    \qquad T \sim t_{n-1}.
+    $$
+
+---
+
+**Note:** You will **not be examined** on the derivations of the confidence intervals for **normally distributed data** with either <span class="xref-no-num">[known @sec-normal-ci-known-var]</span> or <span class="xref-no-num">[unknown @sec-normal-ci-unknown-var]</span> variance.
+
+</div>
+</div>
+
+<details class="practice-details">
+<summary><em>Computing Exact Confidence Intervals — Practice Questions</em></summary>
+
+::: {.smaller-table}
+| Location | Description | Link |
+|----------|-------------|-------|
+| Examples | Archaeological Skeleton data, confidence interval with known variance | @exm-normal-ci-known-var |
+| Examples | Archaeological Skeleton data, confidence interval with unknown variance | @exm-normal-ci-unknown-var |
+
+: {tbl-colwidths="[17, 70, 13]"}
+:::
+
+</details>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-clt-ci">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to **recall** and **compute** <span class="xref-no-num">[approximate @sec-approx-ci]</span> confidence intervals for the **population mean** using the <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span>.
+</span>
+</div>
+
+<div class="revision-content" id="rev-clt-ci" hidden>
+
+Using the <span class="xref-no-num">[CLT @thm-clt]</span>, we obtain an <span class="xref-no-num">[approximate confidence interval @def-approx-ci-clt]</span> for the *population mean* of **any** model from
+$$
+\bar{X} \,\overset{\text{approx.}}{\sim}\, 
+\mathcal{N}\!\left(\mu,\, \frac{\sigma^2}{n}\right).
+$$
+
+---
+
+**Computing Confidence Intervals**
+
+Suppose we observe $n$ i.i.d. data points $x_1,\ldots,x_n$ from **any** distribution with finite variance. A $100(1-\alpha)\%$ <span class="xref-no-num">[approximate CLT-based confidence interval @def-approx-ci-clt]</span> for the **population mean** takes the form:
+
+1. **Known variance:** If the population variance $\sigma^2$ is known, the confidence interval is
+  $$
+  \boxed{\bar{x} \pm z_{1-\alpha/2}\,\frac{\sigma}{\sqrt{n}}}
+  $$
+  where:
+
+   - $\bar{x}$ is the **observed** <span class="xref-no-num">[sample mean @def-sample-mean]</span>,
+   - $z_{1-\alpha/2}$ is the $(1-\alpha/2)$ quantile of the **standard normal** distribution:
+    $$
+    \Pr(Z < z_{1-\alpha/2}) = 1 - \alpha/2, \qquad Z \sim \mathcal{N}(0,1).
+    $$
+
+
+1. **Unknown Variance:** If $\sigma^2$ is unknown, we estimate it using the **sample standard deviation**
+  $$
+  s = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2},
+  $$
+  and the CLT gives the approximate interval:
+  $$
+  \boxed{\bar{x} \pm z_{1-\alpha/2}\,\frac{s}{\sqrt{n}}}
+  $$
+  using the **same** $z$-quantile as above.
+
+
+--- 
+
+**Note:** You may also use the Student-$t$ quantile $t_{n-1,\,1-\alpha/2}$ in the unknown-variance case. Both the **$z$-based** and **$t$-based** intervals are acceptable in the exam and would receive *full marks*.
+
+</div>
+</div>
+
+<details class="practice-details">
+<summary><em>CLT-based Approximate Confidence Intervals — Practice Questions</em></summary>
+
+::: {.smaller-table}
+| Location | Description | Link |
+|----------|-------------|-------| 
+| Question Bank | Binomial data, approximate CLT-based confidence interval | <span class="xref-no-num">[Link @q-clt-ci-bin1]</span> |
+| Examples | Poisson goal data, approximate CLT-based confidence interval | @exm-pois-approx-ci-clt |
+
+: {tbl-colwidths="[17, 70, 13]"}
+:::
+
+</details>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-mle-ci">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to **recall** and **compute** <span class="xref-no-num">[approximate @sec-approx-ci]</span> confidence intervals using the <span class="xref-no-num">[asymptotic distribution of the MLE @def-asymp-mle-approx]</span>.
+</span>
+</div>
+
+<div class="revision-content" id="rev-mle-ci" hidden>
+
+Using @def-asymp-mle-approx, we can construct <span class="xref-no-num">[approximate confidence intervals @def-approx-ci-mle]</span> for the *parameter* $\theta$ of **any** model, using
+$$
+\hat{\theta}_{\mathrm{MLE}}
+\,\overset{\text{approx.}}{\sim}\,
+\mathcal{N}\!\left(
+  \theta,\;
+  \mathcal{I}_n\!\big(\hat{\theta}_{\mathrm{MLE}}\big)^{-1}
+\right).
+$$
+
+---
+
+**Computing Confidence Intervals**
+
+Suppose we observe $n$ i.i.d. data points $x_1,\ldots,x_n$ from a distribution $\mathrm{Distribution}(\theta)$ depending on an unknown parameter $\theta$. A $100(1-\alpha)\%$ <span class="xref-no-num">[approximate asymptotic MLE-based confidence interval @def-approx-ci-mle]</span> for $\theta$ is
+
+$$
+\boxed{
+\hat{\theta}_{\mathrm{MLE}}
+\;\pm\;
+z_{1-\alpha/2}\,
+\sqrt{\mathcal{I}_n\!\big(\hat{\theta}_{\mathrm{MLE}}\big)^{-1}}
+}
+$$
+
+where:
+
+- $\hat{\theta}_{\mathrm{MLE}}$ is the **observed** <span class="xref-no-num">[maximum likelihood estimate @def-mle]</span>,
+- $\mathcal{I}_n(\theta)$ is the <span class="xref-no-num">[Fisher information @prp-fisher-one-obs]</span> for the full sample, evaluated at $\theta = \hat{\theta}_{\mathrm{MLE}}$,
+- $z_{1-\alpha/2}$ is the $(1-\alpha/2)$ quantile of the **standard normal distribution**:
+  $$
+  \Pr(Z < z_{1-\alpha/2}) = 1 - \alpha/2, 
+  \qquad Z \sim \mathcal{N}(0,1).
+  $$
+
+</div>
+</div>
+
+<details class="practice-details">
+<summary><em>MLE-based Approximate Confidence Intervals — Practice Questions</em></summary>
+
+::: {.smaller-table}
+| Location | Description | Link |
+|----------|-------------|-------|
+| Question Bank | Geometric data, approximate MLE-based confidence interval | <span class="xref-no-num">[Link @q-geom-approx-ci]</span> |
+| Examples | Poisson goal data, approximate MLE-based confidence interval | @exm-pois-approx-ci-mle |
+
+: {tbl-colwidths="[17, 70, 13]"}
+:::
+
+</details>
+
+
+
+### Chapter 8 - Bayesian Intervals
+
+<details class="essential-points">
+<summary> Assessment Focus </summary>
+
+
+</details>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-posterior-inference">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Understand that a Bayesian inference outputs the posterior distribution $\pi(\theta \mid \underline{x})$, and that all Bayesian estimates, intervals, and summaries are derived from this distribution.
+</span>
+</div>
+
+<div class="revision-content" id="rev-posterior-inference" hidden>
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-credible-interval">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Understand, and be able to recall, the definition of a <span class="xref-no-num">[Credible Interval @def-credible-interval]</span>.
+</span>
+</div>
+
+<div class="revision-content" id="rev-credible-interval" hidden>
+  
+A $100(1-\alpha)\%$ Bayesian credible interval is **any** region $C_\alpha$ such that
+$$
+\Pr(\theta \in C_\alpha \mid \underline{x})
+= \int_{C_\alpha} \pi(\theta \mid \underline{x})\,\mathrm{d}\theta
+= 1 - \alpha.
+$$
+
+</div>
+</div>
+
+<div class="revision-entry">
+<div class="revision-header" role="button" tabindex="0" aria-expanded="false" aria-controls="rev-hdi">
+<span class="toggle-icon" aria-hidden="true"></span>
+<span class="revision-topic">
+Be able to recall, explain, and apply the definition of a <span class="xref-no-num">[Highest Density Interval (HDI) @def-hdi]</span>.
+</span>
+</div>
+
+<div class="revision-content" id="rev-hdi" hidden>
+
+- See the visualisation in the <span class="xref-no-num">[definition @def-hdi]</span> for intuition.
+
+- A $100(1-\alpha)\%$ **Highest Density Interval (HDI)** is the *narrowest* credible interval containing posterior probability $1-\alpha$.
+
+- It is defined by choosing a constant $\gamma$ such that
+  $$
+  C_\alpha = \{\theta : \pi(\theta \mid \underline{x}) \ge \gamma\}
+  $$
+  and this region satisfies
+  $$
+  \Pr(\theta \in C_\alpha \mid \underline{x})
+  = \int_{C_\alpha} \pi(\theta \mid \underline{x})\,\mathrm{d}\theta
+  = 1 - \alpha.
+  $$
+
+<!-- - If the posterior distribution is normal,
+  $$
+  \theta \mid \underline{x} \sim \mathcal{N}(M, V),
+  $$
+  then the $100(1-\alpha)\%$ HDI coincides with the equal–tailed interval and is given by
+  $$
+  M \pm z_{\alpha/2}\sqrt{V}.
+  $$ -->
+
+---
+
+**Note:**
+
+- You will not be examined on computing analytic HDIs for any specific posterior distribution, such as the Normal or the Beta. The examinable content concerns understanding and interpreting the HDI definition.
+
+
+</div>
+</div>
+
+<details class="practice-details">
+<summary><em> Computing HDIs — Practice Questions</em></summary>
+
+**Note:** The examples below are provided for intuition and practice only. You will not be required to compute analytic HDIs in the exam.
+
+In the exam, HDIs will be assessed through understanding of the definition and interpretation of a Highest Density Interval in context, not through algebraic calculation.
+
+::: {.smaller-table}
+| Location | Description | Link |
+|----------|-------------|-------|
+| Examples | A simple Beta HDI | @exm-hdi-beta |
+| Examples | Normal HDI | @exm-hdi-normal |
+
+: {tbl-colwidths="[17, 70, 13]"}
+:::
+
+</details>
+
+
