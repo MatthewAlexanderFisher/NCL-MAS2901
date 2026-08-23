@@ -117,13 +117,13 @@ auReadout = md`${tex`\theta=${auTarget};\quad
   \operatorname{Bias}(\hat\theta_n)=${auBias.toFixed(3)};\quad
   \operatorname{sd}(\hat\theta_n)=${auFixedSd.toFixed(1)}`}`
 
-html`<div class="au-figure-shell">
-  <div class="au-plots">
-    <div class="au-plot-panel">
+html`<div class="au-figure-shell ojs-figure-shell">
+  <div class="au-plots ojs-plot-grid">
+    <div class="au-plot-panel ojs-plot-panel">
       <strong>Sampling distribution at the selected ${tex`n`}</strong>
       ${auDensityPlot}
     </div>
-    <div class="au-plot-panel">
+    <div class="au-plot-panel ojs-plot-panel">
       <strong>What happens to the bias as ${tex`n`} grows?</strong>
       ${auBiasPlot}
     </div>
@@ -134,24 +134,6 @@ html`<div class="au-figure-shell">
 </div>
 
 <style>
-  .au-figure-shell { color: var(--plot-fg); }
-  .au-plots {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    max-width: 100%;
-  }
-  .au-plot-panel {
-    flex: 0 0 auto;
-    min-width: 320px;
-    text-align: center;
-  }
-  .au-plot-panel > strong {
-    display: block;
-    margin: .2rem 0 .35rem;
-  }
   .au-readout {
     margin: .65rem 0 0;
     font-size: .9rem;

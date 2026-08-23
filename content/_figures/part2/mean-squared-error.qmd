@@ -188,13 +188,13 @@ mseReadout = md`${tex`\operatorname{Bias}(\hat\mu_c)=${mseBias.toFixed(3)};\qqua
   =${mseBiasSquared.toFixed(3)}+${mseVariance.toFixed(3)}
   =${mseValue.toFixed(3)}`}`
 
-html`<div class="mse-figure-shell">
-  <div class="mse-plots">
-    <div class="mse-plot-panel">
+html`<div class="mse-figure-shell ojs-figure-shell">
+  <div class="mse-plots ojs-plot-grid">
+    <div class="mse-plot-panel ojs-plot-panel">
       <strong>Sampling distribution of ${tex`\hat\mu_c=c\bar X`}</strong>
       ${mseDensityPlot}
     </div>
-    <div class="mse-plot-panel">
+    <div class="mse-plot-panel ojs-plot-panel">
       <strong>How squared bias and variance add to MSE</strong>
       ${mseDecompositionPlot}
     </div>
@@ -210,24 +210,6 @@ html`<div class="mse-figure-shell">
 </div>
 
 <style>
-  .mse-figure-shell { color: var(--plot-fg); }
-  .mse-plots {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    max-width: 100%;
-  }
-  .mse-plot-panel {
-    flex: 0 0 auto;
-    min-width: 320px;
-    text-align: center;
-  }
-  .mse-plot-panel > strong {
-    display: block;
-    margin: .2rem 0 .35rem;
-  }
   .mse-legend {
     display: flex;
     flex-wrap: wrap;

@@ -87,8 +87,11 @@ details.controls-root[open] > summary::before {
 /* ---- Controls Grid Layout ---- */
 details.controls-root .controls-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
   gap: var(--ctrl-spacing-xl);
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
   
   /* Container styling */
   border: 1px solid var(--ctrl-border);
@@ -97,12 +100,12 @@ details.controls-root .controls-grid {
   border-bottom-right-radius: var(--ctrl-border-radius);
   padding: var(--ctrl-spacing-lg);
   background: var(--ctrl-surface-weak);
-  overflow-x: auto;
+  overflow: visible;
 }
 
 /* ---- Column Structure ---- */
 details.controls-root .controls-col {
-  min-width: 260px;
+  min-width: 0;
 }
 
 details.controls-root .controls-col h4 {
@@ -146,6 +149,7 @@ details.controls-root .controls-col form > [class*="-input"] {
   display: flex;
   align-items: center;
   gap: var(--ctrl-spacing);
+  min-width: 0;
   min-height: 22px;
 }
 
@@ -321,7 +325,7 @@ details.controls-root .btn-resim button:hover {
 /* ---- Responsive Design ---- */
 @media (max-width: 600px) {
   details.controls-root .controls-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr) !important;
     gap: var(--ctrl-spacing);
   }
   

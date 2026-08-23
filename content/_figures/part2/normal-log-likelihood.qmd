@@ -105,11 +105,9 @@ contourThresholds = d3.ticks(q05, 0, 10)
 
 // ---- Left panel: raster (clipped) + contour (same grid) ----
 viewof leftPanel = {
-  const wrap = html`<div style="
-    position: relative;
-    width: ${plotW}px;
-    height: ${plotH}px;
-    flex: 0 0 ${plotW}px;
+  const wrap = html`<div class="ojs-plot-frame" style="
+    max-width: ${plotW}px;
+    aspect-ratio: ${plotW} / ${plotH};
     line-height: 0;
   "></div>`;
 
@@ -199,7 +197,10 @@ viewof leftPanel = {
 
   function setFromPoint(clientX, clientY, notify = true) {
     const r = hit.getBoundingClientRect();
-    let px = clientX - r.left, py = clientY - r.top;
+    const scaleX = plotW / r.width;
+    const scaleY = plotH / r.height;
+    let px = (clientX - r.left) * scaleX;
+    let py = (clientY - r.top) * scaleY;
     px = Math.min(Math.max(0, px - marginLeft), innerW);
     py = Math.min(Math.max(0, py - marginTop), innerH);
     state.x = muDomain[0] + (px / innerW) * (muDomain[1] - muDomain[0]);
@@ -349,12 +350,12 @@ probeInfo = md`**Probe:** ${tex`\mu=${probeMu.toFixed(2)},\ \sigma^2=${probeSig2
 // Keep the active probe mounted while its dependent plot changes. Rebuilding a
 // parent that contains the pointer target can interrupt pointer capture.
 likelihoodLayout = {
-  const rightHost = html`<div style="flex:0 0 ${plotW}px;"></div>`;
+  const rightHost = html`<div class="ojs-plot-panel"></div>`;
   const statusHost = html`<div role="status" aria-live="polite"
-    style="margin-top:10px; margin-bottom:-10px"></div>`;
-  const node = html`<div style="max-width:100%;">
-    <div style="display:flex; gap:${gap}px; align-items:flex-start; flex-wrap:nowrap; overflow-x:auto;">
-      <div style="flex:0 0 ${plotW}px;">${viewof leftPanel}</div>
+    style="margin-top:10px; margin-bottom:-10px; text-align:center;"></div>`;
+  const node = html`<div class="ojs-figure-shell">
+    <div class="ojs-plot-grid" style="gap:${gap}px;">
+      <div class="ojs-plot-panel">${viewof leftPanel}</div>
       ${rightHost}
     </div>
     ${statusHost}
@@ -362,13 +363,12 @@ likelihoodLayout = {
   return {node, rightHost, statusHost};
 }
 
-likelihoodLayout.node
-
 {
   rightPanel;
   probeInfo;
   likelihoodLayout.rightHost.replaceChildren(rightPanel);
   likelihoodLayout.statusHost.replaceChildren(probeInfo);
+  return likelihoodLayout.node;
 }
 ```
 
@@ -400,15 +400,18 @@ html`<style>
   /* Two-column grid (side-by-side) */
   details.controls-root .controls-grid {
     display: grid;
-    grid-template-columns: minmax(260px, 1fr) minmax(260px, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
     gap: 12px;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
     border: 1px solid var(--border, #e5e7eb); border-top: none;
     border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;
     padding: 10px;
     background: var(--surface-weak, #fafafa);
-    overflow-x: auto;
+    overflow: visible;
   }
-  details.controls-root .controls-col { min-width: 260px; }
+  details.controls-root .controls-col { min-width: 0; }
   details.controls-root .controls-col h4 {
     margin: 0 0 6px 0;
     font-size: var(--ctrl-font); font-weight: 700;
@@ -515,13 +518,15 @@ viewof controls = {
     bins: Inputs.range([10, 60], { value: 24, step: 1, label: "Histogram bins" })
   }, { submit: false });
 
-  const root = html`<details class="controls-root" open>
-    <summary>Simulation controls</summary>
-    <div class="controls-grid">
-      <div class="controls-col"><h4>Data & truth</h4></div>
-      <div class="controls-col"><h4>Grid & display</h4></div>
-    </div>
-  </details>`;
+  const root = html`<div class="controls-wrap">
+    <details class="controls-root" open>
+      <summary>Simulation controls</summary>
+      <div class="controls-grid">
+        <div class="controls-col"><h4>Data & truth</h4></div>
+        <div class="controls-col"><h4>Grid & display</h4></div>
+      </div>
+    </details>
+  </div>`;
 
   const grid = root.querySelector(".controls-grid");
   const leftCol = grid.children[0];

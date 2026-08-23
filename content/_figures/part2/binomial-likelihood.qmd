@@ -204,22 +204,22 @@ likelihoodPlot = {
 ```
 
 ```{ojs}
-dynamicPlotW = Math.min(400, width * 0.45)  // Each plot takes ~45% of available width
+dynamicPlotW = Math.min(400, width)
 ```
 
 
 ```{ojs}
 // Combined side-by-side view - responsive, with titles
-html`<div style="width:100%; box-sizing:border-box;">
-  <div style="display:flex; gap:${gap}px; align-items:flex-start; flex-wrap:wrap; justify-content:center;">
+html`<div class="ojs-figure-shell">
+  <div class="ojs-plot-grid" style="gap:${gap}px;">
     
-    <div style="flex:0 1 ${dynamicPlotW}px; min-width:300px; text-align:center;">
-      <div style="margin-bottom:6px; font-weight:600; font-size:15px;">Binomial PMF</div>
+    <div class="ojs-plot-panel">
+      <div class="ojs-plot-title" style="font-weight:600; font-size:15px;">Binomial PMF</div>
       ${pmfPlot}
     </div>
     
-    <div style="flex:0 1 ${dynamicPlotW}px; min-width:300px; text-align:center;">
-      <div style="margin-bottom:6px; font-weight:600; font-size:15px;">Likelihood Function</div>
+    <div class="ojs-plot-panel">
+      <div class="ojs-plot-title" style="font-weight:600; font-size:15px;">Likelihood Function</div>
       ${likelihoodPlot}
     </div>
     

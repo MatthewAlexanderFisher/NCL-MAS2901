@@ -161,13 +161,13 @@ jmcConclusion = Math.abs(jmcControls.association) < 0.01
   ? html`At zero association every row has the same shape, so ${tex`p_{X\mid Y}(x\mid y)=p_X(x)`}: conditioning provides no new information.`
   : html`The highlighted row is the joint distribution restricted to ${tex`Y=${jmcControls.y}`}. Dividing that row by ${tex`p_Y(${jmcControls.y})`} rescales it to sum to one and produces the conditional distribution.`
 
-html`<div class="jmc-figure-shell">
-  <div class="jmc-plots">
-    <div class="jmc-plot-panel">
+html`<div class="jmc-figure-shell ojs-figure-shell">
+  <div class="jmc-plots ojs-plot-grid">
+    <div class="jmc-plot-panel ojs-plot-panel">
       <strong>Joint PMF ${tex`p_{X,Y}(x,y)`}</strong>
       ${jmcJointPlot}
     </div>
-    <div class="jmc-plot-panel">
+    <div class="jmc-plot-panel ojs-plot-panel">
       <strong>Marginal ${tex`p_X(x)`} versus conditional ${tex`p_{X\mid Y}(x\mid ${jmcControls.y})`}</strong>
       ${jmcComparisonPlot}
     </div>
@@ -182,24 +182,6 @@ html`<div class="jmc-figure-shell">
 </div>
 
 <style>
-  .jmc-figure-shell { color: var(--plot-fg); }
-  .jmc-plots {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    max-width: 100%;
-  }
-  .jmc-plot-panel {
-    flex: 0 0 auto;
-    min-width: 320px;
-    text-align: center;
-  }
-  .jmc-plot-panel > strong {
-    display: block;
-    margin: .2rem 0 .35rem;
-  }
   .jmc-legend {
     display: flex;
     flex-wrap: wrap;

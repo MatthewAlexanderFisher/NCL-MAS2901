@@ -165,13 +165,13 @@ covReadout = md`${tex`\widehat{\operatorname{Cov}}_n(X,Y)
   =${covEmpirical.toFixed(3)};\qquad
   r=${covCorrelation.toFixed(3)}`}`
 
-html`<div class="cov-figure-shell">
-  <div class="cov-plots">
-    <div class="cov-plot-panel">
+html`<div class="cov-figure-shell ojs-figure-shell">
+  <div class="cov-plots ojs-plot-grid">
+    <div class="cov-plot-panel ojs-plot-panel">
       <strong>Which observations contribute positively or negatively?</strong>
       ${covScatterPlot}
     </div>
-    <div class="cov-plot-panel">
+    <div class="cov-plot-panel ojs-plot-panel">
       <strong>Centred products whose mean is the covariance</strong>
       ${covContributionPlot}
     </div>
@@ -186,24 +186,6 @@ html`<div class="cov-figure-shell">
 </div>
 
 <style>
-  .cov-figure-shell { color: var(--plot-fg); }
-  .cov-plots {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    max-width: 100%;
-  }
-  .cov-plot-panel {
-    flex: 0 0 auto;
-    min-width: 320px;
-    text-align: center;
-  }
-  .cov-plot-panel > strong {
-    display: block;
-    margin: .2rem 0 .35rem;
-  }
   .cov-legend {
     display: flex;
     flex-wrap: wrap;

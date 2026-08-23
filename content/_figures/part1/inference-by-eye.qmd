@@ -207,11 +207,15 @@ approxVar = muVar2D.approxVar
 ```{ojs}
 // Layout container placing the histogram (left, 2fr) and slider (right, 1fr)
 {
-  const wrap = html`<div style="
+  const wrap = html`<div class="inference-by-eye-layout" style="
     display: grid;
     grid-template-columns: 3fr 1fr;  /* change to 3fr 1fr for ~3:1 */
     gap: 0.5rem;
     align-items: start; /* left plot stays top-aligned */
+    width: 100%;
+    max-width: 60rem;
+    min-width: 0;
+    margin-inline: auto;
   "></div>`;
 
   // Histogram (left)

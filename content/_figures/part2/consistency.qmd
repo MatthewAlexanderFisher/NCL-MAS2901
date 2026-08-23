@@ -178,13 +178,13 @@ consReadout = md`${tex`\mathrm E[\hat\theta_n]=${consParameters.mean.toFixed(3)}
   \operatorname{sd}(\hat\theta_n)=${consParameters.sd.toFixed(3)};\quad
   \Pr\!\left(\lvert\hat\theta_n-\theta\rvert>\varepsilon\right)=${consProbabilityOutside.toFixed(3)}`}`
 
-html`<div class="cons-figure-shell">
-  <div class="cons-plots">
-    <div class="cons-plot-panel">
+html`<div class="cons-figure-shell ojs-figure-shell">
+  <div class="cons-plots ojs-plot-grid">
+    <div class="cons-plot-panel ojs-plot-panel">
       <strong>Sampling distribution and the ${tex`\varepsilon`}-band</strong>
       ${consDensityPlot}
     </div>
-    <div class="cons-plot-panel">
+    <div class="cons-plot-panel ojs-plot-panel">
       <strong>Probability of missing the band</strong>
       ${consProbabilityPlot}
     </div>
@@ -200,24 +200,6 @@ html`<div class="cons-figure-shell">
 </div>
 
 <style>
-  .cons-figure-shell { color: var(--plot-fg); }
-  .cons-plots {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    max-width: 100%;
-  }
-  .cons-plot-panel {
-    flex: 0 0 auto;
-    min-width: 320px;
-    text-align: center;
-  }
-  .cons-plot-panel > strong {
-    display: block;
-    margin: .2rem 0 .35rem;
-  }
   .cons-legend {
     display: flex;
     flex-wrap: wrap;

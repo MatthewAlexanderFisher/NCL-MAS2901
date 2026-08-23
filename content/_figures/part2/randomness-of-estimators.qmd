@@ -295,9 +295,11 @@ rightPlot = Plot.plot({
   </style>`;
 }
 
-html`<div style="max-width:100%; display:flex; gap:14px; align-items:flex-start; flex-wrap:nowrap;">
-  <div>${leftPlot}</div>
-  <div>${rightPlot}</div>
+html`<div class="ojs-figure-shell">
+  <div class="ojs-plot-grid">
+    <div class="ojs-plot-panel">${leftPlot}</div>
+    <div class="ojs-plot-panel">${rightPlot}</div>
+  </div>
 </div>`
 ```
 

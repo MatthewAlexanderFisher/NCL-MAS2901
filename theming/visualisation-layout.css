@@ -1,0 +1,110 @@
+/* Shared responsive layout for OJS visualisations. */
+.ojs-figure-shell {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 72rem;
+  min-width: 0;
+  margin-inline: auto;
+  color: var(--plot-fg);
+  overflow: visible;
+}
+
+.ojs-plot-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: start;
+  justify-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 72rem;
+  min-width: 0;
+  margin-inline: auto;
+  overflow: visible;
+}
+
+.ojs-plot-panel {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 34rem;
+  min-width: 0;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.ojs-plot-panel > :is(strong, .ojs-plot-title) {
+  display: block;
+  margin: 0.2rem 0 0.35rem;
+}
+
+.ojs-plot-panel :is(svg, figure),
+.ojs-responsive-plot {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+
+.ojs-plot-frame {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin-inline: auto;
+}
+
+/* Centre single-plot OJS outputs and prevent fixed SVG dimensions overflowing. */
+.observablehq > :is(svg, figure) {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+
+.observablehq svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.ojs-toolbar-grid {
+  min-width: 0;
+  max-width: 72rem;
+  margin-inline: auto !important;
+  column-gap: 0.75rem;
+}
+
+.observablehq,
+.observablehq > div,
+.cell:has(.ojs-figure-shell) {
+  min-width: 0;
+}
+
+body.reading-mode .ojs-figure-shell,
+body.reading-mode .ojs-plot-grid,
+body.lecture-zoom .ojs-figure-shell,
+body.lecture-zoom .ojs-plot-grid {
+  margin-inline: auto !important;
+}
+
+@media (max-width: 760px) {
+  .ojs-plot-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .inference-by-eye-layout {
+    grid-template-columns: minmax(0, 1fr) !important;
+    justify-items: center;
+  }
+
+  .ojs-toolbar-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    justify-items: center;
+    row-gap: 0.5rem;
+  }
+
+  .ojs-toolbar-grid :is(.left, .right) form {
+    justify-content: center !important;
+  }
+}

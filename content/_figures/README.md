@@ -20,6 +20,21 @@ Render each `viewof` control panel in its own OJS output cell, normally immediat
 
 Keeping the control view separate leaves its DOM node mounted while dependent plots redraw. Embedding it in a reactive plot template replaces the active slider on the first input event, which interrupts pointer drags and keyboard entry.
 
+## Responsive figure layout
+
+Use the shared classes from `theming/visualisation-layout.css` rather than adding fixed-width flex rows or overflow rules inside a figure partial:
+
+```js
+html`<div class="ojs-figure-shell">
+  <div class="ojs-plot-grid">
+    <div class="ojs-plot-panel">${leftPlot}</div>
+    <div class="ojs-plot-panel">${rightPlot}</div>
+  </div>
+</div>`
+```
+
+The grid keeps paired plots centred and side by side when there is room, then stacks them on narrow screens. Plot SVGs shrink with their panel, so figure containers should not use `overflow-x`, `overflow-y`, fixed flex bases, or non-zero `min-width` values. Wrap a responsive interactive overlay in `ojs-plot-frame`; when its logical SVG size differs from its displayed size, convert pointer coordinates back to logical coordinates before updating scales.
+
 ## Quarto render note
 
 Quarto expands these includes before executing their OJS cells, so shared values and reactive dependencies behave as if the code were still inline. The current Quarto release may print `OJS block count mismatch` once per included cell: the warning only means that a later OJS error could be reported against an inaccurate source line, because Quarto counts line locations in the parent file before expanding includes. It does not indicate a cell-count or dependency failure.

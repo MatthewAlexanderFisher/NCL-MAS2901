@@ -246,9 +246,9 @@ rightPlot = Plot.plot({
   </style>`;
 }
 
-html`<div class="ci-row">
-  <div class="ci-panel">${leftPlot}</div>
-  <div class="ci-panel">${rightPlot}</div>
+html`<div class="ci-row ojs-plot-grid">
+  <div class="ci-panel ojs-plot-panel">${leftPlot}</div>
+  <div class="ci-panel ojs-plot-panel">${rightPlot}</div>
 </div>`
 
 
@@ -282,14 +282,17 @@ details.controls-root > summary::before {
 details.controls-root[open] > summary::before { transform: rotate(90deg); }
 .controls-grid {
   display: grid;
-  grid-template-columns: minmax(260px,1fr) minmax(260px,1fr);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
   gap: 12px;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   border: 1px solid var(--border); border-top: none;
   border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;
   padding: 10px;
   background: var(--surface-weak);
 }
-.controls-col { min-width: 260px; }
+.controls-col { min-width: 0; }
 .controls-col h4 {
   margin: 0 0 6px 0; font-size: 12px; font-weight: 700;
   color: var(--fg-muted);
@@ -306,16 +309,7 @@ details.controls-root[open] > summary::before { transform: rotate(90deg); }
 .toolbar .right form{ display:flex; justify-content:flex-end;   margin:0 }
 .toolbar .center{ text-align:center; font-size:0.9rem; color:var(--brand-fg) }
 
-/* Plots container: force side-by-side; scroll if too narrow */
-.ci-row {
-  display: flex; gap: 14px; align-items: flex-start;
-  flex-wrap: nowrap; overflow-x: auto; max-width: 100%;
-}
-.ci-panel { flex: 0 0 50%; min-width: 460px; }
-
 @media (max-width: 760px) {
-  .ci-row { flex-direction: column; overflow-x: visible; }
-  .ci-panel { flex: 1 1 auto; min-width: 0; width: 100%; }
   .controls-grid { grid-template-columns: 1fr; }
   .controls-col { min-width: 0; }
   .ojs-toolbar-grid { grid-template-columns: 1fr; gap: 8px; }
