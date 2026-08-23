@@ -1,0 +1,279 @@
+```{ojs}
+jmcSupport = d3.range(1, 6)
+
+jmcJoint = {
+  const strength = Math.abs(jmcControls.association);
+  const matchedY = x => jmcControls.association >= 0 ? x : 6 - x;
+
+  return jmcSupport.flatMap(y => jmcSupport.map(x => ({
+    x,
+    y,
+    probability: (1 - strength) / 25 +
+      (y === matchedY(x) ? strength / 5 : 0)
+  })));
+}
+
+jmcMarginalX = jmcSupport.map(x => ({
+  x,
+  probability: d3.sum(jmcJoint.filter(cell => cell.x === x), cell => cell.probability)
+}))
+
+jmcMarginalY = jmcSupport.map(y => ({
+  y,
+  probability: d3.sum(jmcJoint.filter(cell => cell.y === y), cell => cell.probability)
+}))
+
+jmcSelectedYProbability = jmcMarginalY.find(row => row.y === jmcControls.y).probability
+
+jmcConditionalX = jmcSupport.map(x => {
+  const joint = jmcJoint.find(cell =>
+    cell.x === x && cell.y === jmcControls.y
+  ).probability;
+  return {
+    x,
+    probability: joint / jmcSelectedYProbability
+  };
+})
+
+jmcSelectedJoint = jmcJoint.find(cell =>
+  cell.x === jmcControls.x && cell.y === jmcControls.y
+).probability
+
+jmcSelectedConditional = jmcConditionalX.find(row =>
+  row.x === jmcControls.x
+).probability
+
+jmcMaximumJoint = d3.max(jmcJoint, cell => cell.probability)
+```
+
+```{ojs}
+jmcJointPlot = Plot.plot({
+  width: Math.min(500, Math.max(320, width / 2 - 18)),
+  height: 340,
+  marginLeft: 54,
+  style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)",
+    fontFamily: bodyFont,
+    fontSize: 13
+  },
+  x: {label: "X", domain: [0.5, 5.5], ticks: 5},
+  y: {label: "Y", domain: [0.5, 5.5], ticks: 5},
+  marks: [
+    Plot.rect(jmcJoint, {
+      x1: cell => cell.x - 0.47,
+      x2: cell => cell.x + 0.47,
+      y1: cell => cell.y - 0.47,
+      y2: cell => cell.y + 0.47,
+      fill: "var(--plot-series-1)",
+      fillOpacity: cell => 0.1 + 0.82 * cell.probability / jmcMaximumJoint,
+      stroke: "var(--plot-grid)",
+      strokeWidth: 0.8,
+      title: cell =>
+        `p(X=${cell.x}, Y=${cell.y}) = ${cell.probability.toFixed(3)}`
+    }),
+    Plot.rect([{x1: 0.52, x2: 5.48, y1: jmcControls.y - 0.47, y2: jmcControls.y + 0.47}], {
+      x1: "x1",
+      x2: "x2",
+      y1: "y1",
+      y2: "y2",
+      fill: "none",
+      stroke: "var(--plot-series-4)",
+      strokeWidth: 3
+    }),
+    Plot.rect([{
+      x1: jmcControls.x - 0.42,
+      x2: jmcControls.x + 0.42,
+      y1: jmcControls.y - 0.42,
+      y2: jmcControls.y + 0.42
+    }], {
+      x1: "x1",
+      x2: "x2",
+      y1: "y1",
+      y2: "y2",
+      fill: "none",
+      stroke: "var(--plot-series-2)",
+      strokeWidth: 3.2
+    }),
+    Plot.text(jmcJoint, {
+      x: "x",
+      y: "y",
+      text: cell => `${(100 * cell.probability).toFixed(1)}%`,
+      fill: "var(--plot-fg)",
+      fontSize: 12,
+      fontWeight: 600
+    })
+  ]
+})
+
+jmcComparisonPlot = Plot.plot({
+  width: Math.min(500, Math.max(320, width / 2 - 18)),
+  height: 340,
+  marginLeft: 58,
+  style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)",
+    fontFamily: bodyFont,
+    fontSize: 13
+  },
+  x: {label: "X", domain: [0.5, 5.5], ticks: 5},
+  y: {label: "Probability", domain: [0, 1], grid: true, tickFormat: value => `${Math.round(100 * value)}%`},
+  marks: [
+    Plot.rectY(jmcMarginalX, {
+      x1: row => row.x - 0.38,
+      x2: row => row.x + 0.38,
+      y: "probability",
+      fill: "var(--plot-fill-3)",
+      stroke: "var(--plot-series-3)",
+      strokeWidth: 1
+    }),
+    Plot.rectY(jmcConditionalX, {
+      x1: row => row.x - 0.2,
+      x2: row => row.x + 0.2,
+      y: "probability",
+      fill: "var(--plot-series-4)",
+      fillOpacity: 0.82,
+      title: row =>
+        `p(X=${row.x} | Y=${jmcControls.y}) = ${row.probability.toFixed(3)}`
+    }),
+    Plot.dot([jmcConditionalX.find(row => row.x === jmcControls.x)], {
+      x: "x",
+      y: "probability",
+      r: 6,
+      fill: "var(--plot-series-2)",
+      stroke: "var(--plot-on-accent)",
+      strokeWidth: 1.2
+    }),
+    Plot.ruleY([0], {stroke: "var(--plot-reference)"})
+  ]
+})
+```
+
+```{ojs}
+jmcReadout = md`${tex`p_{X,Y}(${jmcControls.x},${jmcControls.y})
+  =${jmcSelectedJoint.toFixed(3)};\qquad
+  p_Y(${jmcControls.y})=${jmcSelectedYProbability.toFixed(3)};\qquad
+  p_{X\mid Y}(${jmcControls.x}\mid${jmcControls.y})
+  =\frac{${jmcSelectedJoint.toFixed(3)}}{${jmcSelectedYProbability.toFixed(3)}}
+  =${jmcSelectedConditional.toFixed(3)}`}`
+
+jmcConclusion = Math.abs(jmcControls.association) < 0.01
+  ? html`At zero association every row has the same shape, so ${tex`p_{X\mid Y}(x\mid y)=p_X(x)`}: conditioning provides no new information.`
+  : html`The highlighted row is the joint distribution restricted to ${tex`Y=${jmcControls.y}`}. Dividing that row by ${tex`p_Y(${jmcControls.y})`} rescales it to sum to one and produces the conditional distribution.`
+
+html`<div class="jmc-figure-shell">
+  <div class="jmc-plots">
+    <div class="jmc-plot-panel">
+      <strong>Joint PMF ${tex`p_{X,Y}(x,y)`}</strong>
+      ${jmcJointPlot}
+    </div>
+    <div class="jmc-plot-panel">
+      <strong>Marginal ${tex`p_X(x)`} versus conditional ${tex`p_{X\mid Y}(x\mid ${jmcControls.y})`}</strong>
+      ${jmcComparisonPlot}
+    </div>
+  </div>
+  <div class="jmc-legend" aria-label="Plot legend">
+    <span><i class="jmc-joint-row"></i> Selected joint row ${tex`Y=${jmcControls.y}`}</span>
+    <span><i class="jmc-marginal"></i> Marginal ${tex`p_X(x)`}</span>
+    <span><i class="jmc-conditional"></i> Conditional ${tex`p_{X\mid Y}(x\mid ${jmcControls.y})`}</span>
+    <span><i class="jmc-cell"></i> Inspected cell</span>
+  </div>
+  <div class="jmc-readout" role="status" aria-live="polite">${jmcReadout}</div>
+</div>
+
+<style>
+  .jmc-figure-shell { color: var(--plot-fg); }
+  .jmc-plots {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  .jmc-plot-panel {
+    flex: 0 0 auto;
+    min-width: 320px;
+    text-align: center;
+  }
+  .jmc-plot-panel > strong {
+    display: block;
+    margin: .2rem 0 .35rem;
+  }
+  .jmc-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .55rem 1.1rem;
+    margin: .65rem 0;
+    font-size: .88rem;
+  }
+  .jmc-legend > span { display: inline-flex; align-items: center; gap: .4rem; }
+  .jmc-joint-row { width: 1rem; height: .72rem; border: 2px solid var(--plot-series-4); display: inline-block; }
+  .jmc-marginal { width: 1rem; height: .72rem; background: var(--plot-fill-3); border: 1px solid var(--plot-series-3); display: inline-block; }
+  .jmc-conditional { width: .55rem; height: .72rem; background: var(--plot-series-4); display: inline-block; }
+  .jmc-cell { width: .8rem; height: .8rem; border: 2px solid var(--plot-series-2); display: inline-block; }
+  .jmc-readout {
+    margin: .65rem 0 0;
+    text-align: center;
+    font-size: .9rem;
+  }
+  .jmc-readout > p { margin: 0; }
+  .jmc-message {
+    margin: .65rem 0 0;
+    padding: .65rem .8rem;
+    border-left: .25rem solid var(--plot-series-1);
+    background: var(--plot-fill-1);
+  }
+</style>`
+```
+
+```{ojs}
+// Keep the controls in a stable output cell beneath the reactive figure.
+viewof jmcControls = {
+  const dependenceForm = Inputs.form({
+    association: Inputs.range([-1, 1], {
+      value: 0.7,
+      step: 0.1,
+      label: "Association"
+    })
+  }, {submit: false});
+
+  const selectionForm = Inputs.form({
+    y: Inputs.range([1, 5], {
+      value: 4,
+      step: 1,
+      label: md`Condition on ${tex`Y=y`}`
+    }),
+    x: Inputs.range([1, 5], {
+      value: 4,
+      step: 1,
+      label: md`Inspect ${tex`X=x`}`
+    })
+  }, {submit: false});
+
+  const root = html`<div class="controls-wrap">
+    <details class="controls-root" open>
+      <summary>Distribution controls</summary>
+      <div class="controls-grid">
+        <div class="controls-col"><h4>Dependence</h4></div>
+        <div class="controls-col"><h4>Condition &amp; inspect</h4></div>
+      </div>
+    </details>
+  </div>`;
+
+  const columns = root.querySelectorAll(".controls-col");
+  columns[0].append(dependenceForm);
+  columns[1].append(selectionForm);
+
+  Object.defineProperty(root, "value", {
+    get: () => ({...dependenceForm.value, ...selectionForm.value})
+  });
+
+  return root;
+}
+```
+
+```{ojs}
+html`<p class="jmc-message">${jmcConclusion}</p>`
+```

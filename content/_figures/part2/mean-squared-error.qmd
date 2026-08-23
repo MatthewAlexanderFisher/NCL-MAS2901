@@ -1,0 +1,303 @@
+```{ojs}
+mseMu = 1
+mseSigma = 2
+mseC = mseControls.c
+mseN = mseControls.n
+
+mseMean = mseC * mseMu
+mseBias = mseMean - mseMu
+mseVariance = mseC ** 2 * mseSigma ** 2 / mseN
+mseSd = Math.sqrt(mseVariance)
+mseBiasSquared = mseBias ** 2
+mseValue = mseBiasSquared + mseVariance
+mseOptimalC = mseMu ** 2 / (mseMu ** 2 + mseSigma ** 2 / mseN)
+
+mseDensityDomain = {
+  const low = Math.min(mseMu, mseMean - 4 * mseSd);
+  const high = Math.max(mseMu, mseMean + 4 * mseSd);
+  const padding = Math.max(0.08, 0.06 * (high - low));
+  return [low - padding, high + padding];
+}
+
+mseDensity = d3.range(321).map(index => {
+  const x = mseDensityDomain[0] + index *
+    (mseDensityDomain[1] - mseDensityDomain[0]) / 320;
+  const y = Math.exp(-0.5 * ((x - mseMean) / mseSd) ** 2) /
+    (mseSd * Math.sqrt(2 * Math.PI));
+  return {x, y};
+})
+
+mseDensityYMax = d3.max(mseDensity, point => point.y)
+
+mseCurve = d3.range(151).map(index => {
+  const c = 1.5 * index / 150;
+  const biasSquared = ((c - 1) * mseMu) ** 2;
+  const variance = c ** 2 * mseSigma ** 2 / mseN;
+  return {
+    c,
+    biasSquared,
+    variance,
+    mse: biasSquared + variance
+  };
+})
+
+mseCurveYMax = d3.max(mseCurve, point => point.mse)
+```
+
+```{ojs}
+mseDensityPlot = Plot.plot({
+  width: Math.min(520, Math.max(320, width / 2 - 18)),
+  height: 330,
+  marginLeft: 58,
+  style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)",
+    fontFamily: bodyFont,
+    fontSize: 13
+  },
+  x: {label: "Possible estimate μ̂ᴄ", domain: mseDensityDomain},
+  y: {label: "Density", domain: [0, 1.12 * mseDensityYMax], grid: true},
+  marks: [
+    Plot.areaY(mseDensity, {
+      x: "x",
+      y: "y",
+      fill: "var(--plot-fill-1)"
+    }),
+    Plot.line(mseDensity, {
+      x: "x",
+      y: "y",
+      stroke: "var(--plot-series-1)",
+      strokeWidth: 2.5
+    }),
+    Plot.ruleX([mseMu], {
+      stroke: "var(--plot-reference)",
+      strokeWidth: 2,
+      strokeDasharray: "5,4"
+    }),
+    Plot.ruleX([mseMean], {
+      stroke: "var(--plot-series-4)",
+      strokeWidth: 2.4
+    }),
+    Math.abs(mseBias) > 1e-8 ? Plot.link([{
+      x1: mseMean,
+      x2: mseMu,
+      y1: 0.12 * mseDensityYMax,
+      y2: 0.12 * mseDensityYMax
+    }], {
+      x1: "x1",
+      x2: "x2",
+      y1: "y1",
+      y2: "y2",
+      stroke: "var(--plot-series-2)",
+      strokeWidth: 4,
+      markerStart: "dot",
+      markerEnd: "arrow"
+    }) : null,
+    Math.abs(mseBias) > 1e-8 ? Plot.text([{
+      x: 0.5 * (mseMean + mseMu),
+      y: 0.12 * mseDensityYMax,
+      label: "bias"
+    }], {
+      x: "x",
+      y: "y",
+      text: "label",
+      dy: -10,
+      fill: "var(--plot-series-2)",
+      fontSize: 12,
+      fontWeight: 600
+    }) : null,
+    Plot.ruleY([0], {stroke: "var(--plot-reference)"})
+  ].filter(mark => mark !== null)
+})
+
+mseDecompositionPlot = Plot.plot({
+  width: Math.min(520, Math.max(320, width / 2 - 18)),
+  height: 330,
+  marginLeft: 58,
+  style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)",
+    fontFamily: bodyFont,
+    fontSize: 13
+  },
+  x: {label: "Estimator multiplier c", domain: [0, 1.5], grid: true},
+  y: {label: "Squared error contribution", domain: [0, 1.08 * mseCurveYMax], grid: true},
+  marks: [
+    Plot.areaY(mseCurve, {
+      x: "c",
+      y1: 0,
+      y2: "variance",
+      fill: "var(--plot-fill-3)"
+    }),
+    Plot.areaY(mseCurve, {
+      x: "c",
+      y1: "variance",
+      y2: "mse",
+      fill: "var(--plot-fill-2)"
+    }),
+    Plot.line(mseCurve, {
+      x: "c",
+      y: "variance",
+      stroke: "var(--plot-series-3)",
+      strokeWidth: 1.8
+    }),
+    Plot.line(mseCurve, {
+      x: "c",
+      y: "mse",
+      stroke: "var(--plot-series-4)",
+      strokeWidth: 2.8
+    }),
+    Plot.ruleX([mseOptimalC], {
+      stroke: "var(--plot-series-1)",
+      strokeWidth: 2,
+      strokeDasharray: "5,4"
+    }),
+    Plot.ruleX([mseC], {
+      stroke: "var(--plot-reference)",
+      strokeWidth: 1.8
+    }),
+    Plot.dot([{c: mseC, value: mseValue}], {
+      x: "c",
+      y: "value",
+      r: 6,
+      fill: "var(--plot-series-4)",
+      stroke: "var(--plot-on-accent)",
+      strokeWidth: 1.2
+    }),
+    Plot.dot([{
+      c: mseOptimalC,
+      value: ((mseOptimalC - 1) * mseMu) ** 2 +
+        mseOptimalC ** 2 * mseSigma ** 2 / mseN
+    }], {
+      x: "c",
+      y: "value",
+      r: 5.5,
+      fill: "var(--plot-series-1)",
+      stroke: "var(--plot-on-accent)",
+      strokeWidth: 1.2
+    }),
+    Plot.ruleY([0], {stroke: "var(--plot-reference)"})
+  ]
+})
+```
+
+```{ojs}
+mseReadout = md`${tex`\operatorname{Bias}(\hat\mu_c)=${mseBias.toFixed(3)};\qquad
+  \operatorname{Var}(\hat\mu_c)=${mseVariance.toFixed(3)};\qquad
+  \operatorname{MSE}(\hat\mu_c)
+  =${mseBiasSquared.toFixed(3)}+${mseVariance.toFixed(3)}
+  =${mseValue.toFixed(3)}`}`
+
+html`<div class="mse-figure-shell">
+  <div class="mse-plots">
+    <div class="mse-plot-panel">
+      <strong>Sampling distribution of ${tex`\hat\mu_c=c\bar X`}</strong>
+      ${mseDensityPlot}
+    </div>
+    <div class="mse-plot-panel">
+      <strong>How squared bias and variance add to MSE</strong>
+      ${mseDecompositionPlot}
+    </div>
+  </div>
+  <div class="mse-legend" aria-label="Plot legend">
+    <span><i class="mse-variance"></i> Variance</span>
+    <span><i class="mse-bias"></i> Squared bias added above variance</span>
+    <span><i class="mse-total"></i> Total MSE</span>
+    <span><i class="mse-optimum"></i> Minimum-MSE ${tex`c^*`}</span>
+    <span><i class="mse-reference"></i> True value ${tex`\mu`}</span>
+  </div>
+  <div class="mse-readout" role="status" aria-live="polite">${mseReadout}</div>
+</div>
+
+<style>
+  .mse-figure-shell { color: var(--plot-fg); }
+  .mse-plots {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  .mse-plot-panel {
+    flex: 0 0 auto;
+    min-width: 320px;
+    text-align: center;
+  }
+  .mse-plot-panel > strong {
+    display: block;
+    margin: .2rem 0 .35rem;
+  }
+  .mse-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .55rem 1.1rem;
+    margin: .65rem 0;
+    font-size: .88rem;
+  }
+  .mse-legend > span { display: inline-flex; align-items: center; gap: .4rem; }
+  .mse-variance { width: 1rem; height: .72rem; background: var(--plot-fill-3); border: 1px solid var(--plot-series-3); display: inline-block; }
+  .mse-bias { width: 1rem; height: .72rem; background: var(--plot-fill-2); border: 1px solid var(--plot-series-2); display: inline-block; }
+  .mse-total { width: 1.25rem; border-top: 3px solid var(--plot-series-4); display: inline-block; }
+  .mse-optimum { width: 1.25rem; border-top: 2px dashed var(--plot-series-1); display: inline-block; }
+  .mse-reference { width: 1.25rem; border-top: 2px dashed var(--plot-reference); display: inline-block; }
+  .mse-readout {
+    margin: .65rem 0 0;
+    text-align: center;
+    font-size: .9rem;
+  }
+  .mse-readout > p { margin: 0; }
+  .mse-message {
+    margin: .65rem 0 0;
+    padding: .65rem .8rem;
+    border-left: .25rem solid var(--plot-series-3);
+    background: var(--plot-fill-3);
+  }
+</style>`
+```
+
+```{ojs}
+// Keep the controls mounted beneath the reactive figure.
+viewof mseControls = {
+  const estimatorForm = Inputs.form({
+    c: Inputs.range([0.05, 1.5], {
+      value: 1,
+      step: 0.05,
+      label: md`Multiplier ${tex`c`}`
+    })
+  }, {submit: false});
+
+  const informationForm = Inputs.form({
+    n: Inputs.range([5, 100], {
+      value: 10,
+      step: 5,
+      label: md`Sample size ${tex`n`}`
+    })
+  }, {submit: false});
+
+  const root = html`<div class="controls-wrap">
+    <details class="controls-root" open>
+      <summary>Estimator controls</summary>
+      <div class="controls-grid">
+        <div class="controls-col"><h4>Estimator</h4></div>
+        <div class="controls-col"><h4>Information</h4></div>
+      </div>
+    </details>
+  </div>`;
+
+  const columns = root.querySelectorAll(".controls-col");
+  columns[0].append(estimatorForm);
+  columns[1].append(informationForm);
+
+  Object.defineProperty(root, "value", {
+    get: () => ({...estimatorForm.value, ...informationForm.value})
+  });
+
+  return root;
+}
+```
+
+```{ojs}
+html`<p class="mse-message"><strong>Trade-off:</strong> with ${tex`\mu=${mseMu}`} and ${tex`\sigma=${mseSigma}`}, the minimum occurs at ${tex`c^*=${mseOptimalC.toFixed(3)}`}. Shrinking below ${tex`c=1`} introduces bias, but can reduce the variance by more than the squared bias increases the error.</p>`
+```

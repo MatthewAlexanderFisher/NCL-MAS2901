@@ -453,6 +453,29 @@ $$
 In this case, the conditional distribution of $X$ given $Y$ is just its marginal distribution: knowing $Y$ does not change the distribution of $X$.
 :::
 
+The following discrete example keeps the marginal distributions fixed while changing the dependence structure. This makes it possible to see exactly what information the joint distribution contains beyond the marginals.
+
+::: {.content-visible unless-format="pdf"}
+
+---
+
+```{=html}
+<details>
+<summary><strong>Show Visualisation: joint, marginal, and conditional distributions</strong></summary>
+```
+
+Choose a value of $Y$ and predict how its highlighted joint row must be transformed into a conditional PMF. Then move the association control to zero and compare the marginal and conditional bars.
+
+{{< include ../../_figures/part1/joint-marginal-conditional.qmd >}}
+
+```{=html}
+</details>
+```
+
+---
+
+:::
+
 ::: {.callout-tip .checkpoint .reader-only title="Checkpoint: what does the joint tell us?" appearance="simple"}
 Decide whether each statement is true or false.
 
@@ -557,6 +580,29 @@ $$
 \rho = \mathrm{Corr}(X,Y) = \frac{\mathrm{Cov}(X,Y)}{\mathrm{SD}(X)\,\mathrm{SD}(Y)}.
 $$
 Correlation always satisfies $\rho \in [-1,1]$.
+:::
+
+The sign of covariance comes from the centred products $(X-\mathrm E[X])(Y-\mathrm E[Y])$. The next visualisation shows those products observation by observation and then averages them.
+
+::: {.content-visible unless-format="pdf"}
+
+---
+
+```{=html}
+<details>
+<summary><strong>Show Visualisation: covariance as an average centred product</strong></summary>
+```
+
+Before moving the correlation slider, predict which two quadrants contribute positively and which two contribute negatively. Then move $\rho$ through zero and watch the balance of the centred products change.
+
+{{< include ../../_figures/part1/covariance.qmd >}}
+
+```{=html}
+</details>
+```
+
+---
+
 :::
 
 ::: {#thm-independence-zero-cov}

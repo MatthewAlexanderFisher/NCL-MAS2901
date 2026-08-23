@@ -1,0 +1,291 @@
+```{ojs}
+covSample = {
+  const run = Number(covControls.run ?? 0);
+  const rng = d3.randomLcg((0.271 + 0.193 * run) % 1 || 0.271);
+  const standardNormal = d3.randomNormal.source(rng)(0, 1);
+  const residualScale = Math.sqrt(Math.max(0, 1 - covControls.rho ** 2));
+
+  return d3.range(covControls.n).map(index => {
+    const x = standardNormal();
+    const residual = standardNormal();
+    return {
+      index: index + 1,
+      x,
+      y: covControls.rho * x + residualScale * residual
+    };
+  });
+}
+
+covXMean = d3.mean(covSample, point => point.x)
+covYMean = d3.mean(covSample, point => point.y)
+
+covContributions = covSample.map(point => ({
+  ...point,
+  contribution: (point.x - covXMean) * (point.y - covYMean)
+}))
+
+covEmpirical = d3.mean(covContributions, point => point.contribution)
+covXSd = Math.sqrt(d3.mean(covSample, point => (point.x - covXMean) ** 2))
+covYSd = Math.sqrt(d3.mean(covSample, point => (point.y - covYMean) ** 2))
+covCorrelation = covEmpirical / Math.max(1e-12, covXSd * covYSd)
+
+covDomain = [-4, 4]
+covQuadrants = [
+  {x1: covDomain[0], x2: covXMean, y1: covDomain[0], y2: covYMean, sign: "positive"},
+  {x1: covXMean, x2: covDomain[1], y1: covYMean, y2: covDomain[1], sign: "positive"},
+  {x1: covDomain[0], x2: covXMean, y1: covYMean, y2: covDomain[1], sign: "negative"},
+  {x1: covXMean, x2: covDomain[1], y1: covDomain[0], y2: covYMean, sign: "negative"}
+]
+
+covContributionLimit = Math.max(
+  0.5,
+  d3.max(covContributions, point => Math.abs(point.contribution)) || 0.5
+)
+```
+
+```{ojs}
+covScatterPlot = Plot.plot({
+  width: Math.min(520, Math.max(320, width / 2 - 18)),
+  height: 330,
+  marginLeft: 52,
+  style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)",
+    fontFamily: bodyFont,
+    fontSize: 13
+  },
+  x: {label: "X", domain: covDomain, grid: true},
+  y: {label: "Y", domain: covDomain, grid: true},
+  marks: [
+    Plot.rect(covQuadrants, {
+      x1: "x1",
+      x2: "x2",
+      y1: "y1",
+      y2: "y2",
+      fill: quadrant => quadrant.sign === "positive" ?
+        "var(--plot-fill-1)" : "var(--plot-fill-4)"
+    }),
+    Plot.ruleX([covXMean], {
+      stroke: "var(--plot-reference)",
+      strokeWidth: 1.8,
+      strokeDasharray: "5,4"
+    }),
+    Plot.ruleY([covYMean], {
+      stroke: "var(--plot-reference)",
+      strokeWidth: 1.8,
+      strokeDasharray: "5,4"
+    }),
+    Plot.dot(covContributions, {
+      x: "x",
+      y: "y",
+      r: point => 2.8 + 2.2 * Math.min(1, Math.abs(point.contribution) / 3),
+      fill: point => point.contribution >= 0 ?
+        "var(--plot-series-1)" : "var(--plot-series-4)",
+      fillOpacity: 0.82,
+      stroke: "var(--plot-on-accent)",
+      strokeWidth: 0.55,
+      title: point =>
+        `(x-x̄)(y-ȳ) = ${point.contribution.toFixed(3)}`
+    }),
+    Plot.text([{x: covXMean, y: covDomain[1] - 0.2, label: "x̄"}], {
+      x: "x",
+      y: "y",
+      text: "label",
+      dx: 7,
+      textAnchor: "start",
+      fill: "var(--plot-fg)",
+      fontSize: 12
+    }),
+    Plot.text([{x: covDomain[1] - 0.2, y: covYMean, label: "ȳ"}], {
+      x: "x",
+      y: "y",
+      text: "label",
+      dy: -7,
+      textAnchor: "end",
+      fill: "var(--plot-fg)",
+      fontSize: 12
+    })
+  ]
+})
+
+covContributionPlot = Plot.plot({
+  width: Math.min(520, Math.max(320, width / 2 - 18)),
+  height: 330,
+  marginLeft: 62,
+  style: {
+    background: "var(--plot-bg)",
+    color: "var(--plot-fg)",
+    fontFamily: bodyFont,
+    fontSize: 13
+  },
+  x: {label: "Observation", domain: [0.5, covControls.n + 0.5], axis: null},
+  y: {
+    label: "Centred product",
+    domain: [-1.12 * covContributionLimit, 1.12 * covContributionLimit],
+    grid: true
+  },
+  marks: [
+    Plot.rectY(covContributions, {
+      x1: point => point.index - 0.43,
+      x2: point => point.index + 0.43,
+      y1: 0,
+      y2: "contribution",
+      fill: point => point.contribution >= 0 ?
+        "var(--plot-series-1)" : "var(--plot-series-4)",
+      fillOpacity: 0.78,
+      title: point =>
+        `Observation ${point.index}: ${point.contribution.toFixed(3)}`
+    }),
+    Plot.ruleY([0], {stroke: "var(--plot-reference)"}),
+    Plot.ruleY([covEmpirical], {
+      stroke: "var(--plot-series-2)",
+      strokeWidth: 2.4,
+      strokeDasharray: "6,4"
+    }),
+    Plot.text([{
+      x: covControls.n,
+      y: covEmpirical,
+      label: "mean product"
+    }], {
+      x: "x",
+      y: "y",
+      text: "label",
+      textAnchor: "end",
+      dy: covEmpirical >= 0 ? -8 : 14,
+      fill: "var(--plot-series-2)",
+      fontSize: 12
+    })
+  ]
+})
+```
+
+```{ojs}
+covReadout = md`${tex`\widehat{\operatorname{Cov}}_n(X,Y)
+  =\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar x)(y_i-\bar y)
+  =${covEmpirical.toFixed(3)};\qquad
+  r=${covCorrelation.toFixed(3)}`}`
+
+html`<div class="cov-figure-shell">
+  <div class="cov-plots">
+    <div class="cov-plot-panel">
+      <strong>Which observations contribute positively or negatively?</strong>
+      ${covScatterPlot}
+    </div>
+    <div class="cov-plot-panel">
+      <strong>Centred products whose mean is the covariance</strong>
+      ${covContributionPlot}
+    </div>
+  </div>
+  <div class="cov-legend" aria-label="Plot legend">
+    <span><i class="cov-swatch cov-positive"></i> Positive centred product</span>
+    <span><i class="cov-swatch cov-negative"></i> Negative centred product</span>
+    <span><i class="cov-line"></i> Mean centred product</span>
+    <span><i class="cov-reference"></i> Sample means</span>
+  </div>
+  <div class="cov-readout" role="status" aria-live="polite">${covReadout}</div>
+</div>
+
+<style>
+  .cov-figure-shell { color: var(--plot-fg); }
+  .cov-plots {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  .cov-plot-panel {
+    flex: 0 0 auto;
+    min-width: 320px;
+    text-align: center;
+  }
+  .cov-plot-panel > strong {
+    display: block;
+    margin: .2rem 0 .35rem;
+  }
+  .cov-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .55rem 1.1rem;
+    margin: .65rem 0;
+    font-size: .88rem;
+  }
+  .cov-legend > span { display: inline-flex; align-items: center; gap: .4rem; }
+  .cov-swatch { width: 1rem; height: .72rem; display: inline-block; }
+  .cov-positive { background: var(--plot-series-1); }
+  .cov-negative { background: var(--plot-series-4); }
+  .cov-line { width: 1.3rem; border-top: 2px dashed var(--plot-series-2); display: inline-block; }
+  .cov-reference { width: 1.3rem; border-top: 2px dashed var(--plot-reference); display: inline-block; }
+  .cov-readout {
+    margin: .65rem 0 0;
+    text-align: center;
+    font-size: .9rem;
+  }
+  .cov-readout > p { margin: 0; }
+  .cov-message {
+    margin: .65rem 0 0;
+    padding: .65rem .8rem;
+    border-left: .25rem solid var(--plot-series-2);
+    background: var(--plot-fill-2);
+  }
+</style>`
+```
+
+```{ojs}
+// Keep the controls mounted below the reactive plots so sliders remain draggable.
+viewof covControls = {
+  const relationshipForm = Inputs.form({
+    rho: Inputs.range([-0.95, 0.95], {
+      value: 0.7,
+      step: 0.05,
+      label: md`Population correlation ${tex`\rho`}`
+    })
+  }, {submit: false});
+
+  const sampleForm = Inputs.form({
+    n: Inputs.range([20, 200], {
+      value: 80,
+      step: 10,
+      label: md`Sample size ${tex`n`}`
+    })
+  }, {submit: false});
+
+  const drawButton = Inputs.button("Draw a new sample", {
+    reduce: value => (value ?? 0) + 1
+  });
+  drawButton.classList.add("btn-resim");
+
+  const root = html`<div class="controls-wrap">
+    <details class="controls-root" open>
+      <summary>Simulation controls</summary>
+      <div class="controls-grid">
+        <div class="controls-col"><h4>Relationship</h4></div>
+        <div class="controls-col"><h4>Sample &amp; actions</h4></div>
+      </div>
+    </details>
+  </div>`;
+
+  const columns = root.querySelectorAll(".controls-col");
+  columns[0].append(relationshipForm);
+  columns[1].append(sampleForm);
+  const buttonWrap = html`<div style="display:flex; justify-content:flex-start; margin-top:6px;"></div>`;
+  buttonWrap.append(drawButton);
+  columns[1].append(buttonWrap);
+
+  Object.defineProperty(root, "value", {
+    get: () => ({
+      ...relationshipForm.value,
+      ...sampleForm.value,
+      run: drawButton.value ?? 0
+    })
+  });
+
+  return root;
+}
+```
+
+```{ojs}
+html`<p class="cov-message"><strong>Read the quadrants:</strong> observations above both means or below both means contribute positively. Observations on opposite sides contribute negatively. Their balance determines the sign and size of the covariance.</p>`
+```
