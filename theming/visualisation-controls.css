@@ -87,7 +87,7 @@ details.controls-root[open] > summary::before {
 /* ---- Controls Grid Layout ---- */
 details.controls-root .controls-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
   gap: var(--ctrl-spacing-xl);
   box-sizing: border-box;
   width: 100%;
@@ -118,9 +118,13 @@ details.controls-root .controls-col h4 {
 /* ---- Form Controls Layout ---- */
 details.controls-root .controls-col form {
   display: grid !important;
-  grid-template-columns: minmax(150px, auto) 1fr;
+  grid-template-columns: minmax(0, 150px) minmax(0, 1fr);
   align-items: center;
   column-gap: var(--ctrl-spacing-lg);
+  box-sizing: border-box;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
   
   font-size: var(--ctrl-font-size) !important;
   line-height: 1.25;
@@ -137,6 +141,7 @@ details.controls-root .controls-col form > label {
   font-size: var(--ctrl-font-size) !important;
   font-weight: 600;
   color: var(--ctrl-fg-muted);
+  min-width: 0;
 }
 
 details.controls-root .controls-col form > label p {
@@ -245,7 +250,10 @@ details.controls-root .controls-col input[type="range"] {
   
   /* Layout */
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   height: 18px;
+  box-sizing: border-box;
   background: transparent;
   vertical-align: middle;
   
@@ -330,7 +338,7 @@ details.controls-root .btn-resim button:hover {
   }
   
   details.controls-root .controls-col form {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr) !important;
     gap: 4px;
   }
   

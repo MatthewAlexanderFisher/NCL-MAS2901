@@ -113,7 +113,7 @@ fiCurvaturePlot = Plot.plot({
   },
   x: {label: "Candidate mean μ", domain: fiLikelihoodDomain, grid: true},
   y: {
-    label: "Expected log-likelihood relative to maximum",
+    label: "E₀[ℓ(μ) − ℓ(0)]",
     domain: [-12, 0.6],
     grid: true
   },
@@ -152,7 +152,7 @@ html`<div class="fi-figure-shell ojs-figure-shell">
       ${fiDistinguishabilityPlot}
     </div>
     <div class="fi-plot-panel ojs-plot-panel">
-      <strong>How sharply does expected log-likelihood peak?</strong>
+      <strong>Expected relative log-likelihood under μ = 0</strong>
       ${fiCurvaturePlot}
     </div>
   </div>
