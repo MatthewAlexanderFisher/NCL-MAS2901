@@ -1,3 +1,43 @@
-div.sidebar-item-container .active{
-    color: var(--brand-teal);
+/* High-contrast active and hover states for course and in-page navigation. */
+
+#quarto-sidebar .sidebar-link {
+  border-inline-start: 3px solid transparent;
+  border-radius: 0.35rem;
+  transition: background-color 100ms ease, color 100ms ease, border-color 100ms ease;
+}
+
+#quarto-sidebar .sidebar-link:hover {
+  background: var(--nav-hover-bg);
+  color: var(--nav-active-fg);
+}
+
+#quarto-sidebar .sidebar-item-container > .sidebar-link.active {
+  border-inline-start-color: var(--nav-active-border);
+  background: var(--nav-active-bg);
+  color: var(--nav-active-fg) !important;
+  font-weight: 700;
+}
+
+#quarto-margin-sidebar .nav-link {
+  border-inline-start-color: var(--border);
+  border-radius: 0 0.3rem 0.3rem 0;
+  transition: background-color 100ms ease, color 100ms ease, border-color 100ms ease;
+}
+
+#quarto-margin-sidebar .nav-link:hover {
+  background: var(--nav-hover-bg);
+  color: var(--nav-active-fg);
+}
+
+#quarto-margin-sidebar .nav-link.active {
+  border-inline-start: 3px solid var(--nav-active-border);
+  background: var(--nav-active-bg);
+  color: var(--nav-active-fg) !important;
+  font-weight: 700;
+}
+
+#quarto-sidebar .sidebar-link:focus-visible,
+#quarto-margin-sidebar .nav-link:focus-visible {
+  outline: 3px solid var(--nav-active-border);
+  outline-offset: 2px;
 }

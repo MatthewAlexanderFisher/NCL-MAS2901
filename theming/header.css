@@ -1,87 +1,137 @@
-/* ============================
-   Header layout + sizing
-   ============================ */
+/* Navbar layout and shared toolbar treatment. */
 
-#quarto-header { z-index: 3000; }
+#quarto-header {
+  z-index: 3000;
+}
 
-
-/* Thicker top navbar */
 #quarto-header nav.navbar {
-  padding-top: 0.8rem;
-  padding-bottom: 0.8rem;
+  padding-block: 0.55rem;
 }
 
-/* Make the container a positioning context */
+/*
+ * The brand container normally wraps both the logo and title. Making it
+ * display:contents lets the navbar use a genuine three-column grid:
+ * logo | centred title | tools. Equal outer tracks keep the title centred in
+ * the viewport rather than centred in whatever space the tools leave behind.
+ */
 #quarto-header .navbar-container {
-  position: relative;
+  display: grid;
+  grid-template-columns: minmax(9.5rem, 1fr) auto minmax(18rem, 1fr);
+  align-items: center;
+  column-gap: 1rem;
+  min-height: 3.15rem;
 }
 
-/* Brand container spans full width; kill centring from mx-auto */
 #quarto-header .navbar-brand-container {
-  width: auto;
-  margin: 0 auto;
-  min-height: 42px;
+  display: contents;
 }
 
-/* === Logo: FAR LEFT === */
 #quarto-header .navbar-brand-logo {
-  position: absolute;
-  left: 0.75rem;
-  top: 50%;
-  transform: translateY(-50%);
+  position: static;
+  grid-column: 1;
+  justify-self: start;
   display: block;
+  margin: 0;
+  padding: 0;
   line-height: 0;
 }
 
 #quarto-header .navbar-logo {
-  position: static;
-  transform: none;
-  height: 40px;
-  width: auto;
-  max-height: 40px;
   display: block;
+  width: auto;
+  height: 40px;
+  max-height: 40px;
 }
 
-/* === Title: TRUE CENTRE === */
-#quarto-header .navbar-title {
-  position: absolute;
-  left: 56%;
-  top: 50%;
-  transform: translate(-50%,-50%);
+#quarto-header .navbar-brand-container > .navbar-brand:not(.navbar-brand-logo) {
+  grid-column: 2;
+  justify-self: center;
+  min-width: 0;
   margin: 0;
-  text-align: center;
-  font-weight: 500;
+  padding: 0;
+}
+
+#quarto-header .navbar-title {
+  position: static;
+  display: block;
+  margin: 0;
+  color: inherit;
   font-size: 1.02rem;
-  line-height: 1.1;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
   white-space: nowrap;
 }
 
-#quarto-header .navbar-title .title-full { display: inline; }
-#quarto-header .navbar-title .title-short { display: none; }
-
-/* === Tools (toggle/search): FAR RIGHT === */
 #quarto-header .quarto-navbar-tools {
-  position: absolute;
-  right: 0.5rem;
-  top: 50%;
-  transform: translateY(-50%);
+  position: static;
+  grid-column: 3;
+  justify-self: end;
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.2rem;
+  min-width: 0;
+  margin: 0;
 }
 
-/* ============================
-   Dark/Light toggle icon
-   ============================ */
-
-#quarto-header .quarto-color-scheme-toggle {
-  width: 2.2rem;
-  height: 2.2rem;
+/* Give every toolbar action the same visual rhythm and accessible target. */
+#quarto-header .quarto-navbar-tools > :is(
+  .quarto-color-scheme-toggle,
+  .btn-ink-tool,
+  .btn-print-pdf
+),
+#quarto-header .quarto-navbar-tools > .settings-dropdown > .btn-settings {
+  box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  min-width: 2.5rem;
+  margin: 0;
+  padding: 0;
+  border: 1px solid transparent;
   border-radius: 0.5rem;
+  background: transparent;
+  color: var(--navbar-fg, currentColor);
+  opacity: 1;
 }
+
+#quarto-header .quarto-navbar-tools > .kg-open-button {
+  min-height: 2.5rem;
+  margin: 0;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  color: var(--navbar-fg, currentColor);
+  white-space: nowrap;
+}
+
+#quarto-header .quarto-navbar-tools > :is(
+  .kg-open-button,
+  .quarto-color-scheme-toggle,
+  .btn-ink-tool,
+  .btn-print-pdf
+):hover,
+#quarto-header .quarto-navbar-tools > .settings-dropdown > .btn-settings:hover {
+  border-color: color-mix(in srgb, var(--navbar-fg) 14%, transparent);
+  background: var(--nav-hover-bg);
+  color: var(--nav-active-fg);
+  opacity: 1;
+}
+
+#quarto-header .quarto-navbar-tools > :is(
+  .kg-open-button,
+  .quarto-color-scheme-toggle,
+  .btn-ink-tool,
+  .btn-print-pdf
+):focus-visible,
+#quarto-header .quarto-navbar-tools > .settings-dropdown > .btn-settings:focus-visible {
+  outline: 3px solid var(--nav-active-border);
+  outline-offset: 2px;
+}
+
+/* Quarto supplies Bootstrap icons; the theme toggle uses a stable text glyph. */
 #quarto-header .quarto-color-scheme-toggle i {
   display: none !important;
 }
@@ -96,102 +146,81 @@
   content: "☀";
 }
 
-#quarto-header .quarto-color-scheme-toggle:hover {
-  background: rgba(255,255,255,0.08);
-}
-
-/* Secondary nav slight thickness */
 #quarto-header .quarto-secondary-nav .container-fluid {
   min-height: 44px;
 }
 
-/* ============================
-   MOBILE RESPONSIVE ADJUSTMENTS
-   ============================ */
+/* Collapse descriptive tool text before it can compete with the title. */
+@media (max-width: 900px) {
+  #quarto-header .navbar-container {
+    grid-template-columns: minmax(8.5rem, 1fr) auto minmax(12rem, 1fr);
+    column-gap: 0.75rem;
+  }
+
+  #quarto-header .kg-open-button-label {
+    display: none;
+  }
+
+  #quarto-header .quarto-navbar-tools > .kg-open-button {
+    box-sizing: border-box;
+    width: 2.5rem;
+    min-width: 2.5rem;
+    padding: 0;
+    justify-content: center;
+  }
+}
+
 @media (max-width: 720px) {
+  #quarto-header .navbar-container {
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 0.5rem;
+  }
+
   #quarto-header .navbar-brand-logo {
     display: none !important;
   }
 
-  #quarto-header .navbar-title {
-    position: absolute;
-    left: 0.75rem;
-    top: 50%;
-    transform: translateY(-50%);
-    margin: 0;
-    text-align: left;
-    font-size: 0.95rem;
-    line-height: 1.2;
-    font-size: 0;
-    white-space: nowrap;
+  #quarto-header .navbar-brand-container > .navbar-brand:not(.navbar-brand-logo) {
+    grid-column: 1;
+    justify-self: start;
   }
-  
+
+  #quarto-header .navbar-title {
+    overflow: hidden;
+    max-width: 7rem;
+    font-size: 0;
+    text-overflow: ellipsis;
+  }
+
   #quarto-header .navbar-title::after {
     content: "MAS2901";
     font-size: 0.95rem;
-    font-weight: 500;
+    font-weight: 600;
   }
 
   #quarto-header .quarto-navbar-tools {
-    position: absolute;
-    right: 0.5rem;
-    top: 50%;
-    transform: translateY(-50%);
+    grid-column: 2;
   }
 }
 
-@media (max-width: 480px) {
-  #quarto-header .navbar-title::after {
-    font-size: 0.85rem;
+@media (max-width: 400px) {
+  #quarto-header .navbar-container {
+    column-gap: 0.25rem;
+  }
+
+  #quarto-header .quarto-navbar-tools {
+    gap: 0.05rem;
+  }
+
+  #quarto-header .quarto-navbar-tools > :is(
+    .quarto-color-scheme-toggle,
+    .btn-ink-tool,
+    .btn-print-pdf,
+    .kg-open-button
+  ),
+  #quarto-header .quarto-navbar-tools > .settings-dropdown > .btn-settings {
+    width: 2.25rem;
+    height: 2.25rem;
+    min-width: 2.25rem;
   }
 }
-
-#quarto-header nav.navbar {
-  padding-top: 0.8rem;
-  padding-bottom: 0.8rem;
-}
-
-
-/* ============================
-   Shared button styles for toolbar buttons
-   ============================ */
-#quarto-header .btn-zoom-toggle,
-#quarto-header .btn-reading-mode {
-  width: 2.2rem;
-  height: 2.2rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.5rem;
-  border: 1px solid var(--navbar-bg, #ddd);
-  background: var(--navbar-bg, white);
-  color: var(--brand-fg, currentColor);
-  cursor: pointer;
-  padding: 0;
-}
-
-#quarto-header .btn-zoom-toggle:hover,
-#quarto-header .btn-reading-mode:hover {
-  color: var(--brand-teal);
-  background: rgba(255,255,255,0.08);
-}
-
-/* ============================
-   Zoom toggle icons
-   ============================ */
-#quarto-header .btn-zoom-toggle svg {
-  width: 1.15rem; height: 1.15rem; display: inline-block;
-}
-#quarto-header .btn-zoom-toggle .icon-exit { display: none; }
-body.lecture-zoom #quarto-header .btn-zoom-toggle .icon-enter { display: none; }
-body.lecture-zoom #quarto-header .btn-zoom-toggle .icon-exit  { display: inline-block; }
-
-/* ============================
-   Reading mode toggle icons
-   ============================ */
-#quarto-header .btn-reading-mode svg {
-  width: 1.15rem; height: 1.15rem; display: inline-block;
-}
-#quarto-header .btn-reading-mode .icon-exit { display: none; }
-body.reading-mode #quarto-header .btn-reading-mode .icon-enter { display: none; }
-body.reading-mode #quarto-header .btn-reading-mode .icon-exit  { display: inline-block; }

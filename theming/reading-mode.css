@@ -9,22 +9,28 @@ body.reading-mode .sidebar-navigation {
   display: none !important;
 }
 
-/* Expand main content with comfortable reading width */
+/* A bounded measure keeps prose near 70--85 characters per line. */
 body.reading-mode main#quarto-document-content,
 body.reading-mode main.content {
-  max-width: 60rem !important;
+  box-sizing: border-box;
+  max-width: 860px !important;
   width: 100% !important;
   margin: 0 auto !important;
-  padding-left: 2rem !important;
-  padding-right: 2rem !important;
+  padding-left: clamp(1.25rem, 4vw, 2.5rem) !important;
+  padding-right: clamp(1.25rem, 4vw, 2.5rem) !important;
 }
 
 /* Relax page grid */
 body.reading-mode .page-columns {
   grid-template-columns: 1fr !important;
+  justify-items: center;
 }
 body.reading-mode .page-columns > * {
   grid-column: 1 / -1 !important;
+}
+
+body.reading-mode .page-columns > main#quarto-document-content {
+  justify-self: center;
 }
 
 /* Reading-optimized typography */
@@ -104,6 +110,12 @@ body.reading-mode div.display-math {
   margin-bottom: 0.25em !important;
 }
 
+@media (max-width: 600px) {
+  html.reading-mode {
+    font-size: 16px !important;
+  }
+}
+
 /* Reading progress indicator */
 body.reading-mode::before {
   content: '';
@@ -117,4 +129,3 @@ body.reading-mode::before {
     transparent var(--scroll-progress, 0%));
   z-index: 9999;
 }
-

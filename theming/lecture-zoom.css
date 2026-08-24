@@ -7,25 +7,37 @@ body.lecture-zoom .sidebar-navigation {
   display: none !important;
 }
 
-/* Expand main content */
+/* Keep projected text comfortably wide without spanning an entire ultrawide display. */
 body.lecture-zoom main#quarto-document-content,
 body.lecture-zoom main.content {
-  max-width: none !important;
+  box-sizing: border-box;
+  max-width: 1200px !important;
   width: 100% !important;
-  margin: 0 !important;
-  padding-left: max(4rem, env(safe-area-inset-left)) !important;
-  padding-right: max(4rem, env(safe-area-inset-right)) !important;
+  margin: 0 auto !important;
+  padding-left: max(clamp(1.5rem, 5vw, 4rem), env(safe-area-inset-left)) !important;
+  padding-right: max(clamp(1.5rem, 5vw, 4rem), env(safe-area-inset-right)) !important;
 }
 
 /* Relax page grid */
 body.lecture-zoom .page-columns {
   grid-template-columns: 1fr !important;
+  justify-items: center;
 }
 body.lecture-zoom .page-columns > * {
   grid-column: 1 / -1 !important;
 }
 
+body.lecture-zoom .page-columns > main#quarto-document-content {
+  justify-self: center;
+}
+
 html.lecture-zoom { font-size: 20px !important; }
+
+@media (max-width: 720px) {
+  html.lecture-zoom {
+    font-size: 18px !important;
+  }
+}
 
 /* Fullscreen overlay that will *host* the existing Quarto autocomplete UI */
 #lecture-search-overlay {

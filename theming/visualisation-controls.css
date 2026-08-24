@@ -4,12 +4,15 @@
 
 /* ---- CSS Custom Properties ---- */
 :root {
-  --ctrl-font-size: 12px;
+  --ctrl-font-size: 0.875rem;
   --ctrl-border-radius: 10px;
   --ctrl-border-radius-sm: 6px;
-  --ctrl-spacing: 8px;
-  --ctrl-spacing-lg: 10px;
-  --ctrl-spacing-xl: 12px;
+  --ctrl-spacing: 0.625rem;
+  --ctrl-spacing-lg: 0.75rem;
+  --ctrl-spacing-xl: 1rem;
+  --ctrl-control-height: 2.125rem;
+  --ctrl-range-track: 0.375rem;
+  --ctrl-range-thumb: 1.125rem;
   
   /* Colors - using your SCSS theme variables */
   --ctrl-surface: var(--surface);
@@ -23,12 +26,16 @@
 
 /* ---- Main Controls Container ---- */
 .controls-wrap {
-  max-width: 720px;
+  width: 100%;
+  max-width: 800px;
   margin: var(--ctrl-spacing) auto 0;
 }
 
 details.controls-root {
-  font-size: var(--ctrl-font-size);
+  width: 100%;
+  max-width: 800px;
+  margin-inline: auto;
+  font-size: var(--ctrl-font-size) !important;
 }
 
 /* ---- Dropdown Header ---- */
@@ -42,7 +49,9 @@ details.controls-root > summary {
   display: flex;
   align-items: center;
   gap: var(--ctrl-spacing);
-  padding: var(--ctrl-spacing) var(--ctrl-spacing-lg);
+  min-height: 2.75rem;
+  box-sizing: border-box;
+  padding: var(--ctrl-spacing) var(--ctrl-spacing-xl) !important;
   
   /* Appearance */
   background: var(--ctrl-surface);
@@ -51,7 +60,7 @@ details.controls-root > summary {
   
   /* Typography */
   font-weight: 600;
-  font-size: calc(var(--ctrl-font-size) + 1px);
+  font-size: calc(var(--ctrl-font-size) + 0.0625rem) !important;
   color: var(--ctrl-fg-strong);
 }
 
@@ -73,10 +82,10 @@ details.controls-root > summary::before {
   width: 0;
   height: 0;
   border-style: solid;
-  border-width: 3px 0 3px 6px;
+  border-width: 4px 0 4px 7px;
   border-color: transparent transparent transparent var(--ctrl-fg-strong);
   transform: rotate(0deg);
-  transform-origin: 3px 50%;
+  transform-origin: 3.5px 50%;
   transition: transform 50ms ease;
 }
 
@@ -87,8 +96,8 @@ details.controls-root[open] > summary::before {
 /* ---- Controls Grid Layout ---- */
 details.controls-root .controls-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
-  gap: var(--ctrl-spacing-xl);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)) !important;
+  gap: var(--ctrl-spacing-xl) !important;
   box-sizing: border-box;
   width: 100%;
   min-width: 0;
@@ -98,7 +107,7 @@ details.controls-root .controls-grid {
   border-top: none;
   border-bottom-left-radius: var(--ctrl-border-radius);
   border-bottom-right-radius: var(--ctrl-border-radius);
-  padding: var(--ctrl-spacing-lg);
+  padding: var(--ctrl-spacing-xl) !important;
   background: var(--ctrl-surface-weak);
   overflow: visible;
 }
@@ -109,8 +118,8 @@ details.controls-root .controls-col {
 }
 
 details.controls-root .controls-col h4 {
-  margin: 0 0 6px 0;
-  font-size: var(--ctrl-font-size);
+  margin: 0 0 0.5rem 0;
+  font-size: var(--ctrl-font-size) !important;
   font-weight: 700;
   color: var(--ctrl-fg-muted);
 }
@@ -118,17 +127,17 @@ details.controls-root .controls-col h4 {
 /* ---- Form Controls Layout ---- */
 details.controls-root .controls-col form {
   display: grid !important;
-  grid-template-columns: minmax(0, 150px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 8rem) minmax(0, 1fr) !important;
   align-items: center;
-  column-gap: var(--ctrl-spacing-lg);
+  column-gap: var(--ctrl-spacing-lg) !important;
   box-sizing: border-box;
   width: 100% !important;
   max-width: 100% !important;
   min-width: 0 !important;
   
   font-size: var(--ctrl-font-size) !important;
-  line-height: 1.25;
-  margin: 6px 0;
+  line-height: 1.35;
+  margin: 0.5rem 0 !important;
 }
 
 /* ---- Labels ---- */
@@ -155,14 +164,18 @@ details.controls-root .controls-col form > [class*="-input"] {
   align-items: center;
   gap: var(--ctrl-spacing);
   min-width: 0;
-  min-height: 22px;
+  min-height: var(--ctrl-control-height) !important;
 }
 
 /* ---- Number Inputs ---- */
 details.controls-root .controls-col input[type="number"] {
-  height: 24px;
-  padding: 2px 6px;
-  font-size: var(--ctrl-font-size);
+  height: var(--ctrl-control-height) !important;
+  min-width: 3.75rem;
+  width: 4.5rem !important;
+  max-width: 40%;
+  flex: 0 1 4.5rem;
+  padding: 0.25rem 0.5rem !important;
+  font-size: var(--ctrl-font-size) !important;
   
   border: 1px solid var(--ctrl-border);
   border-radius: var(--ctrl-border-radius-sm);
@@ -172,9 +185,9 @@ details.controls-root .controls-col input[type="number"] {
 
 /* ---- Select inputs ---- */
 details.controls-root .controls-col select {
-  min-height: 24px !important;
+  min-height: var(--ctrl-control-height) !important;
   max-width: 100% !important;
-  padding: 2px 6px !important;
+  padding: 0.25rem 0.5rem !important;
   font-size: var(--ctrl-font-size) !important;
 
   border: 1px solid var(--ctrl-border) !important;
@@ -190,9 +203,9 @@ details.controls-root .controls-col input[type="checkbox"] {
   appearance: none;
   
   /* Size and positioning - ensure square */
-  width: 18px;
-  height: 18px;
-  min-width: 18px; /* prevent flex shrinking */
+  width: 1.25rem;
+  height: 1.25rem;
+  min-width: 1.25rem; /* prevent flex shrinking */
   margin: 0;
   
   /* Styling to match other inputs */
@@ -252,7 +265,8 @@ details.controls-root .controls-col input[type="range"] {
   width: 100%;
   max-width: 100%;
   min-width: 0;
-  height: 18px;
+  flex: 1 1 5rem;
+  height: 1.75rem !important;
   box-sizing: border-box;
   background: transparent;
   vertical-align: middle;
@@ -263,7 +277,7 @@ details.controls-root .controls-col input[type="range"] {
 
 /* Slider track - WebKit */
 details.controls-root .controls-col input[type="range"]::-webkit-slider-runnable-track {
-  height: 4px;
+  height: var(--ctrl-range-track) !important;
   border-radius: 999px;
   background: color-mix(in srgb, var(--ctrl-brand) 35%, transparent);
 }
@@ -273,27 +287,27 @@ details.controls-root .controls-col input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   
-  width: 12px;
-  height: 12px;
+  width: var(--ctrl-range-thumb) !important;
+  height: var(--ctrl-range-thumb) !important;
   border-radius: 50%;
   border: 0;
   background: var(--ctrl-brand);
   
-  /* Center thumb over 4px track: (4 - 12) / 2 = -4px */
-  margin-top: -4px;
+  /* Centre the 18px thumb over the 6px track. */
+  margin-top: -0.375rem;
 }
 
 /* Slider track - Firefox */
 details.controls-root .controls-col input[type="range"]::-moz-range-track {
-  height: 4px;
+  height: var(--ctrl-range-track) !important;
   border-radius: 999px;
   background: color-mix(in srgb, var(--ctrl-brand) 35%, transparent);
 }
 
 /* Slider thumb - Firefox (auto-centered) */
 details.controls-root .controls-col input[type="range"]::-moz-range-thumb {
-  width: 12px;
-  height: 12px;
+  width: var(--ctrl-range-thumb) !important;
+  height: var(--ctrl-range-thumb) !important;
   border-radius: 50%;
   border: 0;
   background: var(--ctrl-brand);
@@ -301,7 +315,7 @@ details.controls-root .controls-col input[type="range"]::-moz-range-thumb {
 
 /* Optional: Firefox progress styling */
 details.controls-root .controls-col input[type="range"]::-moz-range-progress {
-  height: 4px;
+  height: var(--ctrl-range-track) !important;
   border-radius: 999px;
   background: color-mix(in srgb, var(--ctrl-brand) 35%, transparent);
 }
@@ -309,13 +323,14 @@ details.controls-root .controls-col input[type="range"]::-moz-range-progress {
 /* ---- Buttons ---- */
 details.controls-root .btn-resim button {
   /* Layout */
-  padding: 6px var(--ctrl-spacing-xl);
+  min-height: 2.25rem;
+  padding: 0.5rem 0.9rem !important;
   border: none;
   border-radius: var(--ctrl-border-radius-sm);
   
   /* Typography */
   font-weight: 600;
-  font-size: var(--ctrl-font-size);
+  font-size: var(--ctrl-font-size) !important;
   
   /* Appearance */
   background: var(--ctrl-brand);
@@ -339,10 +354,40 @@ details.controls-root .btn-resim button:hover {
   
   details.controls-root .controls-col form {
     grid-template-columns: minmax(0, 1fr) !important;
-    gap: 4px;
+    gap: 0.35rem;
   }
   
   details.controls-root .controls-col form > label {
     justify-self: start;
   }
+}
+
+/*
+ * A few older figures use bespoke control rows rather than .controls-root.
+ * Keep their slider targets at the same accessible size without imposing the
+ * panel layout on them. The important declarations intentionally win over
+ * legacy OJS style blocks that are mounted after the page stylesheet.
+ */
+.observablehq input[type="range"] {
+  min-height: 1.75rem !important;
+}
+
+.observablehq input[type="range"]::-webkit-slider-runnable-track {
+  height: var(--ctrl-range-track) !important;
+}
+
+.observablehq input[type="range"]::-webkit-slider-thumb {
+  width: var(--ctrl-range-thumb) !important;
+  height: var(--ctrl-range-thumb) !important;
+  margin-top: -0.375rem !important;
+}
+
+.observablehq input[type="range"]::-moz-range-track,
+.observablehq input[type="range"]::-moz-range-progress {
+  height: var(--ctrl-range-track) !important;
+}
+
+.observablehq input[type="range"]::-moz-range-thumb {
+  width: var(--ctrl-range-thumb) !important;
+  height: var(--ctrl-range-thumb) !important;
 }
