@@ -1,0 +1,360 @@
+```{ojs}
+//| echo: false
+
+distMeta = ({
+  bernoulli: { label: "Bernoulli", group: "Discrete models", note: "One binary outcome" },
+  binomial: { label: "Binomial", group: "Discrete models", note: "Number of successes in a fixed number of trials" },
+  poisson: { label: "Poisson", group: "Discrete models", note: "Count of events in a fixed exposure" },
+  geometric: { label: "Geometric", group: "Discrete models", note: "Trials until the first success" },
+  negativeBinomial: { label: "Negative Binomial", group: "Discrete models", note: "Trials until a fixed number of successes" },
+  uniform: { label: "Uniform", group: "Continuous models", note: "A constant density on a bounded interval" },
+  exponential: { label: "Exponential", group: "Continuous models", note: "A positive memoryless waiting time" },
+  gamma: { label: "Gamma", group: "Continuous models", note: "A flexible positive, right-skewed distribution" },
+  inverseGamma: { label: "Inverse Gamma", group: "Continuous models", note: "A positive distribution often used for variance parameters" },
+  normal: { label: "Normal", group: "Continuous models", note: "A symmetric location-scale distribution" },
+  lognormal: { label: "Lognormal", group: "Continuous models", note: "A positive variable whose logarithm is Normal" },
+  chiSquared: { label: "Chi-squared", group: "Continuous models", note: "A sum-of-squares reference distribution" },
+  studentT: { label: "Student t", group: "Continuous models", note: "A symmetric distribution with heavier tails than the Normal" },
+  f: { label: "F", group: "Continuous models", note: "A positive ratio-of-variances reference distribution" },
+  beta: { label: "Beta", group: "Continuous models", note: "A flexible distribution on the unit interval" },
+  weibull: { label: "Weibull", group: "Continuous models", note: "A flexible positive lifetime distribution" }
+})
+```
+
+```{ojs}
+//| echo: false
+
+viewof distChoice = {
+  const root = html`<label class="distribution-picker">
+    <span>Choose a distribution</span>
+    <select aria-label="Choose a distribution">
+      <optgroup label="Discrete models">
+        <option value="bernoulli">Bernoulli</option>
+        <option value="binomial">Binomial</option>
+        <option value="poisson">Poisson</option>
+        <option value="geometric">Geometric</option>
+        <option value="negativeBinomial">Negative Binomial</option>
+      </optgroup>
+      <optgroup label="Continuous models">
+        <option value="uniform">Uniform</option>
+        <option value="exponential">Exponential</option>
+        <option value="gamma">Gamma</option>
+        <option value="inverseGamma">Inverse Gamma</option>
+        <option value="normal" selected>Normal</option>
+        <option value="lognormal">Lognormal</option>
+        <option value="chiSquared">Chi-squared</option>
+        <option value="studentT">Student t</option>
+        <option value="f">F</option>
+        <option value="beta">Beta</option>
+        <option value="weibull">Weibull</option>
+      </optgroup>
+    </select>
+  </label>`;
+  const select = root.querySelector("select");
+  Object.defineProperty(root, "value", { get: () => select.value });
+  return root;
+}
+```
+
+```{ojs}
+//| echo: false
+//| output: false
+
+viewof distParams = {
+  let controls;
+
+  switch (distChoice) {
+    case "bernoulli":
+      controls = Inputs.form({
+        p: Inputs.range([0.01, 0.99], { value: 0.6, step: 0.01, label: md`${tex`p`}` })
+      }, { submit: false });
+      break;
+    case "binomial":
+      controls = Inputs.form({
+        n: Inputs.range([2, 50], { value: 12, step: 1, label: md`${tex`n`}` }),
+        p: Inputs.range([0.01, 0.99], { value: 0.4, step: 0.01, label: md`${tex`p`}` })
+      }, { submit: false });
+      break;
+    case "poisson":
+      controls = Inputs.form({
+        lambda: Inputs.range([0.2, 20], { value: 4, step: 0.1, label: md`${tex`\lambda`}` })
+      }, { submit: false });
+      break;
+    case "geometric":
+      controls = Inputs.form({
+        p: Inputs.range([0.05, 0.95], { value: 0.35, step: 0.01, label: md`${tex`p`}` })
+      }, { submit: false });
+      break;
+    case "negativeBinomial":
+      controls = Inputs.form({
+        r: Inputs.range([1, 15], { value: 4, step: 1, label: md`${tex`r`}` }),
+        p: Inputs.range([0.05, 0.95], { value: 0.4, step: 0.01, label: md`${tex`p`}` })
+      }, { submit: false });
+      break;
+    case "uniform":
+      controls = Inputs.form({
+        a: Inputs.range([-4, 0], { value: -1, step: 0.1, label: md`${tex`a`}` }),
+        b: Inputs.range([1, 6], { value: 3, step: 0.1, label: md`${tex`b`}` })
+      }, { submit: false });
+      break;
+    case "exponential":
+      controls = Inputs.form({
+        lambda: Inputs.range([0.2, 5], { value: 1, step: 0.05, label: md`${tex`\lambda\ \text{(rate)}`}` })
+      }, { submit: false });
+      break;
+    case "gamma":
+      controls = Inputs.form({
+        a: Inputs.range([0.5, 10], { value: 3, step: 0.1, label: md`${tex`a\ \text{(shape)}`}` }),
+        b: Inputs.range([0.2, 5], { value: 1, step: 0.05, label: md`${tex`b\ \text{(rate)}`}` })
+      }, { submit: false });
+      break;
+    case "inverseGamma":
+      controls = Inputs.form({
+        a: Inputs.range([1.1, 10], { value: 4, step: 0.1, label: md`${tex`a\ \text{(shape)}`}` }),
+        b: Inputs.range([0.2, 5], { value: 2, step: 0.05, label: md`${tex`b\ \text{(scale)}`}` })
+      }, { submit: false });
+      break;
+    case "normal":
+      controls = Inputs.form({
+        mu: Inputs.range([-3, 3], { value: 0, step: 0.05, label: md`${tex`\mu`}` }),
+        sigma: Inputs.range([0.2, 3], { value: 1, step: 0.05, label: md`${tex`\sigma`}` })
+      }, { submit: false });
+      break;
+    case "lognormal":
+      controls = Inputs.form({
+        mu: Inputs.range([-2, 2], { value: 0, step: 0.05, label: md`${tex`\mu`}` }),
+        sigma: Inputs.range([0.2, 1.5], { value: 0.6, step: 0.05, label: md`${tex`\sigma`}` })
+      }, { submit: false });
+      break;
+    case "chiSquared":
+      controls = Inputs.form({
+        nu: Inputs.range([1, 40], { value: 6, step: 1, label: md`${tex`\nu`}` })
+      }, { submit: false });
+      break;
+    case "studentT":
+      controls = Inputs.form({
+        nu: Inputs.range([1, 50], { value: 5, step: 1, label: md`${tex`\nu`}` })
+      }, { submit: false });
+      break;
+    case "f":
+      controls = Inputs.form({
+        d1: Inputs.range([1, 30], { value: 5, step: 1, label: md`${tex`d_1`}` }),
+        d2: Inputs.range([1, 30], { value: 10, step: 1, label: md`${tex`d_2`}` })
+      }, { submit: false });
+      break;
+    case "beta":
+      controls = Inputs.form({
+        a: Inputs.range([0.3, 10], { value: 2, step: 0.1, label: md`${tex`a`}` }),
+        b: Inputs.range([0.3, 10], { value: 5, step: 0.1, label: md`${tex`b`}` })
+      }, { submit: false });
+      break;
+    case "weibull":
+      controls = Inputs.form({
+        k: Inputs.range([0.3, 5], { value: 1.5, step: 0.05, label: md`${tex`k\ \text{(shape)}`}` }),
+        lambda: Inputs.range([0.5, 5], { value: 2, step: 0.05, label: md`${tex`\lambda\ \text{(scale)}`}` })
+      }, { submit: false });
+      break;
+  }
+
+  controls.classList.add("distribution-parameter-form");
+  return controls;
+}
+```
+
+```{ojs}
+//| echo: false
+//| output: false
+
+distSpec = {
+  const p = distParams;
+  const fmt = (x, digits = 2) => Number.isFinite(x) ? x.toFixed(digits) : "undefined";
+  let data, stats, kind = "continuous", xDomain;
+
+  switch (distChoice) {
+    case "bernoulli": {
+      data = [0, 1].map(x => ({ x, y: x ? p.p : 1 - p.p }));
+      stats = md`**Mean** ${tex`=p`} ${fmt(p.p)}; **variance** ${tex`=p(1-p)`} ${fmt(p.p * (1-p.p), 3)}.`;
+      kind = "discrete";
+      break;
+    }
+    case "binomial": {
+      data = Array.from({ length: p.n + 1 }, (_, x) => ({ x, y: binomPMF(p.n, p.p, x) }));
+      stats = md`**Mean** ${tex`=np`} ${fmt(p.n*p.p)}; **variance** ${tex`=np(1-p)`} ${fmt(p.n*p.p*(1-p.p))}.`;
+      kind = "discrete";
+      break;
+    }
+    case "poisson": {
+      const hi = Math.max(10, Math.ceil(p.lambda + 5*Math.sqrt(p.lambda)));
+      data = Array.from({ length: hi + 1 }, (_, x) => ({ x, y: poisPMF(p.lambda, x) }));
+      stats = md`**Mean and variance** ${tex`=\lambda`} ${fmt(p.lambda)}.`;
+      kind = "discrete";
+      break;
+    }
+    case "geometric": {
+      const hi = Math.min(60, Math.max(10, Math.ceil(Math.log(0.01)/Math.log(1-p.p))));
+      data = Array.from({ length: hi }, (_, i) => ({ x: i+1, y: geomPMF1(p.p, i+1) }));
+      stats = md`**Mean** ${tex`=1/p`} ${fmt(1/p.p)}; **variance** ${tex`=(1-p)/p^2`} ${fmt((1-p.p)/(p.p**2))}.`;
+      kind = "discrete";
+      break;
+    }
+    case "negativeBinomial": {
+      const mean = p.r/p.p;
+      const sd = Math.sqrt(p.r*(1-p.p)/(p.p**2));
+      const hi = Math.min(100, Math.max(p.r+8, Math.ceil(mean+5*sd)));
+      data = Array.from({ length: hi-p.r+1 }, (_, i) => ({ x: p.r+i, y: negbinPMF(p.r, p.p, p.r+i) }));
+      stats = md`**Mean** ${tex`=r/p`} ${fmt(mean)}; **variance** ${tex`=r(1-p)/p^2`} ${fmt(sd**2)}.`;
+      kind = "discrete";
+      break;
+    }
+    case "uniform": {
+      const pad = 0.15*(p.b-p.a);
+      xDomain = [p.a-pad, p.b+pad];
+      data = linspace(xDomain[0], xDomain[1]).map(x => ({ x, y: unifPDF(x, p.a, p.b) }));
+      stats = md`**Mean** ${tex`=(a+b)/2`} ${fmt((p.a+p.b)/2)}; **variance** ${tex`=(b-a)^2/12`} ${fmt((p.b-p.a)**2/12)}.`;
+      break;
+    }
+    case "exponential": {
+      xDomain = domainExp(p.lambda);
+      data = linspace(...xDomain).map(x => ({ x, y: expPDF(x, p.lambda) }));
+      stats = md`**Mean** ${tex`=1/\lambda`} ${fmt(1/p.lambda)}; **variance** ${tex`=1/\lambda^2`} ${fmt(1/(p.lambda**2))}.`;
+      break;
+    }
+    case "gamma": {
+      xDomain = domainGamma(p.a, p.b);
+      data = linspace(...xDomain).map(x => ({ x, y: gammaPDF(x, p.a, p.b) }));
+      stats = md`**Mean** ${tex`=a/b`} ${fmt(p.a/p.b)}; **variance** ${tex`=a/b^2`} ${fmt(p.a/(p.b**2))}.`;
+      break;
+    }
+    case "inverseGamma": {
+      const mean = p.b/(p.a-1);
+      const variance = p.a > 2 ? p.b**2/((p.a-1)**2*(p.a-2)) : Infinity;
+      const hi = Math.max(4, Math.min(60, Number.isFinite(variance) ? mean+6*Math.sqrt(variance) : 5*mean));
+      xDomain = [0, hi];
+      data = linspace(...xDomain).map(x => ({ x, y: x <= 0 ? 0 : Math.exp(p.a*Math.log(p.b)-logGamma(p.a)-(p.a+1)*Math.log(x)-p.b/x) }));
+      stats = md`**Mean** ${tex`=b/(a-1)`} ${fmt(mean)}; **variance** ${p.a > 2 ? tex`=b^2/[(a-1)^2(a-2)]\ ${fmt(variance)}` : md`is undefined for ${tex`a\leq2`}`}.`;
+      break;
+    }
+    case "normal": {
+      xDomain = domainNormal(p.mu, p.sigma);
+      data = linspace(...xDomain).map(x => ({ x, y: normPDF(x, p.mu, p.sigma) }));
+      stats = md`**Mean** ${tex`=\mu`} ${fmt(p.mu)}; **variance** ${tex`=\sigma^2`} ${fmt(p.sigma**2)}.`;
+      break;
+    }
+    case "lognormal": {
+      const mean = Math.exp(p.mu+p.sigma**2/2);
+      const variance = (Math.exp(p.sigma**2)-1)*Math.exp(2*p.mu+p.sigma**2);
+      xDomain = [0, Math.max(4, mean+5*Math.sqrt(variance))];
+      data = linspace(...xDomain).map(x => ({ x, y: lognormPDF(x, p.mu, p.sigma) }));
+      stats = md`**Mean** ${tex`=e^{\mu+\sigma^2/2}`} ${fmt(mean)}; **variance** ${tex`=(e^{\sigma^2}-1)e^{2\mu+\sigma^2}`} ${fmt(variance)}.`;
+      break;
+    }
+    case "chiSquared": {
+      xDomain = [0, Math.max(8, p.nu+6*Math.sqrt(2*p.nu))];
+      data = linspace(...xDomain).map(x => ({ x, y: chisqPDF(x, p.nu) }));
+      stats = md`**Mean** ${tex`=\nu`} ${fmt(p.nu)}; **variance** ${tex`=2\nu`} ${fmt(2*p.nu)}.`;
+      break;
+    }
+    case "studentT": {
+      xDomain = [-6, 6];
+      data = linspace(...xDomain).map(x => ({ x, y: tPDF(x, p.nu) }));
+      const variance = p.nu > 2 ? p.nu/(p.nu-2) : Infinity;
+      stats = md`**Mean** ${p.nu > 1 ? tex`=0` : md`is undefined`}; **variance** ${p.nu > 2 ? tex`=\nu/(\nu-2)\ ${fmt(variance)}` : md`is not finite for ${tex`\nu\leq2`}`}.`;
+      break;
+    }
+    case "f": {
+      const mean = p.d2 > 2 ? p.d2/(p.d2-2) : Infinity;
+      xDomain = [0, Math.max(6, Number.isFinite(mean) ? 5*mean : 10)];
+      data = linspace(...xDomain).map(x => ({ x, y: fPDF(x, p.d1, p.d2) }));
+      stats = md`**Mean** ${p.d2 > 2 ? tex`=d_2/(d_2-2)\ ${fmt(mean)}` : md`is undefined for ${tex`d_2\leq2`}`}.`;
+      break;
+    }
+    case "beta": {
+      xDomain = [0, 1];
+      data = linspace(...xDomain).map(x => ({ x, y: betaPDF(x, p.a, p.b) }));
+      const mean = p.a/(p.a+p.b);
+      const variance = p.a*p.b/((p.a+p.b)**2*(p.a+p.b+1));
+      stats = md`**Mean** ${tex`=a/(a+b)`} ${fmt(mean)}; **variance** ${tex`=ab/[(a+b)^2(a+b+1)]`} ${fmt(variance, 3)}.`;
+      break;
+    }
+    case "weibull": {
+      const mean = p.lambda*Math.exp(logGamma(1+1/p.k));
+      const variance = p.lambda**2*(Math.exp(logGamma(1+2/p.k))-Math.exp(2*logGamma(1+1/p.k)));
+      xDomain = [0, Math.max(4, mean+5*Math.sqrt(variance))];
+      data = linspace(...xDomain).map(x => ({ x, y: x <= 0 ? 0 : (p.k/p.lambda)*(x/p.lambda)**(p.k-1)*Math.exp(-((x/p.lambda)**p.k)) }));
+      stats = md`**Mean** ${tex`=\lambda\Gamma(1+1/k)`} ${fmt(mean)}; **variance** ${fmt(variance)}.`;
+      break;
+    }
+  }
+
+  return { ...distMeta[distChoice], data, stats, kind, xDomain };
+}
+```
+
+```{ojs}
+//| echo: false
+//| output: false
+
+explorerGraphic = {
+  const plotWidth = Math.min(width, 780);
+  const common = {
+    width: plotWidth,
+    height: 330,
+    marginLeft: 55,
+    style: { background: "var(--plot-bg)", color: "var(--plot-fg)" },
+    y: { label: distSpec.kind === "discrete" ? "Probability" : "Density", grid: true }
+  };
+
+  const plot = distSpec.kind === "discrete"
+    ? Plot.plot({
+        ...common,
+        x: { label: "x", type: "band" },
+        marks: [
+          Plot.barY(distSpec.data, { x: "x", y: "y", fill: ACCENT, inset: 0.6 }),
+          Plot.ruleY([0], { stroke: GRID, strokeOpacity: 0.7 })
+        ]
+      })
+    : Plot.plot({
+        ...common,
+        x: { label: "x", domain: distSpec.xDomain },
+        marks: [
+          Plot.areaY(distSpec.data, { x: "x", y: "y", fill: AREA }),
+          Plot.lineY(distSpec.data, { x: "x", y: "y", stroke: ACCENT, strokeWidth: 2.5 }),
+          Plot.ruleY([0], { stroke: GRID, strokeOpacity: 0.7 })
+        ]
+      });
+
+  return html`<div class="distribution-explorer-output">
+    <h3>${distSpec.label}</h3>
+    <p class="distribution-explorer-note">${distSpec.note}</p>
+    <div class="distribution-explorer-stats">${distSpec.stats}</div>
+    ${plot}
+  </div>`;
+}
+```
+
+```{ojs}
+//| echo: false
+//| output: false
+
+explorerLayout = {
+  const plotHost = html`<div class="distribution-explorer-plot-host"></div>`;
+  const node = html`<div class="ojs-figure-shell distribution-explorer-shell">
+    ${plotHost}
+    <div class="distribution-explorer-controls">
+      <strong>Parameters</strong>
+      ${viewof distParams}
+    </div>
+  </div>`;
+  return { node, plotHost };
+}
+```
+
+```{ojs}
+//| echo: false
+
+{
+  explorerGraphic;
+  explorerLayout.plotHost.replaceChildren(explorerGraphic);
+  return explorerLayout.node;
+}
+```

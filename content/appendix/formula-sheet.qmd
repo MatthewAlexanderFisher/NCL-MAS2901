@@ -1,293 +1,801 @@
 ---
 tbl-cap-location: bottom
+section-divs: false
 ---
 
 # Formula Sheet {.unnumbered}
 
+::: {.callout-important title="Assessment use"}
+You are **not expected to memorise** the probability mass functions, density
+functions, or moments collected on this page for the exam. This Formula Sheet
+defines the notation and parameterisations used throughout the module and in
+assessments; its purpose is to make the course conventions explicit, not to
+create a memory test.
+:::
+
 ## Conventions {#sec-formula-sheet}
 
-This sheet uses the parameterisations shown below. In particular, Gamma second
+The definitions below are the course conventions. In particular, Gamma second
 parameters are **rates**, Weibull second parameters are **scales**, and
-$z_p=\Phi^{-1}(p)$ denotes a lower-tail standard-Normal quantile.
+$z_p=\Phi^{-1}(p)$ denotes a lower-tail standard-Normal quantile. When another
+source uses a different convention, translate it into the parameterisation on
+this page before applying a result.
 
-## Discrete distributions 
+## Find a distribution
 
-### Bernoulli {#sec-bern}
-**Model.** $X \sim \operatorname{Bernoulli}(p)$ with $0\leq p\leq1$.
-**Support.** $x \in \{0,1\}$.  
+::: {.distribution-index}
+::: {}
+**Discrete models**
+
+[Bernoulli](#sec-bern) · [Binomial](#sec-binom) ·
+[Multinomial](#sec-multinomial) · [Poisson](#sec-pois) ·
+[Geometric](#sec-geom) · [Negative Binomial](#sec-negbin)
+:::
+
+::: {}
+**Continuous models**
+
+[Uniform](#sec-unif) · [Exponential](#sec-exp) · [Gamma](#sec-gamma) ·
+[Inverse Gamma](#sec-inv-gamma) · [Normal](#sec-normal) ·
+[Lognormal](#sec-lognormal) · [Beta](#sec-beta) · [Weibull](#sec-weibull)
+:::
+
+::: {}
+**Reference and multivariate distributions**
+
+[Chi-squared](#sec-chisq) · [Student-$t$](#sec-t) · [$F$](#sec-f) ·
+[Multivariate Normal](#sec-mvnorm) · [interactive explorer](#sec-distribution-explorer)
+:::
+:::
+
+## Distribution reference
+
+### Discrete distributions
+
+```{=html}
+<details class="distribution-entry">
+<summary>
+```
+#### Bernoulli {#sec-bern}
+```{=html}
+<span class="distribution-summary-note">One binary outcome</span>
+</summary>
+```
+
+**Model.** $X \sim \operatorname{Bernoulli}(p)$ with $0\leq p\leq1$.<br>
+**Support.** $x \in \{0,1\}$.<br>
 **PMF.**
 $$
-\operatorname{Pr}(X=x) = p^{\,x}(1-p)^{1-x}, \quad x\in\{0,1\}.
+\operatorname{Pr}(X=x) = p^{\,x}(1-p)^{1-x}, \qquad x\in\{0,1\}.
 $$
-**Mean/Var.** $\operatorname{E}[X]=p,\quad \operatorname{Var}(X)=p(1-p).$
+**Mean/variance.** $\operatorname{E}[X]=p$ and
+$\operatorname{Var}(X)=p(1-p)$.<br>
+**Key property.** A sum of independent Bernoulli variables with the same $p$
+is Binomial.
 
----
+::: {.distribution-context}
+**Use as a model.** A single yes/no, success/failure, present/absent, or other
+binary outcome.
 
-### Binomial {#sec-binom}
-**Model.** $X \sim \operatorname{Binomial}(n,p)$, $n\in \mathbb{N}$, $0\leq p\leq1$.
-**Support.** $x=0,1,\ldots,n$.  
+**Bayesian role.** Commonly supplies the likelihood for an unknown probability
+$p$; a Beta prior gives a Beta posterior. It can also model a binary latent
+indicator.
+:::
+
+```{=html}
+</details>
+```
+
+```{=html}
+<details class="distribution-entry">
+<summary>
+```
+#### Binomial {#sec-binom}
+```{=html}
+<span class="distribution-summary-note">Successes in a fixed number of trials</span>
+</summary>
+```
+
+**Model.** $X \sim \operatorname{Binomial}(n,p)$, $n\in\mathbb N$ and
+$0\leq p\leq1$.<br>
+**Support.** $x=0,1,\ldots,n$.<br>
 **PMF.**
 $$
-\operatorname{Pr}(X=x) = \binom{n}{x} p^x (1-p)^{n-x}.
+\operatorname{Pr}(X=x) = \binom{n}{x}p^x(1-p)^{n-x}.
 $$
-**Mean/Var.** $\operatorname{E}[X]=np,\quad \operatorname{Var}(X)=np(1-p).$
+**Mean/variance.** $\operatorname{E}[X]=np$ and
+$\operatorname{Var}(X)=np(1-p)$.<br>
+**Key property.** It is the distribution of the sum of $n$ independent
+$\operatorname{Bernoulli}(p)$ variables.
 
----
+::: {.distribution-context}
+**Use as a model.** The number of successes among a fixed number of independent
+trials when each trial has the same success probability.
 
-### Multinomial {#sec-multinomial}
-**Model.** $\mathbf{X}=(X_1,\ldots,X_k) \sim \operatorname{Multinomial}(n,\mathbf{p})$, with $n\in\mathbb{N}$, $k\ge 2$, $\mathbf{p}=(p_1,\ldots,p_k)$, $p_i>0$, and $\sum_{i=1}^k p_i=1$.  
-**Support.** $\mathbf{x}=(x_1,\ldots,x_k)$ where $x_i\in\{0,1,\ldots,n\}$ and $\sum_{i=1}^k x_i=n$.  
+**Bayesian role.** Commonly supplies the likelihood for $p$; a Beta prior is
+conjugate and produces a Beta posterior.
+:::
+
+```{=html}
+</details>
+```
+
+```{=html}
+<details class="distribution-entry">
+<summary>
+```
+#### Multinomial {#sec-multinomial}
+```{=html}
+<span class="distribution-summary-note">Counts across several categories</span>
+</summary>
+```
+
+**Model.** $\mathbf X=(X_1,\ldots,X_k)\sim
+\operatorname{Multinomial}(n,\mathbf p)$, where $p_i>0$ and
+$\sum_{i=1}^k p_i=1$.<br>
+**Support.** $x_i\in\{0,1,\ldots,n\}$ with $\sum_i x_i=n$.<br>
 **PMF.**
 $$
-\Pr(\mathbf{X}=\mathbf{x})
+\Pr(\mathbf X=\mathbf x)
 =\frac{n!}{x_1!\cdots x_k!}\prod_{i=1}^k p_i^{\,x_i}.
 $$
-**Mean/Cov.**
+**Mean/covariance.**
 $$
-\mathrm{E}[X_i]=n p_i,\qquad 
-\operatorname{Var}(X_i)=n p_i(1-p_i),\qquad 
-\operatorname{Cov}(X_i,X_j)=-\,n p_i p_j\quad (i\ne j).
+\mathrm E[X_i]=np_i,\qquad
+\operatorname{Var}(X_i)=np_i(1-p_i),\qquad
+\operatorname{Cov}(X_i,X_j)=-np_ip_j\quad(i\ne j).
 $$
-**Vector form.**
+Equivalently,
 $$
-\mathrm{E}[\mathbf{X}]=n\,\mathbf{p},\qquad 
-\operatorname{Cov}(\mathbf{X})=n\left(\operatorname{diag}(\mathbf{p})-\mathbf{p}\mathbf{p}^\top\right).
+\operatorname{Cov}(\mathbf X)
+=n\left(\operatorname{diag}(\mathbf p)-\mathbf p\mathbf p^\top\right).
 $$
+**Key property.** For $k=2$, the first component is
+$\operatorname{Binomial}(n,p_1)$.
 
-*Note.* For $k=2$, the first component $X_1 \sim \operatorname{Bin}(n,p_1)$ (Binomial).
+::: {.distribution-context}
+**Use as a model.** Counts in several mutually exclusive categories when the
+total number of independent trials is fixed.
 
----
+**Bayesian role.** It commonly supplies a likelihood for category
+probabilities. The Dirichlet prior is its conjugate prior, although that family
+is beyond the core requirements of this module.
+:::
 
-### Poisson {#sec-pois}
-**Model.** $X \sim \operatorname{Po}(\lambda)$, $\lambda>0$.  
-**Support.** $x=0,1,2,\ldots$.  
+```{=html}
+</details>
+```
+
+```{=html}
+<details class="distribution-entry">
+<summary>
+```
+#### Poisson {#sec-pois}
+```{=html}
+<span class="distribution-summary-note">Event counts in a fixed exposure</span>
+</summary>
+```
+
+**Model.** $X\sim\operatorname{Po}(\lambda)$, $\lambda>0$.<br>
+**Support.** $x=0,1,2,\ldots$.<br>
 **PMF.**
 $$
 \operatorname{Pr}(X=x)=\frac{\lambda^x e^{-\lambda}}{x!}.
 $$
-**Mean/Var.** $\operatorname{E}[X]=\lambda,\quad \operatorname{Var}(X)=\lambda.$
+**Mean/variance.** $\operatorname{E}[X]=\operatorname{Var}(X)=\lambda$.<br>
+**Key property.** Sums of independent Poisson variables are Poisson, with rate
+equal to the sum of the individual rates.
 
----
+::: {.distribution-context}
+**Use as a model.** Counts of events in a fixed time, area, volume, or exposure
+when events occur independently at an approximately constant rate.
 
-### Geometric {#sec-geom}
+**Bayesian role.** Commonly supplies the likelihood for a positive rate
+$\lambda$; a Gamma prior is conjugate and gives a Gamma posterior.
+:::
 
-**Model.** $X \sim \operatorname{Geom}(p)$ (trials **until first success**, counting the success), $0<p<1$.  
-**Support.** $x=1,2,\ldots$.  
+```{=html}
+</details>
+```
+
+```{=html}
+<details class="distribution-entry">
+<summary>
+```
+#### Geometric {#sec-geom}
+```{=html}
+<span class="distribution-summary-note">Trials until the first success</span>
+</summary>
+```
+
+**Model.** $X\sim\operatorname{Geom}(p)$, counting the successful trial, with
+$0<p<1$.<br>
+**Support.** $x=1,2,\ldots$.<br>
 **PMF.**
 $$
 \operatorname{Pr}(X=x)=p(1-p)^{x-1}.
 $$
-**Mean/Var.** $\operatorname{E}[X]=\frac{1}{p},\quad \operatorname{Var}(X)=\frac{1-p}{p^2}.$
+**Mean/variance.** $\operatorname{E}[X]=1/p$ and
+$\operatorname{Var}(X)=(1-p)/p^2$.<br>
+**Key property.** It is memoryless:
+$\Pr(X>s+t\mid X>s)=\Pr(X>t)$.
 
-::: {.callout-warning}
-### Parameterisation alert
-Some texts start at $x=0$ (failures before the first success).
+::: {.distribution-context}
+**Use as a model.** The number of independent repeated trials required to
+observe the first success.
+
+**Bayesian role.** It can supply a likelihood for $p$; a Beta prior remains
+conjugate. It is not usually chosen as a prior for a continuous parameter.
 :::
 
----
+::: {.callout-warning}
+#### Parameterisation alert {.unnumbered}
+Some texts count failures before the first success and therefore start at
+$x=0$.
+:::
 
-### Negative Binomial {#sec-negbin}
-**Model.** $X \sim \operatorname{NegBin}(r,p)$: number of trials to achieve the $r$-th success (counts the successes), $r\in\mathbb{N}$, $0<p<1$.
-**Support.** $x=r,r+1,\ldots$.  
+```{=html}
+</details>
+```
+
+```{=html}
+<details class="distribution-entry">
+<summary>
+```
+#### Negative Binomial {#sec-negbin}
+```{=html}
+<span class="distribution-summary-note">Trials until the r-th success</span>
+</summary>
+```
+
+**Model.** $X\sim\operatorname{NegBin}(r,p)$ is the number of trials required
+to achieve the $r$-th success, counting the successes. Here $r\in\mathbb N$ and
+$0<p<1$.<br>
+**Support.** $x=r,r+1,\ldots$.<br>
 **PMF.**
 $$
-\operatorname{Pr}(X=x) = \binom{x-1}{r-1} p^{\,r} (1-p)^{x-r}.
+\operatorname{Pr}(X=x)=\binom{x-1}{r-1}p^r(1-p)^{x-r}.
 $$
-**Mean/Var.** $\operatorname{E}[X]=\frac{r}{p},\quad \operatorname{Var}(X)=\frac{r(1-p)}{p^2}.$
+**Mean/variance.** $\operatorname{E}[X]=r/p$ and
+$\operatorname{Var}(X)=r(1-p)/p^2$.<br>
+**Key property.** It is a sum of $r$ independent Geometric variables under
+this convention.
 
-::: {.callout-warning}
-### Parameterisation alert
-Another common version counts **failures** before the $r$-th success ($x=0,1,\dots$) with different mean/variance. Always check which one is used.
+::: {.distribution-context}
+**Use as a model.** Repeated trials until a fixed number of successes, or
+overdispersed counts when using the alternative count parameterisation.
+
+**Bayesian role.** It can supply a likelihood for $p$; a Beta prior gives a
+Beta posterior. Always check which Negative Binomial convention is in use.
 :::
 
----
+::: {.callout-warning}
+#### Parameterisation alert {.unnumbered}
+Another common version counts **failures** before the $r$-th success and has
+support $x=0,1,\ldots$, with different mean and variance.
+:::
 
-## Continuous distributions
+```{=html}
+</details>
+```
 
-### Uniform (continuous) {#sec-unif}
-**Model.** $X \sim \operatorname{Uniform}(a,b)$, $a<b$.  
-**Support.** $a<x<b$.  
+### Continuous distributions
+
+```{=html}
+<details class="distribution-entry">
+<summary>
+```
+#### Uniform (continuous) {#sec-unif}
+```{=html}
+<span class="distribution-summary-note">Equal density on a bounded interval</span>
+</summary>
+```
+
+**Model.** $X\sim\operatorname{Uniform}(a,b)$, $a<b$.<br>
+**Support.** $a<x<b$.<br>
 **PDF.**
 $$
 f_X(x;a,b)=\frac{1}{b-a}.
 $$
-**Mean/Var.** $\operatorname{E}[X]=\frac{a+b}{2},\quad \operatorname{Var}(X)=\frac{(b-a)^2}{12}.$
+**Mean/variance.** $\operatorname{E}[X]=(a+b)/2$ and
+$\operatorname{Var}(X)=(b-a)^2/12$.<br>
+**Key property.** Equal-length subintervals have equal probability.
 
----
+::: {.distribution-context}
+**Use as a model.** A bounded continuous quantity for which no part of the
+interval is more plausible than another.
 
-### Exponential {#sec-exp}
-**Model.** $X \sim \operatorname{Exponential}(\lambda)$ with **rate** $\lambda>0$.  
-**Support.** $x>0$.  
-**PDF.**
-$$
-f_X(x;\lambda)= \lambda e^{-\lambda x}.
-$$
-**Mean/Var.** $\operatorname{E}[X]=\frac{1}{\lambda},\quad \operatorname{Var}(X)=\frac{1}{\lambda^2}.$
-
----
-
-### Gamma {#sec-gamma}
-**Model.** $X \sim \operatorname{Gamma}(a,b)$ with **shape** $a>0$ and **rate** $b>0$.  
-**Support.** $x>0$.  
-**PDF.**
-$$
-f_X(x;a,b)= \frac{b^a}{\Gamma(a)} x^{a-1} e^{-bx}.
-$$
-**Mean/Var.** $\operatorname{E}[X]=\frac{a}{b},\quad \operatorname{Var}(X)=\frac{a}{b^2}.$
-
-::: {.callout-warning}
-### Parameterisation alert
-Many sources use **scale** $\beta=1/b$: then $f(x)=\frac{1}{\Gamma(a)\beta^a}x^{a-1}e^{-x/\beta}$ and $\operatorname{E}[X]=a\beta$.
+**Bayesian role.** A bounded Uniform prior can express equal prior density over
+a scientifically defensible range. It is usually not conjugate and should not
+be mistaken for an automatically non-informative choice.
 :::
 
----
+```{=html}
+</details>
+```
 
-### Inverse Gamma {#sec-inv-gamma}
-**Model.** $X \sim \operatorname{InvGamma}(a,b)$, with $a>0$, $b>0$.  
-**Support.** $x>0$.  
+```{=html}
+<details class="distribution-entry">
+<summary>
+```
+#### Exponential {#sec-exp}
+```{=html}
+<span class="distribution-summary-note">A memoryless positive waiting time</span>
+</summary>
+```
+
+**Model.** $X\sim\operatorname{Exponential}(\lambda)$ with **rate**
+$\lambda>0$.<br>
+**Support.** $x>0$.<br>
 **PDF.**
 $$
-f_X(x;a,b)=\frac{b^a}{\Gamma(a)} x^{-(a+1)} e^{-bx^{-1}}.
+f_X(x;\lambda)=\lambda e^{-\lambda x}.
 $$
-**Statistics.**
+**Mean/variance.** $\operatorname{E}[X]=1/\lambda$ and
+$\operatorname{Var}(X)=1/\lambda^2$.<br>
+**Key property.** It is the only continuous memoryless distribution.
+
+::: {.distribution-context}
+**Use as a model.** A positive waiting time generated by a constant event rate,
+such as the time to the next Poisson-process event.
+
+**Bayesian role.** It commonly supplies a likelihood for the rate $\lambda$;
+a Gamma prior is conjugate. An Exponential distribution can also be used as a
+simple prior for a positive parameter.
+:::
+
+```{=html}
+</details>
+```
+
+```{=html}
+<details class="distribution-entry">
+<summary>
+```
+#### Gamma {#sec-gamma}
+```{=html}
+<span class="distribution-summary-note">Positive and flexibly right-skewed</span>
+</summary>
+```
+
+**Model.** $X\sim\operatorname{Gamma}(a,b)$ with **shape** $a>0$ and
+**rate** $b>0$.<br>
+**Support.** $x>0$.<br>
+**PDF.**
+$$
+f_X(x;a,b)=\frac{b^a}{\Gamma(a)}x^{a-1}e^{-bx}.
+$$
+**Mean/variance.** $\operatorname{E}[X]=a/b$ and
+$\operatorname{Var}(X)=a/b^2$.<br>
+**Key property.** Independent Gamma variables with a common rate add to a
+Gamma variable; Exponential and chi-squared distributions are special cases.
+
+::: {.distribution-context}
+**Use as a model.** Positive, right-skewed measurements or waiting times until
+several events occur.
+
+**Bayesian role.** A common prior and posterior family for positive rates or
+precisions. It is conjugate to Poisson and Exponential likelihoods under the
+rate convention used here.
+:::
+
+::: {.callout-warning}
+#### Parameterisation alert {.unnumbered}
+Many sources use a **scale** $\beta=1/b$. Under that convention,
+$\operatorname{E}[X]=a\beta$ and $\operatorname{Var}(X)=a\beta^2$.
+:::
+
+```{=html}
+</details>
+```
+
+```{=html}
+<details class="distribution-entry">
+<summary>
+```
+#### Inverse Gamma {#sec-inv-gamma}
+```{=html}
+<span class="distribution-summary-note">A common variance-prior family</span>
+</summary>
+```
+
+**Model.** $X\sim\operatorname{InvGamma}(a,b)$, with $a,b>0$.<br>
+**Support.** $x>0$.<br>
+**PDF.**
+$$
+f_X(x;a,b)=\frac{b^a}{\Gamma(a)}x^{-(a+1)}e^{-b/x}.
+$$
+**Properties.**
 $$
 \operatorname{E}[X]=\frac{b}{a-1}\quad(a>1),\qquad
 \operatorname{Var}(X)=\frac{b^2}{(a-1)^2(a-2)}\quad(a>2),
 $$
-and $\operatorname{Mode}(X)=b/(a+1)$ for $a>0$. The mean is undefined for
-$a\leq1$; the variance is infinite for $1<a\leq2$ and undefined for $a\leq1$.
+and $\operatorname{Mode}(X)=b/(a+1)$. If $X\sim\operatorname{InvGamma}(a,b)$,
+then $1/X\sim\operatorname{Gamma}(a,b)$ under the course conventions.
 
----
+::: {.distribution-context}
+**Use as a model.** It is occasionally used for positive, strongly skewed
+quantities, although this is not its main role in the module.
 
-### Normal {#sec-normal}
-**Model.** $X \sim \mathcal{N}(\mu,\sigma^2)$ with $\sigma>0$.  
-**Support.** $x\in\mathbb{R}$.  
+**Bayesian role.** A conjugate prior/posterior family for a Normal variance in
+some parameterisations. Its reciprocal-Gamma relationship makes it natural
+when precision rather than variance has a Gamma distribution.
+:::
+
+```{=html}
+</details>
+```
+
+```{=html}
+<details class="distribution-entry">
+<summary>
+```
+#### Normal {#sec-normal}
+```{=html}
+<span class="distribution-summary-note">Symmetric location-scale model</span>
+</summary>
+```
+
+**Model.** $X\sim\mathcal N(\mu,\sigma^2)$ with $\mu\in\mathbb R$ and
+$\sigma>0$.<br>
+**Support.** $x\in\mathbb R$.<br>
 **PDF.**
 $$
-f_X(x;\mu,\sigma^2)=\frac{1}{\sqrt{2\pi \sigma^2}}
-\exp\!\left(-\frac{(x-\mu)^2}{2\sigma^2}\right).
+f_X(x;\mu,\sigma^2)=\frac{1}{\sqrt{2\pi\sigma^2}}
+\exp\!\left[-\frac{(x-\mu)^2}{2\sigma^2}\right].
 $$
-**Mean/Var.** $\operatorname{E}[X]=\mu,\quad \operatorname{Var}(X)=\sigma^2.$
+**Mean/variance.** $\operatorname{E}[X]=\mu$ and
+$\operatorname{Var}(X)=\sigma^2$.
 
 #### Properties {#sec-normal-properties}
-If $X_i\sim\mathcal N(\mu_i,\sigma_i^2)$ are independent, then for constants
-$a_1,\ldots,a_n$,
+
+If $X_i\sim\mathcal N(\mu_i,\sigma_i^2)$ are independent, then
 $$
 \sum_{i=1}^n a_iX_i
-\sim \mathcal N\!\left(\sum_{i=1}^n a_i\mu_i,
-                         \sum_{i=1}^n a_i^2\sigma_i^2\right).
+\sim\mathcal N\!\left(\sum_{i=1}^n a_i\mu_i,
+\sum_{i=1}^n a_i^2\sigma_i^2\right).
 $$
 Consequently, if $X_1,\ldots,X_n\overset{\mathrm{iid}}\sim
 \mathcal N(\mu,\sigma^2)$, then
 $$
-\bar X\sim\mathcal N\!\left(\mu,\frac{\sigma^2}{n}\right),
-\qquad
+\bar X\sim\mathcal N\!\left(\mu,\frac{\sigma^2}{n}\right),\qquad
 \frac{\bar X-\mu}{\sigma/\sqrt n}\sim\mathcal N(0,1).
 $$
 
----
+::: {.distribution-context}
+**Use as a model.** Approximately symmetric continuous measurements generated
+by many small additive influences; also a central sampling approximation.
 
-### Lognormal {#sec-lognormal}
-**Model.** $X \sim \operatorname{LogNormal}(\mu,\sigma^2)$ meaning $\ln X \sim \mathcal{N}(\mu,\sigma^2)$.  
-**Support.** $x>0$.  
+**Bayesian role.** A common prior for location or regression parameters. With
+a Normal likelihood and known variance it is conjugate for the mean; Normal
+posterior and posterior-predictive distributions also arise naturally.
+:::
+
+```{=html}
+</details>
+```
+
+```{=html}
+<details class="distribution-entry">
+<summary>
+```
+#### Lognormal {#sec-lognormal}
+```{=html}
+<span class="distribution-summary-note">Positive with a Normal logarithm</span>
+</summary>
+```
+
+**Model.** $X\sim\operatorname{LogNormal}(\mu,\sigma^2)$ means that
+$\log X\sim\mathcal N(\mu,\sigma^2)$.<br>
+**Support.** $x>0$.<br>
 **PDF.**
 $$
 f_X(x;\mu,\sigma^2)=\frac{1}{x\sqrt{2\pi\sigma^2}}
-\exp\!\left(-\frac{(\ln x-\mu)^2}{2\sigma^2}\right).
+\exp\!\left[-\frac{(\log x-\mu)^2}{2\sigma^2}\right].
 $$
-**Mean/Var.** $\operatorname{E}[X]=e^{\mu+\sigma^2/2},\quad \operatorname{Var}(X)=\big(e^{\sigma^2}-1\big)e^{2\mu+\sigma^2}.$
+**Mean/variance.**
+$$
+\operatorname{E}[X]=e^{\mu+\sigma^2/2},\qquad
+\operatorname{Var}(X)=\bigl(e^{\sigma^2}-1\bigr)e^{2\mu+\sigma^2}.
+$$
+**Key property.** Products of independent Lognormal variables are Lognormal.
 
----
+::: {.distribution-context}
+**Use as a model.** Positive, right-skewed measurements produced by
+multiplicative effects, such as sizes, concentrations, or some durations.
 
-### Chi-squared {#sec-chisq}
-**Model.** $X \sim \chi^2_\nu$ with $\nu>0$ degrees of freedom.  
-**Support.** $x>0$.  
+**Bayesian role.** A useful prior for a positive parameter when it is easier to
+express prior beliefs on its logarithm. It is generally not conjugate.
+:::
+
+```{=html}
+</details>
+```
+
+```{=html}
+<details class="distribution-entry">
+<summary>
+```
+#### Chi-squared {#sec-chisq}
+```{=html}
+<span class="distribution-summary-note">Sum-of-squares reference distribution</span>
+</summary>
+```
+
+**Model.** $X\sim\chi^2_\nu$ with $\nu>0$ degrees of freedom.<br>
+**Support.** $x>0$.<br>
 **PDF.**
 $$
 f_X(x;\nu)=\frac{1}{2^{\nu/2}\Gamma(\nu/2)}x^{\nu/2-1}e^{-x/2}.
 $$
-**Mean/Var.** $\operatorname{E}[X]=\nu,\quad \operatorname{Var}(X)=2\nu.$
+**Mean/variance.** $\operatorname{E}[X]=\nu$ and
+$\operatorname{Var}(X)=2\nu$.<br>
+**Key property.** If $Z_1,\ldots,Z_\nu$ are independent standard Normals, then
+$\sum_i Z_i^2\sim\chi^2_\nu$. It is a Gamma distribution with shape $\nu/2$
+and rate $1/2$.
 
-::: {.callout-note}
-$\chi^2_\nu$ is a special case of Gamma with $a=\nu/2$, $b=1/2$.
+::: {.distribution-context}
+**Use as a model.** Primarily a sampling/reference distribution for sums of
+squared Normal variables and inference about a Normal variance.
+
+**Bayesian role.** It is not normally used directly as a prior in this module.
+Its Gamma relationship connects it to priors on precision and posteriors for
+Normal variance components.
 :::
 
----
+```{=html}
+</details>
+```
 
-### Student-$t$ {#sec-t}
-**Model.** $X \sim t_\nu$ with $\nu>0$ degrees of freedom.  
-**Support.** $x\in\mathbb{R}$.  
+```{=html}
+<details class="distribution-entry">
+<summary>
+```
+#### Student-$t$ {#sec-t}
+```{=html}
+<span class="distribution-summary-note">Symmetric with heavier tails than Normal</span>
+</summary>
+```
+
+**Model.** $X\sim t_\nu$ with $\nu>0$ degrees of freedom.<br>
+**Support.** $x\in\mathbb R$.<br>
 **PDF.**
 $$
-f_X(x;\nu)=\frac{\Gamma\!\left(\frac{\nu+1}{2}\right)}{\sqrt{\nu\pi}\,\Gamma\!\left(\frac{\nu}{2}\right)}
+f_X(x;\nu)=\frac{\Gamma\!\left((\nu+1)/2\right)}
+{\sqrt{\nu\pi}\,\Gamma(\nu/2)}
 \left(1+\frac{x^2}{\nu}\right)^{-(\nu+1)/2}.
 $$
-**Mean/Var.** $\operatorname{E}[X]=0$ for $\nu>1$; undefined for $\nu\le 1$.  
-$\operatorname{Var}(X)=\frac{\nu}{\nu-2}$ for $\nu>2$; infinite for $1<\nu\le 2$; undefined for $\nu\le 1$.
+**Properties.** The mean is $0$ for $\nu>1$ and undefined otherwise. The
+variance is $\nu/(\nu-2)$ for $\nu>2$, infinite for $1<\nu\leq2$, and
+undefined for $\nu\leq1$. As $\nu\to\infty$, $t_\nu$ approaches
+$\mathcal N(0,1)$.
 
----
+::: {.distribution-context}
+**Use as a model.** A symmetric continuous model when heavier tails and greater
+robustness to extreme observations are appropriate; also the reference
+distribution for a Normal mean with unknown variance.
 
-### $F$ distribution {#sec-f}
-**Model.** $X \sim F_{d_1,d_2}$ with $d_1,d_2>0$ degrees of freedom.  
-**Support.** $x>0$.  
+**Bayesian role.** A robust prior for location or standardised effect
+parameters. Student-$t$ posterior-predictive distributions arise after
+integrating over an unknown Normal variance.
+:::
+
+```{=html}
+</details>
+```
+
+```{=html}
+<details class="distribution-entry">
+<summary>
+```
+#### $F$ distribution {#sec-f}
+```{=html}
+<span class="distribution-summary-note">Ratio-of-variances reference distribution</span>
+</summary>
+```
+
+**Model.** $X\sim F_{d_1,d_2}$ with $d_1,d_2>0$ degrees of freedom.<br>
+**Support.** $x>0$.<br>
 **PDF.**
 $$
-f_X(x;d_1,d_2)=\frac{\Gamma\!\left(\frac{d_1+d_2}{2}\right)}{\Gamma\!\left(\frac{d_1}{2}\right)\Gamma\!\left(\frac{d_2}{2}\right)}
-\left(\frac{d_1}{d_2}\right)^{d_1/2}\frac{x^{d_1/2-1}}{\left(1+\frac{d_1}{d_2}x\right)^{(d_1+d_2)/2}}.
+f_X(x;d_1,d_2)=
+\frac{\Gamma\!\left((d_1+d_2)/2\right)}
+{\Gamma(d_1/2)\Gamma(d_2/2)}
+\left(\frac{d_1}{d_2}\right)^{d_1/2}
+\frac{x^{d_1/2-1}}
+{\left(1+\frac{d_1}{d_2}x\right)^{(d_1+d_2)/2}}.
 $$
-**Mean/Var.** $\operatorname{E}[X]=\frac{d_2}{d_2-2}$ for $d_2>2$.  
-$\operatorname{Var}(X)=\frac{2d_2^2(d_1+d_2-2)}{d_1(d_2-2)^2(d_2-4)}$ for $d_2>4$.
+**Properties.** $\operatorname{E}[X]=d_2/(d_2-2)$ for $d_2>2$, and
+$$
+\operatorname{Var}(X)=
+\frac{2d_2^2(d_1+d_2-2)}{d_1(d_2-2)^2(d_2-4)}
+\qquad(d_2>4).
+$$
+It is the distribution of $(U_1/d_1)/(U_2/d_2)$ for independent
+$U_j\sim\chi^2_{d_j}$.
 
----
+::: {.distribution-context}
+**Use as a model.** Primarily a reference distribution for comparing variance
+components and for classical analysis-of-variance statistics.
 
-### Beta {#sec-beta}
-**Model.** $X \sim \operatorname{Beta}(a,b)$, $a>0, b>0$.  
-**Support.** $0<x<1$.  
+**Bayesian role.** It is not a standard prior in this module. Related
+Beta-prime distributions can arise for variance ratios, but that relationship
+is not required for assessment.
+:::
+
+```{=html}
+</details>
+```
+
+```{=html}
+<details class="distribution-entry">
+<summary>
+```
+#### Beta {#sec-beta}
+```{=html}
+<span class="distribution-summary-note">Flexible distribution on (0,1)</span>
+</summary>
+```
+
+**Model.** $X\sim\operatorname{Beta}(a,b)$, $a,b>0$.<br>
+**Support.** $0<x<1$.<br>
 **PDF.**
 $$
-f_X(x;a,b)=\frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}\,x^{a-1}(1-x)^{b-1}.
+f_X(x;a,b)=\frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}
+x^{a-1}(1-x)^{b-1}.
 $$
-**Mean/Var.** $\operatorname{E}[X]=\frac{a}{a+b},\quad \operatorname{Var}(X)=\frac{ab}{(a+b)^2(a+b+1)}.$
+**Mean/variance.**
+$$
+\operatorname{E}[X]=\frac{a}{a+b},\qquad
+\operatorname{Var}(X)=\frac{ab}{(a+b)^2(a+b+1)}.
+$$
+**Key property.** Varying $a$ and $b$ produces symmetric, skewed, U-shaped,
+or concentrated densities on the unit interval.
 
----
+::: {.distribution-context}
+**Use as a model.** A continuous proportion or rate constrained to $(0,1)$,
+provided exact boundary values do not occur.
 
-### Weibull {#sec-weibull}
-**Model.** $X \sim \operatorname{Weibull}(k,\lambda)$ with **shape** $k>0$ and
-**scale** $\lambda>0$.
-**Support.** $x > 0$.  
+**Bayesian role.** The standard conjugate prior and posterior family for a
+Bernoulli or Binomial probability $p$. The parameters can be interpreted
+through prior successes and failures.
+:::
+
+```{=html}
+</details>
+```
+
+```{=html}
+<details class="distribution-entry">
+<summary>
+```
+#### Weibull {#sec-weibull}
+```{=html}
+<span class="distribution-summary-note">Flexible lifetime distribution</span>
+</summary>
+```
+
+**Model.** $X\sim\operatorname{Weibull}(k,\lambda)$ with **shape** $k>0$ and
+**scale** $\lambda>0$.<br>
+**Support.** $x>0$.<br>
 **PDF.**
 $$
-f_X(x;k,\lambda)
-=\frac{k}{\lambda}\left(\frac{x}{\lambda}\right)^{k-1}
- \exp\!\left[-\left(\frac{x}{\lambda}\right)^k\right].
+f_X(x;k,\lambda)=\frac{k}{\lambda}
+\left(\frac{x}{\lambda}\right)^{k-1}
+\exp\!\left[-\left(\frac{x}{\lambda}\right)^k\right].
 $$
-**Mean/Var.**
+**Mean/variance.**
 $$
-\operatorname{E}[X]=\lambda\,\Gamma\!\left(1+\frac1k\right),\qquad
-\operatorname{Var}(X)=\lambda^2\!\left[
+\operatorname{E}[X]=\lambda\Gamma\!\left(1+\frac1k\right),
+$$
+$$
+\operatorname{Var}(X)=\lambda^2\left[
 \Gamma\!\left(1+\frac2k\right)
 -\Gamma\!\left(1+\frac1k\right)^2\right].
 $$
+**Key property.** Its hazard decreases when $k<1$, is constant when $k=1$,
+and increases when $k>1$.
 
-::: {.callout-warning}
-### Parameterisation alert
-Some sources write $\theta=\lambda^k$ and use
-$f(x)=(k/\theta)x^{k-1}e^{-x^k/\theta}$. Check whether the second parameter is
-a scale or a scale raised to the power $k$.
+::: {.distribution-context}
+**Use as a model.** Positive lifetimes, failure times, or waiting times whose
+event rate changes systematically over time.
+
+**Bayesian role.** Common in Bayesian survival models as a likelihood. Priors
+for $k$ and $\lambda$ are usually chosen separately, often from Gamma or
+Lognormal families; there is no simple conjugate pair.
 :::
 
----
+::: {.callout-warning}
+#### Parameterisation alert {.unnumbered}
+Some sources write $\theta=\lambda^k$ and use
+$f(x)=(k/\theta)x^{k-1}e^{-x^k/\theta}$.
+:::
 
-## Multivariate Distributions
+```{=html}
+</details>
+```
 
-### Multivariate Normal {#sec-mvnorm}
-**Model.** $\mathbf{X} \sim \mathcal{N}_p(\boldsymbol{\mu},\Sigma)$ with $\Sigma$ positive definite.  
-**Support.** $\mathbf{x}\in\mathbb{R}^p$.  
+### Multivariate distributions
+
+```{=html}
+<details class="distribution-entry">
+<summary>
+```
+#### Multivariate Normal {#sec-mvnorm}
+```{=html}
+<span class="distribution-summary-note">Joint model for correlated continuous variables</span>
+</summary>
+```
+
+**Model.** $\mathbf X\sim\mathcal N_p(\boldsymbol\mu,\Sigma)$ with $\Sigma$
+positive definite.<br>
+**Support.** $\mathbf x\in\mathbb R^p$.<br>
 **PDF.**
 $$
-f_{\mathbf{X}}(\mathbf{x};\boldsymbol{\mu},\Sigma)=\frac{1}{(2\pi)^{p/2}(\det\Sigma)^{1/2}}
-\exp\!\left(-\tfrac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^\top \Sigma^{-1}(\mathbf{x}-\boldsymbol{\mu})\right).
+f_{\mathbf X}(\mathbf x;\boldsymbol\mu,\Sigma)
+=\frac{1}{(2\pi)^{p/2}(\det\Sigma)^{1/2}}
+\exp\!\left[-\frac12(\mathbf x-\boldsymbol\mu)^\top
+\Sigma^{-1}(\mathbf x-\boldsymbol\mu)\right].
 $$
-**Mean/Cov.** $\operatorname{E}[\mathbf{X}]=\boldsymbol{\mu},\quad \operatorname{Cov}(\mathbf{X})=\Sigma.$
+**Mean/covariance.** $\mathrm E[\mathbf X]=\boldsymbol\mu$ and
+$\operatorname{Cov}(\mathbf X)=\Sigma$.<br>
+**Key property.** Every linear transformation is Normal:
+$A\mathbf X+\mathbf b\sim\mathcal N(A\boldsymbol\mu+\mathbf b,
+A\Sigma A^\top)$.
 
----
+::: {.distribution-context}
+**Use as a model.** Several jointly observed continuous measurements whose
+dependence can be represented through a covariance matrix.
+
+**Bayesian role.** A common prior and posterior family for a vector of
+parameters in Gaussian models, including regression coefficients and latent
+effects.
+:::
+
+```{=html}
+</details>
+```
+
+## Explore distributions {#sec-distribution-explorer}
+
+::: {.content-visible unless-format="pdf"}
+
+Use the explorer to connect a distribution's parameters to its support,
+centre, spread and shape. Make a prediction before moving a slider, then explain
+what changed in words. Only one distribution is mounted at a time, so the page
+remains responsive.
+
+::: {.callout-tip}
+### Three guided investigations
+
+1. **Discrete models:** compare Bernoulli, Binomial and Poisson. Which
+   parameters alter the centre, the spread, or the possible outcomes?
+2. **Waiting times:** compare Geometric, Exponential, Gamma and Weibull. Which
+   are discrete, and what does a larger rate or shape parameter do?
+3. **Shape and tails:** compare Normal, Lognormal, Chi-squared and Student-$t$.
+   Which are symmetric, which are positive, and what happens as the
+   Student-$t$ degrees of freedom grow?
+
+For a PDF, remember that **area**, not curve height, is probability. A density
+may exceed $1$ while its total area remains $1$.
+:::
+
+{{< include ../_figures/appendix/distribution-explorer/shared.qmd >}}
+
+{{< include ../_figures/appendix/distribution-explorer/selector.qmd >}}
+
+::: {.callout-note}
+### What to record
+
+For each distribution you revise, be able to state its support, explain what
+each parameter controls, describe its centre and spread, and give one plausible
+use as a sampling model. For Bayesian work, distinguish the distribution of the
+observed data from a prior or posterior distribution on an unknown parameter.
+:::
+
+:::
+
+::: {.content-visible when-format="pdf"}
+The interactive distribution explorer is available in the online Formula
+Sheet. The formulae and course parameterisations above are complete without it.
+:::
