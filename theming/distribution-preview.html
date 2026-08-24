@@ -1,0 +1,140 @@
+<script>
+(() => {
+  const distributionIds = new Set([
+    'sec-bern',
+    'sec-binom',
+    'sec-multinomial',
+    'sec-pois',
+    'sec-geom',
+    'sec-negbin',
+    'sec-unif',
+    'sec-exp',
+    'sec-gamma',
+    'sec-inv-gamma',
+    'sec-normal',
+    'sec-normal-properties',
+    'sec-lognormal',
+    'sec-chisq',
+    'sec-t',
+    'sec-f',
+    'sec-beta',
+    'sec-weibull',
+    'sec-mvnorm'
+  ]);
+
+  const documentCache = new Map();
+  const previewCache = new Map();
+
+  const sourceDocument = async (url) => {
+    const sourceUrl = new URL(url.href);
+    sourceUrl.hash = '';
+
+    const currentUrl = new URL(window.location.href);
+    currentUrl.hash = '';
+
+    if (sourceUrl.href === currentUrl.href) {
+      return document;
+    }
+
+    if (!documentCache.has(sourceUrl.href)) {
+      documentCache.set(sourceUrl.href, fetch(sourceUrl.href).then((response) => {
+        if (!response.ok) {
+          throw new Error(`Unable to load distribution reference (${response.status})`);
+        }
+        return response.text();
+      }).then((html) => new DOMParser().parseFromString(html, 'text/html')));
+    }
+
+    return documentCache.get(sourceUrl.href);
+  };
+
+  const previewHtml = async (url, id) => {
+    const key = `${url.origin}${url.pathname}#${id}`;
+    if (!previewCache.has(key)) {
+      previewCache.set(key, sourceDocument(url).then((source) => {
+        const target = source.getElementById(id);
+        const entry = target?.closest('details.distribution-entry');
+        if (!entry) return null;
+
+        const clone = entry.cloneNode(true);
+        clone.open = true;
+        clone.querySelectorAll('.anchorjs-link').forEach((anchor) => anchor.remove());
+        clone.querySelectorAll('[id]').forEach((element) => element.removeAttribute('id'));
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'distribution-xref-preview';
+        wrapper.appendChild(clone);
+
+        // Cross-page previews are parsed from the generated HTML but have not
+        // passed through the destination page's runtime math typesetter.
+        if (!wrapper.querySelector('.katex') && window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(wrapper);
+        }
+
+        return wrapper.outerHTML;
+      }));
+    }
+
+    return previewCache.get(key);
+  };
+
+  const initialiseDistributionPreviews = () => {
+    if (!window.tippy) return;
+
+    document.querySelectorAll('a[href]:not(.anchorjs-link)').forEach((link) => {
+      if (link.dataset.distributionPreviewReady === 'true') return;
+
+      let url;
+      try {
+        url = new URL(link.getAttribute('href'), document.baseURI);
+      } catch {
+        return;
+      }
+
+      const id = decodeURIComponent(url.hash.replace(/^#\/?/, ''));
+      if (url.origin !== window.location.origin || !distributionIds.has(id)) return;
+
+      // Replace Quarto's heading-only tooltip for these links. Other
+      // cross-reference previews continue to use Quarto's default behaviour.
+      if (link._tippy) link._tippy.destroy();
+
+      link.dataset.distributionPreviewReady = 'true';
+      window.tippy(link, {
+        allowHTML: true,
+        appendTo: () => document.body,
+        arrow: false,
+        content: '<div class="distribution-preview-loading">Loading distribution…</div>',
+        delay: [100, 80],
+        interactive: true,
+        interactiveBorder: 12,
+        maxWidth: 680,
+        placement: 'auto-start',
+        popperOptions: {
+          modifiers: [
+            { name: 'preventOverflow', options: { padding: 8 } },
+            { name: 'flip', options: { padding: 8 } }
+          ]
+        },
+        theme: 'quarto distribution-preview',
+        onTrigger(instance) {
+          previewHtml(url, id).then((html) => {
+            instance.setContent(html || '<div class="distribution-preview-loading">Preview unavailable.</div>');
+            window.requestAnimationFrame(() => instance.popperInstance?.update());
+          }).catch(() => {
+            instance.setContent('<div class="distribution-preview-loading">Preview unavailable.</div>');
+            window.requestAnimationFrame(() => instance.popperInstance?.update());
+          });
+        }
+      });
+    });
+  };
+
+  const scheduleInitialisation = () => window.setTimeout(initialiseDistributionPreviews, 0);
+
+  if (document.readyState === 'complete') {
+    scheduleInitialisation();
+  } else {
+    window.addEventListener('load', scheduleInitialisation, { once: true });
+  }
+})();
+</script>

@@ -121,6 +121,68 @@ details.distribution-entry > :not(summary):first-of-type {
   margin: 0;
 }
 
+/* Full Formula Sheet entries shown when a distribution link is hovered. */
+
+.tippy-box[data-theme~="distribution-preview"] {
+  max-width: min(680px, calc(100vw - 1rem)) !important;
+  border: 1px solid var(--border);
+  border-radius: 0.45rem;
+  background: var(--brand-bg);
+  color: var(--brand-fg);
+  box-shadow: 0 0.75rem 2rem rgb(0 0 0 / 18%);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.tippy-box[data-theme~="distribution-preview"] > .tippy-content {
+  max-height: min(calc(100vh - 2rem), 44rem);
+  padding: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.distribution-xref-preview {
+  width: min(42rem, calc(100vw - 1rem));
+  max-width: 100%;
+}
+
+.distribution-xref-preview details.distribution-entry {
+  margin: 0;
+  border: 0;
+  border-radius: inherit;
+  overflow: visible;
+}
+
+.distribution-xref-preview details.distribution-entry > summary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  cursor: default;
+  pointer-events: none;
+}
+
+.distribution-xref-preview details.distribution-entry > summary::before {
+  display: none;
+}
+
+.distribution-xref-preview details.distribution-entry > :not(summary) {
+  margin-right: 0.9rem;
+  margin-left: 0.9rem;
+}
+
+.distribution-xref-preview .distribution-context {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.distribution-xref-preview .anchorjs-link {
+  display: none;
+}
+
+.distribution-preview-loading {
+  padding: 0.8rem 1rem;
+  color: var(--fg-muted);
+}
+
 .distribution-picker {
   display: grid;
   grid-template-columns: minmax(0, 12rem) minmax(14rem, 24rem);
