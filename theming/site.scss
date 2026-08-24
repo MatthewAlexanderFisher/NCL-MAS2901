@@ -1,0 +1,35 @@
+@use "sass:meta";
+
+/*
+ * Single entry point for site-wide styles.
+ *
+ * Keep this list ordered: later modules may intentionally refine earlier
+ * component rules. Theme-specific colour tokens remain in light_theme.scss
+ * and dark_theme.scss; modules consume their shared CSS custom properties.
+ */
+@mixin load-site-styles {
+  @include meta.load-css("font");
+  @include meta.load-css("math-scroll");
+  @include meta.load-css("practice-details");
+  @include meta.load-css("callout-style");
+  @include meta.load-css("reader-support");
+  @include meta.load-css("floating-code");
+  @include meta.load-css("no-xref-suffix");
+  @include meta.load-css("scrollbar");
+  @include meta.load-css("nav-tabs");
+  @include meta.load-css("header");
+  @include meta.load-css("question-bank");
+  @include meta.load-css("sidebar");
+  @include meta.load-css("lecture-zoom");
+  @include meta.load-css("visualisation-controls");
+  @include meta.load-css("visualisation-layout");
+  @include meta.load-css("tables");
+  @include meta.load-css("small-table");
+  @include meta.load-css("reading-mode");
+
+  /* Styles formerly embedded in include-after-body HTML fragments. */
+  @include meta.load-css("display-settings");
+  @include meta.load-css("print-button");
+  @include meta.load-css("inkpad");
+  @include meta.load-css("ink-button");
+}
