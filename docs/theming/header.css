@@ -24,23 +24,22 @@
 }
 
 /* === Logo: FAR LEFT === */
-#quarto-header .navbar-logo {
+#quarto-header .navbar-brand-logo {
   position: absolute;
   left: 0.75rem;
   top: 50%;
   transform: translateY(-50%);
-  width: auto;
   display: block;
+  line-height: 0;
 }
 
-.navbar-logo {
+#quarto-header .navbar-logo {
+  position: static;
+  transform: none;
   height: 40px;
   width: auto;
   max-height: 40px;
-}
-
-#quarto-header .navbar-brand-logo {
-  display: contents;
+  display: block;
 }
 
 /* === Title: TRUE CENTRE === */
@@ -110,7 +109,7 @@
    MOBILE RESPONSIVE ADJUSTMENTS
    ============================ */
 @media (max-width: 720px) {
-  #quarto-header .navbar-logo {
+  #quarto-header .navbar-brand-logo {
     display: none !important;
   }
 
