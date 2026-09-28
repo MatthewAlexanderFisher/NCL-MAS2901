@@ -69,23 +69,32 @@ This section covers all the non-examinable content in the course notes.
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.revision-header').forEach(header => {
+    // Keep chapter links beside the disclosure button, not nested inside it.
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'revision-toggle';
+    button.setAttribute('aria-label', `Details: ${header.textContent.trim()}`);
+    button.setAttribute('aria-controls', header.getAttribute('aria-controls'));
+    button.setAttribute('aria-expanded', header.getAttribute('aria-expanded'));
+    header.dataset.expanded = header.getAttribute('aria-expanded');
+    button.append(header.querySelector('.toggle-icon'));
+    header.prepend(button);
+    header.removeAttribute('role');
+    header.removeAttribute('tabindex');
+    header.removeAttribute('aria-expanded');
+    header.removeAttribute('aria-controls');
     const toggle = (e) => {
       // Don't toggle if clicking a link
       if (e.target.closest('a')) return;
       
-      const expanded = header.getAttribute('aria-expanded') === 'true';
-      header.setAttribute('aria-expanded', !expanded);
-      const content = document.getElementById(header.getAttribute('aria-controls'));
+      const expanded = button.getAttribute('aria-expanded') === 'true';
+      header.dataset.expanded = String(!expanded);
+      button.setAttribute('aria-expanded', String(!expanded));
+      const content = document.getElementById(button.getAttribute('aria-controls'));
       content.hidden = expanded;
     };
     
     header.addEventListener('click', toggle);
-    header.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggle(e);
-      }
-    });
   });
 });
 </script>

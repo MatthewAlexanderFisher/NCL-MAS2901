@@ -1,5 +1,5 @@
 
-<div class="inkpad-toolbar" id="inkpad-toolbar" aria-label="Ink toolbar" aria-hidden="true">
+<div class="inkpad-toolbar" id="inkpad-toolbar" role="group" aria-label="Ink toolbar" aria-hidden="true">
 <button class="inkpad-btn inkpad-toggle" id="inkpad-toggle" type="button"
         aria-pressed="false" title="Draw (D)" aria-label="Draw (D)">
   <span class="sr-only">Toggle ink</span>
@@ -611,9 +611,11 @@ onButton('inkpad-save', () => {
   document.addEventListener('keydown', (e) => {
     // Only when toolbar is visible
     if (!toolbar.classList.contains('open')) return;
+    // Character-only shortcuts are confined to focus within the ink toolbar.
+    if (!toolbar.contains(document.activeElement)) return;
 
     // Don’t hijack typing in inputs
-    if (e.target && /input|textarea|select|button/i.test(e.target.tagName)) return;
+    if (e.target && /input|textarea|select/i.test(e.target.tagName)) return;
     if (e.target?.isContentEditable) return;
 
     const k = e.key.toLowerCase();

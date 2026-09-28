@@ -10,17 +10,19 @@ page-layout: full
 
 <div class="py3grid">
   <div id="editor" class="panel">
-    <header>Editor</header>
+    <header id="editor-label">Python editor</header>
     <div class="body">
+<p id="editor-help">Press Shift+Enter to run your code. Press Escape to move to the output controls.</p>
 <textarea
   id="code"
+  aria-labelledby="editor-label"
+  aria-describedby="editor-help"
   class="editor-text"
   placeholder="# Write Python code here..."
   spellcheck="false"
   autocorrect="off"
   autocapitalize="off"
   autocomplete="off"
-  inputmode="none"
 >
 import numpy as np
 import matplotlib.pyplot as plt
@@ -42,11 +44,11 @@ plt.show()
       <div class="toolbar">
         <button id="runBtn" class="btn" disabled>▶ Run</button>
         <button id="clearBtn" class="btn">Clear</button>
-        <span id="status">Loading...</span>
+        <span id="status" role="status" aria-live="polite">Loading...</span>
       </div>
     </header>
     <div class="body">
-      <div id="terminal"></div>
+      <div id="terminal" role="log" aria-label="Python output" aria-live="polite" tabindex="0"></div>
     </div>
   </div>
 </div>

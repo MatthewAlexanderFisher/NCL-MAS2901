@@ -373,6 +373,7 @@ If we plot this:
 #| code-summary: "Show code"
 #| fig-align: center
 #| renderings: [light, dark]
+#| fig-alt: "Binomial likelihood for one head in five tosses. The curve is zero at theta equals zero and one, and has its maximum at theta equals 0.2."
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -567,6 +568,7 @@ A graph of this prior density is given as follows:
 #| code-summary: "Show code"
 #| fig-align: center
 #| renderings: [light, dark]
+#| fig-alt: "Beta(77, 5) prior density for the probability of a correct answer. Most density is close to one, with a peak near 0.95 and very little density below 0.8."
 #| 
 import numpy as np
 import math
@@ -677,6 +679,7 @@ A graph of the posterior density is given as follows:
 #| code-summary: "Show code"
 #| fig-align: center
 #| renderings: [light, dark]
+#| fig-alt: "Beta(82, 10) posterior density after five correct answers in ten trials. The peak is near 0.9, lower than the prior peak near 0.95, but the strong prior still favours high accuracy."
 #| 
 import numpy as np
 import math
@@ -864,7 +867,7 @@ which is about **0.52% click-through rate**.
   <summary><strong> Show Plot </strong></summary>
 ```
 
-![Beta prior and posterior for the Instagram click-through rate parameter $\theta$ after observing $X=47$ clicks out of $n=10{,}000$ impressions. The posterior is sharply concentrated near ~0.5%](figures/prior_post_instagram.png)
+![Beta prior and posterior for the Instagram click-through rate parameter $\theta$ after observing $X=47$ clicks out of $n=10{,}000$ impressions. The posterior is sharply concentrated near ~0.5%](figures/prior_post_instagram.png){fig-alt="Prior and posterior densities for the Instagram click-through rate. After 47 clicks in 10,000 impressions, the posterior is much more concentrated than the prior and peaks near a click-through rate of 0.5 percent."}
 
 
 ```{=html}

@@ -30,7 +30,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../content/appendix/question-bank.html" rel="next">
+<link href="../../content/appendix/distribution-explorer.html" rel="next">
 <link href="../../content/appendix/formula-sheet.html" rel="prev">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -44,9 +44,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-defb9ab936951473f7e2826efdecb2cb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-10de85cc784b83e189d4ae55d49e33e5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-defb9ab936951473f7e2826efdecb2cb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-65b5ecc515b6fccafcfc3e9913d3c9af.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-64161293e90c4c048379959daf340384.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-65b5ecc515b6fccafcfc3e9913d3c9af.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -54,9 +54,7 @@ ul.task-list li input[type="checkbox"] {
   "panel-placement": "start",
   "type": "textbox",
   "limit": 50,
-  "keyboard-shortcut": [
-    "F"
-  ],
+  "keyboard-shortcut": [],
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -573,6 +571,12 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../content/appendix/distribution-explorer.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Distribution Explorer</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../content/appendix/question-bank.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Question Bank</span></a>
   </div>
@@ -581,6 +585,12 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="../../content/ide/python-ide.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Python IDE</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/appendix/statistical-tables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Statistical Tables</span></a>
   </div>
 </li>
       </ul>
@@ -3168,23 +3178,32 @@ T \; \overset{\text{approx.}}{\sim} \; \chi^2_1,
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.revision-header').forEach(header => {
+    // Keep chapter links beside the disclosure button, not nested inside it.
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'revision-toggle';
+    button.setAttribute('aria-label', `Details: ${header.textContent.trim()}`);
+    button.setAttribute('aria-controls', header.getAttribute('aria-controls'));
+    button.setAttribute('aria-expanded', header.getAttribute('aria-expanded'));
+    header.dataset.expanded = header.getAttribute('aria-expanded');
+    button.append(header.querySelector('.toggle-icon'));
+    header.prepend(button);
+    header.removeAttribute('role');
+    header.removeAttribute('tabindex');
+    header.removeAttribute('aria-expanded');
+    header.removeAttribute('aria-controls');
     const toggle = (e) => {
       // Don't toggle if clicking a link
       if (e.target.closest('a')) return;
       
-      const expanded = header.getAttribute('aria-expanded') === 'true';
-      header.setAttribute('aria-expanded', !expanded);
-      const content = document.getElementById(header.getAttribute('aria-controls'));
+      const expanded = button.getAttribute('aria-expanded') === 'true';
+      header.dataset.expanded = String(!expanded);
+      button.setAttribute('aria-expanded', String(!expanded));
+      const content = document.getElementById(button.getAttribute('aria-controls'));
       content.hidden = expanded;
     };
     
     header.addEventListener('click', toggle);
-    header.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggle(e);
-      }
-    });
   });
 });
 </script>
@@ -3248,15 +3267,15 @@ document.addEventListener('DOMContentLoaded', function () {
   const settingsContainer = document.createElement('div');
   settingsContainer.className = 'settings-dropdown';
   settingsContainer.innerHTML = `
-    <button class="btn-settings" type="button" aria-label="Display settings" title="Display settings">
+    <button class="btn-settings" type="button" aria-label="Display settings" title="Display settings" aria-expanded="false" aria-controls="display-settings-panel">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="3"></circle>
         <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
       </svg>
     </button>
-    <div class="settings-menu">
+    <div class="settings-menu" id="display-settings-panel">
       <p class="settings-section-label">Display Mode</p>
-      <button class="settings-item" id="lecture-zoom-toggle" type="button">
+      <button class="settings-item" id="lecture-zoom-toggle" type="button" aria-pressed="false">
         <span class="settings-icon">
           <svg class="icon-enter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="15 3 21 3 21 9"></polyline>
@@ -3274,7 +3293,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <span class="settings-label">Lecture Zoom</span>
         <span class="settings-status"></span>
       </button>
-      <button class="settings-item" id="reading-mode-toggle" type="button">
+      <button class="settings-item" id="reading-mode-toggle" type="button" aria-pressed="false">
         <span class="settings-icon">
           <svg class="icon-enter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
@@ -3381,6 +3400,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const isReadingMode = document.body.classList.contains('reading-mode');
     lectureZoomToggle.classList.toggle('active', isLectureZoom);
     readingModeToggle.classList.toggle('active', isReadingMode);
+    lectureZoomToggle.setAttribute('aria-pressed', String(isLectureZoom));
+    readingModeToggle.setAttribute('aria-pressed', String(isReadingMode));
   };
 
   // Apply custom colors
@@ -3438,24 +3459,36 @@ document.addEventListener('DOMContentLoaded', function () {
   // Event Listeners
   // ============================
 
+  const setSettingsOpen = (open, restoreFocus = false) => {
+    settingsContainer.classList.toggle('open', open);
+    settingsBtn.setAttribute('aria-expanded', String(open));
+    if (restoreFocus) settingsBtn.focus();
+  };
+
   // Toggle dropdown
   settingsBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    settingsContainer.classList.toggle('open');
+    setSettingsOpen(!settingsContainer.classList.contains('open'));
   });
 
   // Close dropdown when clicking outside
   document.addEventListener('click', (e) => {
     if (!settingsContainer.contains(e.target)) {
-      settingsContainer.classList.remove('open');
+      setSettingsOpen(false);
     }
   });
 
   // Close on Escape
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      settingsContainer.classList.remove('open');
+    if (e.key === 'Escape' && settingsContainer.classList.contains('open')) {
+      setSettingsOpen(false, settingsContainer.contains(document.activeElement));
     }
+  });
+
+  settingsContainer.addEventListener('focusout', () => {
+    requestAnimationFrame(() => {
+      if (!settingsContainer.contains(document.activeElement)) setSettingsOpen(false);
+    });
   });
 
   // Lecture Zoom toggle
@@ -3528,6 +3561,146 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 <script>
+(() => {
+  const distributionIds = new Set([
+    'sec-bern',
+    'sec-binom',
+    'sec-multinomial',
+    'sec-pois',
+    'sec-geom',
+    'sec-negbin',
+    'sec-unif',
+    'sec-exp',
+    'sec-gamma',
+    'sec-inv-gamma',
+    'sec-normal',
+    'sec-normal-properties',
+    'sec-lognormal',
+    'sec-chisq',
+    'sec-t',
+    'sec-f',
+    'sec-beta',
+    'sec-weibull',
+    'sec-mvnorm'
+  ]);
+
+  const documentCache = new Map();
+  const previewCache = new Map();
+
+  const sourceDocument = async (url) => {
+    const sourceUrl = new URL(url.href);
+    sourceUrl.hash = '';
+
+    const currentUrl = new URL(window.location.href);
+    currentUrl.hash = '';
+
+    if (sourceUrl.href === currentUrl.href) {
+      return document;
+    }
+
+    if (!documentCache.has(sourceUrl.href)) {
+      documentCache.set(sourceUrl.href, fetch(sourceUrl.href).then((response) => {
+        if (!response.ok) {
+          throw new Error(`Unable to load distribution reference (${response.status})`);
+        }
+        return response.text();
+      }).then((html) => new DOMParser().parseFromString(html, 'text/html')));
+    }
+
+    return documentCache.get(sourceUrl.href);
+  };
+
+  const previewHtml = async (url, id) => {
+    const key = `${url.origin}${url.pathname}#${id}`;
+    if (!previewCache.has(key)) {
+      previewCache.set(key, sourceDocument(url).then((source) => {
+        const target = source.getElementById(id);
+        const entry = target?.closest('details.distribution-entry');
+        if (!entry) return null;
+
+        const clone = entry.cloneNode(true);
+        clone.open = true;
+        clone.querySelectorAll('.anchorjs-link').forEach((anchor) => anchor.remove());
+        clone.querySelectorAll('[id]').forEach((element) => element.removeAttribute('id'));
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'distribution-xref-preview';
+        wrapper.appendChild(clone);
+
+        // Cross-page previews are parsed from the generated HTML but have not
+        // passed through the destination page's runtime math typesetter.
+        if (!wrapper.querySelector('.katex') && window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(wrapper);
+        }
+
+        return wrapper.outerHTML;
+      }));
+    }
+
+    return previewCache.get(key);
+  };
+
+  const initialiseDistributionPreviews = () => {
+    if (!window.tippy) return;
+
+    document.querySelectorAll('a[href]:not(.anchorjs-link)').forEach((link) => {
+      if (link.dataset.distributionPreviewReady === 'true') return;
+
+      let url;
+      try {
+        url = new URL(link.getAttribute('href'), document.baseURI);
+      } catch {
+        return;
+      }
+
+      const id = decodeURIComponent(url.hash.replace(/^#\/?/, ''));
+      if (url.origin !== window.location.origin || !distributionIds.has(id)) return;
+
+      // Replace Quarto's heading-only tooltip for these links. Other
+      // cross-reference previews continue to use Quarto's default behaviour.
+      if (link._tippy) link._tippy.destroy();
+
+      link.dataset.distributionPreviewReady = 'true';
+      window.tippy(link, {
+        allowHTML: true,
+        appendTo: () => document.body,
+        arrow: false,
+        content: '<div class="distribution-preview-loading">Loading distribution…</div>',
+        delay: [100, 80],
+        interactive: true,
+        interactiveBorder: 12,
+        maxWidth: 680,
+        placement: 'auto-start',
+        popperOptions: {
+          modifiers: [
+            { name: 'preventOverflow', options: { padding: 8 } },
+            { name: 'flip', options: { padding: 8 } }
+          ]
+        },
+        theme: 'quarto distribution-preview',
+        onTrigger(instance) {
+          previewHtml(url, id).then((html) => {
+            instance.setContent(html || '<div class="distribution-preview-loading">Preview unavailable.</div>');
+            window.requestAnimationFrame(() => instance.popperInstance?.update());
+          }).catch(() => {
+            instance.setContent('<div class="distribution-preview-loading">Preview unavailable.</div>');
+            window.requestAnimationFrame(() => instance.popperInstance?.update());
+          });
+        }
+      });
+    });
+  };
+
+  const scheduleInitialisation = () => window.setTimeout(initialiseDistributionPreviews, 0);
+
+  if (document.readyState === 'complete') {
+    scheduleInitialisation();
+  } else {
+    window.addEventListener('load', scheduleInitialisation, { once: true });
+  }
+})();
+</script>
+<script>
 document.addEventListener('DOMContentLoaded', () => {
   // Only target IMPORTANT callouts; add more types if needed.
   const sel = '.callout.callout-important .callout-title-container';
@@ -3548,662 +3721,370 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const tools = document.querySelector('#quarto-header .quarto-navbar-tools');
-  if (!tools) return;
+  const main = document.querySelector('main.content');
+  if (!main) return;
+  const defaults = {expandAll: true, pageNumbers: true, chapterInfo: true, layout: 'default', paper: 'A4'};
+  const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+  const plainText = node => {
+    const copy = node.cloneNode(true);
+    copy.querySelectorAll('.katex-html, annotation, .anchorjs-link').forEach(el => el.remove());
+    return copy.textContent.replace(/\s+/g, ' ').trim();
+  };
+  const pageKey = href => {
+    const url = new URL(href, location.href);
+    url.hash = '';
+    url.pathname = url.pathname.replace(/\/index\.html$/, '/');
+    return url.href;
+  };
+  const chapters = () => Array.from(document.querySelectorAll('#quarto-sidebar a.sidebar-link[href]'))
+    .filter(link => new URL(link.href).origin === location.origin)
+    .map(link => ({href: link.href, title: plainText(link), part: plainText(
+      link.closest('.sidebar-item-section')?.querySelector(':scope > .sidebar-item-container .sidebar-item-text') || document.createElement('span'))}));
+  const currentChapter = () => chapters().find(ch => pageKey(ch.href) === pageKey(location.href)) ||
+    {href: location.href, title: plainText(document.querySelector('h1') || main), part: ''};
 
-  // Create the print/save button
-  const printBtn = document.createElement('button');
-  printBtn.id = 'print-pdf-header-toggle';
-  printBtn.className = 'btn-print-pdf';
-  printBtn.type = 'button';
-  printBtn.setAttribute('aria-label', 'Print or save as PDF');
-  printBtn.setAttribute('title', 'Print/Save PDF (Ctrl+P)');
-
-  // SVG icon (printer icon without control dot)
-  printBtn.innerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <!-- Paper/document -->
-      <path d="M6 9V2h12v7"/>
-      <!-- Printer body -->
-      <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/>
-      <!-- Output paper -->
-      <rect x="6" y="14" width="12" height="8" rx="1"/>
-    </svg>
-  `;
-
-  // Place it after the zoom button (if present) or color toggle
-  const zoomToggle = tools.querySelector('#lecture-zoom-header-toggle');
-  const colorToggle = tools.querySelector('.quarto-color-scheme-toggle');
-  
-  if (zoomToggle && zoomToggle.parentNode) {
-    zoomToggle.parentNode.insertBefore(printBtn, zoomToggle.nextSibling);
-  } else if (colorToggle && colorToggle.parentNode) {
-    colorToggle.parentNode.insertBefore(printBtn, colorToggle.nextSibling);
-  } else {
-    tools.appendChild(printBtn);
-  }
-
-  // Helper function to expand all collapsible content
-  const expandAllContent = () => {
-    const expandedElements = [];
-
-    // Quarto callout blocks with collapse
-    document.querySelectorAll('.callout.collapse').forEach(callout => {
-      if (!callout.classList.contains('show')) {
-        callout.classList.add('show', 'printing-expanded');
-        expandedElements.push(callout);
-      }
+  // Track only our mutations so native printing restores panels, tabs and inputs.
+  const prepareContent = (root, options) => {
+    const undo = [];
+    const attribute = (el, name, value) => {
+      const old = el.getAttribute(name);
+      undo.push(() => old === null ? el.removeAttribute(name) : el.setAttribute(name, old));
+      if (value === null) el.removeAttribute(name); else el.setAttribute(name, value);
+    };
+    if (options.expandAll) {
+      root.querySelectorAll('details:not(.code-fold)').forEach(el => attribute(el, 'open', ''));
+      root.querySelectorAll('.collapse, .tab-pane').forEach(el => {
+        attribute(el, 'class', `${el.className} show${el.matches('.tab-pane') ? ' active' : ''}`);
+      });
+      root.querySelectorAll('.revision-content[hidden]').forEach(el => attribute(el, 'hidden', null));
+    }
+    root.querySelectorAll('.tab-pane').forEach(panel => {
+      const label = root.querySelector(`[id="${CSS.escape(panel.getAttribute('aria-labelledby') || '')}"]`);
+      if (!label) return;
+      const heading = root.ownerDocument.createElement('div');
+      heading.className = 'print-tab-heading'; heading.textContent = plainText(label);
+      panel.prepend(heading); undo.push(() => heading.remove());
     });
-
-    // Details/summary elements
-    document.querySelectorAll('details:not([open])').forEach(details => {
-      details.setAttribute('open', '');
-      details.classList.add('printing-expanded');
-      expandedElements.push(details);
+    root.querySelectorAll('input, select, textarea').forEach(input => {
+      if (input.type === 'hidden' || input.closest('.filterbox')) return;
+      attribute(input, 'class', `${input.className} print-original-control`);
+      if (input.type === 'range' && input.closest('form')?.querySelector('input[type="number"]')) return;
+      const value = root.ownerDocument.createElement('span');
+      value.className = 'print-control-value';
+      value.textContent = input.matches('select') ? Array.from(input.selectedOptions).map(o => o.textContent).join(', ') :
+        ['checkbox', 'radio'].includes(input.type) ? (input.checked ? 'Yes' : 'No') : input.value;
+      input.before(value); undo.push(() => value.remove());
     });
-
-    // Bootstrap collapse elements
-    document.querySelectorAll('.collapse:not(.show)').forEach(collapse => {
-      collapse.classList.add('show', 'printing-expanded');
-      expandedElements.push(collapse);
-    });
-
-    // Quarto tabsets - show all tab content
-    document.querySelectorAll('.tab-pane:not(.active)').forEach(tab => {
-      tab.classList.add('active', 'show', 'printing-expanded');
-      expandedElements.push(tab);
-    });
-
-    return expandedElements;
+    return () => undo.reverse().forEach(restore => restore());
   };
 
-  // Helper function to restore collapsed state
-  const restoreCollapsedContent = (elements) => {
-    elements.forEach(el => {
-      if (el.classList.contains('printing-expanded')) {
-        if (el.tagName === 'DETAILS') {
-          el.removeAttribute('open');
-        } else if (el.classList.contains('callout')) {
-          el.classList.remove('show');
-        } else if (el.classList.contains('collapse')) {
-          el.classList.remove('show');
-        } else if (el.classList.contains('tab-pane')) {
-          el.classList.remove('active', 'show');
+  const paperStyle = (doc, options) => {
+    const margin = options.layout === 'compact' ? 12 : options.layout === 'wide' ? 10 : 17;
+    const paper = options.paper === 'Letter' ? 'letter' : 'A4';
+    const width = (paper === 'letter' ? 215.9 : 210) - 2 * margin;
+    doc.body.style.setProperty('--print-content-width', `${width}mm`);
+    const style = doc.createElement('style');
+    style.dataset.printSettings = '';
+    style.textContent = `@media print { @page {
+      size: ${paper}; margin: 18mm ${margin}mm;
+      @top-left { content: ${options.chapterInfo ? '"MAS2901 · Statistical Inference"' : 'none'}; font: 8pt sans-serif; color: #555; }
+      @bottom-right { content: ${options.pageNumbers ? 'counter(page)' : 'none'}; font: 8pt sans-serif; color: #555; }
+    } }`;
+    doc.head.append(style);
+    return style;
+  };
+
+  const fitContent = root => {
+    const undo = [];
+    root.querySelectorAll('.math.display, .table-scroll').forEach(wrapper => {
+      const content = wrapper.matches('.math.display') ? wrapper.querySelector('.katex') : wrapper.querySelector('table');
+      if (!content || !wrapper.clientWidth) return;
+      const width = Math.max(content.scrollWidth, content.getBoundingClientRect().width);
+      if (width > wrapper.clientWidth + 1) {
+        const old = content.style.zoom;
+        content.style.zoom = String((wrapper.clientWidth - 2) / width);
+        undo.push(() => { content.style.zoom = old; });
+      }
+    });
+    root.querySelectorAll('figure, .ojs-plot-panel, .callout, .controls-root, .ojs-toolbar-grid').forEach(el => {
+      const height = el.getBoundingClientRect().height;
+      // Long proofs and figure collections must be allowed to flow across pages.
+      if (height > 0 && height < (el.matches('.callout') ? 220 : 650) && !el.classList.contains('print-keep-together')) {
+        el.classList.add('print-keep-together');
+        undo.push(() => el.classList.remove('print-keep-together'));
+      }
+    });
+    return () => undo.reverse().forEach(restore => restore());
+  };
+
+  const waitForContent = async doc => {
+    const deadline = Date.now() + 30000;
+    // Wait for Quarto imports and Observable computations rather than a guessed delay.
+    let settled = 0;
+    while (settled < 2) {
+      if (Date.now() > deadline) throw new Error('Interactive figures are still loading. Please wait and try again.');
+      // Quarto leaves its import class on fulfilled cells when no imports were
+      // needed. Hidden empty cells also occur when a view is moved into a layout.
+      // A hidden viewof value may await its first input forever even though the
+      // visible chart has rendered. Readiness concerns printable outputs only.
+      settled = doc.querySelector('.ojs-in-a-box-waiting-for-module-import:empty:not(.quarto-ojs-hide), .observablehq--running:not(.quarto-ojs-hide)') ? 0 : settled + 1;
+      await delay(150);
+    }
+    if (doc.querySelector('.observablehq--error')) throw new Error('A figure could not load. Reload the chapter before printing.');
+    await Promise.race([doc.fonts.ready, delay(15000).then(() => { throw new Error('Fonts did not finish loading. Please try again.'); })]);
+    const images = Array.from(doc.querySelectorAll('main img')).filter(img => !img.closest('.quarto-dark-content, .dark-content'));
+    images.forEach(img => { img.loading = 'eager'; });
+    await Promise.race([
+      Promise.all(images.map(img => new Promise((resolve, reject) => {
+        const check = () => img.naturalWidth ? resolve() : reject(new Error('An image could not load. Please reload the chapter.'));
+        // decode() can remain pending on images adopted from another document.
+        // Complete, successfully loaded images are already ready for printing.
+        if (img.complete) check();
+        else { img.addEventListener('load', check, {once: true}); img.addEventListener('error', check, {once: true}); }
+      }))),
+      delay(15000).then(() => { throw new Error('Images did not finish loading. Please try again.'); })
+    ]);
+  };
+
+  const snapshot = (doc, chapter) => {
+    const source = doc.querySelector('main.content');
+    if (!source) throw new Error(`No lecture content found in ${chapter.title}.`);
+    const clone = source.cloneNode(true);
+    const originals = source.querySelectorAll('input, select, textarea');
+    clone.querySelectorAll('input, select, textarea').forEach((input, i) => {
+      input.value = originals[i].value;
+      if ('checked' in input) input.checked = originals[i].checked;
+    });
+    // CodeMirror only renders its visible lines. Preserve the complete code in
+    // the printed IDE, including edits made before opening the print options.
+    const editorBody = clone.querySelector('#editor .body');
+    if (editorBody && doc.getElementById('code')) {
+      const pre = doc.createElement('pre');
+      pre.textContent = doc.defaultView.cmEditor?.getValue() ?? doc.getElementById('code').value;
+      editorBody.replaceChildren(pre);
+      clone.querySelector('#status')?.remove();
+    }
+    const canvases = source.querySelectorAll('canvas');
+    clone.querySelectorAll('canvas').forEach((canvas, i) => {
+      const img = doc.createElement('img');
+      img.src = canvases[i].toDataURL();
+      img.alt = canvases[i].getAttribute('aria-label') || 'Snapshot of the interactive figure';
+      img.width = canvases[i].width; img.height = canvases[i].height; img.className = 'figure-img';
+      canvas.replaceWith(img);
+    });
+    clone.querySelectorAll('img:not([src^="data:"])').forEach(img => {
+      img.src = new URL(img.getAttribute('src'), doc.baseURI).href;
+      img.removeAttribute('srcset'); img.removeAttribute('sizes'); img.loading = 'eager';
+    });
+    clone.querySelectorAll('a[href], image[href], image[xlink\\:href]').forEach(el => {
+      const attr = el.hasAttribute('href') ? 'href' : 'xlink:href';
+      el.setAttribute(attr, new URL(el.getAttribute(attr), doc.baseURI).href);
+    });
+    clone.querySelectorAll('script, .anchorjs-link, .quarto-dark-content, .dark-content').forEach(el => el.remove());
+    return {chapter, clone};
+  };
+
+  const namespaceChapters = pages => {
+    const destinations = new Map();
+    pages.forEach(({chapter, clone}, index) => {
+      const prefix = `print-ch${index + 1}-`;
+      const ids = new Map();
+      clone.querySelectorAll('[id]').forEach(el => { ids.set(el.id, prefix + el.id); el.id = prefix + el.id; });
+      clone.id = `${prefix}content`;
+      destinations.set(pageKey(chapter.href), {ids, id: clone.id});
+      clone.querySelectorAll('*').forEach(el => {
+        ['aria-labelledby', 'aria-describedby', 'aria-controls', 'for'].forEach(attr => {
+          if (el.hasAttribute(attr)) el.setAttribute(attr, el.getAttribute(attr).split(/\s+/).map(id => ids.get(id) || id).join(' '));
+        });
+        for (const attr of el.attributes) {
+          if (attr.value.includes('url(#')) el.setAttribute(attr.name, attr.value.replace(/url\(#([^)]*)\)/g, (match, id) => `url(#${ids.get(id) || id})`));
+          if (el.namespaceURI === 'http://www.w3.org/2000/svg' && ['href', 'xlink:href'].includes(attr.name) && attr.value.startsWith('#')) {
+            el.setAttribute(attr.name, `#${ids.get(attr.value.slice(1)) || attr.value.slice(1)}`);
+          }
         }
-        el.classList.remove('printing-expanded');
-      }
+      });
     });
+    pages.forEach(({clone}) => clone.querySelectorAll('a[href]').forEach(link => {
+      const url = new URL(link.href);
+      const target = destinations.get(pageKey(url.href));
+      if (!target) return;
+      const id = url.hash ? target.ids.get(decodeURIComponent(url.hash.slice(1))) : target.id;
+      if (id) link.setAttribute('href', `#${id}`);
+    }));
   };
 
-  // Show print options dialog
-  const showPrintDialog = () => {
-    // Remove any existing dialog
-    const existingDialog = document.getElementById('print-options-dialog');
-    if (existingDialog) existingDialog.remove();
+  const createPrintWindow = () => {
+    // Open during the click, before asynchronous loading, to avoid popup blocking.
+    const win = window.open('', '_blank');
+    if (!win) throw new Error('Please allow the print preview window, then try again.');
+    win.document.open();
+    win.document.write('<!doctype html><html lang="en"><head><meta charset="utf-8"><title>MAS2901 print preview</title></head><body><p role="status">Preparing lecture notes…</p></body></html>');
+    win.document.close();
+    return win;
+  };
 
-    // Get chapter list from sidebar
-    const chapters = getChapterList();
-    const currentChapter = getCurrentChapterInfo();
-
-    const dialog = document.createElement('div');
-    dialog.id = 'print-options-dialog';
-    dialog.className = 'print-dialog-overlay';
-    dialog.innerHTML = `
-      <div class="print-dialog">
-        <h3>Print Options</h3>
-        
-        <div class="print-option">
-          <label>
-            Print scope:
-            <select id="print-scope">
-              <option value="current">Current page only</option>
-              <option value="chapter">Current chapter (${currentChapter.name})</option>
-              <option value="part">Current part (${currentChapter.partName})</option>
-              <option value="selected">Selected chapters...</option>
-              <option value="all">Entire book</option>
-            </select>
-          </label>
-        </div>
-
-        <div class="print-option" id="chapter-selection" style="display: none;">
-          <label>Select chapters to print:</label>
-          <div class="chapter-list">
-            ${chapters.map(ch => `
-              <label class="chapter-item">
-                <input type="checkbox" value="${ch.href}" data-title="${ch.title}">
-                ${ch.part ? `<strong>${ch.part}</strong>` : ''} ${ch.title}
-              </label>
-            `).join('')}
-          </div>
-        </div>
-        
-        <div class="print-option">
-          <label>
-            <input type="checkbox" id="print-expand-all" checked>
-            Expand all collapsed content
-          </label>
-        </div>
-        
-        <div class="print-option">
-          <label>
-            <input type="checkbox" id="print-page-numbers" checked>
-            Add page numbers
-          </label>
-        </div>
-        
-        <div class="print-option">
-          <label>
-            <input type="checkbox" id="print-chapter-info" checked>
-            Include chapter/section headers
-          </label>
-        </div>
-
-        <div class="print-option">
-          <label>
-            Layout:
-            <select id="print-layout">
-              <option value="default">Default</option>
-              <option value="compact">Compact (smaller margins)</option>
-              <option value="wide">Wide (full width)</option>
-            </select>
-          </label>
-        </div>
-        
-        <div class="print-progress" id="print-progress" style="display: none;">
-          <div class="progress-bar">
-            <div class="progress-fill"></div>
-          </div>
-          <div class="progress-text">Preparing pages...</div>
-        </div>
-        
-        <div class="print-actions">
-          <button class="btn-print-cancel">Cancel</button>
-          <button class="btn-print-confirm">Print</button>
-        </div>
-      </div>
-    `;
-
-    document.body.appendChild(dialog);
-
-    // Handle scope change
-    const scopeSelect = dialog.querySelector('#print-scope');
-    const chapterSelection = dialog.querySelector('#chapter-selection');
-    
-    scopeSelect.addEventListener('change', () => {
-      chapterSelection.style.display = scopeSelect.value === 'selected' ? 'block' : 'none';
+  const assemble = async (win, pages, options) => {
+    if (win.closed) throw new Error('The print preview was closed.');
+    const doc = win.document;
+    doc.documentElement.style.setProperty('font-size', '11pt', 'important');
+    const seen = new Set();
+    const pendingStyles = [];
+    document.querySelectorAll('link[rel="stylesheet"], link[rel="disabled-stylesheet"]').forEach(link => {
+      if (link.classList.contains('quarto-color-alternate') || link.dataset.mode === 'dark' || seen.has(link.href)) return;
+      seen.add(link.href);
+      const copy = doc.createElement('link'); copy.rel = 'stylesheet'; copy.href = link.href;
+      pendingStyles.push(new Promise((resolve, reject) => {
+        copy.onload = resolve;
+        copy.onerror = () => reject(new Error('Print styles could not load. Please try again.'));
+      }));
+      doc.head.append(copy);
     });
+    const stylesReady = Promise.all(pendingStyles);
+    doc.body.replaceChildren();
+    doc.body.className = `print-document print-layout-${options.layout}`;
+    paperStyle(doc, options);
+    const toolbar = doc.createElement('div'); toolbar.className = 'print-view-toolbar';
+    toolbar.innerHTML = '<button type="button">Print / Save PDF</button><p>Use “Save as PDF” in the print dialog. Turn off browser headers and footers to avoid duplicate page furniture.</p>';
+    toolbar.querySelector('button').addEventListener('click', () => win.print()); doc.body.append(toolbar);
+    pages.forEach(({clone}) => prepareContent(clone, options));
+    namespaceChapters(pages);
+    const book = doc.createElement('main'); book.className = 'content'; book.id = 'quarto-document-content';
+    pages.forEach(({clone}) => {
+      const section = doc.createElement('section'); section.className = 'print-chapter'; section.id = clone.id;
+      section.append(...Array.from(clone.childNodes)); book.append(section);
+    });
+    doc.body.append(book);
+    await Promise.race([stylesReady, delay(15000).then(() => { throw new Error('Print styles did not finish loading. Please try again.'); })]);
+    await waitForContent(doc);
+    fitContent(book);
+    doc.body.dataset.printReady = 'true';
+    doc.title = pages.length === 1 ? `${pages[0].chapter.title} — MAS2901` : 'MAS2901 — Selected lecture notes';
+    win.focus(); win.print();
+  };
 
-    // Handle dialog actions
-    const confirmBtn = dialog.querySelector('.btn-print-confirm');
-    const cancelBtn = dialog.querySelector('.btn-print-cancel');
+  const loadChapter = (iframe, href) => new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error('A chapter took too long to load. Please try again.')), 30000);
+    iframe.onload = () => {
+      clearTimeout(timer);
+      if (!iframe.contentDocument?.querySelector('main.content')) reject(new Error('A chapter could not be loaded.'));
+      else resolve(iframe.contentDocument);
+    };
+    iframe.onerror = () => { clearTimeout(timer); reject(new Error('A chapter could not be loaded.')); };
+    iframe.src = href;
+  });
 
-    confirmBtn.addEventListener('click', () => {
-      const scope = dialog.querySelector('#print-scope').value;
+  const showOptions = () => {
+    if (document.querySelector('#print-options-dialog')) return;
+    const current = currentChapter(); const list = chapters();
+    const dialog = document.createElement('dialog');
+    dialog.id = 'print-options-dialog'; dialog.className = 'print-dialog';
+    dialog.setAttribute('aria-labelledby', 'print-options-title');
+    dialog.innerHTML = `
+      <h2 id="print-options-title">Print or save as PDF</h2>
+      <p>A paper layout with dark text on white. Figures are saved as static snapshots.</p>
+      <div class="print-option"><label>Print scope: <select id="print-scope">
+        <option value="current">Current chapter</option><option value="part">Current part</option>
+        <option value="selected">Selected chapters</option><option value="all">Entire book</option>
+      </select></label></div>
+      <fieldset id="chapter-selection" class="chapter-list" hidden><legend>Select chapters</legend></fieldset>
+      <div class="print-option"><label><input type="checkbox" id="print-expand-all" checked> Include collapsed explanations and all tabs</label></div>
+      <div class="print-option"><label><input type="checkbox" id="print-page-numbers" checked> Add page numbers</label></div>
+      <div class="print-option"><label><input type="checkbox" id="print-chapter-info" checked> Add course heading in the page margin</label></div>
+      <div class="print-option"><label>Paper: <select id="print-paper"><option value="A4">A4</option><option value="Letter">US Letter</option></select></label></div>
+      <div class="print-option"><label>Layout: <select id="print-layout"><option value="default">Standard</option><option value="compact">Compact text</option><option value="wide">Wider text area</option></select></label></div>
+      <p class="print-progress" role="status" aria-live="polite"></p>
+      <div class="print-actions"><button type="button" class="btn-print-cancel">Cancel</button><button type="button" class="btn-print-confirm">Prepare PDF / Print</button></div>`;
+    const selection = dialog.querySelector('#chapter-selection');
+    list.forEach(chapter => {
+      const label = document.createElement('label'); const input = document.createElement('input');
+      input.type = 'checkbox'; input.value = chapter.href;
+      label.append(input, document.createTextNode(chapter.title)); selection.append(label);
+    });
+    if (!current.part) dialog.querySelector('option[value="part"]').disabled = true;
+    const scope = dialog.querySelector('#print-scope');
+    scope.addEventListener('change', () => { selection.hidden = scope.value !== 'selected'; });
+    const status = dialog.querySelector('.print-progress'); const confirm = dialog.querySelector('.btn-print-confirm');
+    let cancelled = false; let preview;
+    dialog.addEventListener('close', () => {
+      cancelled = true;
+      if (preview && !preview.closed && preview.document.body.dataset.printReady !== 'true') preview.close();
+      dialog.remove();
+    });
+    dialog.querySelector('.btn-print-cancel').addEventListener('click', () => dialog.close());
+    confirm.addEventListener('click', async () => {
       const options = {
         expandAll: dialog.querySelector('#print-expand-all').checked,
         pageNumbers: dialog.querySelector('#print-page-numbers').checked,
         chapterInfo: dialog.querySelector('#print-chapter-info').checked,
         layout: dialog.querySelector('#print-layout').value,
-        scope: scope
+        paper: dialog.querySelector('#print-paper').value
       };
-      
-      // Get selected chapters if scope is 'selected'
-      if (scope === 'selected') {
-        options.chapters = Array.from(dialog.querySelectorAll('.chapter-item input:checked'))
-          .map(cb => ({ href: cb.value, title: cb.dataset.title }));
-      }
-      
-      dialog.remove();
-      
-      // Handle different scopes
-      if (scope === 'current') {
-        triggerPrint(options);
-      } else {
-        triggerMultiPagePrint(options);
-      }
-    });
-
-    cancelBtn.addEventListener('click', () => {
-      dialog.remove();
-    });
-
-    // Close on backdrop click
-    dialog.addEventListener('click', (e) => {
-      if (e.target === dialog) dialog.remove();
-    });
-
-    // Close on Escape
-    const escHandler = (e) => {
-      if (e.key === 'Escape') {
-        dialog.remove();
-        document.removeEventListener('keydown', escHandler);
-      }
-    };
-    document.addEventListener('keydown', escHandler);
-  };
-
-  // Get chapter list from sidebar
-  const getChapterList = () => {
-    const chapters = [];
-    const sidebar = document.querySelector('.sidebar-navigation');
-    if (!sidebar) return chapters;
-    
-    let currentPart = '';
-    sidebar.querySelectorAll('.sidebar-item').forEach(item => {
-      if (item.querySelector('.sidebar-item-text')?.classList.contains('sidebar-part')) {
-        currentPart = item.textContent.trim();
-      } else if (item.querySelector('a')) {
-        const link = item.querySelector('a');
-        chapters.push({
-          href: link.getAttribute('href'),
-          title: link.textContent.trim(),
-          part: currentPart,
-          element: item
-        });
-      }
-    });
-    
-    return chapters;
-  };
-
-  // Get current chapter info - FIXED version
-  const getCurrentChapterInfo = () => {
-    // Try to find the active sidebar item
-    let active = document.querySelector('.sidebar-item.active a');
-    if (!active) {
-      // Fallback: check if we're on a chapter page
-      const chapterTitle = document.querySelector('h1.chapter-title, .title')?.textContent?.trim();
-      return { name: chapterTitle || 'Current Page', partName: 'No part' };
-    }
-    
-    const title = active.textContent.trim();
-    
-    // Find part name by traversing up from the active item
-    let partName = '';
-    let currentEl = active.closest('.sidebar-item');
-    
-    // Go up through previous siblings until we find a part
-    while (currentEl) {
-      currentEl = currentEl.previousElementSibling;
-      if (currentEl && currentEl.querySelector('.sidebar-part, .chapter-part')) {
-        partName = currentEl.textContent.trim();
-        break;
-      }
-    }
-    
-    // If not found, check parent sections
-    if (!partName) {
-      const parentSection = active.closest('.chapter-section');
-      if (parentSection) {
-        const partEl = parentSection.querySelector('.sidebar-part, .chapter-part');
-        if (partEl) partName = partEl.textContent.trim();
-      }
-    }
-    
-    return { name: title, partName: partName || 'Main Content' };
-  };
-
-  // Get chapters for current part
-  const getChaptersInPart = (partName) => {
-    const chapters = getChapterList();
-    const inPart = [];
-    let foundPart = false;
-    
-    for (const ch of chapters) {
-      if (ch.part === partName) {
-        foundPart = true;
-        inPart.push(ch);
-      } else if (foundPart && ch.part !== partName) {
-        break; // Moved to next part
-      }
-    }
-    
-    return inPart;
-  };
-
-  // Multi-page print handler
-  const triggerMultiPagePrint = async (options) => {
-    const progressEl = document.getElementById('print-progress');
-    const progressBar = progressEl?.querySelector('.progress-fill');
-    const progressText = progressEl?.querySelector('.progress-text');
-    
-    if (progressEl) progressEl.style.display = 'block';
-    
-    // Determine which chapters to print
-    let chaptersToPrint = [];
-    
-    switch (options.scope) {
-      case 'all':
-        chaptersToPrint = getChapterList();
-        break;
-      case 'part':
-        const currentInfo = getCurrentChapterInfo();
-        chaptersToPrint = getChaptersInPart(currentInfo.partName);
-        break;
-      case 'chapter':
-        // For current chapter, just use single page print
-        triggerPrint(options);
-        return;
-      case 'selected':
-        chaptersToPrint = options.chapters || [];
-        break;
-    }
-    
-    if (chaptersToPrint.length === 0) {
-      alert('No chapters selected for printing');
-      return;
-    }
-    
-    // Create iframe for loading pages
-    const iframe = document.createElement('iframe');
-    iframe.style.position = 'absolute';
-    iframe.style.left = '-9999px';
-    iframe.style.width = '1000px';
-    iframe.style.height = '1000px';
-    document.body.appendChild(iframe);
-    
-    // Collect all pages
-    const printPages = [];
-    
-    for (let i = 0; i < chaptersToPrint.length; i++) {
-      const chapter = chaptersToPrint[i];
-      const progress = ((i + 1) / chaptersToPrint.length) * 100;
-      
-      if (progressBar) progressBar.style.width = progress + '%';
-      if (progressText) progressText.textContent = `Loading ${chapter.title}...`;
-      
+      const selected = new Set(Array.from(selection.querySelectorAll('input:checked')).map(el => el.value));
+      const requested = scope.value === 'current' ? [current] : scope.value === 'part' ? list.filter(ch => ch.part === current.part) :
+        scope.value === 'selected' ? list.filter(ch => selected.has(ch.href)) : list;
+      if (!requested.length) { status.textContent = 'Select at least one chapter.'; return; }
+      let iframe;
       try {
-        // Load page in iframe
-        const pageContent = await loadPageInIframe(iframe, chapter.href);
-        
-        // Process the page
-        if (options.expandAll) {
-          expandAllContentInDocument(iframe.contentDocument);
+        preview = createPrintWindow(); confirm.disabled = true; status.classList.remove('print-error');
+        const pages = [];
+        for (const chapter of requested) {
+          if (cancelled || preview.closed) throw new Error('Print preparation cancelled.');
+          status.textContent = `Preparing ${pages.length + 1} of ${requested.length}: ${chapter.title}`;
+          let doc = document;
+          if (pageKey(chapter.href) !== pageKey(location.href)) {
+            if (!iframe) {
+              iframe = document.createElement('iframe');
+              iframe.title = 'Preparing print content'; iframe.setAttribute('aria-hidden', 'true'); iframe.tabIndex = -1;
+              iframe.style.cssText = 'position:fixed;left:-10000px;top:0;width:1000px;height:1000px;visibility:hidden;';
+              document.body.append(iframe);
+            }
+            doc = await loadChapter(iframe, chapter.href);
+          }
+          await waitForContent(doc); pages.push(snapshot(doc, chapter));
         }
-        
-        // Extract and store the content
-        const content = iframe.contentDocument.querySelector('.content, main, article')?.innerHTML || '';
-        printPages.push({
-          title: chapter.title,
-          content: content
-        });
-        
-      } catch (err) {
-        console.error(`Failed to load ${chapter.title}:`, err);
-      }
-    }
-    
-    // Clean up
-    iframe.remove();
-    if (progressEl) progressEl.style.display = 'none';
-    
-    // Create combined print document
-    createCombinedPrintDocument(printPages, options);
+        if (cancelled || preview.closed) throw new Error('Print preparation cancelled.');
+        status.textContent = 'Laying out the pages…';
+        await assemble(preview, pages, options); dialog.close();
+      } catch (error) {
+        if (preview && !preview.closed) preview.close();
+        if (!cancelled) { status.textContent = error.message; status.classList.add('print-error'); confirm.disabled = false; }
+      } finally { iframe?.remove(); }
+    });
+    document.body.append(dialog); dialog.showModal();
   };
 
-  // Load page in iframe
-  const loadPageInIframe = (iframe, href) => {
-    return new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        reject(new Error('Page load timeout'));
-      }, 10000);
-      
-      iframe.onload = () => {
-        clearTimeout(timeout);
-        // Wait a bit for JS to run
-        setTimeout(() => resolve(iframe.contentDocument), 500);
-      };
-      
-      iframe.src = href;
-    });
-  };
+  const tools = document.querySelector('#quarto-header .quarto-navbar-tools');
+  if (tools) {
+    const button = document.createElement('button');
+    button.id = 'print-pdf-header-toggle'; button.className = 'btn-print-pdf'; button.type = 'button';
+    button.setAttribute('aria-label', 'Print or save as PDF'); button.title = 'Print or save as PDF';
+    button.innerHTML = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>';
+    tools.append(button); button.addEventListener('click', showOptions);
+  }
 
-  // Expand content in a document
-  const expandAllContentInDocument = (doc) => {
-    // Quarto callout blocks
-    doc.querySelectorAll('.callout.collapse').forEach(callout => {
-      callout.classList.add('show');
-    });
-
-    // Details elements
-    doc.querySelectorAll('details').forEach(details => {
-      details.setAttribute('open', '');
-    });
-
-    // Bootstrap collapse
-    doc.querySelectorAll('.collapse').forEach(collapse => {
-      collapse.classList.add('show');
-    });
-  };
-
-  // Create combined document for printing - FIXED version
-  const createCombinedPrintDocument = (pages, options) => {
-    // Create new window for printing
-    const printWindow = window.open('', '_blank');
-    
-    // Collect all stylesheets except those that might interfere
-    const stylesheets = Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
-      .filter(link => !link.href.includes('quarto-html'))
-      .map(link => link.outerHTML).join('\n');
-    
-    // Build HTML
-    const html = `
-      <!DOCTYPE html>
-      <html class="${document.documentElement.className}">
-      <head>
-        <meta charset="UTF-8">
-        <title>MAS2901 Statistical Inference - Print</title>
-        ${stylesheets}
-        <style>
-          /* Reset background for light mode printing */
-          @media print {
-            body:not(.quarto-dark) {
-              background-color: white !important;
-              color: black !important;
-            }
-            
-            body:not(.quarto-dark) .content,
-            body:not(.quarto-dark) .quarto-container-default,
-            body:not(.quarto-dark) main,
-            body:not(.quarto-dark) article {
-              background-color: white !important;
-              color: black !important;
-            }
-            
-            /* Fix math rendering in dark mode */
-            .quarto-dark .katex,
-            .quarto-dark .MathJax,
-            .quarto-dark .MathJax *,
-            .quarto-dark .katex * {
-              color: #e9ecef !important;
-              background-color: transparent !important;
-              fill: #e9ecef !important;
-            }
-            
-            /* Ensure OJS figures fit within page */
-            .ojs-cell,
-            .cell-output-display,
-            figure,
-            .figure {
-              max-width: 100% !important;
-              overflow: hidden !important;
-              page-break-inside: avoid;
-            }
-            
-            .ojs-cell svg,
-            figure svg,
-            .cell-output-display svg {
-              max-width: 100% !important;
-              height: auto !important;
-            }
-            
-            /* Scale down large images/plots */
-            img, svg {
-              max-width: 100% !important;
-              height: auto !important;
-            }
-            
-            /* Hide overflow indicators */
-            * {
-              overflow: visible !important;
-            }
-            
-            pre {
-              overflow-wrap: break-word !important;
-              white-space: pre-wrap !important;
-            }
-            
-            /* Page breaks */
-            .chapter-break { 
-              page-break-before: always;
-              margin-top: 0 !important;
-            }
-            
-            /* Remove section headers that duplicate */
-            .sidebar-title,
-            .navbar-title,
-            .quarto-title-meta {
-              display: none !important;
-            }
-            
-            /* Compact layout adjustments */
-            body.print-layout-compact {
-              font-size: 10pt;
-              line-height: 1.4;
-            }
-            
-            body.print-layout-compact h1 { font-size: 1.4em; }
-            body.print-layout-compact h2 { font-size: 1.2em; }
-            body.print-layout-compact h3 { font-size: 1.1em; }
-            
-            /* Wide layout */
-            body.print-layout-wide .content {
-              max-width: 100% !important;
-              margin: 0.5in !important;
-            }
-            
-            /* Hide navigation elements */
-            .quarto-title-breadcrumbs,
-            .page-navigation,
-            .nav-footer {
-              display: none !important;
-            }
-          }
-          
-          /* Dark mode specific fixes */
-          ${document.body.classList.contains('quarto-dark') ? `
-          html, body {
-            background-color: #1a1a1a !important;
-            color: #e9ecef !important;
-          }
-          ` : ''}
-        </style>
-      </head>
-      <body class="${document.body.className} printing print-layout-${options.layout} ${options.pageNumbers ? 'print-page-numbers' : ''} ${options.chapterInfo ? 'print-chapter-info' : ''}">
-        ${pages.map((page, i) => `
-          <div class="${i > 0 ? 'chapter-break' : ''}">
-            <h1 class="chapter-title">${page.title}</h1>
-            ${page.content}
-          </div>
-        `).join('\n')}
-      </body>
-      </html>
-    `;
-    
-    printWindow.document.write(html);
-    printWindow.document.close();
-    
-    // Wait for content to render
-    printWindow.onload = () => {
-      setTimeout(() => {
-        // Final cleanup before printing
-        const doc = printWindow.document;
-        
-        // Remove duplicate headers
-        doc.querySelectorAll('.quarto-title, .title-block-banner').forEach((el, idx) => {
-          if (idx > 0) el.remove();
-        });
-        
-        // Scale OJS content
-        doc.querySelectorAll('.ojs-cell').forEach(cell => {
-          cell.style.maxWidth = '100%';
-          cell.style.overflow = 'hidden';
-        });
-        
-        printWindow.print();
-        
-        // Close after print dialog
-        printWindow.onafterprint = () => {
-          printWindow.close();
-        };
-      }, 1000); // Give more time for math to render
+  // Native browser Print uses the same layout and restores state after dismissal.
+  let restoreNative;
+  window.addEventListener('beforeprint', () => {
+    if (restoreNative) return;
+    const oldClass = document.body.className; const oldStyle = document.body.getAttribute('style');
+    const oldRootClass = document.documentElement.className;
+    document.documentElement.classList.remove('reading-mode', 'lecture-zoom');
+    document.body.classList.remove('reading-mode', 'lecture-zoom');
+    document.body.classList.add('print-document');
+    const style = paperStyle(document, defaults);
+    const restoreContent = prepareContent(main, defaults); const restoreFit = fitContent(main);
+    restoreNative = () => {
+      restoreFit(); restoreContent(); style.remove(); document.body.className = oldClass;
+      document.documentElement.className = oldRootClass;
+      if (oldStyle === null) document.body.removeAttribute('style'); else document.body.setAttribute('style', oldStyle);
+      restoreNative = null;
     };
-  };
-
-  // Print handler with options
-  const triggerPrint = (options) => {
-    let expandedElements = [];
-    
-    // Apply print classes based on options
-    document.body.classList.add('printing');
-    if (options.pageNumbers) document.body.classList.add('print-page-numbers');
-    if (options.chapterInfo) document.body.classList.add('print-chapter-info');
-    document.body.classList.add(`print-layout-${options.layout}`);
-    
-    // Store chapter/section info
-    const chapterTitle = document.querySelector('h1.title')?.textContent || '';
-    const courseTitle = 'MAS2901 Statistical Inference';
-    document.body.setAttribute('data-chapter-title', chapterTitle);
-    document.body.setAttribute('data-course-title', courseTitle);
-    
-    // Force dark mode styles to be applied to documentElement too
-    if (document.body.classList.contains('quarto-dark')) {
-      document.documentElement.classList.add('printing-dark');
-    }
-    
-    // Expand content if requested
-    if (options.expandAll) {
-      expandedElements = expandAllContent();
-    }
-    
-    // Small delay to ensure DOM updates
-    setTimeout(() => {
-      window.print();
-      
-      // Clean up after print dialog closes
-      window.addEventListener('afterprint', function cleanup() {
-        document.body.classList.remove('printing', 'print-page-numbers', 
-          'print-chapter-info', `print-layout-${options.layout}`);
-        document.documentElement.classList.remove('printing-dark');
-        
-        // Restore collapsed state
-        if (expandedElements.length > 0) {
-          restoreCollapsedContent(expandedElements);
-        }
-        
-        window.removeEventListener('afterprint', cleanup);
-      });
-    }, 100);
-  };
-
-  // Click handler - show options dialog
-  printBtn.addEventListener('click', () => {
-    showPrintDialog();
   });
-  
-  // Direct print shortcut (Ctrl+Shift+P) - use default options
-  document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'p' && 
-        !/input|textarea|select/i.test(e.target.tagName)) {
-      e.preventDefault();
-      showPrintDialog();
-    }
-  });
+  window.addEventListener('afterprint', () => restoreNative?.());
 });
 </script>
 
-<div class="inkpad-toolbar" id="inkpad-toolbar" aria-label="Ink toolbar" aria-hidden="true">
+<div class="inkpad-toolbar" id="inkpad-toolbar" role="group" aria-label="Ink toolbar" aria-hidden="true">
 <button class="inkpad-btn inkpad-toggle" id="inkpad-toggle" type="button" aria-pressed="false" title="Draw (D)" aria-label="Draw (D)">
   <span class="sr-only">Toggle ink</span>
 
@@ -4811,9 +4692,11 @@ onButton('inkpad-save', () => {
   document.addEventListener('keydown', (e) => {
     // Only when toolbar is visible
     if (!toolbar.classList.contains('open')) return;
+    // Character-only shortcuts are confined to focus within the ink toolbar.
+    if (!toolbar.contains(document.activeElement)) return;
 
     // Don’t hijack typing in inputs
-    if (e.target && /input|textarea|select|button/i.test(e.target.tagName)) return;
+    if (e.target && /input|textarea|select/i.test(e.target.tagName)) return;
     if (e.target?.isContentEditable) return;
 
     const k = e.key.toLowerCase();
@@ -4899,7 +4782,7 @@ document.addEventListener('DOMContentLoaded', () => {
   inkBtn.className = 'btn-ink-tool';
   inkBtn.type = 'button';
   inkBtn.setAttribute('aria-label', 'Ink controls');
-  inkBtn.setAttribute('title', 'Ink controls (I)');
+  inkBtn.setAttribute('title', 'Ink controls');
   inkBtn.setAttribute('aria-controls', 'inkpad-toolbar');
   inkBtn.setAttribute('aria-expanded', 'false');
 
@@ -4931,8 +4814,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const setOpen = (open) => {
     if (!toolbar) return;
     toolbar.classList.toggle('open', open);
+    toolbar.setAttribute('aria-hidden', String(!open));
     inkBtn.classList.toggle('active', open);
     inkBtn.setAttribute('aria-expanded', String(open));
+    if (open) toolbar.querySelector('button')?.focus();
+    else if (toolbar.contains(document.activeElement)) inkBtn.focus();
   };
 
   inkBtn.addEventListener('click', () => {
@@ -4940,13 +4826,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setOpen(!toolbar.classList.contains('open'));
   });
 
-  // Keyboard: "I" toggles; "Esc" closes
+  // The labelled header button opens the toolbar; Escape closes it.
   document.addEventListener('keydown', (e) => {
-    if (/input|textarea|select/i.test(e.target.tagName)) return;
-    if (e.key.toLowerCase() === 'i' && !e.metaKey && !e.ctrlKey && !e.altKey) {
-      if (!toolbar) return;
-      setOpen(!toolbar.classList.contains('open'));
-    }
     if (e.key === 'Escape') setOpen(false);
   });
 });
@@ -5010,6 +4891,135 @@ if (document.body.classList.contains('reading-mode')) {
     .then(() => loadScript(asset('knowledge-graph/knowledge-graph.js')))
     .catch((error) => console.error('Unable to load the course map.', error));
 })();
+</script>
+<script>
+// Quarto and Observable generate some controls after the page has loaded.
+// Enhance those controls here as well as the initial static document.
+document.addEventListener('DOMContentLoaded', () => {
+  const main = document.querySelector('main');
+  if (!main) return;
+
+  const textLabel = (element) => {
+    const copy = element.cloneNode(true);
+    copy.querySelectorAll('.katex-html, annotation, .anchorjs-link, [aria-hidden="true"]').forEach(node => node.remove());
+    const symbols = { 'μ': ' mu ', 'σ': ' sigma ', 'θ': ' theta ', 'ρ': ' rho ', 'ε': ' epsilon ', 'α': ' alpha ', 'β': ' beta ', 'δ': ' delta ' };
+    return copy.textContent.replace(/[μσθρεαβδ]/g, symbol => symbols[symbol]).replace(/\s+/g, ' ').trim();
+  };
+
+  const enhanceInput = (input) => {
+    if (input.hasAttribute('aria-label') || input.hasAttribute('aria-labelledby')) return;
+    // Inputs.range labels only the number input, not its paired slider.
+    const form = input.closest('form');
+    const label = input.labels?.[0] || form?.querySelector('label');
+    if (!label) return;
+    const name = textLabel(label);
+    if (name) input.setAttribute('aria-label', name);
+  };
+
+  const updateScrollRegion = (element) => {
+    const overflowing = element.clientWidth > 0 && element.scrollWidth > element.clientWidth + 1;
+    if (overflowing) element.setAttribute('tabindex', '0');
+    else element.removeAttribute('tabindex');
+  };
+  const scrollObserver = new ResizeObserver(entries => entries.forEach(entry => updateScrollRegion(entry.target)));
+  const observedScrollRegions = new WeakSet();
+  const watchScrollRegion = (element) => {
+    if (observedScrollRegions.has(element)) return;
+    observedScrollRegions.add(element);
+    scrollObserver.observe(element);
+    updateScrollRegion(element);
+  };
+
+  const enhanceTable = (table) => {
+    if (table.parentElement.classList.contains('table-scroll')) return;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'table-scroll';
+    wrapper.setAttribute('role', 'group');
+    const caption = table.querySelector('caption') || table.closest('figure')?.querySelector('figcaption');
+    wrapper.setAttribute('aria-label', caption ? `Table: ${textLabel(caption)}` : 'Table; scroll horizontally if needed');
+    table.before(wrapper);
+    wrapper.append(table);
+    watchScrollRegion(wrapper);
+  };
+
+  const enhanceCallout = (header) => {
+    if (header.dataset.keyboardDisclosure) return;
+    header.dataset.keyboardDisclosure = 'true';
+    if (header.querySelector('a[href]')) {
+      // A linked title must sit beside its disclosure control, not inside it.
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'callout-disclosure-button';
+      button.setAttribute('aria-label', textLabel(header));
+      ['data-bs-toggle', 'data-bs-target', 'aria-controls', 'aria-expanded'].forEach(name => {
+        button.setAttribute(name, header.getAttribute(name));
+        header.removeAttribute(name);
+      });
+      header.removeAttribute('aria-label');
+      button.append(header.querySelector('.callout-btn-toggle'));
+      header.append(button);
+      const panel = document.getElementById(button.getAttribute('aria-controls'));
+      ['show.bs.collapse', 'hide.bs.collapse'].forEach(type => panel?.addEventListener(type, event => {
+        if (event.target === panel) header.classList.toggle('collapsed', type === 'hide.bs.collapse');
+      }));
+      return;
+    }
+    header.setAttribute('role', 'button');
+    header.tabIndex = 0;
+    // Keep the visible title as the name, instead of the generic "Toggle callout".
+    header.removeAttribute('aria-label');
+    header.addEventListener('keydown', event => {
+      if (event.target === header && (event.key === 'Enter' || event.key === ' ')) {
+        event.preventDefault();
+        header.click(); // Bootstrap updates the panel and aria-expanded together.
+      }
+    });
+  };
+
+  const enhance = (root) => {
+    const each = (selector, fn) => {
+      if (root.matches?.(selector)) fn(root);
+      root.querySelectorAll(selector).forEach(fn);
+    };
+    each('input[type="range"], input[type="number"]', enhanceInput);
+    // Observable labels plot groups and legends; give those labels a valid role.
+    each('.observablehq g[aria-label]:not([role]), .observablehq div[aria-label]:not([role])', element => element.setAttribute('role', 'group'));
+    each('.callout-header[data-bs-toggle="collapse"]', enhanceCallout);
+    each('table', enhanceTable);
+    each('.math.display', watchScrollRegion);
+    // Heading permalinks inside summary create nested interactive controls.
+    each('summary .anchorjs-link', anchor => anchor.remove());
+    // Math-only cross-references also need a dependable link name.
+    each('a[href] .math', math => {
+      const link = math.closest('a');
+      if (!link.hasAttribute('aria-label')) {
+        const name = textLabel(link);
+        if (name) link.setAttribute('aria-label', name);
+      }
+    });
+  };
+
+  enhance(main);
+  document.querySelectorAll('.sidebar-logo-link').forEach(link => {
+    if (!link.textContent.trim() && !link.querySelector('img')) link.remove();
+  });
+
+  const pending = new Set();
+  let scheduled = false;
+  new MutationObserver(records => {
+    records.forEach(record => record.addedNodes.forEach(node => {
+      if (node instanceof Element) pending.add(node);
+    }));
+    if (scheduled || !pending.size) return;
+    scheduled = true;
+    requestAnimationFrame(() => {
+      scheduled = false;
+      const roots = [...pending];
+      pending.clear();
+      roots.filter(root => root.isConnected && !roots.some(other => other !== root && other.contains(root))).forEach(enhance);
+    });
+  }).observe(main, {childList: true, subtree: true});
+});
 </script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -5431,8 +5441,8 @@ if (document.body.classList.contains('reading-mode')) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../content/appendix/question-bank.html" class="pagination-link" aria-label="Question Bank">
-        <span class="nav-page-text">Question Bank</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../content/appendix/distribution-explorer.html" class="pagination-link" aria-label="Distribution Explorer">
+        <span class="nav-page-text">Distribution Explorer</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

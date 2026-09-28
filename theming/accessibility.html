@@ -1,0 +1,129 @@
+<script>
+// Quarto and Observable generate some controls after the page has loaded.
+// Enhance those controls here as well as the initial static document.
+document.addEventListener('DOMContentLoaded', () => {
+  const main = document.querySelector('main');
+  if (!main) return;
+
+  const textLabel = (element) => {
+    const copy = element.cloneNode(true);
+    copy.querySelectorAll('.katex-html, annotation, .anchorjs-link, [aria-hidden="true"]').forEach(node => node.remove());
+    const symbols = { 'μ': ' mu ', 'σ': ' sigma ', 'θ': ' theta ', 'ρ': ' rho ', 'ε': ' epsilon ', 'α': ' alpha ', 'β': ' beta ', 'δ': ' delta ' };
+    return copy.textContent.replace(/[μσθρεαβδ]/g, symbol => symbols[symbol]).replace(/\s+/g, ' ').trim();
+  };
+
+  const enhanceInput = (input) => {
+    if (input.hasAttribute('aria-label') || input.hasAttribute('aria-labelledby')) return;
+    // Inputs.range labels only the number input, not its paired slider.
+    const form = input.closest('form');
+    const label = input.labels?.[0] || form?.querySelector('label');
+    if (!label) return;
+    const name = textLabel(label);
+    if (name) input.setAttribute('aria-label', name);
+  };
+
+  const updateScrollRegion = (element) => {
+    const overflowing = element.clientWidth > 0 && element.scrollWidth > element.clientWidth + 1;
+    if (overflowing) element.setAttribute('tabindex', '0');
+    else element.removeAttribute('tabindex');
+  };
+  const scrollObserver = new ResizeObserver(entries => entries.forEach(entry => updateScrollRegion(entry.target)));
+  const observedScrollRegions = new WeakSet();
+  const watchScrollRegion = (element) => {
+    if (observedScrollRegions.has(element)) return;
+    observedScrollRegions.add(element);
+    scrollObserver.observe(element);
+    updateScrollRegion(element);
+  };
+
+  const enhanceTable = (table) => {
+    if (table.parentElement.classList.contains('table-scroll')) return;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'table-scroll';
+    wrapper.setAttribute('role', 'group');
+    const caption = table.querySelector('caption') || table.closest('figure')?.querySelector('figcaption');
+    wrapper.setAttribute('aria-label', caption ? `Table: ${textLabel(caption)}` : 'Table; scroll horizontally if needed');
+    table.before(wrapper);
+    wrapper.append(table);
+    watchScrollRegion(wrapper);
+  };
+
+  const enhanceCallout = (header) => {
+    if (header.dataset.keyboardDisclosure) return;
+    header.dataset.keyboardDisclosure = 'true';
+    if (header.querySelector('a[href]')) {
+      // A linked title must sit beside its disclosure control, not inside it.
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'callout-disclosure-button';
+      button.setAttribute('aria-label', textLabel(header));
+      ['data-bs-toggle', 'data-bs-target', 'aria-controls', 'aria-expanded'].forEach(name => {
+        button.setAttribute(name, header.getAttribute(name));
+        header.removeAttribute(name);
+      });
+      header.removeAttribute('aria-label');
+      button.append(header.querySelector('.callout-btn-toggle'));
+      header.append(button);
+      const panel = document.getElementById(button.getAttribute('aria-controls'));
+      ['show.bs.collapse', 'hide.bs.collapse'].forEach(type => panel?.addEventListener(type, event => {
+        if (event.target === panel) header.classList.toggle('collapsed', type === 'hide.bs.collapse');
+      }));
+      return;
+    }
+    header.setAttribute('role', 'button');
+    header.tabIndex = 0;
+    // Keep the visible title as the name, instead of the generic "Toggle callout".
+    header.removeAttribute('aria-label');
+    header.addEventListener('keydown', event => {
+      if (event.target === header && (event.key === 'Enter' || event.key === ' ')) {
+        event.preventDefault();
+        header.click(); // Bootstrap updates the panel and aria-expanded together.
+      }
+    });
+  };
+
+  const enhance = (root) => {
+    const each = (selector, fn) => {
+      if (root.matches?.(selector)) fn(root);
+      root.querySelectorAll(selector).forEach(fn);
+    };
+    each('input[type="range"], input[type="number"]', enhanceInput);
+    // Observable labels plot groups and legends; give those labels a valid role.
+    each('.observablehq g[aria-label]:not([role]), .observablehq div[aria-label]:not([role])', element => element.setAttribute('role', 'group'));
+    each('.callout-header[data-bs-toggle="collapse"]', enhanceCallout);
+    each('table', enhanceTable);
+    each('.math.display', watchScrollRegion);
+    // Heading permalinks inside summary create nested interactive controls.
+    each('summary .anchorjs-link', anchor => anchor.remove());
+    // Math-only cross-references also need a dependable link name.
+    each('a[href] .math', math => {
+      const link = math.closest('a');
+      if (!link.hasAttribute('aria-label')) {
+        const name = textLabel(link);
+        if (name) link.setAttribute('aria-label', name);
+      }
+    });
+  };
+
+  enhance(main);
+  document.querySelectorAll('.sidebar-logo-link').forEach(link => {
+    if (!link.textContent.trim() && !link.querySelector('img')) link.remove();
+  });
+
+  const pending = new Set();
+  let scheduled = false;
+  new MutationObserver(records => {
+    records.forEach(record => record.addedNodes.forEach(node => {
+      if (node instanceof Element) pending.add(node);
+    }));
+    if (scheduled || !pending.size) return;
+    scheduled = true;
+    requestAnimationFrame(() => {
+      scheduled = false;
+      const roots = [...pending];
+      pending.clear();
+      roots.filter(root => root.isConnected && !roots.some(other => other !== root && other.contains(root))).forEach(enhance);
+    });
+  }).observe(main, {childList: true, subtree: true});
+});
+</script>

@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   inkBtn.className = 'btn-ink-tool';
   inkBtn.type = 'button';
   inkBtn.setAttribute('aria-label', 'Ink controls');
-  inkBtn.setAttribute('title', 'Ink controls (I)');
+  inkBtn.setAttribute('title', 'Ink controls');
   inkBtn.setAttribute('aria-controls', 'inkpad-toolbar');
   inkBtn.setAttribute('aria-expanded', 'false');
 
@@ -44,8 +44,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const setOpen = (open) => {
     if (!toolbar) return;
     toolbar.classList.toggle('open', open);
+    toolbar.setAttribute('aria-hidden', String(!open));
     inkBtn.classList.toggle('active', open);
     inkBtn.setAttribute('aria-expanded', String(open));
+    if (open) toolbar.querySelector('button')?.focus();
+    else if (toolbar.contains(document.activeElement)) inkBtn.focus();
   };
 
   inkBtn.addEventListener('click', () => {
@@ -53,13 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setOpen(!toolbar.classList.contains('open'));
   });
 
-  // Keyboard: "I" toggles; "Esc" closes
+  // The labelled header button opens the toolbar; Escape closes it.
   document.addEventListener('keydown', (e) => {
-    if (/input|textarea|select/i.test(e.target.tagName)) return;
-    if (e.key.toLowerCase() === 'i' && !e.metaKey && !e.ctrlKey && !e.altKey) {
-      if (!toolbar) return;
-      setOpen(!toolbar.classList.contains('open'));
-    }
     if (e.key === 'Escape') setOpen(false);
   });
 });

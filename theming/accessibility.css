@@ -1,0 +1,99 @@
+/* Keep wide content scrollable without widening the reading column. */
+main, main .cell, main .cell-output, main .tab-content, main .tab-pane,
+main .quarto-layout-cell, main .quarto-float, main .callout-body-container {
+  min-width: 0;
+}
+
+.table-scroll {
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.table-scroll > table { margin-bottom: 0; }
+main img.figure-img { max-width: 100%; height: auto; }
+
+/* Muted Bootstrap colours and header opacity fail on our custom surfaces. */
+main details:not(.controls-root):not(.essential-points):not(.practice-details):not(.distribution-entry) > summary {
+  color: var(--brand-fg);
+}
+
+.quarto-page-breadcrumbs .breadcrumb-item,
+.quarto-page-breadcrumbs .breadcrumb-item a,
+.quarto-title-breadcrumbs .breadcrumb-item a .chapter-title,
+.nav-page-text,
+.quarto-title-meta-heading,
+figcaption,
+main blockquote {
+  color: var(--fg-muted) !important;
+}
+.quarto-title-meta-heading { opacity: 1 !important; }
+main pre:not(.sourceCode) > code { color: var(--code-fg) !important; }
+
+.header-section-number { color: inherit; opacity: 1; }
+.callout.callout-style-simple > div.callout-header,
+.callout.callout-style-default > div.callout-header { opacity: 1; }
+.callout-header a { color: inherit; text-decoration: underline; }
+
+/* Hidden OJS source must not leave an empty copy button in the tab order. */
+.code-copy-outer-scaffold:has(> .sourceCode.hidden) > .code-copy-button { display: none; }
+.code-copy-button { min-width: 24px; min-height: 24px; }
+main li > .xref-no-num:only-child > a { display: inline-block; min-height: 24px; }
+main .observablehq label:has(> input[type="checkbox"]) {
+  min-height: 28px;
+  align-items: center;
+}
+
+main .observablehq button.btn-quarto {
+  color: var(--plot-on-accent);
+  background: var(--plot-series-1);
+}
+main .observablehq button.btn-quarto:hover {
+  background: color-mix(in srgb, var(--plot-series-1) 90%, var(--plot-fg));
+}
+
+#quarto-sidebar .sidebar-item-text.sidebar-link {
+  display: block;
+  min-height: 24px;
+  padding-block: 0.2rem;
+}
+
+#quarto-sidebar .sidebar-item-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  min-height: 24px;
+}
+
+.callout-header[role="button"] { cursor: pointer; }
+.callout-disclosure-button {
+  min-width: 32px;
+  min-height: 32px;
+  border: 0;
+  border-radius: 0.25rem;
+  background: transparent;
+  color: inherit;
+}
+:is(button, summary, input, select, textarea, [role="button"], .table-scroll, .math.display):focus-visible {
+  outline: 3px solid var(--nav-active-border);
+  outline-offset: 2px;
+}
+
+.estimate-inputs { display: grid; gap: 0.5rem; margin-top: 0.75rem; }
+.estimate-inputs label { display: grid; gap: 0.2rem; }
+.estimate-inputs input {
+  width: 100%;
+  min-width: 0;
+  padding: 0.35rem;
+  color: var(--brand-fg);
+  background: var(--surface-weak);
+  border: 1px solid var(--fg-muted);
+  border-radius: 0.25rem;
+}
+.estimate-status { margin-top: 0.5rem; font-size: 0.85rem; }
+
+@media print {
+  .table-scroll { overflow: visible; }
+}

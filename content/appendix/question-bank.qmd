@@ -7,11 +7,6 @@ tbl-cap-location: bottom
 
 # Question Bank {.unnumbered}
 
-The bank is deliberately broad: it is a place to **practise**, not a list of
-questions that should all be completed from top to bottom. Try a question before
-opening its solution, mark the step at which you became stuck, and then retry it
-without the solution a day or two later.
-
 ::: {.callout-tip}
 ## Choose a practice route
 
@@ -102,6 +97,7 @@ allTags = Array.from(new Set(
       // Always show, but only add peppers if >0
       const span = document.createElement('span');
       span.className = `difficulty-peppers level-${level}`;
+      span.setAttribute('role', 'img');
       const difficultyName = ["Easy", "Medium", "Hard", "Challenge"][level] ?? "Unrated";
       span.setAttribute('aria-label', `Difficulty: ${difficultyName}`);
       span.textContent = level > 0 ? `(${ "🌶".repeat(level) })` : "( )";
@@ -116,8 +112,8 @@ allTags = Array.from(new Set(
 viewof typed = {
   // --- DOM
   const wrapper = html`<div class="token-autocomplete"></div>`;
-  const labelEl = html`<label class="token-label">Filter by tags (type, space-separated):</label>`;
-  const input   = html`<input class="token-input" type="text" placeholder="e.g. bayes probability">`;
+  const labelEl = html`<label class="token-label" for="question-tag-filter">Filter by tags (type, space-separated):</label>`;
+  const input   = html`<input id="question-tag-filter" class="token-input" type="text" placeholder="e.g. bayes probability">`;
   wrapper.append(labelEl, input);
 
   // --- PORTAL: suggestions list lives at document.body so it can overlay everything

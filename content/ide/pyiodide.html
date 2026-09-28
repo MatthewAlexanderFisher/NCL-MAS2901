@@ -13,7 +13,13 @@
   codeEl.setAttribute("autocorrect", "off");
   codeEl.setAttribute("autocapitalize", "off");
   codeEl.setAttribute("autocomplete", "off");
-  codeEl.setAttribute("inputmode", "none");
+  const focusOutputControls = () => (runBtn.disabled ? clearBtn : runBtn).focus();
+  codeEl.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      focusOutputControls();
+    }
+  });
 
   // Terminal output helpers
   function output(text, className = '') {
@@ -161,9 +167,12 @@ print(f"Matplotlib {matplotlib.__version__}")
       autoCloseBrackets: true,
       matchBrackets: true,
       extraKeys: {
-        'Shift-Enter': () => runCode()
+        'Shift-Enter': () => { if (!runBtn.disabled) runCode(); },
+        'Esc': focusOutputControls
       }
     });
+    editor.getInputField().setAttribute('aria-labelledby', 'editor-label');
+    editor.getInputField().setAttribute('aria-describedby', 'editor-help');
     
     // Store editor reference globally so runCode can access it
     window.cmEditor = editor;
@@ -179,6 +188,7 @@ print(f"Matplotlib {matplotlib.__version__}")
 
   // Update runCode to get code from CodeMirror:
   async function runCode() {
+    if (runBtn.disabled || !pyodide) return;
     runBtn.disabled = true;
     status.textContent = "Running...";
     output('\n--- Running ---\n', 'separator');
@@ -192,6 +202,9 @@ print(f"Matplotlib {matplotlib.__version__}")
       enhanceMplToolbar();
     } catch (err) {
       output('\n' + err.toString() + '\n', 'error');
+      status.textContent = "Error; see Python output";
+      runBtn.disabled = false;
+      return;
     }
 
     status.textContent = "Ready";

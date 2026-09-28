@@ -219,7 +219,6 @@ Here, the **units** are the weather **stations** (during the same storm), and th
 
 Some data are **extremely high-dimensional**. The following example is enrichment rather than assessed content.
 
-:::: {.callout-note collapse="true" title="Enrichment: image data"}
 ::: {#exm-image-data}
 #### Image Data
 
@@ -227,7 +226,7 @@ An image is made of a grid of **pixels**, where each pixel is a **colour**.
 
 A colour can be represented by three channels: red, green, and blue[^a-channel].
 
-![A 32×32 image of a cat, broken into its three colour channels (red, green, blue). Each pixel has three values (one per channel), making the image a high-dimensional observation.](figures/cat_pixel.png){#fig-pixel}
+![A 32×32 image of a cat, broken into its three colour channels (red, green, blue). Each pixel has three values (one per channel), making the image a high-dimensional observation.](figures/cat_pixel.png){#fig-pixel fig-alt="A cat image separated into red, green and blue pixel grids. The 32 by 32 pixels each have three channel values, giving 3,072 numerical measurements for one image."}
 
 If the whole image is one observational unit, each pixel–channel position is one variable. An image is therefore a **high-dimensional multivariate observation**. To see why, consider the size of real images:
 
@@ -240,9 +239,6 @@ If the whole image is one observational unit, each pixel–channel position is o
 So even a single image can be thought of as a *very high-dimensional observation*. And **videos** are higher still: sequences of such images evolving over time[^compression].
 
 :::
-
-::::
-
 
 
 ### Numerical data
@@ -511,8 +507,6 @@ If you only had two colours, the multinomial distribution would become the <span
 :::
 
 
-
-:::: {.callout-note collapse="true" title="Enrichment: a conditional model in machine learning"}
 ::: {.example #exm-ml-inference}
 ### Machine learning example
 In image classification, each "training" example is a pair $(X_i,Y_i)$ where $X_i$ is an image and $Y_i\in\{0,1\}$. A generic probabilistic model specifies
@@ -547,9 +541,6 @@ This is a **conditional** model: it specifies $Y\mid X$ while treating the input
 ```
 
 :::
-
-::::
-
 
 
 ::: {.callout-warning #wrn-nonexaminable-specifying-models}

@@ -7,15 +7,15 @@ document.addEventListener('DOMContentLoaded', function () {
   const settingsContainer = document.createElement('div');
   settingsContainer.className = 'settings-dropdown';
   settingsContainer.innerHTML = `
-    <button class="btn-settings" type="button" aria-label="Display settings" title="Display settings">
+    <button class="btn-settings" type="button" aria-label="Display settings" title="Display settings" aria-expanded="false" aria-controls="display-settings-panel">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="3"></circle>
         <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
       </svg>
     </button>
-    <div class="settings-menu">
+    <div class="settings-menu" id="display-settings-panel">
       <p class="settings-section-label">Display Mode</p>
-      <button class="settings-item" id="lecture-zoom-toggle" type="button">
+      <button class="settings-item" id="lecture-zoom-toggle" type="button" aria-pressed="false">
         <span class="settings-icon">
           <svg class="icon-enter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="15 3 21 3 21 9"></polyline>
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <span class="settings-label">Lecture Zoom</span>
         <span class="settings-status"></span>
       </button>
-      <button class="settings-item" id="reading-mode-toggle" type="button">
+      <button class="settings-item" id="reading-mode-toggle" type="button" aria-pressed="false">
         <span class="settings-icon">
           <svg class="icon-enter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
@@ -140,6 +140,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const isReadingMode = document.body.classList.contains('reading-mode');
     lectureZoomToggle.classList.toggle('active', isLectureZoom);
     readingModeToggle.classList.toggle('active', isReadingMode);
+    lectureZoomToggle.setAttribute('aria-pressed', String(isLectureZoom));
+    readingModeToggle.setAttribute('aria-pressed', String(isReadingMode));
   };
 
   // Apply custom colors
@@ -197,24 +199,36 @@ document.addEventListener('DOMContentLoaded', function () {
   // Event Listeners
   // ============================
 
+  const setSettingsOpen = (open, restoreFocus = false) => {
+    settingsContainer.classList.toggle('open', open);
+    settingsBtn.setAttribute('aria-expanded', String(open));
+    if (restoreFocus) settingsBtn.focus();
+  };
+
   // Toggle dropdown
   settingsBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    settingsContainer.classList.toggle('open');
+    setSettingsOpen(!settingsContainer.classList.contains('open'));
   });
 
   // Close dropdown when clicking outside
   document.addEventListener('click', (e) => {
     if (!settingsContainer.contains(e.target)) {
-      settingsContainer.classList.remove('open');
+      setSettingsOpen(false);
     }
   });
 
   // Close on Escape
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      settingsContainer.classList.remove('open');
+    if (e.key === 'Escape' && settingsContainer.classList.contains('open')) {
+      setSettingsOpen(false, settingsContainer.contains(document.activeElement));
     }
+  });
+
+  settingsContainer.addEventListener('focusout', () => {
+    requestAnimationFrame(() => {
+      if (!settingsContainer.contains(document.activeElement)) setSettingsOpen(false);
+    });
   });
 
   // Lecture Zoom toggle

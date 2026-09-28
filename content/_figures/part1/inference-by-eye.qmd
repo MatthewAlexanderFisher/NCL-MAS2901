@@ -102,7 +102,6 @@ viewof muVar2D = {
   const wrap = html`<div style="
     width: 100%;
     max-width: 320px;      /* cap size; tweak as you like */
-    aspect-ratio: 1 / 1;   /* keep it square */
     display: block;
   "></div>`;
 
@@ -111,12 +110,14 @@ viewof muVar2D = {
     .attr("viewBox", `0 0 ${width} ${height}`)
     .attr("preserveAspectRatio", "xMidYMid meet")
     .style("width", "100%")
-    .style("height", "100%")
+    .style("height", "auto")
+    .style("display", "block")
     .style("background", "transparent")
     .style("color", "var(--plot-fg)")
     .attr("stroke-opacity", 0.)
     .style("font-family", bodyFont)
     .style("font-size", "14px");
+  svg.attr("role", "img").attr("aria-label", "Guessed mean and variance. Set the point with a pointer or use the labelled estimate inputs below.");
 
   const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 
@@ -154,22 +155,54 @@ viewof muVar2D = {
     .attr("fill", "var(--plot-fg)")
     .style("font-weight", 400);
 
-  function updateVisual() {
+  const estimateInputs = html`<div class="estimate-inputs">
+    <label>Guessed mean (μ)
+      <input type="number" name="guessed-mean" aria-label="Guessed mean, mu" min=${mu_min} max=${mu_max} step="any">
+    </label>
+    <label>Guessed variance (σ²)
+      <input type="number" name="guessed-variance" aria-label="Guessed variance, sigma squared" min=${var_min} max=${var_max} step="any">
+    </label>
+  </div>`;
+  const meanInput = estimateInputs.querySelector('[name="guessed-mean"]');
+  const varianceInput = estimateInputs.querySelector('[name="guessed-variance"]');
+  const estimateStatus = html`<p class="estimate-status" role="status" aria-live="polite"></p>`;
+
+  function updateVisual(syncInputs = true) {
     const cx = x(state.approxMu), cy = y(state.approxVar);
     crossX.attr("x1", 0).attr("x2", W).attr("y1", cy).attr("y2", cy);
     crossY.attr("x1", cx).attr("x2", cx).attr("y1", 0).attr("y2", H);
     handle.attr("cx", cx).attr("cy", cy);
     readout.text(`μ≈ ${state.approxMu.toFixed(2)},        σ²≈ ${state.approxVar.toFixed(2)}`);
+    if (syncInputs) {
+      meanInput.value = state.approxMu;
+      varianceInput.value = state.approxVar;
+    }
+    estimateStatus.textContent = `Guessed mean ${state.approxMu.toFixed(2)}; guessed variance ${state.approxVar.toFixed(2)}.`;
   }
+
+  const publishEstimate = (syncInputs = true) => {
+    root.value = { ...state };
+    root.dispatchEvent(new CustomEvent("input", {bubbles: true}));
+    updateVisual(syncInputs);
+  };
+
+  estimateInputs.addEventListener("input", event => {
+    event.stopPropagation();
+    const mean = meanInput.valueAsNumber;
+    const variance = varianceInput.valueAsNumber;
+    if (!Number.isFinite(mean) || !Number.isFinite(variance)) return;
+    state = {approxMu: clamp(mean, mu_min, mu_max), approxVar: clamp(variance, var_min, var_max)};
+    // Preserve intermediate typed text such as "1." until editing finishes.
+    publishEstimate(false);
+  });
+  estimateInputs.addEventListener("change", () => updateVisual());
 
   function setFromPointer(evt) {
     const [px, py] = d3.pointer(evt, g.node()); // in SVG user units (matches viewBox)
     const mu = clamp(x.invert(px), mu_min, mu_max);
     const vv = clamp(y.invert(py), var_min, var_max);
     state = { approxMu: mu, approxVar: vv };
-    root.value = { approxMu: state.approxMu, approxVar: state.approxVar };
-    root.dispatchEvent(new CustomEvent("input", {bubbles: true}));
-    updateVisual();
+    publishEstimate();
   }
 
   // Interaction overlay
@@ -192,7 +225,7 @@ viewof muVar2D = {
 
   // Root element with .value is the wrapper (so CSS controls size)
   const root = wrap;
-  root.append(svg.node());
+  root.append(svg.node(), estimateInputs, estimateStatus);
   root.value = { approxMu: state.approxMu, approxVar: state.approxVar };
 
   updateVisual();
@@ -246,14 +279,14 @@ viewof controls = {
   resimBtn.classList.add("btn-resim");
 
   const leftForm = Inputs.form({
-    n: Inputs.range([1, 400], { value: 50, step: 1, label: md`${tex`n`}` }),
-    mu_true: Inputs.range([-5, 5], { value: 0.5, step: 0.05, label: md`${tex`\mu_{\text{true}}`}` }),
-    sigma_true: Inputs.range([0.3, 4], { value: 1.2, step: 0.05, label: md`${tex`\sigma_{\text{true}}`}` })
+    n: Inputs.range([1, 400], { value: 50, step: 1, label: "Sample size, n" }),
+    mu_true: Inputs.range([-5, 5], { value: 0.5, step: 0.05, label: "True mean, μ" }),
+    sigma_true: Inputs.range([0.3, 4], { value: 1.2, step: 0.05, label: "True standard deviation, σ" })
   }, { submit: false });
 
   const rightForm = Inputs.form({
-    muHalfWidth: Inputs.range([1, 10], { value: 5, step: 0.05, label: md`${tex`\mu\text{-range}`}` }),
-    sig2Max: Inputs.range([0.2, 10], { value: 5, step: 0.05, label: md`${tex`\sigma^2\text{ max}`}` }),
+    muHalfWidth: Inputs.range([1, 10], { value: 5, step: 0.05, label: "Mean range" }),
+    sig2Max: Inputs.range([0.2, 10], { value: 5, step: 0.05, label: "Maximum variance" }),
     bins: Inputs.range([10, 60], { value: 12, step: 1, label: "Histogram bins" })
   }, { submit: false });
 

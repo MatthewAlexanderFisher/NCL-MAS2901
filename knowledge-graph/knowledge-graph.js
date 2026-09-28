@@ -26,7 +26,8 @@
     graphAvailable: true,
     isOpen: false,
     previousFocus: null,
-    searchIndex: -1
+    searchIndex: -1,
+    inertBackground: []
   };
 
   const ui = {};
@@ -103,8 +104,8 @@
         <div class="kg-toolbar">
           <div class="kg-field kg-field--search">
             <label for="knowledge-graph-search">Find a concept</label>
-            <input id="knowledge-graph-search" type="search" autocomplete="off" placeholder="e.g. likelihood or confidence interval" disabled>
-            <div class="kg-search-results" role="listbox" aria-label="Matching concepts" hidden></div>
+            <input id="knowledge-graph-search" type="search" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="knowledge-graph-results" autocomplete="off" placeholder="e.g. likelihood or confidence interval" disabled>
+            <div class="kg-search-results" id="knowledge-graph-results" role="listbox" aria-label="Matching concepts" hidden></div>
           </div>
           <div class="kg-field">
             <label for="knowledge-graph-part">Course part</label>
@@ -260,6 +261,10 @@
     ui.openButton.setAttribute('aria-expanded', 'true');
     requestAnimationFrame(() => ui.backdrop.classList.add('is-open'));
     ui.drawer.focus();
+    state.inertBackground = Array.from(document.body.children).filter(element =>
+      element instanceof HTMLElement && element !== ui.backdrop && !element.inert &&
+      !['SCRIPT', 'STYLE', 'LINK'].includes(element.tagName));
+    state.inertBackground.forEach(element => { element.inert = true; });
 
     try {
       await loadData();
@@ -302,6 +307,8 @@
     document.body.classList.remove('kg-drawer-open');
     ui.openButton.setAttribute('aria-expanded', 'false');
     hideSearchResults();
+    state.inertBackground.forEach(element => { element.inert = false; });
+    state.inertBackground = [];
     window.setTimeout(() => {
       if (!state.isOpen) ui.backdrop.hidden = true;
     }, reducedMotion.matches ? 0 : 230);
@@ -324,10 +331,11 @@
     if (!focusable.length) return;
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
-    if (event.shiftKey && document.activeElement === first) {
+    const outsideControls = document.activeElement === ui.drawer || !ui.drawer.contains(document.activeElement);
+    if (event.shiftKey && (document.activeElement === first || outsideControls)) {
       event.preventDefault();
       last.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
+    } else if (!event.shiftKey && (document.activeElement === last || outsideControls)) {
       event.preventDefault();
       first.focus();
     }
@@ -837,10 +845,11 @@
       .filter((node) => `${node.label} ${node.description}`.toLowerCase().includes(query))
       .slice(0, 8);
     const fragment = document.createDocumentFragment();
-    matches.forEach((node) => {
+    matches.forEach((node, index) => {
       const button = document.createElement('button');
       button.type = 'button';
       button.className = 'kg-search-result';
+      button.id = `knowledge-graph-result-${index}`;
       button.setAttribute('role', 'option');
       button.setAttribute('aria-selected', 'false');
       button.dataset.nodeId = node.id;
@@ -856,6 +865,8 @@
     ui.searchResults.replaceChildren(fragment);
     if (!matches.length) ui.searchResults.append(createMessage('No matching concepts.'));
     ui.searchResults.hidden = false;
+    ui.search.setAttribute('aria-expanded', 'true');
+    ui.search.removeAttribute('aria-activedescendant');
   }
 
   function handleSearchKeys(event) {
@@ -881,6 +892,7 @@
       return;
     }
     options.forEach((option, index) => option.setAttribute('aria-selected', String(index === state.searchIndex)));
+    ui.search.setAttribute('aria-activedescendant', options[state.searchIndex].id);
   }
 
   function chooseSearchResult(nodeId) {
@@ -891,6 +903,8 @@
 
   function hideSearchResults() {
     ui.searchResults.hidden = true;
+    ui.search.setAttribute('aria-expanded', 'false');
+    ui.search.removeAttribute('aria-activedescendant');
     state.searchIndex = -1;
   }
 

@@ -106,13 +106,13 @@ details.practice-details[open] > :not(summary):first-of-type {
   margin-bottom: 0.5em;
 }
 
-.revision-entry:has(.revision-header[aria-expanded="true"]) {
+.revision-entry:has(.revision-header[data-expanded="true"]) {
   background-color: color-mix(in srgb, var(--brand-fg), transparent 96%);
   outline: 1.5px solid color-mix(in srgb, var(--brand-fg), transparent 85%);
   outline-offset: 0;
 }
 
-.revision-entry:has(.revision-header[aria-expanded="true"]) .revision-content {
+.revision-entry:has(.revision-header[data-expanded="true"]) .revision-content {
   border-top: 1px solid color-mix(in srgb, var(--brand-fg), transparent 75%);
   margin-top: 0.25em;
   padding-top: 0.75em;
@@ -128,7 +128,7 @@ details.practice-details[open] > :not(summary):first-of-type {
   line-height: 1.25;        /* or 1.25; lower than body default */
 }
 
-.revision-header:not([aria-expanded="true"]):hover {
+.revision-header:not([data-expanded="true"]):hover {
   background-color: color-mix(in srgb, var(--brand-fg), transparent 95%);
 }
 
@@ -139,6 +139,18 @@ details.practice-details[open] > :not(summary):first-of-type {
 
 .revision-topic {
   flex: 1;
+}
+
+.revision-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  min-height: 2rem;
+  border: 1px solid var(--fg-muted);
+  border-radius: 0.25rem;
+  color: var(--brand-fg);
+  background: var(--surface-weak);
 }
 
 .toggle-icon {
@@ -154,7 +166,7 @@ details.practice-details[open] > :not(summary):first-of-type {
   font-size: 0.6em;
 }
 
-.revision-header[aria-expanded="true"] .toggle-icon::before {
+.revision-header[data-expanded="true"] .toggle-icon::before {
   content: "▼";
 }
 

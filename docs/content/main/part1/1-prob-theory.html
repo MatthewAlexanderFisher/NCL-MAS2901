@@ -79,9 +79,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-fd673b5a7d09bb21522613b2c1c10d7e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark-3a1038968848d9d3688a25c6cb5cbbb6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../../site_libs/bootstrap/bootstrap-fd673b5a7d09bb21522613b2c1c10d7e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-65b5ecc515b6fccafcfc3e9913d3c9af.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-64161293e90c4c048379959daf340384.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-65b5ecc515b6fccafcfc3e9913d3c9af.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -89,9 +89,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "panel-placement": "start",
   "type": "textbox",
   "limit": 50,
-  "keyboard-shortcut": [
-    "F"
-  ],
+  "keyboard-shortcut": [],
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -2701,7 +2699,7 @@ f_{X,Y}(x,y)&amp;=f_X(x)f_Y(y) &amp;&amp; \text{(continuous)}.
 </div>
 <div class="callout-body-container">
 <div id="exm-bern-var" class="example theorem">
-<p><span class="theorem-title"><strong>Example 1.5 (Variance of a Bernoulli Random Variable)</strong></span> A <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-bern" class="quarto-xref">Bernoulli random variable&nbsp;<span>2.1</span></a></span> <span class="math inline">X</span> takes only the values <span class="math inline">0</span> and <span class="math inline">1</span>, with probabilities <span class="math display">
+<p><span class="theorem-title"><strong>Example 1.5 (Variance of a Bernoulli Random Variable)</strong></span> A <span class="xref-no-num"><a href="../../appendix/formula-sheet.html#sec-bern" class="quarto-xref">Bernoulli random variable&nbsp;<span>3.1.1</span></a></span> <span class="math inline">X</span> takes only the values <span class="math inline">0</span> and <span class="math inline">1</span>, with probabilities <span class="math display">
 \mathrm{Pr}(X=1) = p, \qquad \mathrm{Pr}(X=0) = 1-p, \qquad 0 \leq p \leq 1.
 </span></p>
 <p>For example, <span class="math inline">X</span> could indicate whether one respondent in our recurring study-space survey prefers space <span class="math inline">A</span>.</p>
@@ -3004,15 +3002,15 @@ document.addEventListener('DOMContentLoaded', function () {
   const settingsContainer = document.createElement('div');
   settingsContainer.className = 'settings-dropdown';
   settingsContainer.innerHTML = `
-    <button class="btn-settings" type="button" aria-label="Display settings" title="Display settings">
+    <button class="btn-settings" type="button" aria-label="Display settings" title="Display settings" aria-expanded="false" aria-controls="display-settings-panel">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="3"></circle>
         <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
       </svg>
     </button>
-    <div class="settings-menu">
+    <div class="settings-menu" id="display-settings-panel">
       <p class="settings-section-label">Display Mode</p>
-      <button class="settings-item" id="lecture-zoom-toggle" type="button">
+      <button class="settings-item" id="lecture-zoom-toggle" type="button" aria-pressed="false">
         <span class="settings-icon">
           <svg class="icon-enter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="15 3 21 3 21 9"></polyline>
@@ -3030,7 +3028,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <span class="settings-label">Lecture Zoom</span>
         <span class="settings-status"></span>
       </button>
-      <button class="settings-item" id="reading-mode-toggle" type="button">
+      <button class="settings-item" id="reading-mode-toggle" type="button" aria-pressed="false">
         <span class="settings-icon">
           <svg class="icon-enter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
@@ -3137,6 +3135,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const isReadingMode = document.body.classList.contains('reading-mode');
     lectureZoomToggle.classList.toggle('active', isLectureZoom);
     readingModeToggle.classList.toggle('active', isReadingMode);
+    lectureZoomToggle.setAttribute('aria-pressed', String(isLectureZoom));
+    readingModeToggle.setAttribute('aria-pressed', String(isReadingMode));
   };
 
   // Apply custom colors
@@ -3194,24 +3194,36 @@ document.addEventListener('DOMContentLoaded', function () {
   // Event Listeners
   // ============================
 
+  const setSettingsOpen = (open, restoreFocus = false) => {
+    settingsContainer.classList.toggle('open', open);
+    settingsBtn.setAttribute('aria-expanded', String(open));
+    if (restoreFocus) settingsBtn.focus();
+  };
+
   // Toggle dropdown
   settingsBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    settingsContainer.classList.toggle('open');
+    setSettingsOpen(!settingsContainer.classList.contains('open'));
   });
 
   // Close dropdown when clicking outside
   document.addEventListener('click', (e) => {
     if (!settingsContainer.contains(e.target)) {
-      settingsContainer.classList.remove('open');
+      setSettingsOpen(false);
     }
   });
 
   // Close on Escape
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      settingsContainer.classList.remove('open');
+    if (e.key === 'Escape' && settingsContainer.classList.contains('open')) {
+      setSettingsOpen(false, settingsContainer.contains(document.activeElement));
     }
+  });
+
+  settingsContainer.addEventListener('focusout', () => {
+    requestAnimationFrame(() => {
+      if (!settingsContainer.contains(document.activeElement)) setSettingsOpen(false);
+    });
   });
 
   // Lecture Zoom toggle
@@ -3284,6 +3296,146 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 <script>
+(() => {
+  const distributionIds = new Set([
+    'sec-bern',
+    'sec-binom',
+    'sec-multinomial',
+    'sec-pois',
+    'sec-geom',
+    'sec-negbin',
+    'sec-unif',
+    'sec-exp',
+    'sec-gamma',
+    'sec-inv-gamma',
+    'sec-normal',
+    'sec-normal-properties',
+    'sec-lognormal',
+    'sec-chisq',
+    'sec-t',
+    'sec-f',
+    'sec-beta',
+    'sec-weibull',
+    'sec-mvnorm'
+  ]);
+
+  const documentCache = new Map();
+  const previewCache = new Map();
+
+  const sourceDocument = async (url) => {
+    const sourceUrl = new URL(url.href);
+    sourceUrl.hash = '';
+
+    const currentUrl = new URL(window.location.href);
+    currentUrl.hash = '';
+
+    if (sourceUrl.href === currentUrl.href) {
+      return document;
+    }
+
+    if (!documentCache.has(sourceUrl.href)) {
+      documentCache.set(sourceUrl.href, fetch(sourceUrl.href).then((response) => {
+        if (!response.ok) {
+          throw new Error(`Unable to load distribution reference (${response.status})`);
+        }
+        return response.text();
+      }).then((html) => new DOMParser().parseFromString(html, 'text/html')));
+    }
+
+    return documentCache.get(sourceUrl.href);
+  };
+
+  const previewHtml = async (url, id) => {
+    const key = `${url.origin}${url.pathname}#${id}`;
+    if (!previewCache.has(key)) {
+      previewCache.set(key, sourceDocument(url).then((source) => {
+        const target = source.getElementById(id);
+        const entry = target?.closest('details.distribution-entry');
+        if (!entry) return null;
+
+        const clone = entry.cloneNode(true);
+        clone.open = true;
+        clone.querySelectorAll('.anchorjs-link').forEach((anchor) => anchor.remove());
+        clone.querySelectorAll('[id]').forEach((element) => element.removeAttribute('id'));
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'distribution-xref-preview';
+        wrapper.appendChild(clone);
+
+        // Cross-page previews are parsed from the generated HTML but have not
+        // passed through the destination page's runtime math typesetter.
+        if (!wrapper.querySelector('.katex') && window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(wrapper);
+        }
+
+        return wrapper.outerHTML;
+      }));
+    }
+
+    return previewCache.get(key);
+  };
+
+  const initialiseDistributionPreviews = () => {
+    if (!window.tippy) return;
+
+    document.querySelectorAll('a[href]:not(.anchorjs-link)').forEach((link) => {
+      if (link.dataset.distributionPreviewReady === 'true') return;
+
+      let url;
+      try {
+        url = new URL(link.getAttribute('href'), document.baseURI);
+      } catch {
+        return;
+      }
+
+      const id = decodeURIComponent(url.hash.replace(/^#\/?/, ''));
+      if (url.origin !== window.location.origin || !distributionIds.has(id)) return;
+
+      // Replace Quarto's heading-only tooltip for these links. Other
+      // cross-reference previews continue to use Quarto's default behaviour.
+      if (link._tippy) link._tippy.destroy();
+
+      link.dataset.distributionPreviewReady = 'true';
+      window.tippy(link, {
+        allowHTML: true,
+        appendTo: () => document.body,
+        arrow: false,
+        content: '<div class="distribution-preview-loading">Loading distribution…</div>',
+        delay: [100, 80],
+        interactive: true,
+        interactiveBorder: 12,
+        maxWidth: 680,
+        placement: 'auto-start',
+        popperOptions: {
+          modifiers: [
+            { name: 'preventOverflow', options: { padding: 8 } },
+            { name: 'flip', options: { padding: 8 } }
+          ]
+        },
+        theme: 'quarto distribution-preview',
+        onTrigger(instance) {
+          previewHtml(url, id).then((html) => {
+            instance.setContent(html || '<div class="distribution-preview-loading">Preview unavailable.</div>');
+            window.requestAnimationFrame(() => instance.popperInstance?.update());
+          }).catch(() => {
+            instance.setContent('<div class="distribution-preview-loading">Preview unavailable.</div>');
+            window.requestAnimationFrame(() => instance.popperInstance?.update());
+          });
+        }
+      });
+    });
+  };
+
+  const scheduleInitialisation = () => window.setTimeout(initialiseDistributionPreviews, 0);
+
+  if (document.readyState === 'complete') {
+    scheduleInitialisation();
+  } else {
+    window.addEventListener('load', scheduleInitialisation, { once: true });
+  }
+})();
+</script>
+<script>
 document.addEventListener('DOMContentLoaded', () => {
   // Only target IMPORTANT callouts; add more types if needed.
   const sel = '.callout.callout-important .callout-title-container';
@@ -3304,662 +3456,370 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const tools = document.querySelector('#quarto-header .quarto-navbar-tools');
-  if (!tools) return;
+  const main = document.querySelector('main.content');
+  if (!main) return;
+  const defaults = {expandAll: true, pageNumbers: true, chapterInfo: true, layout: 'default', paper: 'A4'};
+  const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+  const plainText = node => {
+    const copy = node.cloneNode(true);
+    copy.querySelectorAll('.katex-html, annotation, .anchorjs-link').forEach(el => el.remove());
+    return copy.textContent.replace(/\s+/g, ' ').trim();
+  };
+  const pageKey = href => {
+    const url = new URL(href, location.href);
+    url.hash = '';
+    url.pathname = url.pathname.replace(/\/index\.html$/, '/');
+    return url.href;
+  };
+  const chapters = () => Array.from(document.querySelectorAll('#quarto-sidebar a.sidebar-link[href]'))
+    .filter(link => new URL(link.href).origin === location.origin)
+    .map(link => ({href: link.href, title: plainText(link), part: plainText(
+      link.closest('.sidebar-item-section')?.querySelector(':scope > .sidebar-item-container .sidebar-item-text') || document.createElement('span'))}));
+  const currentChapter = () => chapters().find(ch => pageKey(ch.href) === pageKey(location.href)) ||
+    {href: location.href, title: plainText(document.querySelector('h1') || main), part: ''};
 
-  // Create the print/save button
-  const printBtn = document.createElement('button');
-  printBtn.id = 'print-pdf-header-toggle';
-  printBtn.className = 'btn-print-pdf';
-  printBtn.type = 'button';
-  printBtn.setAttribute('aria-label', 'Print or save as PDF');
-  printBtn.setAttribute('title', 'Print/Save PDF (Ctrl+P)');
-
-  // SVG icon (printer icon without control dot)
-  printBtn.innerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <!-- Paper/document -->
-      <path d="M6 9V2h12v7"/>
-      <!-- Printer body -->
-      <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/>
-      <!-- Output paper -->
-      <rect x="6" y="14" width="12" height="8" rx="1"/>
-    </svg>
-  `;
-
-  // Place it after the zoom button (if present) or color toggle
-  const zoomToggle = tools.querySelector('#lecture-zoom-header-toggle');
-  const colorToggle = tools.querySelector('.quarto-color-scheme-toggle');
-  
-  if (zoomToggle && zoomToggle.parentNode) {
-    zoomToggle.parentNode.insertBefore(printBtn, zoomToggle.nextSibling);
-  } else if (colorToggle && colorToggle.parentNode) {
-    colorToggle.parentNode.insertBefore(printBtn, colorToggle.nextSibling);
-  } else {
-    tools.appendChild(printBtn);
-  }
-
-  // Helper function to expand all collapsible content
-  const expandAllContent = () => {
-    const expandedElements = [];
-
-    // Quarto callout blocks with collapse
-    document.querySelectorAll('.callout.collapse').forEach(callout => {
-      if (!callout.classList.contains('show')) {
-        callout.classList.add('show', 'printing-expanded');
-        expandedElements.push(callout);
-      }
+  // Track only our mutations so native printing restores panels, tabs and inputs.
+  const prepareContent = (root, options) => {
+    const undo = [];
+    const attribute = (el, name, value) => {
+      const old = el.getAttribute(name);
+      undo.push(() => old === null ? el.removeAttribute(name) : el.setAttribute(name, old));
+      if (value === null) el.removeAttribute(name); else el.setAttribute(name, value);
+    };
+    if (options.expandAll) {
+      root.querySelectorAll('details:not(.code-fold)').forEach(el => attribute(el, 'open', ''));
+      root.querySelectorAll('.collapse, .tab-pane').forEach(el => {
+        attribute(el, 'class', `${el.className} show${el.matches('.tab-pane') ? ' active' : ''}`);
+      });
+      root.querySelectorAll('.revision-content[hidden]').forEach(el => attribute(el, 'hidden', null));
+    }
+    root.querySelectorAll('.tab-pane').forEach(panel => {
+      const label = root.querySelector(`[id="${CSS.escape(panel.getAttribute('aria-labelledby') || '')}"]`);
+      if (!label) return;
+      const heading = root.ownerDocument.createElement('div');
+      heading.className = 'print-tab-heading'; heading.textContent = plainText(label);
+      panel.prepend(heading); undo.push(() => heading.remove());
     });
-
-    // Details/summary elements
-    document.querySelectorAll('details:not([open])').forEach(details => {
-      details.setAttribute('open', '');
-      details.classList.add('printing-expanded');
-      expandedElements.push(details);
+    root.querySelectorAll('input, select, textarea').forEach(input => {
+      if (input.type === 'hidden' || input.closest('.filterbox')) return;
+      attribute(input, 'class', `${input.className} print-original-control`);
+      if (input.type === 'range' && input.closest('form')?.querySelector('input[type="number"]')) return;
+      const value = root.ownerDocument.createElement('span');
+      value.className = 'print-control-value';
+      value.textContent = input.matches('select') ? Array.from(input.selectedOptions).map(o => o.textContent).join(', ') :
+        ['checkbox', 'radio'].includes(input.type) ? (input.checked ? 'Yes' : 'No') : input.value;
+      input.before(value); undo.push(() => value.remove());
     });
-
-    // Bootstrap collapse elements
-    document.querySelectorAll('.collapse:not(.show)').forEach(collapse => {
-      collapse.classList.add('show', 'printing-expanded');
-      expandedElements.push(collapse);
-    });
-
-    // Quarto tabsets - show all tab content
-    document.querySelectorAll('.tab-pane:not(.active)').forEach(tab => {
-      tab.classList.add('active', 'show', 'printing-expanded');
-      expandedElements.push(tab);
-    });
-
-    return expandedElements;
+    return () => undo.reverse().forEach(restore => restore());
   };
 
-  // Helper function to restore collapsed state
-  const restoreCollapsedContent = (elements) => {
-    elements.forEach(el => {
-      if (el.classList.contains('printing-expanded')) {
-        if (el.tagName === 'DETAILS') {
-          el.removeAttribute('open');
-        } else if (el.classList.contains('callout')) {
-          el.classList.remove('show');
-        } else if (el.classList.contains('collapse')) {
-          el.classList.remove('show');
-        } else if (el.classList.contains('tab-pane')) {
-          el.classList.remove('active', 'show');
+  const paperStyle = (doc, options) => {
+    const margin = options.layout === 'compact' ? 12 : options.layout === 'wide' ? 10 : 17;
+    const paper = options.paper === 'Letter' ? 'letter' : 'A4';
+    const width = (paper === 'letter' ? 215.9 : 210) - 2 * margin;
+    doc.body.style.setProperty('--print-content-width', `${width}mm`);
+    const style = doc.createElement('style');
+    style.dataset.printSettings = '';
+    style.textContent = `@media print { @page {
+      size: ${paper}; margin: 18mm ${margin}mm;
+      @top-left { content: ${options.chapterInfo ? '"MAS2901 · Statistical Inference"' : 'none'}; font: 8pt sans-serif; color: #555; }
+      @bottom-right { content: ${options.pageNumbers ? 'counter(page)' : 'none'}; font: 8pt sans-serif; color: #555; }
+    } }`;
+    doc.head.append(style);
+    return style;
+  };
+
+  const fitContent = root => {
+    const undo = [];
+    root.querySelectorAll('.math.display, .table-scroll').forEach(wrapper => {
+      const content = wrapper.matches('.math.display') ? wrapper.querySelector('.katex') : wrapper.querySelector('table');
+      if (!content || !wrapper.clientWidth) return;
+      const width = Math.max(content.scrollWidth, content.getBoundingClientRect().width);
+      if (width > wrapper.clientWidth + 1) {
+        const old = content.style.zoom;
+        content.style.zoom = String((wrapper.clientWidth - 2) / width);
+        undo.push(() => { content.style.zoom = old; });
+      }
+    });
+    root.querySelectorAll('figure, .ojs-plot-panel, .callout, .controls-root, .ojs-toolbar-grid').forEach(el => {
+      const height = el.getBoundingClientRect().height;
+      // Long proofs and figure collections must be allowed to flow across pages.
+      if (height > 0 && height < (el.matches('.callout') ? 220 : 650) && !el.classList.contains('print-keep-together')) {
+        el.classList.add('print-keep-together');
+        undo.push(() => el.classList.remove('print-keep-together'));
+      }
+    });
+    return () => undo.reverse().forEach(restore => restore());
+  };
+
+  const waitForContent = async doc => {
+    const deadline = Date.now() + 30000;
+    // Wait for Quarto imports and Observable computations rather than a guessed delay.
+    let settled = 0;
+    while (settled < 2) {
+      if (Date.now() > deadline) throw new Error('Interactive figures are still loading. Please wait and try again.');
+      // Quarto leaves its import class on fulfilled cells when no imports were
+      // needed. Hidden empty cells also occur when a view is moved into a layout.
+      // A hidden viewof value may await its first input forever even though the
+      // visible chart has rendered. Readiness concerns printable outputs only.
+      settled = doc.querySelector('.ojs-in-a-box-waiting-for-module-import:empty:not(.quarto-ojs-hide), .observablehq--running:not(.quarto-ojs-hide)') ? 0 : settled + 1;
+      await delay(150);
+    }
+    if (doc.querySelector('.observablehq--error')) throw new Error('A figure could not load. Reload the chapter before printing.');
+    await Promise.race([doc.fonts.ready, delay(15000).then(() => { throw new Error('Fonts did not finish loading. Please try again.'); })]);
+    const images = Array.from(doc.querySelectorAll('main img')).filter(img => !img.closest('.quarto-dark-content, .dark-content'));
+    images.forEach(img => { img.loading = 'eager'; });
+    await Promise.race([
+      Promise.all(images.map(img => new Promise((resolve, reject) => {
+        const check = () => img.naturalWidth ? resolve() : reject(new Error('An image could not load. Please reload the chapter.'));
+        // decode() can remain pending on images adopted from another document.
+        // Complete, successfully loaded images are already ready for printing.
+        if (img.complete) check();
+        else { img.addEventListener('load', check, {once: true}); img.addEventListener('error', check, {once: true}); }
+      }))),
+      delay(15000).then(() => { throw new Error('Images did not finish loading. Please try again.'); })
+    ]);
+  };
+
+  const snapshot = (doc, chapter) => {
+    const source = doc.querySelector('main.content');
+    if (!source) throw new Error(`No lecture content found in ${chapter.title}.`);
+    const clone = source.cloneNode(true);
+    const originals = source.querySelectorAll('input, select, textarea');
+    clone.querySelectorAll('input, select, textarea').forEach((input, i) => {
+      input.value = originals[i].value;
+      if ('checked' in input) input.checked = originals[i].checked;
+    });
+    // CodeMirror only renders its visible lines. Preserve the complete code in
+    // the printed IDE, including edits made before opening the print options.
+    const editorBody = clone.querySelector('#editor .body');
+    if (editorBody && doc.getElementById('code')) {
+      const pre = doc.createElement('pre');
+      pre.textContent = doc.defaultView.cmEditor?.getValue() ?? doc.getElementById('code').value;
+      editorBody.replaceChildren(pre);
+      clone.querySelector('#status')?.remove();
+    }
+    const canvases = source.querySelectorAll('canvas');
+    clone.querySelectorAll('canvas').forEach((canvas, i) => {
+      const img = doc.createElement('img');
+      img.src = canvases[i].toDataURL();
+      img.alt = canvases[i].getAttribute('aria-label') || 'Snapshot of the interactive figure';
+      img.width = canvases[i].width; img.height = canvases[i].height; img.className = 'figure-img';
+      canvas.replaceWith(img);
+    });
+    clone.querySelectorAll('img:not([src^="data:"])').forEach(img => {
+      img.src = new URL(img.getAttribute('src'), doc.baseURI).href;
+      img.removeAttribute('srcset'); img.removeAttribute('sizes'); img.loading = 'eager';
+    });
+    clone.querySelectorAll('a[href], image[href], image[xlink\\:href]').forEach(el => {
+      const attr = el.hasAttribute('href') ? 'href' : 'xlink:href';
+      el.setAttribute(attr, new URL(el.getAttribute(attr), doc.baseURI).href);
+    });
+    clone.querySelectorAll('script, .anchorjs-link, .quarto-dark-content, .dark-content').forEach(el => el.remove());
+    return {chapter, clone};
+  };
+
+  const namespaceChapters = pages => {
+    const destinations = new Map();
+    pages.forEach(({chapter, clone}, index) => {
+      const prefix = `print-ch${index + 1}-`;
+      const ids = new Map();
+      clone.querySelectorAll('[id]').forEach(el => { ids.set(el.id, prefix + el.id); el.id = prefix + el.id; });
+      clone.id = `${prefix}content`;
+      destinations.set(pageKey(chapter.href), {ids, id: clone.id});
+      clone.querySelectorAll('*').forEach(el => {
+        ['aria-labelledby', 'aria-describedby', 'aria-controls', 'for'].forEach(attr => {
+          if (el.hasAttribute(attr)) el.setAttribute(attr, el.getAttribute(attr).split(/\s+/).map(id => ids.get(id) || id).join(' '));
+        });
+        for (const attr of el.attributes) {
+          if (attr.value.includes('url(#')) el.setAttribute(attr.name, attr.value.replace(/url\(#([^)]*)\)/g, (match, id) => `url(#${ids.get(id) || id})`));
+          if (el.namespaceURI === 'http://www.w3.org/2000/svg' && ['href', 'xlink:href'].includes(attr.name) && attr.value.startsWith('#')) {
+            el.setAttribute(attr.name, `#${ids.get(attr.value.slice(1)) || attr.value.slice(1)}`);
+          }
         }
-        el.classList.remove('printing-expanded');
-      }
+      });
     });
+    pages.forEach(({clone}) => clone.querySelectorAll('a[href]').forEach(link => {
+      const url = new URL(link.href);
+      const target = destinations.get(pageKey(url.href));
+      if (!target) return;
+      const id = url.hash ? target.ids.get(decodeURIComponent(url.hash.slice(1))) : target.id;
+      if (id) link.setAttribute('href', `#${id}`);
+    }));
   };
 
-  // Show print options dialog
-  const showPrintDialog = () => {
-    // Remove any existing dialog
-    const existingDialog = document.getElementById('print-options-dialog');
-    if (existingDialog) existingDialog.remove();
+  const createPrintWindow = () => {
+    // Open during the click, before asynchronous loading, to avoid popup blocking.
+    const win = window.open('', '_blank');
+    if (!win) throw new Error('Please allow the print preview window, then try again.');
+    win.document.open();
+    win.document.write('<!doctype html><html lang="en"><head><meta charset="utf-8"><title>MAS2901 print preview</title></head><body><p role="status">Preparing lecture notes…</p></body></html>');
+    win.document.close();
+    return win;
+  };
 
-    // Get chapter list from sidebar
-    const chapters = getChapterList();
-    const currentChapter = getCurrentChapterInfo();
-
-    const dialog = document.createElement('div');
-    dialog.id = 'print-options-dialog';
-    dialog.className = 'print-dialog-overlay';
-    dialog.innerHTML = `
-      <div class="print-dialog">
-        <h3>Print Options</h3>
-        
-        <div class="print-option">
-          <label>
-            Print scope:
-            <select id="print-scope">
-              <option value="current">Current page only</option>
-              <option value="chapter">Current chapter (${currentChapter.name})</option>
-              <option value="part">Current part (${currentChapter.partName})</option>
-              <option value="selected">Selected chapters...</option>
-              <option value="all">Entire book</option>
-            </select>
-          </label>
-        </div>
-
-        <div class="print-option" id="chapter-selection" style="display: none;">
-          <label>Select chapters to print:</label>
-          <div class="chapter-list">
-            ${chapters.map(ch => `
-              <label class="chapter-item">
-                <input type="checkbox" value="${ch.href}" data-title="${ch.title}">
-                ${ch.part ? `<strong>${ch.part}</strong>` : ''} ${ch.title}
-              </label>
-            `).join('')}
-          </div>
-        </div>
-        
-        <div class="print-option">
-          <label>
-            <input type="checkbox" id="print-expand-all" checked>
-            Expand all collapsed content
-          </label>
-        </div>
-        
-        <div class="print-option">
-          <label>
-            <input type="checkbox" id="print-page-numbers" checked>
-            Add page numbers
-          </label>
-        </div>
-        
-        <div class="print-option">
-          <label>
-            <input type="checkbox" id="print-chapter-info" checked>
-            Include chapter/section headers
-          </label>
-        </div>
-
-        <div class="print-option">
-          <label>
-            Layout:
-            <select id="print-layout">
-              <option value="default">Default</option>
-              <option value="compact">Compact (smaller margins)</option>
-              <option value="wide">Wide (full width)</option>
-            </select>
-          </label>
-        </div>
-        
-        <div class="print-progress" id="print-progress" style="display: none;">
-          <div class="progress-bar">
-            <div class="progress-fill"></div>
-          </div>
-          <div class="progress-text">Preparing pages...</div>
-        </div>
-        
-        <div class="print-actions">
-          <button class="btn-print-cancel">Cancel</button>
-          <button class="btn-print-confirm">Print</button>
-        </div>
-      </div>
-    `;
-
-    document.body.appendChild(dialog);
-
-    // Handle scope change
-    const scopeSelect = dialog.querySelector('#print-scope');
-    const chapterSelection = dialog.querySelector('#chapter-selection');
-    
-    scopeSelect.addEventListener('change', () => {
-      chapterSelection.style.display = scopeSelect.value === 'selected' ? 'block' : 'none';
+  const assemble = async (win, pages, options) => {
+    if (win.closed) throw new Error('The print preview was closed.');
+    const doc = win.document;
+    doc.documentElement.style.setProperty('font-size', '11pt', 'important');
+    const seen = new Set();
+    const pendingStyles = [];
+    document.querySelectorAll('link[rel="stylesheet"], link[rel="disabled-stylesheet"]').forEach(link => {
+      if (link.classList.contains('quarto-color-alternate') || link.dataset.mode === 'dark' || seen.has(link.href)) return;
+      seen.add(link.href);
+      const copy = doc.createElement('link'); copy.rel = 'stylesheet'; copy.href = link.href;
+      pendingStyles.push(new Promise((resolve, reject) => {
+        copy.onload = resolve;
+        copy.onerror = () => reject(new Error('Print styles could not load. Please try again.'));
+      }));
+      doc.head.append(copy);
     });
+    const stylesReady = Promise.all(pendingStyles);
+    doc.body.replaceChildren();
+    doc.body.className = `print-document print-layout-${options.layout}`;
+    paperStyle(doc, options);
+    const toolbar = doc.createElement('div'); toolbar.className = 'print-view-toolbar';
+    toolbar.innerHTML = '<button type="button">Print / Save PDF</button><p>Use “Save as PDF” in the print dialog. Turn off browser headers and footers to avoid duplicate page furniture.</p>';
+    toolbar.querySelector('button').addEventListener('click', () => win.print()); doc.body.append(toolbar);
+    pages.forEach(({clone}) => prepareContent(clone, options));
+    namespaceChapters(pages);
+    const book = doc.createElement('main'); book.className = 'content'; book.id = 'quarto-document-content';
+    pages.forEach(({clone}) => {
+      const section = doc.createElement('section'); section.className = 'print-chapter'; section.id = clone.id;
+      section.append(...Array.from(clone.childNodes)); book.append(section);
+    });
+    doc.body.append(book);
+    await Promise.race([stylesReady, delay(15000).then(() => { throw new Error('Print styles did not finish loading. Please try again.'); })]);
+    await waitForContent(doc);
+    fitContent(book);
+    doc.body.dataset.printReady = 'true';
+    doc.title = pages.length === 1 ? `${pages[0].chapter.title} — MAS2901` : 'MAS2901 — Selected lecture notes';
+    win.focus(); win.print();
+  };
 
-    // Handle dialog actions
-    const confirmBtn = dialog.querySelector('.btn-print-confirm');
-    const cancelBtn = dialog.querySelector('.btn-print-cancel');
+  const loadChapter = (iframe, href) => new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error('A chapter took too long to load. Please try again.')), 30000);
+    iframe.onload = () => {
+      clearTimeout(timer);
+      if (!iframe.contentDocument?.querySelector('main.content')) reject(new Error('A chapter could not be loaded.'));
+      else resolve(iframe.contentDocument);
+    };
+    iframe.onerror = () => { clearTimeout(timer); reject(new Error('A chapter could not be loaded.')); };
+    iframe.src = href;
+  });
 
-    confirmBtn.addEventListener('click', () => {
-      const scope = dialog.querySelector('#print-scope').value;
+  const showOptions = () => {
+    if (document.querySelector('#print-options-dialog')) return;
+    const current = currentChapter(); const list = chapters();
+    const dialog = document.createElement('dialog');
+    dialog.id = 'print-options-dialog'; dialog.className = 'print-dialog';
+    dialog.setAttribute('aria-labelledby', 'print-options-title');
+    dialog.innerHTML = `
+      <h2 id="print-options-title">Print or save as PDF</h2>
+      <p>A paper layout with dark text on white. Figures are saved as static snapshots.</p>
+      <div class="print-option"><label>Print scope: <select id="print-scope">
+        <option value="current">Current chapter</option><option value="part">Current part</option>
+        <option value="selected">Selected chapters</option><option value="all">Entire book</option>
+      </select></label></div>
+      <fieldset id="chapter-selection" class="chapter-list" hidden><legend>Select chapters</legend></fieldset>
+      <div class="print-option"><label><input type="checkbox" id="print-expand-all" checked> Include collapsed explanations and all tabs</label></div>
+      <div class="print-option"><label><input type="checkbox" id="print-page-numbers" checked> Add page numbers</label></div>
+      <div class="print-option"><label><input type="checkbox" id="print-chapter-info" checked> Add course heading in the page margin</label></div>
+      <div class="print-option"><label>Paper: <select id="print-paper"><option value="A4">A4</option><option value="Letter">US Letter</option></select></label></div>
+      <div class="print-option"><label>Layout: <select id="print-layout"><option value="default">Standard</option><option value="compact">Compact text</option><option value="wide">Wider text area</option></select></label></div>
+      <p class="print-progress" role="status" aria-live="polite"></p>
+      <div class="print-actions"><button type="button" class="btn-print-cancel">Cancel</button><button type="button" class="btn-print-confirm">Prepare PDF / Print</button></div>`;
+    const selection = dialog.querySelector('#chapter-selection');
+    list.forEach(chapter => {
+      const label = document.createElement('label'); const input = document.createElement('input');
+      input.type = 'checkbox'; input.value = chapter.href;
+      label.append(input, document.createTextNode(chapter.title)); selection.append(label);
+    });
+    if (!current.part) dialog.querySelector('option[value="part"]').disabled = true;
+    const scope = dialog.querySelector('#print-scope');
+    scope.addEventListener('change', () => { selection.hidden = scope.value !== 'selected'; });
+    const status = dialog.querySelector('.print-progress'); const confirm = dialog.querySelector('.btn-print-confirm');
+    let cancelled = false; let preview;
+    dialog.addEventListener('close', () => {
+      cancelled = true;
+      if (preview && !preview.closed && preview.document.body.dataset.printReady !== 'true') preview.close();
+      dialog.remove();
+    });
+    dialog.querySelector('.btn-print-cancel').addEventListener('click', () => dialog.close());
+    confirm.addEventListener('click', async () => {
       const options = {
         expandAll: dialog.querySelector('#print-expand-all').checked,
         pageNumbers: dialog.querySelector('#print-page-numbers').checked,
         chapterInfo: dialog.querySelector('#print-chapter-info').checked,
         layout: dialog.querySelector('#print-layout').value,
-        scope: scope
+        paper: dialog.querySelector('#print-paper').value
       };
-      
-      // Get selected chapters if scope is 'selected'
-      if (scope === 'selected') {
-        options.chapters = Array.from(dialog.querySelectorAll('.chapter-item input:checked'))
-          .map(cb => ({ href: cb.value, title: cb.dataset.title }));
-      }
-      
-      dialog.remove();
-      
-      // Handle different scopes
-      if (scope === 'current') {
-        triggerPrint(options);
-      } else {
-        triggerMultiPagePrint(options);
-      }
-    });
-
-    cancelBtn.addEventListener('click', () => {
-      dialog.remove();
-    });
-
-    // Close on backdrop click
-    dialog.addEventListener('click', (e) => {
-      if (e.target === dialog) dialog.remove();
-    });
-
-    // Close on Escape
-    const escHandler = (e) => {
-      if (e.key === 'Escape') {
-        dialog.remove();
-        document.removeEventListener('keydown', escHandler);
-      }
-    };
-    document.addEventListener('keydown', escHandler);
-  };
-
-  // Get chapter list from sidebar
-  const getChapterList = () => {
-    const chapters = [];
-    const sidebar = document.querySelector('.sidebar-navigation');
-    if (!sidebar) return chapters;
-    
-    let currentPart = '';
-    sidebar.querySelectorAll('.sidebar-item').forEach(item => {
-      if (item.querySelector('.sidebar-item-text')?.classList.contains('sidebar-part')) {
-        currentPart = item.textContent.trim();
-      } else if (item.querySelector('a')) {
-        const link = item.querySelector('a');
-        chapters.push({
-          href: link.getAttribute('href'),
-          title: link.textContent.trim(),
-          part: currentPart,
-          element: item
-        });
-      }
-    });
-    
-    return chapters;
-  };
-
-  // Get current chapter info - FIXED version
-  const getCurrentChapterInfo = () => {
-    // Try to find the active sidebar item
-    let active = document.querySelector('.sidebar-item.active a');
-    if (!active) {
-      // Fallback: check if we're on a chapter page
-      const chapterTitle = document.querySelector('h1.chapter-title, .title')?.textContent?.trim();
-      return { name: chapterTitle || 'Current Page', partName: 'No part' };
-    }
-    
-    const title = active.textContent.trim();
-    
-    // Find part name by traversing up from the active item
-    let partName = '';
-    let currentEl = active.closest('.sidebar-item');
-    
-    // Go up through previous siblings until we find a part
-    while (currentEl) {
-      currentEl = currentEl.previousElementSibling;
-      if (currentEl && currentEl.querySelector('.sidebar-part, .chapter-part')) {
-        partName = currentEl.textContent.trim();
-        break;
-      }
-    }
-    
-    // If not found, check parent sections
-    if (!partName) {
-      const parentSection = active.closest('.chapter-section');
-      if (parentSection) {
-        const partEl = parentSection.querySelector('.sidebar-part, .chapter-part');
-        if (partEl) partName = partEl.textContent.trim();
-      }
-    }
-    
-    return { name: title, partName: partName || 'Main Content' };
-  };
-
-  // Get chapters for current part
-  const getChaptersInPart = (partName) => {
-    const chapters = getChapterList();
-    const inPart = [];
-    let foundPart = false;
-    
-    for (const ch of chapters) {
-      if (ch.part === partName) {
-        foundPart = true;
-        inPart.push(ch);
-      } else if (foundPart && ch.part !== partName) {
-        break; // Moved to next part
-      }
-    }
-    
-    return inPart;
-  };
-
-  // Multi-page print handler
-  const triggerMultiPagePrint = async (options) => {
-    const progressEl = document.getElementById('print-progress');
-    const progressBar = progressEl?.querySelector('.progress-fill');
-    const progressText = progressEl?.querySelector('.progress-text');
-    
-    if (progressEl) progressEl.style.display = 'block';
-    
-    // Determine which chapters to print
-    let chaptersToPrint = [];
-    
-    switch (options.scope) {
-      case 'all':
-        chaptersToPrint = getChapterList();
-        break;
-      case 'part':
-        const currentInfo = getCurrentChapterInfo();
-        chaptersToPrint = getChaptersInPart(currentInfo.partName);
-        break;
-      case 'chapter':
-        // For current chapter, just use single page print
-        triggerPrint(options);
-        return;
-      case 'selected':
-        chaptersToPrint = options.chapters || [];
-        break;
-    }
-    
-    if (chaptersToPrint.length === 0) {
-      alert('No chapters selected for printing');
-      return;
-    }
-    
-    // Create iframe for loading pages
-    const iframe = document.createElement('iframe');
-    iframe.style.position = 'absolute';
-    iframe.style.left = '-9999px';
-    iframe.style.width = '1000px';
-    iframe.style.height = '1000px';
-    document.body.appendChild(iframe);
-    
-    // Collect all pages
-    const printPages = [];
-    
-    for (let i = 0; i < chaptersToPrint.length; i++) {
-      const chapter = chaptersToPrint[i];
-      const progress = ((i + 1) / chaptersToPrint.length) * 100;
-      
-      if (progressBar) progressBar.style.width = progress + '%';
-      if (progressText) progressText.textContent = `Loading ${chapter.title}...`;
-      
+      const selected = new Set(Array.from(selection.querySelectorAll('input:checked')).map(el => el.value));
+      const requested = scope.value === 'current' ? [current] : scope.value === 'part' ? list.filter(ch => ch.part === current.part) :
+        scope.value === 'selected' ? list.filter(ch => selected.has(ch.href)) : list;
+      if (!requested.length) { status.textContent = 'Select at least one chapter.'; return; }
+      let iframe;
       try {
-        // Load page in iframe
-        const pageContent = await loadPageInIframe(iframe, chapter.href);
-        
-        // Process the page
-        if (options.expandAll) {
-          expandAllContentInDocument(iframe.contentDocument);
+        preview = createPrintWindow(); confirm.disabled = true; status.classList.remove('print-error');
+        const pages = [];
+        for (const chapter of requested) {
+          if (cancelled || preview.closed) throw new Error('Print preparation cancelled.');
+          status.textContent = `Preparing ${pages.length + 1} of ${requested.length}: ${chapter.title}`;
+          let doc = document;
+          if (pageKey(chapter.href) !== pageKey(location.href)) {
+            if (!iframe) {
+              iframe = document.createElement('iframe');
+              iframe.title = 'Preparing print content'; iframe.setAttribute('aria-hidden', 'true'); iframe.tabIndex = -1;
+              iframe.style.cssText = 'position:fixed;left:-10000px;top:0;width:1000px;height:1000px;visibility:hidden;';
+              document.body.append(iframe);
+            }
+            doc = await loadChapter(iframe, chapter.href);
+          }
+          await waitForContent(doc); pages.push(snapshot(doc, chapter));
         }
-        
-        // Extract and store the content
-        const content = iframe.contentDocument.querySelector('.content, main, article')?.innerHTML || '';
-        printPages.push({
-          title: chapter.title,
-          content: content
-        });
-        
-      } catch (err) {
-        console.error(`Failed to load ${chapter.title}:`, err);
-      }
-    }
-    
-    // Clean up
-    iframe.remove();
-    if (progressEl) progressEl.style.display = 'none';
-    
-    // Create combined print document
-    createCombinedPrintDocument(printPages, options);
+        if (cancelled || preview.closed) throw new Error('Print preparation cancelled.');
+        status.textContent = 'Laying out the pages…';
+        await assemble(preview, pages, options); dialog.close();
+      } catch (error) {
+        if (preview && !preview.closed) preview.close();
+        if (!cancelled) { status.textContent = error.message; status.classList.add('print-error'); confirm.disabled = false; }
+      } finally { iframe?.remove(); }
+    });
+    document.body.append(dialog); dialog.showModal();
   };
 
-  // Load page in iframe
-  const loadPageInIframe = (iframe, href) => {
-    return new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        reject(new Error('Page load timeout'));
-      }, 10000);
-      
-      iframe.onload = () => {
-        clearTimeout(timeout);
-        // Wait a bit for JS to run
-        setTimeout(() => resolve(iframe.contentDocument), 500);
-      };
-      
-      iframe.src = href;
-    });
-  };
+  const tools = document.querySelector('#quarto-header .quarto-navbar-tools');
+  if (tools) {
+    const button = document.createElement('button');
+    button.id = 'print-pdf-header-toggle'; button.className = 'btn-print-pdf'; button.type = 'button';
+    button.setAttribute('aria-label', 'Print or save as PDF'); button.title = 'Print or save as PDF';
+    button.innerHTML = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>';
+    tools.append(button); button.addEventListener('click', showOptions);
+  }
 
-  // Expand content in a document
-  const expandAllContentInDocument = (doc) => {
-    // Quarto callout blocks
-    doc.querySelectorAll('.callout.collapse').forEach(callout => {
-      callout.classList.add('show');
-    });
-
-    // Details elements
-    doc.querySelectorAll('details').forEach(details => {
-      details.setAttribute('open', '');
-    });
-
-    // Bootstrap collapse
-    doc.querySelectorAll('.collapse').forEach(collapse => {
-      collapse.classList.add('show');
-    });
-  };
-
-  // Create combined document for printing - FIXED version
-  const createCombinedPrintDocument = (pages, options) => {
-    // Create new window for printing
-    const printWindow = window.open('', '_blank');
-    
-    // Collect all stylesheets except those that might interfere
-    const stylesheets = Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
-      .filter(link => !link.href.includes('quarto-html'))
-      .map(link => link.outerHTML).join('\n');
-    
-    // Build HTML
-    const html = `
-      <!DOCTYPE html>
-      <html class="${document.documentElement.className}">
-      <head>
-        <meta charset="UTF-8">
-        <title>MAS2901 Statistical Inference - Print</title>
-        ${stylesheets}
-        <style>
-          /* Reset background for light mode printing */
-          @media print {
-            body:not(.quarto-dark) {
-              background-color: white !important;
-              color: black !important;
-            }
-            
-            body:not(.quarto-dark) .content,
-            body:not(.quarto-dark) .quarto-container-default,
-            body:not(.quarto-dark) main,
-            body:not(.quarto-dark) article {
-              background-color: white !important;
-              color: black !important;
-            }
-            
-            /* Fix math rendering in dark mode */
-            .quarto-dark .katex,
-            .quarto-dark .MathJax,
-            .quarto-dark .MathJax *,
-            .quarto-dark .katex * {
-              color: #e9ecef !important;
-              background-color: transparent !important;
-              fill: #e9ecef !important;
-            }
-            
-            /* Ensure OJS figures fit within page */
-            .ojs-cell,
-            .cell-output-display,
-            figure,
-            .figure {
-              max-width: 100% !important;
-              overflow: hidden !important;
-              page-break-inside: avoid;
-            }
-            
-            .ojs-cell svg,
-            figure svg,
-            .cell-output-display svg {
-              max-width: 100% !important;
-              height: auto !important;
-            }
-            
-            /* Scale down large images/plots */
-            img, svg {
-              max-width: 100% !important;
-              height: auto !important;
-            }
-            
-            /* Hide overflow indicators */
-            * {
-              overflow: visible !important;
-            }
-            
-            pre {
-              overflow-wrap: break-word !important;
-              white-space: pre-wrap !important;
-            }
-            
-            /* Page breaks */
-            .chapter-break { 
-              page-break-before: always;
-              margin-top: 0 !important;
-            }
-            
-            /* Remove section headers that duplicate */
-            .sidebar-title,
-            .navbar-title,
-            .quarto-title-meta {
-              display: none !important;
-            }
-            
-            /* Compact layout adjustments */
-            body.print-layout-compact {
-              font-size: 10pt;
-              line-height: 1.4;
-            }
-            
-            body.print-layout-compact h1 { font-size: 1.4em; }
-            body.print-layout-compact h2 { font-size: 1.2em; }
-            body.print-layout-compact h3 { font-size: 1.1em; }
-            
-            /* Wide layout */
-            body.print-layout-wide .content {
-              max-width: 100% !important;
-              margin: 0.5in !important;
-            }
-            
-            /* Hide navigation elements */
-            .quarto-title-breadcrumbs,
-            .page-navigation,
-            .nav-footer {
-              display: none !important;
-            }
-          }
-          
-          /* Dark mode specific fixes */
-          ${document.body.classList.contains('quarto-dark') ? `
-          html, body {
-            background-color: #1a1a1a !important;
-            color: #e9ecef !important;
-          }
-          ` : ''}
-        </style>
-      </head>
-      <body class="${document.body.className} printing print-layout-${options.layout} ${options.pageNumbers ? 'print-page-numbers' : ''} ${options.chapterInfo ? 'print-chapter-info' : ''}">
-        ${pages.map((page, i) => `
-          <div class="${i > 0 ? 'chapter-break' : ''}">
-            <h1 class="chapter-title">${page.title}</h1>
-            ${page.content}
-          </div>
-        `).join('\n')}
-      </body>
-      </html>
-    `;
-    
-    printWindow.document.write(html);
-    printWindow.document.close();
-    
-    // Wait for content to render
-    printWindow.onload = () => {
-      setTimeout(() => {
-        // Final cleanup before printing
-        const doc = printWindow.document;
-        
-        // Remove duplicate headers
-        doc.querySelectorAll('.quarto-title, .title-block-banner').forEach((el, idx) => {
-          if (idx > 0) el.remove();
-        });
-        
-        // Scale OJS content
-        doc.querySelectorAll('.ojs-cell').forEach(cell => {
-          cell.style.maxWidth = '100%';
-          cell.style.overflow = 'hidden';
-        });
-        
-        printWindow.print();
-        
-        // Close after print dialog
-        printWindow.onafterprint = () => {
-          printWindow.close();
-        };
-      }, 1000); // Give more time for math to render
+  // Native browser Print uses the same layout and restores state after dismissal.
+  let restoreNative;
+  window.addEventListener('beforeprint', () => {
+    if (restoreNative) return;
+    const oldClass = document.body.className; const oldStyle = document.body.getAttribute('style');
+    const oldRootClass = document.documentElement.className;
+    document.documentElement.classList.remove('reading-mode', 'lecture-zoom');
+    document.body.classList.remove('reading-mode', 'lecture-zoom');
+    document.body.classList.add('print-document');
+    const style = paperStyle(document, defaults);
+    const restoreContent = prepareContent(main, defaults); const restoreFit = fitContent(main);
+    restoreNative = () => {
+      restoreFit(); restoreContent(); style.remove(); document.body.className = oldClass;
+      document.documentElement.className = oldRootClass;
+      if (oldStyle === null) document.body.removeAttribute('style'); else document.body.setAttribute('style', oldStyle);
+      restoreNative = null;
     };
-  };
-
-  // Print handler with options
-  const triggerPrint = (options) => {
-    let expandedElements = [];
-    
-    // Apply print classes based on options
-    document.body.classList.add('printing');
-    if (options.pageNumbers) document.body.classList.add('print-page-numbers');
-    if (options.chapterInfo) document.body.classList.add('print-chapter-info');
-    document.body.classList.add(`print-layout-${options.layout}`);
-    
-    // Store chapter/section info
-    const chapterTitle = document.querySelector('h1.title')?.textContent || '';
-    const courseTitle = 'MAS2901 Statistical Inference';
-    document.body.setAttribute('data-chapter-title', chapterTitle);
-    document.body.setAttribute('data-course-title', courseTitle);
-    
-    // Force dark mode styles to be applied to documentElement too
-    if (document.body.classList.contains('quarto-dark')) {
-      document.documentElement.classList.add('printing-dark');
-    }
-    
-    // Expand content if requested
-    if (options.expandAll) {
-      expandedElements = expandAllContent();
-    }
-    
-    // Small delay to ensure DOM updates
-    setTimeout(() => {
-      window.print();
-      
-      // Clean up after print dialog closes
-      window.addEventListener('afterprint', function cleanup() {
-        document.body.classList.remove('printing', 'print-page-numbers', 
-          'print-chapter-info', `print-layout-${options.layout}`);
-        document.documentElement.classList.remove('printing-dark');
-        
-        // Restore collapsed state
-        if (expandedElements.length > 0) {
-          restoreCollapsedContent(expandedElements);
-        }
-        
-        window.removeEventListener('afterprint', cleanup);
-      });
-    }, 100);
-  };
-
-  // Click handler - show options dialog
-  printBtn.addEventListener('click', () => {
-    showPrintDialog();
   });
-  
-  // Direct print shortcut (Ctrl+Shift+P) - use default options
-  document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'p' && 
-        !/input|textarea|select/i.test(e.target.tagName)) {
-      e.preventDefault();
-      showPrintDialog();
-    }
-  });
+  window.addEventListener('afterprint', () => restoreNative?.());
 });
 </script>
 
-<div class="inkpad-toolbar" id="inkpad-toolbar" aria-label="Ink toolbar" aria-hidden="true">
+<div class="inkpad-toolbar" id="inkpad-toolbar" role="group" aria-label="Ink toolbar" aria-hidden="true">
 <button class="inkpad-btn inkpad-toggle" id="inkpad-toggle" type="button" aria-pressed="false" title="Draw (D)" aria-label="Draw (D)">
   <span class="sr-only">Toggle ink</span>
 
@@ -4567,9 +4427,11 @@ onButton('inkpad-save', () => {
   document.addEventListener('keydown', (e) => {
     // Only when toolbar is visible
     if (!toolbar.classList.contains('open')) return;
+    // Character-only shortcuts are confined to focus within the ink toolbar.
+    if (!toolbar.contains(document.activeElement)) return;
 
     // Don’t hijack typing in inputs
-    if (e.target && /input|textarea|select|button/i.test(e.target.tagName)) return;
+    if (e.target && /input|textarea|select/i.test(e.target.tagName)) return;
     if (e.target?.isContentEditable) return;
 
     const k = e.key.toLowerCase();
@@ -4655,7 +4517,7 @@ document.addEventListener('DOMContentLoaded', () => {
   inkBtn.className = 'btn-ink-tool';
   inkBtn.type = 'button';
   inkBtn.setAttribute('aria-label', 'Ink controls');
-  inkBtn.setAttribute('title', 'Ink controls (I)');
+  inkBtn.setAttribute('title', 'Ink controls');
   inkBtn.setAttribute('aria-controls', 'inkpad-toolbar');
   inkBtn.setAttribute('aria-expanded', 'false');
 
@@ -4687,8 +4549,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const setOpen = (open) => {
     if (!toolbar) return;
     toolbar.classList.toggle('open', open);
+    toolbar.setAttribute('aria-hidden', String(!open));
     inkBtn.classList.toggle('active', open);
     inkBtn.setAttribute('aria-expanded', String(open));
+    if (open) toolbar.querySelector('button')?.focus();
+    else if (toolbar.contains(document.activeElement)) inkBtn.focus();
   };
 
   inkBtn.addEventListener('click', () => {
@@ -4696,13 +4561,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setOpen(!toolbar.classList.contains('open'));
   });
 
-  // Keyboard: "I" toggles; "Esc" closes
+  // The labelled header button opens the toolbar; Escape closes it.
   document.addEventListener('keydown', (e) => {
-    if (/input|textarea|select/i.test(e.target.tagName)) return;
-    if (e.key.toLowerCase() === 'i' && !e.metaKey && !e.ctrlKey && !e.altKey) {
-      if (!toolbar) return;
-      setOpen(!toolbar.classList.contains('open'));
-    }
     if (e.key === 'Escape') setOpen(false);
   });
 });
@@ -4766,6 +4626,135 @@ if (document.body.classList.contains('reading-mode')) {
     .then(() => loadScript(asset('knowledge-graph/knowledge-graph.js')))
     .catch((error) => console.error('Unable to load the course map.', error));
 })();
+</script>
+<script>
+// Quarto and Observable generate some controls after the page has loaded.
+// Enhance those controls here as well as the initial static document.
+document.addEventListener('DOMContentLoaded', () => {
+  const main = document.querySelector('main');
+  if (!main) return;
+
+  const textLabel = (element) => {
+    const copy = element.cloneNode(true);
+    copy.querySelectorAll('.katex-html, annotation, .anchorjs-link, [aria-hidden="true"]').forEach(node => node.remove());
+    const symbols = { 'μ': ' mu ', 'σ': ' sigma ', 'θ': ' theta ', 'ρ': ' rho ', 'ε': ' epsilon ', 'α': ' alpha ', 'β': ' beta ', 'δ': ' delta ' };
+    return copy.textContent.replace(/[μσθρεαβδ]/g, symbol => symbols[symbol]).replace(/\s+/g, ' ').trim();
+  };
+
+  const enhanceInput = (input) => {
+    if (input.hasAttribute('aria-label') || input.hasAttribute('aria-labelledby')) return;
+    // Inputs.range labels only the number input, not its paired slider.
+    const form = input.closest('form');
+    const label = input.labels?.[0] || form?.querySelector('label');
+    if (!label) return;
+    const name = textLabel(label);
+    if (name) input.setAttribute('aria-label', name);
+  };
+
+  const updateScrollRegion = (element) => {
+    const overflowing = element.clientWidth > 0 && element.scrollWidth > element.clientWidth + 1;
+    if (overflowing) element.setAttribute('tabindex', '0');
+    else element.removeAttribute('tabindex');
+  };
+  const scrollObserver = new ResizeObserver(entries => entries.forEach(entry => updateScrollRegion(entry.target)));
+  const observedScrollRegions = new WeakSet();
+  const watchScrollRegion = (element) => {
+    if (observedScrollRegions.has(element)) return;
+    observedScrollRegions.add(element);
+    scrollObserver.observe(element);
+    updateScrollRegion(element);
+  };
+
+  const enhanceTable = (table) => {
+    if (table.parentElement.classList.contains('table-scroll')) return;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'table-scroll';
+    wrapper.setAttribute('role', 'group');
+    const caption = table.querySelector('caption') || table.closest('figure')?.querySelector('figcaption');
+    wrapper.setAttribute('aria-label', caption ? `Table: ${textLabel(caption)}` : 'Table; scroll horizontally if needed');
+    table.before(wrapper);
+    wrapper.append(table);
+    watchScrollRegion(wrapper);
+  };
+
+  const enhanceCallout = (header) => {
+    if (header.dataset.keyboardDisclosure) return;
+    header.dataset.keyboardDisclosure = 'true';
+    if (header.querySelector('a[href]')) {
+      // A linked title must sit beside its disclosure control, not inside it.
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'callout-disclosure-button';
+      button.setAttribute('aria-label', textLabel(header));
+      ['data-bs-toggle', 'data-bs-target', 'aria-controls', 'aria-expanded'].forEach(name => {
+        button.setAttribute(name, header.getAttribute(name));
+        header.removeAttribute(name);
+      });
+      header.removeAttribute('aria-label');
+      button.append(header.querySelector('.callout-btn-toggle'));
+      header.append(button);
+      const panel = document.getElementById(button.getAttribute('aria-controls'));
+      ['show.bs.collapse', 'hide.bs.collapse'].forEach(type => panel?.addEventListener(type, event => {
+        if (event.target === panel) header.classList.toggle('collapsed', type === 'hide.bs.collapse');
+      }));
+      return;
+    }
+    header.setAttribute('role', 'button');
+    header.tabIndex = 0;
+    // Keep the visible title as the name, instead of the generic "Toggle callout".
+    header.removeAttribute('aria-label');
+    header.addEventListener('keydown', event => {
+      if (event.target === header && (event.key === 'Enter' || event.key === ' ')) {
+        event.preventDefault();
+        header.click(); // Bootstrap updates the panel and aria-expanded together.
+      }
+    });
+  };
+
+  const enhance = (root) => {
+    const each = (selector, fn) => {
+      if (root.matches?.(selector)) fn(root);
+      root.querySelectorAll(selector).forEach(fn);
+    };
+    each('input[type="range"], input[type="number"]', enhanceInput);
+    // Observable labels plot groups and legends; give those labels a valid role.
+    each('.observablehq g[aria-label]:not([role]), .observablehq div[aria-label]:not([role])', element => element.setAttribute('role', 'group'));
+    each('.callout-header[data-bs-toggle="collapse"]', enhanceCallout);
+    each('table', enhanceTable);
+    each('.math.display', watchScrollRegion);
+    // Heading permalinks inside summary create nested interactive controls.
+    each('summary .anchorjs-link', anchor => anchor.remove());
+    // Math-only cross-references also need a dependable link name.
+    each('a[href] .math', math => {
+      const link = math.closest('a');
+      if (!link.hasAttribute('aria-label')) {
+        const name = textLabel(link);
+        if (name) link.setAttribute('aria-label', name);
+      }
+    });
+  };
+
+  enhance(main);
+  document.querySelectorAll('.sidebar-logo-link').forEach(link => {
+    if (!link.textContent.trim() && !link.querySelector('img')) link.remove();
+  });
+
+  const pending = new Set();
+  let scheduled = false;
+  new MutationObserver(records => {
+    records.forEach(record => record.addedNodes.forEach(node => {
+      if (node instanceof Element) pending.add(node);
+    }));
+    if (scheduled || !pending.size) return;
+    scheduled = true;
+    requestAnimationFrame(() => {
+      scheduled = false;
+      const roots = [...pending];
+      pending.clear();
+      roots.filter(root => root.isConnected && !roots.some(other => other !== root && other.contains(root))).forEach(enhance);
+    });
+  }).observe(main, {childList: true, subtree: true});
+});
 </script>
 <script type="ojs-module-contents">
 eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImJvZHlGb250ID0gZ2V0Q29tcHV0ZWRTdHlsZShkb2N1bWVudC5ib2R5KS5mb250RmFtaWx5XG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTIiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiIvLyBUb2dnbGU6IGhpZ2hsaWdodCBzZWxlY3Rpb24gKHVzZSBleHBsaWNpdCB2YWx1ZXMgZm9yIHJvYnVzdCBjb21wYXJpc29ucylcbnZpZXdvZiB2ZW5uT3AgPSBJbnB1dHMucmFkaW8oXG4gIFtcIk5vbmVcIiwgXCJBXCIsIFwiQlwiLCBcIkHhtpxcIiwgXCJVbmlvblwiLCBcIkludGVyc2VjdGlvblwiXSxcbiAgeyB2YWx1ZTogXCJOb25lXCIsIGxhYmVsOiBcIkhpZ2hsaWdodDpcIiB9XG4pXG5cblxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0zIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiXG52ZW5uID0ge1xuICBjb25zdCB3aWR0aCA9IDQ4MCwgaGVpZ2h0ID0gMjgwO1xuICBjb25zdCBwYWQgPSAxODtcblxuICBjb25zdCBjeEEgPSAxOTAsIGN5QSA9IDE0MCwgciA9IDkwOyAgIC8vIGNpcmNsZSBBXG4gIGNvbnN0IGN4QiA9IDI5MCwgY3lCID0gMTQwOyAgICAgICAgICAgLy8gY2lyY2xlIEJcblxuICBjb25zdCBzdmcgPSBkMy5jcmVhdGUoXCJzdmdcIilcbiAgICAuYXR0cihcIndpZHRoXCIsIHdpZHRoKVxuICAgIC5hdHRyKFwiaGVpZ2h0XCIsIGhlaWdodClcbiAgICAuYXR0cihcInZpZXdCb3hcIiwgWzAsIDAsIHdpZHRoLCBoZWlnaHRdKVxuICAgIC5zdHlsZShcImJhY2tncm91bmRcIiwgXCJ2YXIoLS1wbG90LWJnKVwiKVxuICAgIC5zdHlsZShcImNvbG9yXCIsIFwidmFyKC0tcGxvdC1mZylcIik7XG5cbiAgLy8gU2FtcGxlIHNwYWNlIM6pIChib3VuZGluZyByZWN0YW5nbGUpXG4gIGNvbnN0IG9tZWdhID0gc3ZnLmFwcGVuZChcInJlY3RcIilcbiAgICAuYXR0cihcInhcIiwgcGFkKS5hdHRyKFwieVwiLCBwYWQpXG4gICAgLmF0dHIoXCJ3aWR0aFwiLCB3aWR0aCAtIDIqcGFkKS5hdHRyKFwiaGVpZ2h0XCIsIGhlaWdodCAtIDIqcGFkKVxuICAgIC5hdHRyKFwicnhcIiwgMTApXG4gICAgLmF0dHIoXCJmaWxsXCIsIFwibm9uZVwiKVxuICAgIC5hdHRyKFwic3Ryb2tlXCIsIFwiY3VycmVudENvbG9yXCIpXG4gICAgLmF0dHIoXCJzdHJva2Utb3BhY2l0eVwiLCAwLjUpO1xuXG4gIC8vIExhYmVsIM6pXG4gIHN2Zy5hcHBlbmQoXCJ0ZXh0XCIpXG4gICAgLmF0dHIoXCJ4XCIsIHBhZCArIDgpLmF0dHIoXCJ5XCIsIHBhZCArIDE2KVxuICAgIC50ZXh0KFwizqlcIilcbiAgICAuc3R5bGUoXCJmb250LXdlaWdodFwiLCA0MDApXG4gICAgLnN0eWxlKFwiZm9udC1zaXplXCIsIFwiMThweFwiKVxuICAgIC5zdHlsZShcImZpbGxcIiwgXCJ2YXIoLS1wbG90LW11dGVkKVwiKTtcblxuICAvLyBDb2xvcnMgKENTUyB2YXJzIHdpdGggZmFsbGJhY2tzKVxuICBjb25zdCBjb2xBICAgPSBcInZhcigtLXBsb3Qtc2VyaWVzLTEpXCI7XG4gIGNvbnN0IGNvbEIgICA9IFwidmFyKC0tcGxvdC1zZXJpZXMtNClcIjtcbiAgY29uc3QgaGlsaXRlID0gXCJ2YXIoLS1wbG90LWZpbGwtMilcIjtcbiAgY29uc3QgZ3JpZCAgID0gXCJ2YXIoLS1wbG90LWdyaWQpXCI7XG5cbiAgLy8gLS0tIERlZnM6IGNsaXBzICYgbWFzayBmb3IgQV5jIC0tLVxuICBjb25zdCBkZWZzID0gc3ZnLmFwcGVuZChcImRlZnNcIik7XG5cbiAgZGVmcy5hcHBlbmQoXCJjbGlwUGF0aFwiKS5hdHRyKFwiaWRcIiwgXCJjbGlwQVwiKVxuICAgIC5hcHBlbmQoXCJjaXJjbGVcIikuYXR0cihcImN4XCIsIGN4QSkuYXR0cihcImN5XCIsIGN5QSkuYXR0cihcInJcIiwgcik7XG5cbiAgZGVmcy5hcHBlbmQoXCJjbGlwUGF0aFwiKS5hdHRyKFwiaWRcIiwgXCJjbGlwQlwiKVxuICAgIC5hcHBlbmQoXCJjaXJjbGVcIikuYXR0cihcImN4XCIsIGN4QikuYXR0cihcImN5XCIsIGN5QikuYXR0cihcInJcIiwgcik7XG5cbiAgLy8gTWFzayBmb3IgQV5jOiB3aGl0ZSBrZWVwcywgYmxhY2sgcmVtb3ZlcyAoc3VidHJhY3QgY2lyY2xlIEEgZnJvbSDOqSByZWN0KVxuICBjb25zdCBtID0gZGVmcy5hcHBlbmQoXCJtYXNrXCIpLmF0dHIoXCJpZFwiLCBcIm1hc2tBY1wiKTtcbiAgbS5hcHBlbmQoXCJyZWN0XCIpXG4gICAgLmF0dHIoXCJ4XCIsIHBhZCkuYXR0cihcInlcIiwgcGFkKVxuICAgIC5hdHRyKFwid2lkdGhcIiwgd2lkdGggLSAyKnBhZCkuYXR0cihcImhlaWdodFwiLCBoZWlnaHQgLSAyKnBhZClcbiAgICAuYXR0cihcInJ4XCIsIDEwKVxuICAgIC5hdHRyKFwiZmlsbFwiLCBcIndoaXRlXCIpO1xuICBtLmFwcGVuZChcImNpcmNsZVwiKVxuICAgIC5hdHRyKFwiY3hcIiwgY3hBKS5hdHRyKFwiY3lcIiwgY3lBKS5hdHRyKFwiclwiLCByKVxuICAgIC5hdHRyKFwiZmlsbFwiLCBcImJsYWNrXCIpO1xuXG4gIC8vIEJhc2Ugc2V0cyAoYWx3YXlzIGxpZ2h0bHkgdHJhbnNwYXJlbnQpXG4gIHN2Zy5hcHBlbmQoXCJjaXJjbGVcIilcbiAgICAuYXR0cihcImN4XCIsIGN4QSkuYXR0cihcImN5XCIsIGN5QSkuYXR0cihcInJcIiwgcilcbiAgICAuYXR0cihcImZpbGxcIiwgY29sQSkuYXR0cihcImZpbGwtb3BhY2l0eVwiLCAwLjQpO1xuXG4gIHN2Zy5hcHBlbmQoXCJjaXJjbGVcIilcbiAgICAuYXR0cihcImN4XCIsIGN4QikuYXR0cihcImN5XCIsIGN5QikuYXR0cihcInJcIiwgcilcbiAgICAuYXR0cihcImZpbGxcIiwgY29sQikuYXR0cihcImZpbGwtb3BhY2l0eVwiLCAwLjQpO1xuXG4gIC8vIEhpZ2hsaWdodCBsYXllclxuICBpZiAodmVubk9wID09PSBcIkFcIikge1xuICAgIHN2Zy5hcHBlbmQoXCJjaXJjbGVcIilcbiAgICAgIC5hdHRyKFwiY3hcIiwgY3hBKS5hdHRyKFwiY3lcIiwgY3lBKS5hdHRyKFwiclwiLCByKVxuICAgICAgLmF0dHIoXCJmaWxsXCIsIGhpbGl0ZSkuYXR0cihcImZpbGwtb3BhY2l0eVwiLCAwLjk5KTtcblxuICB9IGVsc2UgaWYgKHZlbm5PcCA9PT0gXCJCXCIpIHtcbiAgICBzdmcuYXBwZW5kKFwiY2lyY2xlXCIpXG4gICAgICAuYXR0cihcImN4XCIsIGN4QikuYXR0cihcImN5XCIsIGN5QikuYXR0cihcInJcIiwgcilcbiAgICAgIC5hdHRyKFwiZmlsbFwiLCBoaWxpdGUpLmF0dHIoXCJmaWxsLW9wYWNpdHlcIiwgMC45OSk7XG5cbiAgfSBlbHNlIGlmICh2ZW5uT3AgPT09IFwiQeG2nFwiKSB7XG4gICAgLy8gRHJhdyDOqSBpbiBvcmFuZ2UsIGJ1dCBtYXNrZWQgdG8gcmVtb3ZlIEFcbiAgICBzdmcuYXBwZW5kKFwicmVjdFwiKVxuICAgICAgLmF0dHIoXCJ4XCIsIHBhZCkuYXR0cihcInlcIiwgcGFkKVxuICAgICAgLmF0dHIoXCJ3aWR0aFwiLCB3aWR0aCAtIDIqcGFkKS5hdHRyKFwiaGVpZ2h0XCIsIGhlaWdodCAtIDIqcGFkKVxuICAgICAgLmF0dHIoXCJyeFwiLCAxMClcbiAgICAgIC5hdHRyKFwiZmlsbFwiLCBoaWxpdGUpLmF0dHIoXCJmaWxsLW9wYWNpdHlcIiwgMC45OSlcbiAgICAgIC5hdHRyKFwibWFza1wiLCBcInVybCgjbWFza0FjKVwiKTtcblxuICB9IGVsc2UgaWYgKHZlbm5PcCA9PT0gXCJVbmlvblwiKSB7XG4gICAgLy8gQSDiiKogQjogb3ZlcmxheSBib3RoIGNpcmNsZXMgc29saWQgb3JhbmdlXG4gICAgc3ZnLmFwcGVuZChcImNpcmNsZVwiKVxuICAgICAgLmF0dHIoXCJjeFwiLCBjeEEpLmF0dHIoXCJjeVwiLCBjeUEpLmF0dHIoXCJyXCIsIHIpXG4gICAgICAuYXR0cihcImZpbGxcIiwgaGlsaXRlKS5hdHRyKFwiZmlsbC1vcGFjaXR5XCIsIDAuOTkpO1xuICAgIHN2Zy5hcHBlbmQoXCJjaXJjbGVcIilcbiAgICAgIC5hdHRyKFwiY3hcIiwgY3hCKS5hdHRyKFwiY3lcIiwgY3lCKS5hdHRyKFwiclwiLCByKVxuICAgICAgLmF0dHIoXCJmaWxsXCIsIGhpbGl0ZSkuYXR0cihcImZpbGwtb3BhY2l0eVwiLCAwLjk5KTtcblxuICB9IGVsc2UgaWYgKHZlbm5PcCA9PT0gXCJJbnRlcnNlY3Rpb25cIikge1xuICAgIC8vIEEg4oipIEI6IGNsaXAgQiBieSBBIChlcXVpdmFsZW50bHkgY2xpcCBBIGJ5IEIpXG4gICAgc3ZnLmFwcGVuZChcImdcIikuYXR0cihcImNsaXAtcGF0aFwiLCBcInVybCgjY2xpcEEpXCIpXG4gICAgICAuYXBwZW5kKFwiY2lyY2xlXCIpXG4gICAgICAuYXR0cihcImN4XCIsIGN4QikuYXR0cihcImN5XCIsIGN5QikuYXR0cihcInJcIiwgcilcbiAgICAgIC5hdHRyKFwiZmlsbFwiLCBoaWxpdGUpLmF0dHIoXCJmaWxsLW9wYWNpdHlcIiwgMC45OSk7XG4gIH1cblxuICAvLyBMYWJlbHMgQSBhbmQgQlxuICBzdmcuYXBwZW5kKFwidGV4dFwiKVxuICAgIC5hdHRyKFwieFwiLCBjeEEgLSAyNikuYXR0cihcInlcIiwgY3lBIC0gOClcbiAgICAudGV4dChcIkFcIilcbiAgICAuc3R5bGUoXCJmb250LXNpemVcIiwgXCIxNHB4XCIpXG4gICAgLnN0eWxlKFwiZm9udC13ZWlnaHRcIiwgNjAwKVxuICAgIC5zdHlsZShcImZpbGxcIiwgXCJ2YXIoLS1wbG90LW11dGVkKVwiKTtcblxuICBzdmcuYXBwZW5kKFwidGV4dFwiKVxuICAgIC5hdHRyKFwieFwiLCBjeEIgKyAyMikuYXR0cihcInlcIiwgY3lCIC0gOClcbiAgICAudGV4dChcIkJcIilcbiAgICAuc3R5bGUoXCJmb250LXNpemVcIiwgXCIxNHB4XCIpXG4gICAgLnN0eWxlKFwiZm9udC13ZWlnaHRcIiwgNjAwKVxuICAgIC5zdHlsZShcImZpbGxcIiwgXCJ2YXIoLS1wbG90LW11dGVkKVwiKTtcblxuICAvLyBTdWJ0bGUgYmFzZWxpbmVcbiAgc3ZnLmFwcGVuZChcImxpbmVcIilcbiAgICAuYXR0cihcIngxXCIsIHBhZCkuYXR0cihcIngyXCIsIHdpZHRoIC0gcGFkKVxuICAgIC5hdHRyKFwieTFcIiwgaGVpZ2h0IC0gcGFkIC0gMC41KS5hdHRyKFwieTJcIiwgaGVpZ2h0IC0gcGFkIC0gMC41KVxuICAgIC5hdHRyKFwic3Ryb2tlXCIsIGdyaWQpLmF0dHIoXCJzdHJva2Utb3BhY2l0eVwiLCAwLjIpO1xuXG4gIHJldHVybiBzdmcubm9kZSgpO1xufVxuXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTQiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJcbntcbiAgY29uc3Qgd2lkdGggPSA3MjAsIGhlaWdodCA9IDM2MDtcbiAgY29uc3QgcGFkID0gMjA7XG5cbiAgLy8gU29mdCByZWdpb24gZmlsbHMgc2hhcmUgdGhlIHNhbWUgaWRlbnRpdGllcyBhcyB0aGUgZmlndXJlIHNlcmllcyBwYWxldHRlLlxuICBjb25zdCBmaWxscyA9IFtcbiAgICBcInZhcigtLXBsb3QtZmlsbC0xKVwiLFxuICAgIFwidmFyKC0tcGxvdC1maWxsLTIpXCIsXG4gICAgXCJ2YXIoLS1wbG90LWZpbGwtMylcIixcbiAgICBcInZhcigtLXBsb3QtZmlsbC01KVwiLFxuICAgIFwidmFyKC0tcGxvdC1maWxsLTQpXCJcbiAgXTtcbiAgY29uc3QgY29sID0gaSA9PiBmaWxsc1tpICUgZmlsbHMubGVuZ3RoXTtcblxuICAvLyBzZWVkZWQgUk5HIHNvIFwiUmVzZWVkXCIgY2hhbmdlcyBsYXlvdXQgZGV0ZXJtaW5pc3RpY2FsbHkgcGVyIGNsaWNrXG4gIGNvbnN0IHJuZyA9IGQzLnJhbmRvbUxjZyhyZXNlZWQgfHwgMSk7XG5cbiAgLy8gZ2VuZXJhdGUgbiBzaXRlcyBpbnNpZGUgzqkgKGluc2V0IGJ5IHBhZGRpbmcpXG4gIGNvbnN0IHNpdGVzID0gZDMucmFuZ2UobikubWFwKGkgPT4gKHtcbiAgICBuYW1lOiBgQiR7aSsxfWAsXG4gICAgeDogcGFkICsgcm5nKCkgKiAod2lkdGggLSAyKnBhZCksXG4gICAgeTogcGFkICsgcm5nKCkgKiAoaGVpZ2h0IC0gMipwYWQpXG4gIH0pKTtcblxuICBjb25zdCBkZWxhdW5heSA9IGQzLkRlbGF1bmF5LmZyb20oc2l0ZXMsIGQgPT4gZC54LCBkID0+IGQueSk7XG4gIGNvbnN0IHZvciA9IGRlbGF1bmF5LnZvcm9ub2koW3BhZCwgcGFkLCB3aWR0aCAtIHBhZCwgaGVpZ2h0IC0gcGFkXSk7XG5cbiAgY29uc3Qgc3ZnID0gZDMuY3JlYXRlKFwic3ZnXCIpXG4gICAgLmF0dHIoXCJ2aWV3Qm94XCIsIFswLCAwLCB3aWR0aCwgaGVpZ2h0XSlcbiAgICAuYXR0cihcIndpZHRoXCIsIHdpZHRoKVxuICAgIC5hdHRyKFwiaGVpZ2h0XCIsIGhlaWdodClcbiAgICAuc3R5bGUoXCJiYWNrZ3JvdW5kXCIsIFwidmFyKC0tcGxvdC1iZylcIilcbiAgICAuc3R5bGUoXCJjb2xvclwiLCBcInZhcigtLXBsb3QtZmcpXCIpXG4gICAgLnN0eWxlKFwiZm9udC1mYW1pbHlcIiwgYm9keUZvbnQpXG4gICAgLnN0eWxlKFwiZm9udC1zaXplXCIsIFwiMTRweFwiKTtcblxuICAvLyAtLS0gZGVmczogcm91bmRlZC1yZWN0IGNsaXAgZm9yIM6pIC0tLVxuICBjb25zdCBkZWZzID0gc3ZnLmFwcGVuZChcImRlZnNcIik7XG4gIGRlZnMuYXBwZW5kKFwiY2xpcFBhdGhcIilcbiAgICAuYXR0cihcImlkXCIsIFwiY2xpcE9tZWdhXCIpXG4gICAgLmFwcGVuZChcInJlY3RcIilcbiAgICAgIC5hdHRyKFwieFwiLCBwYWQpLmF0dHIoXCJ5XCIsIHBhZClcbiAgICAgIC5hdHRyKFwid2lkdGhcIiwgd2lkdGggLSAyKnBhZCkuYXR0cihcImhlaWdodFwiLCBoZWlnaHQgLSAyKnBhZClcbiAgICAgIC5hdHRyKFwicnhcIiwgMTApO1xuXG4gIC8vIGNlbGxzIChjbGlwcGVkIHRvIHJvdW5kZWQgzqkgc28gbm8gc2hhcnAgb3V0ZXIgYm94KVxuICBjb25zdCBnID0gc3ZnLmFwcGVuZChcImdcIikuYXR0cihcImNsaXAtcGF0aFwiLCBcInVybCgjY2xpcE9tZWdhKVwiKTtcbiAgY29uc3QgcG9seXMgPSBbXTsgIC8vIHN0b3JlIHBvbHlnb25zIGZvciBjZW50cm9pZCBsYWJlbGxpbmdcblxuICBmb3IgKGxldCBpID0gMDsgaSA8IHNpdGVzLmxlbmd0aDsgaSsrKSB7XG4gICAgY29uc3QgcG9seSA9IHZvci5jZWxsUG9seWdvbihpKTtcbiAgICBpZiAoIXBvbHkpIGNvbnRpbnVlO1xuICAgIHBvbHlzLnB1c2goeyBpLCBwb2x5LCBuYW1lOiBzaXRlc1tpXS5uYW1lIH0pO1xuICAgIGcuYXBwZW5kKFwicGF0aFwiKVxuICAgICAgLmF0dHIoXCJkXCIsIGQzLmxpbmUoKShwb2x5KSlcbiAgICAgIC5hdHRyKFwiZmlsbFwiLCBjb2woaSkpXG4gICAgICAuYXR0cihcInN0cm9rZVwiLCBcImN1cnJlbnRDb2xvclwiKVxuICAgICAgLmF0dHIoXCJzdHJva2Utb3BhY2l0eVwiLCAwLjI4KTtcbiAgfVxuXG4gIC8vIGxhYmVsIGZvbnQgc2l6ZSBhZGFwdHMgdG8gbiAoY2xhbXBlZCBiZXR3ZWVuIDEwcHggYW5kIDE0cHgpXG4gIGNvbnN0IGZ6ID0gTWF0aC5tYXgoMTAsIE1hdGgubWluKDE0LCAxNiAtIDAuNSAqIChuIC0gMykpKTtcblxuICAvLyBsYWJlbHMgYXQgcG9seWdvbiBjZW50cm9pZHMgKHRydWUgY2VudHJlIGZvciBjb252ZXggVm9yb25vaSBjZWxscylcbiAgc3ZnLmFwcGVuZChcImdcIilcbiAgICAuc2VsZWN0QWxsKFwidGV4dFwiKVxuICAgIC5kYXRhKHBvbHlzLm1hcChkID0+IHtcbiAgICAgIGNvbnN0IFtjeCwgY3ldID0gZDMucG9seWdvbkNlbnRyb2lkKGQucG9seSk7XG4gICAgICByZXR1cm4geyB4OiBjeCwgeTogY3ksIG5hbWU6IGQubmFtZSB9O1xuICAgIH0pKVxuICAgIC5qb2luKFwidGV4dFwiKVxuICAgICAgLmF0dHIoXCJ4XCIsIGQgPT4gZC54KVxuICAgICAgLmF0dHIoXCJ5XCIsIGQgPT4gZC55KVxuICAgICAgLnRleHQoZCA9PiBkLm5hbWUpXG4gICAgICAuYXR0cihcImZvbnQtd2VpZ2h0XCIsIDcwMClcbiAgICAgIC5hdHRyKFwiZmlsbFwiLCBcImN1cnJlbnRDb2xvclwiKVxuICAgICAgLmF0dHIoXCJmb250LXNpemVcIiwgYCR7Znp9cHhgKVxuICAgICAgLmF0dHIoXCJ0ZXh0LWFuY2hvclwiLCBcIm1pZGRsZVwiKVxuICAgICAgLmF0dHIoXCJkb21pbmFudC1iYXNlbGluZVwiLCBcIm1pZGRsZVwiKTtcblxuICAvLyDOqSBmcmFtZSAoc2luZ2xlIHJvdW5kZWQgcmVjdGFuZ2xlLCBkcmF3biBsYXN0KVxuICBzdmcuYXBwZW5kKFwicmVjdFwiKVxuICAgIC5hdHRyKFwieFwiLCBwYWQpLmF0dHIoXCJ5XCIsIHBhZClcbiAgICAuYXR0cihcIndpZHRoXCIsIHdpZHRoIC0gMipwYWQpLmF0dHIoXCJoZWlnaHRcIiwgaGVpZ2h0IC0gMipwYWQpXG4gICAgLmF0dHIoXCJyeFwiLCAxMClcbiAgICAuYXR0cihcImZpbGxcIiwgXCJub25lXCIpXG4gICAgLmF0dHIoXCJzdHJva2VcIiwgXCJjdXJyZW50Q29sb3JcIilcbiAgICAuYXR0cihcInN0cm9rZS1vcGFjaXR5XCIsIDAuNTUpO1xuXG4gIC8vIM6pIGxhYmVsXG4gIHN2Zy5hcHBlbmQoXCJ0ZXh0XCIpXG4gICAgLmF0dHIoXCJ4XCIsIHBhZCArIDgpLmF0dHIoXCJ5XCIsIHBhZCArIDE2KVxuICAgIC50ZXh0KFwizqlcIilcbiAgICAuc3R5bGUoXCJmb250LXdlaWdodFwiLCA0MDApXG4gICAgLnN0eWxlKFwiZm9udC1zaXplXCIsIFwiMThweFwiKVxuICAgIC5hdHRyKFwiZmlsbFwiLCBcImN1cnJlbnRDb2xvclwiKTtcblxuICByZXR1cm4gc3ZnLm5vZGUoKTtcbn1cbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IlxuLy8gQnVpbGQgdGhlIHR3byBpbnB1dHMgb25seSwgaW4gYSBzaWRlLWJ5LXNpZGUgZ3JpZFxudmlld29mIGNvbnRyb2xzID0ge1xuICBjb25zdCByZXNCdG4gPSBJbnB1dHMuYnV0dG9uKFwiUmVzZWVkIHBvaW50c1wiKTtcbiAgcmVzQnRuLmNsYXNzTGlzdC5hZGQoXCJidG4tcmVzaW1cIik7XG5cbiAgY29uc3QgbGVmdEZvcm0gPSBJbnB1dHMuZm9ybShcbiAgICB7IG46IElucHV0cy5yYW5nZShbMywgNTBdLCB7IHZhbHVlOiAxMCwgc3RlcDogMSwgbGFiZWw6IG1kYCR7dGV4YGtgfTogbnVtYmVyIG9mIHNldHNgIH0pIH0sXG4gICAgeyBzdWJtaXQ6IGZhbHNlIH1cbiAgKTtcbiAgY29uc3QgcmlnaHRGb3JtID0gSW5wdXRzLmZvcm0oeyByZXNlZWQ6IHJlc0J0biB9LCB7IHN1Ym1pdDogZmFsc2UgfSk7XG5cbiAgY29uc3Qgcm9vdCA9IGh0bWxgPGRpdiBjbGFzcz1cImNvbnRyb2xzLXdyYXBcIj5cbiAgICA8ZGV0YWlscyBjbGFzcz1cImNvbnRyb2xzLXJvb3RcIiBvcGVuPlxuICAgICAgPHN1bW1hcnk+UGFydGl0aW9uIGNvbnRyb2xzPC9zdW1tYXJ5PlxuICAgICAgPGRpdiBjbGFzcz1cImNvbnRyb2xzLWdyaWRcIj5cbiAgICAgICAgPGRpdiBjbGFzcz1cImNvbnRyb2xzLWNvbFwiPjxoND5OdW1iZXIgb2YgcmVnaW9uczwvaDQ+PC9kaXY+XG4gICAgICAgIDxkaXYgY2xhc3M9XCJjb250cm9scy1jb2xcIj48aDQ+UmFuZG9taXNhdGlvbjwvaDQ+PC9kaXY+XG4gICAgICA8L2Rpdj5cbiAgICA8L2RldGFpbHM+XG4gIDwvZGl2PmA7XG5cbiAgY29uc3QgZ3JpZCA9IHJvb3QucXVlcnlTZWxlY3RvcihcIi5jb250cm9scy1ncmlkXCIpO1xuICBjb25zdCBsZWZ0Q29sID0gZ3JpZC5jaGlsZHJlblswXTtcbiAgY29uc3QgcmlnaHRDb2wgPSBncmlkLmNoaWxkcmVuWzFdO1xuICBsZWZ0Q29sLmFwcGVuZChsZWZ0Rm9ybSk7XG4gIHJpZ2h0Q29sLmFwcGVuZChyaWdodEZvcm0pO1xuXG4gIGNvbnN0IGdldFZhbHVlID0gKCkgPT4gKHsgLi4ubGVmdEZvcm0udmFsdWUsIC4uLnJpZ2h0Rm9ybS52YWx1ZSB9KTtcbiAgY29uc3QgdXBkYXRlID0gKCkgPT4ge1xuICAgIHJvb3QudmFsdWUgPSBnZXRWYWx1ZSgpO1xuICAgIHJvb3QuZGlzcGF0Y2hFdmVudChuZXcgQ3VzdG9tRXZlbnQoXCJpbnB1dFwiLCB7IGJ1YmJsZXM6IHRydWUgfSkpO1xuICB9O1xuICBncmlkLmFkZEV2ZW50TGlzdGVuZXIoXCJpbnB1dFwiLCB1cGRhdGUpO1xuICBxdWV1ZU1pY3JvdGFzayh1cGRhdGUpO1xuICByZXR1cm4gcm9vdDtcbn1cblxuLy8gcmVhY3RpdmUgYmluZGluZ3MgZm9yIHRoZSBwbG90XG5uID0gY29udHJvbHMublxucmVzZWVkID0gY29udHJvbHMucmVzZWVkXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTYiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ7XG4gIGNvbnN0IHdpZHRoID0gNzIwLCBoZWlnaHQgPSAzNjA7XG4gIGNvbnN0IHBhZCA9IDIwO1xuXG4gIC8vIFNvZnQgcmVnaW9uIGZpbGxzIHNoYXJlIHRoZSBzYW1lIGlkZW50aXRpZXMgYXMgdGhlIGZpZ3VyZSBzZXJpZXMgcGFsZXR0ZS5cbiAgY29uc3QgZmlsbHMgPSBbXG4gICAgXCJ2YXIoLS1wbG90LWZpbGwtMSlcIixcbiAgICBcInZhcigtLXBsb3QtZmlsbC0zKVwiLFxuICAgIFwidmFyKC0tcGxvdC1maWxsLTUpXCIsXG4gICAgXCJ2YXIoLS1wbG90LWZpbGwtNClcIlxuICBdO1xuICBjb25zdCBjb2wgPSBpID0+IGZpbGxzW2kgJSBmaWxscy5sZW5ndGhdO1xuICBjb25zdCBvcmFuZ2VTdHJva2UgPSBcInZhcigtLXBsb3Qtc2VyaWVzLTIpXCI7XG4gIGNvbnN0IG9yYW5nZUZpbGwgPSBcInZhcigtLXBsb3QtZmlsbC0yKVwiO1xuXG4gIC8vIGRldGVybWluaXN0aWMgUk5HXG4gIGNvbnN0IHJuZyA9IGQzLnJhbmRvbUxjZygyKTtcblxuICAvLyBWb3Jvbm9pIHNpdGVzXG4gIGNvbnN0IHNpdGVzID0gZDMucmFuZ2UobjIpLm1hcChpID0+ICh7XG4gICAgbmFtZTogYEIke2krMX1gLFxuICAgIHg6IHBhZCArIHJuZygpICogKHdpZHRoIC0gMipwYWQpLFxuICAgIHk6IHBhZCArIHJuZygpICogKGhlaWdodCAtIDIqcGFkKVxuICB9KSk7XG5cbiAgY29uc3QgZGVsYXVuYXkgPSBkMy5EZWxhdW5heS5mcm9tKHNpdGVzLCBkID0+IGQueCwgZCA9PiBkLnkpO1xuICBjb25zdCB2b3IgPSBkZWxhdW5heS52b3Jvbm9pKFtwYWQsIHBhZCwgd2lkdGggLSBwYWQsIGhlaWdodCAtIHBhZF0pO1xuXG4gIGNvbnN0IHN2ZyA9IGQzLmNyZWF0ZShcInN2Z1wiKVxuICAgIC5hdHRyKFwidmlld0JveFwiLCBbMCwgMCwgd2lkdGgsIGhlaWdodF0pXG4gICAgLmF0dHIoXCJ3aWR0aFwiLCB3aWR0aClcbiAgICAuYXR0cihcImhlaWdodFwiLCBoZWlnaHQpXG4gICAgLnN0eWxlKFwiYmFja2dyb3VuZFwiLCBcInZhcigtLXBsb3QtYmcpXCIpXG4gICAgLnN0eWxlKFwiY29sb3JcIiwgXCJ2YXIoLS1wbG90LWZnKVwiKVxuICAgIC5zdHlsZShcImZvbnQtZmFtaWx5XCIsIGJvZHlGb250KVxuICAgIC5zdHlsZShcImZvbnQtc2l6ZVwiLCBcIjE0cHhcIik7XG5cbiAgLy8gLS0tIGRlZnM6IHJvdW5kZWQtcmVjdCBjbGlwIGZvciDOqSArIHBlci1jZWxsIGNsaXBQYXRocyArIGVsbGlwc2UgZm9yIEEgLS0tXG4gIGNvbnN0IGRlZnMgPSBzdmcuYXBwZW5kKFwiZGVmc1wiKTtcblxuICBkZWZzLmFwcGVuZChcImNsaXBQYXRoXCIpXG4gICAgLmF0dHIoXCJpZFwiLCBcImNsaXBPbWVnYS1sb3RwMlwiKVxuICAgIC5hcHBlbmQoXCJyZWN0XCIpXG4gICAgICAuYXR0cihcInhcIiwgcGFkKS5hdHRyKFwieVwiLCBwYWQpXG4gICAgICAuYXR0cihcIndpZHRoXCIsIHdpZHRoIC0gMipwYWQpLmF0dHIoXCJoZWlnaHRcIiwgaGVpZ2h0IC0gMipwYWQpXG4gICAgICAuYXR0cihcInJ4XCIsIDEwKTtcblxuICAvLyBQZXItY2VsbCBjbGlwUGF0aHMgKHNvIHdlIGNhbiBkcmF3IEHiiKlCX2kgYnkgY2xpcHBpbmcgdGhlIGVsbGlwc2UgdG8gZWFjaCBjZWxsKVxuICBmb3IgKGxldCBpID0gMDsgaSA8IHNpdGVzLmxlbmd0aDsgaSsrKSB7XG4gICAgY29uc3QgcG9seSA9IHZvci5jZWxsUG9seWdvbihpKTtcbiAgICBpZiAoIXBvbHkpIGNvbnRpbnVlO1xuICAgIGRlZnMuYXBwZW5kKFwiY2xpcFBhdGhcIilcbiAgICAgIC5hdHRyKFwiaWRcIiwgYGNsaXBDZWxsLWxvdHAyLSR7aX1gKVxuICAgICAgLmFwcGVuZChcInBhdGhcIilcbiAgICAgIC5hdHRyKFwiZFwiLCBkMy5saW5lKCkocG9seSkpO1xuICB9XG5cbiAgLy8gQTogZWxsaXBzZSBnZW9tZXRyeVxuICBjb25zdCBBeCA9IHdpZHRoICogMC41MCwgQXkgPSBoZWlnaHQgKiAwLjUyOyAgLy8gY2VudHJlXG4gIGNvbnN0IEFyeCA9IHdpZHRoICogMC40MiwgQXJ5ID0gaGVpZ2h0ICogMC40O1xuXG4gIC8vIC0tLSBWb3Jvbm9pIGNlbGwgZmlsbHM6IHRoZSBiYWNrIGxheWVyIG9mIHRoZSBkaWFncmFtIC0tLVxuICBjb25zdCBjZWxsRmlsbHMgPSBzdmcuYXBwZW5kKFwiZ1wiKS5hdHRyKFwiY2xpcC1wYXRoXCIsIFwidXJsKCNjbGlwT21lZ2EtbG90cDIpXCIpO1xuICBjb25zdCBwb2x5cyA9IFtdO1xuICBmb3IgKGxldCBpID0gMDsgaSA8IHNpdGVzLmxlbmd0aDsgaSsrKSB7XG4gICAgY29uc3QgcG9seSA9IHZvci5jZWxsUG9seWdvbihpKTtcbiAgICBpZiAoIXBvbHkpIGNvbnRpbnVlO1xuICAgIHBvbHlzLnB1c2goeyBpLCBwb2x5LCBuYW1lOiBzaXRlc1tpXS5uYW1lIH0pO1xuICAgIGNlbGxGaWxscy5hcHBlbmQoXCJwYXRoXCIpXG4gICAgICAuYXR0cihcImRcIiwgZDMubGluZSgpKHBvbHkpKVxuICAgICAgLmF0dHIoXCJmaWxsXCIsIGNvbChpKSk7XG4gIH1cblxuICAvLyAtLS0gQeKIqUJfaSBwaWVjZXMgKG9yYW5nZSksIHJldmVhbGVkIHVwIHRvICdmcmFtZTInIC0tLVxuICBjb25zdCBvdmVybGFwcyA9IHN2Zy5hcHBlbmQoXCJnXCIpLmF0dHIoXCJjbGlwLXBhdGhcIiwgXCJ1cmwoI2NsaXBPbWVnYS1sb3RwMilcIik7XG4gIGZvciAobGV0IGkgPSAwOyBpIDwgc2l0ZXMubGVuZ3RoOyBpKyspIHtcbiAgICBvdmVybGFwcy5hcHBlbmQoXCJlbGxpcHNlXCIpXG4gICAgICAuYXR0cihcImN4XCIsIEF4KS5hdHRyKFwiY3lcIiwgQXkpXG4gICAgICAuYXR0cihcInJ4XCIsIEFyeCkuYXR0cihcInJ5XCIsIEFyeSlcbiAgICAgIC5hdHRyKFwiZmlsbFwiLCBvcmFuZ2VGaWxsKVxuICAgICAgLmF0dHIoXCJmaWxsLW9wYWNpdHlcIiwgaSA8IGZyYW1lMiA/IDEuIDogMCkgIC8vIHJldmVhbCBwcm9ncmVzc2l2ZWx5XG4gICAgICAuYXR0cihcImNsaXAtcGF0aFwiLCBgdXJsKCNjbGlwQ2VsbC1sb3RwMi0ke2l9KWApO1xuICB9XG5cbiAgLy8gUmVkcmF3IHRoZSBwYXJ0aXRpb24gYm91bmRhcmllcyBhZnRlciB0aGUgYW5pbWF0ZWQgZmlsbHMgc28gdGhleSBzdGF5IGNsZWFyLlxuICBzdmcuYXBwZW5kKFwiZ1wiKVxuICAgIC5hdHRyKFwiY2xpcC1wYXRoXCIsIFwidXJsKCNjbGlwT21lZ2EtbG90cDIpXCIpXG4gICAgLnNlbGVjdEFsbChcInBhdGhcIilcbiAgICAuZGF0YShwb2x5cylcbiAgICAuam9pbihcInBhdGhcIilcbiAgICAgIC5hdHRyKFwiZFwiLCBkID0+IGQzLmxpbmUoKShkLnBvbHkpKVxuICAgICAgLmF0dHIoXCJmaWxsXCIsIFwibm9uZVwiKVxuICAgICAgLmF0dHIoXCJzdHJva2VcIiwgXCJjdXJyZW50Q29sb3JcIilcbiAgICAgIC5hdHRyKFwic3Ryb2tlLW9wYWNpdHlcIiwgMC42MilcbiAgICAgIC5hdHRyKFwic3Ryb2tlLXdpZHRoXCIsIDEuMjUpO1xuXG4gIC8vIEEgbXVzdCBiZSB0aGUgdG9wIGdlb21ldHJpYyBsYXllcjogaXRzIG91dGxpbmUgcmVtYWlucyB2aXNpYmxlIHRocm91Z2hvdXQuXG4gIHN2Zy5hcHBlbmQoXCJlbGxpcHNlXCIpXG4gICAgLmF0dHIoXCJjeFwiLCBBeCkuYXR0cihcImN5XCIsIEF5KVxuICAgIC5hdHRyKFwicnhcIiwgQXJ4KS5hdHRyKFwicnlcIiwgQXJ5KVxuICAgIC5hdHRyKFwiZmlsbFwiLCBcIm5vbmVcIilcbiAgICAuYXR0cihcInN0cm9rZVwiLCBvcmFuZ2VTdHJva2UpXG4gICAgLmF0dHIoXCJzdHJva2Utd2lkdGhcIiwgNClcbiAgICAuYXR0cihcInZlY3Rvci1lZmZlY3RcIiwgXCJub24tc2NhbGluZy1zdHJva2VcIilcbiAgICAuYXR0cihcImNsaXAtcGF0aFwiLCBcInVybCgjY2xpcE9tZWdhLWxvdHAyKVwiKTtcblxuICAvLyBMYWJlbHMgYXQgcG9seWdvbiBjZW50cm9pZHMgYXJlIGFsc28ga2VwdCBhYm92ZSB0aGUgYW5pbWF0ZWQgcGllY2VzLlxuICBjb25zdCBmejIgPSBNYXRoLm1heCgxMCwgTWF0aC5taW4oMTQsIDE2IC0gMC4zICogKG4yIC0gMykpKTtcbiAgc3ZnLmFwcGVuZChcImdcIilcbiAgICAuc2VsZWN0QWxsKFwidGV4dFwiKVxuICAgIC5kYXRhKHBvbHlzLm1hcChkID0+IHtcbiAgICAgIGNvbnN0IFtjeCwgY3ldID0gZDMucG9seWdvbkNlbnRyb2lkKGQucG9seSk7XG4gICAgICByZXR1cm4geyB4OiBjeCwgeTogY3ksIG5hbWU6IGQubmFtZSB9O1xuICAgIH0pKVxuICAgIC5qb2luKFwidGV4dFwiKVxuICAgICAgLmF0dHIoXCJ4XCIsIGQgPT4gZC54KVxuICAgICAgLmF0dHIoXCJ5XCIsIGQgPT4gZC55KVxuICAgICAgLnRleHQoZCA9PiBkLm5hbWUpXG4gICAgICAuYXR0cihcImZvbnQtd2VpZ2h0XCIsIDcwMClcbiAgICAgIC5hdHRyKFwiZmlsbFwiLCBcInZhcigtLXBsb3QtbXV0ZWQpXCIpXG4gICAgICAuYXR0cihcImZvbnQtc2l6ZVwiLCBgJHtmejJ9cHhgKVxuICAgICAgLmF0dHIoXCJ0ZXh0LWFuY2hvclwiLCBcIm1pZGRsZVwiKVxuICAgICAgLmF0dHIoXCJkb21pbmFudC1iYXNlbGluZVwiLCBcIm1pZGRsZVwiKTtcblxuXG4gIC8vIM6pIGZyYW1lXG4gIHN2Zy5hcHBlbmQoXCJyZWN0XCIpXG4gICAgLmF0dHIoXCJ4XCIsIHBhZCkuYXR0cihcInlcIiwgcGFkKVxuICAgIC5hdHRyKFwid2lkdGhcIiwgd2lkdGggLSAyKnBhZCkuYXR0cihcImhlaWdodFwiLCBoZWlnaHQgLSAyKnBhZClcbiAgICAuYXR0cihcInJ4XCIsIDEwKVxuICAgIC5hdHRyKFwiZmlsbFwiLCBcIm5vbmVcIilcbiAgICAuYXR0cihcInN0cm9rZVwiLCBcImN1cnJlbnRDb2xvclwiKVxuICAgIC5hdHRyKFwic3Ryb2tlLW9wYWNpdHlcIiwgMC41NSk7XG5cbiAgLy8gzqkgbGFiZWxcbiAgc3ZnLmFwcGVuZChcInRleHRcIilcbiAgICAuYXR0cihcInhcIiwgcGFkICsgOCkuYXR0cihcInlcIiwgcGFkICsgMTYpXG4gICAgLnRleHQoXCLOqVwiKVxuICAgIC5zdHlsZShcImZvbnQtd2VpZ2h0XCIsIDQwMClcbiAgICAuc3R5bGUoXCJmb250LXNpemVcIiwgXCIxOHB4XCIpXG4gICAgLmF0dHIoXCJmaWxsXCIsIFwiY3VycmVudENvbG9yXCIpO1xuXG4gIC8vIEEgbGFiZWxcbiAgc3ZnLmFwcGVuZChcInRleHRcIilcbiAgICAuYXR0cihcInhcIiwgQXgpLmF0dHIoXCJ5XCIsIEF5KVxuICAgIC50ZXh0KFwiQVwiKVxuICAgIC5hdHRyKFwiZmlsbFwiLCBcImN1cnJlbnRDb2xvclwiKVxuICAgIC5hdHRyKFwiZm9udC1zaXplXCIsIDE4KVxuICAgIC5hdHRyKFwiZm9udC13ZWlnaHRcIiwgNzAwKVxuICAgIC5hdHRyKFwidGV4dC1hbmNob3JcIiwgXCJtaWRkbGVcIik7XG5cbiAgcmV0dXJuIHN2Zy5ub2RlKCk7XG59XG5cbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNyIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Ii8vIEFuaW1hdGlvbiBkcml2ZXI6IGVhY2ggYnV0dG9uIGNsaWNrIHJlc3RhcnRzIHRoZSByZXZlYWxcbmZyYW1lMiA9IHtcbiAgaWYgKCFjbGljazIpIHJldHVybiAwO1xuICBjb25zdCBkZWxheSA9IDYwMDtcbiAgbGV0IGkgPSAwO1xuICB3aGlsZSAoaSA8PSBuMikge1xuICAgIHlpZWxkIGk7XG4gICAgYXdhaXQgUHJvbWlzZXMuZGVsYXkoZGVsYXkpO1xuICAgIGkrKztcbiAgfVxuICByZXR1cm4gaTtcbn1cblxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC04IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiLy8gQ29tcGFjdCBjb250cm9scyBCRUxPVyB0aGUgcGxvdCAodHdvIGlucHV0cyk6IGsgYW5kIFBsYXkgYW5pbWF0aW9uXG5cbi8vIFR3byBjb250cm9sczogayAoc2xpZGVyKSBhbmQgUGxheSBhbmltYXRpb24gKGJ1dHRvbilcbnZpZXdvZiBjb250cm9sczIgPSB7XG4gIGNvbnN0IGxlZnRGb3JtICA9IElucHV0cy5mb3JtKFxuICAgIHsgbjogSW5wdXRzLnJhbmdlKFszLCA1MF0sIHsgdmFsdWU6IDEwLCBzdGVwOiAxLCBsYWJlbDogbWRgJHt0ZXhga2B9OiBudW1iZXIgb2Ygc2V0c2AgfSkgfSxcbiAgICB7IHN1Ym1pdDpmYWxzZSB9XG4gICk7XG5cbiAgY29uc3QgcGxheUJ0biA9IElucHV0cy5idXR0b24oXCLilrYgUGxheVwiKTtcbiAgcGxheUJ0bi5jbGFzc0xpc3QuYWRkKFwiYnRuLXJlc2ltXCIpOyAgLy8gcmV1c2UgeW91ciB0ZWFsIGJ1dHRvbiBzdHlsZVxuXG4gIGNvbnN0IHJpZ2h0Rm9ybSA9IElucHV0cy5mb3JtKHsgY2xpY2syOiBwbGF5QnRuIH0sIHsgc3VibWl0OmZhbHNlIH0pO1xuXG4gIGNvbnN0IHJvb3QgPSBodG1sYDxkaXYgY2xhc3M9XCJjb250cm9scy13cmFwXCI+XG4gICAgPGRldGFpbHMgY2xhc3M9XCJjb250cm9scy1yb290XCIgb3Blbj5cbiAgICAgIDxzdW1tYXJ5PkxhdyBvZiBUb3RhbCBQcm9iYWJpbGl0eSBjb250cm9sczwvc3VtbWFyeT5cbiAgICAgIDxkaXYgY2xhc3M9XCJjb250cm9scy1ncmlkXCI+XG4gICAgICAgIDxkaXYgY2xhc3M9XCJjb250cm9scy1jb2xcIj48aDQ+UGFydGl0aW9uIHNpemU8L2g0PjwvZGl2PlxuICAgICAgICA8ZGl2IGNsYXNzPVwiY29udHJvbHMtY29sXCI+PGg0PkFuaW1hdGlvbjwvaDQ+PC9kaXY+XG4gICAgICA8L2Rpdj5cbiAgICA8L2RldGFpbHM+XG4gIDwvZGl2PmA7XG5cbiAgY29uc3QgZ3JpZCA9IHJvb3QucXVlcnlTZWxlY3RvcihcIi5jb250cm9scy1ncmlkXCIpO1xuICBncmlkLmNoaWxkcmVuWzBdLmFwcGVuZChsZWZ0Rm9ybSk7XG4gIGdyaWQuY2hpbGRyZW5bMV0uYXBwZW5kKHJpZ2h0Rm9ybSk7XG5cbiAgY29uc3QgZ2V0VmFsdWUgPSAoKSA9PiAoeyAuLi5sZWZ0Rm9ybS52YWx1ZSwgLi4ucmlnaHRGb3JtLnZhbHVlIH0pO1xuICBjb25zdCB1cGRhdGUgPSAoKSA9PiB7IHJvb3QudmFsdWUgPSBnZXRWYWx1ZSgpOyByb290LmRpc3BhdGNoRXZlbnQobmV3IEN1c3RvbUV2ZW50KFwiaW5wdXRcIiwgeyBidWJibGVzOnRydWUgfSkpOyB9O1xuICBncmlkLmFkZEV2ZW50TGlzdGVuZXIoXCJpbnB1dFwiLCB1cGRhdGUpO1xuICBxdWV1ZU1pY3JvdGFzayh1cGRhdGUpO1xuICByZXR1cm4gcm9vdDtcbn1cblxuLy8gcmVhY3RpdmVcbm4yICAgICA9IGNvbnRyb2xzMi5uXG5jbGljazIgPSBjb250cm9sczIuY2xpY2syXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTkiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJqbWNTdXBwb3J0ID0gZDMucmFuZ2UoMSwgNilcblxuam1jSm9pbnQgPSB7XG4gIGNvbnN0IHN0cmVuZ3RoID0gTWF0aC5hYnMoam1jQ29udHJvbHMuYXNzb2NpYXRpb24pO1xuICBjb25zdCBtYXRjaGVkWSA9IHggPT4gam1jQ29udHJvbHMuYXNzb2NpYXRpb24gPj0gMCA/IHggOiA2IC0geDtcblxuICByZXR1cm4gam1jU3VwcG9ydC5mbGF0TWFwKHkgPT4gam1jU3VwcG9ydC5tYXAoeCA9PiAoe1xuICAgIHgsXG4gICAgeSxcbiAgICBwcm9iYWJpbGl0eTogKDEgLSBzdHJlbmd0aCkgLyAyNSArXG4gICAgICAoeSA9PT0gbWF0Y2hlZFkoeCkgPyBzdHJlbmd0aCAvIDUgOiAwKVxuICB9KSkpO1xufVxuXG5qbWNNYXJnaW5hbFggPSBqbWNTdXBwb3J0Lm1hcCh4ID0+ICh7XG4gIHgsXG4gIHByb2JhYmlsaXR5OiBkMy5zdW0oam1jSm9pbnQuZmlsdGVyKGNlbGwgPT4gY2VsbC54ID09PSB4KSwgY2VsbCA9PiBjZWxsLnByb2JhYmlsaXR5KVxufSkpXG5cbmptY01hcmdpbmFsWSA9IGptY1N1cHBvcnQubWFwKHkgPT4gKHtcbiAgeSxcbiAgcHJvYmFiaWxpdHk6IGQzLnN1bShqbWNKb2ludC5maWx0ZXIoY2VsbCA9PiBjZWxsLnkgPT09IHkpLCBjZWxsID0+IGNlbGwucHJvYmFiaWxpdHkpXG59KSlcblxuam1jU2VsZWN0ZWRZUHJvYmFiaWxpdHkgPSBqbWNNYXJnaW5hbFkuZmluZChyb3cgPT4gcm93LnkgPT09IGptY0NvbnRyb2xzLnkpLnByb2JhYmlsaXR5XG5cbmptY0NvbmRpdGlvbmFsWCA9IGptY1N1cHBvcnQubWFwKHggPT4ge1xuICBjb25zdCBqb2ludCA9IGptY0pvaW50LmZpbmQoY2VsbCA9PlxuICAgIGNlbGwueCA9PT0geCAmJiBjZWxsLnkgPT09IGptY0NvbnRyb2xzLnlcbiAgKS5wcm9iYWJpbGl0eTtcbiAgcmV0dXJuIHtcbiAgICB4LFxuICAgIHByb2JhYmlsaXR5OiBqb2ludCAvIGptY1NlbGVjdGVkWVByb2JhYmlsaXR5XG4gIH07XG59KVxuXG5qbWNTZWxlY3RlZEpvaW50ID0gam1jSm9pbnQuZmluZChjZWxsID0+XG4gIGNlbGwueCA9PT0gam1jQ29udHJvbHMueCAmJiBjZWxsLnkgPT09IGptY0NvbnRyb2xzLnlcbikucHJvYmFiaWxpdHlcblxuam1jU2VsZWN0ZWRDb25kaXRpb25hbCA9IGptY0NvbmRpdGlvbmFsWC5maW5kKHJvdyA9PlxuICByb3cueCA9PT0gam1jQ29udHJvbHMueFxuKS5wcm9iYWJpbGl0eVxuXG5qbWNNYXhpbXVtSm9pbnQgPSBkMy5tYXgoam1jSm9pbnQsIGNlbGwgPT4gY2VsbC5wcm9iYWJpbGl0eSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMTAiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJqbWNKb2ludFBsb3QgPSBQbG90LnBsb3Qoe1xuICB3aWR0aDogTWF0aC5taW4oNTAwLCBNYXRoLm1heCgzMjAsIHdpZHRoIC8gMiAtIDE4KSksXG4gIGhlaWdodDogMzQwLFxuICBtYXJnaW5MZWZ0OiA1NCxcbiAgc3R5bGU6IHtcbiAgICBiYWNrZ3JvdW5kOiBcInZhcigtLXBsb3QtYmcpXCIsXG4gICAgY29sb3I6IFwidmFyKC0tcGxvdC1mZylcIixcbiAgICBmb250RmFtaWx5OiBib2R5Rm9udCxcbiAgICBmb250U2l6ZTogMTNcbiAgfSxcbiAgeDoge2xhYmVsOiBcIlhcIiwgZG9tYWluOiBbMC41LCA1LjVdLCB0aWNrczogNX0sXG4gIHk6IHtsYWJlbDogXCJZXCIsIGRvbWFpbjogWzAuNSwgNS41XSwgdGlja3M6IDV9LFxuICBtYXJrczogW1xuICAgIFBsb3QucmVjdChqbWNKb2ludCwge1xuICAgICAgeDE6IGNlbGwgPT4gY2VsbC54IC0gMC40NyxcbiAgICAgIHgyOiBjZWxsID0+IGNlbGwueCArIDAuNDcsXG4gICAgICB5MTogY2VsbCA9PiBjZWxsLnkgLSAwLjQ3LFxuICAgICAgeTI6IGNlbGwgPT4gY2VsbC55ICsgMC40NyxcbiAgICAgIGZpbGw6IFwidmFyKC0tcGxvdC1zZXJpZXMtMSlcIixcbiAgICAgIGZpbGxPcGFjaXR5OiBjZWxsID0+IDAuMSArIDAuODIgKiBjZWxsLnByb2JhYmlsaXR5IC8gam1jTWF4aW11bUpvaW50LFxuICAgICAgc3Ryb2tlOiBcInZhcigtLXBsb3QtZ3JpZClcIixcbiAgICAgIHN0cm9rZVdpZHRoOiAwLjgsXG4gICAgICB0aXRsZTogY2VsbCA9PlxuICAgICAgICBgcChYPSR7Y2VsbC54fSwgWT0ke2NlbGwueX0pID0gJHtjZWxsLnByb2JhYmlsaXR5LnRvRml4ZWQoMyl9YFxuICAgIH0pLFxuICAgIFBsb3QucmVjdChbe3gxOiAwLjUyLCB4MjogNS40OCwgeTE6IGptY0NvbnRyb2xzLnkgLSAwLjQ3LCB5Mjogam1jQ29udHJvbHMueSArIDAuNDd9XSwge1xuICAgICAgeDE6IFwieDFcIixcbiAgICAgIHgyOiBcIngyXCIsXG4gICAgICB5MTogXCJ5MVwiLFxuICAgICAgeTI6IFwieTJcIixcbiAgICAgIGZpbGw6IFwibm9uZVwiLFxuICAgICAgc3Ryb2tlOiBcInZhcigtLXBsb3Qtc2VyaWVzLTQpXCIsXG4gICAgICBzdHJva2VXaWR0aDogM1xuICAgIH0pLFxuICAgIFBsb3QucmVjdChbe1xuICAgICAgeDE6IGptY0NvbnRyb2xzLnggLSAwLjQyLFxuICAgICAgeDI6IGptY0NvbnRyb2xzLnggKyAwLjQyLFxuICAgICAgeTE6IGptY0NvbnRyb2xzLnkgLSAwLjQyLFxuICAgICAgeTI6IGptY0NvbnRyb2xzLnkgKyAwLjQyXG4gICAgfV0sIHtcbiAgICAgIHgxOiBcIngxXCIsXG4gICAgICB4MjogXCJ4MlwiLFxuICAgICAgeTE6IFwieTFcIixcbiAgICAgIHkyOiBcInkyXCIsXG4gICAgICBmaWxsOiBcIm5vbmVcIixcbiAgICAgIHN0cm9rZTogXCJ2YXIoLS1wbG90LXNlcmllcy0yKVwiLFxuICAgICAgc3Ryb2tlV2lkdGg6IDMuMlxuICAgIH0pLFxuICAgIFBsb3QudGV4dChqbWNKb2ludCwge1xuICAgICAgeDogXCJ4XCIsXG4gICAgICB5OiBcInlcIixcbiAgICAgIHRleHQ6IGNlbGwgPT4gYCR7KDEwMCAqIGNlbGwucHJvYmFiaWxpdHkpLnRvRml4ZWQoMSl9JWAsXG4gICAgICBmaWxsOiBcInZhcigtLXBsb3QtZmcpXCIsXG4gICAgICBmb250U2l6ZTogMTIsXG4gICAgICBmb250V2VpZ2h0OiA2MDBcbiAgICB9KVxuICBdXG59KVxuXG5qbWNDb21wYXJpc29uUGxvdCA9IFBsb3QucGxvdCh7XG4gIHdpZHRoOiBNYXRoLm1pbig1MDAsIE1hdGgubWF4KDMyMCwgd2lkdGggLyAyIC0gMTgpKSxcbiAgaGVpZ2h0OiAzNDAsXG4gIG1hcmdpbkxlZnQ6IDU4LFxuICBzdHlsZToge1xuICAgIGJhY2tncm91bmQ6IFwidmFyKC0tcGxvdC1iZylcIixcbiAgICBjb2xvcjogXCJ2YXIoLS1wbG90LWZnKVwiLFxuICAgIGZvbnRGYW1pbHk6IGJvZHlGb250LFxuICAgIGZvbnRTaXplOiAxM1xuICB9LFxuICB4OiB7bGFiZWw6IFwiWFwiLCBkb21haW46IFswLjUsIDUuNV0sIHRpY2tzOiA1fSxcbiAgeToge2xhYmVsOiBcIlByb2JhYmlsaXR5XCIsIGRvbWFpbjogWzAsIDFdLCBncmlkOiB0cnVlLCB0aWNrRm9ybWF0OiB2YWx1ZSA9PiBgJHtNYXRoLnJvdW5kKDEwMCAqIHZhbHVlKX0lYH0sXG4gIG1hcmtzOiBbXG4gICAgUGxvdC5yZWN0WShqbWNNYXJnaW5hbFgsIHtcbiAgICAgIHgxOiByb3cgPT4gcm93LnggLSAwLjM4LFxuICAgICAgeDI6IHJvdyA9PiByb3cueCArIDAuMzgsXG4gICAgICB5OiBcInByb2JhYmlsaXR5XCIsXG4gICAgICBmaWxsOiBcInZhcigtLXBsb3QtZmlsbC0zKVwiLFxuICAgICAgc3Ryb2tlOiBcInZhcigtLXBsb3Qtc2VyaWVzLTMpXCIsXG4gICAgICBzdHJva2VXaWR0aDogMVxuICAgIH0pLFxuICAgIFBsb3QucmVjdFkoam1jQ29uZGl0aW9uYWxYLCB7XG4gICAgICB4MTogcm93ID0+IHJvdy54IC0gMC4yLFxuICAgICAgeDI6IHJvdyA9PiByb3cueCArIDAuMixcbiAgICAgIHk6IFwicHJvYmFiaWxpdHlcIixcbiAgICAgIGZpbGw6IFwidmFyKC0tcGxvdC1zZXJpZXMtNClcIixcbiAgICAgIGZpbGxPcGFjaXR5OiAwLjgyLFxuICAgICAgdGl0bGU6IHJvdyA9PlxuICAgICAgICBgcChYPSR7cm93Lnh9IHwgWT0ke2ptY0NvbnRyb2xzLnl9KSA9ICR7cm93LnByb2JhYmlsaXR5LnRvRml4ZWQoMyl9YFxuICAgIH0pLFxuICAgIFBsb3QuZG90KFtqbWNDb25kaXRpb25hbFguZmluZChyb3cgPT4gcm93LnggPT09IGptY0NvbnRyb2xzLngpXSwge1xuICAgICAgeDogXCJ4XCIsXG4gICAgICB5OiBcInByb2JhYmlsaXR5XCIsXG4gICAgICByOiA2LFxuICAgICAgZmlsbDogXCJ2YXIoLS1wbG90LXNlcmllcy0yKVwiLFxuICAgICAgc3Ryb2tlOiBcInZhcigtLXBsb3Qtb24tYWNjZW50KVwiLFxuICAgICAgc3Ryb2tlV2lkdGg6IDEuMlxuICAgIH0pLFxuICAgIFBsb3QucnVsZVkoWzBdLCB7c3Ryb2tlOiBcInZhcigtLXBsb3QtcmVmZXJlbmNlKVwifSlcbiAgXVxufSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMTEiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJqbWNSZWFkb3V0ID0gbWRgJHt0ZXhgcF97WCxZfSgke2ptY0NvbnRyb2xzLnh9LCR7am1jQ29udHJvbHMueX0pXG4gID0ke2ptY1NlbGVjdGVkSm9pbnQudG9GaXhlZCgzKX07XFxxcXVhZFxuICBwX1koJHtqbWNDb250cm9scy55fSk9JHtqbWNTZWxlY3RlZFlQcm9iYWJpbGl0eS50b0ZpeGVkKDMpfTtcXHFxdWFkXG4gIHBfe1hcXG1pZCBZfSgke2ptY0NvbnRyb2xzLnh9XFxtaWQke2ptY0NvbnRyb2xzLnl9KVxuICA9XFxmcmFjeyR7am1jU2VsZWN0ZWRKb2ludC50b0ZpeGVkKDMpfX17JHtqbWNTZWxlY3RlZFlQcm9iYWJpbGl0eS50b0ZpeGVkKDMpfX1cbiAgPSR7am1jU2VsZWN0ZWRDb25kaXRpb25hbC50b0ZpeGVkKDMpfWB9YFxuXG5qbWNDb25jbHVzaW9uID0gTWF0aC5hYnMoam1jQ29udHJvbHMuYXNzb2NpYXRpb24pIDwgMC4wMVxuICA/IGh0bWxgQXQgemVybyBhc3NvY2lhdGlvbiBldmVyeSByb3cgaGFzIHRoZSBzYW1lIHNoYXBlLCBzbyAke3RleGBwX3tYXFxtaWQgWX0oeFxcbWlkIHkpPXBfWCh4KWB9OiBjb25kaXRpb25pbmcgcHJvdmlkZXMgbm8gbmV3IGluZm9ybWF0aW9uLmBcbiAgOiBodG1sYFRoZSBoaWdobGlnaHRlZCByb3cgaXMgdGhlIGpvaW50IGRpc3RyaWJ1dGlvbiByZXN0cmljdGVkIHRvICR7dGV4YFk9JHtqbWNDb250cm9scy55fWB9LiBEaXZpZGluZyB0aGF0IHJvdyBieSAke3RleGBwX1koJHtqbWNDb250cm9scy55fSlgfSByZXNjYWxlcyBpdCB0byBzdW0gdG8gb25lIGFuZCBwcm9kdWNlcyB0aGUgY29uZGl0aW9uYWwgZGlzdHJpYnV0aW9uLmBcblxuaHRtbGA8ZGl2IGNsYXNzPVwiam1jLWZpZ3VyZS1zaGVsbCBvanMtZmlndXJlLXNoZWxsXCI+XG4gIDxkaXYgY2xhc3M9XCJqbWMtcGxvdHMgb2pzLXBsb3QtZ3JpZFwiPlxuICAgIDxkaXYgY2xhc3M9XCJqbWMtcGxvdC1wYW5lbCBvanMtcGxvdC1wYW5lbFwiPlxuICAgICAgPHN0cm9uZz5Kb2ludCBQTUYgJHt0ZXhgcF97WCxZfSh4LHkpYH08L3N0cm9uZz5cbiAgICAgICR7am1jSm9pbnRQbG90fVxuICAgIDwvZGl2PlxuICAgIDxkaXYgY2xhc3M9XCJqbWMtcGxvdC1wYW5lbCBvanMtcGxvdC1wYW5lbFwiPlxuICAgICAgPHN0cm9uZz5NYXJnaW5hbCAke3RleGBwX1goeClgfSB2ZXJzdXMgY29uZGl0aW9uYWwgJHt0ZXhgcF97WFxcbWlkIFl9KHhcXG1pZCAke2ptY0NvbnRyb2xzLnl9KWB9PC9zdHJvbmc+XG4gICAgICAke2ptY0NvbXBhcmlzb25QbG90fVxuICAgIDwvZGl2PlxuICA8L2Rpdj5cbiAgPGRpdiBjbGFzcz1cImptYy1sZWdlbmRcIiBhcmlhLWxhYmVsPVwiUGxvdCBsZWdlbmRcIj5cbiAgICA8c3Bhbj48aSBjbGFzcz1cImptYy1qb2ludC1yb3dcIj48L2k+IFNlbGVjdGVkIGpvaW50IHJvdyAke3RleGBZPSR7am1jQ29udHJvbHMueX1gfTwvc3Bhbj5cbiAgICA8c3Bhbj48aSBjbGFzcz1cImptYy1tYXJnaW5hbFwiPjwvaT4gTWFyZ2luYWwgJHt0ZXhgcF9YKHgpYH08L3NwYW4+XG4gICAgPHNwYW4+PGkgY2xhc3M9XCJqbWMtY29uZGl0aW9uYWxcIj48L2k+IENvbmRpdGlvbmFsICR7dGV4YHBfe1hcXG1pZCBZfSh4XFxtaWQgJHtqbWNDb250cm9scy55fSlgfTwvc3Bhbj5cbiAgICA8c3Bhbj48aSBjbGFzcz1cImptYy1jZWxsXCI+PC9pPiBJbnNwZWN0ZWQgY2VsbDwvc3Bhbj5cbiAgPC9kaXY+XG4gIDxkaXYgY2xhc3M9XCJqbWMtcmVhZG91dFwiIHJvbGU9XCJzdGF0dXNcIiBhcmlhLWxpdmU9XCJwb2xpdGVcIj4ke2ptY1JlYWRvdXR9PC9kaXY+XG48L2Rpdj5cblxuPHN0eWxlPlxuICAuam1jLWxlZ2VuZCB7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LXdyYXA6IHdyYXA7XG4gICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gICAgZ2FwOiAuNTVyZW0gMS4xcmVtO1xuICAgIG1hcmdpbjogLjY1cmVtIDA7XG4gICAgZm9udC1zaXplOiAuODhyZW07XG4gIH1cbiAgLmptYy1sZWdlbmQgPiBzcGFuIHsgZGlzcGxheTogaW5saW5lLWZsZXg7IGFsaWduLWl0ZW1zOiBjZW50ZXI7IGdhcDogLjRyZW07IH1cbiAgLmptYy1qb2ludC1yb3cgeyB3aWR0aDogMXJlbTsgaGVpZ2h0OiAuNzJyZW07IGJvcmRlcjogMnB4IHNvbGlkIHZhcigtLXBsb3Qtc2VyaWVzLTQpOyBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7IH1cbiAgLmptYy1tYXJnaW5hbCB7IHdpZHRoOiAxcmVtOyBoZWlnaHQ6IC43MnJlbTsgYmFja2dyb3VuZDogdmFyKC0tcGxvdC1maWxsLTMpOyBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1wbG90LXNlcmllcy0zKTsgZGlzcGxheTogaW5saW5lLWJsb2NrOyB9XG4gIC5qbWMtY29uZGl0aW9uYWwgeyB3aWR0aDogLjU1cmVtOyBoZWlnaHQ6IC43MnJlbTsgYmFja2dyb3VuZDogdmFyKC0tcGxvdC1zZXJpZXMtNCk7IGRpc3BsYXk6IGlubGluZS1ibG9jazsgfVxuICAuam1jLWNlbGwgeyB3aWR0aDogLjhyZW07IGhlaWdodDogLjhyZW07IGJvcmRlcjogMnB4IHNvbGlkIHZhcigtLXBsb3Qtc2VyaWVzLTIpOyBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7IH1cbiAgLmptYy1yZWFkb3V0IHtcbiAgICBtYXJnaW46IC42NXJlbSAwIDA7XG4gICAgdGV4dC1hbGlnbjogY2VudGVyO1xuICAgIGZvbnQtc2l6ZTogLjlyZW07XG4gIH1cbiAgLmptYy1yZWFkb3V0ID4gcCB7IG1hcmdpbjogMDsgfVxuICAuam1jLW1lc3NhZ2Uge1xuICAgIG1hcmdpbjogLjY1cmVtIDAgMDtcbiAgICBwYWRkaW5nOiAuNjVyZW0gLjhyZW07XG4gICAgYm9yZGVyLWxlZnQ6IC4yNXJlbSBzb2xpZCB2YXIoLS1wbG90LXNlcmllcy0xKTtcbiAgICBiYWNrZ3JvdW5kOiB2YXIoLS1wbG90LWZpbGwtMSk7XG4gIH1cbjwvc3R5bGU+YFxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0xMiIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Ii8vIEtlZXAgdGhlIGNvbnRyb2xzIGluIGEgc3RhYmxlIG91dHB1dCBjZWxsIGJlbmVhdGggdGhlIHJlYWN0aXZlIGZpZ3VyZS5cbnZpZXdvZiBqbWNDb250cm9scyA9IHtcbiAgY29uc3QgZGVwZW5kZW5jZUZvcm0gPSBJbnB1dHMuZm9ybSh7XG4gICAgYXNzb2NpYXRpb246IElucHV0cy5yYW5nZShbLTEsIDFdLCB7XG4gICAgICB2YWx1ZTogMC43LFxuICAgICAgc3RlcDogMC4xLFxuICAgICAgbGFiZWw6IFwiQXNzb2NpYXRpb25cIlxuICAgIH0pXG4gIH0sIHtzdWJtaXQ6IGZhbHNlfSk7XG5cbiAgY29uc3Qgc2VsZWN0aW9uRm9ybSA9IElucHV0cy5mb3JtKHtcbiAgICB5OiBJbnB1dHMucmFuZ2UoWzEsIDVdLCB7XG4gICAgICB2YWx1ZTogNCxcbiAgICAgIHN0ZXA6IDEsXG4gICAgICBsYWJlbDogbWRgQ29uZGl0aW9uIG9uICR7dGV4YFk9eWB9YFxuICAgIH0pLFxuICAgIHg6IElucHV0cy5yYW5nZShbMSwgNV0sIHtcbiAgICAgIHZhbHVlOiA0LFxuICAgICAgc3RlcDogMSxcbiAgICAgIGxhYmVsOiBtZGBJbnNwZWN0ICR7dGV4YFg9eGB9YFxuICAgIH0pXG4gIH0sIHtzdWJtaXQ6IGZhbHNlfSk7XG5cbiAgY29uc3Qgcm9vdCA9IGh0bWxgPGRpdiBjbGFzcz1cImNvbnRyb2xzLXdyYXBcIj5cbiAgICA8ZGV0YWlscyBjbGFzcz1cImNvbnRyb2xzLXJvb3RcIiBvcGVuPlxuICAgICAgPHN1bW1hcnk+RGlzdHJpYnV0aW9uIGNvbnRyb2xzPC9zdW1tYXJ5PlxuICAgICAgPGRpdiBjbGFzcz1cImNvbnRyb2xzLWdyaWRcIj5cbiAgICAgICAgPGRpdiBjbGFzcz1cImNvbnRyb2xzLWNvbFwiPjxoND5EZXBlbmRlbmNlPC9oND48L2Rpdj5cbiAgICAgICAgPGRpdiBjbGFzcz1cImNvbnRyb2xzLWNvbFwiPjxoND5Db25kaXRpb24gJmFtcDsgaW5zcGVjdDwvaDQ+PC9kaXY+XG4gICAgICA8L2Rpdj5cbiAgICA8L2RldGFpbHM+XG4gIDwvZGl2PmA7XG5cbiAgY29uc3QgY29sdW1ucyA9IHJvb3QucXVlcnlTZWxlY3RvckFsbChcIi5jb250cm9scy1jb2xcIik7XG4gIGNvbHVtbnNbMF0uYXBwZW5kKGRlcGVuZGVuY2VGb3JtKTtcbiAgY29sdW1uc1sxXS5hcHBlbmQoc2VsZWN0aW9uRm9ybSk7XG5cbiAgT2JqZWN0LmRlZmluZVByb3BlcnR5KHJvb3QsIFwidmFsdWVcIiwge1xuICAgIGdldDogKCkgPT4gKHsuLi5kZXBlbmRlbmNlRm9ybS52YWx1ZSwgLi4uc2VsZWN0aW9uRm9ybS52YWx1ZX0pXG4gIH0pO1xuXG4gIHJldHVybiByb290O1xufVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0xMyIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Imh0bWxgPHAgY2xhc3M9XCJqbWMtbWVzc2FnZVwiPiR7am1jQ29uY2x1c2lvbn08L3A+YFxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0xNCIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImNvdlNhbXBsZSA9IHtcbiAgY29uc3QgcnVuID0gTnVtYmVyKGNvdkNvbnRyb2xzLnJ1biA/PyAwKTtcbiAgY29uc3Qgcm5nID0gZDMucmFuZG9tTGNnKCgwLjI3MSArIDAuMTkzICogcnVuKSAlIDEgfHwgMC4yNzEpO1xuICBjb25zdCBzdGFuZGFyZE5vcm1hbCA9IGQzLnJhbmRvbU5vcm1hbC5zb3VyY2Uocm5nKSgwLCAxKTtcbiAgY29uc3QgcmVzaWR1YWxTY2FsZSA9IE1hdGguc3FydChNYXRoLm1heCgwLCAxIC0gY292Q29udHJvbHMucmhvICoqIDIpKTtcblxuICByZXR1cm4gZDMucmFuZ2UoY292Q29udHJvbHMubikubWFwKGluZGV4ID0+IHtcbiAgICBjb25zdCB4ID0gc3RhbmRhcmROb3JtYWwoKTtcbiAgICBjb25zdCByZXNpZHVhbCA9IHN0YW5kYXJkTm9ybWFsKCk7XG4gICAgcmV0dXJuIHtcbiAgICAgIGluZGV4OiBpbmRleCArIDEsXG4gICAgICB4LFxuICAgICAgeTogY292Q29udHJvbHMucmhvICogeCArIHJlc2lkdWFsU2NhbGUgKiByZXNpZHVhbFxuICAgIH07XG4gIH0pO1xufVxuXG5jb3ZYTWVhbiA9IGQzLm1lYW4oY292U2FtcGxlLCBwb2ludCA9PiBwb2ludC54KVxuY292WU1lYW4gPSBkMy5tZWFuKGNvdlNhbXBsZSwgcG9pbnQgPT4gcG9pbnQueSlcblxuY292Q29udHJpYnV0aW9ucyA9IGNvdlNhbXBsZS5tYXAocG9pbnQgPT4gKHtcbiAgLi4ucG9pbnQsXG4gIGNvbnRyaWJ1dGlvbjogKHBvaW50LnggLSBjb3ZYTWVhbikgKiAocG9pbnQueSAtIGNvdllNZWFuKVxufSkpXG5cbmNvdkVtcGlyaWNhbCA9IGQzLm1lYW4oY292Q29udHJpYnV0aW9ucywgcG9pbnQgPT4gcG9pbnQuY29udHJpYnV0aW9uKVxuY292WFNkID0gTWF0aC5zcXJ0KGQzLm1lYW4oY292U2FtcGxlLCBwb2ludCA9PiAocG9pbnQueCAtIGNvdlhNZWFuKSAqKiAyKSlcbmNvdllTZCA9IE1hdGguc3FydChkMy5tZWFuKGNvdlNhbXBsZSwgcG9pbnQgPT4gKHBvaW50LnkgLSBjb3ZZTWVhbikgKiogMikpXG5jb3ZDb3JyZWxhdGlvbiA9IGNvdkVtcGlyaWNhbCAvIE1hdGgubWF4KDFlLTEyLCBjb3ZYU2QgKiBjb3ZZU2QpXG5cbmNvdkRvbWFpbiA9IFstNCwgNF1cbmNvdlF1YWRyYW50cyA9IFtcbiAge3gxOiBjb3ZEb21haW5bMF0sIHgyOiBjb3ZYTWVhbiwgeTE6IGNvdkRvbWFpblswXSwgeTI6IGNvdllNZWFuLCBzaWduOiBcInBvc2l0aXZlXCJ9LFxuICB7eDE6IGNvdlhNZWFuLCB4MjogY292RG9tYWluWzFdLCB5MTogY292WU1lYW4sIHkyOiBjb3ZEb21haW5bMV0sIHNpZ246IFwicG9zaXRpdmVcIn0sXG4gIHt4MTogY292RG9tYWluWzBdLCB4MjogY292WE1lYW4sIHkxOiBjb3ZZTWVhbiwgeTI6IGNvdkRvbWFpblsxXSwgc2lnbjogXCJuZWdhdGl2ZVwifSxcbiAge3gxOiBjb3ZYTWVhbiwgeDI6IGNvdkRvbWFpblsxXSwgeTE6IGNvdkRvbWFpblswXSwgeTI6IGNvdllNZWFuLCBzaWduOiBcIm5lZ2F0aXZlXCJ9XG5dXG5cbmNvdkNvbnRyaWJ1dGlvbkxpbWl0ID0gTWF0aC5tYXgoXG4gIDAuNSxcbiAgZDMubWF4KGNvdkNvbnRyaWJ1dGlvbnMsIHBvaW50ID0+IE1hdGguYWJzKHBvaW50LmNvbnRyaWJ1dGlvbikpIHx8IDAuNVxuKVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0xNSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImNvdlNjYXR0ZXJQbG90ID0gUGxvdC5wbG90KHtcbiAgd2lkdGg6IE1hdGgubWluKDUyMCwgTWF0aC5tYXgoMzIwLCB3aWR0aCAvIDIgLSAxOCkpLFxuICBoZWlnaHQ6IDMzMCxcbiAgbWFyZ2luTGVmdDogNTIsXG4gIHN0eWxlOiB7XG4gICAgYmFja2dyb3VuZDogXCJ2YXIoLS1wbG90LWJnKVwiLFxuICAgIGNvbG9yOiBcInZhcigtLXBsb3QtZmcpXCIsXG4gICAgZm9udEZhbWlseTogYm9keUZvbnQsXG4gICAgZm9udFNpemU6IDEzXG4gIH0sXG4gIHg6IHtsYWJlbDogXCJYXCIsIGRvbWFpbjogY292RG9tYWluLCBncmlkOiB0cnVlfSxcbiAgeToge2xhYmVsOiBcIllcIiwgZG9tYWluOiBjb3ZEb21haW4sIGdyaWQ6IHRydWV9LFxuICBtYXJrczogW1xuICAgIFBsb3QucmVjdChjb3ZRdWFkcmFudHMsIHtcbiAgICAgIHgxOiBcIngxXCIsXG4gICAgICB4MjogXCJ4MlwiLFxuICAgICAgeTE6IFwieTFcIixcbiAgICAgIHkyOiBcInkyXCIsXG4gICAgICBmaWxsOiBxdWFkcmFudCA9PiBxdWFkcmFudC5zaWduID09PSBcInBvc2l0aXZlXCIgP1xuICAgICAgICBcInZhcigtLXBsb3QtZmlsbC0xKVwiIDogXCJ2YXIoLS1wbG90LWZpbGwtNClcIlxuICAgIH0pLFxuICAgIFBsb3QucnVsZVgoW2NvdlhNZWFuXSwge1xuICAgICAgc3Ryb2tlOiBcInZhcigtLXBsb3QtcmVmZXJlbmNlKVwiLFxuICAgICAgc3Ryb2tlV2lkdGg6IDEuOCxcbiAgICAgIHN0cm9rZURhc2hhcnJheTogXCI1LDRcIlxuICAgIH0pLFxuICAgIFBsb3QucnVsZVkoW2NvdllNZWFuXSwge1xuICAgICAgc3Ryb2tlOiBcInZhcigtLXBsb3QtcmVmZXJlbmNlKVwiLFxuICAgICAgc3Ryb2tlV2lkdGg6IDEuOCxcbiAgICAgIHN0cm9rZURhc2hhcnJheTogXCI1LDRcIlxuICAgIH0pLFxuICAgIFBsb3QuZG90KGNvdkNvbnRyaWJ1dGlvbnMsIHtcbiAgICAgIHg6IFwieFwiLFxuICAgICAgeTogXCJ5XCIsXG4gICAgICByOiBwb2ludCA9PiAyLjggKyAyLjIgKiBNYXRoLm1pbigxLCBNYXRoLmFicyhwb2ludC5jb250cmlidXRpb24pIC8gMyksXG4gICAgICBmaWxsOiBwb2ludCA9PiBwb2ludC5jb250cmlidXRpb24gPj0gMCA/XG4gICAgICAgIFwidmFyKC0tcGxvdC1zZXJpZXMtMSlcIiA6IFwidmFyKC0tcGxvdC1zZXJpZXMtNClcIixcbiAgICAgIGZpbGxPcGFjaXR5OiAwLjgyLFxuICAgICAgc3Ryb2tlOiBcInZhcigtLXBsb3Qtb24tYWNjZW50KVwiLFxuICAgICAgc3Ryb2tlV2lkdGg6IDAuNTUsXG4gICAgICB0aXRsZTogcG9pbnQgPT5cbiAgICAgICAgYCh4LXjMhCkoeS15zIQpID0gJHtwb2ludC5jb250cmlidXRpb24udG9GaXhlZCgzKX1gXG4gICAgfSksXG4gICAgUGxvdC50ZXh0KFt7eDogY292WE1lYW4sIHk6IGNvdkRvbWFpblsxXSAtIDAuMiwgbGFiZWw6IFwieMyEXCJ9XSwge1xuICAgICAgeDogXCJ4XCIsXG4gICAgICB5OiBcInlcIixcbiAgICAgIHRleHQ6IFwibGFiZWxcIixcbiAgICAgIGR4OiA3LFxuICAgICAgdGV4dEFuY2hvcjogXCJzdGFydFwiLFxuICAgICAgZmlsbDogXCJ2YXIoLS1wbG90LWZnKVwiLFxuICAgICAgZm9udFNpemU6IDEyXG4gICAgfSksXG4gICAgUGxvdC50ZXh0KFt7eDogY292RG9tYWluWzFdIC0gMC4yLCB5OiBjb3ZZTWVhbiwgbGFiZWw6IFwiecyEXCJ9XSwge1xuICAgICAgeDogXCJ4XCIsXG4gICAgICB5OiBcInlcIixcbiAgICAgIHRleHQ6IFwibGFiZWxcIixcbiAgICAgIGR5OiAtNyxcbiAgICAgIHRleHRBbmNob3I6IFwiZW5kXCIsXG4gICAgICBmaWxsOiBcInZhcigtLXBsb3QtZmcpXCIsXG4gICAgICBmb250U2l6ZTogMTJcbiAgICB9KVxuICBdXG59KVxuXG5jb3ZDb250cmlidXRpb25QbG90ID0gUGxvdC5wbG90KHtcbiAgd2lkdGg6IE1hdGgubWluKDUyMCwgTWF0aC5tYXgoMzIwLCB3aWR0aCAvIDIgLSAxOCkpLFxuICBoZWlnaHQ6IDMzMCxcbiAgbWFyZ2luTGVmdDogNjIsXG4gIHN0eWxlOiB7XG4gICAgYmFja2dyb3VuZDogXCJ2YXIoLS1wbG90LWJnKVwiLFxuICAgIGNvbG9yOiBcInZhcigtLXBsb3QtZmcpXCIsXG4gICAgZm9udEZhbWlseTogYm9keUZvbnQsXG4gICAgZm9udFNpemU6IDEzXG4gIH0sXG4gIHg6IHtsYWJlbDogXCJPYnNlcnZhdGlvblwiLCBkb21haW46IFswLjUsIGNvdkNvbnRyb2xzLm4gKyAwLjVdLCBheGlzOiBudWxsfSxcbiAgeToge1xuICAgIGxhYmVsOiBcIkNlbnRyZWQgcHJvZHVjdFwiLFxuICAgIGRvbWFpbjogWy0xLjEyICogY292Q29udHJpYnV0aW9uTGltaXQsIDEuMTIgKiBjb3ZDb250cmlidXRpb25MaW1pdF0sXG4gICAgZ3JpZDogdHJ1ZVxuICB9LFxuICBtYXJrczogW1xuICAgIFBsb3QucmVjdFkoY292Q29udHJpYnV0aW9ucywge1xuICAgICAgeDE6IHBvaW50ID0+IHBvaW50LmluZGV4IC0gMC40MyxcbiAgICAgIHgyOiBwb2ludCA9PiBwb2ludC5pbmRleCArIDAuNDMsXG4gICAgICB5MTogMCxcbiAgICAgIHkyOiBcImNvbnRyaWJ1dGlvblwiLFxuICAgICAgZmlsbDogcG9pbnQgPT4gcG9pbnQuY29udHJpYnV0aW9uID49IDAgP1xuICAgICAgICBcInZhcigtLXBsb3Qtc2VyaWVzLTEpXCIgOiBcInZhcigtLXBsb3Qtc2VyaWVzLTQpXCIsXG4gICAgICBmaWxsT3BhY2l0eTogMC43OCxcbiAgICAgIHRpdGxlOiBwb2ludCA9PlxuICAgICAgICBgT2JzZXJ2YXRpb24gJHtwb2ludC5pbmRleH06ICR7cG9pbnQuY29udHJpYnV0aW9uLnRvRml4ZWQoMyl9YFxuICAgIH0pLFxuICAgIFBsb3QucnVsZVkoWzBdLCB7c3Ryb2tlOiBcInZhcigtLXBsb3QtcmVmZXJlbmNlKVwifSksXG4gICAgUGxvdC5ydWxlWShbY292RW1waXJpY2FsXSwge1xuICAgICAgc3Ryb2tlOiBcInZhcigtLXBsb3Qtc2VyaWVzLTIpXCIsXG4gICAgICBzdHJva2VXaWR0aDogMi40LFxuICAgICAgc3Ryb2tlRGFzaGFycmF5OiBcIjYsNFwiXG4gICAgfSksXG4gICAgUGxvdC50ZXh0KFt7XG4gICAgICB4OiBjb3ZDb250cm9scy5uLFxuICAgICAgeTogY292RW1waXJpY2FsLFxuICAgICAgbGFiZWw6IFwibWVhbiBwcm9kdWN0XCJcbiAgICB9XSwge1xuICAgICAgeDogXCJ4XCIsXG4gICAgICB5OiBcInlcIixcbiAgICAgIHRleHQ6IFwibGFiZWxcIixcbiAgICAgIHRleHRBbmNob3I6IFwiZW5kXCIsXG4gICAgICBkeTogY292RW1waXJpY2FsID49IDAgPyAtOCA6IDE0LFxuICAgICAgZmlsbDogXCJ2YXIoLS1wbG90LXNlcmllcy0yKVwiLFxuICAgICAgZm9udFNpemU6IDEyXG4gICAgfSlcbiAgXVxufSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMTYiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJjb3ZSZWFkb3V0ID0gbWRgJHt0ZXhgXFx3aWRlaGF0e1xcb3BlcmF0b3JuYW1le0Nvdn19X24oWCxZKVxuICA9XFxmcmFjezF9e259XFxzdW1fe2k9MX1ee259KHhfaS1cXGJhciB4KSh5X2ktXFxiYXIgeSlcbiAgPSR7Y292RW1waXJpY2FsLnRvRml4ZWQoMyl9O1xccXF1YWRcbiAgcj0ke2NvdkNvcnJlbGF0aW9uLnRvRml4ZWQoMyl9YH1gXG5cbmh0bWxgPGRpdiBjbGFzcz1cImNvdi1maWd1cmUtc2hlbGwgb2pzLWZpZ3VyZS1zaGVsbFwiPlxuICA8ZGl2IGNsYXNzPVwiY292LXBsb3RzIG9qcy1wbG90LWdyaWRcIj5cbiAgICA8ZGl2IGNsYXNzPVwiY292LXBsb3QtcGFuZWwgb2pzLXBsb3QtcGFuZWxcIj5cbiAgICAgIDxzdHJvbmc+V2hpY2ggb2JzZXJ2YXRpb25zIGNvbnRyaWJ1dGUgcG9zaXRpdmVseSBvciBuZWdhdGl2ZWx5Pzwvc3Ryb25nPlxuICAgICAgJHtjb3ZTY2F0dGVyUGxvdH1cbiAgICA8L2Rpdj5cbiAgICA8ZGl2IGNsYXNzPVwiY292LXBsb3QtcGFuZWwgb2pzLXBsb3QtcGFuZWxcIj5cbiAgICAgIDxzdHJvbmc+Q2VudHJlZCBwcm9kdWN0cyB3aG9zZSBtZWFuIGlzIHRoZSBjb3ZhcmlhbmNlPC9zdHJvbmc+XG4gICAgICAke2NvdkNvbnRyaWJ1dGlvblBsb3R9XG4gICAgPC9kaXY+XG4gIDwvZGl2PlxuICA8ZGl2IGNsYXNzPVwiY292LWxlZ2VuZFwiIGFyaWEtbGFiZWw9XCJQbG90IGxlZ2VuZFwiPlxuICAgIDxzcGFuPjxpIGNsYXNzPVwiY292LXN3YXRjaCBjb3YtcG9zaXRpdmVcIj48L2k+IFBvc2l0aXZlIGNlbnRyZWQgcHJvZHVjdDwvc3Bhbj5cbiAgICA8c3Bhbj48aSBjbGFzcz1cImNvdi1zd2F0Y2ggY292LW5lZ2F0aXZlXCI+PC9pPiBOZWdhdGl2ZSBjZW50cmVkIHByb2R1Y3Q8L3NwYW4+XG4gICAgPHNwYW4+PGkgY2xhc3M9XCJjb3YtbGluZVwiPjwvaT4gTWVhbiBjZW50cmVkIHByb2R1Y3Q8L3NwYW4+XG4gICAgPHNwYW4+PGkgY2xhc3M9XCJjb3YtcmVmZXJlbmNlXCI+PC9pPiBTYW1wbGUgbWVhbnM8L3NwYW4+XG4gIDwvZGl2PlxuICA8ZGl2IGNsYXNzPVwiY292LXJlYWRvdXRcIiByb2xlPVwic3RhdHVzXCIgYXJpYS1saXZlPVwicG9saXRlXCI+JHtjb3ZSZWFkb3V0fTwvZGl2PlxuPC9kaXY+XG5cbjxzdHlsZT5cbiAgLmNvdi1sZWdlbmQge1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC13cmFwOiB3cmFwO1xuICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgIGdhcDogLjU1cmVtIDEuMXJlbTtcbiAgICBtYXJnaW46IC42NXJlbSAwO1xuICAgIGZvbnQtc2l6ZTogLjg4cmVtO1xuICB9XG4gIC5jb3YtbGVnZW5kID4gc3BhbiB7IGRpc3BsYXk6IGlubGluZS1mbGV4OyBhbGlnbi1pdGVtczogY2VudGVyOyBnYXA6IC40cmVtOyB9XG4gIC5jb3Ytc3dhdGNoIHsgd2lkdGg6IDFyZW07IGhlaWdodDogLjcycmVtOyBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7IH1cbiAgLmNvdi1wb3NpdGl2ZSB7IGJhY2tncm91bmQ6IHZhcigtLXBsb3Qtc2VyaWVzLTEpOyB9XG4gIC5jb3YtbmVnYXRpdmUgeyBiYWNrZ3JvdW5kOiB2YXIoLS1wbG90LXNlcmllcy00KTsgfVxuICAuY292LWxpbmUgeyB3aWR0aDogMS4zcmVtOyBib3JkZXItdG9wOiAycHggZGFzaGVkIHZhcigtLXBsb3Qtc2VyaWVzLTIpOyBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7IH1cbiAgLmNvdi1yZWZlcmVuY2UgeyB3aWR0aDogMS4zcmVtOyBib3JkZXItdG9wOiAycHggZGFzaGVkIHZhcigtLXBsb3QtcmVmZXJlbmNlKTsgZGlzcGxheTogaW5saW5lLWJsb2NrOyB9XG4gIC5jb3YtcmVhZG91dCB7XG4gICAgbWFyZ2luOiAuNjVyZW0gMCAwO1xuICAgIHRleHQtYWxpZ246IGNlbnRlcjtcbiAgICBmb250LXNpemU6IC45cmVtO1xuICB9XG4gIC5jb3YtcmVhZG91dCA+IHAgeyBtYXJnaW46IDA7IH1cbiAgLmNvdi1tZXNzYWdlIHtcbiAgICBtYXJnaW46IC42NXJlbSAwIDA7XG4gICAgcGFkZGluZzogLjY1cmVtIC44cmVtO1xuICAgIGJvcmRlci1sZWZ0OiAuMjVyZW0gc29saWQgdmFyKC0tcGxvdC1zZXJpZXMtMik7XG4gICAgYmFja2dyb3VuZDogdmFyKC0tcGxvdC1maWxsLTIpO1xuICB9XG48L3N0eWxlPmBcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMTciLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiIvLyBLZWVwIHRoZSBjb250cm9scyBtb3VudGVkIGJlbG93IHRoZSByZWFjdGl2ZSBwbG90cyBzbyBzbGlkZXJzIHJlbWFpbiBkcmFnZ2FibGUuXG52aWV3b2YgY292Q29udHJvbHMgPSB7XG4gIGNvbnN0IHJlbGF0aW9uc2hpcEZvcm0gPSBJbnB1dHMuZm9ybSh7XG4gICAgcmhvOiBJbnB1dHMucmFuZ2UoWy0wLjk1LCAwLjk1XSwge1xuICAgICAgdmFsdWU6IDAuNyxcbiAgICAgIHN0ZXA6IDAuMDUsXG4gICAgICBsYWJlbDogbWRgUG9wdWxhdGlvbiBjb3JyZWxhdGlvbiAke3RleGBcXHJob2B9YFxuICAgIH0pXG4gIH0sIHtzdWJtaXQ6IGZhbHNlfSk7XG5cbiAgY29uc3Qgc2FtcGxlRm9ybSA9IElucHV0cy5mb3JtKHtcbiAgICBuOiBJbnB1dHMucmFuZ2UoWzIwLCAyMDBdLCB7XG4gICAgICB2YWx1ZTogODAsXG4gICAgICBzdGVwOiAxMCxcbiAgICAgIGxhYmVsOiBtZGBTYW1wbGUgc2l6ZSAke3RleGBuYH1gXG4gICAgfSlcbiAgfSwge3N1Ym1pdDogZmFsc2V9KTtcblxuICBjb25zdCBkcmF3QnV0dG9uID0gSW5wdXRzLmJ1dHRvbihcIkRyYXcgYSBuZXcgc2FtcGxlXCIsIHtcbiAgICByZWR1Y2U6IHZhbHVlID0+ICh2YWx1ZSA/PyAwKSArIDFcbiAgfSk7XG4gIGRyYXdCdXR0b24uY2xhc3NMaXN0LmFkZChcImJ0bi1yZXNpbVwiKTtcblxuICBjb25zdCByb290ID0gaHRtbGA8ZGl2IGNsYXNzPVwiY29udHJvbHMtd3JhcFwiPlxuICAgIDxkZXRhaWxzIGNsYXNzPVwiY29udHJvbHMtcm9vdFwiIG9wZW4+XG4gICAgICA8c3VtbWFyeT5TaW11bGF0aW9uIGNvbnRyb2xzPC9zdW1tYXJ5PlxuICAgICAgPGRpdiBjbGFzcz1cImNvbnRyb2xzLWdyaWRcIj5cbiAgICAgICAgPGRpdiBjbGFzcz1cImNvbnRyb2xzLWNvbFwiPjxoND5SZWxhdGlvbnNoaXA8L2g0PjwvZGl2PlxuICAgICAgICA8ZGl2IGNsYXNzPVwiY29udHJvbHMtY29sXCI+PGg0PlNhbXBsZSAmYW1wOyBhY3Rpb25zPC9oND48L2Rpdj5cbiAgICAgIDwvZGl2PlxuICAgIDwvZGV0YWlscz5cbiAgPC9kaXY+YDtcblxuICBjb25zdCBjb2x1bW5zID0gcm9vdC5xdWVyeVNlbGVjdG9yQWxsKFwiLmNvbnRyb2xzLWNvbFwiKTtcbiAgY29sdW1uc1swXS5hcHBlbmQocmVsYXRpb25zaGlwRm9ybSk7XG4gIGNvbHVtbnNbMV0uYXBwZW5kKHNhbXBsZUZvcm0pO1xuICBjb25zdCBidXR0b25XcmFwID0gaHRtbGA8ZGl2IHN0eWxlPVwiZGlzcGxheTpmbGV4OyBqdXN0aWZ5LWNvbnRlbnQ6ZmxleC1zdGFydDsgbWFyZ2luLXRvcDo2cHg7XCI+PC9kaXY+YDtcbiAgYnV0dG9uV3JhcC5hcHBlbmQoZHJhd0J1dHRvbik7XG4gIGNvbHVtbnNbMV0uYXBwZW5kKGJ1dHRvbldyYXApO1xuXG4gIE9iamVjdC5kZWZpbmVQcm9wZXJ0eShyb290LCBcInZhbHVlXCIsIHtcbiAgICBnZXQ6ICgpID0+ICh7XG4gICAgICAuLi5yZWxhdGlvbnNoaXBGb3JtLnZhbHVlLFxuICAgICAgLi4uc2FtcGxlRm9ybS52YWx1ZSxcbiAgICAgIHJ1bjogZHJhd0J1dHRvbi52YWx1ZSA/PyAwXG4gICAgfSlcbiAgfSk7XG5cbiAgcmV0dXJuIHJvb3Q7XG59XG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTE4IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiaHRtbGA8cCBjbGFzcz1cImNvdi1tZXNzYWdlXCI+PHN0cm9uZz5SZWFkIHRoZSBxdWFkcmFudHM6PC9zdHJvbmc+IG9ic2VydmF0aW9ucyBhYm92ZSBib3RoIG1lYW5zIG9yIGJlbG93IGJvdGggbWVhbnMgY29udHJpYnV0ZSBwb3NpdGl2ZWx5LiBPYnNlcnZhdGlvbnMgb24gb3Bwb3NpdGUgc2lkZXMgY29udHJpYnV0ZSBuZWdhdGl2ZWx5LiBUaGVpciBiYWxhbmNlIGRldGVybWluZXMgdGhlIHNpZ24gYW5kIHNpemUgb2YgdGhlIGNvdmFyaWFuY2UuPC9wPmBcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgndmVubk9wJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2NvbnRyb2xzJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2NvbnRyb2xzMicpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdqbWNDb250cm9scycpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdjb3ZDb250cm9scycpIn1dfQ==

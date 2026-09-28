@@ -204,8 +204,8 @@ rightPlot = Plot.plot({
   return html`<div class="ojs-toolbar-grid">
     <div class="left">${viewof resample}</div>
       <div class="center" role="status" aria-live="polite">
-        ${md`${tex`\big[L(\underline{X}),\, U(\underline{X})\big] = \big[${ciZ.L.toFixed(2)},\; ${ciZ.U.toFixed(2)}\big]`}
-        This interval **${currentCoveredZ ? "covers" : "does not cover"}** the fixed true value ${tex`\mu=${controls.trueMu.toFixed(1)}`}.`}
+        ${tex`\big[L(\underline{X}),\, U(\underline{X})\big] = \big[${ciZ.L.toFixed(2)},\; ${ciZ.U.toFixed(2)}\big]`}
+        <p>This interval <strong>${currentCoveredZ ? "covers" : "does not cover"}</strong> the fixed true value ${tex`\mu=${controls.trueMu.toFixed(1)}`}.</p>
       </div>
     <div class="right">${viewof reset}</div>
   </div>
