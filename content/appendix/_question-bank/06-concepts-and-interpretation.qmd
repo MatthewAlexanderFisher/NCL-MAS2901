@@ -1,0 +1,451 @@
+::: {.callout-important .question appearance="minimal" data-tags="interpretation statistics estimator exponential" data-difficulty="0" #q-concepts-estimator-estimate}
+## Model, parameter, estimator, and estimate
+
+Waiting times $X_1,\ldots,X_4$ are modelled as i.i.d. Exponential random
+variables with unknown rate $\lambda>0$, so
+$$
+f(x\mid\lambda)=\lambda e^{-\lambda x},\qquad x>0,
+\qquad \mathrm{E}[X_i]=1/\lambda.
+$$
+The observed waiting times, in minutes, are $0.5$, $1$, $1.5$, and $3$.
+
+(a) Identify the parameter and its parameter space. What does i.i.d. assume?  
+(b) Calculate $\bar x$ and the observed value of the rate estimator
+$\hat\lambda=4/\sum_i X_i$. State the units of each.  
+(c) Which of $\bar X$, $4/\sum_i X_i$, and $\bar X-1/\lambda$ are statistics?
+Explain the distinction between an estimator and an estimate.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a)** The parameter is the rate $\lambda$, with parameter space $(0,\infty)$.
+The i.i.d. assumption says the waiting times are mutually independent and
+all have the same Exponential distribution, including the same rate.
+
+**(b)** The observed total is $6$ minutes, giving
+$$
+\bar x=\frac64=1.5\text{ minutes},\qquad
+\hat\lambda_{\mathrm{obs}}=\frac46=\frac23\text{ per minute}.
+$$
+The mean waiting time and the rate are different targets, with reciprocal units.
+
+**(c)** Both $\bar X$ and $4/\sum_i X_i$ are statistics: their values can be
+computed from the observations without knowing the parameter. The quantity
+$\bar X-1/\lambda$ is not a statistic because it depends on the unknown rate.
+An estimator is a statistic used to estimate a target; it is random before
+sampling. Its realised numerical value, such as $2/3$ per minute, is an estimate.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="interpretation estimator bias variance mse consistency normal" data-difficulty="1" #q-concepts-unbiased-consistent}
+## Unbiased and consistent are different properties
+
+Let $X_1,\ldots,X_n$ be i.i.d. $\mathcal N(\mu,\sigma^2)$, where $\sigma^2>0$.
+Consider two estimators of $\mu$:
+$$
+T_n=X_1,\qquad U_n=\bar X+\frac1n.
+$$
+
+(a) Find the bias and variance of each estimator.  
+(b) Show directly that $T_n$ is not consistent by considering
+$\mathrm{Pr}(|T_n-\mu|>\varepsilon)$ for a fixed $\varepsilon>0$.  
+(c) Use the sufficient condition based on bias and variance to show that
+$U_n$ is consistent. What do these examples show about unbiasedness?
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a)** For every $n$,
+$$
+\mathrm{Bias}(T_n)=0,\qquad \mathrm{Var}(T_n)=\sigma^2,
+$$
+whereas
+$$
+\mathrm{Bias}(U_n)=\frac1n,\qquad
+\mathrm{Var}(U_n)=\frac{\sigma^2}{n}.
+$$
+Adding a constant changes the mean but not the variance.
+
+**(b)** The distribution of $T_n$ does not change with $n$:
+$$
+\mathrm{Pr}(|T_n-\mu|>\varepsilon)
+=2\left[1-\Phi\!\left(\frac{\varepsilon}{\sigma}\right)\right]>0.
+$$
+This fixed positive probability cannot tend to zero, so $T_n$ is not
+consistent. It ignores every observation after the first. Merely failing a
+sufficient condition would not prove inconsistency; this calculation does.
+
+**(c)** Both the bias $1/n$ and variance $\sigma^2/n$ tend to zero, so $U_n$
+is consistent. Equivalently,
+$$
+\mathrm{MSE}(U_n)=\frac{\sigma^2}{n}+\frac1{n^2}\longrightarrow0.
+$$
+Thus an unbiased estimator need not be consistent, and an estimator can be
+biased at every finite sample size yet still be consistent. Unbiasedness
+concerns the mean at a given sample size; consistency concerns concentration
+around the target as the sample size grows.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="interpretation likelihood bernoulli bayes" data-difficulty="1" #q-concepts-likelihood-probability}
+## Likelihood is not a posterior probability
+
+Four conditionally independent Bernoulli trials produce the ordered outcomes
+$(1,1,1,0)$. The common success probability $\theta$ can take only the values
+$1/4$ and $3/4$.
+
+(a) Calculate the likelihood at each possible parameter value and their ratio.  
+(b) A student says: “The larger likelihood is the probability that
+$\theta=3/4$.” Explain the error.  
+(c) Now assign prior probabilities $\mathrm{Pr}(\theta=1/4)=0.8$ and
+$\mathrm{Pr}(\theta=3/4)=0.2$. Find the posterior probability of $\theta=3/4$.  
+(d) If only the total number of successes had been recorded, how would the
+likelihoods and the answer to part (c) change?
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a)** For this ordered sequence the likelihood is $L(\theta)=\theta^3(1-\theta)$:
+$$
+L(1/4)=\frac3{256},\qquad L(3/4)=\frac{27}{256},\qquad
+\frac{L(3/4)}{L(1/4)}=9.
+$$
+The observed sequence is nine times as probable under $\theta=3/4$ as under
+$\theta=1/4$.
+
+**(b)** Each likelihood is the probability of the observed data **given** a
+parameter value. It is not the probability of that parameter **given** the
+data. Likelihood values need not sum to one over parameter values. A Bayesian
+posterior requires a prior and normalisation.
+
+**(c)** Multiply by the prior weights and normalise:
+$$
+\mathrm{Pr}(\theta=3/4\mid\underline x)
+=\frac{(27/256)(0.2)}{(3/256)(0.8)+(27/256)(0.2)}
+=\frac9{13}\approx0.6923.
+$$
+Normalising the likelihoods alone would give $0.9$, which would correspond
+to equal prior probabilities, not the prior specified here.
+
+**(d)** The count has a $\mathrm{Binomial}(4,\theta)$ distribution. Both
+likelihoods acquire the same factor $\binom43=4$, becoming $3/64$ and $27/64$.
+That factor cancels from the ratio and from the posterior, so part (c) is
+unchanged. The probability of a count differs from that of one ordered sequence.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="interpretation confidence-interval hypothesis-test normal clt z-test t-test" data-difficulty="0" #q-concepts-choose-method}
+## Choosing a method from the assumptions
+
+In each scenario below, the observations form an i.i.d. sample and the target
+is the population mean $\mu$. For a confidence interval or a test of
+$H_0:\mu=\mu_0$, choose an appropriate method and state whether its calibration
+is exact or approximate. Give the statistic and reference distribution when
+available.
+
+(a) $n=12$ observations from a Normal population with known variance $\sigma^2$.  
+(b) $n=12$ observations from a Normal population with unknown variance.  
+(c) $n=200$ observations from a non-Normal population with finite, nonzero
+variance.  
+(d) $n=8$ observations from a strongly skewed population with unknown variance.
+Is an exact Normal-theory $t$ procedure justified by the information given?
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a)** Use an exact Normal $z$ procedure. Under $H_0$,
+$$
+Z=\frac{\bar X-\mu_0}{\sigma/\sqrt n}\sim\mathcal N(0,1).
+$$
+Normality of the observations makes this exact even for $n=12$.
+
+**(b)** Use an exact one-sample $t$ procedure. With the usual sample standard
+deviation $S$, under $H_0$,
+$$
+T=\frac{\bar X-\mu_0}{S/\sqrt n}\sim t_{11}.
+$$
+The degrees of freedom are $n-1$, and replacing $\sigma$ by $S$ introduces
+uncertainty that the $t$ distribution accounts for.
+
+**(c)** A CLT-based Normal procedure is a possible large-sample approximation:
+$$
+\frac{\bar X-\mu_0}{S/\sqrt n}\overset{\mathrm{approx.}}{\sim}\mathcal N(0,1)
+\quad\text{under }H_0.
+$$
+Its finite-sample accuracy depends on the population's shape, including its
+tails. A sample size of $200$ does not guarantee a good approximation for
+every finite-variance distribution.
+
+**(d)** No. An exact $t$ distribution relies on the Normal sampling model,
+and $n=8$ with strong skewness gives little support for a CLT approximation.
+More information about the population model or a different justified method
+is needed. Unknown variance alone does not make a $t$ procedure exact.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="interpretation confidence-interval credible-interval normal standard-error" data-difficulty="0" #q-concepts-interval-interpretation}
+## What a 95% interval does and does not say
+
+An i.i.d. Normal sample has known population standard deviation $\sigma=8$,
+sample size $n=64$, and observed mean $\bar x=15$. Use $z_{0.975}=1.96$.
+
+(a) Calculate a $95\%$ confidence interval for $\mu$.  
+(b) Explain what is correct or incorrect about each statement:
+
+1. “This method produces intervals containing the true mean in $95\%$ of
+   repeated samples under the model.”
+2. “There is now a $95\%$ frequentist probability that $\mu$ lies between
+   these two observed endpoints.”
+3. “About $95\%$ of individual observations lie in this interval.”
+
+(c) How would the interval's width change if the sample size increased to
+$256$, with the same known population standard deviation and confidence level?  
+(d) If a Bayesian analysis instead reported a $95\%$ credible interval, what
+probability statement would that support?
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a)** The standard error is $8/\sqrt{64}=1$, so the interval is
+$$
+15\pm1.96(1)=[13.04,16.96].
+$$
+
+**(b)** Statement 1 is the correct repeated-sampling interpretation (up to
+rounding of the Normal quantile). Before sampling, the endpoints are random.
+Statement 2 incorrectly assigns frequentist probability to a fixed parameter
+lying in a now fixed interval; the realised interval either contains $\mu$
+or it does not. Statement 3 confuses uncertainty about a mean with the spread
+of observations. Individual observations have standard deviation $8$, whereas
+the sample mean has standard error $1$.
+
+**(c)** Width is proportional to $1/\sqrt n$. Increasing $n$ by a factor of
+four halves the width from $3.92$ to $1.96$. It need not leave the centre
+unchanged, because a new sample may have a different mean.
+
+**(d)** For a credible interval $[l,u]$ one can write
+$$
+\mathrm{Pr}(l\le\mu\le u\mid\underline x)=0.95,
+$$
+with probability taken under the posterior distribution, conditional on the
+data and the chosen prior and sampling model. A frequentist confidence
+interval cannot be given that interpretation without a Bayesian analysis.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="interpretation hypothesis-test p-value z-test one-sided two-sided" data-difficulty="0" #q-concepts-p-values}
+## The alternative determines the p-value
+
+A test statistic for a Normal mean has an exact standard Normal distribution
+under $H_0:\mu=\mu_0$. Its observed value is $z_{\mathrm{obs}}=1.80$.
+You may use $\Phi(1.80)=0.9641$.
+
+(a) Calculate the $p$-value for the pre-specified alternative $H_1:\mu>\mu_0$.  
+(b) Calculate the $p$-value for the pre-specified alternative $H_1:\mu\ne\mu_0$.  
+(c) State the decision at the $5\%$ level in each case. Does either $p$-value
+give the probability that $H_0$ is true?  
+(d) Explain why choosing a one-sided alternative after seeing the sign of the
+observed statistic is problematic.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a)** For the right-sided alternative, larger values are more extreme:
+$$
+p=\mathrm{Pr}_{H_0}(Z\ge1.80)=1-0.9641=0.0359.
+$$
+
+**(b)** For the two-sided alternative, both tails count:
+$$
+p=\mathrm{Pr}_{H_0}(|Z|\ge1.80)=2(1-0.9641)=0.0718.
+$$
+
+**(c)** Reject $H_0$ for the right-sided test since $0.0359<0.05$. Fail to
+reject it for the two-sided test since $0.0718>0.05$. This latter decision
+does not prove $\mu=\mu_0$. Each $p$-value is a tail probability for a statistic
+**assuming the null model**, not a posterior probability of that model.
+
+**(d)** The rejection rule must be specified before inspecting the outcome.
+If we always choose the observed direction and use a $5\%$ one-sided cutoff,
+we reject in either tail beyond $\pm z_{0.95}$. Under the continuous standard
+Normal null this has probability $0.05+0.05=0.10$, not $0.05$.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="interpretation hypothesis-test power normal z-test one-sided" data-difficulty="1" #q-concepts-power-errors}
+## Type I error, Type II error, and power
+
+Let $X_1,\ldots,X_{16}$ be i.i.d. $\mathcal N(\mu,64)$ observations. Test
+$H_0:\mu=20$ against $H_1:\mu>20$ by rejecting when
+$$
+Z=\frac{\bar X-20}{8/\sqrt{16}}>1.645.
+$$
+For these calculations use $\Phi(1.645)\approx0.95$,
+$\Phi(0.355)\approx0.6387$, and $\Phi(2.355)\approx0.9907$.
+
+(a) Express the rejection region in terms of $\bar X$ and calculate the
+Type I error probability.  
+(b) If the true mean is $\mu=24$, find the power and Type II error probability.  
+(c) Repeat the power calculation for $n=64$, using the same $5\%$ one-sided
+test. Explain why the Type I error probability stays the same while power changes.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a)** The standard error is $2$, so reject when
+$\bar X>20+1.645(2)=23.29$. Under $H_0$, $Z\sim\mathcal N(0,1)$, giving
+$$
+\mathrm{Pr}_{\mu=20}(\text{reject }H_0)=1-\Phi(1.645)\approx0.05.
+$$
+A Type I error is rejecting when the null is true.
+
+**(b)** Under $\mu=24$, $\bar X\sim\mathcal N(24,4)$, so
+$$
+\mathrm{Power}(24)=\mathrm{Pr}_{\mu=24}(\bar X>23.29)
+=1-\Phi\!\left(\frac{23.29-24}{2}\right)
+=\Phi(0.355)\approx0.6387.
+$$
+The Type II error probability at $\mu=24$ is $1-0.6387=0.3613$:
+failing to reject when this alternative value is true. Power is a function
+of the true mean, not a single probability shared by all alternatives.
+
+**(c)** With $n=64$ the standard error is $1$, so the rejection boundary becomes
+$20+1.645=21.645$. At $\mu=24$,
+$$
+\mathrm{Power}(24)=1-\Phi(21.645-24)=\Phi(2.355)\approx0.9907.
+$$
+The null-standardised statistic is still standard Normal and uses the same
+cutoff, maintaining size approximately $0.05$ (the approximation is only from
+rounding the cutoff). The smaller standard error makes a mean of $24$ easier
+to distinguish from $20$.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="interpretation bayes conjugacy beta binomial map" data-difficulty="1" #q-concepts-sequential-bayes}
+## Sequential Bayesian updating and prior influence
+
+Conditional on a fixed success probability $p$, all trials below are independent
+Bernoulli trials. Begin with the prior $p\sim\mathrm{Beta}(2,3)$. A first batch
+contains $3$ successes in $5$ trials; a second batch contains $1$ success in
+$3$ trials.
+
+(a) Find the posterior after each batch, using the first posterior as the
+prior for the second update.  
+(b) Check that updating once with all the data gives the same final posterior.
+Find its posterior mean and MAP estimate.  
+(c) Express the final posterior mean as a weighted average of the original
+prior mean and the overall observed success proportion.  
+(d) Repeat the final posterior mean calculation for a
+$\mathrm{Beta}(20,30)$ prior. Explain the effect of this change.
+
+You may use that a $\mathrm{Beta}(a,b)$ distribution has mean $a/(a+b)$ and,
+when $a,b>1$, mode $(a-1)/(a+b-2)$.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a)** A Beta update adds successes to the first shape parameter and failures
+to the second. The first batch has $2$ failures, giving
+$$
+p\mid\text{batch 1}\sim\mathrm{Beta}(2+3,3+2)=\mathrm{Beta}(5,5).
+$$
+The second batch has $2$ failures, so
+$$
+p\mid\text{both batches}\sim\mathrm{Beta}(5+1,5+2)=\mathrm{Beta}(6,7).
+$$
+
+**(b)** There are $4$ successes and $4$ failures overall. One update gives
+$\mathrm{Beta}(2+4,3+4)=\mathrm{Beta}(6,7)$, as above. Conditional independence
+lets us multiply the batch likelihoods in either order. The posterior summaries are
+$$
+\mathrm{E}[p\mid\underline x]=\frac6{13}\approx0.4615,\qquad
+\hat p_{\mathrm{MAP}}=\frac5{11}\approx0.4545.
+$$
+The posterior mean and mode need not coincide.
+
+**(c)** The original prior mean is $2/5=0.4$ and the sample proportion is
+$4/8=0.5$. Thus
+$$
+\frac6{13}=\frac5{13}(0.4)+\frac8{13}(0.5).
+$$
+The weights are proportional to the prior shape sum $a+b$ and the number of
+trials. The result lies between the prior mean and the observed proportion.
+
+**(d)** The new prior has the same mean $0.4$ but is more concentrated. The
+posterior is $\mathrm{Beta}(24,34)$, with mean
+$$
+\frac{24}{58}=\frac{50}{58}(0.4)+\frac8{58}(0.5)
+=\frac{12}{29}\approx0.4138.
+$$
+The larger prior weight keeps the posterior mean closer to $0.4$ for these
+eight trials. This illustrates how prior concentration affects an update even
+when the prior mean is unchanged.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="interpretation bayes credible-interval hdi beta cdf" data-difficulty="1" #q-concepts-credible-hdi}
+## Equal-tailed and highest-density credible intervals
+
+Suppose the posterior density of a parameter $\theta$ is
+$$
+\pi(\theta\mid\underline x)=2\theta,\qquad 0\le\theta\le1,
+$$
+and zero elsewhere.
+
+(a) Find the posterior CDF and its quantile of order $p$, for $0<p<1$.  
+(b) Find a $90\%$ equal-tailed credible interval.  
+(c) Find a $90\%$ highest-density interval (HDI). Explain why its upper
+endpoint is $1$.  
+(d) Compare the intervals' lengths and state what they have in common.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a)** On the support,
+$$
+F(\theta\mid\underline x)=\int_0^\theta2t\,\mathrm{d}t=\theta^2.
+$$
+The CDF is zero below $0$ and one above $1$. Solving $q_p^2=p$ gives
+$q_p=\sqrt p$.
+
+**(b)** Leave $0.05$ posterior probability in each tail:
+$$
+[q_{0.05},q_{0.95}]=[\sqrt{0.05},\sqrt{0.95}]
+\approx[0.2236,0.9747].
+$$
+
+**(c)** The density increases throughout the support. The highest-density
+values therefore form an interval $[a,1]$. Requiring posterior mass $0.90$ gives
+$$
+\int_a^1 2\theta\,\mathrm{d}\theta=1-a^2=0.90,
+$$
+so the HDI is $[\sqrt{0.10},1]\approx[0.3162,1]$. Every interior point of
+this interval has higher density than points excluded below it. There is no
+requirement for equal tail probabilities, or equal endpoint densities when
+an endpoint is a boundary of the support.
+
+**(d)** The equal-tailed interval has length approximately $0.7511$; the HDI
+has length approximately $0.6838$. Both contain $90\%$ of the posterior
+probability, but the HDI is shorter here because it uses the part of the support
+with greatest density. Neither says that future observations fall in the
+interval with probability $0.90$: these are intervals for the parameter.
+
+</details>
+
+:::
