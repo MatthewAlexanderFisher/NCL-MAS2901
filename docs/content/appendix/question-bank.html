@@ -66,7 +66,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
 <link href="../../content/ide/python-ide.html" rel="next">
-<link href="../../content/appendix/distribution-explorer.html" rel="prev">
+<link href="../../content/appendix/revision-sheet.html" rel="prev">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -608,12 +608,6 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/appendix/distribution-explorer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Distribution Explorer</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../../content/appendix/question-bank.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Question Bank</span></a>
   </div>
@@ -622,12 +616,6 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="../../content/ide/python-ide.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Python IDE</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../content/appendix/statistical-tables.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Statistical Tables</span></a>
   </div>
 </li>
       </ul>
@@ -663,6 +651,7 @@ window.Quarto = {
 </header>
 
 
+<p>Each question has a permanent number so you can keep a record of those you have completed. Numbers stay the same when you filter the bank or print questions. New questions will be numbered after the current set.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -721,7 +710,7 @@ window.Quarto = {
 </div>
 <p>The filters below combine tags using <strong>AND</strong>: selecting <code>bayes</code> and <code>binomial</code> shows questions carrying both tags. Difficulty runs from <strong>Easy</strong> through <strong>Challenge</strong>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="81" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 80;"><span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>bodyFont <span class="op">=</span> <span class="fu">getComputedStyle</span>(<span class="bu">document</span><span class="op">.</span><span class="at">body</span>)<span class="op">.</span><span class="at">fontFamily</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="85" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 84;"><span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>bodyFont <span class="op">=</span> <span class="fu">getComputedStyle</span>(<span class="bu">document</span><span class="op">.</span><span class="at">body</span>)<span class="op">.</span><span class="at">fontFamily</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-1" data-nodetype="declaration">
 
@@ -729,12 +718,12 @@ window.Quarto = {
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="87" data-source-offset="-42"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 86;"><span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>allQuestions <span class="op">=</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>(<span class="bu">document</span><span class="op">.</span><span class="fu">querySelectorAll</span>(<span class="st">'.question'</span>))</span>
-<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>allTags <span class="op">=</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>(<span class="kw">new</span> <span class="bu">Set</span>(</span>
-<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a>  allQuestions<span class="op">.</span><span class="fu">flatMap</span>(el <span class="kw">=&gt;</span> (el<span class="op">.</span><span class="at">dataset</span><span class="op">.</span><span class="at">tags</span> <span class="op">||</span> <span class="st">""</span>)</span>
-<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">split</span>(<span class="ss">/</span><span class="sc">\s+</span><span class="ss">/</span>)<span class="op">.</span><span class="fu">map</span>(t <span class="kw">=&gt;</span> t<span class="op">.</span><span class="fu">trim</span>())<span class="op">.</span><span class="fu">filter</span>(<span class="bu">Boolean</span>))</span>
-<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a>))<span class="op">.</span><span class="fu">sort</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="91" data-source-offset="-42"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 90;"><span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>allQuestions <span class="op">=</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>(<span class="bu">document</span><span class="op">.</span><span class="fu">querySelectorAll</span>(<span class="st">'.question'</span>))</span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>allTags <span class="op">=</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>(<span class="kw">new</span> <span class="bu">Set</span>(</span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a>  allQuestions<span class="op">.</span><span class="fu">flatMap</span>(el <span class="kw">=&gt;</span> (el<span class="op">.</span><span class="at">dataset</span><span class="op">.</span><span class="at">tags</span> <span class="op">||</span> <span class="st">""</span>)</span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">split</span>(<span class="ss">/</span><span class="sc">\s+</span><span class="ss">/</span>)<span class="op">.</span><span class="fu">map</span>(t <span class="kw">=&gt;</span> t<span class="op">.</span><span class="fu">trim</span>())<span class="op">.</span><span class="fu">filter</span>(<span class="bu">Boolean</span>))</span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a>))<span class="op">.</span><span class="fu">sort</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-2-1" data-nodetype="declaration">
@@ -751,36 +740,36 @@ window.Quarto = {
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="95" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 94;"><span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">const</span> el <span class="kw">of</span> allQuestions) {</span>
-<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a>    <span class="co">// --- Tagbar (unchanged) ---</span></span>
-<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="op">!</span>el<span class="op">.</span><span class="fu">querySelector</span>(<span class="st">'.tagbar'</span>)) {</span>
-<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> tags <span class="op">=</span> (el<span class="op">.</span><span class="at">dataset</span><span class="op">.</span><span class="at">tags</span> <span class="op">||</span> <span class="st">""</span>)<span class="op">.</span><span class="fu">split</span>(<span class="ss">/</span><span class="sc">\s+</span><span class="ss">/</span>)<span class="op">.</span><span class="fu">filter</span>(<span class="bu">Boolean</span>)<span class="op">;</span></span>
-<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> bar <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">createElement</span>(<span class="st">'div'</span>)<span class="op">;</span></span>
-<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a>      bar<span class="op">.</span><span class="at">className</span> <span class="op">=</span> <span class="st">'tagbar'</span><span class="op">;</span></span>
-<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a>      bar<span class="op">.</span><span class="fu">append</span>(<span class="op">...</span>tags<span class="op">.</span><span class="fu">map</span>(t <span class="kw">=&gt;</span> <span class="bu">Object</span><span class="op">.</span><span class="fu">assign</span>(<span class="bu">document</span><span class="op">.</span><span class="fu">createElement</span>(<span class="st">'span'</span>)<span class="op">,</span> {</span>
-<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a>        <span class="dt">className</span><span class="op">:</span> <span class="st">'tag'</span><span class="op">,</span> <span class="dt">textContent</span><span class="op">:</span> t</span>
-<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a>      })))<span class="op">;</span></span>
-<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a>      el<span class="op">.</span><span class="fu">appendChild</span>(bar)<span class="op">;</span></span>
-<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a>    <span class="co">// --- Difficulty peppers in header (RHS) ---</span></span>
-<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> header <span class="op">=</span> el<span class="op">.</span><span class="fu">querySelector</span>(<span class="st">'.callout-header'</span>)<span class="op">;</span></span>
-<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (header <span class="op">&amp;&amp;</span> <span class="op">!</span>header<span class="op">.</span><span class="fu">querySelector</span>(<span class="st">'.difficulty-peppers'</span>)) {</span>
-<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> level <span class="op">=</span> <span class="bu">Number</span>(el<span class="op">.</span><span class="at">dataset</span><span class="op">.</span><span class="at">difficulty</span> <span class="op">??</span> <span class="dv">0</span>)<span class="op">;</span></span>
-<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Always show, but only add peppers if &gt;0</span></span>
-<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> span <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">createElement</span>(<span class="st">'span'</span>)<span class="op">;</span></span>
-<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a>      span<span class="op">.</span><span class="at">className</span> <span class="op">=</span> <span class="vs">`difficulty-peppers level-</span><span class="sc">${</span>level<span class="sc">}</span><span class="vs">`</span><span class="op">;</span></span>
-<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a>      span<span class="op">.</span><span class="fu">setAttribute</span>(<span class="st">'role'</span><span class="op">,</span> <span class="st">'img'</span>)<span class="op">;</span></span>
-<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> difficultyName <span class="op">=</span> [<span class="st">"Easy"</span><span class="op">,</span> <span class="st">"Medium"</span><span class="op">,</span> <span class="st">"Hard"</span><span class="op">,</span> <span class="st">"Challenge"</span>][level] <span class="op">??</span> <span class="st">"Unrated"</span><span class="op">;</span></span>
-<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a>      span<span class="op">.</span><span class="fu">setAttribute</span>(<span class="st">'aria-label'</span><span class="op">,</span> <span class="vs">`Difficulty: </span><span class="sc">${</span>difficultyName<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
-<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a>      span<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> level <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">?</span> <span class="vs">`(</span><span class="sc">${</span> <span class="st">"🌶"</span><span class="op">.</span><span class="fu">repeat</span>(level) <span class="sc">}</span><span class="vs">)`</span> <span class="op">:</span> <span class="st">"( )"</span><span class="op">;</span></span>
-<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a>      header<span class="op">.</span><span class="fu">appendChild</span>(span)<span class="op">;</span></span>
-<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">html</span><span class="vs">``</span>  <span class="co">// silence</span></span>
-<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="99" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 98;"><span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">const</span> el <span class="kw">of</span> allQuestions) {</span>
+<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a>    <span class="co">// --- Tagbar (unchanged) ---</span></span>
+<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="op">!</span>el<span class="op">.</span><span class="fu">querySelector</span>(<span class="st">'.tagbar'</span>)) {</span>
+<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> tags <span class="op">=</span> (el<span class="op">.</span><span class="at">dataset</span><span class="op">.</span><span class="at">tags</span> <span class="op">||</span> <span class="st">""</span>)<span class="op">.</span><span class="fu">split</span>(<span class="ss">/</span><span class="sc">\s+</span><span class="ss">/</span>)<span class="op">.</span><span class="fu">filter</span>(<span class="bu">Boolean</span>)<span class="op">;</span></span>
+<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> bar <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">createElement</span>(<span class="st">'div'</span>)<span class="op">;</span></span>
+<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a>      bar<span class="op">.</span><span class="at">className</span> <span class="op">=</span> <span class="st">'tagbar'</span><span class="op">;</span></span>
+<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a>      bar<span class="op">.</span><span class="fu">append</span>(<span class="op">...</span>tags<span class="op">.</span><span class="fu">map</span>(t <span class="kw">=&gt;</span> <span class="bu">Object</span><span class="op">.</span><span class="fu">assign</span>(<span class="bu">document</span><span class="op">.</span><span class="fu">createElement</span>(<span class="st">'span'</span>)<span class="op">,</span> {</span>
+<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a>        <span class="dt">className</span><span class="op">:</span> <span class="st">'tag'</span><span class="op">,</span> <span class="dt">textContent</span><span class="op">:</span> t</span>
+<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a>      })))<span class="op">;</span></span>
+<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a>      el<span class="op">.</span><span class="fu">appendChild</span>(bar)<span class="op">;</span></span>
+<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a>    <span class="co">// --- Difficulty peppers in header (RHS) ---</span></span>
+<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> header <span class="op">=</span> el<span class="op">.</span><span class="fu">querySelector</span>(<span class="st">'.callout-header'</span>)<span class="op">;</span></span>
+<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (header <span class="op">&amp;&amp;</span> <span class="op">!</span>header<span class="op">.</span><span class="fu">querySelector</span>(<span class="st">'.difficulty-peppers'</span>)) {</span>
+<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> level <span class="op">=</span> <span class="bu">Number</span>(el<span class="op">.</span><span class="at">dataset</span><span class="op">.</span><span class="at">difficulty</span> <span class="op">??</span> <span class="dv">0</span>)<span class="op">;</span></span>
+<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Always show, but only add peppers if &gt;0</span></span>
+<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> span <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">createElement</span>(<span class="st">'span'</span>)<span class="op">;</span></span>
+<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a>      span<span class="op">.</span><span class="at">className</span> <span class="op">=</span> <span class="vs">`difficulty-peppers level-</span><span class="sc">${</span>level<span class="sc">}</span><span class="vs">`</span><span class="op">;</span></span>
+<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a>      span<span class="op">.</span><span class="fu">setAttribute</span>(<span class="st">'role'</span><span class="op">,</span> <span class="st">'img'</span>)<span class="op">;</span></span>
+<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> difficultyName <span class="op">=</span> [<span class="st">"Easy"</span><span class="op">,</span> <span class="st">"Medium"</span><span class="op">,</span> <span class="st">"Hard"</span><span class="op">,</span> <span class="st">"Challenge"</span>][level] <span class="op">??</span> <span class="st">"Unrated"</span><span class="op">;</span></span>
+<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a>      span<span class="op">.</span><span class="fu">setAttribute</span>(<span class="st">'aria-label'</span><span class="op">,</span> <span class="vs">`Difficulty: </span><span class="sc">${</span>difficultyName<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
+<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a>      span<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> level <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">?</span> <span class="vs">`(</span><span class="sc">${</span> <span class="st">"🌶"</span><span class="op">.</span><span class="fu">repeat</span>(level) <span class="sc">}</span><span class="vs">)`</span> <span class="op">:</span> <span class="st">"( )"</span><span class="op">;</span></span>
+<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a>      header<span class="op">.</span><span class="fu">appendChild</span>(span)<span class="op">;</span></span>
+<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">html</span><span class="vs">``</span>  <span class="co">// silence</span></span>
+<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-3" data-nodetype="expression">
 
@@ -788,149 +777,149 @@ window.Quarto = {
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="128" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 127;"><span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a>viewof typed <span class="op">=</span> {</span>
-<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- DOM</span></span>
-<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> wrapper <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div class="token-autocomplete"&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
-<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> labelEl <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;label class="token-label" for="question-tag-filter"&gt;Filter by tags (type, space-separated):&lt;/label&gt;`</span><span class="op">;</span></span>
-<span id="cb4-132"><a href="#cb4-132" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> input   <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;input id="question-tag-filter" class="token-input" type="text" placeholder="e.g. bayes probability"&gt;`</span><span class="op">;</span></span>
-<span id="cb4-133"><a href="#cb4-133" aria-hidden="true" tabindex="-1"></a>  wrapper<span class="op">.</span><span class="fu">append</span>(labelEl<span class="op">,</span> input)<span class="op">;</span></span>
-<span id="cb4-134"><a href="#cb4-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-135"><a href="#cb4-135" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- PORTAL: suggestions list lives at document.body so it can overlay everything</span></span>
-<span id="cb4-136"><a href="#cb4-136" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> list <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div class="token-suggestions" role="listbox" hidden&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
-<span id="cb4-137"><a href="#cb4-137" aria-hidden="true" tabindex="-1"></a>  <span class="bu">document</span><span class="op">.</span><span class="at">body</span><span class="op">.</span><span class="fu">appendChild</span>(list)<span class="op">;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="132" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 131;"><span id="cb4-132"><a href="#cb4-132" aria-hidden="true" tabindex="-1"></a>viewof typed <span class="op">=</span> {</span>
+<span id="cb4-133"><a href="#cb4-133" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- DOM</span></span>
+<span id="cb4-134"><a href="#cb4-134" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> wrapper <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div class="token-autocomplete"&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb4-135"><a href="#cb4-135" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> labelEl <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;label class="token-label" for="question-tag-filter"&gt;Filter by tags (type, space-separated):&lt;/label&gt;`</span><span class="op">;</span></span>
+<span id="cb4-136"><a href="#cb4-136" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> input   <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;input id="question-tag-filter" class="token-input" type="text" placeholder="e.g. bayes probability"&gt;`</span><span class="op">;</span></span>
+<span id="cb4-137"><a href="#cb4-137" aria-hidden="true" tabindex="-1"></a>  wrapper<span class="op">.</span><span class="fu">append</span>(labelEl<span class="op">,</span> input)<span class="op">;</span></span>
 <span id="cb4-138"><a href="#cb4-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-139"><a href="#cb4-139" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Make sure it floats above all content</span></span>
-<span id="cb4-140"><a href="#cb4-140" aria-hidden="true" tabindex="-1"></a>  list<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">position</span> <span class="op">=</span> <span class="st">"fixed"</span><span class="op">;</span></span>
-<span id="cb4-141"><a href="#cb4-141" aria-hidden="true" tabindex="-1"></a>  list<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">zIndex</span> <span class="op">=</span> <span class="st">"9999"</span><span class="op">;</span> <span class="co">// high z-index to overlay everything</span></span>
+<span id="cb4-139"><a href="#cb4-139" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- PORTAL: suggestions list lives at document.body so it can overlay everything</span></span>
+<span id="cb4-140"><a href="#cb4-140" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> list <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div class="token-suggestions" role="listbox" hidden&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb4-141"><a href="#cb4-141" aria-hidden="true" tabindex="-1"></a>  <span class="bu">document</span><span class="op">.</span><span class="at">body</span><span class="op">.</span><span class="fu">appendChild</span>(list)<span class="op">;</span></span>
 <span id="cb4-142"><a href="#cb4-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-143"><a href="#cb4-143" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- value plumbing</span></span>
-<span id="cb4-144"><a href="#cb4-144" aria-hidden="true" tabindex="-1"></a>  <span class="bu">Object</span><span class="op">.</span><span class="fu">defineProperty</span>(wrapper<span class="op">,</span> <span class="st">"value"</span><span class="op">,</span> {</span>
-<span id="cb4-145"><a href="#cb4-145" aria-hidden="true" tabindex="-1"></a>    <span class="kw">get</span>() { <span class="cf">return</span> input<span class="op">.</span><span class="at">value</span><span class="op">;</span> }<span class="op">,</span></span>
-<span id="cb4-146"><a href="#cb4-146" aria-hidden="true" tabindex="-1"></a>    <span class="kw">set</span>(v) { input<span class="op">.</span><span class="at">value</span> <span class="op">=</span> v <span class="op">??</span> <span class="st">""</span><span class="op">;</span> }</span>
-<span id="cb4-147"><a href="#cb4-147" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
-<span id="cb4-148"><a href="#cb4-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-149"><a href="#cb4-149" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- helpers</span></span>
-<span id="cb4-150"><a href="#cb4-150" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> TAGS <span class="op">=</span> () <span class="kw">=&gt;</span> (<span class="kw">typeof</span> allTags <span class="op">!==</span> <span class="st">"undefined"</span> <span class="op">?</span> allTags <span class="op">:</span> [])<span class="op">;</span></span>
-<span id="cb4-151"><a href="#cb4-151" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> tokens <span class="op">=</span> () <span class="kw">=&gt;</span> input<span class="op">.</span><span class="at">value</span><span class="op">.</span><span class="fu">split</span>(<span class="ss">/</span><span class="sc">\s+</span><span class="ss">/</span>)<span class="op">.</span><span class="fu">filter</span>(<span class="bu">Boolean</span>)<span class="op">;</span></span>
-<span id="cb4-152"><a href="#cb4-152" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> lastToken <span class="op">=</span> () <span class="kw">=&gt;</span> (input<span class="op">.</span><span class="at">value</span><span class="op">.</span><span class="fu">match</span>(<span class="ss">/</span><span class="sc">(?</span><span class="ss">:^</span><span class="sc">|\s)(\S*)$</span><span class="ss">/</span>)<span class="op">?.</span>[<span class="dv">1</span>]) <span class="op">??</span> <span class="st">""</span><span class="op">;</span></span>
-<span id="cb4-153"><a href="#cb4-153" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> pretty <span class="op">=</span> t <span class="kw">=&gt;</span> t<span class="op">.</span><span class="fu">replace</span>(<span class="ss">/-/g</span><span class="op">,</span> <span class="st">" "</span>)<span class="op">.</span><span class="fu">replace</span>(<span class="ss">/</span><span class="sc">\b\w</span><span class="ss">/g</span><span class="op">,</span> c <span class="kw">=&gt;</span> c<span class="op">.</span><span class="fu">toUpperCase</span>())<span class="op">;</span></span>
-<span id="cb4-154"><a href="#cb4-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-155"><a href="#cb4-155" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Position portal directly below the input, matching its width</span></span>
-<span id="cb4-156"><a href="#cb4-156" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> alignList <span class="op">=</span> () <span class="kw">=&gt;</span> {</span>
-<span id="cb4-157"><a href="#cb4-157" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> r <span class="op">=</span> input<span class="op">.</span><span class="fu">getBoundingClientRect</span>()<span class="op">;</span></span>
-<span id="cb4-158"><a href="#cb4-158" aria-hidden="true" tabindex="-1"></a>    list<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">left</span> <span class="op">=</span> <span class="vs">`</span><span class="sc">${</span>r<span class="op">.</span><span class="at">left</span><span class="sc">}</span><span class="vs">px`</span><span class="op">;</span></span>
-<span id="cb4-159"><a href="#cb4-159" aria-hidden="true" tabindex="-1"></a>    list<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">top</span>  <span class="op">=</span> <span class="vs">`</span><span class="sc">${</span>r<span class="op">.</span><span class="at">bottom</span> <span class="op">+</span> <span class="dv">4</span><span class="sc">}</span><span class="vs">px`</span><span class="op">;</span></span>
-<span id="cb4-160"><a href="#cb4-160" aria-hidden="true" tabindex="-1"></a>    list<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">width</span> <span class="op">=</span> <span class="vs">`</span><span class="sc">${</span>r<span class="op">.</span><span class="at">width</span><span class="sc">}</span><span class="vs">px`</span><span class="op">;</span></span>
-<span id="cb4-161"><a href="#cb4-161" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
-<span id="cb4-162"><a href="#cb4-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-163"><a href="#cb4-163" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- render suggestions</span></span>
-<span id="cb4-164"><a href="#cb4-164" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> selectedIndex <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
-<span id="cb4-165"><a href="#cb4-165" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> applyActiveStyles <span class="op">=</span> () <span class="kw">=&gt;</span> {</span>
-<span id="cb4-166"><a href="#cb4-166" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> items <span class="op">=</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>(list<span class="op">.</span><span class="at">children</span>)<span class="op">;</span></span>
-<span id="cb4-167"><a href="#cb4-167" aria-hidden="true" tabindex="-1"></a>    items<span class="op">.</span><span class="fu">forEach</span>((el<span class="op">,</span> i) <span class="kw">=&gt;</span> el<span class="op">.</span><span class="at">classList</span><span class="op">.</span><span class="fu">toggle</span>(<span class="st">"active"</span><span class="op">,</span> i <span class="op">===</span> selectedIndex))<span class="op">;</span></span>
-<span id="cb4-168"><a href="#cb4-168" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
-<span id="cb4-169"><a href="#cb4-169" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-170"><a href="#cb4-170" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">renderSuggestions</span>() {</span>
-<span id="cb4-171"><a href="#cb4-171" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> q <span class="op">=</span> <span class="fu">lastToken</span>()<span class="op">.</span><span class="fu">toLowerCase</span>()<span class="op">;</span></span>
-<span id="cb4-172"><a href="#cb4-172" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> already <span class="op">=</span> <span class="kw">new</span> <span class="bu">Set</span>(<span class="fu">tokens</span>()<span class="op">.</span><span class="fu">map</span>(s <span class="kw">=&gt;</span> s<span class="op">.</span><span class="fu">toLowerCase</span>()))<span class="op">;</span></span>
-<span id="cb4-173"><a href="#cb4-173" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> tags <span class="op">=</span> <span class="fu">TAGS</span>()<span class="op">;</span></span>
-<span id="cb4-174"><a href="#cb4-174" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-175"><a href="#cb4-175" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> candidates <span class="op">=</span> q</span>
-<span id="cb4-176"><a href="#cb4-176" aria-hidden="true" tabindex="-1"></a>      <span class="op">?</span> tags<span class="op">.</span><span class="fu">filter</span>(t <span class="kw">=&gt;</span> t<span class="op">.</span><span class="fu">toLowerCase</span>()<span class="op">.</span><span class="fu">startsWith</span>(q) <span class="op">&amp;&amp;</span> <span class="op">!</span>already<span class="op">.</span><span class="fu">has</span>(t<span class="op">.</span><span class="fu">toLowerCase</span>()))</span>
-<span id="cb4-177"><a href="#cb4-177" aria-hidden="true" tabindex="-1"></a>      <span class="op">:</span> []<span class="op">;</span></span>
+<span id="cb4-143"><a href="#cb4-143" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Make sure it floats above all content</span></span>
+<span id="cb4-144"><a href="#cb4-144" aria-hidden="true" tabindex="-1"></a>  list<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">position</span> <span class="op">=</span> <span class="st">"fixed"</span><span class="op">;</span></span>
+<span id="cb4-145"><a href="#cb4-145" aria-hidden="true" tabindex="-1"></a>  list<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">zIndex</span> <span class="op">=</span> <span class="st">"9999"</span><span class="op">;</span> <span class="co">// high z-index to overlay everything</span></span>
+<span id="cb4-146"><a href="#cb4-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-147"><a href="#cb4-147" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- value plumbing</span></span>
+<span id="cb4-148"><a href="#cb4-148" aria-hidden="true" tabindex="-1"></a>  <span class="bu">Object</span><span class="op">.</span><span class="fu">defineProperty</span>(wrapper<span class="op">,</span> <span class="st">"value"</span><span class="op">,</span> {</span>
+<span id="cb4-149"><a href="#cb4-149" aria-hidden="true" tabindex="-1"></a>    <span class="kw">get</span>() { <span class="cf">return</span> input<span class="op">.</span><span class="at">value</span><span class="op">;</span> }<span class="op">,</span></span>
+<span id="cb4-150"><a href="#cb4-150" aria-hidden="true" tabindex="-1"></a>    <span class="kw">set</span>(v) { input<span class="op">.</span><span class="at">value</span> <span class="op">=</span> v <span class="op">??</span> <span class="st">""</span><span class="op">;</span> }</span>
+<span id="cb4-151"><a href="#cb4-151" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb4-152"><a href="#cb4-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-153"><a href="#cb4-153" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- helpers</span></span>
+<span id="cb4-154"><a href="#cb4-154" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> TAGS <span class="op">=</span> () <span class="kw">=&gt;</span> (<span class="kw">typeof</span> allTags <span class="op">!==</span> <span class="st">"undefined"</span> <span class="op">?</span> allTags <span class="op">:</span> [])<span class="op">;</span></span>
+<span id="cb4-155"><a href="#cb4-155" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> tokens <span class="op">=</span> () <span class="kw">=&gt;</span> input<span class="op">.</span><span class="at">value</span><span class="op">.</span><span class="fu">split</span>(<span class="ss">/</span><span class="sc">\s+</span><span class="ss">/</span>)<span class="op">.</span><span class="fu">filter</span>(<span class="bu">Boolean</span>)<span class="op">;</span></span>
+<span id="cb4-156"><a href="#cb4-156" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> lastToken <span class="op">=</span> () <span class="kw">=&gt;</span> (input<span class="op">.</span><span class="at">value</span><span class="op">.</span><span class="fu">match</span>(<span class="ss">/</span><span class="sc">(?</span><span class="ss">:^</span><span class="sc">|\s)(\S*)$</span><span class="ss">/</span>)<span class="op">?.</span>[<span class="dv">1</span>]) <span class="op">??</span> <span class="st">""</span><span class="op">;</span></span>
+<span id="cb4-157"><a href="#cb4-157" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> pretty <span class="op">=</span> t <span class="kw">=&gt;</span> t<span class="op">.</span><span class="fu">replace</span>(<span class="ss">/-/g</span><span class="op">,</span> <span class="st">" "</span>)<span class="op">.</span><span class="fu">replace</span>(<span class="ss">/</span><span class="sc">\b\w</span><span class="ss">/g</span><span class="op">,</span> c <span class="kw">=&gt;</span> c<span class="op">.</span><span class="fu">toUpperCase</span>())<span class="op">;</span></span>
+<span id="cb4-158"><a href="#cb4-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-159"><a href="#cb4-159" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Position portal directly below the input, matching its width</span></span>
+<span id="cb4-160"><a href="#cb4-160" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> alignList <span class="op">=</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb4-161"><a href="#cb4-161" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> r <span class="op">=</span> input<span class="op">.</span><span class="fu">getBoundingClientRect</span>()<span class="op">;</span></span>
+<span id="cb4-162"><a href="#cb4-162" aria-hidden="true" tabindex="-1"></a>    list<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">left</span> <span class="op">=</span> <span class="vs">`</span><span class="sc">${</span>r<span class="op">.</span><span class="at">left</span><span class="sc">}</span><span class="vs">px`</span><span class="op">;</span></span>
+<span id="cb4-163"><a href="#cb4-163" aria-hidden="true" tabindex="-1"></a>    list<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">top</span>  <span class="op">=</span> <span class="vs">`</span><span class="sc">${</span>r<span class="op">.</span><span class="at">bottom</span> <span class="op">+</span> <span class="dv">4</span><span class="sc">}</span><span class="vs">px`</span><span class="op">;</span></span>
+<span id="cb4-164"><a href="#cb4-164" aria-hidden="true" tabindex="-1"></a>    list<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">width</span> <span class="op">=</span> <span class="vs">`</span><span class="sc">${</span>r<span class="op">.</span><span class="at">width</span><span class="sc">}</span><span class="vs">px`</span><span class="op">;</span></span>
+<span id="cb4-165"><a href="#cb4-165" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb4-166"><a href="#cb4-166" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-167"><a href="#cb4-167" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- render suggestions</span></span>
+<span id="cb4-168"><a href="#cb4-168" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> selectedIndex <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="cb4-169"><a href="#cb4-169" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> applyActiveStyles <span class="op">=</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb4-170"><a href="#cb4-170" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> items <span class="op">=</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>(list<span class="op">.</span><span class="at">children</span>)<span class="op">;</span></span>
+<span id="cb4-171"><a href="#cb4-171" aria-hidden="true" tabindex="-1"></a>    items<span class="op">.</span><span class="fu">forEach</span>((el<span class="op">,</span> i) <span class="kw">=&gt;</span> el<span class="op">.</span><span class="at">classList</span><span class="op">.</span><span class="fu">toggle</span>(<span class="st">"active"</span><span class="op">,</span> i <span class="op">===</span> selectedIndex))<span class="op">;</span></span>
+<span id="cb4-172"><a href="#cb4-172" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb4-173"><a href="#cb4-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-174"><a href="#cb4-174" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">renderSuggestions</span>() {</span>
+<span id="cb4-175"><a href="#cb4-175" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> q <span class="op">=</span> <span class="fu">lastToken</span>()<span class="op">.</span><span class="fu">toLowerCase</span>()<span class="op">;</span></span>
+<span id="cb4-176"><a href="#cb4-176" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> already <span class="op">=</span> <span class="kw">new</span> <span class="bu">Set</span>(<span class="fu">tokens</span>()<span class="op">.</span><span class="fu">map</span>(s <span class="kw">=&gt;</span> s<span class="op">.</span><span class="fu">toLowerCase</span>()))<span class="op">;</span></span>
+<span id="cb4-177"><a href="#cb4-177" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> tags <span class="op">=</span> <span class="fu">TAGS</span>()<span class="op">;</span></span>
 <span id="cb4-178"><a href="#cb4-178" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-179"><a href="#cb4-179" aria-hidden="true" tabindex="-1"></a>    list<span class="op">.</span><span class="at">innerHTML</span> <span class="op">=</span> <span class="st">""</span><span class="op">;</span></span>
-<span id="cb4-180"><a href="#cb4-180" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (candidates<span class="op">.</span><span class="at">length</span> <span class="op">===</span> <span class="dv">0</span>) { list<span class="op">.</span><span class="at">hidden</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span> <span class="cf">return</span><span class="op">;</span> }</span>
-<span id="cb4-181"><a href="#cb4-181" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-182"><a href="#cb4-182" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="kw">const</span> t <span class="kw">of</span> candidates<span class="op">.</span><span class="fu">slice</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">8</span>)) {</span>
-<span id="cb4-183"><a href="#cb4-183" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> item <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div class="token-suggestion" role="option" data-token="</span><span class="sc">${</span>t<span class="sc">}</span><span class="vs">"&gt;</span><span class="sc">${</span><span class="fu">pretty</span>(t)<span class="sc">}</span><span class="vs">&lt;/div&gt;`</span><span class="op">;</span></span>
-<span id="cb4-184"><a href="#cb4-184" aria-hidden="true" tabindex="-1"></a>      item<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"mousedown"</span><span class="op">,</span> (e) <span class="kw">=&gt;</span> { e<span class="op">.</span><span class="fu">preventDefault</span>()<span class="op">;</span> <span class="fu">acceptSuggestion</span>(t)<span class="op">;</span> })<span class="op">;</span></span>
-<span id="cb4-185"><a href="#cb4-185" aria-hidden="true" tabindex="-1"></a>      list<span class="op">.</span><span class="fu">appendChild</span>(item)<span class="op">;</span></span>
-<span id="cb4-186"><a href="#cb4-186" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb4-187"><a href="#cb4-187" aria-hidden="true" tabindex="-1"></a>    selectedIndex <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
-<span id="cb4-188"><a href="#cb4-188" aria-hidden="true" tabindex="-1"></a>    <span class="fu">applyActiveStyles</span>()<span class="op">;</span></span>
-<span id="cb4-189"><a href="#cb4-189" aria-hidden="true" tabindex="-1"></a>    list<span class="op">.</span><span class="at">hidden</span> <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
-<span id="cb4-190"><a href="#cb4-190" aria-hidden="true" tabindex="-1"></a>    <span class="fu">alignList</span>()<span class="op">;</span> <span class="co">// ensure correct position when shown</span></span>
-<span id="cb4-191"><a href="#cb4-191" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb4-192"><a href="#cb4-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-193"><a href="#cb4-193" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">commit</span>() {</span>
-<span id="cb4-194"><a href="#cb4-194" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> parts <span class="op">=</span> <span class="fu">tokens</span>()<span class="op">;</span></span>
-<span id="cb4-195"><a href="#cb4-195" aria-hidden="true" tabindex="-1"></a>    input<span class="op">.</span><span class="at">value</span> <span class="op">=</span> parts<span class="op">.</span><span class="fu">join</span>(<span class="st">" "</span>) <span class="op">+</span> (parts<span class="op">.</span><span class="at">length</span> <span class="op">?</span> <span class="st">" "</span> <span class="op">:</span> <span class="st">""</span>)<span class="op">;</span></span>
-<span id="cb4-196"><a href="#cb4-196" aria-hidden="true" tabindex="-1"></a>    wrapper<span class="op">.</span><span class="fu">dispatchEvent</span>(<span class="kw">new</span> <span class="bu">Event</span>(<span class="st">"input"</span><span class="op">,</span> { <span class="dt">bubbles</span><span class="op">:</span> <span class="kw">true</span> }))<span class="op">;</span></span>
-<span id="cb4-197"><a href="#cb4-197" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb4-198"><a href="#cb4-198" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-199"><a href="#cb4-199" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">acceptSuggestion</span>(tag) {</span>
-<span id="cb4-200"><a href="#cb4-200" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> parts <span class="op">=</span> input<span class="op">.</span><span class="at">value</span><span class="op">.</span><span class="fu">split</span>(<span class="ss">/</span><span class="sc">\s+</span><span class="ss">/</span>)<span class="op">;</span></span>
-<span id="cb4-201"><a href="#cb4-201" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="ss">/</span><span class="sc">\S</span><span class="ss">/</span><span class="op">.</span><span class="fu">test</span>(input<span class="op">.</span><span class="at">value</span>)) parts<span class="op">.</span><span class="fu">pop</span>()<span class="op">;</span> <span class="co">// replace last token</span></span>
-<span id="cb4-202"><a href="#cb4-202" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> <span class="kw">set</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">Set</span>(parts<span class="op">.</span><span class="fu">filter</span>(<span class="bu">Boolean</span>)<span class="op">.</span><span class="fu">map</span>(s <span class="kw">=&gt;</span> s<span class="op">.</span><span class="fu">toLowerCase</span>()))<span class="op">;</span></span>
-<span id="cb4-203"><a href="#cb4-203" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="op">!</span><span class="kw">set</span><span class="op">.</span><span class="fu">has</span>(tag<span class="op">.</span><span class="fu">toLowerCase</span>())) parts<span class="op">.</span><span class="fu">push</span>(tag)<span class="op">;</span></span>
-<span id="cb4-204"><a href="#cb4-204" aria-hidden="true" tabindex="-1"></a>    input<span class="op">.</span><span class="at">value</span> <span class="op">=</span> parts<span class="op">.</span><span class="fu">filter</span>(<span class="bu">Boolean</span>)<span class="op">.</span><span class="fu">join</span>(<span class="st">" "</span>) <span class="op">+</span> <span class="st">" "</span><span class="op">;</span></span>
-<span id="cb4-205"><a href="#cb4-205" aria-hidden="true" tabindex="-1"></a>    list<span class="op">.</span><span class="at">hidden</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></span>
-<span id="cb4-206"><a href="#cb4-206" aria-hidden="true" tabindex="-1"></a>    <span class="fu">commit</span>()<span class="op">;</span></span>
-<span id="cb4-207"><a href="#cb4-207" aria-hidden="true" tabindex="-1"></a>    input<span class="op">.</span><span class="fu">focus</span>()<span class="op">;</span></span>
-<span id="cb4-208"><a href="#cb4-208" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb4-209"><a href="#cb4-209" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-210"><a href="#cb4-210" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">moveSelection</span>(delta) {</span>
-<span id="cb4-211"><a href="#cb4-211" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> items <span class="op">=</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>(list<span class="op">.</span><span class="at">children</span>)<span class="op">;</span></span>
-<span id="cb4-212"><a href="#cb4-212" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (items<span class="op">.</span><span class="at">length</span> <span class="op">===</span> <span class="dv">0</span>) <span class="cf">return</span><span class="op">;</span></span>
-<span id="cb4-213"><a href="#cb4-213" aria-hidden="true" tabindex="-1"></a>    selectedIndex <span class="op">=</span> (selectedIndex <span class="op">+</span> delta <span class="op">+</span> items<span class="op">.</span><span class="at">length</span>) <span class="op">%</span> items<span class="op">.</span><span class="at">length</span><span class="op">;</span></span>
-<span id="cb4-214"><a href="#cb4-214" aria-hidden="true" tabindex="-1"></a>    <span class="fu">applyActiveStyles</span>()<span class="op">;</span></span>
-<span id="cb4-215"><a href="#cb4-215" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (selectedIndex <span class="op">&gt;=</span> <span class="dv">0</span>) items[selectedIndex]<span class="op">.</span><span class="fu">scrollIntoView</span>({ <span class="dt">block</span><span class="op">:</span> <span class="st">"nearest"</span> })<span class="op">;</span></span>
-<span id="cb4-216"><a href="#cb4-216" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb4-217"><a href="#cb4-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-218"><a href="#cb4-218" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- events</span></span>
-<span id="cb4-219"><a href="#cb4-219" aria-hidden="true" tabindex="-1"></a>  input<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"input"</span><span class="op">,</span> renderSuggestions)<span class="op">;</span></span>
-<span id="cb4-220"><a href="#cb4-220" aria-hidden="true" tabindex="-1"></a>  input<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"focus"</span><span class="op">,</span> () <span class="kw">=&gt;</span> { <span class="fu">alignList</span>()<span class="op">;</span> })<span class="op">;</span> <span class="co">// realign on focus</span></span>
+<span id="cb4-179"><a href="#cb4-179" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> candidates <span class="op">=</span> q</span>
+<span id="cb4-180"><a href="#cb4-180" aria-hidden="true" tabindex="-1"></a>      <span class="op">?</span> tags<span class="op">.</span><span class="fu">filter</span>(t <span class="kw">=&gt;</span> t<span class="op">.</span><span class="fu">toLowerCase</span>()<span class="op">.</span><span class="fu">startsWith</span>(q) <span class="op">&amp;&amp;</span> <span class="op">!</span>already<span class="op">.</span><span class="fu">has</span>(t<span class="op">.</span><span class="fu">toLowerCase</span>()))</span>
+<span id="cb4-181"><a href="#cb4-181" aria-hidden="true" tabindex="-1"></a>      <span class="op">:</span> []<span class="op">;</span></span>
+<span id="cb4-182"><a href="#cb4-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-183"><a href="#cb4-183" aria-hidden="true" tabindex="-1"></a>    list<span class="op">.</span><span class="at">innerHTML</span> <span class="op">=</span> <span class="st">""</span><span class="op">;</span></span>
+<span id="cb4-184"><a href="#cb4-184" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (candidates<span class="op">.</span><span class="at">length</span> <span class="op">===</span> <span class="dv">0</span>) { list<span class="op">.</span><span class="at">hidden</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span> <span class="cf">return</span><span class="op">;</span> }</span>
+<span id="cb4-185"><a href="#cb4-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-186"><a href="#cb4-186" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="kw">const</span> t <span class="kw">of</span> candidates<span class="op">.</span><span class="fu">slice</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">8</span>)) {</span>
+<span id="cb4-187"><a href="#cb4-187" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> item <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div class="token-suggestion" role="option" data-token="</span><span class="sc">${</span>t<span class="sc">}</span><span class="vs">"&gt;</span><span class="sc">${</span><span class="fu">pretty</span>(t)<span class="sc">}</span><span class="vs">&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb4-188"><a href="#cb4-188" aria-hidden="true" tabindex="-1"></a>      item<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"mousedown"</span><span class="op">,</span> (e) <span class="kw">=&gt;</span> { e<span class="op">.</span><span class="fu">preventDefault</span>()<span class="op">;</span> <span class="fu">acceptSuggestion</span>(t)<span class="op">;</span> })<span class="op">;</span></span>
+<span id="cb4-189"><a href="#cb4-189" aria-hidden="true" tabindex="-1"></a>      list<span class="op">.</span><span class="fu">appendChild</span>(item)<span class="op">;</span></span>
+<span id="cb4-190"><a href="#cb4-190" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb4-191"><a href="#cb4-191" aria-hidden="true" tabindex="-1"></a>    selectedIndex <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="cb4-192"><a href="#cb4-192" aria-hidden="true" tabindex="-1"></a>    <span class="fu">applyActiveStyles</span>()<span class="op">;</span></span>
+<span id="cb4-193"><a href="#cb4-193" aria-hidden="true" tabindex="-1"></a>    list<span class="op">.</span><span class="at">hidden</span> <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb4-194"><a href="#cb4-194" aria-hidden="true" tabindex="-1"></a>    <span class="fu">alignList</span>()<span class="op">;</span> <span class="co">// ensure correct position when shown</span></span>
+<span id="cb4-195"><a href="#cb4-195" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-196"><a href="#cb4-196" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-197"><a href="#cb4-197" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">commit</span>() {</span>
+<span id="cb4-198"><a href="#cb4-198" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> parts <span class="op">=</span> <span class="fu">tokens</span>()<span class="op">;</span></span>
+<span id="cb4-199"><a href="#cb4-199" aria-hidden="true" tabindex="-1"></a>    input<span class="op">.</span><span class="at">value</span> <span class="op">=</span> parts<span class="op">.</span><span class="fu">join</span>(<span class="st">" "</span>) <span class="op">+</span> (parts<span class="op">.</span><span class="at">length</span> <span class="op">?</span> <span class="st">" "</span> <span class="op">:</span> <span class="st">""</span>)<span class="op">;</span></span>
+<span id="cb4-200"><a href="#cb4-200" aria-hidden="true" tabindex="-1"></a>    wrapper<span class="op">.</span><span class="fu">dispatchEvent</span>(<span class="kw">new</span> <span class="bu">Event</span>(<span class="st">"input"</span><span class="op">,</span> { <span class="dt">bubbles</span><span class="op">:</span> <span class="kw">true</span> }))<span class="op">;</span></span>
+<span id="cb4-201"><a href="#cb4-201" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-202"><a href="#cb4-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-203"><a href="#cb4-203" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">acceptSuggestion</span>(tag) {</span>
+<span id="cb4-204"><a href="#cb4-204" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> parts <span class="op">=</span> input<span class="op">.</span><span class="at">value</span><span class="op">.</span><span class="fu">split</span>(<span class="ss">/</span><span class="sc">\s+</span><span class="ss">/</span>)<span class="op">;</span></span>
+<span id="cb4-205"><a href="#cb4-205" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="ss">/</span><span class="sc">\S</span><span class="ss">/</span><span class="op">.</span><span class="fu">test</span>(input<span class="op">.</span><span class="at">value</span>)) parts<span class="op">.</span><span class="fu">pop</span>()<span class="op">;</span> <span class="co">// replace last token</span></span>
+<span id="cb4-206"><a href="#cb4-206" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> <span class="kw">set</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">Set</span>(parts<span class="op">.</span><span class="fu">filter</span>(<span class="bu">Boolean</span>)<span class="op">.</span><span class="fu">map</span>(s <span class="kw">=&gt;</span> s<span class="op">.</span><span class="fu">toLowerCase</span>()))<span class="op">;</span></span>
+<span id="cb4-207"><a href="#cb4-207" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="op">!</span><span class="kw">set</span><span class="op">.</span><span class="fu">has</span>(tag<span class="op">.</span><span class="fu">toLowerCase</span>())) parts<span class="op">.</span><span class="fu">push</span>(tag)<span class="op">;</span></span>
+<span id="cb4-208"><a href="#cb4-208" aria-hidden="true" tabindex="-1"></a>    input<span class="op">.</span><span class="at">value</span> <span class="op">=</span> parts<span class="op">.</span><span class="fu">filter</span>(<span class="bu">Boolean</span>)<span class="op">.</span><span class="fu">join</span>(<span class="st">" "</span>) <span class="op">+</span> <span class="st">" "</span><span class="op">;</span></span>
+<span id="cb4-209"><a href="#cb4-209" aria-hidden="true" tabindex="-1"></a>    list<span class="op">.</span><span class="at">hidden</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb4-210"><a href="#cb4-210" aria-hidden="true" tabindex="-1"></a>    <span class="fu">commit</span>()<span class="op">;</span></span>
+<span id="cb4-211"><a href="#cb4-211" aria-hidden="true" tabindex="-1"></a>    input<span class="op">.</span><span class="fu">focus</span>()<span class="op">;</span></span>
+<span id="cb4-212"><a href="#cb4-212" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-213"><a href="#cb4-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-214"><a href="#cb4-214" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">moveSelection</span>(delta) {</span>
+<span id="cb4-215"><a href="#cb4-215" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> items <span class="op">=</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>(list<span class="op">.</span><span class="at">children</span>)<span class="op">;</span></span>
+<span id="cb4-216"><a href="#cb4-216" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (items<span class="op">.</span><span class="at">length</span> <span class="op">===</span> <span class="dv">0</span>) <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb4-217"><a href="#cb4-217" aria-hidden="true" tabindex="-1"></a>    selectedIndex <span class="op">=</span> (selectedIndex <span class="op">+</span> delta <span class="op">+</span> items<span class="op">.</span><span class="at">length</span>) <span class="op">%</span> items<span class="op">.</span><span class="at">length</span><span class="op">;</span></span>
+<span id="cb4-218"><a href="#cb4-218" aria-hidden="true" tabindex="-1"></a>    <span class="fu">applyActiveStyles</span>()<span class="op">;</span></span>
+<span id="cb4-219"><a href="#cb4-219" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (selectedIndex <span class="op">&gt;=</span> <span class="dv">0</span>) items[selectedIndex]<span class="op">.</span><span class="fu">scrollIntoView</span>({ <span class="dt">block</span><span class="op">:</span> <span class="st">"nearest"</span> })<span class="op">;</span></span>
+<span id="cb4-220"><a href="#cb4-220" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb4-221"><a href="#cb4-221" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-222"><a href="#cb4-222" aria-hidden="true" tabindex="-1"></a>  input<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"keydown"</span><span class="op">,</span> (e) <span class="kw">=&gt;</span> {</span>
-<span id="cb4-223"><a href="#cb4-223" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="op">!</span>list<span class="op">.</span><span class="at">hidden</span> <span class="op">&amp;&amp;</span> (e<span class="op">.</span><span class="at">key</span> <span class="op">===</span> <span class="st">"ArrowDown"</span> <span class="op">||</span> e<span class="op">.</span><span class="at">key</span> <span class="op">===</span> <span class="st">"ArrowUp"</span>)) {</span>
-<span id="cb4-224"><a href="#cb4-224" aria-hidden="true" tabindex="-1"></a>      e<span class="op">.</span><span class="fu">preventDefault</span>()<span class="op">;</span> <span class="fu">moveSelection</span>(e<span class="op">.</span><span class="at">key</span> <span class="op">===</span> <span class="st">"ArrowDown"</span> <span class="op">?</span> <span class="op">+</span><span class="dv">1</span> <span class="op">:</span> <span class="op">-</span><span class="dv">1</span>)<span class="op">;</span> <span class="cf">return</span><span class="op">;</span></span>
-<span id="cb4-225"><a href="#cb4-225" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb4-226"><a href="#cb4-226" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (e<span class="op">.</span><span class="at">key</span> <span class="op">===</span> <span class="st">"Enter"</span>) {</span>
-<span id="cb4-227"><a href="#cb4-227" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="op">!</span>list<span class="op">.</span><span class="at">hidden</span> <span class="op">&amp;&amp;</span> selectedIndex <span class="op">&gt;=</span> <span class="dv">0</span>) {</span>
-<span id="cb4-228"><a href="#cb4-228" aria-hidden="true" tabindex="-1"></a>        e<span class="op">.</span><span class="fu">preventDefault</span>()<span class="op">;</span></span>
-<span id="cb4-229"><a href="#cb4-229" aria-hidden="true" tabindex="-1"></a>        <span class="kw">const</span> choice <span class="op">=</span> list<span class="op">.</span><span class="at">children</span>[selectedIndex]<span class="op">?.</span><span class="at">dataset</span><span class="op">.</span><span class="at">token</span><span class="op">;</span></span>
-<span id="cb4-230"><a href="#cb4-230" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (choice) <span class="fu">acceptSuggestion</span>(choice)<span class="op">;</span></span>
-<span id="cb4-231"><a href="#cb4-231" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
-<span id="cb4-232"><a href="#cb4-232" aria-hidden="true" tabindex="-1"></a>        <span class="fu">commit</span>()<span class="op">;</span></span>
-<span id="cb4-233"><a href="#cb4-233" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb4-234"><a href="#cb4-234" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (e<span class="op">.</span><span class="at">key</span> <span class="op">===</span> <span class="st">"Escape"</span>) {</span>
-<span id="cb4-235"><a href="#cb4-235" aria-hidden="true" tabindex="-1"></a>      list<span class="op">.</span><span class="at">hidden</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></span>
-<span id="cb4-236"><a href="#cb4-236" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb4-237"><a href="#cb4-237" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
-<span id="cb4-238"><a href="#cb4-238" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-239"><a href="#cb4-239" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Delay blur to allow mousedown on suggestion to fire first</span></span>
-<span id="cb4-240"><a href="#cb4-240" aria-hidden="true" tabindex="-1"></a>  input<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"blur"</span><span class="op">,</span> () <span class="kw">=&gt;</span> {</span>
-<span id="cb4-241"><a href="#cb4-241" aria-hidden="true" tabindex="-1"></a>    <span class="pp">setTimeout</span>(() <span class="kw">=&gt;</span> { list<span class="op">.</span><span class="at">hidden</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span> <span class="fu">commit</span>()<span class="op">;</span> }<span class="op">,</span> <span class="dv">200</span>)<span class="op">;</span></span>
-<span id="cb4-242"><a href="#cb4-242" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
-<span id="cb4-243"><a href="#cb4-243" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-244"><a href="#cb4-244" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Close when clicking outside (remember list is outside wrapper now)</span></span>
-<span id="cb4-245"><a href="#cb4-245" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> onDocClick <span class="op">=</span> (e) <span class="kw">=&gt;</span> {</span>
-<span id="cb4-246"><a href="#cb4-246" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (e<span class="op">.</span><span class="at">target</span> <span class="op">!==</span> input <span class="op">&amp;&amp;</span> <span class="op">!</span>list<span class="op">.</span><span class="fu">contains</span>(e<span class="op">.</span><span class="at">target</span>)) list<span class="op">.</span><span class="at">hidden</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></span>
-<span id="cb4-247"><a href="#cb4-247" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
-<span id="cb4-248"><a href="#cb4-248" aria-hidden="true" tabindex="-1"></a>  <span class="bu">document</span><span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"click"</span><span class="op">,</span> onDocClick<span class="op">,</span> <span class="kw">true</span>)<span class="op">;</span></span>
-<span id="cb4-249"><a href="#cb4-249" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-250"><a href="#cb4-250" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Reposition on any scroll/resize (capture scrolls from nested containers)</span></span>
-<span id="cb4-251"><a href="#cb4-251" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> onViewportChange <span class="op">=</span> () <span class="kw">=&gt;</span> { <span class="cf">if</span> (<span class="op">!</span>list<span class="op">.</span><span class="at">hidden</span>) <span class="fu">alignList</span>()<span class="op">;</span> }<span class="op">;</span></span>
-<span id="cb4-252"><a href="#cb4-252" aria-hidden="true" tabindex="-1"></a>  <span class="bu">window</span><span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"resize"</span><span class="op">,</span> onViewportChange<span class="op">,</span> { <span class="dt">passive</span><span class="op">:</span> <span class="kw">true</span> })<span class="op">;</span></span>
-<span id="cb4-253"><a href="#cb4-253" aria-hidden="true" tabindex="-1"></a>  <span class="bu">window</span><span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"scroll"</span><span class="op">,</span> onViewportChange<span class="op">,</span> <span class="kw">true</span>)<span class="op">;</span></span>
-<span id="cb4-254"><a href="#cb4-254" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-255"><a href="#cb4-255" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Initial alignment</span></span>
-<span id="cb4-256"><a href="#cb4-256" aria-hidden="true" tabindex="-1"></a>  <span class="fu">queueMicrotask</span>(alignList)<span class="op">;</span></span>
-<span id="cb4-257"><a href="#cb4-257" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-258"><a href="#cb4-258" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Cleanup when the cell re-runs</span></span>
-<span id="cb4-259"><a href="#cb4-259" aria-hidden="true" tabindex="-1"></a>  wrapper<span class="op">.</span><span class="at">dispose</span> <span class="op">=</span> () <span class="kw">=&gt;</span> {</span>
-<span id="cb4-260"><a href="#cb4-260" aria-hidden="true" tabindex="-1"></a>    <span class="bu">document</span><span class="op">.</span><span class="fu">removeEventListener</span>(<span class="st">"click"</span><span class="op">,</span> onDocClick<span class="op">,</span> <span class="kw">true</span>)<span class="op">;</span></span>
-<span id="cb4-261"><a href="#cb4-261" aria-hidden="true" tabindex="-1"></a>    <span class="bu">window</span><span class="op">.</span><span class="fu">removeEventListener</span>(<span class="st">"resize"</span><span class="op">,</span> onViewportChange<span class="op">,</span> { <span class="dt">passive</span><span class="op">:</span> <span class="kw">true</span> })<span class="op">;</span></span>
-<span id="cb4-262"><a href="#cb4-262" aria-hidden="true" tabindex="-1"></a>    <span class="bu">window</span><span class="op">.</span><span class="fu">removeEventListener</span>(<span class="st">"scroll"</span><span class="op">,</span> onViewportChange<span class="op">,</span> <span class="kw">true</span>)<span class="op">;</span></span>
-<span id="cb4-263"><a href="#cb4-263" aria-hidden="true" tabindex="-1"></a>    list<span class="op">.</span><span class="fu">remove</span>()<span class="op">;</span></span>
-<span id="cb4-264"><a href="#cb4-264" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
-<span id="cb4-265"><a href="#cb4-265" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-266"><a href="#cb4-266" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Initial render</span></span>
-<span id="cb4-267"><a href="#cb4-267" aria-hidden="true" tabindex="-1"></a>  <span class="fu">renderSuggestions</span>()<span class="op">;</span></span>
-<span id="cb4-268"><a href="#cb4-268" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-269"><a href="#cb4-269" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> wrapper<span class="op">;</span></span>
-<span id="cb4-270"><a href="#cb4-270" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-222"><a href="#cb4-222" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- events</span></span>
+<span id="cb4-223"><a href="#cb4-223" aria-hidden="true" tabindex="-1"></a>  input<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"input"</span><span class="op">,</span> renderSuggestions)<span class="op">;</span></span>
+<span id="cb4-224"><a href="#cb4-224" aria-hidden="true" tabindex="-1"></a>  input<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"focus"</span><span class="op">,</span> () <span class="kw">=&gt;</span> { <span class="fu">alignList</span>()<span class="op">;</span> })<span class="op">;</span> <span class="co">// realign on focus</span></span>
+<span id="cb4-225"><a href="#cb4-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-226"><a href="#cb4-226" aria-hidden="true" tabindex="-1"></a>  input<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"keydown"</span><span class="op">,</span> (e) <span class="kw">=&gt;</span> {</span>
+<span id="cb4-227"><a href="#cb4-227" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="op">!</span>list<span class="op">.</span><span class="at">hidden</span> <span class="op">&amp;&amp;</span> (e<span class="op">.</span><span class="at">key</span> <span class="op">===</span> <span class="st">"ArrowDown"</span> <span class="op">||</span> e<span class="op">.</span><span class="at">key</span> <span class="op">===</span> <span class="st">"ArrowUp"</span>)) {</span>
+<span id="cb4-228"><a href="#cb4-228" aria-hidden="true" tabindex="-1"></a>      e<span class="op">.</span><span class="fu">preventDefault</span>()<span class="op">;</span> <span class="fu">moveSelection</span>(e<span class="op">.</span><span class="at">key</span> <span class="op">===</span> <span class="st">"ArrowDown"</span> <span class="op">?</span> <span class="op">+</span><span class="dv">1</span> <span class="op">:</span> <span class="op">-</span><span class="dv">1</span>)<span class="op">;</span> <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb4-229"><a href="#cb4-229" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb4-230"><a href="#cb4-230" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (e<span class="op">.</span><span class="at">key</span> <span class="op">===</span> <span class="st">"Enter"</span>) {</span>
+<span id="cb4-231"><a href="#cb4-231" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="op">!</span>list<span class="op">.</span><span class="at">hidden</span> <span class="op">&amp;&amp;</span> selectedIndex <span class="op">&gt;=</span> <span class="dv">0</span>) {</span>
+<span id="cb4-232"><a href="#cb4-232" aria-hidden="true" tabindex="-1"></a>        e<span class="op">.</span><span class="fu">preventDefault</span>()<span class="op">;</span></span>
+<span id="cb4-233"><a href="#cb4-233" aria-hidden="true" tabindex="-1"></a>        <span class="kw">const</span> choice <span class="op">=</span> list<span class="op">.</span><span class="at">children</span>[selectedIndex]<span class="op">?.</span><span class="at">dataset</span><span class="op">.</span><span class="at">token</span><span class="op">;</span></span>
+<span id="cb4-234"><a href="#cb4-234" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (choice) <span class="fu">acceptSuggestion</span>(choice)<span class="op">;</span></span>
+<span id="cb4-235"><a href="#cb4-235" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
+<span id="cb4-236"><a href="#cb4-236" aria-hidden="true" tabindex="-1"></a>        <span class="fu">commit</span>()<span class="op">;</span></span>
+<span id="cb4-237"><a href="#cb4-237" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb4-238"><a href="#cb4-238" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (e<span class="op">.</span><span class="at">key</span> <span class="op">===</span> <span class="st">"Escape"</span>) {</span>
+<span id="cb4-239"><a href="#cb4-239" aria-hidden="true" tabindex="-1"></a>      list<span class="op">.</span><span class="at">hidden</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb4-240"><a href="#cb4-240" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb4-241"><a href="#cb4-241" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb4-242"><a href="#cb4-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-243"><a href="#cb4-243" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Delay blur to allow mousedown on suggestion to fire first</span></span>
+<span id="cb4-244"><a href="#cb4-244" aria-hidden="true" tabindex="-1"></a>  input<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"blur"</span><span class="op">,</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb4-245"><a href="#cb4-245" aria-hidden="true" tabindex="-1"></a>    <span class="pp">setTimeout</span>(() <span class="kw">=&gt;</span> { list<span class="op">.</span><span class="at">hidden</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span> <span class="fu">commit</span>()<span class="op">;</span> }<span class="op">,</span> <span class="dv">200</span>)<span class="op">;</span></span>
+<span id="cb4-246"><a href="#cb4-246" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb4-247"><a href="#cb4-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-248"><a href="#cb4-248" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Close when clicking outside (remember list is outside wrapper now)</span></span>
+<span id="cb4-249"><a href="#cb4-249" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> onDocClick <span class="op">=</span> (e) <span class="kw">=&gt;</span> {</span>
+<span id="cb4-250"><a href="#cb4-250" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (e<span class="op">.</span><span class="at">target</span> <span class="op">!==</span> input <span class="op">&amp;&amp;</span> <span class="op">!</span>list<span class="op">.</span><span class="fu">contains</span>(e<span class="op">.</span><span class="at">target</span>)) list<span class="op">.</span><span class="at">hidden</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb4-251"><a href="#cb4-251" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb4-252"><a href="#cb4-252" aria-hidden="true" tabindex="-1"></a>  <span class="bu">document</span><span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"click"</span><span class="op">,</span> onDocClick<span class="op">,</span> <span class="kw">true</span>)<span class="op">;</span></span>
+<span id="cb4-253"><a href="#cb4-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-254"><a href="#cb4-254" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Reposition on any scroll/resize (capture scrolls from nested containers)</span></span>
+<span id="cb4-255"><a href="#cb4-255" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> onViewportChange <span class="op">=</span> () <span class="kw">=&gt;</span> { <span class="cf">if</span> (<span class="op">!</span>list<span class="op">.</span><span class="at">hidden</span>) <span class="fu">alignList</span>()<span class="op">;</span> }<span class="op">;</span></span>
+<span id="cb4-256"><a href="#cb4-256" aria-hidden="true" tabindex="-1"></a>  <span class="bu">window</span><span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"resize"</span><span class="op">,</span> onViewportChange<span class="op">,</span> { <span class="dt">passive</span><span class="op">:</span> <span class="kw">true</span> })<span class="op">;</span></span>
+<span id="cb4-257"><a href="#cb4-257" aria-hidden="true" tabindex="-1"></a>  <span class="bu">window</span><span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"scroll"</span><span class="op">,</span> onViewportChange<span class="op">,</span> <span class="kw">true</span>)<span class="op">;</span></span>
+<span id="cb4-258"><a href="#cb4-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-259"><a href="#cb4-259" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Initial alignment</span></span>
+<span id="cb4-260"><a href="#cb4-260" aria-hidden="true" tabindex="-1"></a>  <span class="fu">queueMicrotask</span>(alignList)<span class="op">;</span></span>
+<span id="cb4-261"><a href="#cb4-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-262"><a href="#cb4-262" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Cleanup when the cell re-runs</span></span>
+<span id="cb4-263"><a href="#cb4-263" aria-hidden="true" tabindex="-1"></a>  wrapper<span class="op">.</span><span class="at">dispose</span> <span class="op">=</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb4-264"><a href="#cb4-264" aria-hidden="true" tabindex="-1"></a>    <span class="bu">document</span><span class="op">.</span><span class="fu">removeEventListener</span>(<span class="st">"click"</span><span class="op">,</span> onDocClick<span class="op">,</span> <span class="kw">true</span>)<span class="op">;</span></span>
+<span id="cb4-265"><a href="#cb4-265" aria-hidden="true" tabindex="-1"></a>    <span class="bu">window</span><span class="op">.</span><span class="fu">removeEventListener</span>(<span class="st">"resize"</span><span class="op">,</span> onViewportChange<span class="op">,</span> { <span class="dt">passive</span><span class="op">:</span> <span class="kw">true</span> })<span class="op">;</span></span>
+<span id="cb4-266"><a href="#cb4-266" aria-hidden="true" tabindex="-1"></a>    <span class="bu">window</span><span class="op">.</span><span class="fu">removeEventListener</span>(<span class="st">"scroll"</span><span class="op">,</span> onViewportChange<span class="op">,</span> <span class="kw">true</span>)<span class="op">;</span></span>
+<span id="cb4-267"><a href="#cb4-267" aria-hidden="true" tabindex="-1"></a>    list<span class="op">.</span><span class="fu">remove</span>()<span class="op">;</span></span>
+<span id="cb4-268"><a href="#cb4-268" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb4-269"><a href="#cb4-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-270"><a href="#cb4-270" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Initial render</span></span>
+<span id="cb4-271"><a href="#cb4-271" aria-hidden="true" tabindex="-1"></a>  <span class="fu">renderSuggestions</span>()<span class="op">;</span></span>
+<span id="cb4-272"><a href="#cb4-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-273"><a href="#cb4-273" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> wrapper<span class="op">;</span></span>
+<span id="cb4-274"><a href="#cb4-274" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-4" data-nodetype="declaration">
 
@@ -938,19 +927,19 @@ window.Quarto = {
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb5" data-startfrom="277" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 276;"><span id="cb5-277"><a href="#cb5-277" aria-hidden="true" tabindex="-1"></a>viewof chosen <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">checkbox</span>(allTags<span class="op">,</span> {</span>
-<span id="cb5-278"><a href="#cb5-278" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="fu">md</span><span class="vs">`Or pick tags:`</span><span class="op">,</span></span>
-<span id="cb5-279"><a href="#cb5-279" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> []</span>
-<span id="cb5-280"><a href="#cb5-280" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb5-281"><a href="#cb5-281" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-282"><a href="#cb5-282" aria-hidden="true" tabindex="-1"></a>viewof levels <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">checkbox</span>(</span>
-<span id="cb5-283"><a href="#cb5-283" aria-hidden="true" tabindex="-1"></a>  [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span>]<span class="op">,</span></span>
-<span id="cb5-284"><a href="#cb5-284" aria-hidden="true" tabindex="-1"></a>  {</span>
-<span id="cb5-285"><a href="#cb5-285" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="fu">md</span><span class="vs">`Difficulty:`</span><span class="op">,</span></span>
-<span id="cb5-286"><a href="#cb5-286" aria-hidden="true" tabindex="-1"></a>    <span class="dt">value</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span>]<span class="op">,</span>                 <span class="co">// default: show all</span></span>
-<span id="cb5-287"><a href="#cb5-287" aria-hidden="true" tabindex="-1"></a>    <span class="dt">format</span><span class="op">:</span> d <span class="kw">=&gt;</span> [<span class="st">"Easy"</span><span class="op">,</span> <span class="st">"Medium"</span><span class="op">,</span> <span class="st">"Hard"</span><span class="op">,</span> <span class="st">"Challenge"</span>][d]</span>
-<span id="cb5-288"><a href="#cb5-288" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb5-289"><a href="#cb5-289" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb5" data-startfrom="281" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 280;"><span id="cb5-281"><a href="#cb5-281" aria-hidden="true" tabindex="-1"></a>viewof chosen <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">checkbox</span>(allTags<span class="op">,</span> {</span>
+<span id="cb5-282"><a href="#cb5-282" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="fu">md</span><span class="vs">`Or pick tags:`</span><span class="op">,</span></span>
+<span id="cb5-283"><a href="#cb5-283" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> []</span>
+<span id="cb5-284"><a href="#cb5-284" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb5-285"><a href="#cb5-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-286"><a href="#cb5-286" aria-hidden="true" tabindex="-1"></a>viewof levels <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">checkbox</span>(</span>
+<span id="cb5-287"><a href="#cb5-287" aria-hidden="true" tabindex="-1"></a>  [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span>]<span class="op">,</span></span>
+<span id="cb5-288"><a href="#cb5-288" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb5-289"><a href="#cb5-289" aria-hidden="true" tabindex="-1"></a>    <span class="dt">label</span><span class="op">:</span> <span class="fu">md</span><span class="vs">`Difficulty:`</span><span class="op">,</span></span>
+<span id="cb5-290"><a href="#cb5-290" aria-hidden="true" tabindex="-1"></a>    <span class="dt">value</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span>]<span class="op">,</span>                 <span class="co">// default: show all</span></span>
+<span id="cb5-291"><a href="#cb5-291" aria-hidden="true" tabindex="-1"></a>    <span class="dt">format</span><span class="op">:</span> d <span class="kw">=&gt;</span> [<span class="st">"Easy"</span><span class="op">,</span> <span class="st">"Medium"</span><span class="op">,</span> <span class="st">"Hard"</span><span class="op">,</span> <span class="st">"Challenge"</span>][d]</span>
+<span id="cb5-292"><a href="#cb5-292" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-293"><a href="#cb5-293" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-5-1" data-nodetype="declaration">
@@ -967,24 +956,24 @@ window.Quarto = {
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="294" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 293;"><span id="cb6-294"><a href="#cb6-294" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb6-295"><a href="#cb6-295" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Sync checkboxes to the committed text tokens</span></span>
-<span id="cb6-296"><a href="#cb6-296" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> lcMap <span class="op">=</span> <span class="kw">new</span> <span class="bu">Map</span>(allTags<span class="op">.</span><span class="fu">map</span>(t <span class="kw">=&gt;</span> [t<span class="op">.</span><span class="fu">toLowerCase</span>()<span class="op">,</span> t]))<span class="op">;</span> <span class="co">// lower → original</span></span>
-<span id="cb6-297"><a href="#cb6-297" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> typedNow <span class="op">=</span> (typed <span class="op">||</span> <span class="st">""</span>)<span class="op">.</span><span class="fu">split</span>(<span class="ss">/</span><span class="sc">\s+</span><span class="ss">/</span>)<span class="op">.</span><span class="fu">filter</span>(<span class="bu">Boolean</span>)<span class="op">.</span><span class="fu">map</span>(s <span class="kw">=&gt;</span> s<span class="op">.</span><span class="fu">toLowerCase</span>())<span class="op">;</span></span>
-<span id="cb6-298"><a href="#cb6-298" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> selected <span class="op">=</span> typedNow<span class="op">.</span><span class="fu">map</span>(s <span class="kw">=&gt;</span> lcMap<span class="op">.</span><span class="fu">get</span>(s))<span class="op">.</span><span class="fu">filter</span>(<span class="bu">Boolean</span>)<span class="op">;</span></span>
-<span id="cb6-299"><a href="#cb6-299" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-300"><a href="#cb6-300" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> el <span class="op">=</span> viewof chosen<span class="op">;</span></span>
-<span id="cb6-301"><a href="#cb6-301" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (el <span class="op">&amp;&amp;</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">isArray</span>(el<span class="op">.</span><span class="at">value</span>)) {</span>
-<span id="cb6-302"><a href="#cb6-302" aria-hidden="true" tabindex="-1"></a>    <span class="co">// compare sets to avoid churn</span></span>
-<span id="cb6-303"><a href="#cb6-303" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> cur <span class="op">=</span> <span class="kw">new</span> <span class="bu">Set</span>(el<span class="op">.</span><span class="at">value</span>)<span class="op">;</span></span>
-<span id="cb6-304"><a href="#cb6-304" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> equal <span class="op">=</span> selected<span class="op">.</span><span class="at">length</span> <span class="op">===</span> cur<span class="op">.</span><span class="at">size</span> <span class="op">&amp;&amp;</span> selected<span class="op">.</span><span class="fu">every</span>(v <span class="kw">=&gt;</span> cur<span class="op">.</span><span class="fu">has</span>(v))<span class="op">;</span></span>
-<span id="cb6-305"><a href="#cb6-305" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="op">!</span>equal) {</span>
-<span id="cb6-306"><a href="#cb6-306" aria-hidden="true" tabindex="-1"></a>      el<span class="op">.</span><span class="at">value</span> <span class="op">=</span> selected<span class="op">;</span></span>
-<span id="cb6-307"><a href="#cb6-307" aria-hidden="true" tabindex="-1"></a>      el<span class="op">.</span><span class="fu">dispatchEvent</span>(<span class="kw">new</span> <span class="bu">Event</span>(<span class="st">"input"</span><span class="op">,</span> {<span class="dt">bubbles</span><span class="op">:</span><span class="kw">true</span>}))<span class="op">;</span></span>
-<span id="cb6-308"><a href="#cb6-308" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb6-309"><a href="#cb6-309" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb6-310"><a href="#cb6-310" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">html</span><span class="vs">``</span><span class="op">;</span></span>
-<span id="cb6-311"><a href="#cb6-311" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="298" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 297;"><span id="cb6-298"><a href="#cb6-298" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb6-299"><a href="#cb6-299" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Sync checkboxes to the committed text tokens</span></span>
+<span id="cb6-300"><a href="#cb6-300" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> lcMap <span class="op">=</span> <span class="kw">new</span> <span class="bu">Map</span>(allTags<span class="op">.</span><span class="fu">map</span>(t <span class="kw">=&gt;</span> [t<span class="op">.</span><span class="fu">toLowerCase</span>()<span class="op">,</span> t]))<span class="op">;</span> <span class="co">// lower → original</span></span>
+<span id="cb6-301"><a href="#cb6-301" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> typedNow <span class="op">=</span> (typed <span class="op">||</span> <span class="st">""</span>)<span class="op">.</span><span class="fu">split</span>(<span class="ss">/</span><span class="sc">\s+</span><span class="ss">/</span>)<span class="op">.</span><span class="fu">filter</span>(<span class="bu">Boolean</span>)<span class="op">.</span><span class="fu">map</span>(s <span class="kw">=&gt;</span> s<span class="op">.</span><span class="fu">toLowerCase</span>())<span class="op">;</span></span>
+<span id="cb6-302"><a href="#cb6-302" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> selected <span class="op">=</span> typedNow<span class="op">.</span><span class="fu">map</span>(s <span class="kw">=&gt;</span> lcMap<span class="op">.</span><span class="fu">get</span>(s))<span class="op">.</span><span class="fu">filter</span>(<span class="bu">Boolean</span>)<span class="op">;</span></span>
+<span id="cb6-303"><a href="#cb6-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-304"><a href="#cb6-304" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> el <span class="op">=</span> viewof chosen<span class="op">;</span></span>
+<span id="cb6-305"><a href="#cb6-305" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (el <span class="op">&amp;&amp;</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">isArray</span>(el<span class="op">.</span><span class="at">value</span>)) {</span>
+<span id="cb6-306"><a href="#cb6-306" aria-hidden="true" tabindex="-1"></a>    <span class="co">// compare sets to avoid churn</span></span>
+<span id="cb6-307"><a href="#cb6-307" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> cur <span class="op">=</span> <span class="kw">new</span> <span class="bu">Set</span>(el<span class="op">.</span><span class="at">value</span>)<span class="op">;</span></span>
+<span id="cb6-308"><a href="#cb6-308" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> equal <span class="op">=</span> selected<span class="op">.</span><span class="at">length</span> <span class="op">===</span> cur<span class="op">.</span><span class="at">size</span> <span class="op">&amp;&amp;</span> selected<span class="op">.</span><span class="fu">every</span>(v <span class="kw">=&gt;</span> cur<span class="op">.</span><span class="fu">has</span>(v))<span class="op">;</span></span>
+<span id="cb6-309"><a href="#cb6-309" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="op">!</span>equal) {</span>
+<span id="cb6-310"><a href="#cb6-310" aria-hidden="true" tabindex="-1"></a>      el<span class="op">.</span><span class="at">value</span> <span class="op">=</span> selected<span class="op">;</span></span>
+<span id="cb6-311"><a href="#cb6-311" aria-hidden="true" tabindex="-1"></a>      el<span class="op">.</span><span class="fu">dispatchEvent</span>(<span class="kw">new</span> <span class="bu">Event</span>(<span class="st">"input"</span><span class="op">,</span> {<span class="dt">bubbles</span><span class="op">:</span><span class="kw">true</span>}))<span class="op">;</span></span>
+<span id="cb6-312"><a href="#cb6-312" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb6-313"><a href="#cb6-313" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-314"><a href="#cb6-314" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">html</span><span class="vs">``</span><span class="op">;</span></span>
+<span id="cb6-315"><a href="#cb6-315" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-6" data-nodetype="expression">
 
@@ -992,29 +981,29 @@ window.Quarto = {
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb7" data-startfrom="315" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 314;"><span id="cb7-315"><a href="#cb7-315" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb7-316"><a href="#cb7-316" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> typedSet  <span class="op">=</span> <span class="kw">new</span> <span class="bu">Set</span>((typed <span class="op">||</span> <span class="st">""</span>)<span class="op">.</span><span class="fu">split</span>(<span class="ss">/</span><span class="sc">\s+</span><span class="ss">/</span>)<span class="op">.</span><span class="fu">filter</span>(<span class="bu">Boolean</span>))<span class="op">;</span></span>
-<span id="cb7-317"><a href="#cb7-317" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> chosenSet <span class="op">=</span> <span class="kw">new</span> <span class="bu">Set</span>(chosen <span class="op">||</span> [])<span class="op">;</span></span>
-<span id="cb7-318"><a href="#cb7-318" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> required  <span class="op">=</span> <span class="kw">new</span> <span class="bu">Set</span>([<span class="op">...</span>typedSet<span class="op">,</span> <span class="op">...</span>chosenSet])<span class="op">;</span>   <span class="co">// AND over tags</span></span>
-<span id="cb7-319"><a href="#cb7-319" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> chosenLv  <span class="op">=</span> <span class="kw">new</span> <span class="bu">Set</span>(levels <span class="op">||</span> [])<span class="op">;</span>                  <span class="co">// allowed levels</span></span>
-<span id="cb7-320"><a href="#cb7-320" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-321"><a href="#cb7-321" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> shown <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb7-322"><a href="#cb7-322" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">const</span> el <span class="kw">of</span> allQuestions) {</span>
-<span id="cb7-323"><a href="#cb7-323" aria-hidden="true" tabindex="-1"></a>    <span class="co">// tags check</span></span>
-<span id="cb7-324"><a href="#cb7-324" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> elTags <span class="op">=</span> <span class="kw">new</span> <span class="bu">Set</span>((el<span class="op">.</span><span class="at">dataset</span><span class="op">.</span><span class="at">tags</span> <span class="op">||</span> <span class="st">""</span>)<span class="op">.</span><span class="fu">split</span>(<span class="ss">/</span><span class="sc">\s+</span><span class="ss">/</span>)<span class="op">.</span><span class="fu">filter</span>(<span class="bu">Boolean</span>))<span class="op">;</span></span>
-<span id="cb7-325"><a href="#cb7-325" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> passTags <span class="op">=</span> required<span class="op">.</span><span class="at">size</span> <span class="op">===</span> <span class="dv">0</span> <span class="op">||</span> [<span class="op">...</span>required]<span class="op">.</span><span class="fu">every</span>(t <span class="kw">=&gt;</span> elTags<span class="op">.</span><span class="fu">has</span>(t))<span class="op">;</span></span>
-<span id="cb7-326"><a href="#cb7-326" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-327"><a href="#cb7-327" aria-hidden="true" tabindex="-1"></a>    <span class="co">// difficulty check (0 default)</span></span>
-<span id="cb7-328"><a href="#cb7-328" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> level <span class="op">=</span> <span class="bu">Number</span>(el<span class="op">.</span><span class="at">dataset</span><span class="op">.</span><span class="at">difficulty</span> <span class="op">??</span> <span class="dv">0</span>)<span class="op">;</span></span>
-<span id="cb7-329"><a href="#cb7-329" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> passDiff <span class="op">=</span> chosenLv<span class="op">.</span><span class="fu">has</span>(level)<span class="op">;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb7" data-startfrom="319" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 318;"><span id="cb7-319"><a href="#cb7-319" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb7-320"><a href="#cb7-320" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> typedSet  <span class="op">=</span> <span class="kw">new</span> <span class="bu">Set</span>((typed <span class="op">||</span> <span class="st">""</span>)<span class="op">.</span><span class="fu">split</span>(<span class="ss">/</span><span class="sc">\s+</span><span class="ss">/</span>)<span class="op">.</span><span class="fu">filter</span>(<span class="bu">Boolean</span>))<span class="op">;</span></span>
+<span id="cb7-321"><a href="#cb7-321" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> chosenSet <span class="op">=</span> <span class="kw">new</span> <span class="bu">Set</span>(chosen <span class="op">||</span> [])<span class="op">;</span></span>
+<span id="cb7-322"><a href="#cb7-322" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> required  <span class="op">=</span> <span class="kw">new</span> <span class="bu">Set</span>([<span class="op">...</span>typedSet<span class="op">,</span> <span class="op">...</span>chosenSet])<span class="op">;</span>   <span class="co">// AND over tags</span></span>
+<span id="cb7-323"><a href="#cb7-323" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> chosenLv  <span class="op">=</span> <span class="kw">new</span> <span class="bu">Set</span>(levels <span class="op">||</span> [])<span class="op">;</span>                  <span class="co">// allowed levels</span></span>
+<span id="cb7-324"><a href="#cb7-324" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-325"><a href="#cb7-325" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> shown <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-326"><a href="#cb7-326" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">const</span> el <span class="kw">of</span> allQuestions) {</span>
+<span id="cb7-327"><a href="#cb7-327" aria-hidden="true" tabindex="-1"></a>    <span class="co">// tags check</span></span>
+<span id="cb7-328"><a href="#cb7-328" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> elTags <span class="op">=</span> <span class="kw">new</span> <span class="bu">Set</span>((el<span class="op">.</span><span class="at">dataset</span><span class="op">.</span><span class="at">tags</span> <span class="op">||</span> <span class="st">""</span>)<span class="op">.</span><span class="fu">split</span>(<span class="ss">/</span><span class="sc">\s+</span><span class="ss">/</span>)<span class="op">.</span><span class="fu">filter</span>(<span class="bu">Boolean</span>))<span class="op">;</span></span>
+<span id="cb7-329"><a href="#cb7-329" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> passTags <span class="op">=</span> required<span class="op">.</span><span class="at">size</span> <span class="op">===</span> <span class="dv">0</span> <span class="op">||</span> [<span class="op">...</span>required]<span class="op">.</span><span class="fu">every</span>(t <span class="kw">=&gt;</span> elTags<span class="op">.</span><span class="fu">has</span>(t))<span class="op">;</span></span>
 <span id="cb7-330"><a href="#cb7-330" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-331"><a href="#cb7-331" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> show <span class="op">=</span> passTags <span class="op">&amp;&amp;</span> passDiff<span class="op">;</span></span>
-<span id="cb7-332"><a href="#cb7-332" aria-hidden="true" tabindex="-1"></a>    el<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">display</span> <span class="op">=</span> show <span class="op">?</span> <span class="st">""</span> <span class="op">:</span> <span class="st">"none"</span><span class="op">;</span></span>
-<span id="cb7-333"><a href="#cb7-333" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (show) shown <span class="op">+=</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb7-334"><a href="#cb7-334" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb7-335"><a href="#cb7-335" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-336"><a href="#cb7-336" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">html</span><span class="vs">`&lt;div&gt;&lt;strong&gt;Showing </span><span class="sc">${</span>shown<span class="sc">}</span><span class="vs">&lt;/strong&gt; of </span><span class="sc">${</span>allQuestions<span class="op">.</span><span class="at">length</span><span class="sc">}</span><span class="vs"> questions.&lt;/div&gt;`</span></span>
-<span id="cb7-337"><a href="#cb7-337" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-331"><a href="#cb7-331" aria-hidden="true" tabindex="-1"></a>    <span class="co">// difficulty check (0 default)</span></span>
+<span id="cb7-332"><a href="#cb7-332" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> level <span class="op">=</span> <span class="bu">Number</span>(el<span class="op">.</span><span class="at">dataset</span><span class="op">.</span><span class="at">difficulty</span> <span class="op">??</span> <span class="dv">0</span>)<span class="op">;</span></span>
+<span id="cb7-333"><a href="#cb7-333" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> passDiff <span class="op">=</span> chosenLv<span class="op">.</span><span class="fu">has</span>(level)<span class="op">;</span></span>
+<span id="cb7-334"><a href="#cb7-334" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-335"><a href="#cb7-335" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> show <span class="op">=</span> passTags <span class="op">&amp;&amp;</span> passDiff<span class="op">;</span></span>
+<span id="cb7-336"><a href="#cb7-336" aria-hidden="true" tabindex="-1"></a>    el<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">display</span> <span class="op">=</span> show <span class="op">?</span> <span class="st">""</span> <span class="op">:</span> <span class="st">"none"</span><span class="op">;</span></span>
+<span id="cb7-337"><a href="#cb7-337" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (show) shown <span class="op">+=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb7-338"><a href="#cb7-338" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-339"><a href="#cb7-339" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-340"><a href="#cb7-340" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">html</span><span class="vs">`&lt;div&gt;&lt;strong&gt;Showing </span><span class="sc">${</span>shown<span class="sc">}</span><span class="vs">&lt;/strong&gt; of </span><span class="sc">${</span>allQuestions<span class="op">.</span><span class="at">length</span><span class="sc">}</span><span class="vs"> questions.&lt;/div&gt;`</span></span>
+<span id="cb7-341"><a href="#cb7-341" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-7" data-nodetype="expression">
 
@@ -1027,7 +1016,7 @@ window.Quarto = {
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;1: Events: at least one, exactly one, or neither
+Important&nbsp;1: Question 1: Events: at least one, exactly one, or neither
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1063,7 +1052,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;2: Conditional probabilities from a two-way table
+Important&nbsp;2: Question 2: Conditional probabilities from a two-way table
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1127,7 +1116,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;3: Sampling without replacement
+Important&nbsp;3: Question 3: Sampling without replacement
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1165,7 +1154,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;4: Independent or mutually exclusive?
+Important&nbsp;4: Question 4: Independent or mutually exclusive?
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1201,7 +1190,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;5: Total probability across three suppliers
+Important&nbsp;5: Question 5: Total probability across three suppliers
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1233,7 +1222,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;6: Bayes’ theorem and a rare fault
+Important&nbsp;6: Question 6: Bayes’ theorem and a rare fault
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1266,7 +1255,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;7: A discrete distribution from probabilities to moments
+Important&nbsp;7: Question 7: A discrete distribution from probabilities to moments
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1315,7 +1304,7 @@ F_X(x)=
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;8: A density is not a point probability
+Important&nbsp;8: Question 8: A density is not a point probability
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1357,7 +1346,7 @@ f_X(x)=8x\quad(0&lt;x&lt;1/2),
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;9: Joint, marginal, and conditional probabilities
+Important&nbsp;9: Question 9: Joint, marginal, and conditional probabilities
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1421,7 +1410,7 @@ p_{X,Y}(0,0)=0.10\ne(0.40)(0.30)=p_X(0)p_Y(0).
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;10: Zero correlation does not imply independence
+Important&nbsp;10: Question 10: Zero correlation does not imply independence
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1456,7 +1445,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;11: Counting events with indicator variables
+Important&nbsp;11: Question 11: Counting events with indicator variables
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1494,7 +1483,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;12: One observation versus a sample mean
+Important&nbsp;12: Question 12: One observation versus a sample mean
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1528,7 +1517,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Probability of heads
+<span class="screen-reader-only">Important</span>Question 13: Probability of heads
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1549,7 +1538,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Newspaper subscriptions
+<span class="screen-reader-only">Important</span>Question 14: Newspaper subscriptions
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1578,7 +1567,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;13: Normal Data MLE
+Important&nbsp;13: Question 15: Normal Data MLE
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1616,7 +1605,7 @@ L(\mu ; \underline{x}) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi}}
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Converting mean and standard deviation
+<span class="screen-reader-only">Important</span>Question 16: Converting mean and standard deviation
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1644,7 +1633,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>PDF, normalisation constant, and CDF
+<span class="screen-reader-only">Important</span>Question 17: PDF, normalisation constant, and CDF
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1799,7 +1788,7 @@ Figure&nbsp;1: Probability density function <span class="math inline">f(x)</span
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Linear combinations of independent random variables
+<span class="screen-reader-only">Important</span>Question 18: Linear combinations of independent random variables
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1860,7 +1849,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Linear combinations of dependent random variables
+<span class="screen-reader-only">Important</span>Question 19: Linear combinations of dependent random variables
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1923,7 +1912,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Minimiser of <span class="math inline">\mathrm{E}[(X-c)^2]</span>
+<span class="screen-reader-only">Important</span>Question 20: Minimiser of <span class="math inline">\mathrm{E}[(X-c)^2]</span>
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1956,7 +1945,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Minimiser of <span class="math inline">\mathrm{E}[|X-c|]</span>
+<span class="screen-reader-only">Important</span>Question 21: Minimiser of <span class="math inline">\mathrm{E}[|X-c|]</span>
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1991,7 +1980,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Binomial Probabilities
+<span class="screen-reader-only">Important</span>Question 22: Binomial Probabilities
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -2068,7 +2057,7 @@ Since <span class="math inline">X</span> is integer-valued, this corresponds to 
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="67a50c6e" class="cell" data-execution_count="2">
+<div id="e15b2bad" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> comb</span>
@@ -2136,7 +2125,7 @@ cat(
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Mean and Standard Deviation of Linear Combinations
+<span class="screen-reader-only">Important</span>Question 23: Mean and Standard Deviation of Linear Combinations
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -2195,7 +2184,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Expectation with a Poisson Distribution
+<span class="screen-reader-only">Important</span>Question 24: Expectation with a Poisson Distribution
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -2234,7 +2223,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Distribution of a Squared Normal Variable
+<span class="screen-reader-only">Important</span>Question 25: Distribution of a Squared Normal Variable
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -2281,7 +2270,7 @@ This is exactly the PDF of a <span class="math inline">\chi^2_1</span> distribut
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Customer Waiting Times
+<span class="screen-reader-only">Important</span>Question 26: Customer Waiting Times
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -2323,7 +2312,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Exact Binomial Confidence Interval (Clopper–Pearson)
+<span class="screen-reader-only">Important</span>Question 27: Exact Binomial Confidence Interval (Clopper–Pearson)
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -2381,7 +2370,7 @@ B^{-1}\!\left(1-\tfrac{\alpha}{2};\, x+1,\; n-x\right), &amp; x\le n-1,\\
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Probability Integral Transform
+<span class="screen-reader-only">Important</span>Question 28: Probability Integral Transform
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -2434,7 +2423,7 @@ U \sim U(0,1).
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Moment Generating Function of the Exponential
+<span class="screen-reader-only">Important</span>Question 29: Moment Generating Function of the Exponential
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -2477,7 +2466,7 @@ M(t) = \frac{\lambda}{\lambda - t}, \qquad 0 \leq t &lt; \lambda.
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;14: Estimating <span class="math inline">\lambda</span> from Independent Poisson Samples
+Important&nbsp;14: Question 30: Estimating <span class="math inline">\lambda</span> from Independent Poisson Samples
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -2574,7 +2563,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Bias, Variance, and MSE of Estimators
+<span class="screen-reader-only">Important</span>Question 31: Bias, Variance, and MSE of Estimators
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -2664,7 +2653,7 @@ a = \tfrac{1-3b}{2} = \tfrac{7}{23},
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;15: Properties of Poisson Estimators
+Important&nbsp;15: Question 32: Properties of Poisson Estimators
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -2729,7 +2718,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;16: MLE for the Gamma Distribution
+Important&nbsp;16: Question 33: MLE for the Gamma Distribution
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -2769,7 +2758,7 @@ L(b;\underline{x}) = \prod_{i=1}^n f(x_i;b)
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="1c04f9e3" class="cell" data-execution_count="3">
+<div id="0cf3b710" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -2838,7 +2827,7 @@ L(b;\underline{x}) = \prod_{i=1}^n f(x_i;b)
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Deriving the Student-<span class="math inline">t</span> distribution
+<span class="screen-reader-only">Important</span>Question 34: Deriving the Student-<span class="math inline">t</span> distribution
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -2909,7 +2898,7 @@ f_T(t) = \frac{\Gamma\!\left(\frac{\nu+1}{2}\right)}{\sqrt{\nu\pi}\,\Gamma\!\lef
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Sample Mean and Standard Deviation
+<span class="screen-reader-only">Important</span>Question 35: Sample Mean and Standard Deviation
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -2950,7 +2939,7 @@ s = \sqrt{24.011} \approx 4.900.
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;17: Central Limit Theorem Approximation
+Important&nbsp;17: Question 36: Central Limit Theorem Approximation
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3027,7 +3016,7 @@ We first compute the moments.</p>
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;18: Normal Approximation to the Binomial
+Important&nbsp;18: Question 37: Normal Approximation to the Binomial
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3065,7 +3054,7 @@ X \overset{\text{approx.}}{\sim} \mathcal{N} \big(np,\; np(1-p)\big).
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;19: Properties of an Estimator I
+Important&nbsp;19: Question 38: Properties of an Estimator I
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3113,7 +3102,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;20: Properties of an Estimator II
+Important&nbsp;20: Question 39: Properties of an Estimator II
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3158,7 +3147,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;21: Properties of an Estimator III
+Important&nbsp;21: Question 40: Properties of an Estimator III
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3217,7 +3206,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;22: Properties of the Poisson distribution
+Important&nbsp;22: Question 41: Properties of the Poisson distribution
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3263,7 +3252,7 @@ Since <span class="math inline">\mathrm{Var}(X_i) = \lambda</span> and the <span
 </ol></li>
 </ol>
 <p>In Python:</p>
-<div id="f47310be" class="cell" data-execution_count="4">
+<div id="8f1f8b44" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> poisson</span>
@@ -3288,7 +3277,7 @@ Part (iii) answer: 0.5987138355230368</code></pre>
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Variance of an Estimator (with dependence)
+<span class="screen-reader-only">Important</span>Question 42: Variance of an Estimator (with dependence)
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3321,7 +3310,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;23: Proving Consistency I
+Important&nbsp;23: Question 43: Proving Consistency I
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3367,7 +3356,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;24: Computing Likelihoods I
+Important&nbsp;24: Question 44: Computing Likelihoods I
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3396,7 +3385,7 @@ L(p; \underline{x}) &amp;= \prod_{i=1}^n p(1-p)^{x_i - 1} \\
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;25: Computing Likelihoods II
+Important&nbsp;25: Question 45: Computing Likelihoods II
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3425,7 +3414,7 @@ L(\mu; \underline{x}) &amp;= \prod_{i=1}^n \frac{1}{\sqrt{2\pi}} \exp\left\{ -\f
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;26: Computing Likelihoods III
+Important&nbsp;26: Question 46: Computing Likelihoods III
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3456,7 +3445,7 @@ L(\mu, \gamma; \underline{x}) &amp;= \prod_{i=1}^n \frac{1}{x_i\sqrt{2\pi\gamma}
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;27: Fisher Information for a Binomial Observation
+Important&nbsp;27: Question 47: Fisher Information for a Binomial Observation
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3521,7 +3510,7 @@ j(\hat\theta_{\mathrm{MLE}};x)
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;28: Fisher Information for Geometric Data
+Important&nbsp;28: Question 48: Fisher Information for Geometric Data
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3594,7 +3583,7 @@ j_n(\hat\theta_{\mathrm{MLE}};\underline x)
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;29: Fisher Information of the Variance of Normal Data
+Important&nbsp;29: Question 49: Fisher Information of the Variance of Normal Data
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3670,7 +3659,7 @@ j_n(\hat\gamma_{\mathrm{MLE}};\underline x)
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;30: Asymptotic Posterior for the Variance Parameter
+Important&nbsp;30: Question 50: Asymptotic Posterior for the Variance Parameter
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3784,7 +3773,7 @@ I_n(\hat{\gamma})^{-1}
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;31: Asymptotic Posterior for Poisson Data
+Important&nbsp;31: Question 51: Asymptotic Posterior for Poisson Data
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3850,7 +3839,7 @@ f(\underline{x} \mid \lambda) &amp;= \prod_{i=1}^n \frac{\lambda^{x_i} e^{-\lamb
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;32: Asymptotic Posterior for Exponential Data
+Important&nbsp;32: Question 52: Asymptotic Posterior for Exponential Data
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3951,7 +3940,7 @@ f(\underline{x} \mid \lambda)
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Bayesian Inference for the Click-through Rate on Instagram
+<span class="screen-reader-only">Important</span>Question 53: Bayesian Inference for the Click-through Rate on Instagram
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3967,7 +3956,7 @@ f(\underline{x} \mid \lambda)
 <li>Construct a <span class="math inline">90\%</span> highest density interval (HDI) for <span class="math inline">\theta</span>.</li>
 </ol>
 <p><em>Hint:</em> The following plot may be helpful.</p>
-<div id="69e9b571" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="5">
+<div id="9ed5cf61" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="5">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -4050,7 +4039,7 @@ X \mid \theta \sim \mathrm{Binomial}(n=20,\ \theta).
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;33: Approximate MLE-based Confidence Interval for Geometric Data
+Important&nbsp;33: Question 54: Approximate MLE-based Confidence Interval for Geometric Data
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4126,7 +4115,7 @@ n\bar{x} p &amp;= n \\
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;34: Asymptotic Distribution of the Exponential MLE
+Important&nbsp;34: Question 55: Asymptotic Distribution of the Exponential MLE
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4197,7 +4186,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;35: Normal Data: Asymptotic Distribution of the MLE of the variance
+Important&nbsp;35: Question 56: Normal Data: Asymptotic Distribution of the MLE of the variance
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4273,7 +4262,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;36: Large-Sample Approximate Confidence Interval for a Proportion
+Important&nbsp;36: Question 57: Large-Sample Approximate Confidence Interval for a Proportion
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4313,7 +4302,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;37: Large-Sample Hypothesis Test for a Proportion
+Important&nbsp;37: Question 58: Large-Sample Hypothesis Test for a Proportion
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4369,7 +4358,7 @@ z_{0.05} = -1.645.
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;38: Large-Sample Hypothesis Test for a Poisson Rate
+Important&nbsp;38: Question 59: Large-Sample Hypothesis Test for a Poisson Rate
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4422,7 +4411,7 @@ z_{0.05} = -1.645.
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;39: Large-Sample Two-Sided Hypothesis Test for a Poisson Rate
+Important&nbsp;39: Question 60: Large-Sample Two-Sided Hypothesis Test for a Poisson Rate
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4475,7 +4464,7 @@ T_{\mathrm{obs}} = \frac{\bar{X} - \lambda_0}{\mathrm{SE}_0}
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;40: Large-Sample Two-Sided Hypothesis Test for an Exponential Rate
+Important&nbsp;40: Question 61: Large-Sample Two-Sided Hypothesis Test for an Exponential Rate
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4537,7 +4526,7 @@ T_{\mathrm{obs}} = \frac{\bar{X} - 1/\lambda_0}{\mathrm{SE}_0}
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;41: One-Sample Z-test and t-test for a Normal Mean
+Important&nbsp;41: Question 62: One-Sample Z-test and t-test for a Normal Mean
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4621,7 +4610,7 @@ n - 1 = 24
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;42: VO<span class="math inline">_2</span> Max: One-Sided One-Sample Z-Test and t-Test for a Normal Mean
+Important&nbsp;42: Question 63: VO<span class="math inline">_2</span> Max: One-Sided One-Sample Z-Test and t-Test for a Normal Mean
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4705,7 +4694,7 @@ t_{40,,0.99} \approx 2.423.
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;43: Sodium Content: One-Sided One-Sample Z-Test and t-Test for a Normal Mean
+Important&nbsp;43: Question 64: Sodium Content: One-Sided One-Sample Z-Test and t-Test for a Normal Mean
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4786,7 +4775,7 @@ t_{39,\,0.01} \approx -2.426.
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;44: MAP Estimation in a Defect-Rate Problem
+Important&nbsp;44: Question 65: MAP Estimation in a Defect-Rate Problem
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4885,7 +4874,7 @@ x + a - 1 &amp;= (n + a + b - 2)p \\[4pt]
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;45: MAP Estimation for a Call-Arrival Rate
+Important&nbsp;45: Question 66: MAP Estimation for a Call-Arrival Rate
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -4992,7 +4981,7 @@ f(y \mid \lambda)
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;46: Unbiased Estimation and Efficiency in the Normal Model
+Important&nbsp;46: Question 67: Unbiased Estimation and Efficiency in the Normal Model
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -5103,7 +5092,7 @@ L(\theta) = (2\pi\theta)^{-n/2}
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;47: Likelihood Ratio Test for Extreme Weather Events
+Important&nbsp;47: Question 68: Likelihood Ratio Test for Extreme Weather Events
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -5170,7 +5159,7 @@ T_{\mathrm{obs}} = -2 \log \lambda
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Bias, Variance, and Mean Squared Error
+<span class="screen-reader-only">Important</span>Question 69: Bias, Variance, and Mean Squared Error
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -5228,7 +5217,7 @@ If a biased estimator has a smaller MSE than an unbiased one, the biased estimat
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;48: Likelihood Ratio Test for the Lifespan of a Magical Artefact
+Important&nbsp;48: Question 70: Likelihood Ratio Test for the Lifespan of a Magical Artefact
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -5320,7 +5309,7 @@ T_{\mathrm{obs}} = 0.514 &lt; 2.71,
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;49: Properties of the Maximum Likelihood Estimator
+Important&nbsp;49: Question 71: Properties of the Maximum Likelihood Estimator
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -5390,7 +5379,7 @@ L(\theta; \underline{x}) = \prod_{i=1}^n f(x_i \mid \theta) = \theta^{-n} \prod_
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;50: Estimation from a Uniform Distribution
+Important&nbsp;50: Question 72: Estimation from a Uniform Distribution
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -5502,7 +5491,7 @@ f_Z(z)
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Two-Sample <span class="math inline">t</span>-Test for Difference in Means
+<span class="screen-reader-only">Important</span>Question 73: Two-Sample <span class="math inline">t</span>-Test for Difference in Means
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -5582,7 +5571,7 @@ t =
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Bayesian Reliability Analysis with a Weibull Model
+<span class="screen-reader-only">Important</span>Question 74: Bayesian Reliability Analysis with a Weibull Model
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -5735,7 +5724,7 @@ f(\underline{t} \mid \theta)
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;51: MLE for the Uniform Distribution <span class="math inline">U(\theta, 2\theta)</span>
+Important&nbsp;51: Question 75: MLE for the Uniform Distribution <span class="math inline">U(\theta, 2\theta)</span>
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -5793,7 +5782,7 @@ Hence, the likelihood is maximized by taking the <strong>smallest allowable</str
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Bias, Mean Squared Error, and Estimator Comparison
+<span class="screen-reader-only">Important</span>Question 76: Bias, Mean Squared Error, and Estimator Comparison
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -5880,7 +5869,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Unbiasedness of the Sample Variance and Pooled Variance; Hypothesis Test for Means
+<span class="screen-reader-only">Important</span>Question 77: Unbiasedness of the Sample Variance and Pooled Variance; Hypothesis Test for Means
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -5948,7 +5937,7 @@ Therefore, there is <strong>insufficient evidence at the 5% level</strong> to co
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Bernoulli Likelihood, Fisher Information, and Inference
+<span class="screen-reader-only">Important</span>Question 78: Bernoulli Likelihood, Fisher Information, and Inference
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -6057,7 +6046,7 @@ There is evidence that the proportion of left-handed people differs from 0.1.</p
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;52: Conjugacy: Binomial Model, Beta Prior
+Important&nbsp;52: Question 79: Conjugacy: Binomial Model, Beta Prior
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -6101,7 +6090,7 @@ p \mid x \sim \mathrm{Beta}(a + x, b + n - x),
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;53: Conjugacy: Poisson Model, Gamma Prior
+Important&nbsp;53: Question 80: Conjugacy: Poisson Model, Gamma Prior
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -6151,7 +6140,7 @@ f(\underline{x} \mid \lambda) \propto \lambda^{n\bar{x}} e^{-n\lambda}.
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;54: Conjugacy: Geometric Model, Beta Prior
+Important&nbsp;54: Question 81: Conjugacy: Geometric Model, Beta Prior
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -6199,7 +6188,7 @@ p \mid \underline{x} \sim \mathrm{Beta}(a + n, b + n(\bar{x} - 1)),
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;55: Conjugacy: Normal Model with known variance, Normal Prior for mean
+Important&nbsp;55: Question 82: Conjugacy: Normal Model with known variance, Normal Prior for mean
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -6269,7 +6258,7 @@ V &amp;= \frac{1}{\frac{1}{\sigma^2_0} + \frac{n}{\sigma^2}}.
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;56: Conjugacy: Normal Model with known mean, Inverse Gamma Prior for variance
+Important&nbsp;56: Question 83: Conjugacy: Normal Model with known mean, Inverse Gamma Prior for variance
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -6327,7 +6316,7 @@ b + \frac{1}{2}\sum_{i=1}^n (x_i - \mu)^2  \right),
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;57: Conjugacy: Exponential Model, Gamma Prior
+Important&nbsp;57: Question 84: Conjugacy: Exponential Model, Gamma Prior
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -6379,7 +6368,7 @@ b + n\bar{x}  \right),
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;58: Conjugacy: Weibull Model with known rate, Inverse Gamma Prior
+Important&nbsp;58: Question 85: Conjugacy: Weibull Model with known rate, Inverse Gamma Prior
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -6433,7 +6422,7 @@ b + \sum_{i=1}^n x_i^\beta  \right),
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;59: Posterior calculation: Normal likelihood, Normal prior
+Important&nbsp;59: Question 86: Posterior calculation: Normal likelihood, Normal prior
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -6475,7 +6464,7 @@ V &amp;= \frac{1}{ \frac{1}{1} + \frac{10}{4}} = \frac{4}{14}.
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;60: Model, parameter, estimator, and estimate
+Important&nbsp;60: Question 87: Model, parameter, estimator, and estimate
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -6509,7 +6498,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;61: Unbiased and consistent are different properties
+Important&nbsp;61: Question 88: Unbiased and consistent are different properties
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -6549,7 +6538,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;62: Likelihood is not a posterior probability
+Important&nbsp;62: Question 89: Likelihood is not a posterior probability
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -6587,7 +6576,7 @@ L(1/4)=\frac3{256},\qquad L(3/4)=\frac{27}{256},\qquad
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;63: Choosing a method from the assumptions
+Important&nbsp;63: Question 90: Choosing a method from the assumptions
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -6625,7 +6614,7 @@ T=\frac{\bar X-\mu_0}{S/\sqrt n}\sim t_{11}.
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;64: What a 95% interval does and does not say
+Important&nbsp;64: Question 91: What a 95% interval does and does not say
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -6666,7 +6655,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;65: The alternative determines the p-value
+Important&nbsp;65: Question 92: The alternative determines the p-value
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -6701,7 +6690,7 @@ p=\mathrm{Pr}_{H_0}(|Z|\ge1.80)=2(1-0.9641)=0.0718.
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;66: Type I error, Type II error, and power
+Important&nbsp;66: Question 93: Type I error, Type II error, and power
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -6739,7 +6728,7 @@ Solution
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;67: Sequential Bayesian updating and prior influence
+Important&nbsp;67: Question 94: Sequential Bayesian updating and prior influence
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -6783,7 +6772,7 @@ p\mid\text{both batches}\sim\mathrm{Beta}(5+1,5+2)=\mathrm{Beta}(6,7).
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important&nbsp;68: Equal-tailed and highest-density credible intervals
+Important&nbsp;68: Question 95: Equal-tailed and highest-density credible intervals
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -8494,8 +8483,8 @@ if (document.body.classList.contains('reading-mode')) {
   const asset = (path) => new URL(path, siteRoot).href;
   window.MAS2901_KNOWLEDGE_GRAPH_CYTOSCAPE = asset('knowledge-graph/vendor/cytoscape-3.34.1.min.js');
 
-  loadStylesheet(asset('knowledge-graph/knowledge-graph.css'))
-    .then(() => loadScript(asset('knowledge-graph/knowledge-graph.js')))
+  loadStylesheet(asset('knowledge-graph/knowledge-graph.css?v=2'))
+    .then(() => loadScript(asset('knowledge-graph/knowledge-graph.js?v=2')))
     .catch((error) => console.error('Unable to load the course map.', error));
 })();
 </script>
@@ -9054,8 +9043,8 @@ window._ojs.runtime.interpretFromScriptTags();
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../content/appendix/distribution-explorer.html" class="pagination-link" aria-label="Distribution Explorer">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Distribution Explorer</span>
+      <a href="../../content/appendix/revision-sheet.html" class="pagination-link" aria-label="Revision Sheet">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Revision Sheet</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

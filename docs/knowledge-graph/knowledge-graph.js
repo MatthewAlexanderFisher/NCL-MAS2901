@@ -5,9 +5,10 @@
   window.__mas2901KnowledgeGraphInitialised = true;
 
   const siteRoot = new URL(window.MAS2901_KNOWLEDGE_GRAPH_ROOT || './', document.baseURI);
-  const dataUrl = new URL('knowledge-graph/course-graph.json', siteRoot);
+  const dataUrl = new URL('knowledge-graph/course-graph.json?v=2', siteRoot);
   const cytoscapeUrl = window.MAS2901_KNOWLEDGE_GRAPH_CYTOSCAPE;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const compactViewport = window.matchMedia('(max-width: 680px)');
 
   const state = {
     data: null,
@@ -16,8 +17,7 @@
     relationshipById: new Map(),
     currentId: null,
     selectedId: null,
-    expandedIds: new Set(),
-    showAll: false,
+    chapterById: new Map(),
     partFilter: 'all',
     view: readStoredView(),
     cy: null,
@@ -42,16 +42,16 @@
 
   function readStoredView() {
     try {
-      const stored = localStorage.getItem('mas2901-course-map-view');
-      return stored === 'list' ? 'list' : 'graph';
+      const stored = localStorage.getItem('mas2901-course-map-view-v2');
+      return ['overview', 'graph', 'list'].includes(stored) ? stored : 'overview';
     } catch (_) {
-      return 'graph';
+      return 'overview';
     }
   }
 
   function storeView(view) {
     try {
-      localStorage.setItem('mas2901-course-map-view', view);
+      localStorage.setItem('mas2901-course-map-view-v2', view);
     } catch (_) {
       // The course map still works if storage is unavailable.
     }
@@ -97,7 +97,7 @@
         <header class="kg-drawer-header">
           <div class="kg-drawer-title-wrap">
             <h2 class="kg-drawer-title" id="knowledge-graph-title">Course map</h2>
-            <p class="kg-drawer-subtitle" id="knowledge-graph-subtitle">Explore how the main ideas in MAS2901 connect.</p>
+            <p class="kg-drawer-subtitle" id="knowledge-graph-subtitle">Browse every chapter, then explore the connections around a concept.</p>
           </div>
           <button class="kg-close-button" type="button" aria-label="Close course map">×</button>
         </header>
@@ -113,9 +113,9 @@
               <option value="all">All parts</option>
             </select>
           </div>
-          <button class="kg-button kg-scope-button" type="button" disabled>Show full map</button>
           <div class="kg-view-switch" aria-label="Course map view">
-            <button class="kg-view-button" type="button" data-view="graph" aria-pressed="true">Graph</button>
+            <button class="kg-view-button" type="button" data-view="overview" aria-pressed="true">Overview</button>
+            <button class="kg-view-button" type="button" data-view="graph" aria-pressed="false">Connections</button>
             <button class="kg-view-button" type="button" data-view="list" aria-pressed="false">List</button>
           </div>
         </div>
@@ -125,7 +125,20 @@
               <span class="kg-status" role="status" aria-live="polite">Open the map to load course concepts.</span>
               <button class="kg-button kg-reset-button" type="button" disabled>Reset to this page</button>
             </div>
-            <div class="kg-graph" role="img" aria-label="Interactive graph of course concepts. Use the list view for keyboard-accessible links."></div>
+            <div class="kg-overview" aria-label="Course chapters and resources"></div>
+            <div class="kg-graph-view" hidden>
+              <div class="kg-graph-tools">
+                <p>Direct connections only. Scroll for more, or select a neighbour to explore. Fit shows all at once.</p>
+                <div class="kg-zoom-controls" aria-label="Graph zoom">
+                  <button class="kg-button" type="button" data-zoom="out" aria-label="Zoom out">−</button>
+                  <button class="kg-button" type="button" data-zoom="fit">Fit</button>
+                  <button class="kg-button" type="button" data-zoom="in" aria-label="Zoom in">+</button>
+                </div>
+              </div>
+              <div class="kg-graph-scroll" tabindex="0" role="region" aria-label="Scrollable concept connections">
+                <div class="kg-graph" role="img" aria-label="Direct connections for the selected concept. The same connections are available as buttons in the concept details."></div>
+              </div>
+            </div>
             <div class="kg-list-view" aria-label="Course concepts as a list" hidden></div>
           </section>
           <section class="kg-detail" aria-label="Selected concept details">
@@ -143,11 +156,15 @@
 
     document.body.append(ui.backdrop);
     ui.drawer = ui.backdrop.querySelector('.kg-drawer');
+    ui.main = ui.backdrop.querySelector('.kg-main');
     ui.closeButton = ui.backdrop.querySelector('.kg-close-button');
     ui.search = ui.backdrop.querySelector('#knowledge-graph-search');
     ui.searchResults = ui.backdrop.querySelector('.kg-search-results');
     ui.partFilter = ui.backdrop.querySelector('#knowledge-graph-part');
-    ui.scopeButton = ui.backdrop.querySelector('.kg-scope-button');
+    ui.overview = ui.backdrop.querySelector('.kg-overview');
+    ui.graphView = ui.backdrop.querySelector('.kg-graph-view');
+    ui.graphScroll = ui.backdrop.querySelector('.kg-graph-scroll');
+    ui.legend = ui.backdrop.querySelector('.kg-legend');
     ui.resetButton = ui.backdrop.querySelector('.kg-reset-button');
     ui.viewButtons = Array.from(ui.backdrop.querySelectorAll('.kg-view-button'));
     ui.status = ui.backdrop.querySelector('.kg-status');
@@ -160,7 +177,19 @@
     ui.backdrop.addEventListener('click', (event) => {
       if (event.target === ui.backdrop) closeDrawer();
     });
-    ui.scopeButton.addEventListener('click', toggleScope);
+    ui.backdrop.querySelectorAll('[data-zoom]').forEach(button => button.addEventListener('click', () => {
+      if (!state.cy) return;
+      if (button.dataset.zoom === 'fit') return fitGraph();
+      const factor = button.dataset.zoom === 'in' ? 1.25 : 0.8;
+      state.cy.zoom({ level: state.cy.zoom() * factor, renderedPosition: { x: state.cy.width() / 2, y: state.cy.height() / 2 } });
+    }));
+    new ResizeObserver(() => {
+      if (state.isOpen && !compactViewport.matches && state.view === 'graph' && state.cy) {
+        state.cy.resize();
+        fitGraph(true);
+      }
+    }).observe(ui.graphScroll);
+    compactViewport.addEventListener('change', () => { if (state.isOpen) renderAll(); });
     ui.resetButton.addEventListener('click', resetToCurrentPage);
     ui.partFilter.addEventListener('change', changePartFilter);
     ui.viewButtons.forEach((button) => button.addEventListener('click', () => setView(button.dataset.view)));
@@ -175,7 +204,7 @@
   async function loadData() {
     if (state.data) return state.data;
     if (!state.dataPromise) {
-      state.dataPromise = fetch(dataUrl)
+      state.dataPromise = fetch(dataUrl, { mode: 'same-origin' })
         .then((response) => {
           if (!response.ok) throw new Error(`Course map data returned ${response.status}.`);
           return response.json();
@@ -185,6 +214,7 @@
           state.data = data;
           state.nodeById = new Map(data.nodes.map((node) => [node.id, node]));
           state.partById = new Map(data.parts.map((part) => [part.id, part]));
+          state.chapterById = new Map(data.chapters.map((chapter) => [chapter.id, chapter]));
           state.relationshipById = new Map(data.relationshipTypes.map((relationship) => [relationship.id, relationship]));
           populatePartFilter();
           enableControls();
@@ -201,9 +231,10 @@
     const nodeIds = new Set();
     const partIds = new Set((data.parts || []).map((part) => part.id));
     const relationshipIds = new Set((data.relationshipTypes || []).map((relationship) => relationship.id));
+    const chapterIds = new Set((data.chapters || []).map((chapter) => chapter.id));
     for (const node of data.nodes) {
       if (!node.id || nodeIds.has(node.id)) throw new Error(`Duplicate or missing course map node: ${node.id || '(missing id)'}.`);
-      if (!node.label || !node.href || !partIds.has(node.part)) throw new Error(`Incomplete course map node: ${node.id}.`);
+      if (!node.label || !node.href || !partIds.has(node.part) || !chapterIds.has(node.chapter)) throw new Error(`Incomplete course map node: ${node.id}.`);
       nodeIds.add(node.id);
     }
     const edgeIds = new Set();
@@ -248,7 +279,6 @@
   function enableControls() {
     ui.search.disabled = false;
     ui.partFilter.disabled = false;
-    ui.scopeButton.disabled = false;
     ui.resetButton.disabled = false;
   }
 
@@ -270,16 +300,13 @@
       await loadData();
       state.currentId = resolveCurrentNode();
       state.selectedId = state.currentId;
-      state.showAll = false;
       state.partFilter = 'all';
       ui.partFilter.value = 'all';
-      state.expandedIds = neighbourhood(state.currentId);
       setLoadingStatus('Preparing the interactive map…');
 
       try {
         await ensureCytoscape();
         state.graphAvailable = true;
-        initialiseGraph();
       } catch (error) {
         state.graphAvailable = false;
         state.view = 'list';
@@ -290,7 +317,7 @@
       window.setTimeout(() => {
         if (!state.isOpen || !state.cy || state.view !== 'graph') return;
         state.cy.resize();
-        state.cy.fit(undefined, 38);
+        fitGraph(true);
       }, window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 260);
     } catch (error) {
       console.error('Unable to initialise the course map.', error);
@@ -348,11 +375,14 @@
       const url = topicUrl(node);
       return normalisePath(url.pathname) === currentPath;
     });
-    if (!candidates.length) return state.data.nodes[0].id;
+    if (!candidates.length) return null;
 
     if (currentHash) {
       const exact = candidates.find((node) => topicUrl(node).hash === currentHash);
       if (exact) return exact.id;
+    }
+    if (!currentHash && window.scrollY < 80) {
+      return (candidates.find(node => node.defaultForPage) || candidates[0]).id;
     }
 
     const anchored = candidates
@@ -379,7 +409,7 @@
   }
 
   function neighbourhood(nodeId) {
-    const ids = new Set([nodeId]);
+    const ids = new Set(nodeId ? [nodeId] : []);
     if (!state.data || !nodeId) return ids;
     state.data.edges.forEach((edge) => {
       if (edge.source === nodeId) ids.add(edge.target);
@@ -388,22 +418,22 @@
     return ids;
   }
 
-  function expandAround(nodeId) {
-    neighbourhood(nodeId).forEach((id) => state.expandedIds.add(id));
+  function catalogNodes() {
+    if (!state.data) return [];
+    return state.data.nodes.filter(node => state.partFilter === 'all' || node.part === state.partFilter);
   }
 
   function visibleNodes() {
-    if (!state.data) return [];
-    let nodes = state.showAll
-      ? [...state.data.nodes]
-      : state.data.nodes.filter((node) => state.expandedIds.has(node.id));
-    if (state.partFilter !== 'all') nodes = nodes.filter((node) => node.part === state.partFilter);
-    return nodes;
+    const nodes = catalogNodes();
+    if (state.view !== 'graph') return nodes;
+    const ids = neighbourhood(state.selectedId);
+    return nodes.filter(node => ids.has(node.id));
   }
 
   function visibleEdges(nodes) {
-    const ids = new Set(nodes.map((node) => node.id));
-    return state.data.edges.filter((edge) => ids.has(edge.source) && ids.has(edge.target));
+    const ids = new Set(nodes.map(node => node.id));
+    return state.data.edges.filter(edge => ids.has(edge.source) && ids.has(edge.target) &&
+      (edge.source === state.selectedId || edge.target === state.selectedId));
   }
 
   function initialiseGraph() {
@@ -412,11 +442,12 @@
       container: ui.graph,
       elements: [],
       style: graphStyles(),
-      minZoom: 0.35,
+      minZoom: 0.15,
       maxZoom: 2.4,
       wheelSensitivity: 0.18,
+      userZoomingEnabled: false,
       boxSelectionEnabled: false,
-      autoungrabify: false
+      autoungrabify: true
     });
     state.cy.on('tap', 'node', (event) => selectNode(event.target.id()));
   }
@@ -427,25 +458,25 @@
       {
         selector: 'node',
         style: {
-          'background-color': 'data(color)',
-          'border-color': palette.background,
+          'background-color': palette.background,
+          'border-color': 'data(color)',
           'border-width': 2,
           'color': palette.foreground,
           'font-family': getComputedStyle(document.body).fontFamily,
-          'font-size': 12,
+          'font-size': 14,
           'font-weight': 600,
-          'height': 52,
+          'height': 78,
           'label': 'data(label)',
-          'padding': 7,
+          'padding': 8,
           'shape': 'round-rectangle',
           'text-halign': 'center',
-          'text-max-width': 126,
+          'text-max-width': 178,
           'text-outline-color': palette.background,
           'text-outline-opacity': 0.94,
-          'text-outline-width': 3,
+          'text-outline-width': 0,
           'text-valign': 'center',
           'text-wrap': 'wrap',
-          'width': 136
+          'width': 196
         }
       },
       {
@@ -458,8 +489,9 @@
       {
         selector: 'node:selected',
         style: {
-          'border-color': palette.foreground,
-          'border-width': 4,
+          'border-color': 'data(color)',
+          'border-width': 5,
+          'font-weight': 800,
           'overlay-color': palette.series5,
           'overlay-opacity': 0.08,
           'overlay-padding': 7
@@ -468,7 +500,9 @@
       {
         selector: 'edge',
         style: {
-          'curve-style': 'bezier',
+          'curve-style': 'taxi',
+          'taxi-direction': 'horizontal',
+          'taxi-turn': '50%',
           'line-color': palette.muted,
           'line-opacity': 0.68,
           'target-arrow-color': palette.muted,
@@ -507,7 +541,7 @@
           'color': palette.foreground,
           'font-family': getComputedStyle(document.body).fontFamily,
           'font-size': 9,
-          'label': 'data(typeLabel)',
+          'label': '',
           'line-opacity': 1,
           'text-background-color': palette.background,
           'text-background-opacity': 0.92,
@@ -541,53 +575,67 @@
       foundations: palette.series1,
       'point-estimation': palette.series2,
       'interval-estimation': palette.series3,
-      'hypothesis-testing': palette.series4
+      'hypothesis-testing': palette.series4,
+      resources: palette.series5
     };
   }
 
+  // A fixed three-column arrangement keeps labels apart and prevents layout drift.
+  // Only incident edges are drawn, so links never cross an unrelated concept card.
+  function focusPositions(nodes, edges) {
+    const incoming = new Set(edges.filter(edge => edge.target === state.selectedId).map(edge => edge.source));
+    const left = nodes.filter(node => node.id !== state.selectedId && incoming.has(node.id));
+    const right = nodes.filter(node => node.id !== state.selectedId && !incoming.has(node.id));
+    const positions = new Map([[state.selectedId, { x: 0, y: 0 }]]);
+    [left, right].forEach((column, side) => column.forEach((node, row) => {
+      positions.set(node.id, { x: side === 0 ? -310 : 310, y: (row - (column.length - 1) / 2) * 118 });
+    }));
+    return positions;
+  }
+
+  function fitGraph(readable = false) {
+    if (!state.cy || !state.cy.nodes().length || state.view !== 'graph' || compactViewport.matches) return;
+    const viewportHeight = ui.graphScroll.clientHeight;
+    if (!viewportHeight) return;
+    const bounds = state.cy.elements().boundingBox();
+    const widthZoom = Math.min(1, (ui.graphScroll.clientWidth - 72) / bounds.w);
+    const fitZoom = Math.min(widthZoom, (viewportHeight - 72) / bounds.h);
+    // Preserve readable labels for dense neighbourhoods using native vertical scrolling.
+    const zoom = readable ? Math.min(widthZoom, Math.max(0.8, fitZoom)) : fitZoom;
+    ui.graph.style.height = `${Math.max(viewportHeight, bounds.h * zoom + 72)}px`;
+    state.cy.resize();
+    state.cy.zoom(zoom);
+    state.cy.center();
+    const selected = state.cy.$id(state.selectedId);
+    ui.graphScroll.scrollTop = selected.length ? Math.max(0, selected.renderedPosition('y') - viewportHeight / 2) : 0;
+  }
+
   function renderGraph() {
-    if (!state.cy || !state.graphAvailable) return;
+    if (state.view !== 'graph' || !state.graphAvailable || compactViewport.matches) return;
+    initialiseGraph();
+    if (!state.cy) return;
     const nodes = visibleNodes();
     const edges = visibleEdges(nodes);
     const colours = partColours();
-    const elements = [
-      ...nodes.map((node) => ({
-        group: 'nodes',
-        data: { ...node, color: colours[node.part] || getPalette().series5 },
-        classes: node.id === state.currentId ? 'current' : ''
-      })),
-      ...edges.map((edge, index) => ({
-        group: 'edges',
-        data: {
-          id: `kg-edge-${index}-${edge.source}-${edge.target}`,
-          ...edge,
-          typeLabel: state.relationshipById.get(edge.type)?.label || edge.type
-        }
-      }))
-    ];
+    const positions = focusPositions(nodes, edges);
     state.cy.batch(() => {
       state.cy.elements().remove();
-      state.cy.add(elements);
+      state.cy.add([
+        ...nodes.map(node => ({
+          group: 'nodes', data: { ...node, color: colours[node.part] },
+          position: positions.get(node.id), classes: node.id === state.currentId ? 'current' : ''
+        })),
+        ...edges.map((edge, index) => ({
+          group: 'edges', data: { id: `kg-edge-${index}`, ...edge }
+        }))
+      ]);
       state.cy.style(graphStyles());
     });
-    const selected = state.cy.$id(state.selectedId);
-    if (selected.length) selected.select();
+    state.cy.$id(state.selectedId).select();
     highlightSelectedEdges();
-
-    const animate = !reducedMotion.matches && nodes.length <= 28;
-    state.cy.layout({
-      name: 'cose',
-      animate,
-      animationDuration: 280,
-      componentSpacing: 90,
-      fit: true,
-      gravity: 0.35,
-      idealEdgeLength: nodes.length > 30 ? 85 : 115,
-      nodeOverlap: 18,
-      nodeRepulsion: nodes.length > 30 ? 260000 : 420000,
-      padding: 38,
-      randomize: true
-    }).run();
+    state.cy.resize();
+    state.cy.layout({ name: 'preset', fit: false, animate: false }).run();
+    fitGraph(true);
   }
 
   function highlightSelectedEdges() {
@@ -623,53 +671,120 @@
 
   function renderAll() {
     if (!state.data) return;
-    if (!state.nodeById.has(state.selectedId)) state.selectedId = visibleNodes()[0]?.id || state.data.nodes[0].id;
+    if (!state.nodeById.has(state.selectedId)) state.selectedId = catalogNodes()[0]?.id;
     applyViewState();
+    renderOverview();
     renderGraph();
     renderList();
     renderDetails();
     updateStatus();
-    ui.scopeButton.textContent = state.showAll ? 'Show local map' : 'Show full map';
+  }
+
+  function renderOverview() {
+    const openChapters = new Set(Array.from(ui.overview.querySelectorAll('details[open]')).map(el => el.dataset.chapter));
+    const firstRender = !ui.overview.childElementCount;
+    const nodes = catalogNodes();
+    const fragment = document.createDocumentFragment();
+    const colours = partColours();
+    [...state.data.parts].sort((a, b) => a.order - b.order).forEach(part => {
+      const partNodes = nodes.filter(node => node.part === part.id);
+      if (!partNodes.length) return;
+      const section = document.createElement('section');
+      section.className = 'kg-overview-part';
+      section.style.setProperty('--kg-part-color', colours[part.id]);
+      const title = document.createElement('h3');
+      title.textContent = `${part.label} · ${partNodes.length}`;
+      section.append(title);
+      state.data.chapters.filter(chapter => chapter.part === part.id).forEach(chapter => {
+        const chapterNodes = partNodes.filter(node => node.chapter === chapter.id);
+        if (!chapterNodes.length) return;
+        const card = document.createElement('details');
+        card.className = 'kg-chapter';
+        card.dataset.chapter = chapter.id;
+        card.open = openChapters.has(chapter.id) || (firstRender && chapterNodes.some(node => node.id === state.currentId));
+        const summary = document.createElement('summary');
+        const label = document.createElement('span');
+        label.textContent = chapter.label;
+        const count = document.createElement('span');
+        count.className = 'kg-chapter-count';
+        count.textContent = `${chapterNodes.length} ${chapterNodes.length === 1 ? 'entry' : 'entries'}`;
+        summary.append(label, count);
+        const content = document.createElement('div');
+        content.className = 'kg-chapter-content';
+        const read = document.createElement('a');
+        read.className = 'kg-chapter-read';
+        read.href = new URL(chapter.href, siteRoot).href;
+        read.textContent = 'Open this page →';
+        read.addEventListener('click', closeDrawer);
+        content.append(read);
+        chapterNodes.forEach(node => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'kg-concept-button';
+          button.dataset.nodeId = node.id;
+          button.textContent = node.label;
+          if (node.id === state.currentId) button.classList.add('is-current');
+          if (node.optional) button.append(optionalBadge());
+          button.addEventListener('click', () => selectNode(node.id));
+          content.append(button);
+        });
+        card.append(summary, content);
+        section.append(card);
+      });
+      fragment.append(section);
+    });
+    ui.overview.replaceChildren(fragment);
+  }
+
+  function optionalBadge() {
+    const badge = document.createElement('span');
+    badge.className = 'kg-optional';
+    badge.textContent = 'Not examinable';
+    return badge;
   }
 
   function renderList() {
     if (!state.data) return;
-    const nodes = visibleNodes();
+    const nodes = catalogNodes();
     const colours = partColours();
     const fragment = document.createDocumentFragment();
-    const orderedParts = [...state.data.parts].sort((a, b) => a.order - b.order);
-    orderedParts.forEach((part) => {
-      const partNodes = nodes.filter((node) => node.part === part.id);
-      if (!partNodes.length) return;
+    state.data.chapters.forEach(chapter => {
+      const chapterNodes = nodes.filter(node => node.chapter === chapter.id);
+      if (!chapterNodes.length) return;
       const section = document.createElement('section');
       section.className = 'kg-list-part';
       const heading = document.createElement('h3');
-      heading.textContent = part.label;
+      heading.textContent = chapter.label;
       const list = document.createElement('ul');
-      partNodes.forEach((node) => {
+      chapterNodes.forEach(node => {
         const item = document.createElement('li');
+        item.className = 'kg-list-item';
         const link = document.createElement('a');
         link.className = 'kg-list-link';
         if (node.id === state.currentId) link.classList.add('is-current');
-        if (node.id === state.selectedId) link.classList.add('is-selected');
         link.href = topicUrl(node).href;
-        link.dataset.nodeId = node.id;
         const dot = document.createElement('span');
         dot.className = 'kg-list-dot';
         dot.style.setProperty('--kg-node-color', colours[node.part]);
         const label = document.createElement('span');
         label.textContent = node.label;
         link.append(dot, label);
+        if (node.optional) link.append(optionalBadge());
         link.addEventListener('click', closeDrawer);
-        link.addEventListener('focus', () => selectNode(node.id, { renderGraph: false }));
-        item.append(link);
+        link.addEventListener('focus', () => selectNode(node.id, { detailsOnly: true }));
+        const explore = document.createElement('button');
+        explore.type = 'button';
+        explore.className = 'kg-list-explore';
+        explore.textContent = 'Connections';
+        explore.setAttribute('aria-label', `Explore connections for ${node.label}`);
+        explore.addEventListener('click', () => selectNode(node.id));
+        item.append(link, explore);
         list.append(item);
       });
       section.append(heading, list);
       fragment.append(section);
     });
     ui.list.replaceChildren(fragment);
-    if (!nodes.length) ui.list.append(createMessage('No concepts match this filter.'));
   }
 
   function renderDetails() {
@@ -684,6 +799,7 @@
     part.className = 'kg-detail-part';
     part.textContent = state.partById.get(node.part)?.label || node.part;
     fragment.append(part);
+    if (node.optional) fragment.append(optionalBadge());
     if (node.id === state.currentId) {
       const badge = document.createElement('span');
       badge.className = 'kg-current-badge';
@@ -692,6 +808,7 @@
     }
     const heading = document.createElement('h3');
     heading.textContent = node.label;
+    heading.tabIndex = -1;
     const description = document.createElement('p');
     description.className = 'kg-detail-description';
     description.textContent = node.description;
@@ -753,70 +870,61 @@
       ui.partFilter.value = 'all';
     }
     state.selectedId = nodeId;
-    expandAround(nodeId);
-    if (options.renderGraph === false) {
+    if (options.detailsOnly) {
       renderDetails();
       updateStatus();
       return;
     }
+    // Focused maps always show the complete immediate neighbourhood, including other parts.
+    state.partFilter = 'all';
+    ui.partFilter.value = 'all';
+    state.view = state.graphAvailable ? 'graph' : 'list';
     renderAll();
-    if (state.cy) {
-      const selected = state.cy.$id(nodeId);
-      if (selected.length) {
-        selected.select();
-        state.cy.animate({ center: { eles: selected }, zoom: Math.max(state.cy.zoom(), 0.85), duration: reducedMotion.matches ? 0 : 220 });
-      }
-    }
-  }
-
-  function toggleScope() {
-    state.showAll = !state.showAll;
-    renderAll();
+    if (compactViewport.matches) ui.main.scrollTop = 0;
+    ui.detail.querySelector('h3')?.focus({ preventScroll: true });
   }
 
   function resetToCurrentPage() {
     state.currentId = resolveCurrentNode();
     state.selectedId = state.currentId;
-    state.expandedIds = neighbourhood(state.currentId);
-    state.showAll = false;
     state.partFilter = 'all';
     ui.partFilter.value = 'all';
     ui.search.value = '';
     hideSearchResults();
+    ui.overview.replaceChildren();
     renderAll();
   }
 
   function changePartFilter() {
     state.partFilter = ui.partFilter.value;
     const selected = state.nodeById.get(state.selectedId);
-    if (state.partFilter !== 'all' && selected?.part !== state.partFilter) {
-      const replacement = state.data.nodes.find((node) => node.part === state.partFilter);
-      if (replacement) {
-        state.selectedId = replacement.id;
-        expandAround(replacement.id);
-      }
-    }
+    if (state.partFilter !== 'all' && selected?.part !== state.partFilter) state.selectedId = catalogNodes()[0]?.id;
+    if (state.view === 'graph') state.view = 'overview';
+    ui.overview.replaceChildren();
+    hideSearchResults();
     renderAll();
   }
 
   function setView(view) {
-    state.view = view === 'list' || !state.graphAvailable ? 'list' : 'graph';
-    storeView(state.view);
-    applyViewState();
-    if (state.view === 'graph' && state.cy) {
-      state.cy.resize();
-      state.cy.fit(undefined, 38);
+    state.view = ['overview', 'graph', 'list'].includes(view) ? view : 'overview';
+    if (state.view === 'graph') {
+      if (!state.graphAvailable) state.view = 'list';
+      state.partFilter = 'all';
+      ui.partFilter.value = 'all';
     }
+    storeView(state.view);
+    renderAll();
   }
 
   function applyViewState() {
     if (!state.graphAvailable && state.view === 'graph') state.view = 'list';
-    const graphView = state.view === 'graph';
-    ui.graph.hidden = !graphView;
-    ui.list.hidden = graphView;
-    ui.viewButtons.forEach((button) => {
-      const active = button.dataset.view === state.view;
-      button.setAttribute('aria-pressed', String(active));
+    ui.overview.hidden = state.view !== 'overview';
+    ui.graphView.hidden = state.view !== 'graph';
+    ui.list.hidden = state.view !== 'list';
+    ui.legend.hidden = state.view !== 'graph';
+    ui.main.dataset.view = state.view;
+    ui.viewButtons.forEach(button => {
+      button.setAttribute('aria-pressed', String(button.dataset.view === state.view));
       button.disabled = button.dataset.view === 'graph' && !state.graphAvailable;
     });
   }
@@ -825,8 +933,9 @@
     if (!state.data) return;
     const count = visibleNodes().length;
     const selected = state.nodeById.get(state.selectedId);
-    const mode = state.showAll ? 'full map' : 'local map';
-    ui.status.textContent = `${count} of ${state.data.nodes.length} concepts shown in the ${mode}${selected ? `; ${selected.label} selected` : ''}.`;
+    ui.status.textContent = state.view === 'graph'
+      ? `${selected?.label || 'Concept'} · ${Math.max(0, count - 1)} connected entries`
+      : `${count} entries across ${state.data.chapters.filter(chapter => catalogNodes().some(node => node.chapter === chapter.id)).length} chapters and resources`;
   }
 
   function setLoadingStatus(text) {
@@ -841,9 +950,11 @@
       hideSearchResults();
       return;
     }
-    const matches = state.data.nodes
-      .filter((node) => `${node.label} ${node.description}`.toLowerCase().includes(query))
-      .slice(0, 8);
+    const words = query.split(/\s+/);
+    const matches = state.data.nodes.filter(node => {
+      const text = `${node.id} ${node.label} ${node.description} ${(node.aliases || []).join(' ')}`.toLowerCase();
+      return words.every(word => text.includes(word));
+    }).sort((a, b) => Number(b.label.toLowerCase().startsWith(query)) - Number(a.label.toLowerCase().startsWith(query)));
     const fragment = document.createDocumentFragment();
     matches.forEach((node, index) => {
       const button = document.createElement('button');
@@ -857,7 +968,7 @@
       label.textContent = node.label;
       const part = document.createElement('span');
       part.className = 'kg-search-result-part';
-      part.textContent = state.partById.get(node.part)?.shortLabel || state.partById.get(node.part)?.label || node.part;
+      part.textContent = state.chapterById.get(node.chapter)?.label || node.part;
       button.append(label, part);
       button.addEventListener('click', () => chooseSearchResult(node.id));
       fragment.append(button);
@@ -893,6 +1004,7 @@
     }
     options.forEach((option, index) => option.setAttribute('aria-selected', String(index === state.searchIndex)));
     ui.search.setAttribute('aria-activedescendant', options[state.searchIndex].id);
+    options[state.searchIndex].scrollIntoView({ block: 'nearest' });
   }
 
   function chooseSearchResult(nodeId) {

@@ -608,12 +608,6 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/appendix/distribution-explorer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Distribution Explorer</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../../content/appendix/question-bank.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Question Bank</span></a>
   </div>
@@ -622,12 +616,6 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="../../content/ide/python-ide.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Python IDE</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../content/appendix/statistical-tables.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Statistical Tables</span></a>
   </div>
 </li>
       </ul>
@@ -3369,8 +3357,8 @@ if (document.body.classList.contains('reading-mode')) {
   const asset = (path) => new URL(path, siteRoot).href;
   window.MAS2901_KNOWLEDGE_GRAPH_CYTOSCAPE = asset('knowledge-graph/vendor/cytoscape-3.34.1.min.js');
 
-  loadStylesheet(asset('knowledge-graph/knowledge-graph.css'))
-    .then(() => loadScript(asset('knowledge-graph/knowledge-graph.js')))
+  loadStylesheet(asset('knowledge-graph/knowledge-graph.css?v=2'))
+    .then(() => loadScript(asset('knowledge-graph/knowledge-graph.js?v=2')))
     .catch((error) => console.error('Unable to load the course map.', error));
 })();
 </script>

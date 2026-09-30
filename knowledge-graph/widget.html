@@ -41,8 +41,8 @@
   const asset = (path) => new URL(path, siteRoot).href;
   window.MAS2901_KNOWLEDGE_GRAPH_CYTOSCAPE = asset('knowledge-graph/vendor/cytoscape-3.34.1.min.js');
 
-  loadStylesheet(asset('knowledge-graph/knowledge-graph.css'))
-    .then(() => loadScript(asset('knowledge-graph/knowledge-graph.js')))
+  loadStylesheet(asset('knowledge-graph/knowledge-graph.css?v=2'))
+    .then(() => loadScript(asset('knowledge-graph/knowledge-graph.js?v=2')))
     .catch((error) => console.error('Unable to load the course map.', error));
 })();
 </script>
