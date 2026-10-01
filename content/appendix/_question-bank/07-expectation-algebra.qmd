@@ -1,0 +1,227 @@
+::: {.callout-important .question appearance="minimal" data-tags="foundations probability expectation linearity" data-difficulty="1" #q-expectation-linearity-proof}
+## Question 96: Why is expectation linear?
+
+Let $X_1,\ldots,X_n$ be random variables and let $a_1,\ldots,a_n$ be **fixed real
+numbers**. For this proof, suppose that the vector
+$\mathbf X=(X_1,\ldots,X_n)$ takes values in a finite set $S$, with joint
+probability mass function $p(\mathbf x)$. Do **not** assume independence.
+
+(a) Starting from the definition
+$$
+\mathrm E[g(\mathbf X)]
+=\sum_{\mathbf x\in S}g(\mathbf x)p(\mathbf x),
+$$
+prove that
+$$
+\mathrm E\!\left[\sum_{i=1}^n a_iX_i\right]
+=\sum_{i=1}^n a_i\mathrm E[X_i].
+$$
+(b) Explain what it means to say that expectation is a **linear operator**.
+For a fixed number $c$, deduce a formula for
+$\mathrm E[c+\sum_{i=1}^n a_iX_i]$. Where, if anywhere, did you use independence?  
+(c) A student argues that linearity also gives
+$\mathrm E[X^2]=(\mathrm E[X])^2$. Use a random variable with
+$\Pr(X=0)=\Pr(X=1)=1/2$ to show why this is incorrect.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a)** Substitute $g(\mathbf x)=\sum_{i=1}^n a_ix_i$ into the definition:
+\begin{align*}
+\mathrm E\!\left[\sum_{i=1}^n a_iX_i\right]
+&=\sum_{\mathbf x\in S}\left(\sum_{i=1}^n a_ix_i\right)p(\mathbf x)\\
+&=\sum_{i=1}^n a_i\sum_{\mathbf x\in S}x_i p(\mathbf x)\\
+&=\sum_{i=1}^n a_i\mathrm E[X_i].
+\end{align*}
+The second line rearranges finite sums and takes the fixed coefficient $a_i$
+outside the sum over possible outcomes. The inner sum in that line is precisely
+the expectation of $X_i$ under the joint distribution.
+
+**(b)** The map $T(U)=\mathrm E[U]$ takes a random variable to a number. It is
+linear because it preserves addition and multiplication by fixed scalars:
+$$
+T(aU+bV)=aT(U)+bT(V).
+$$
+Also, $\mathrm E[c]=c\sum_{\mathbf x\in S}p(\mathbf x)=c$, so
+$$
+\mathrm E\!\left[c+\sum_{i=1}^n a_iX_i\right]
+=c+\sum_{i=1}^n a_i\mathrm E[X_i].
+$$
+There is **no independence assumption**: we never factorised the joint
+probabilities. Linearity also holds beyond this finite setting whenever the
+random variables have finite absolute expectations, $\mathrm E[|X_i|]<\infty$.
+For variables with a joint density, the corresponding proof replaces the outer
+sum over $\mathbf x$ by an integral.
+
+**(c)** Here $\mathrm E[X]=1/2$, while $X^2=X$, so
+$$
+\mathrm E[X^2]=\frac12\ne\frac14=(\mathrm E[X])^2.
+$$
+Linearity concerns sums and **fixed** multiples. It does not say that expectation
+commutes with squaring or other nonlinear functions. In $X^2=X\cdot X$, the
+coefficient multiplying $X$ is itself random.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="foundations probability expectation linearity" data-difficulty="1" #q-expectation-weighted-sums}
+## Question 97: Expectations of general weighted sums
+
+Let $n$ be a fixed positive integer. Random variables $X_1,\ldots,X_n$ have
+finite absolute expectations and satisfy
+$$
+\mathrm E[X_i]=2i-1,\qquad i=1,\ldots,n.
+$$
+No independence assumption is made. Define
+$$
+S_n=\sum_{i=1}^n iX_i,
+\qquad
+T_n=\frac1n\sum_{i=1}^n(3X_i-2).
+$$
+
+(a) Find $\mathrm E[S_n]$ as a formula in $n$.  
+(b) Find $\mathrm E[T_n]$. Take care with the constant inside the sum.  
+(c) Evaluate both answers for $n=4$. Would the formulas change if all the
+$X_i$ were dependent? Explain which quantities you treated as fixed.
+
+You may use
+$$
+\sum_{i=1}^n i=\frac{n(n+1)}2,
+\qquad
+\sum_{i=1}^n i^2=\frac{n(n+1)(2n+1)}6.
+$$
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a)** Each weight $i$ is fixed, so linearity gives
+\begin{align*}
+\mathrm E[S_n]
+&=\sum_{i=1}^n i\,\mathrm E[X_i]
+=\sum_{i=1}^n i(2i-1)\\
+&=2\sum_{i=1}^n i^2-\sum_{i=1}^n i\\
+&=\frac{n(n+1)(2n+1)}3-\frac{n(n+1)}2\\
+&=\frac{n(n+1)(4n-1)}6.
+\end{align*}
+
+**(b)** There are $n$ copies of the constant $-2$:
+\begin{align*}
+\mathrm E[T_n]
+&=\frac1n\sum_{i=1}^n\bigl(3\mathrm E[X_i]-2\bigr)\\
+&=\frac1n\left(3\sum_{i=1}^n(2i-1)-2n\right).
+\end{align*}
+Since
+$$
+\sum_{i=1}^n(2i-1)=2\frac{n(n+1)}2-n=n^2,
+$$
+we obtain $\mathrm E[T_n]=3n-2$. The constant contributes $-2$ after dividing
+by $n$, rather than $-2/n$.
+
+**(c)** At $n=4$,
+$$
+\mathrm E[S_4]=\frac{4\cdot5\cdot15}{6}=50,
+\qquad
+\mathrm E[T_4]=10.
+$$
+For example, the first answer is also $1\cdot1+2\cdot3+3\cdot5+4\cdot7=50$.
+Both formulas remain valid for dependent random variables with the stated
+expectations. The indices $i$, the number of terms $n$, and the coefficients
+$i$, $3$, $-2$, and $1/n$ are fixed. Only the $X_i$ are random.
+
+</details>
+
+:::
+
+::: {.callout-important .question appearance="minimal" data-tags="foundations probability expectation linearity variance second-moment fixed-parameters" data-difficulty="1" #q-expectation-fixed-parameters}
+## Question 98: What is random inside the expectation?
+
+Let $n$ be a fixed positive integer, and let $\mu\in\mathbb R$ and $\sigma>0$
+be **fixed parameters**. For each $i=1,\ldots,n$, suppose
+$$
+\mathrm E_{\mu,\sigma}[X_i]=\mu,
+\qquad
+\operatorname{Var}_{\mu,\sigma}(X_i)=\sigma^2.
+$$
+The subscript on the expectation identifies the fixed parameter values governing
+the distribution of the random variables. No particular distribution or
+independence assumption is required.
+
+(a) Which of $X_i$, $i$, $n$, $\mu$, and $\sigma$ are random in this expectation?
+Does a parameter become random merely because its numerical value is unknown?  
+(b) Calculate
+$$
+A(\mu,\sigma)=\mathrm E_{\mu,\sigma}\!\left[
+\frac{1}{\sigma^2}\sum_{i=1}^n(X_i-\mu)\right].
+$$
+(c) Calculate
+$$
+B(\mu,\sigma)=-\mathrm E_{\mu,\sigma}\!\left[
+\frac{n}{\sigma^2}-\frac{3}{\sigma^4}
+\sum_{i=1}^n(X_i-\mu)^2\right].
+$$
+(d) Calculate
+$$
+C(\mu,\sigma)=\mathrm E_{\mu,\sigma}\!\left[
+\frac{1}{\sigma^4}\sum_{i=1}^n X_i^2\right].
+$$
+Explain why replacing every $X_i$ inside the brackets by $\mu$ would give the
+wrong answers in parts (c) and (d).
+
+These expressions resemble those used in Fisher information calculations, but
+this question only requires probability rules for expectations and variances.
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a)** Only $X_i$ is random. The index $i$, the number of terms $n$, and the
+parameters $\mu$ and $\sigma$ are fixed. In particular, $1/\sigma^2$ and
+$3/\sigma^4$ can be taken outside an expectation. An unknown fixed number is
+still a constant for this calculation. The notation $\mathrm E_{\mu,\sigma}$
+does **not** mean averaging over $\mu$ or $\sigma$.
+
+**(b)** Apply linearity to the sum and to each centred variable:
+$$
+A(\mu,\sigma)
+=\frac{1}{\sigma^2}\sum_{i=1}^n
+\bigl(\mathrm E_{\mu,\sigma}[X_i]-\mu\bigr)
+=\frac{1}{\sigma^2}\sum_{i=1}^n(\mu-\mu)=0.
+$$
+
+**(c)** The square stays inside the expectation. By the definition of variance,
+$$
+\mathrm E_{\mu,\sigma}[(X_i-\mu)^2]=\sigma^2.
+$$
+Taking care with the minus sign outside the expectation,
+\begin{align*}
+B(\mu,\sigma)
+&=-\frac{n}{\sigma^2}
++\frac{3}{\sigma^4}\sum_{i=1}^n
+\mathrm E_{\mu,\sigma}[(X_i-\mu)^2]\\
+&=-\frac{n}{\sigma^2}+\frac{3n\sigma^2}{\sigma^4}
+=\frac{2n}{\sigma^2}.
+\end{align*}
+
+**(d)** Rearrange the variance identity before evaluating the sum:
+$$
+\mathrm E_{\mu,\sigma}[X_i^2]
+=\operatorname{Var}_{\mu,\sigma}(X_i)
++\bigl(\mathrm E_{\mu,\sigma}[X_i]\bigr)^2
+=\sigma^2+\mu^2.
+$$
+Therefore
+$$
+C(\mu,\sigma)
+=\frac{1}{\sigma^4}\sum_{i=1}^n(\sigma^2+\mu^2)
+=\frac{n(\sigma^2+\mu^2)}{\sigma^4}.
+$$
+Replacing $X_i$ by $\mu$ would incorrectly give
+$B=-n/\sigma^2$ and $C=n\mu^2/\sigma^4$, discarding the variation in $X_i$.
+Expectation is an average of the **whole expression**, rather than a rule that
+substitutes the mean into every occurrence of a random variable. Independence
+was unnecessary throughout: we used expectations of sums, not products of
+different random variables.
+
+</details>
+
+:::

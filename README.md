@@ -45,8 +45,8 @@ output are intentionally ignored.
 ## Maintenance notes
 
 - Question titles contain permanent numbers. Keep each existing number with its
-  question, including when moving it between files. The current bank uses 1–95;
-  the next addition is **Question 96**. Give later additions the next unused
+  question, including when moving it between files. The current bank uses 1–98;
+  the next addition is **Question 99**. Give later additions the next unused
   number after the highest assigned number, and never renumber or reuse an
   existing number. This keeps students' records and printed copies consistent.
 - The web-app manifest assumes the GitHub Pages base path `/NCL-MAS2901/`.

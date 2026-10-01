@@ -1,5 +1,5 @@
 // Bump this to invalidate old caches after content updates
-const CACHE_VERSION = 'v1.0.18';
+const CACHE_VERSION = 'v1.0.19';
 const STATIC_CACHE = `static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `runtime-${CACHE_VERSION}`;
 
