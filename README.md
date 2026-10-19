@@ -54,3 +54,5 @@ output are intentionally ignored.
   asset changes that should immediately invalidate students' offline caches.
 - Open `tools/figures/cat-pixel.ipynb` in its own directory when regenerating
   `content/main/part1/figures/cat_pixel.png`.
+
+© University of Newcastle upon Tyne 2026. Matthew Fisher, Author. All rights reserved.

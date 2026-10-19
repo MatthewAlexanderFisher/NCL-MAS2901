@@ -79,9 +79,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-65b5ecc515b6fccafcfc3e9913d3c9af.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark-64161293e90c4c048379959daf340384.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../../site_libs/bootstrap/bootstrap-65b5ecc515b6fccafcfc3e9913d3c9af.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-76709cf790811f10c6e28b6f7cc65dbb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-7c8273de6c96aacdcfa7d97d7b7b23b0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-76709cf790811f10c6e28b6f7cc65dbb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -645,6 +645,7 @@ window.Quarto = {
   <li><a href="#bayesian-estimators" id="toc-bayesian-estimators" class="nav-link" data-scroll-target="#bayesian-estimators"><span class="header-section-number">6.4</span> Bayesian Estimators</a></li>
   <li><a href="#asymptotic-posterior-distribution" id="toc-asymptotic-posterior-distribution" class="nav-link" data-scroll-target="#asymptotic-posterior-distribution"><span class="header-section-number">6.5</span> Asymptotic Posterior Distribution</a></li>
   <li><a href="#chapter-summary" id="toc-chapter-summary" class="nav-link" data-scroll-target="#chapter-summary"><span class="header-section-number">6.6</span> Chapter summary</a></li>
+  <li><a href="#practice-questions" id="toc-practice-questions" class="nav-link" data-scroll-target="#practice-questions">Practice questions</a></li>
   </ul>
 </nav>
     </div>
@@ -1342,7 +1343,7 @@ f(\underline{x})=\int_{\Theta}f(\underline{x}\mid\theta)\pi(\theta)\,d\theta
 </span> Note that there is only a <strong>single observation</strong> here: one experiment is “tossing the coin <span class="math inline">5</span> times and seeing how many come up heads”. The probability of observing <span class="math inline">X=1</span> is <span class="math display">
     f(x = 1 \mid \theta) = 5\theta(1-\theta)^4
 </span> If we plot this:</p>
-<div id="91936e18" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="2">
+<div id="33dc5fa7" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="2">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -1607,7 +1608,7 @@ f(\underline{x}) = \int f(\underline{x}\mid \theta)\,\pi(\theta)\, d\theta,
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="2decc3c9" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="3">
+<div id="6bba3531" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="3">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1712,7 +1713,7 @@ plot(theta_grid, pdf_values, type = "l",
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="013dd60a" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="4">
+<div id="c68b0df8" class="cell" data-renderings="[&quot;light&quot;,&quot;dark&quot;]" data-execution_count="4">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -2468,6 +2469,14 @@ The logarithm turns products into sums, simplifying differentiation: <span class
 <li>The posterior mean, median, and mode answer different decision questions; there is no universally best point summary without a loss or decision goal.</li>
 <li>Large samples often reduce prior influence and can produce an approximately Normal posterior, but the result is conditional on the observed data and can fail outside regular settings.</li>
 </ul>
+</section>
+<section id="practice-questions" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="practice-questions">Practice questions</h2>
+<ul>
+<li><a href="../../appendix/question-bank.html?chapter=6&amp;coverage=chapter#question-chapter-filters">Questions involving Chapter 6</a>.</li>
+<li><a href="../../appendix/question-bank.html?chapter=6&amp;coverage=upto#question-chapter-filters">Everything covered by the end of Chapter 6</a>.</li>
+</ul>
+<p>Some questions combine chapters. Their labels show when the <strong>whole question</strong> is covered; the cumulative link includes only questions covered so far. You can further narrow either list by topic tags and difficulty.</p>
 
 
 </section>

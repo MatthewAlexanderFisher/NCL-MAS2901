@@ -11,7 +11,7 @@ Each question has a permanent number so you can keep a record of those you have
 completed. Numbers stay the same when you filter the bank or print questions.
 New questions will be numbered after the current set.
 
-::: {.callout-tip}
+::: {.callout-tip collapse="true"}
 ## Choose a practice route
 
 | If you are... | Start with... | Then move to... |
@@ -50,9 +50,16 @@ Start with [estimators and estimates](#q-concepts-estimator-estimate) and
 [p-values](#q-concepts-p-values), and [power](#q-concepts-power-errors).
 :::
 
-The filters below combine tags using **AND**: selecting `bayes` and `binomial`
-shows questions carrying both tags. Difficulty runs from **Easy** through
-**Challenge**.
+Choose a chapter below. **Questions for this chapter** includes questions that
+combine its material with later chapters. **Everything covered so far** includes
+only questions whose whole content is covered by the end of the selected chapter,
+assuming you have worked through the chapters in order. This is a guide to topic
+coverage, not a guarantee of difficulty or exam scope; extension questions remain
+in the bank.
+
+Chapter, tag, and difficulty filters work together. Tags combine using **AND**:
+selecting `bayes` and `binomial` shows questions carrying both tags. Difficulty
+runs from **Easy** through **Challenge**.
 
 ```{python}
 #| echo: false
@@ -104,8 +111,92 @@ allTags = Array.from(new Set(
 ```
 
 ```{ojs}
+chapterCatalog = [
+  "Probability Theory",
+  "What is Statistical Inference?",
+  "Types of Inference",
+  "Frequentist Point Estimation",
+  "Likelihood",
+  "Bayesian Inference",
+  "Frequentist Interval Estimation",
+  "Bayesian Intervals",
+  "Frequentist Hypothesis Testing",
+  "Bayesian Hypothesis Testing (not examinable)"
+]
+
+viewof chapterSelection = {
+  const wrapper = html`<div class="filterbox chapter-filter" id="question-chapter-filters">
+    <div class="chapter-filter-fields">
+      <div><label for="question-chapter">Chapter</label>
+        <select id="question-chapter" aria-describedby="chapter-filter-help">
+          <option value="0">All chapters</option>
+          ${chapterCatalog.map((title, i) => html`<option value=${i + 1}>${i + 1}. ${title}</option>`)}
+        </select>
+      </div>
+      <div><label for="question-coverage">Show</label>
+        <select id="question-coverage" aria-describedby="chapter-filter-help">
+          <option value="upto">Everything covered so far</option>
+          <option value="chapter">Questions for this chapter</option>
+        </select>
+      </div>
+    </div>
+    <p id="chapter-filter-help">Select a chapter to practise its topics or everything covered up to that point. Questions spanning chapters show when the whole question is covered.</p>
+  </div>`;
+  const chapter = wrapper.querySelector('#question-chapter');
+  const coverage = wrapper.querySelector('#question-coverage');
+  const readLocation = () => {
+    const params = new URLSearchParams(location.search);
+    const n = Number(params.get('chapter'));
+    chapter.value = Number.isInteger(n) && n >= 1 && n <= chapterCatalog.length ? String(n) : '0';
+    coverage.value = params.get('coverage') === 'chapter' ? 'chapter' : 'upto';
+    coverage.disabled = chapter.value === '0';
+  };
+  readLocation();
+  Object.defineProperty(wrapper, 'value', {
+    get: () => ({chapter: Number(chapter.value), coverage: coverage.value})
+  });
+  const updateLocation = () => {
+    coverage.disabled = chapter.value === '0';
+    const url = new URL(location.href);
+    if (chapter.value === '0') {
+      url.searchParams.delete('chapter');
+      url.searchParams.delete('coverage');
+    } else {
+      url.searchParams.set('chapter', chapter.value);
+      url.searchParams.set('coverage', coverage.value);
+    }
+    history.replaceState(history.state, '', url);
+  };
+  wrapper.addEventListener('input', updateLocation);
+  const onPopState = () => {
+    readLocation();
+    wrapper.dispatchEvent(new Event('input', {bubbles: true}));
+  };
+  window.addEventListener('popstate', onPopState);
+  invalidation.then(() => window.removeEventListener('popstate', onPopState));
+  return wrapper;
+}
+```
+
+```{ojs}
 {
   for (const el of allQuestions) {
+    if (!el.querySelector('.question-chapter-note')) {
+      const chapters = (el.dataset.chapters || '').split(/\s+/).map(Number).filter(Boolean);
+      const ready = Number(el.dataset.readyAfter);
+      const note = document.createElement('div');
+      note.className = 'question-chapter-note';
+      const label = document.createElement('span');
+      label.className = 'question-chapter-label';
+      label.textContent = `${chapters.length === 1 ? 'Chapter' : 'Chapters'} ${chapters.join(', ')}`;
+      const detail = document.createElement('span');
+      detail.className = 'question-chapter-detail';
+      detail.textContent = chapters.length === 1
+        ? chapterCatalog[chapters[0] - 1]
+        : `Whole question covered by Chapter ${ready}`;
+      note.append(label, document.createTextNode(' '), detail);
+      el.querySelector('.callout-body').prepend(note);
+    }
     // --- Tagbar (unchanged) ---
     if (!el.querySelector('.tagbar')) {
       const tags = (el.dataset.tags || "").split(/\s+/).filter(Boolean);
@@ -329,6 +420,7 @@ viewof levels = Inputs.checkbox(
   const chosenSet = new Set(chosen || []);
   const required  = new Set([...typedSet, ...chosenSet]);   // AND over tags
   const chosenLv  = new Set(levels || []);                  // allowed levels
+  const selectedChapter = chapterSelection.chapter;
 
   let shown = 0;
   for (const el of allQuestions) {
@@ -340,12 +432,28 @@ viewof levels = Inputs.checkbox(
     const level = Number(el.dataset.difficulty ?? 0);
     const passDiff = chosenLv.has(level);
 
-    const show = passTags && passDiff;
+    const chapters = (el.dataset.chapters || '').split(/\s+/).map(Number);
+    const readyAfter = Number(el.dataset.readyAfter);
+    const passChapter = selectedChapter === 0 || (chapterSelection.coverage === 'upto'
+      ? readyAfter > 0 && readyAfter <= selectedChapter
+      : chapters.includes(selectedChapter));
+
+    const show = passTags && passDiff && passChapter;
     el.style.display = show ? "" : "none";
     if (show) shown += 1;
   }
 
-  return html`<div><strong>Showing ${shown}</strong> of ${allQuestions.length} questions.</div>`
+  const scope = selectedChapter === 0 ? 'All chapters'
+    : chapterSelection.coverage === 'upto'
+      ? `Whole questions covered by the end of Chapter ${selectedChapter}`
+      : `Questions involving Chapter ${selectedChapter}, including questions that also need later material`;
+  const emptyMessage = selectedChapter === 10 && chapterSelection.coverage === 'chapter'
+    ? 'There are currently no dedicated question-bank exercises for Chapter 10. Use the worked examples in that chapter, or choose “Everything covered so far” for cumulative revision.'
+    : 'No questions match these filters. Try another chapter or coverage option, or clear the tag and difficulty filters.';
+  return html`<div class="question-filter-status" role="status" aria-live="polite" aria-atomic="true">
+    <strong>Showing ${shown}</strong> of ${allQuestions.length} questions. ${scope}.
+    ${shown === 0 ? html`<p>${emptyMessage}</p>` : ''}
+  </div>`
 }
 
 ```
@@ -354,7 +462,7 @@ viewof levels = Inputs.checkbox(
 
 {{< include _question-bank/00-probability-foundations.qmd >}}
 
-::: {.callout-important .question appearance="minimal" data-tags="probability" data-difficulty="0"}
+::: {.callout-important .question appearance="minimal" data-tags="probability" data-difficulty="0" data-chapters="1" data-ready-after="1"}
 ## Question 13: Probability of heads
 A fair coin is tossed $10$ times. What is the probability of exactly $6$ heads?
 
@@ -370,7 +478,7 @@ $$
 
 :::
 
-::: {.callout-important .question appearance="minimal" data-tags="probability" data-difficulty="0"}
+::: {.callout-important .question appearance="minimal" data-tags="probability" data-difficulty="0" data-chapters="1" data-ready-after="1"}
 ## Question 14: Newspaper subscriptions
 In a certain city, $50\%$ of families subscribe to the morning newspaper, $65\%$ subscribe to the afternoon newspaper, and $30\%$ subscribe to both.  
 
@@ -400,7 +508,7 @@ So, $85\%$ of families subscribe to at least one newspaper.
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="likelihood mle" data-difficulty="1" #q-normal-data-mle}
+::: {.callout-important .question appearance="minimal" data-tags="likelihood mle" data-difficulty="1" #q-normal-data-mle data-chapters="5" data-ready-after="5"}
 ## Question 15: Normal Data MLE
 Let $X_1,\dots,X_n \stackrel{iid}{\sim} \mathcal{N}(\mu,1)$. Find the MLE of $\mu$.
 
@@ -442,7 +550,7 @@ value is $\bar x$.
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="probability expectation" data-difficulty="0"}
+::: {.callout-important .question appearance="minimal" data-tags="probability expectation" data-difficulty="0" data-chapters="1" data-ready-after="1"}
 ## Question 16: Converting mean and standard deviation
 October temperatures in Newcastle (daily maximum) have population mean $13^\circ$C and population standard deviation $3^\circ$C.  
 
@@ -470,7 +578,7 @@ $$
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="probability expectation" data-difficulty="1"}
+::: {.callout-important .question appearance="minimal" data-tags="probability expectation" data-difficulty="1" data-chapters="1" data-ready-after="1"}
 ## Question 17: PDF, normalisation constant, and CDF
 The random variable $X$ has PDF
 $$
