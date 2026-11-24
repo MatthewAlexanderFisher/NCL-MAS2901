@@ -1,0 +1,37 @@
+<script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js" defer></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+<script>
+(() => {
+  const solution = 'details.solution';
+
+  function typesetMath(root, includeClosed = false) {
+    if (!window.katex) return;
+
+    const macros = {};
+    // The list must stay fixed while KaTeX inserts its output into each span.
+    for (const element of root.querySelectorAll('span.math')) {
+      const text = element.firstChild;
+      if (text?.nodeType !== Node.TEXT_NODE
+          || (!includeClosed && element.closest(`${solution}:not([open])`))) continue;
+
+      window.katex.render(text.data, element, {
+        displayMode: element.classList.contains('display'),
+        throwOnError: false,
+        macros
+      });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    window.Quarto ??= {};
+    window.Quarto.typesetMath = typesetMath;
+    window.Quarto.typesetDeferredMath = typesetMath;
+    typesetMath(document);
+  }, {once: true});
+
+  // Native details toggles do not bubble, but they can be captured on the document.
+  document.addEventListener('toggle', event => {
+    if (event.target.matches(`${solution}[open]`)) typesetMath(event.target);
+  }, true);
+})();
+</script>

@@ -107,17 +107,19 @@ So, the $90\%$ highest density interval is $\theta \in (0, 0.01041)$.
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="likelihood geometric" data-difficulty="2" #q-geom-approx-ci data-chapters="5 7" data-ready-after="7"}
+:::: {.callout-important .question appearance="minimal" data-tags="likelihood geometric" data-difficulty="2" #q-geom-approx-ci data-chapters="5 7" data-ready-after="7" data-exam-slot="a-interval" data-exam-marks="10" data-exam-parts="7 3" data-exam-family="geometric-likelihood"}
 
 ## Question 54: Approximate MLE-based Confidence Interval for Geometric Data
 
-Suppose we have $n$ i.i.d. <span class="xref-no-num">[geometric @sec-geom]</span> observations
+::: {.exam-prompt}
+Suppose we have $n$ i.i.d. geometric observations
 $$
 X_1,\dots,X_n \overset{\text{i.i.d.}}{\sim} \mathrm{Geometric}(p).
 $$
 
-1. Using the <span class="xref-no-num">[asymptotic distribution of the MLE @def-asymp-mle-approx]</span>, construct a general $100(1-\alpha)\%$ <span class="xref-no-num">[approximate CI @def-approx-ci-mle]</span> for $p$.
-2. Suppose we observe a random sample of size $n = 100$ from a geometric distribution, and the sample mean is $\bar{x} = 9.84$. Using the asymptotic normal approximation of the MLE, compute an approximate $95\%$ confidence interval for the parameter $p$.
+1. Using the asymptotic distribution of the MLE, construct a general $100(1-\alpha)\%$ approximate CI for $p$.
+2. Suppose we observe a random sample of size $n = 100$ from a geometric distribution, and the sample mean is $\bar{x} = 9.84$. Using the asymptotic normal approximation of the MLE, compute an approximate $95\%$ confidence interval for the parameter $p$. You may use $z_{0.975}=1.960$.
+:::
 
 <details class="solution">
   <summary>Solution</summary>
@@ -136,7 +138,7 @@ $$
      $$
      \ell(p; \underline{x}) = n \log p + n(\bar{x} - 1) \log(1-p).
      $$
-   * **Step 2: Compute Derivates of Log-Likelihood**
+   * **Step 2: Compute Derivatives of the Log-Likelihood**
      The derivatives of the log-likelihood are
      $$
      \begin{align*}
@@ -175,11 +177,11 @@ $$
      For this model, the realised observed information evaluated at the MLE has
      the same value, but the two definitions are conceptually distinct.
    * **Step 5: Compute Approximate CI**
-     The <span class="xref-no-num">[asymptotic distribution of the MLE @def-asymp-mle-approx]</span> implies that, for large $n$,
+     For an interior true parameter $0<p<1$ and large $n$, the MLE has approximate sampling distribution
      $$
-     \hat{p}_{\mathrm{MLE}} \overset{\text{approx.}}{\sim} \mathcal{N}(p, \mathcal{I}_n(\hat{p}_{\mathrm{MLE}})^{-1}).
+     \hat{p}_{\mathrm{MLE}} \overset{\text{approx.}}{\sim} \mathcal{N}\bigl(p, \mathcal{I}_n(p)^{-1}\bigr).
      $$
-     Therefore, an approximate $100(1-\alpha)\%$ confidence interval takes the form:
+     Evaluating the information at the observed MLE gives the estimated standard error. When $\bar{x}>1$, the resulting approximate $100(1-\alpha)\%$ confidence interval is
      $$
      \frac{1}{\bar{x}} \pm z_{1-\alpha/2} \sqrt{\frac{\bar{x} - 1}{n \bar{x}^3}}.
      $$
@@ -191,7 +193,7 @@ $$
      $$
      we plug in the given values $\bar{x} = 9.84$ and $n=100$. The relevant quantile is $z_{0.975} = 1.96$. Therefore, we obtain
      $$
-     0.1016 \pm 1.96×0.0096≈0.1016±0.0189.
+     0.1016 \pm 1.96 \times 0.0096 \approx 0.1016 \pm 0.0189.
      $$
      Therefore, an approximate $95\%$ confidence interval for $p$ is
      $$
@@ -201,7 +203,7 @@ $$
      $$
 </details>
 
-:::
+::::
 
 ::: {.callout-important .question appearance="minimal" data-tags="asymptotic-mle exponential" data-difficulty="1" #q-asymp-mle-exp data-chapters="5" data-ready-after="5"}
 
@@ -603,17 +605,21 @@ The data provide evidence that the true mean number of pothole reports per day i
 
 :::
 
-::: {.callout-important .question appearance="minimal" data-tags="poisson clt hypothesis-test two-sided" data-difficulty="1" #q-clt-hypothesis-pois2 data-chapters="4 9" data-ready-after="9"}
+:::: {.callout-important .question appearance="minimal" data-tags="poisson clt hypothesis-test two-sided" data-difficulty="1" #q-clt-hypothesis-pois2 data-chapters="4 9" data-ready-after="9" data-exam-slot="a-testing" data-exam-marks="10" data-exam-family="poisson-rate"}
 
 ## Question 60: Large-Sample Two-Sided Hypothesis Test for a Poisson Rate
 
+::: {.exam-prompt}
 A call centre manager claims that the average number of customer complaint calls received per hour is **5**. To assess this claim, the number of complaint calls is recorded over a random sample of $n = 60$ one-hour periods. Across these 60 hours, a total of $X = 360$ complaint calls are received.
 
-Assuming a <span class="xref-no-num">[Poisson model @sec-pois]</span>
+Assuming a Poisson model
 $$
 X_i \stackrel{\text{iid}}{\sim} \mathrm{Poisson}(\lambda), \qquad i=1,\dots,n,
 $$
-where $\lambda$ is the true mean number of complaint calls per hour, use the <span class="xref-no-num">[Central Limit Theorem @thm-clt]</span> to perform a **1% significance level** **two-sided** hypothesis test of the manager’s claim.
+where $\lambda$ is the true mean number of complaint calls per hour, use the Central Limit Theorem to perform a **1% significance level** **two-sided** hypothesis test of the manager’s claim.
+
+You may use $z_{0.995}=2.576$.
+:::
 
 <details class="solution">
   <summary>Solution</summary>
@@ -677,7 +683,7 @@ The data provide evidence that the true mean number of complaint calls per hour 
 
 </details>
 
-:::
+::::
 
 ::: {.callout-important .question appearance="minimal" data-tags="exponential clt hypothesis-test" data-difficulty="1" #q-clt-hypothesis-exp1 data-chapters="4 9" data-ready-after="9"}
 

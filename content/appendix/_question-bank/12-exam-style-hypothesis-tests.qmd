@@ -1,0 +1,163 @@
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style normal variance mle fisher-information lrt hypothesis-test two-sided confidence-interval" data-difficulty="2" #q-variance-calibration-lrt data-chapters="5 7 9" data-ready-after="9" data-exam-slot="b-testing" data-exam-marks="20" data-exam-parts="5 5 4 6" data-exam-family="normal-variance"}
+
+## Question 150: Likelihood ratio testing for instrument variance
+
+::: {.exam-prompt}
+
+A laboratory checks a balance by weighing the same reference mass repeatedly. Let $X_i$ be the difference in milligrams between the $i$th reading and the reference value. The laboratory models $X_1,\ldots,X_n$ as independent $\mathcal N(0,v)$ observations with unknown variance $v>0$. It wishes to test $H_0:v=1$ against $H_1:v\ne 1$.
+
+1. Write down the log-likelihood for $v$ and obtain its maximum likelihood estimator for samples with $\sum_i x_i^2>0$.
+2. Derive the likelihood ratio test statistic in terms of $n$ and the observed maximum likelihood estimate. State its approximate distribution under $H_0$.
+3. For $n=30$, the laboratory obtains $\sum_i x_i^2=51$. Calculate the test statistic, bound the $p$-value using the reference values below, and decide whether to reject at the $5\%$ level.
+4. Find the expected Fisher information for the sample and use it to construct an approximate $95\%$ Normal confidence interval for $v$ from these data. Does the test based on this interval give the same decision as the likelihood ratio test? Explain how the two decisions can differ.
+
+You may use $\log(1.7)=0.5306$, $z_{0.975}=1.960$, and the $95$th, $97.5$th and $99$th percentiles of $\chi^2_1$, which are $3.841$, $5.024$ and $6.635$.
+
+:::
+
+<details class="solution">
+<summary>Solution</summary>
+
+1. With $S=\sum_i x_i^2$, independence gives the log-likelihood
+   $$
+   \ell(v)=-\frac n2\log(2\pi)-\frac n2\log v-\frac{S}{2v}.
+   $$
+   Its derivative is
+   $$
+   \ell'(v)=-\frac{n}{2v}+\frac{S}{2v^2}=\frac{S-nv}{2v^2}.
+   $$
+   For $S>0$, this changes sign from positive to negative at $\hat v=S/n$, so $\hat v$ is the maximiser.
+
+2. The log-likelihood at $\hat v$ has $S/\hat v=n$. At the null value $v_0=1$ it has $S/v_0=n\hat v$. Therefore
+   $$
+   D=2\{\ell(\hat v)-\ell(1)\}
+    =n\{\hat v-1-\log\hat v\}.
+   $$
+   The full model has one free parameter and the null fixes it at an interior value. Under $H_0$, $D$ is approximately $\chi^2_1$ for large $n$.
+
+3. Here $\hat v=51/30=1.7$ and
+   $$
+   D=30(1.7-1-0.5306)\approx 5.08.
+   $$
+   Since $5.024<D<6.635$, the approximate upper-tail probability lies between $0.01$ and $0.025$. The result falls in the $5\%$ rejection region. There is evidence that the variance differs from $1$ square milligram.
+
+4. Differentiate again and use $\mathrm E_v[S]=nv$:
+   $$
+   \ell''(v)=\frac{n}{2v^2}-\frac{S}{v^3},
+   \qquad
+   \mathcal I_n(v)=-\mathrm E_v[\ell''(v)]=\frac{n}{2v^2}.
+   $$
+   The large-sample variance of the MLE is approximately $2v^2/n$, giving the estimated standard error $\hat v\sqrt{2/n}$. The approximate interval is
+   $$
+   1.7\pm 1.960(1.7)\sqrt{\frac{2}{30}}\approx (0.840,\ 2.560).
+   $$
+   It contains $1$, so the corresponding Wald test fails to reject at $5\%$. The interval uses a Normal approximation centred at $\hat v$ with a plug-in standard error. The likelihood ratio test uses the difference in log-likelihoods and a $\chi^2_1$ reference distribution. The two approximate rules have different rejection regions at this sample size.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style log-normal normal z-test hypothesis-test one-sided p-value power" data-difficulty="2" #q-lognormal-energy-mean-test data-chapters="9" data-ready-after="9" data-exam-slot="b-testing" data-exam-marks="20" data-exam-parts="4 5 5 6" data-exam-family="lognormal-mean"}
+
+## Question 151: An exact test for a lognormal mean
+
+::: {.exam-prompt}
+
+An engineering team monitors the total energy $Y_i$ in kilowatt-hours used by the $i$th run of a cleaning process. Assume the $Y_i$ are independent lognormal observations such that $W_i=\log Y_i\sim\mathcal N(\mu,0.16)$, where $\log$ is the natural logarithm. The arithmetic mean energy is $m=\mathrm E[Y_i]=\exp(\mu+0.08)$. The team wants to test $H_0:m=8$ against $H_1:m>8$.
+
+1. Express both hypotheses in terms of $\mu$ and state the sampling distribution of $\bar W$.
+2. Derive a test of exact size $\alpha$ based on $\bar W$. Give the rejection region in terms of $\bar W$ and explain what a Type I error would mean here.
+3. A sample of $25$ runs gives $\overline{\log y}=2.16$. Compute the standardised test statistic, bound the one-sided $p$-value using the reference values below, and report the conclusion at the $5\%$ level.
+4. Express the power function in terms of $m$ and $n$. For the test at the $5\%$ level with $n=25$, evaluate the power when the true mean energy is $10$ kilowatt-hours and interpret this probability.
+
+You may use $\log 8=2.07944$, $\log 10=2.30259$, $z_{0.95}=1.645$, $z_{0.975}=1.960$, $z_{0.99}=2.326$, and $\Phi(1.144)\approx0.874$.
+
+:::
+
+<details class="solution">
+<summary>Solution</summary>
+
+1. The map $\mu\mapsto\exp(\mu+0.08)$ is increasing. With $\mu_0=\log 8-0.08$, the hypotheses become $H_0:\mu=\mu_0$ and $H_1:\mu>\mu_0$. Independence and normality give $\bar W\sim\mathcal N(\mu,0.16/n)$ exactly.
+
+2. Under $H_0$,
+   $$
+   Z=\frac{\bar W-\mu_0}{0.4/\sqrt n}\sim\mathcal N(0,1).
+   $$
+   Reject for $Z>z_{1-\alpha}$, or equivalently for
+   $$
+   \bar W>\mu_0+\frac{0.4}{\sqrt n}z_{1-\alpha}.
+   $$
+   This region has probability $\alpha$ under $H_0$. A Type I error means concluding that the mean energy exceeds $8$ kilowatt-hours when the mean is $8$.
+
+3. The standard error is $0.4/5=0.08$ and $\mu_0\approx 1.99944$, so
+   $$
+   z_{\rm obs}=\frac{2.16-1.99944}{0.08}\approx 2.007.
+   $$
+   Since $z_{0.975}<z_{\rm obs}<z_{0.99}$, the upper-tail $p$-value is between $0.01$ and $0.025$. The team rejects $H_0$ at $5\%$. There is evidence that the arithmetic mean energy exceeds $8$ kilowatt-hours.
+
+4. Under any $m>0$, $\mu-\mu_0=\log(m/8)$, giving
+   $$
+   \begin{aligned}
+   \mathrm{Power}(m)
+   &=1-\Phi\!\left(z_{1-\alpha}-\frac{\sqrt n}{0.4}\log(m/8)\right)\\
+   &=\Phi\!\left(\frac{\sqrt n}{0.4}\log(m/8)-z_{1-\alpha}\right).
+   \end{aligned}
+   $$
+   For $m=10$, $\sqrt n/0.4=12.5$, and the argument of $\Phi$ is $12.5(2.30259-2.07944)-1.645\approx 1.144$. The power is about $0.874$. If the mean is $10$ kilowatt-hours and the model holds, about $87.4\%$ of repeated studies with $25$ runs would reject $H_0$ using this rule.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style uniform clt hypothesis-test one-sided power sample-size" data-difficulty="2" #q-uniform-dispatch-power data-chapters="4 9" data-ready-after="9" data-exam-slot="b-testing" data-exam-marks="20" data-exam-parts="4 5 5 6" data-exam-family="uniform-mean"}
+
+## Question 152: Testing dispatch times and planning for power
+
+::: {.exam-prompt}
+
+A warehouse wants to know whether a change has reduced the mean time to prepare an order. It models the preparation times $X_1,\ldots,X_n$ in minutes as independent $\mathrm{Uniform}(\mu-6,\mu+6)$ observations, with $\mu>6$. The previous mean was $24$ minutes. The hypotheses are $H_0:\mu=24$ and $H_1:\mu<24$.
+
+1. State $\mathrm E[X_i]$ and $\mathrm{Var}(X_i)$ under the model. Give the approximate sampling distribution of $\bar X$ for large $n$ and name the result that justifies it.
+2. Give the critical value for a $5\%$ test in terms of $\bar X$. For a sample of $36$ orders with $\bar x=22.95$, decide whether to reject and give a conclusion in context.
+3. Derive the approximate power function of this rule. At $n=36$ and $\mu=22.5$, find the power and the Type II error probability.
+4. The warehouse plans to repeat the study. Find the smallest integer sample size that gives at least $90\%$ power at $\mu=22.8$ under the Normal approximation, using the same $5\%$ level.
+
+You may use $z_{0.95}=1.645$, $z_{0.90}=1.282$, and $\Phi(0.953)\approx0.830$.
+
+:::
+
+<details class="solution">
+<summary>Solution</summary>
+
+1. The midpoint of the Uniform interval is $\mu$ and its width is $12$. Thus $\mathrm E[X_i]=\mu$ and $\mathrm{Var}(X_i)=12^2/12=12$. By the central limit theorem,
+   $$
+   \bar X \mathrel{\overset{\rm approx}{\sim}}\mathcal N(\mu,12/n)
+   $$
+   for large $n$.
+
+2. Under $H_0$, the lower $5\%$ critical value for $\bar X$ is
+   $$
+   c_n=24-1.645\sqrt{12/n}.
+   $$
+   Reject if $\bar X<c_n$. At $n=36$, $c_{36}\approx 23.050$. The observed mean $22.95$ is below this threshold, so the warehouse rejects $H_0$. The data provide evidence of a reduction in mean preparation time.
+
+3. For any $\mu$ in the model,
+   $$
+   \Pr_\mu(\bar X<c_n)
+   \approx \Phi\!\left(\frac{24-\mu}{\sqrt{12/n}}-1.645\right).
+   $$
+   At $\mu=22.5$, $n=36$, the argument is approximately $0.953$. The power is $0.830$ and the Type II error probability at this alternative is approximately $0.170$.
+
+4. Power of at least $0.90$ at $\mu=22.8$ requires
+   $$
+   1.2\sqrt{n/12}-1.645\ \ge\ 1.282.
+   $$
+   Rearranging gives
+   $$
+   n\ge 12\left(\frac{1.645+1.282}{1.2}\right)^2\approx 71.39.
+   $$
+   The smallest integer that meets the requirement under the approximation is $72$.
+
+</details>
+
+::::

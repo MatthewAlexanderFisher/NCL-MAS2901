@@ -9,7 +9,8 @@ browser-based Python IDE.
 ## Project structure
 
 - `content/main/` contains the ten course chapters.
-- `content/appendix/` contains student reference and revision material.
+- `content/appendix/` contains student reference and revision material,
+  including the practice exam generator.
 - `content/appendix/_question-bank/` and `_revision-sheet/` contain partial
   files included by their parent pages; they are not standalone chapters.
 - `theming/`, `js/`, and `pwa/` contain the presentation and offline features.
@@ -45,10 +46,17 @@ output are intentionally ignored.
 ## Maintenance notes
 
 - Question titles contain permanent numbers. Keep each existing number with its
-  question, including when moving it between files. The current bank uses 1–98;
-  the next addition is **Question 99**. Give later additions the next unused
+  question, including when moving it between files. The current bank uses 1–152.
+  The next addition is **Question 153**. Give later additions the next unused
   number after the highest assigned number, and never renumber or reuse an
   existing number. This keeps students' records and printed copies consistent.
+- The practice exam uses marked prompts from `content/appendix/_question-bank/`.
+  Reuse the exam metadata on existing entries when adding questions to the pool.
+  Keep the statement in the `exam-prompt` block and the worked answer in the
+  `details.solution` block. The imported entries in `08-specimen-exams.qmd`
+  use `data-exam-origin="specimen"` so a paper can draw from both groups of
+  questions. If two items could repeat the same task on a paper, give them the
+  same exam family.
 - The web-app manifest assumes the GitHub Pages base path `/NCL-MAS2901/`.
 - Increment `CACHE_VERSION` in `service-worker.js` when publishing content or
   asset changes that should immediately invalidate students' offline caches.

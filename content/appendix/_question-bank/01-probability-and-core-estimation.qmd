@@ -875,9 +875,10 @@ matching part (b).
 :::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="bias mse estimator" data-difficulty="2" data-chapters="4" data-ready-after="4"}
+:::: {.callout-important .question appearance="minimal" data-tags="bias mse estimator" data-difficulty="2" data-chapters="4" data-ready-after="4" data-exam-slot="b-estimation" data-exam-marks="20" data-exam-parts="9 4 7" data-exam-family="linear-estimator-mse"}
 ## Question 31: Bias, Variance, and MSE of Estimators
 
+::: {.exam-prompt #bank-question-31}
 A random variable $X$ has expected value $\mathrm{E}[X] = 2\theta + 6$ and variance $\mathrm{Var}(X) = 2\theta^2$.  
 A random variable $Y$ has expected value $\mathrm{E}[Y] = 3\theta - 12$ and variance $\mathrm{Var}(Y) = 6\theta^2 + 1$.  
 Assume $X$ and $Y$ are **independent**.  
@@ -891,6 +892,7 @@ a. Compute the **bias**, **variance**, and **MSE** of the following estimators o
 b. Let $\hat{\theta} = aX + bY + c$ be an estimator of $\theta$. Derive a system of linear equations involving $a, b, c$ that ensures $\hat{\theta}$ is **unbiased** for any value of $\theta$.  
 
 c. Suppose $\hat{\theta} = aX + bY + c$ is an **unbiased** estimator of $\theta$. Find the values of $a, b, c$ that minimise the **mean squared error** of $\hat{\theta}$ when the true value of $\theta = 1$.
+:::
 
 <details class="solution">
   <summary>Solution</summary>
@@ -982,12 +984,13 @@ $$
 
 </details>
 
-:::
+::::
 
-::: {.callout-important .question appearance="minimal" data-tags="poisson estimator variance consistency" data-difficulty="1" #q-poisson-consistency1 data-chapters="4" data-ready-after="4"}
+:::: {.callout-important .question appearance="minimal" data-tags="poisson estimator variance consistency" data-difficulty="1" #q-poisson-consistency1 data-chapters="4" data-ready-after="4" data-exam-slot="a-estimator" data-exam-marks="10" data-exam-parts="3 3 4"}
 ## Question 32: Properties of Poisson Estimators
 
-Suppose that $X_1, X_2, \ldots, X_n$, for $n \geq 1$, are independent $\mathrm{Poisson}(\lambda)$ random variables.  
+::: {.exam-prompt}
+Suppose that $X_1, X_2, \ldots, X_n$, for $n \geq 2$ and $\lambda>0$, are independent $\mathrm{Poisson}(\lambda)$ random variables.
 
 Two possible estimators of $\lambda$ are:
 $$
@@ -999,13 +1002,14 @@ $$
 a. Show that $\hat{\lambda}_1$ is unbiased but $\hat{\lambda}_2$ is not.  
 
 b. Show that
-$$
-\mathrm{Var}(\hat{\lambda}_1) = \frac{\lambda}{n}, 
-\qquad 
-\mathrm{Var}(\hat{\lambda}_2) = \frac{\lambda}{n^3}.
-$$
+   $$
+   \mathrm{Var}(\hat{\lambda}_1) = \frac{\lambda}{n},
+   \qquad
+   \mathrm{Var}(\hat{\lambda}_2) = \frac{\lambda}{n^3}.
+   $$
 
 c. For each estimator, determine whether it can be shown to be **consistent** using its mean and variance.
+:::
 
 <details class="solution">
   <summary>Solution</summary>
@@ -1024,7 +1028,7 @@ $$
 = \frac{1}{n^2} \cdot n\lambda = \frac{\lambda}{n}.
 $$
 
-So $\hat{\lambda}_2$ is biased.
+So $\hat{\lambda}_2$ is biased for $n\ge 2$.
 
 ---
 
@@ -1051,10 +1055,11 @@ $$
 **c. Consistency.**
 
 - $\hat{\lambda}_1$: unbiased and $\mathrm{Var}(\hat{\lambda}_1)\to 0$ as $n\to\infty$, so $\hat{\lambda}_1$ is consistent.  
-- $\hat{\lambda}_2$: $\mathrm{E}[\hat{\lambda}_2] = \lambda/n \to 0$ as $n\to\infty$, so it does not converge to $\lambda$. Therefore it is not consistent.
+- $\hat{\lambda}_2$: its mean tends to $0$ and its variance tends to $0$, so the same sufficient condition shows that $\hat{\lambda}_2$ converges in probability to $0$. Since $\lambda>0$, it is not consistent for $\lambda$.
 
 </details>
-:::
+
+::::
 
 ::: {.callout-important .question appearance="minimal" data-tags="gamma distribution mle coding likelihood" data-difficulty="2" #q-gamma-mle data-chapters="5" data-ready-after="5"}
 ## Question 33: MLE for the Gamma Distribution

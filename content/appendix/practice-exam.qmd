@@ -1,0 +1,47 @@
+---
+search: false
+toc: false
+filters:
+  - _practice-exam/question-pool.lua
+format:
+  html:
+    css: practice-exam.css
+---
+
+# Practice Exam Generator {.unnumbered}
+
+**Time allowed** 2 hours · **Total** 100 marks
+
+Answer all seven questions and show your working. Use the [Formula Sheet](formula-sheet.qmd)
+and any reference values supplied in the questions.
+
+```{=html}
+<div class="exam-controls">
+  <button type="button" class="btn btn-primary" id="generate-practice-exam" disabled>Generate new exam</button>
+  <button type="button" class="btn btn-outline-secondary" id="print-practice-exam" disabled>Print / Save as PDF</button>
+</div>
+<p id="practice-exam-status" role="status"></p>
+<noscript><p>Enable JavaScript to generate a practice exam.</p></noscript>
+
+<div id="practice-exam" hidden>
+  <section aria-labelledby="practice-exam-a">
+    <h2 id="practice-exam-a">Section A <span>40 marks</span></h2>
+    <div id="practice-exam-a-questions"></div>
+  </section>
+  <section aria-labelledby="practice-exam-b">
+    <h2 id="practice-exam-b">Section B <span>60 marks</span></h2>
+    <div id="practice-exam-b-questions"></div>
+  </section>
+  <div class="exam-review">
+    <button type="button" class="btn btn-outline-primary" id="toggle-practice-exam-solutions" aria-controls="practice-exam-solutions" aria-expanded="false">Show solutions</button>
+    <div id="practice-exam-solutions" hidden></div>
+  </div>
+</div>
+```
+
+::: {#exam-question-pool hidden=""}
+:::
+
+```{=html}
+<script src="practice-exam.js?v=2" defer></script>
+```

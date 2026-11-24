@@ -270,11 +270,12 @@ $$
 
 
 
-::: {.callout-important .question appearance="minimal" data-tags="estimator bias variance mse fisher-information cramer-rao normal exam-style" data-difficulty="3" #q-efficiency-hard-normal data-chapters="4 5" data-ready-after="5"}
+:::: {.callout-important .question appearance="minimal" data-tags="estimator bias variance mse fisher-information cramer-rao normal exam-style" data-difficulty="3" #q-efficiency-hard-normal data-chapters="4 5" data-ready-after="5" data-exam-slot="b-estimation" data-exam-marks="20" data-exam-parts="7 6 7" data-exam-family="normal-variance"}
 
 ## Question 67: Unbiased Estimation and Efficiency in the Normal Model
 
-Suppose that $X_1, \ldots, X_n$ are independent $\mathcal{N}(\mu, \theta)$ random variables, where $\mu$ is a **known constant** and $\theta$ is the **unknown parameter of interest**. Let $\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i$.
+::: {.exam-prompt}
+For $n\ge 2$, suppose that $X_1, \ldots, X_n$ are independent $\mathcal{N}(\mu, \theta)$ random variables, where $\mu$ is a **known constant** and $\theta$ is the **unknown variance**. Let $\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i$.
 
 1. Let
    $$
@@ -303,7 +304,8 @@ Suppose that $X_1, \ldots, X_n$ are independent $\mathcal{N}(\mu, \theta)$ rando
 
    Determine whether $\hat{\theta}'$ has a **lower mean-squared error (MSE)** than any unbiased estimator of $\theta$.
 
-   *Hint:* If $X \sim \mathcal{N}(\mu, \theta)$, then $\mathrm{Var}[(X-\mu)^2] = 2\theta^2.$  
+   *Hint:* If $X \sim \mathcal{N}(\mu, \theta)$, then $\mathrm{Var}[(X-\mu)^2] = 2\theta^2.$
+:::
 
 <details class="solution">
 <summary>Solution</summary>
@@ -418,7 +420,7 @@ $\hat{\theta}'$ has a **smaller mean-squared error** than any unbiased estimator
 
 </details>
 
-:::
+::::
 
 ::: {.callout-important .question appearance="minimal" data-tags="poisson lrt hypothesis-test exam-style" data-difficulty="2" #q-lrt-weather data-chapters="5 9" data-ready-after="9"}
 
@@ -1006,23 +1008,24 @@ There is **insufficient evidence** to conclude that the mean systolic blood pres
 
 :::
 
-::: {.callout-important .question appearance="minimal" data-tags="bayes weibull inverse-gamma likelihood conjugacy exam-style" data-difficulty="3" data-chapters="5 6" data-ready-after="6"}
+:::: {.callout-important .question appearance="minimal" data-tags="bayes weibull inverse-gamma likelihood conjugacy exam-style" data-difficulty="3" data-chapters="5 6" data-ready-after="6" data-exam-slot="b-bayes" data-exam-marks="20" data-exam-parts="5 5 4 6" data-exam-family="weibull-likelihood"}
 
 ## Question 74: Bayesian Reliability Analysis with a Weibull Model
 
+::: {.exam-prompt #bank-question-74}
 A reliability engineer is studying the lifespan of a machine part under varying stress conditions.  
 
-The engineer collects data from a random sample of $5$ machine parts. Each data point $T_i$ represents the **time to failure** (in hours) of part $i$ under stress level $d_i$.
+The engineer collects data from independent machine parts. Each data point $T_i$ represents the **time to failure** (in hours) of part $i$ under stress level $d_i$.
 
-The time to failure is assumed to follow a <span class="xref-no-num">[Weibull distribution @sec-weibull]</span>:
+The time to failure is assumed to follow a Weibull distribution:
 $$
-T_i \mid \theta \sim \mathrm{Weibull}(\lambda, \theta / d_i), \quad \lambda > 0, \, \theta > 0,
+T_i \mid \theta \sim \mathrm{Weibull}\!\left(k, (\theta/d_i)^{1/k}\right), \quad k > 0, \, \theta > 0,
 $$
-where $d_i$ is the known stress level for the $i$th part, $\lambda = 1$ is the known scale parameter, and $\theta$ is the unknown shape parameter of interest.
+where $d_i>0$ is the known stress level for part $i$, $k$ is the known shape, and $\theta$ is the unknown parameter governing the scale.
 
 1. Derive the likelihood function for $n$ independent observations.
 
-2. Suppose the prior for $\theta$ is <span class="xref-no-num">[Inverse Gamma @sec-inv-gamma]</span>, that is $\theta \sim \mathrm{InvGamma}(a, b)$.  
+2. Suppose the prior for $\theta$ is Inverse Gamma, that is $\theta \sim \mathrm{InvGamma}(a, b)$.
    
    Show that this prior is **conjugate** within the Inverse Gamma family.
 
@@ -1032,7 +1035,7 @@ where $d_i$ is the known stress level for the $i$th part, $\lambda = 1$ is the k
    |:-----|:-:|:-:|:-:|:-:|:-:|
    | **Time to failure** $(T_i)$ | $3.1$ | $1.4$ | $0.8$ | $0.6$ | $0.7$ |
 
-   Using $a = 20$ and $b = 3$, determine the posterior distribution for $\theta$.
+   Using $k=1$, $a=20$, and $b=3$, determine the posterior distribution for $\theta$.
 
 4. Using the prior and posterior parameters obtained above, complete the following table to summarise the engineer’s updated beliefs about $\theta$:
 
@@ -1041,6 +1044,7 @@ where $d_i$ is the known stress level for the $i$th part, $\lambda = 1$ is the k
    | $\mathrm{Mode}(\theta)$ | ? | ? |
    | $\mathrm{E}[\theta]$ | ? | ? |
    | $\mathrm{SD}(\theta)$ | ? | ? |
+:::
 
 <details class="solution">
 <summary>Solution</summary>
@@ -1050,11 +1054,11 @@ where $d_i$ is the known stress level for the $i$th part, $\lambda = 1$ is the k
 For $n$ independent observations,
 \begin{align*}
 f(\underline{t} \mid \theta)
-&= \prod_{i=1}^n \frac{\lambda}{\theta / d_i} t_i^{\lambda - 1}
-    \exp\!\left(-\frac{t_i^\lambda}{\theta / d_i}\right) \\
-&= \frac{\lambda^n}{\theta^n}
-   \left( \prod_{i=1}^n d_i t_i^{\lambda - 1} \right)
-   \exp\!\left( -\frac{1}{\theta} \sum_{i=1}^n d_i t_i^\lambda \right).
+&= \prod_{i=1}^n \frac{k}{\theta / d_i} t_i^{k - 1}
+    \exp\!\left(-\frac{t_i^k}{\theta / d_i}\right) \\
+&= \frac{k^n}{\theta^n}
+   \left( \prod_{i=1}^n d_i t_i^{k - 1} \right)
+   \exp\!\left( -\frac{1}{\theta} \sum_{i=1}^n d_i t_i^k \right).
 \end{align*}
 
 ---
@@ -1070,15 +1074,15 @@ Combining with the likelihood:
 \begin{align*}
 \pi(\theta \mid \underline{t})
 &\propto \theta^{-n} 
-   \exp\!\left(-\frac{1}{\theta}\sum_{i=1}^n d_i t_i^\lambda\right)
+   \exp\!\left(-\frac{1}{\theta}\sum_{i=1}^n d_i t_i^k\right)
    \times \theta^{-(a+1)} e^{-b / \theta} \\
 &\propto \theta^{-(a + n + 1)} 
-   \exp\!\left(-\frac{1}{\theta}\bigg[b + \sum_{i=1}^n d_i t_i^\lambda\bigg]\right).
+   \exp\!\left(-\frac{1}{\theta}\bigg[b + \sum_{i=1}^n d_i t_i^k\bigg]\right).
 \end{align*}
 
 Hence,
 $$
-\theta \mid \underline{t} \sim \mathrm{InvGamma}\!\left(a + n,\, b + \sum_{i=1}^n d_i t_i^\lambda\right).
+\theta \mid \underline{t} \sim \mathrm{InvGamma}\!\left(a + n,\, b + \sum_{i=1}^n d_i t_i^k\right).
 $$
 
 Since the posterior is also an Inverse Gamma, the prior is **conjugate**.
@@ -1117,22 +1121,24 @@ Thus:
 | $\mathrm{E}[\theta]$ | $3/19 \approx 0.158$ | $44.1/24 \approx 1.838$ |
 | $\mathrm{SD}(\theta)$ | $\approx 0.037$ | $\approx 0.383$ |
 
-After observing the data, the engineer’s belief shifts toward a larger value of $\theta$, reflecting an increase in the estimated shape parameter, while uncertainty also grows due to the relatively small sample size.
+After observing the data, the engineer’s belief shifts toward a larger value of $\theta$, reflecting an increase in the estimated scale of lifetimes at a given stress level. The posterior standard deviation is larger than the prior standard deviation for these data.
 
 </details>
 
-:::
+::::
 
-::: {.callout-important .question appearance="minimal" data-tags="mle uniform" data-difficulty="2" #q-unif-mle1 data-chapters="5" data-ready-after="5"}
+:::: {.callout-important .question appearance="minimal" data-tags="mle uniform" data-difficulty="2" #q-unif-mle1 data-chapters="5" data-ready-after="5" data-exam-slot="a-likelihood" data-exam-marks="10" data-exam-family="uniform-mle"}
 
 ## Question 75: MLE for the Uniform Distribution $U(\theta, 2\theta)$
 
-Let $X_1, X_2, \ldots, X_n$ be independent and identically distributed random variables from the <span class="xref-no-num">[Uniform distribution @sec-unif]</span>:
+::: {.exam-prompt}
+Let $X_1, X_2, \ldots, X_n$ be independent and identically distributed random variables from the Uniform distribution:
 $$
 X_i \sim U(\theta, 2\theta), \qquad \theta > 0.
 $$
 
-Obtain the **maximum likelihood estimator** $\hat{\theta}$.
+Take the density to be $1/\theta$ on the closed interval $[\theta,2\theta]$ and zero outside it. Obtain the **maximum likelihood estimator** $\hat{\theta}$.
+:::
 
 <details class="solution">
   <summary>Solution</summary>
@@ -1189,29 +1195,31 @@ $$
 
 </details>
 
-:::
+::::
 
 
-::: {.callout-important .question appearance="minimal" data-tags="estimator bias variance mse exam-style" data-difficulty="1" data-chapters="4" data-ready-after="4"}
+:::: {.callout-important .question appearance="minimal" data-tags="estimator bias variance mse exam-style" data-difficulty="1" data-chapters="4" data-ready-after="4" data-exam-slot="a-estimator" data-exam-marks="10" data-exam-parts="3 7" data-exam-family="linear-estimator-mse"}
 
 ## Question 76: Bias, Mean Squared Error, and Estimator Comparison
 
+::: {.exam-prompt #bank-question-76}
 (a) Define the **bias** and **mean squared error (MSE)** of an estimator $\hat{\theta}$ of a parameter $\theta$. Given the bias and variance of an estimator, explain how you would find the mean squared error.
 
-(b) Suppose a random variable $X$ has  
-$$
-\mathrm{E}[X] = 2\theta + 1, \quad \mathrm{Var}(X) = 2\theta^2 + 1,
-$$
-    and another independent random variable $Y$ has  
-$$
-\mathrm{E}[Y] = 3\theta - 2, \quad \mathrm{Var}(Y) = 3\theta^2.
-$$
+(b) Suppose a random variable $X$ has
+    $$
+    \mathrm{E}[X] = 2\theta + 1, \quad \mathrm{Var}(X) = 2\theta^2 + 1,
+    $$
+    and another independent random variable $Y$ has
+    $$
+    \mathrm{E}[Y] = 3\theta - 2, \quad \mathrm{Var}(Y) = 3\theta^2.
+    $$
     Two estimators of $\theta$ are proposed:
-$$
-\hat{\theta}_1 = \frac{3X - Y - 5}{3}, \qquad
-\hat{\theta}_2 = \frac{2Y - X + 4}{4}.
-$$
+    $$
+    \hat{\theta}_1 = \frac{3X - Y - 5}{3}, \qquad
+    \hat{\theta}_2 = \frac{2Y - X + 4}{4}.
+    $$
     Which of these estimators would you recommend? Justify your answer.
+:::
 
 <details class="solution">
 <summary>Solution</summary>
@@ -1244,7 +1252,7 @@ $$
 
 ---
 
-**(c) Recommendation**
+**Choosing an estimator**
 
 Comparing the MSEs:
 $$
@@ -1256,12 +1264,13 @@ Therefore, $\hat{\theta}_2$ is preferred.
 
 </details>
 
-:::
+::::
 
-::: {.callout-important .question appearance="minimal" data-tags="estimator bias t-test hypothesis-test exam-style" data-difficulty="3" data-chapters="4 9" data-ready-after="9"}
+:::: {.callout-important .question appearance="minimal" data-tags="estimator bias t-test hypothesis-test exam-style" data-difficulty="3" data-chapters="4 9" data-ready-after="9" data-exam-slot="b-testing" data-exam-marks="20" data-exam-parts="5 4 11" data-exam-family="normal-mean-test"}
 
 ## Question 77: Unbiasedness of the Sample Variance and Pooled Variance; Hypothesis Test for Means
 
+::: {.exam-prompt #bank-question-77}
 1. The sample variance for a random sample $X_1, X_2, \ldots, X_n$ can be written as  
    $$
    S^2 = \frac{1}{n-1} \left( \sum_{i=1}^n X_i^2 - n\bar{X}^2 \right).
@@ -1269,7 +1278,7 @@ Therefore, $\hat{\theta}_2$ is preferred.
    Show that $S^2$ is **unbiased** for the population variance $\sigma^2$.  
    
 
-2. Suppose we have two Normal random samples, of sizes $n_1$ and $n_2$, with the same population variance $\sigma^2$. The pooled variance estimator is
+2. Suppose we have two independent Normal random samples, of sizes $n_1$ and $n_2$, with the same population variance $\sigma^2$. The pooled variance estimator is
    $$
    S^2_{\text{pooled}} = \frac{(n_1 - 1)S_1^2 + (n_2 - 1)S_2^2}{n_1 + n_2 - 2},
    $$
@@ -1282,8 +1291,9 @@ Therefore, $\hat{\theta}_2$ is preferred.
    n_1 = 20, \; \bar{x}_1 = 289.3, \; s_1 = 10.8, \qquad
    n_2 = 10, \; \bar{x}_2 = 298.1, \; s_2 = 15.7.
    $$
-   Assuming Normal random samples and equal population variances, test the hypothesis that the two providers have the same average download speed.  
-   
+   Assume these are independent Normal random samples with equal population variances. Test the hypothesis that the two providers have the same average download speed against a two-sided alternative at the $5\%$ level. You may use $t_{0.975,28}=2.048$.
+:::
+
 <details class="solution">
 <summary>Solution</summary>
 
@@ -1333,20 +1343,16 @@ Therefore, $\hat{\theta}_2$ is preferred.
 
    Degrees of freedom: $n_1 + n_2 - 2 = 28$.
 
-   Since the question does not specify an alternative, use the **two-sided** test:
+   Use the **two-sided** test:
    $$
    H_0: \mu_1 = \mu_2, \qquad H_1: \mu_1 \neq \mu_2.
    $$
 
-   From the $t$-table:
-   $$
-   t_{0.9, 28} = 1.701, \quad t_{0.95, 28} = 2.048.
-   $$
-
-   As $|t| = 1.805$ lies between these values, the difference is significant at the 10% level but not at 5%.  
+   The 5% two-sided critical value is $t_{0.975,28}=2.048$.
+   Since $|t|=1.805<2.048$, the result is not significant at the 5% level.
    Therefore, there is **insufficient evidence at the 5% level** to conclude that the providers have different mean download speeds.
 
 </details>
 
-:::
+::::
 

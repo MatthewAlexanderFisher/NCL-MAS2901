@@ -125,10 +125,11 @@ document.addEventListener('DOMContentLoaded', () => {
     ]);
   };
 
-  const snapshot = (doc, chapter) => {
+  const snapshot = (doc, chapter, options) => {
     const source = doc.querySelector('main.content');
     if (!source) throw new Error(`No lecture content found in ${chapter.title}.`);
     const clone = source.cloneNode(true);
+    doc.defaultView?.Quarto?.typesetDeferredMath?.(clone, options.expandAll);
     const originals = source.querySelectorAll('input, select, textarea');
     clone.querySelectorAll('input, select, textarea').forEach((input, i) => {
       input.value = originals[i].value;
@@ -319,7 +320,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             doc = await loadChapter(iframe, chapter.href);
           }
-          await waitForContent(doc); pages.push(snapshot(doc, chapter));
+          await waitForContent(doc); pages.push(snapshot(doc, chapter, options));
         }
         if (cancelled || preview.closed) throw new Error('Print preparation cancelled.');
         status.textContent = 'Laying out the pages…';
@@ -351,7 +352,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.remove('reading-mode', 'lecture-zoom');
     document.body.classList.add('print-document');
     const style = paperStyle(document, defaults);
-    const restoreContent = prepareContent(main, defaults); const restoreFit = fitContent(main);
+    const restoreContent = prepareContent(main, defaults);
+    window.Quarto?.typesetDeferredMath?.(main, defaults.expandAll);
+    const restoreFit = fitContent(main);
     restoreNative = () => {
       restoreFit(); restoreContent(); style.remove(); document.body.className = oldClass;
       document.documentElement.className = oldRootClass;

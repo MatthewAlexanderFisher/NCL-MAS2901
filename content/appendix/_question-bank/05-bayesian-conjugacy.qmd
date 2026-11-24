@@ -1,28 +1,31 @@
-::: {.callout-important .question appearance="minimal" data-tags="bernoulli mle fisher-information lrt exam-style" data-difficulty="3" data-chapters="5 7 9" data-ready-after="9"}
+:::: {.callout-important .question appearance="minimal" data-tags="bernoulli mle fisher-information lrt exam-style" data-difficulty="3" data-chapters="5 7 9" data-ready-after="9" data-exam-slot="b-testing" data-exam-marks="20" data-exam-parts="4 4 4 5 3" data-exam-family="bernoulli-information"}
 
 ## Question 78: Bernoulli Likelihood, Fisher Information, and Inference
 
+::: {.exam-prompt #bank-question-78}
 1. Suppose $\underline{X} = (X_1, X_2, \ldots, X_n)$ is a random sample from a Bernoulli distribution with probability mass function  
    $$
    \Pr(X = x \mid \theta) = \theta^x (1 - \theta)^{1 - x}, \quad x = 0, 1, \; 0 < \theta < 1.
    $$
-   Write down the log-likelihood function $\ell(\theta ; \underline{x})$ and derive the maximum likelihood estimator (MLE) $\hat{\theta}$ for $\theta$.  
+   Write down the log-likelihood function $\ell(\theta ; \underline{x})$ and derive the maximum likelihood estimator (MLE) $\hat{\theta}$ for $\theta$ when $0<\sum_{i=1}^n x_i<n$.
 
-2. Obtain the Fisher information $\mathcal{I}_n(\theta)$ and hence find the asymptotic variance $\mathrm{Var}(\hat{\theta})$.  
+2. Obtain the Fisher information $\mathcal{I}_n(\theta)$ and hence give the approximate large-sample variance of $\hat{\theta}$.
 
 3. Out of a random sample of $200$ people from a population, $30$ were found to be left-handed.  
    
-   Assuming the probability of being left-handed is $\theta$, obtain an approximate 95% confidence interval for $\theta$ using the asymptotic distribution of the MLE.  
+   Assuming the probability of being left-handed is $\theta$, obtain an approximate $95\%$ confidence interval for $\theta$ using the asymptotic distribution of the MLE. You may use $z_{0.975}=1.960$.
 
-4. Use a likelihood ratio test to assess whether there is evidence against the null hypothesis $H_0 : \theta = 0.1$.  
+4. Use a likelihood ratio test at the $5\%$ level to assess whether there is evidence against the null hypothesis $H_0 : \theta = 0.1$. You may use the $95$th percentile of $\chi^2_1$, which is $3.841$.
 
 5. The *odds parameter* $\pi$ is a monotonic transformation of $\theta$, given by  
    $$
    \pi = \frac{\theta}{1 - \theta}.
    $$
-    (i) What is the MLE of $\pi$ for the data in part (c)?  
-      (You do not need to consider the likelihood of $\pi$, but you should state any property of MLEs used.)  
-    (ii) Give an approximate 95% confidence interval for $\pi$.  
+
+   (i) What is the MLE of $\pi$ for the data in part 3?
+       (You do not need to consider the likelihood of $\pi$, but you should state any property of MLEs used.)
+   (ii) Give an approximate $95\%$ confidence interval for $\pi$.
+:::
 
 <details class="solution">
 <summary>Solution</summary>
@@ -107,7 +110,7 @@
    $$
    D = 2(\ell_A - \ell_B) = 4.894.
    $$
-   Under $H_0$, $D \sim \chi^2_1$.  
+   Under $H_0$, $D$ is approximately $\chi^2_1$ for large samples.
    Since $4.894 > 3.841$ (the 5% critical value), we reject $H_0$ at the 5% level.  
    There is evidence that the proportion of left-handed people differs from 0.1.
 
@@ -129,7 +132,7 @@
 
 </details>
 
-:::
+::::
 
 
 

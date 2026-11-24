@@ -1,0 +1,389 @@
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style exponential likelihood mle" data-difficulty="2" #q-shifted-exponential-onset data-chapters="5" data-ready-after="5" data-exam-slot="a-likelihood" data-exam-marks="10" data-exam-parts="4 3 3" data-exam-family="shifted-exponential-support"}
+
+## Question 135: A Lower Endpoint for Recording Delays
+
+::: {.exam-prompt}
+
+A recorder has an unknown minimum startup delay $\theta\geq 0$ seconds. Independent
+startup times $X_1,\ldots,X_n$ have density
+$$
+f(x\mid\theta)=
+\begin{cases}
+2e^{-2(x-\theta)}, & x\geq\theta,\\
+0, & x<\theta.
+\end{cases}
+$$
+Use the stated value of the density at $x=\theta$.
+
+(a) Write down the likelihood for a sample $x_1,\ldots,x_n$ and give the
+    range of $\theta$ on which it is positive.
+
+(b) Derive the maximum likelihood estimator of $\theta$. Explain how the
+    likelihood behaves on its positive range.
+
+(c) Find the estimate for the observed times $2.4$, $2.1$, $3.8$, and $2.9$
+    seconds. An analyst proposes using the sample mean instead. Explain what
+    likelihood that proposal gives for these observations.
+
+:::
+
+<details class="solution">
+<summary>Solution</summary>
+
+**(a)** Every observation must satisfy $x_i\geq\theta$. For a sample from
+this model, write $x_{(1)}=\min_i x_i\geq 0$. Independence gives
+$$
+L(\theta)=
+\begin{cases}
+2^n\exp\!\left(-2\sum_{i=1}^n x_i+2n\theta\right), & 0\leq\theta\leq x_{(1)},\\
+0, & \theta>x_{(1)}.
+\end{cases}
+$$
+
+**(b)** On $[0,x_{(1)}]$, the factor $\exp(2n\theta)$ is strictly increasing
+in $\theta$. The stipulated density includes the endpoint, so the likelihood
+attains its maximum at $\hat\theta=\min_i X_i$.
+
+**(c)** The maximum likelihood estimate is $2.1$ seconds. The sample mean is
+$2.8$ seconds. Using $\theta=2.8$ would assign density zero to the observed
+times $2.1$ and $2.4$, so the joint likelihood at the sample mean is zero.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style bayes credible-interval hdi interpretation" data-difficulty="1" #q-posterior-density-bands data-chapters="8" data-ready-after="8" data-exam-slot="a-interval" data-exam-marks="10" data-exam-parts="3 4 3" data-exam-family="highest-density-region"}
+
+## Question 136: Credible Regions for Two Calibration Ranges
+
+::: {.exam-prompt}
+
+A calibration parameter $\theta$ has posterior density $0.4$ on each of the
+intervals $[0,1]$ and $[3,4]$, and density $0.1$ on $(1,3)$. The density is
+zero elsewhere. The following sets each contain $80\%$ posterior probability:
+$$
+C_1=[0.25,3.75],
+\qquad
+C_2=[0,1]\cup[3,4].
+$$
+
+(a) Explain what the quoted $80\%$ probability means and which of $C_1$ and
+    $C_2$ can be called a credible interval.
+
+(b) Use the definition of a highest-density region to determine which of these
+    two sets is an $80\%$ highest-density region. Give a density comparison that
+    rules out the other set.
+
+(c) A technician reads $C_1$ as saying that the central range $(1,3)$ is where
+    most of the posterior probability lies. Find the posterior probability of
+    that range and explain how the two candidate sets can have the same
+    probability despite covering different values.
+
+:::
+
+<details class="solution">
+<summary>Solution</summary>
+
+**(a)** Conditional on the prior, model and data used to obtain the posterior,
+$\Pr(\theta\in C_j\mid\underline{x})=0.8$ for either set. Both sets are
+credible regions. $C_1$ is an interval because it is connected, while $C_2$
+consists of two disjoint intervals.
+
+**(b)** A highest-density region contains the points with the greatest
+posterior density up to the requested probability. For example, the density
+threshold $0.2$ gives exactly $C_2$, which has probability $0.8$. By contrast,
+$C_1$ includes $\theta=2$, where the density is $0.1$, while excluding
+$\theta=0.1$, where it is $0.4$. No density threshold can include the former
+without also including the latter.
+
+**(c)** The central range has posterior probability $(3-1)(0.1)=0.2$. Relative
+to $C_2$, $C_1$ includes this central range and omits two outer pieces of
+length $0.25$ with density $0.4$. The pieces omitted have combined probability
+$2(0.25)(0.4)=0.2$. The exchanged probability is the same.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style gamma clt hypothesis-test one-sided p-value" data-difficulty="1" #q-gamma-processing-time-test data-chapters="4 9" data-ready-after="9" data-exam-slot="a-testing" data-exam-marks="10" data-exam-parts="4 4 2" data-exam-family="gamma-rate"}
+
+## Question 137: A One-Sided Test for Mean Processing Time
+
+::: {.exam-prompt}
+
+A workshop wants to know whether a machine's mean processing time $\mu$ has
+increased from $20$ minutes. Independent processing times $X_i$ have a Gamma
+distribution with shape $4$ and rate $4/\mu$, so
+$\mathrm{E}[X_i]=\mu$ and $\mathrm{Var}(X_i)=\mu^2/4$. The mean of $n=64$
+observations is $22.5$ minutes. Use a $5\%$ level and take the standard Normal
+CDF value $\Phi(2)\approx 0.97725$.
+
+(a) State the hypotheses and use the Central Limit Theorem to give the
+    approximate null distribution of the sample mean.
+
+(b) Construct a standardised test statistic, compute the observed value and
+    $p$-value, and state the decision in context.
+
+(c) Explain what a Type I error would mean for the workshop and why the
+    calculation in (b) uses the upper tail.
+
+:::
+
+<details class="solution">
+<summary>Solution</summary>
+
+**(a)** The hypotheses are $H_0:\mu=20$ and $H_1:\mu>20$. The observations
+are i.i.d. with finite variance. Under $H_0$, the Central Limit Theorem
+therefore gives
+$$
+\bar X\ \overset{\mathrm{approx.}}{\sim}\
+\mathcal N\!\left(20,\frac{20^2}{4\cdot 64}\right).
+$$
+The null standard error is $20/\sqrt{4\cdot 64}=1.25$ minutes.
+
+**(b)** The statistic $Z=(\bar X-20)/1.25$ is approximately standard Normal
+under $H_0$. Its observed value is $(22.5-20)/1.25=2$. The upper-tail
+$p$-value is about $1-0.97725=0.02275$. Since $0.02275<0.05$, reject
+$H_0$. The data provide evidence that the mean processing time has increased.
+
+**(c)** A Type I error is concluding that the processing time has increased
+when the true mean is $20$ minutes. The alternative concerns an increase, so
+large positive values of $Z$ provide evidence in that direction.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style binomial hypothesis-test one-sided power p-value" data-difficulty="2" #q-binomial-achieved-size data-chapters="9" data-ready-after="9" data-exam-slot="a-testing" data-exam-marks="10" data-exam-parts="4 3 3" data-exam-family="binomial-exact-test"}
+
+## Question 138: Exact Size and Power for a Germination Test
+
+::: {.exam-prompt}
+
+A small greenhouse experiment uses five seeds. Each seed germinates
+independently with probability $p$, so the count $X$ that germinates has a
+$\mathrm{Binomial}(5,p)$ distribution. Test $H_0:p=0.4$ against $H_1:p>0.4$.
+The proposed tests reject when $X\geq c$ for an integer cutoff $c$.
+
+(a) Find the smallest cutoff giving a test of level $5\%$. Calculate the
+    achieved size of this test.
+
+(b) Four of the five seeds germinate. Find the exact one-sided $p$-value and
+    state what the study can conclude about $p$ at the $5\%$ level.
+
+(c) Find the power and the Type II error probability when $p=0.8$.
+
+:::
+
+<details class="solution">
+<summary>Solution</summary>
+
+**(a)** The null upper-tail probabilities at the two largest attainable
+counts are
+$$
+\Pr_{0.4}(X\geq 4)=5(0.4)^4(0.6)+(0.4)^5=0.08704,
+\qquad
+\Pr_{0.4}(X\geq 5)=(0.4)^5=0.01024.
+$$
+Smaller cutoffs only increase the tail probability. Hence $c=5$ is the
+smallest cutoff with size no more than $0.05$. Its achieved size is
+$0.01024$ because $H_0$ specifies a single value of $p$.
+
+**(b)** The $p$-value is $\Pr_{0.4}(X\geq4)=0.08704$. Fail to reject
+$H_0$ at the $5\%$ level. The five observations give insufficient evidence
+to conclude that the germination probability exceeds $0.4$.
+
+**(c)** At $p=0.8$, power is the probability of reaching the same rejection
+region, $\Pr_{0.8}(X=5)=(0.8)^5=0.32768$. The Type II error probability
+at this alternative is $1-0.32768=0.67232$.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style bayes conjugacy gamma exponential likelihood mle map" data-difficulty="2" #q-gamma-exponential-clearance-rate data-chapters="5 6" data-ready-after="6" data-exam-slot="a-bayes" data-exam-marks="10" data-exam-parts="4 3 3" data-exam-family="gamma-exponential"}
+
+## Question 139: Updating the Rate at Which a Queue Clears
+
+::: {.exam-prompt}
+
+Four independent clearance times $X_i$, measured in minutes, have an
+Exponential distribution with rate $\lambda>0$. Their observed total is
+$12$ minutes. The prior for $\lambda$ is $\mathrm{Gamma}(3,2)$ in
+shape–rate form. A $\mathrm{Gamma}(a,b)$ density is proportional to
+$\lambda^{a-1}e^{-b\lambda}$ and has mean $a/b$.
+
+(a) Derive the posterior distribution of $\lambda$.
+
+(b) Calculate the MAP estimate by maximising the log posterior.
+
+(c) Calculate the posterior mean and express it as a weighted average of the
+    prior mean and the maximum likelihood estimate from the clearance times.
+    State what the weights are proportional to.
+
+:::
+
+<details class="solution">
+<summary>Solution</summary>
+
+**(a)** The likelihood is proportional to $\lambda^4e^{-12\lambda}$.
+Multiplying by the prior kernel $\lambda^2e^{-2\lambda}$ gives
+$\lambda^6e^{-14\lambda}$. Thus
+$$
+\lambda\mid\underline{x}\sim\mathrm{Gamma}(7,14).
+$$
+
+**(b)** Up to a constant the log posterior is $6\log\lambda-14\lambda$.
+Its derivative is $6/\lambda-14$, which vanishes at
+$\hat\lambda_{\mathrm{MAP}}=6/14=3/7$ per minute. The second derivative
+$-6/\lambda^2$ is negative on the positive half-line, so this is the maximum.
+
+**(c)** The log-likelihood has derivative $4/\lambda-12$, so the MLE is
+$4/12=1/3$ per minute. The prior mean is $3/2$ per minute and the posterior
+mean is
+$$
+\mathrm{E}[\lambda\mid\underline{x}]
+=\frac{7}{14}
+=\frac{2}{14}\frac{3}{2}+\frac{12}{14}\frac{4}{12}
+=0.5
+$$
+per minute. The weights are proportional to the prior rate hyperparameter $2$
+and the total observed clearance time $12$.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style bayes bernoulli likelihood map" data-difficulty="2" #q-bounded-diversion-posterior data-chapters="6" data-ready-after="6" data-exam-slot="a-bayes" data-exam-marks="10" data-exam-parts="4 3 3" data-exam-family="truncated-bernoulli-posterior"}
+
+## Question 140: A Posterior with a Bounded Prior
+
+::: {.exam-prompt}
+
+A sorting station diverts each inspected item to a manual check independently
+with probability $p$. A mechanical limit ensures $0\leq p\leq 1/2$. The
+prior density is $\pi(p)=8p$ on this closed interval and zero elsewhere.
+In a short trial, both of two inspected items are diverted. Use the stated
+closed support for the posterior density when evaluating its mode.
+
+(a) Derive the normalised posterior density of $p$.
+
+(b) Find the posterior mean and the MAP estimate.
+
+(c) Find the prior and posterior probabilities of $p>1/4$. Interpret how
+    observing the two diversions changes the probability of this event.
+
+:::
+
+<details class="solution">
+<summary>Solution</summary>
+
+**(a)** The observed data have likelihood $p^2$. Multiplying by the prior
+gives $8p^3$ on $[0,1/2]$. This kernel integrates to
+$8(1/2)^4/4=1/8$, so the posterior density is $64p^3$ on $[0,1/2]$ and
+zero elsewhere.
+
+**(b)** The posterior mean is
+$$
+\int_0^{1/2}p(64p^3)\,\mathrm{d}p
+=\frac{64}{5}(1/2)^5=\frac25.
+$$
+The posterior density increases up to the included upper endpoint. The MAP
+estimate is therefore $1/2$.
+
+**(c)** Before the trial the probability is
+$$
+\Pr(p>1/4)=\int_{1/4}^{1/2}8p\,\mathrm{d}p
+=4\bigl((1/2)^2-(1/4)^2\bigr)=\frac34.
+$$
+After the trial it is
+$$
+\Pr(p>1/4\mid\underline{x})=\int_{1/4}^{1/2}64p^3\,\mathrm{d}p
+=16\bigl((1/2)^4-(1/4)^4\bigr)=\frac{15}{16}.
+$$
+Larger values of $p$ make two diversions more likely. The observations raise
+the probability that the station diverts more than a quarter of the items,
+from $0.75$ to $0.9375$.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style geometric likelihood mle lrt hypothesis-test two-sided p-value" data-difficulty="2" #q-geometric-connection-lrt data-chapters="5 9" data-ready-after="9" data-exam-slot="b-testing" data-exam-marks="20" data-exam-parts="5 5 6 4" data-exam-family="geometric-likelihood"}
+
+## Question 141: Likelihood Ratio Evidence from Connection Attempts
+
+::: {.exam-prompt}
+
+A monitoring device records the number of attempts needed to connect after
+each restart. Independently for each restart, this count $X_i$ has
+probability mass function
+$$
+f(x\mid p)=p(1-p)^{x-1},\qquad x=1,2,\ldots,\quad 0<p<1.
+$$
+The technical specification assumes a success probability of $1/2$ on each
+attempt. Test $H_0:p=1/2$ against $H_1:p\ne 1/2$. Write $S=\sum_{i=1}^n X_i$,
+and assume $S>n$ for the samples considered.
+
+(a) Obtain the log-likelihood for $p$ and derive its maximum likelihood
+    estimator.
+
+(b) Express the likelihood ratio test statistic in terms of $n$, $S$ and the
+    observed MLE. State its approximate null distribution for large $n$
+    and the rejection rule at significance level $\alpha$.
+
+(c) The device records a total of $S=150$ attempts across $n=60$ restarts.
+    Compute the observed likelihood ratio statistic. Use the supplied
+    quantiles to decide whether to reject at $5\%$ and at $1\%$. Give
+    bounds on the approximate $p$-value and interpret the result at $5\%$.
+
+(d) An independent run with $n=30$ and $S=75$ gives the same sample mean.
+    Explain why the two runs have the same MLE but different test statistics.
+    State whether the second run rejects at $5\%$ using the same approximation.
+
+You may use $\log(0.8)\approx -0.22314$ and $\log(1.2)\approx 0.18232$.
+The $0.95$ and $0.99$ quantiles of $\chi^2_1$ are $3.841$ and $6.635$,
+respectively.
+
+:::
+
+<details class="solution">
+<summary>Solution</summary>
+
+**(a)** Independence gives $L(p)=p^n(1-p)^{S-n}$. The log-likelihood and
+its first derivative are
+$$
+\ell(p)=n\log p +(S-n)\log(1-p),\qquad
+\ell'(p)=\frac{n}{p}-\frac{S-n}{1-p}.
+$$
+Setting the derivative to zero gives $n(1-p)=(S-n)p$, or
+$\hat p=n/S=1/\bar X$. This is an interior maximum since $S>n$ and $\ell$
+is strictly concave.
+
+**(b)** The likelihood ratio statistic is
+$$
+D=2\{\ell(\hat p)-\ell(1/2)\}
+=2\left[n\log(2\hat p)+(S-n)\log\{2(1-\hat p)\}\right].
+$$
+Under the null, $D$ is approximately $\chi^2_1$ for large $n$. Reject
+when $D$ exceeds the $(1-\alpha)$ quantile of $\chi^2_1$.
+
+**(c)** Here $\hat p=60/150=0.4$ and
+$$
+D=2[60\log(0.8)+90\log(1.2)]\approx 6.04.
+$$
+Since $3.841<6.04<6.635$, reject at $5\%$ and fail to reject at $1\%$.
+The approximate $p$-value lies between $0.01$ and $0.05$. At the $5\%$
+level there is evidence that the success probability differs from the
+specification of $1/2$. The fitted value is lower than the specification.
+
+**(d)** Both runs give $\bar x=2.5$ and $\hat p=0.4$. The formula in (b)
+has the same log terms for each run, but the coefficients $n$ and $S-n$ in
+the second run are half as large. This gives $D\approx 3.02$, below $3.841$,
+so the second run fails to reject at $5\%$. The likelihood accumulates
+evidence from each restart, so the same estimate gives stronger evidence
+in the larger sample.
+
+</details>
+
+::::

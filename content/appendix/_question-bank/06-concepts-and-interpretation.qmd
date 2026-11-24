@@ -39,20 +39,24 @@ sampling. Its realised numerical value, such as $2/3$ per minute, is an estimate
 
 :::
 
-::: {.callout-important .question appearance="minimal" data-tags="interpretation estimator bias variance mse consistency normal" data-difficulty="1" #q-concepts-unbiased-consistent data-chapters="4" data-ready-after="4"}
+:::: {.callout-important .question appearance="minimal" data-tags="interpretation estimator bias variance mse consistency normal" data-difficulty="1" #q-concepts-unbiased-consistent data-chapters="4" data-ready-after="4" data-exam-slot="a-estimator" data-exam-marks="10" data-exam-parts="4 3 3"}
 ## Question 88: Unbiased and consistent are different properties
 
+::: {.exam-prompt}
 Let $X_1,\ldots,X_n$ be i.i.d. $\mathcal N(\mu,\sigma^2)$, where $\sigma^2>0$.
 Consider two estimators of $\mu$:
 $$
 T_n=X_1,\qquad U_n=\bar X+\frac1n.
 $$
 
-(a) Find the bias and variance of each estimator.  
+(a) Find the bias and variance of each estimator.
+
 (b) Show directly that $T_n$ is not consistent by considering
-$\mathrm{Pr}(|T_n-\mu|>\varepsilon)$ for a fixed $\varepsilon>0$.  
+    $\mathrm{Pr}(|T_n-\mu|>\varepsilon)$ for a fixed $\varepsilon>0$.
+
 (c) Use the sufficient condition based on bias and variance to show that
-$U_n$ is consistent. What do these examples show about unbiasedness?
+    $U_n$ is consistent. What do these examples show about unbiasedness?
+:::
 
 <details class="solution">
   <summary>Solution</summary>
@@ -89,7 +93,7 @@ around the target as the sample size grows.
 
 </details>
 
-:::
+::::
 
 ::: {.callout-important .question appearance="minimal" data-tags="interpretation likelihood bernoulli bayes" data-difficulty="1" #q-concepts-likelihood-probability data-chapters="3 5 6" data-ready-after="6"}
 ## Question 89: Likelihood is not a posterior probability
@@ -191,25 +195,29 @@ is needed. Unknown variance alone does not make a $t$ procedure exact.
 
 :::
 
-::: {.callout-important .question appearance="minimal" data-tags="interpretation confidence-interval credible-interval normal standard-error" data-difficulty="0" #q-concepts-interval-interpretation data-chapters="3 7 8" data-ready-after="8"}
+:::: {.callout-important .question appearance="minimal" data-tags="interpretation confidence-interval credible-interval normal standard-error" data-difficulty="0" #q-concepts-interval-interpretation data-chapters="3 7 8" data-ready-after="8" data-exam-slot="a-interval" data-exam-marks="10" data-exam-parts="3 3 2 2"}
 ## Question 91: What a 95% interval does and does not say
 
+::: {.exam-prompt}
 An i.i.d. Normal sample has known population standard deviation $\sigma=8$,
 sample size $n=64$, and observed mean $\bar x=15$. Use $z_{0.975}=1.96$.
 
-(a) Calculate a $95\%$ confidence interval for $\mu$.  
+(a) Calculate a $95\%$ confidence interval for $\mu$.
+
 (b) Explain what is correct or incorrect about each statement:
 
-1. “This method produces intervals containing the true mean in $95\%$ of
-   repeated samples under the model.”
-2. “There is now a $95\%$ frequentist probability that $\mu$ lies between
-   these two observed endpoints.”
-3. “About $95\%$ of individual observations lie in this interval.”
+    1. “This method produces intervals containing the true mean in $95\%$ of
+       repeated samples under the model.”
+    2. “There is now a $95\%$ frequentist probability that $\mu$ lies between
+       these two observed endpoints.”
+    3. “About $95\%$ of individual observations lie in this interval.”
 
 (c) How would the interval's width change if the sample size increased to
-$256$, with the same known population standard deviation and confidence level?  
+    $256$, with the same known population standard deviation and confidence level?
+
 (d) If a Bayesian analysis instead reported a $95\%$ credible interval, what
-probability statement would that support?
+    probability statement would that support?
+:::
 
 <details class="solution">
   <summary>Solution</summary>
@@ -241,7 +249,7 @@ interval cannot be given that interpretation without a Bayesian analysis.
 
 </details>
 
-:::
+::::
 
 ::: {.callout-important .question appearance="minimal" data-tags="interpretation hypothesis-test p-value z-test one-sided two-sided" data-difficulty="0" #q-concepts-p-values data-chapters="9" data-ready-after="9"}
 ## Question 92: The alternative determines the p-value
@@ -284,9 +292,10 @@ Normal null this has probability $0.05+0.05=0.10$, not $0.05$.
 
 :::
 
-::: {.callout-important .question appearance="minimal" data-tags="interpretation hypothesis-test power normal z-test one-sided" data-difficulty="1" #q-concepts-power-errors data-chapters="9" data-ready-after="9"}
+:::: {.callout-important .question appearance="minimal" data-tags="interpretation hypothesis-test power normal z-test one-sided" data-difficulty="1" #q-concepts-power-errors data-chapters="9" data-ready-after="9" data-exam-slot="a-testing" data-exam-marks="10" data-exam-parts="4 3 3" data-exam-family="normal-mean-test"}
 ## Question 93: Type I error, Type II error, and power
 
+::: {.exam-prompt}
 Let $X_1,\ldots,X_{16}$ be i.i.d. $\mathcal N(\mu,64)$ observations. Test
 $H_0:\mu=20$ against $H_1:\mu>20$ by rejecting when
 $$
@@ -296,10 +305,13 @@ For these calculations use $\Phi(1.645)\approx0.95$,
 $\Phi(0.355)\approx0.6387$, and $\Phi(2.355)\approx0.9907$.
 
 (a) Express the rejection region in terms of $\bar X$ and calculate the
-Type I error probability.  
-(b) If the true mean is $\mu=24$, find the power and Type II error probability.  
+    Type I error probability.
+
+(b) If the true mean is $\mu=24$, find the power and Type II error probability.
+
 (c) Repeat the power calculation for $n=64$, using the same $5\%$ one-sided
-test. Explain why the Type I error probability stays the same while power changes.
+    test. Explain why the Type I error probability stays the same while power changes.
+:::
 
 <details class="solution">
   <summary>Solution</summary>
@@ -333,27 +345,32 @@ to distinguish from $20$.
 
 </details>
 
-:::
+::::
 
-::: {.callout-important .question appearance="minimal" data-tags="interpretation bayes conjugacy beta binomial map" data-difficulty="1" #q-concepts-sequential-bayes data-chapters="6" data-ready-after="6"}
+:::: {.callout-important .question appearance="minimal" data-tags="interpretation bayes conjugacy beta binomial map" data-difficulty="1" #q-concepts-sequential-bayes data-chapters="6" data-ready-after="6" data-exam-slot="b-bayes" data-exam-marks="20" data-exam-parts="6 6 4 4" data-exam-family="beta-binomial"}
 ## Question 94: Sequential Bayesian updating and prior influence
 
+::: {.exam-prompt}
 Conditional on a fixed success probability $p$, all trials below are independent
 Bernoulli trials. Begin with the prior $p\sim\mathrm{Beta}(2,3)$. A first batch
 contains $3$ successes in $5$ trials; a second batch contains $1$ success in
 $3$ trials.
 
-(a) Find the posterior after each batch, using the first posterior as the
-prior for the second update.  
-(b) Check that updating once with all the data gives the same final posterior.
-Find its posterior mean and MAP estimate.  
-(c) Express the final posterior mean as a weighted average of the original
-prior mean and the overall observed success proportion.  
-(d) Repeat the final posterior mean calculation for a
-$\mathrm{Beta}(20,30)$ prior. Explain the effect of this change.
-
 You may use that a $\mathrm{Beta}(a,b)$ distribution has mean $a/(a+b)$ and,
 when $a,b>1$, mode $(a-1)/(a+b-2)$.
+
+(a) Find the posterior after each batch, using the first posterior as the
+    prior for the second update.
+
+(b) Check that updating once with all the data gives the same final posterior.
+    Find its posterior mean and MAP estimate.
+
+(c) Express the final posterior mean as a weighted average of the original
+    prior mean and the overall observed success proportion.
+
+(d) Repeat the final posterior mean calculation for a
+    $\mathrm{Beta}(20,30)$ prior. Explain the effect of this change.
+:::
 
 <details class="solution">
   <summary>Solution</summary>
@@ -397,7 +414,7 @@ when the prior mean is unchanged.
 
 </details>
 
-:::
+::::
 
 ::: {.callout-important .question appearance="minimal" data-tags="interpretation bayes credible-interval hdi beta cdf" data-difficulty="1" #q-concepts-credible-hdi data-chapters="8" data-ready-after="8"}
 ## Question 95: Equal-tailed and highest-density credible intervals

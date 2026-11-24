@@ -1,0 +1,2563 @@
+<!-- Curated specimen questions and worked answers. Repeated prompts share one
+     entry. The anchors retain the original specimen and question IDs.
+     The 8- and 12-mark prompts and the Bayesian hypothesis-testing prompt were
+     outside the curated question pool. -->
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style exponential interpretation estimator bias variance mse" data-difficulty="1" #q-specimen-1-q1 data-chapters="2 4" data-ready-after="4" data-exam-slot="a-estimator" data-exam-marks="10" data-exam-family="estimator-properties" data-exam-origin="specimen"}
+
+## Question 99: Estimating the Mean Lifetime of a Component
+
+::: {.exam-prompt}
+
+An engineer studies the lifetimes of a particular type of electronic component. Let $Y_i$ denote the
+lifetime (in hours) of the $i$th component in a random sample of size $n \ge 2$. Assume that the lifetimes
+are IID and that $$
+Y_i \mid \theta \sim \mathrm{Exp}\!\left( \frac{1}{\theta}\right),
+\qquad i = 1,2,\ldots,n,
+$$ where $\theta > 0$ is the (unknown) *average lifetime* of a component. Recall that for this
+parameterisation of the exponential distribution, the mean and variance are $$
+\mathrm{E}[Y_i] = \theta,
+\qquad
+\mathrm{Var}(Y_i) = \theta^2.
+$$
+
+A statistician considers the following statistics: $$
+T_1 = \frac{1}{n}\sum_{i=1}^n Y_i,
+\qquad
+T_2 = \sqrt{\frac{1}{n - 1}\sum_{i=1}^n (Y_i - \bar{Y})^2},
+$$ where $\bar{Y} = T_1$, as potential estimators for $\theta$.
+
+(a) Explain clearly the meaning of each of the following terms in the context of this problem:
+
+    (i) parameter,
+
+    (ii) estimator,
+
+    (iii) statistic.
+
+    [\[3 marks\]]{.exam-part-marks}
+
+(b) The statistician must decide whether to use $T_1$ or $T_2$ to estimate the average lifetime
+    $\theta$. Give two examples of statistical criteria that could be used to compare these
+    estimators, such as bias, variance, or mean squared error, and briefly explain the role of each
+    criterion selected. [\[3 marks\]]{.exam-part-marks}
+
+(c) The statistician ultimately decides to use $T_1$ to estimate the average lifetime $\theta$.
+    Compute the mean squared error of $T_1$ as an estimator of $\theta$, and comment on its value.
+    [\[4 marks\]]{.exam-part-marks}
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+(a) (i) The parameter is $\theta$, the fixed, unknown mean lifetime of this type of component.
+
+    (ii) An estimator is a rule that uses the random sample to estimate a parameter. For example,
+         $T_1=\bar Y$ is a random variable used to estimate $\theta$.
+
+    (iii) A statistic is a function of the sample and known constants. For example, $T_1$, $T_2$
+          and $\sum_{i=1}^n Y_i$ are all statistics.
+
+(b) **Bias** compares the estimator's mean with $\theta$ using
+    $\mathrm{Bias}(T)=\mathrm{E}[T]-\theta$. **Variance** measures how much $T$ varies between
+    repeated samples. The mean squared error combines both as
+    $\mathrm{MSE}(T)=\mathrm{Var}(T)+\mathrm{Bias}(T)^2$.
+
+(c) Linearity of expectation gives $\mathrm{E}[T_1]=\theta$. By independence,
+    $$
+    \mathrm{Var}(T_1)
+    =\frac{1}{n^2}\sum_{i=1}^n \mathrm{Var}(Y_i)
+    =\frac{\theta^2}{n}.
+    $$
+    Since $T_1$ is unbiased, $\mathrm{MSE}(T_1)=\theta^2/n$. The MSE decreases to zero as $n$
+    increases, so $T_1$ is consistent.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style weibull likelihood fisher-information estimator bias variance cramer-rao" data-difficulty="2" #q-specimen-1-q2 data-chapters="4 5" data-ready-after="5" data-exam-slot="a-likelihood" data-exam-marks="10" data-exam-family="weibull-likelihood" data-exam-origin="specimen"}
+
+## Question 100: Fisher Information and Efficiency for Weibull Lifetimes
+
+::: {.exam-prompt}
+
+A reliability engineer models the lifetimes of components using a Weibull distribution with $$
+U_1,\ldots,U_n \overset{\text{i.i.d.}}{\sim} \mathrm{Weibull}(\beta,\theta^{1/\beta}),
+$$ where the *shape* parameter $\beta>0$ is known, and the *scale* $\theta^{1/\beta}$ depends on
+the unknown parameter $\theta>0$.
+The PDF is $$
+f(u\mid\theta)
+= \frac{\beta}{\theta}\, u^{\beta-1}
+  \exp\!\left( -\frac{u^\beta}{\theta} \right),
+\qquad u>0.
+$$
+
+You may use the identities $$
+\mathrm{E}[U_i^\beta] = \theta
+\quad\text{and}\quad
+\mathrm{Var}(U_i^\beta) = \theta^2.
+$$
+
+(a) Derive the log-likelihood $\ell(\theta)$ for $\theta$ and show that the Fisher information for
+    the whole sample is $$
+    \mathcal{I}_n(\theta) \;=\; \frac{n}{\theta^2}.
+    $$ [\[6 marks\]]{.exam-part-marks}
+
+(b) Consider the estimator $$
+    \hat{\theta} = \frac{1}{n} \sum_{i=1}^n U_i^\beta.
+    $$
+
+    (i) Show that $\hat{\theta}$ is unbiased for $\theta$ and compute $\mathrm{Var}(\hat{\theta})$.
+        [\[2 marks\]]{.exam-part-marks}
+
+    (ii) Is $\hat{\theta}$ an efficient estimator of $\theta$? Justify your answer. [\[2 marks\]]{.exam-part-marks}
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+(a) By independence, the log-likelihood is the sum of the individual log-densities.
+    $$
+    \ell(\theta)
+    = n\log\beta-n\log\theta
+      +(\beta-1)\sum_{i=1}^n\log u_i
+      -\frac{1}{\theta}\sum_{i=1}^n u_i^\beta.
+    $$
+    The first and second derivatives are
+    $$
+    \ell'(\theta)=-\frac n\theta+\frac{1}{\theta^2}\sum_{i=1}^n u_i^\beta,
+    \qquad
+    \ell''(\theta)=\frac{n}{\theta^2}-\frac{2}{\theta^3}\sum_{i=1}^n u_i^\beta.
+    $$
+    Using $\mathrm{E}[U_i^\beta]=\theta$ gives
+    $$
+    \mathcal I_n(\theta)=-\mathrm{E}[\ell''(\theta)]
+    =-\frac{n}{\theta^2}+\frac{2n\theta}{\theta^3}
+    =\frac{n}{\theta^2}.
+    $$
+
+(b) (i) The mean and variance of the estimator are
+        $$
+        \mathrm{E}[\hat\theta]=\frac{1}{n}\sum_{i=1}^n\theta=\theta,
+        \qquad
+        \mathrm{Var}(\hat\theta)=\frac{1}{n^2}\sum_{i=1}^n\theta^2=\frac{\theta^2}{n}.
+        $$
+        The mean establishes unbiasedness. Independence lets us add the variances.
+
+    (ii) Yes. The variance $\theta^2/n$ is equal to the Cramér–Rao lower bound
+         $\mathcal I_n(\theta)^{-1}$ for an unbiased estimator.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style poisson likelihood mle asymptotic-mle lrt hypothesis-test two-sided p-value" data-difficulty="2" #q-specimen-1-q5 data-chapters="5 9" data-ready-after="9" data-exam-slot="b-testing" data-exam-marks="20" data-exam-family="poisson-rate" data-exam-origin="specimen"}
+
+## Question 101: Likelihood Ratio and Large-Sample Tests for an Orchid Bloom Rate
+
+::: {.exam-prompt}
+
+A botanist is studying a rare species of orchid that blooms unexpectedly throughout the year. During
+each observation period, they record the number of new blooms that appear.
+
+They model the number of blooms observed in a fixed time window as $$
+X_i  \overset{\text{i.i.d.}}{\sim} \mathrm{Pois}(\lambda), \qquad i=1,\dots,n,
+$$ where $\lambda$ is the average number of blooms per observation period.
+
+(a) What is $\mathrm{E}[X_i]$ under this model? [\[1 mark\]]{.exam-part-marks}
+
+(b) The botanist believes the true mean bloom rate is $\lambda = 4$ blooms per period. Formulate
+    this belief as a null hypothesis $H_0$ and give the corresponding *two-sided* alternative
+    hypothesis. [\[2 marks\]]{.exam-part-marks}
+
+(c) Show that the log-likelihood function for $\lambda$ is $$
+    \ell(\lambda;\underline{x})
+        = -n\lambda + S \, \log \lambda + C,
+        \qquad S = \sum_{i=1}^n x_i,
+    $$ for a constant $C$ not depending on $\lambda$. [\[3 marks\]]{.exam-part-marks}
+
+(d) Hence show that the MLE is $$
+    \hat{\lambda}=\bar{X}.
+    $$ [\[2 marks\]]{.exam-part-marks}
+
+(e) An experiment yields $n=30$ observation periods with total count $S=150$ blooms. Perform a
+    likelihood ratio test of your hypotheses from part (b), stating:
+
+    -   the test statistic,
+
+    -   its asymptotic null distribution,
+
+    -   and whether the null hypothesis should be rejected at the $1\%$ level.
+
+    [\[6 marks\]]{.exam-part-marks}
+
+(f) It is known that $$
+    \sqrt{n}\left(\hat{\lambda}-\lambda\right)
+        \;\overset{\text{approx.}}{\sim}\;
+        \mathcal{N}\!\left(0,\lambda\right)
+        \quad\text{for large } n.
+    $$
+
+    (i) For large $n$ and assuming your null hypothesis $H_0$ from part (b) is true, state the
+        approximate distribution of the statistic $$
+        T = \frac{\sqrt{n}(\hat{\lambda} - 4)}{2}.
+        $$ [\[2 marks\]]{.exam-part-marks}
+
+    (ii) Using $T$, compute the $p$-value of the two-sided test based on your hypotheses from
+         part (b) and the data from part (e). [\[2 marks\]]{.exam-part-marks}
+
+    (iii) Compare the conclusion of this test with the LRT from part (e). [\[2 marks\]]{.exam-part-marks}
+
+You may use $\chi^2_{1,0.99} = 6.635$ and $\Phi(2.74) = 0.9969$, where $\Phi$ is the standard Normal CDF.
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a)** Under the Poisson model, $\mathrm{E}[X_i]=\lambda$ blooms per observation period.
+
+**(b)** The hypotheses are $H_0:\lambda=4$ and $H_1:\lambda\ne 4$.
+
+**(c)** Independence gives, with $S=\sum_{i=1}^n x_i$,
+$$
+L(\lambda;\underline{x})
+= \prod_{i=1}^n \frac{e^{-\lambda}\lambda^{x_i}}{x_i!}
+= \frac{e^{-n\lambda}\lambda^S}{\prod_{i=1}^n x_i!}.
+$$
+Taking logarithms gives $\ell(\lambda;\underline{x})=-n\lambda+S\log\lambda+C$, where $C=-\sum_i\log(x_i!)$ is constant in $\lambda$.
+
+**(d)** The score is $-n+S/\lambda$. For $S>0$, it switches from positive to negative at $\lambda=S/n$. Thus the MLE is $\hat\lambda=\bar X$. If all counts are zero, the likelihood is maximised at the boundary $\lambda=0$ when the Poisson parameter space includes it. On $\lambda>0$, the supremum is approached as $\lambda$ decreases to zero.
+
+**(e)** For the observed data, $\hat\lambda=150/30=5$. The likelihood ratio statistic is
+$$
+\begin{aligned}
+W &= 2\{\ell(\hat\lambda;\underline{x})-\ell(4;\underline{x})\}\\
+  &= 2\{-30(5-4)+150\log(5/4)\} \approx 6.943.
+\end{aligned}
+$$
+Under $H_0$, $W$ has an asymptotic $\chi^2_1$ distribution. Since $6.943>6.635$, reject $H_0$ at the $1\%$ level. The data give evidence that the mean bloom rate differs from four blooms per period.
+
+**(f)(i)** Under $H_0$, $\sqrt{n}(\hat\lambda-4)$ is approximately $\mathcal{N}(0,4)$. Dividing by its standard deviation of $2$ gives $T\overset{\text{approx.}}{\sim}\mathcal{N}(0,1)$.
+
+**(f)(ii)** The observed value is $t=\sqrt{30}(5-4)/2\approx 2.74$. The two-sided $p$-value is
+$$
+2\{1-\Phi(|t|)\}\approx 2(1-0.9969)=0.0062.
+$$
+
+**(f)(iii)** Both tests reject $H_0$ at the $1\%$ level. The LRT compares the fitted and null likelihoods using a chi-squared reference distribution. The large-sample test compares the standardised MLE with a Normal reference distribution.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style normal variance estimator mse consistency likelihood bayes conjugacy inverse-gamma map" data-difficulty="3" #q-specimen-1-q6 data-chapters="4 5 6" data-ready-after="6" data-exam-slot="b-estimation" data-exam-marks="20" data-exam-family="normal-variance" data-exam-origin="specimen"}
+
+## Question 102: Mean Squared Error and Bayesian Estimation of a Variance
+
+::: {.exam-prompt}
+
+Let $X_1,\ldots,X_n$ be an IID sample from a distribution such that $\mathrm{E}[X_i] = \mu$,
+variance $\mathrm{Var}[X_i] = \sigma^2 < \infty$ and
+$\mathrm{E}[(X_i - \mu)^4] = \kappa^2 < \infty$. Fix a constant $c \in \mathbb{R}$. For $n+c>0$,
+consider the estimator of $\sigma^2$: $$
+\hat{\sigma}^2
+= \frac{1}{n+c}\sum_{i=1}^n (X_i - \mu)^2.
+$$
+
+(a) Compute the MSE of $\hat{\sigma}^2$ as an estimator of $\sigma^2$ and hence show that
+    $\hat{\sigma}^2$ is consistent for all $c\in\mathbb{R}$. [\[8 marks\]]{.exam-part-marks}
+
+(b) Assume now that $X_i \mid \sigma^2 \sim \mathcal{N}(\mu, \sigma^2)$ independently, where $\mu$
+    is known, and that we place an inverse-gamma prior on $\sigma^2$: $$
+    \sigma^2 \sim \operatorname{InvGamma}(a,b).
+    $$
+
+    (i) Show that the likelihood takes the form $$
+        L(\sigma^2;\underline{x})
+        = (2\pi\sigma^2)^{-n/2}
+           \exp\!\left[
+               -\,\frac{1}{2\sigma^2}
+                 \sum_{i=1}^n (x_i - \mu)^2
+           \right].
+        $$ [\[2 marks\]]{.exam-part-marks}
+
+    (ii) Using Bayes' theorem, show that $$
+         \sigma^2 \mid \underline{x}
+         \sim
+         \operatorname{InvGamma}\!\left(
+               a + \frac{n}{2}, \;
+               b + \frac{1}{2}\sum_{i=1}^n (x_i - \mu)^2
+         \right).
+         $$ [\[5 marks\]]{.exam-part-marks}
+
+    (iii) Let $S = \sum_{i=1}^n (X_i - \mu)^2$ and define $\eta = 2b$. Show that the MAP estimator
+          of $\sigma^2$ is $$
+          \widehat{\sigma}^2_{\mathrm{MAP}}
+          = \frac{\eta + S}{2a + n + 2}.
+          $$ [\[5 marks\]]{.exam-part-marks}
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a)** Put $Z_i=(X_i-\mu)^2$. Then $\mathrm{E}[Z_i]=\sigma^2$ and $\mathrm{Var}(Z_i)=\kappa^2-\sigma^4$. Using independence,
+$$
+\begin{aligned}
+\mathrm{E}[\hat\sigma^2] &= \frac{n\sigma^2}{n+c},\\
+\mathrm{Bias}(\hat\sigma^2) &= -\frac{c\sigma^2}{n+c},\\
+\mathrm{Var}(\hat\sigma^2) &= \frac{n(\kappa^2-\sigma^4)}{(n+c)^2}.
+\end{aligned}
+$$
+The MSE is the sum of the variance and squared bias,
+$$
+\mathrm{MSE}(\hat\sigma^2)
+= \frac{n(\kappa^2-\sigma^4)+c^2\sigma^4}{(n+c)^2}.
+$$
+For every fixed $c$, this tends to zero as $n\to\infty$. For any $\varepsilon>0$,
+$$
+\Pr(|\hat\sigma^2-\sigma^2|>\varepsilon)
+\le \frac{\mathrm{MSE}(\hat\sigma^2)}{\varepsilon^2}
+\longrightarrow 0.
+$$
+Thus $\hat\sigma^2$ is consistent.
+
+**(b)(i)** Write $v=\sigma^2$ and $s=\sum_{i=1}^n(x_i-\mu)^2$. The likelihood is the product of the independent Normal densities,
+$$
+L(v;\underline{x})
+= \prod_{i=1}^n \frac{1}{\sqrt{2\pi v}}
+    \exp\!\left(-\frac{(x_i-\mu)^2}{2v}\right)
+= (2\pi v)^{-n/2}\exp\!\left(-\frac{s}{2v}\right).
+$$
+
+**(b)(ii)** For $v>0$, the prior has kernel $v^{-(a+1)}e^{-b/v}$. Multiplying by the likelihood gives
+$$
+\pi(v\mid\underline{x})
+\propto v^{-(a+n/2+1)}\exp\!\left(-\frac{b+s/2}{v}\right).
+$$
+Hence $\sigma^2\mid\underline{x}\sim\operatorname{InvGamma}(a+n/2,b+s/2)$.
+
+**(b)(iii)** Let $A=a+n/2$ and $B=b+s/2$. The posterior log-density has derivative
+$$
+\frac{d}{dv}\log\pi(v\mid\underline{x})
+= -\frac{A+1}{v}+\frac{B}{v^2}.
+$$
+It changes from positive to negative at $v=B/(A+1)$. Replacing $s$ by the statistic $S$ and using $\eta=2b$ gives
+$$
+\widehat{\sigma}^2_{\mathrm{MAP}}=\frac{\eta+S}{2a+n+2}.
+$$
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style normal likelihood mle confidence-interval bayes conjugacy hdi interpretation" data-difficulty="3" #q-specimen-1-q7 data-chapters="5 6 7 8" data-ready-after="8" data-exam-slot="b-bayes" data-exam-marks="20" data-exam-family="normal-mean-bayes" data-exam-origin="specimen"}
+
+## Question 103: Frequentist and Bayesian Intervals for Mean Reaction Time
+
+::: {.exam-prompt}
+
+A cognitive neuroscientist at *Newcastle University* is studying the reaction time $R$ (in
+milliseconds) required for a subject to correctly identify a visual stimulus. Let $R_1,\ldots,R_n$
+be an IID sample, and assume $$
+R_i \mid \mu \sim \mathcal{N}\!\left(\mu,\;\tau^{-1}\right), \qquad i=1,\ldots,n,
+$$ where the population mean $\mu$ is unknown but the precision $\tau$ (i.e. variance $1/\tau$) is
+known. A sample of size $n=40$ yields a sample mean $\bar{r}=275$ ms.
+
+Assume $\tau = (1/30)^2$ so the known standard deviation is $30$ ms.
+
+(a) (i) Write down the likelihood $L(\mu;\underline{r})$ and log-likelihood
+        $\ell(\mu; \underline{r})$ for the given model. [\[3 marks\]]{.exam-part-marks}
+
+    (ii) Derive the maximum likelihood estimator (MLE) of $\mu$ and state its sampling distribution
+         exactly. [\[3 marks\]]{.exam-part-marks}
+
+(b) (i) Using the sampling distribution from part (a)(ii), compute an exact 95% confidence interval
+        for $\mu$. [\[3 marks\]]{.exam-part-marks}
+
+    (ii) Suppose a prior belief places $\mu$ near $300$ ms with moderate uncertainty. The researcher
+         adopts a conjugate Normal prior $$
+         \mu \sim \mathcal{N}\!\left(\mu_0,\;\tau_0^{-1}\right),
+             \qquad
+             \mu_0=300,\;\; \tau_0 = (1/50)^2.
+         $$ Derive the posterior distribution $\mu \mid \underline{r}$, stating its family, mean and
+         precision. [\[8 marks\]]{.exam-part-marks}
+
+(c) A 95% highest density interval (HDI) for $\mu$ under the posterior derived in part (b)(ii) is
+    given by $$
+    \Pr(266 < \mu < 284.5 \mid \underline{r}) \approx 0.95.
+    $$ Compare, in one or two sentences, the interpretation of this 95% Bayesian HDI with the exact
+    95% confidence interval constructed in part (b)(i). [\[3 marks\]]{.exam-part-marks}
+
+You may use the standard Normal quantile $z_{0.975} = 1.960$.
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a)(i)** Multiplying the independent Normal densities gives
+$$
+\begin{aligned}
+L(\mu;\underline{r}) &=
+  \left(\frac{\tau}{2\pi}\right)^{n/2}
+  \exp\!\left(-\frac{\tau}{2}\sum_{i=1}^n(r_i-\mu)^2\right),\\
+\ell(\mu;\underline{r}) &=
+  \frac n2\log\!\left(\frac{\tau}{2\pi}\right)
+  -\frac{\tau}{2}\sum_{i=1}^n(r_i-\mu)^2.
+\end{aligned}
+$$
+
+**(a)(ii)** Differentiating gives $\ell'(\mu)=n\tau(\bar r-\mu)$. The observed maximum is at $\bar r$, so the MLE is $\hat\mu=\bar R$. Because the $R_i$ are independent Normal observations,
+$$
+\hat\mu=\bar R\sim\mathcal{N}\!\left(\mu,\frac{1}{n\tau}\right)
+$$
+exactly.
+
+**(b)(i)** The exact $95\%$ confidence interval uses the sampling standard error $1/\sqrt{n\tau}=30/\sqrt{40}$. The interval is
+$$
+275\pm1.960\,\frac{30}{\sqrt{40}}
+\ \ \Longrightarrow\ \ (265.7,\ 284.3)\ \text{ms}.
+$$
+
+**(b)(ii)** Multiplying the prior density by the likelihood and collecting powers of $\mu$ gives
+$$
+\log\pi(\mu\mid\underline{r})
+= -\frac{1}{2}\left[
+  (\tau_0+n\tau)\mu^2-2(\tau_0\mu_0+n\tau\bar r)\mu
+  \right]+C,
+$$
+where $C$ is constant in $\mu$. Completing the square yields
+$$
+\begin{aligned}
+\mu\mid\underline{r} &\sim \mathcal{N}(\mu_n,\tau_n^{-1}),\\
+\tau_n &= \tau_0+n\tau,\\
+\mu_n &= \frac{\tau_0\mu_0+n\tau\bar r}{\tau_0+n\tau}.
+\end{aligned}
+$$
+With $\tau_0=1/2500$ and $\tau=1/900$, the posterior precision is approximately $0.04484$ and the posterior mean is approximately $275.22$ ms. The posterior variance is approximately $22.30\,\mathrm{ms}^2$.
+
+**(c)** Under the model and prior, the posterior probability that $\mu$ lies in the reported HDI is approximately $0.95$. The frequentist procedure gives an interval containing the fixed true $\mu$ in $95\%$ of repeated samples.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style normal interpretation z-test hypothesis-test one-sided power" data-difficulty="3" #q-specimen-1-q8 data-chapters="1 3 9" data-ready-after="9" data-exam-slot="b-testing" data-exam-marks="20" data-exam-family="normal-mean-test" data-exam-origin="specimen"}
+
+## Question 104: Hypothesis Testing and Power for Mean Recall Improvement
+
+::: {.exam-prompt}
+
+A biomedical engineer is evaluating whether a new cognitive--training app improves short-term
+memory. Each participant completes a daily memory--recall test for two weeks. Let $Y_1,\ldots,Y_n$
+denote the *day-to-day improvements* in recall score after beginning the training.
+
+Because different days show different levels of natural variability, assume $$
+Y_i \mid \mu \sim \mathcal{N}(\mu,\sigma_i^2),
+\qquad i=1,\ldots,n,
+$$ where the observations are independent and the variances $\sigma_i^2$ are known and not all
+equal. The parameter $\mu$ represents the average daily improvement attributable to the training.
+
+(a) Explain what it means to "estimate $\mu$'' in the frequentist framework, and how uncertainty
+    about $\mu$ is represented in a Bayesian analysis. [\[2 marks\]]{.exam-part-marks}
+
+(b) The engineer wishes to test the hypothesis $$
+    H_0 : \mu = 0
+    \qquad \text{vs.} \qquad
+    H_1 : \mu > 0.
+    $$
+
+    (i) Define the *size* of a hypothesis test. [\[2 marks\]]{.exam-part-marks}
+
+    (ii) Show that the statistic $$
+         T = \sum_{i=1}^n \frac{Y_i}{\sigma_i^2}
+         $$ is normally distributed under any $\mu$, and derive its mean and variance. [\[4 marks\]]{.exam-part-marks}
+
+    (iii) Hence show that a size $\alpha$ test rejects $H_0$ when $$
+          T > c_\alpha,
+          $$ for a suitable constant $c_\alpha$ to be determined. [\[3 marks\]]{.exam-part-marks}
+
+    (iv) Derive the *power function* $$
+         \beta(\mu)
+             = \Pr(\text{Reject } H_0 \mid \mu),
+         $$ and express your answer in terms of $\Phi(\cdot)$, the standard Normal CDF. [\[5 marks\]]{.exam-part-marks}
+
+(c) A small pilot dataset gives the improvements (in points): $$
+    2.1,\; 1.8,\; -0.4,\; 3.2,\; 0.9,\; 1.5,
+    $$ with corresponding known variances $$
+    \sigma_i^2 = 1.0,\; 1.2,\; 0.8,\; 1.5,\; 1.0,\; 0.9.
+    $$
+
+    (i) Compute the observed value of the test statistic $T$ from part (b). [\[2 marks\]]{.exam-part-marks}
+
+    (ii) Using the size $\alpha = 0.05$ rejection rule from part (b)(iii), state whether $H_0$ is
+         rejected for this data, justifying your conclusion clearly. [\[2 marks\]]{.exam-part-marks}
+
+You may use the standard Normal quantile $z_{0.95} = 1.645$.
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a)** In frequentist inference, $\mu$ is fixed and unknown. We estimate it with a statistic computed from the data and use the statistic's sampling distribution to quantify uncertainty. A Bayesian analysis uses a prior distribution for $\mu$ and updates it to a posterior distribution using the observed data.
+
+**(b)(i)** The size of a test is the greatest probability of rejecting the null hypothesis among parameter values in the null. Here the null is simple, so the size is $\Pr_{\mu=0}(\text{reject }H_0)$.
+
+**(b)(ii)** Define $S=\sum_{i=1}^n 1/\sigma_i^2$. A linear combination of the independent Normal variables is Normal. Its mean and variance are
+$$
+\begin{aligned}
+\mathrm{E}_\mu[T] &= \sum_{i=1}^n \frac{\mu}{\sigma_i^2}=\mu S,\\
+\mathrm{Var}_\mu(T) &= \sum_{i=1}^n \frac{\sigma_i^2}{\sigma_i^4}=S.
+\end{aligned}
+$$
+Thus $T\sim\mathcal{N}(\mu S,S)$.
+
+**(b)(iii)** Large values of $T$ support $\mu>0$. Under $H_0$, $T/\sqrt S\sim\mathcal{N}(0,1)$, so the test that rejects for $T>c_\alpha=z_{1-\alpha}\sqrt S$ has size $\alpha$.
+
+**(b)(iv)** Using the mean and variance under a general $\mu$ gives the power function
+$$
+\begin{aligned}
+\beta(\mu) &= \Pr_\mu(T>c_\alpha)
+=1-\Phi\!\left(\frac{c_\alpha-\mu S}{\sqrt S}\right)\\
+&=1-\Phi\!\left(z_{1-\alpha}-\mu\sqrt S\right).
+\end{aligned}
+$$
+
+**(c)(i)** The observed statistic is
+$$
+\begin{aligned}
+t &= \frac{2.1}{1.0}+\frac{1.8}{1.2}
+ +\frac{-0.4}{0.8}+\frac{3.2}{1.5}
+ +\frac{0.9}{1.0}+\frac{1.5}{0.9}\\
+&=7.80.
+\end{aligned}
+$$
+
+**(c)(ii)** The sum of the inverse variances is $S\approx5.861$. The critical value is $c_{0.05}=1.645\sqrt{5.861}\approx3.98$. Since $7.80>3.98$, reject $H_0$ at the $5\%$ level. The pilot data give evidence of a positive mean daily improvement.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style estimator bias variance mse" data-difficulty="1" #q-specimen-2-q1 data-chapters="4" data-ready-after="4" data-exam-slot="a-estimator" data-exam-marks="10" data-exam-family="estimator-properties" data-exam-origin="specimen"}
+
+## Question 105: Bias, Variance, and Mean Squared Error
+
+::: {.exam-prompt}
+
+Let $\hat{\theta} = \hat{\theta}(X_1,\ldots,X_n)$ be an estimator of a parameter $\theta$.
+
+(a) Give precise mathematical definitions of the following quantities:
+
+    (i) the *bias* of $\hat{\theta}$ [\[2 marks\]]{.exam-part-marks}
+
+    (ii) the *variance* of $\hat{\theta}$ [\[2 marks\]]{.exam-part-marks}
+
+(b) Starting from the definition $$
+    \mathrm{MSE}(\hat{\theta})
+    = \mathrm{E}\big[(\hat{\theta} - \theta)^2\big],
+    $$ derive the identity $$
+    \mathrm{MSE}(\hat{\theta})
+    = \mathrm{Bias}(\hat{\theta})^2
+      + \mathrm{Var}(\hat{\theta}).
+    $$ [\[4 marks\]]{.exam-part-marks}
+
+(c) Show that if $\hat{\theta}$ is an unbiased estimator of $\theta$, then $$
+    \mathrm{MSE}(\hat{\theta})
+    = \mathrm{E}[\hat{\theta}^2] - \theta^2.
+    $$ [\[2 marks\]]{.exam-part-marks}
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+(a) (i) The bias is $\mathrm{E}[\hat\theta]-\theta$.
+
+    (ii) The variance is
+         $$
+         \mathrm{Var}(\hat\theta)
+         =\mathrm{E}\big[(\hat\theta-\mathrm{E}[\hat\theta])^2\big]
+         =\mathrm{E}[\hat\theta^2]-\mathrm{E}[\hat\theta]^2.
+         $$
+
+(b) Let $m=\mathrm{E}[\hat\theta]$. Writing $\hat\theta-\theta=(\hat\theta-m)+(m-\theta)$ and
+    expanding the square gives
+    $$
+    \begin{aligned}
+    \mathrm{MSE}(\hat\theta)
+      &=\mathrm{E}[(\hat\theta-m)^2]+2(m-\theta)\mathrm{E}[\hat\theta-m]+(m-\theta)^2\\
+      &=\mathrm{Var}(\hat\theta)+\mathrm{Bias}(\hat\theta)^2,
+    \end{aligned}
+    $$
+    since $\mathrm{E}[\hat\theta-m]=0$.
+
+(c) Unbiasedness implies $\mathrm{E}[\hat\theta]=\theta$. The identity in part (b) then reduces to
+    $$
+    \mathrm{MSE}(\hat\theta)
+    =\mathrm{Var}(\hat\theta)
+    =\mathrm{E}[\hat\theta^2]-\theta^2.
+    $$
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style poisson clt confidence-interval hypothesis-test two-sided interpretation" data-difficulty="1" #q-specimen-2-q2 data-chapters="4 7 9" data-ready-after="9" data-exam-slot="a-interval" data-exam-marks="10" data-exam-family="poisson-rate" data-exam-origin="specimen"}
+
+## Question 106: A Large-Sample Confidence Interval for Call Volume
+
+::: {.exam-prompt}
+
+(a) A call centre records the number of calls handled by each employee during a shift.
+
+    Let $Y_1, \ldots, Y_n$ be an IID sample from a $\mathrm{Pois}(\lambda)$ distribution. In a
+    sample of $n = 120$ employees, the sample mean number of calls handled is $\bar{Y} = 18.7$.
+
+    Using a large-sample normal approximation to the sampling distribution of $\bar{Y}$, construct
+    an approximate 95% confidence interval for $\lambda$. [\[4 marks\]]{.exam-part-marks}
+
+(b) Interpret your confidence interval from part (a) in one or two sentences, making clear what the
+    probability statement refers to. [\[2 marks\]]{.exam-part-marks}
+
+(c) A team leader claims that the average number of calls handled per shift is 20. Using your
+    interval from part (a), test the hypothesis $H_0: \lambda = 20$ against $H_1: \lambda \neq 20$
+    at the 5% significance level, and state your conclusion clearly. [\[3 marks\]]{.exam-part-marks}
+
+(d) Briefly explain why it is reasonable to use a large-sample confidence interval here, even though
+    the Poisson distribution is not normal. [\[1 mark\]]{.exam-part-marks}
+
+You may use the standard Normal quantile $z_{0.975} = 1.960$.
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+(a) The Poisson mean and variance are both $\lambda$, so
+    $\mathrm{E}[\bar Y]=\lambda$ and $\mathrm{Var}(\bar Y)=\lambda/n$. The CLT gives
+    $\bar Y \overset{\mathrm{approx.}}{\sim}\mathcal N(\lambda,\lambda/n)$ for large $n$.
+    Replacing $\lambda$ by $\bar Y$ in the standard error gives the approximate 95% interval
+    $$
+    \bar Y \pm 1.960\sqrt{\frac{\bar Y}{n}}
+    =18.7\pm 1.960\sqrt{\frac{18.7}{120}}
+    \approx (17.93,\,19.47).
+    $$
+
+(b) If we repeatedly sampled 120 employees and constructed an interval each time using this
+    procedure, about 95% of those intervals would contain the fixed true mean $\lambda$.
+
+(c) The hypothesised value $20$ lies outside the approximate 95% interval. Reject
+    $H_0:\lambda=20$ in the corresponding two-sided test at the 5% level. The interval is entirely
+    below 20, giving evidence that the mean number of calls handled per shift is below 20.
+
+(d) The observations are IID with finite variance. The CLT approximates the sampling distribution
+    of the mean by a Normal distribution, and $n=120$ is large enough for this approximation here.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style bayes conjugacy likelihood beta binomial interpretation" data-difficulty="1" #q-specimen-2-q3 data-chapters="5 6" data-ready-after="6" data-exam-slot="a-bayes" data-exam-marks="10" data-exam-family="beta-binomial" data-exam-origin="specimen"}
+
+## Question 107: Combining Beta Priors and Updating with Football Results
+
+::: {.exam-prompt}
+
+Before an upcoming match against *Wigan Athletic*, two groups of football fans give their opinions
+about how likely *Plymouth Argyle* are to win.
+
+Let $\theta$ denote the probability that Plymouth Argyle win a randomly chosen match against a team
+of similar strength to Wigan. Each match result is coded as $$
+X_i =
+\begin{cases}
+1, & \text{if Plymouth Argyle win},\\
+0, & \text{otherwise}.
+\end{cases}
+$$ A data analyst models match outcomes as $$
+X_i \mid \theta \sim \mathrm{Bernoulli}(\theta), \qquad 0 < \theta < 1.
+$$
+
+Two independent fan groups provide prior information:
+
+-   *Local fans:* "Plymouth are usually the better side in these fixtures; they probably win about
+    70% of the time."
+
+-   *Neutral analysts:* "We think it is closer to 40%, based on league position and recent form."
+
+The analyst represents these opinions by two Beta priors: $$
+\theta \sim \mathrm{Beta}(7,3)
+\quad\text{(local fans)},
+\qquad
+\theta \sim \mathrm{Beta}(4,6)
+\quad\text{(neutral analysts)}.
+$$ The analyst chooses to combine the two opinions by adding the shape parameters to give an overall
+prior $$
+\theta \sim \mathrm{Beta}(\alpha_0,\beta_0),
+\qquad
+\alpha_0 = 7+4,\ \beta_0 = 3+6.
+$$
+
+A dataset of $n=20$ past matches against teams of similar strength yields $x=9$ Plymouth Argyle
+wins.
+
+(a) Compute the prior means of $\theta$ implied by the local fans and the neutral analysts
+    separately, and briefly comment on how each reflects the verbal statements above. [\[2 marks\]]{.exam-part-marks}
+
+(b) Now treat the $n=20$ past matches as data from a Binomial model: $$
+    X \mid \theta \sim \mathrm{Binomial}(n,\theta),
+    \qquad X = \sum_{i=1}^n X_i.
+    $$
+
+    (i) Write down the likelihood function for $\theta$ given $x$ wins out of $n$ matches. [\[2 marks\]]{.exam-part-marks}
+
+    (ii) Using the combined prior $\theta \sim \mathrm{Beta}(\alpha_0,\beta_0)$ and the Binomial
+         likelihood, derive the posterior distribution $\theta \mid x$, clearly stating its family
+         and updated parameters. [\[3 marks\]]{.exam-part-marks}
+
+(c) Compute the posterior mean of $\theta$ for $n=20$ and $x=9$, and compare it briefly to: $$
+    \hat{\theta} = \frac{x}{n}
+    \quad\text{and}\quad
+    \mathrm{E}[\theta]\ \text{under the combined prior}.
+    $$ Explain in one or two sentences how the prior and data are being combined. [\[3 marks\]]{.exam-part-marks}
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+(a) A $\mathrm{Beta}(\alpha,\beta)$ distribution has mean $\alpha/(\alpha+\beta)$. The two means
+    are $7/(7+3)=0.70$ and $4/(4+6)=0.40$, matching the local fans' and neutral analysts' stated
+    probabilities respectively.
+
+(b) (i) The Binomial likelihood is
+        $$
+        L(\theta;x)=\binom nx\theta^x(1-\theta)^{n-x}.
+        $$
+
+    (ii) The combined prior is $\mathrm{Beta}(11,9)$. Multiplying its density by the likelihood gives
+         $$
+         \pi(\theta\mid x)
+         \propto \theta^{\alpha_0+x-1}(1-\theta)^{\beta_0+n-x-1}.
+         $$
+         This is the kernel of $\mathrm{Beta}(\alpha_0+x,\beta_0+n-x)$. For the data given, the
+         posterior is $\mathrm{Beta}(20,20)$.
+
+(c) The posterior mean is $20/(20+20)=0.50$, between the sample proportion $9/20=0.45$ and the
+    combined prior mean $11/20=0.55$. The update weights the two means equally because the
+    combined prior shape parameters sum to 20 and there are 20 observations.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style log-normal likelihood fisher-information asymptotic-mle variance" data-difficulty="2" #q-specimen-2-q4 data-chapters="5" data-ready-after="5" data-exam-slot="a-likelihood" data-exam-marks="10" data-exam-family="normal-variance" data-exam-origin="specimen"}
+
+## Question 108: Fisher Information and Asymptotic Inference for Lognormal Data
+
+::: {.exam-prompt}
+
+Suppose $X_1,\dots,X_n$ are independent and identically distributed as $$
+X_i \mid \gamma \sim \mathrm{LogNormal}(1,\gamma),
+$$ with density $$
+f(x_i \mid \gamma)
+= \frac{1}{x_i \sqrt{2\pi\gamma}}
+  \exp\!\left(
+  -\frac{(\log x_i - 1)^2}{2\gamma}
+  \right),
+  \qquad x_i>0.
+$$
+
+(a) Show that the log-likelihood for $\gamma$ takes the form $$
+    \ell(\gamma;\underline{x})
+        = -\frac{n}{2}\log(2\pi)
+          - \frac{n}{2}\log \gamma
+          - \sum_{i=1}^n \log x_i
+          - \frac{1}{2\gamma}
+            \sum_{i=1}^n\!\left(\log (x_i) -1 \right)^2.
+    $$ [\[3 marks\]]{.exam-part-marks}
+
+(b) Show that the Fisher information for $\gamma$ takes the form $$
+    \mathcal{I}_n(\gamma)
+        = \frac{n}{2\gamma^2}.
+    $$ *Hint:* You may use the fact that if $Y\sim \mathrm{LogNormal}(\mu, \sigma^2)$, then
+    $\log(Y) \sim \mathcal{N}(\mu, \sigma^2)$. [\[5 marks\]]{.exam-part-marks}
+
+(c) Without explicitly computing the MLE $\hat{\gamma}_{\mathrm{MLE}}$ of $\gamma$, write down its
+    asymptotic distribution. [\[2 marks\]]{.exam-part-marks}
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+(a) Independence gives $L(\gamma;\underline{x})=\prod_{i=1}^n f(x_i\mid\gamma)$. Taking logs
+    and collecting the terms gives
+    $$
+    \ell(\gamma;\underline{x})
+    =-\frac{n}{2}\log(2\pi)-\frac{n}{2}\log\gamma
+     -\sum_{i=1}^n\log x_i-\frac{1}{2\gamma}\sum_{i=1}^n(\log x_i-1)^2.
+    $$
+
+(b) Write $s=\sum_{i=1}^n(\log x_i-1)^2$. Differentiating gives
+    $$
+    \ell'(\gamma)=-\frac{n}{2\gamma}+\frac{s}{2\gamma^2},
+    \qquad
+    \ell''(\gamma)=\frac{n}{2\gamma^2}-\frac{s}{\gamma^3}.
+    $$
+    Since $\log X_i\sim\mathcal N(1,\gamma)$, each squared deviation has mean $\gamma$.
+    Therefore $\mathrm{E}[S]=n\gamma$ for $S=\sum_{i=1}^n(\log X_i-1)^2$, and
+    $$
+    \mathcal I_n(\gamma)=-\mathrm{E}[\ell''(\gamma)]
+    =-\frac{n}{2\gamma^2}+\frac{n\gamma}{\gamma^3}
+    =\frac{n}{2\gamma^2}.
+    $$
+
+(c) For large $n$ the MLE is approximately Normal with centre $\gamma$ and variance
+    $\mathcal I_n(\gamma)^{-1}$.
+    $$
+    \hat\gamma_{\mathrm{MLE}}\ \overset{\mathrm{approx.}}{\sim}\
+    \mathcal N\!\left(\gamma,\frac{2\gamma^2}{n}\right).
+    $$
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style beta expectation likelihood mle fisher-information lrt hypothesis-test two-sided" data-difficulty="3" #q-specimen-2-q5 data-chapters="1 5 9" data-ready-after="9" data-exam-slot="b-estimation" data-exam-marks="20" data-exam-family="beta-likelihood" data-exam-origin="specimen"}
+
+## Question 109: Likelihood Inference and Testing for a Beta Shape Parameter
+
+::: {.exam-prompt}
+
+A continuous random variable $X$ has probability density function $$
+f(x \mid \theta) =
+\begin{cases}
+\theta x^{\theta - 1}, & 0 < x < 1,\\[6pt]
+0, & \text{otherwise},
+\end{cases}
+$$ where $\theta > 0$ is an unknown parameter.
+
+(a) Show that $\mathrm{E}[\log X] = -\dfrac{1}{\theta}$.
+
+    *Hint: You may find it helpful to consider the substitution $y = -\log(x)$ in the integral.*
+    [\[6 marks\]]{.exam-part-marks}
+
+(b) Given an IID sample $X_1, X_2, \ldots, X_n$ from this distribution, derive expressions for:
+
+    (i) The maximum likelihood estimator $\hat{\theta}_{\mathrm{MLE}}$ of $\theta$. [\[5 marks\]]{.exam-part-marks}
+
+    (ii) The Fisher information $\mathcal{I}_n(\theta)$ for the whole sample. [\[3 marks\]]{.exam-part-marks}
+
+(c) Suppose that $n = 80$ and the sample mean of $\log X$ is $\overline{\log X} = -3.2$. A
+    researcher claims that the true parameter value is $\theta = 0.25$. Using a two-sided likelihood
+    ratio test at the $5\%$ significance level, assess this claim. [\[6 marks\]]{.exam-part-marks}
+
+You may use the chi-squared quantile $\chi^2_{1,0.95} = 3.841$.
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a)** With $y=-\log x$, the limits $x=0$ and $x=1$ correspond to $y=\infty$ and $y=0$. Reversing the limits to absorb the minus sign in $dx=-e^{-y}\,dy$ gives
+$$
+\begin{aligned}
+\mathrm{E}[\log X]
+&=\int_0^1 \log(x)\,\theta x^{\theta-1}\,dx\\
+&=-\theta\int_0^\infty y e^{-\theta y}\,dy
+=-\frac1\theta.
+\end{aligned}
+$$
+The last step uses $\int_0^\infty y e^{-\theta y}\,dy=1/\theta^2$, which follows by integration by parts.
+
+**(b)(i)** The likelihood is $L(\theta;\underline{x})=\theta^n\prod_i x_i^{\theta-1}$. The score is
+$$
+\frac{\partial}{\partial\theta}\ell(\theta;\underline{x})
+=\frac{n}{\theta}+\sum_{i=1}^n\log x_i.
+$$
+It is zero at $\hat\theta=-n/\sum_i\log x_i=-1/\overline{\log x}$. The solution is positive since $0<x_i<1$ for all $i$, and $\ell''(\theta)=-n/\theta^2<0$.
+
+**(b)(ii)** The Fisher information for the sample is
+$$
+\mathcal{I}_n(\theta)
+=-\mathrm{E}_\theta[\ell''(\theta)]
+=\frac{n}{\theta^2}.
+$$
+
+**(c)** For $H_0:\theta=0.25$ against $H_1:\theta\ne0.25$, the observed log-likelihood uses $\sum_i\log x_i=80(-3.2)=-256$. The unrestricted MLE is $\hat\theta=0.3125$. The LRT statistic is
+$$
+\begin{aligned}
+W &= 2\{\ell(0.3125;\underline{x})-\ell(0.25;\underline{x})\}\\
+&=2\{80\log(0.3125/0.25)-256(0.3125-0.25)\}
+\approx 3.703.
+\end{aligned}
+$$
+Under $H_0$, $W$ is asymptotically $\chi^2_1$. Since $3.703<3.841$, the data do not give sufficient evidence to reject the researcher's claim at the $5\%$ level.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style weibull likelihood mle fisher-information asymptotic-mle confidence-interval bayes conjugacy gamma" data-difficulty="3" #q-specimen-2-q7 data-chapters="5 6 7" data-ready-after="7" data-exam-slot="b-estimation" data-exam-marks="20" data-exam-family="weibull-likelihood" data-exam-origin="specimen"}
+
+## Question 110: Frequentist and Bayesian Inference for Weibull Battery Lifetimes
+
+::: {.exam-prompt}
+
+A materials scientist is investigating the lifetime (in hours) of a new battery component used in
+electric vehicles. Let $T_1, \ldots, T_n$ denote the lifetimes of $n$ independently tested
+components. It is assumed that $$
+T_i \mid \theta \sim \mathrm{Weibull}(k,\theta), \qquad i=1,\dots,n,
+$$ where the shape parameter is known to be $k=2$, and the scale parameter $\theta>0$ is unknown.
+The density is $$
+f(t \mid \theta)
+= \frac{2}{\theta^2} t \exp\!\left(-\frac{t^2}{\theta^2}\right),
+\qquad t > 0.
+$$
+
+A sample of $n=40$ components yields observed lifetimes $t_1,\ldots,t_{40}$ with $$
+\sum_{i=1}^{40} t_i^2 = 12{,}000.
+$$
+
+(a) (i) Show that the log-likelihood function takes the form $$
+        \ell(\theta; \underline{t}) = n\log 2 - 2n\log \theta + \sum_{i=1}^n \log(t_i) - \frac{1}{\theta^2}\sum_{i=1}^n t_i^2.
+        $$ [\[3 marks\]]{.exam-part-marks}
+
+    (ii) Derive the maximum likelihood estimator $\hat{\theta}$ and evaluate it numerically for the
+         given data. [\[3 marks\]]{.exam-part-marks}
+
+(b) (i) Derive the Fisher information for a single observation, $\mathcal{I}_1(\theta)$, and hence
+        for $n$ observations.
+
+        *Hint:* You may use the fact that if $X\sim \mathrm{Weibull}(2,\theta)$, then
+        $X^2\sim \mathrm{Exp}\left(\frac{1}{\theta^2}\right)$. [\[3 marks\]]{.exam-part-marks}
+
+    (ii) Hence obtain the asymptotic distribution of the MLE and construct an approximate $95\%$
+         confidence interval for $\theta$. [\[3 marks\]]{.exam-part-marks}
+
+(c) Engineers believe, based on past data from similar components, that the scale parameter is
+    likely to be around $\theta \approx 20$ hours, with moderate uncertainty.
+
+    They adopt the prior $$
+    \theta^{-2} \sim \mathrm{Gamma}(\alpha_0,\beta_0),
+    $$ i.e. a prior on the precision parameter $\lambda = 1/\theta^2$ with density $$
+    \pi(\lambda) \propto \lambda^{\alpha_0 - 1} e^{-\beta_0 \lambda}.
+    $$
+
+    (i) Show that the choice $\alpha_0 = 5$ and $\beta_0 = 2000$ is consistent with the prior belief
+        that $\theta$ is likely to be near $20$. [\[2 marks\]]{.exam-part-marks}
+
+    (ii) Show that the likelihood function written as a function of $\lambda$ takes the form $$
+         f(\underline{t} \mid \lambda) = 2^n \lambda^n \exp\left\{-\lambda\sum_{i=1}^n t_i^2\right\} \prod_{i=1}^n t_i.
+         $$ [\[2 marks\]]{.exam-part-marks}
+
+    (iii) Using $\alpha_0 = 5$, $\beta_0 = 2000$ and the given data, derive the posterior
+          distribution of $\lambda = 1/\theta^2$ and state its mean and variance. [\[4 marks\]]{.exam-part-marks}
+
+You may use the standard Normal quantile $z_{0.975} = 1.960$.
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a)(i)** Let $s=\sum_{i=1}^n t_i^2$. Multiplying the densities of the independent lifetimes yields
+$$
+L(\theta;\underline{t})=\frac{2^n}{\theta^{2n}}
+  \left(\prod_{i=1}^n t_i\right)e^{-s/\theta^2}.
+$$
+Taking logarithms gives $\ell(\theta;\underline{t})=n\log 2-2n\log\theta+\sum_i\log t_i-s/\theta^2$.
+
+**(a)(ii)** The score is $-2n/\theta+2s/\theta^3$, which changes sign from positive to negative at $\hat\theta=\sqrt{s/n}$. Numerically, $\hat\theta=\sqrt{12{,}000/40}\approx17.32$ hours.
+
+**(b)(i)** The single-observation log-density has second derivative $2/\theta^2-6T^2/\theta^4$. Because $T^2\sim\mathrm{Exp}(1/\theta^2)$, its mean is $\theta^2$. It follows that
+$$
+\mathcal{I}_1(\theta)
+= -\frac{2}{\theta^2}+\frac{6\theta^2}{\theta^4}
+=\frac{4}{\theta^2},
+\qquad
+\mathcal{I}_n(\theta)=\frac{4n}{\theta^2}.
+$$
+
+**(b)(ii)** The MLE is approximately $\mathcal{N}(\theta,\theta^2/(4n))$ for large $n$. Substituting $\hat\theta$ into the variance gives the estimated standard error $\hat\theta/(2\sqrt n)\approx1.369$ hours. The approximate $95\%$ confidence interval is
+$$
+17.32\pm1.960(1.369)
+\ \ \Longrightarrow\ \ (14.64,\ 20.00)\ \text{hours}.
+$$
+
+**(c)(i)** With the shape–rate convention, the prior mean of $\lambda$ is $5/2000=1/20^2$. This corresponds to a scale of $20$ hours. On the scale of $\theta$, transforming the prior density using $|d\lambda/d\theta|=2/\theta^3$ gives a density proportional to $\theta^{-11}e^{-2000/\theta^2}$. Its mode is $\sqrt{4000/11}\approx19.07$ hours, which is also close to $20$.
+
+**(c)(ii)** Substituting $\theta^{-2}=\lambda$ into the likelihood gives
+$$
+f(\underline{t}\mid\lambda)
+=2^n\lambda^n e^{-\lambda s}\prod_{i=1}^n t_i.
+$$
+
+**(c)(iii)** The product of the likelihood kernel $\lambda^n e^{-\lambda s}$ and prior kernel $\lambda^{\alpha_0-1}e^{-\beta_0\lambda}$ gives
+$$
+\lambda\mid\underline{t}
+\sim\mathrm{Gamma}(\alpha_0+n,\beta_0+s)
+=\mathrm{Gamma}(45,14{,}000).
+$$
+The posterior mean is $45/14{,}000\approx0.003214$. The posterior variance is $45/14{,}000^2\approx2.296\times10^{-7}$.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style normal t-test student-t confidence-interval hypothesis-test two-sided" data-difficulty="3" #q-specimen-2-q8 data-chapters="7 9" data-ready-after="9" data-exam-slot="b-testing" data-exam-marks="20" data-exam-family="normal-mean-test" data-exam-origin="specimen"}
+
+## Question 111: Student-t Inference for a Change in Jump Height
+
+::: {.exam-prompt}
+
+A sports scientist is evaluating whether a new strength--training routine improves vertical jump
+height. For each athlete, the increase in jump height (in centimetres) after a 6-week programme is
+recorded. Let $X_1, X_2, \ldots, X_n$ denote these increases, modelled as $$
+X_i \stackrel{\mathrm{i.i.d.}}{\sim} \mathcal{N}(\mu,\sigma^2),
+$$ where both the mean improvement $\mu$ and variance $\sigma^2$ are unknown.
+
+The scientist wishes to test whether the programme leads to a systematic change: $$
+H_0: \mu = 0
+\qquad \text{vs.} \qquad
+H_1: \mu \neq 0.
+$$
+
+(a) The sample variance is defined as $$
+    S^2 = \frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X})^2.
+    $$ Using the facts that:
+
+    (i) $\displaystyle \frac{(n-1)S^2}{\sigma^2} \sim \chi^2_{n-1}$,
+
+    (ii) $S^2$ is independent of the sample mean $\bar{X}$,
+
+    and the defining property of the Student-$t$ distribution: if $$
+    T = \frac{Z}{\sqrt{U/\nu}},
+    $$ where $$
+    Z \sim \mathcal{N}(0,1), \quad U \sim \chi^2_{\nu},
+    \quad \text{and } Z \text{ and } U \text{ are independent},
+    $$ then $$
+    T \sim t_{\nu},
+    $$ show that under $H_0$, $$
+    T = \frac{\bar{X}}{S/\sqrt{n}}
+    \;\sim\; t_{n-1}.
+    $$ [\[6 marks\]]{.exam-part-marks}
+
+(b) Using the distribution result from part (a):
+
+    (i) Hence state the rejection region of a two-sided size $\alpha$ test in terms of the critical
+        value $t_{n-1,\, 1-\alpha/2}$. [\[2 marks\]]{.exam-part-marks}
+
+    (ii) Show that this two-sided size-$\alpha$ test rejects $H_0:\mu=0$ if and only if the
+         $100(1-\alpha)\%$ confidence interval for $\mu$, based on $T$, does not contain $0$. [\[5 marks\]]{.exam-part-marks}
+
+(c) A sample of $n = 16$ athletes yields a sample mean $\bar{x} = 3.2$ cm and a sample variance
+    $s^2 = 9$.
+
+    (i) Carry out the test from part (b) at the $5\%$ significance level, stating clearly whether
+        the null hypothesis is rejected. [\[4 marks\]]{.exam-part-marks}
+
+    (ii) Briefly interpret your conclusion in the practical context of evaluating the training
+         programme. [\[3 marks\]]{.exam-part-marks}
+
+You may use the Student-$t$ quantile $t_{15,0.975} = 2.131$.
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a)** Under $H_0$, $\bar X\sim\mathcal{N}(0,\sigma^2/n)$, so $Z=\bar X/(\sigma/\sqrt n)\sim\mathcal{N}(0,1)$. The quantity $U=(n-1)S^2/\sigma^2$ is $\chi^2_{n-1}$ and independent of $Z$. Therefore,
+$$
+T=\frac{Z}{\sqrt{U/(n-1)}}
+=\frac{\bar X}{S/\sqrt n}
+\sim t_{n-1}.
+$$
+
+**(b)(i)** The two-sided test rejects $H_0$ when $|T|>t_{n-1,\,1-\alpha/2}$, placing rejection probability $\alpha/2$ in each tail under $H_0$.
+
+**(b)(ii)** Let $c=t_{n-1,\,1-\alpha/2}$. For any fixed $\mu$, the pivot $(\bar X-\mu)/(S/\sqrt n)$ also has a $t_{n-1}$ distribution. The central probability $1-\alpha$ gives the confidence interval
+$$
+[\bar X-c S/\sqrt n,\ \bar X+c S/\sqrt n].
+$$
+This interval contains $0$ exactly when $|\bar X|\le c S/\sqrt n$, equivalently $|T|\le c$. Thus the test rejects precisely when the interval excludes $0$.
+
+**(c)(i)** Here $s=3$ cm and $s/\sqrt n=3/4=0.75$ cm. The observed statistic is $t=3.2/0.75\approx4.27$. Since $|t|>t_{15,0.975}=2.131$, reject $H_0$ at the $5\%$ level.
+
+**(c)(ii)** The data give evidence of a systematic change in mean jump height. The estimated change is a gain of $3.2$ cm, with a $95\%$ confidence interval of approximately $(1.60,\ 4.80)$ cm.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style normal interpretation estimator bias variance mse" data-difficulty="1" #q-specimen-3-q1 data-chapters="2 4" data-ready-after="4" data-exam-slot="a-estimator" data-exam-marks="10" data-exam-family="normal-variance" data-exam-origin="specimen"}
+
+## Question 112: Comparing Estimators of Temperature Variability
+
+::: {.exam-prompt}
+
+A climate scientist is investigating variability in daily temperature measurements at a remote
+research station. Let $Z_i$ denote the deviation (in $^\circ$C) of the $i$th day's maximum
+temperature from the known long-term seasonal average. A random sample of size $n$ is collected, and
+the observations are assumed independent with $$
+Z_i \mid \sigma^2 \sim \mathcal{N}(\mu_0,\, \sigma^2),
+\qquad i = 1,2,\ldots,n,
+$$ where $\mu_0$ is a known constant and $\sigma^2 > 0$ is the unknown variance representing natural
+day-to-day temperature variability.
+
+A data analyst considers the following statistics: $$
+S_1 = \frac{1}{n}\sum_{i=1}^n (Z_i - \mu_0)^2,
+\qquad
+S_2 = \frac{1}{n - 1}\sum_{i=1}^n (Z_i - \bar{Z})^2,
+$$ where $\bar{Z} = \frac{1}{n}\sum_{i=1}^n Z_i$.
+
+(a) Explain clearly the meaning of each of the following terms in the context of this problem:
+
+    (i) parameter,
+
+    (ii) estimator,
+
+    (iii) statistic.
+
+    [\[3 marks\]]{.exam-part-marks}
+
+(b) The analyst must decide whether $S_1$ or $S_2$ should be used to estimate the unknown variance
+    $\sigma^2$. Give two examples of statistical criteria that could be used to compare these
+    estimators (such as bias, variance, or mean squared error), and briefly explain the role of each
+    criterion. [\[3 marks\]]{.exam-part-marks}
+
+(c) The analyst eventually chooses $S_1$. Compute the mean squared error of $S_1$ as an estimator of
+    $\sigma^2$.
+
+    *Hint:* You may use, without proof, the facts that $$
+    \mathrm{E}[(Z_i - \mu_0)^2] = \sigma^2,
+    \qquad
+    \mathrm{Var}((Z_i - \mu_0)^2) = 2\sigma^4.
+    $$
+
+    [\[4 marks\]]{.exam-part-marks}
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+(a) (i) The parameter is $\sigma^2$, the unknown variance of daily temperature deviations.
+
+    (ii) An estimator is a rule that uses the sample to estimate a parameter. Here $S_1$ and $S_2$
+         are both estimators of $\sigma^2$.
+
+    (iii) A statistic is a function of the sample and known constants. For example, $\bar Z$ and
+          $\sum_{i=1}^n(Z_i-\mu_0)^2$ are statistics because $\mu_0$ is known.
+
+(b) **Bias** measures how far the estimator's expectation is from $\sigma^2$. **Variance**
+    measures how much the estimator varies between repeated samples. An MSE comparison accounts
+    for both, as $\mathrm{MSE}=\mathrm{Variance}+\mathrm{Bias}^2$.
+
+(c) The provided moments and linearity of expectation give
+    $$
+    \mathrm{E}[S_1]=\frac{1}{n}\sum_{i=1}^n\mathrm{E}[(Z_i-\mu_0)^2]=\sigma^2.
+    $$
+    The squared deviations are independent because the $Z_i$ are independent, so
+    $$
+    \mathrm{Var}(S_1)
+    =\frac{1}{n^2}\sum_{i=1}^n\mathrm{Var}((Z_i-\mu_0)^2)
+    =\frac{2\sigma^4}{n}.
+    $$
+    Hence $S_1$ is unbiased and its MSE is $2\sigma^4/n$.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style bernoulli binomial clt hypothesis-test one-sided" data-difficulty="1" #q-specimen-3-q2 data-chapters="4 9" data-ready-after="9" data-exam-slot="a-testing" data-exam-marks="10" data-exam-family="bernoulli-information" data-exam-origin="specimen"}
+
+## Question 113: Large-Sample Testing for a Pollution Exceedance Proportion
+
+::: {.exam-prompt}
+
+An environmental agency monitors whether randomly sampled river water samples exceed a certain
+pollution threshold. For each sample, define $$
+X_i =
+\begin{cases}
+1, & \text{if sample } i \text{ exceeds the pollution threshold},\\
+0, & \text{otherwise},
+\end{cases}
+$$ Assume that $X_1,\ldots,X_n$ are IID $\mathrm{Bernoulli}(p)$, where $p$ is the (unknown)
+probability that a randomly chosen sample exceeds the threshold. Let $$
+Y = \sum_{i=1}^n X_i
+$$ denote the total number of samples exceeding the threshold, so that $Y \sim \mathrm{Bin}(n,p)$,
+and let $$
+\hat{p} = \frac{Y}{n}
+$$ be the sample proportion.
+
+(a) Using the Central Limit Theorem, show that for large $n$ $$
+    \hat{p} \; \overset{\text{approx.}}{\sim} \; \mathcal{N}\left(p, \frac{p(1-p)}{n}\right)
+    $$ [\[5 marks\]]{.exam-part-marks}
+
+(b) In a particular investigation, the agency tests $n = 200$ water samples, and finds that $Y = 46$
+    of them exceed the pollution threshold.
+
+    Environmental regulations state that the proportion of samples exceeding the threshold should be
+    *no more than* $20\%$. Using the approximation from part (a), test the hypothesis $$
+    H_0: p = 0.2
+    \quad\text{against}\quad
+    H_1: p > 0.2
+    $$ at the 5% significance level, and state your conclusion clearly in the context of the
+    problem. [\[5 marks\]]{.exam-part-marks}
+
+You may use the standard Normal quantile $z_{0.95} = 1.645$.
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+(a) We have $\hat p=Y/n=\bar X$. The Bernoulli observations have mean $p$ and variance
+    $p(1-p)$. By the CLT, for large $n$ and $0<p<1$,
+    $$
+    \frac{\hat p-p}{\sqrt{p(1-p)/n}}\ \overset{\mathrm{approx.}}{\sim}\ \mathcal N(0,1).
+    $$
+    Thus $\hat p$ is approximately $\mathcal N\big(p,p(1-p)/n\big)$.
+
+(b) Under $H_0$, use the null value $p_0=0.20$ in the standard error. With $\hat p=46/200=0.23$,
+    $$
+    z_{\mathrm{obs}}
+    =\frac{0.23-0.20}{\sqrt{0.20(1-0.20)/200}}
+    \approx 1.06.
+    $$
+    The upper-tail rejection rule at 5% is $z_{\mathrm{obs}}>1.645$. Since $1.06<1.645$, we
+    fail to reject $H_0$. The data provide insufficient evidence that the threshold is exceeded
+    in more than 20% of water samples.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style geometric beta bayes likelihood conjugacy interpretation" data-difficulty="1" #q-specimen-3-q3 data-chapters="5 6" data-ready-after="6" data-exam-slot="a-bayes" data-exam-marks="10" data-exam-family="geometric-likelihood" data-exam-origin="specimen"}
+
+## Question 114: Bayesian Inference for Geometric Waiting Times
+
+::: {.exam-prompt}
+
+A marine biologist is studying how frequently a rare species of bioluminescent plankton emits a
+light flash. When observed in darkness, each plankton repeatedly emits flashes, and the number of
+seconds between flashes is recorded.
+
+Let $\theta$ denote the probability that a flash occurs in any given one--second interval. The time
+(in seconds) until the next flash is modelled as $$
+T_i \mid \theta \sim \mathrm{Geometric}(\theta),
+\qquad i = 1,2,\dots,
+$$ where $T_i$ counts the number of independent one--second intervals until the first flash.
+
+Two independent research groups provide prior beliefs about $\theta$:
+
+-   *Field researchers:* "Flashes happen fairly often - probably around once every 4 seconds on
+    average."
+
+-   *Laboratory technicians:* "In controlled conditions, they seem less active - more like once
+    every 8 seconds."
+
+These opinions are encoded using Beta priors: $$
+\begin{aligned}
+    \theta &\sim \mathrm{Beta}(5,15),
+\quad\text{(field researchers)}, \\
+\theta &\sim \mathrm{Beta}(3,21),
+\quad\text{(laboratory technicians)}.
+\end{aligned}
+$$ The biologist chooses to combine the two opinions by adding the shape parameters to obtain the
+overall prior $$
+\theta \sim \mathrm{Beta}(\alpha_0,\beta_0),
+\qquad
+\alpha_0 = 5+3,\ \beta_0 = 15+21.
+$$
+
+A dataset of $n=20$ observed flash intervals gives a total waiting time of $$
+\sum_{i=1}^{20} t_i = 110 \ \text{seconds}.
+$$
+
+(a) Compute the prior means of $\theta$ implied by each group, and briefly comment on how they match
+    the verbal descriptions. [\[2 marks\]]{.exam-part-marks}
+
+(b) The likelihood function for the $n$ Geometric observations $t_1,\ldots,t_n$ can be written as $$
+    f(\underline{t} \mid \theta)
+    = \theta^n\,(1-\theta)^{n(\bar{t}-1)},
+    $$ where $\bar{t} = \tfrac{1}{n}\sum_{i=1}^n t_i$.
+
+    (i) Write down the likelihood function for $\theta$ given the total waiting time
+        $\sum_{i=1}^{20} t_i = 110$ and $n=20$ flashes. [\[2 marks\]]{.exam-part-marks}
+
+    (ii) Using the combined Beta prior and the Geometric likelihood, derive the posterior
+         distribution of $\theta \mid \underline{t}$. State clearly the family and updated
+         parameters. [\[3 marks\]]{.exam-part-marks}
+
+(c) Compute the posterior mean of $\theta$ and compare it to the sample estimate $$
+    \hat{\theta} = \frac{1}{\bar{t}},
+    $$ and to the prior mean under the combined prior. Explain briefly how the prior information and
+    the data are being combined. [\[3 marks\]]{.exam-part-marks}
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+(a) The two prior means for $\theta$ are
+    $$
+    \frac{5}{5+15}=\frac14,
+    \qquad
+    \frac{3}{3+21}=\frac18.
+    $$
+    The conditional mean waiting time is $1/\theta$. At the two prior mean probabilities this gives
+    waits of 4 and 8 seconds, matching the researchers' descriptions.
+
+(b) (i) With $\bar t=110/20=5.5$, the likelihood is $\theta^{20}(1-\theta)^{90}$ because
+        $n(\bar t-1)=110-20=90$.
+
+    (ii) The combined prior is $\mathrm{Beta}(8,36)$. Multiplying its density by the likelihood
+         gives
+         $$
+         \pi(\theta\mid\underline t)
+         \propto \theta^{7+20}(1-\theta)^{35+90}
+         =\theta^{27}(1-\theta)^{125}.
+         $$
+         This is the kernel of a $\mathrm{Beta}(28,126)$ distribution.
+
+(c) The posterior mean is $28/(28+126)=2/11$. The sample estimate $1/5.5$ and the combined
+    prior mean $8/(8+36)$ also equal $2/11$. The prior and the data agree about the centre, so the
+    update leaves the mean at $2/11$ while concentrating the distribution. In particular, the
+    Beta variance at a fixed mean $m$ is $m(1-m)/(\alpha+\beta+1)$, which decreases as the shape
+    parameters increase.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style normal t-test confidence-interval hypothesis-test one-sided" data-difficulty="2" #q-specimen-3-q4 data-chapters="7 9" data-ready-after="9" data-exam-slot="a-interval" data-exam-marks="10" data-exam-family="normal-mean-test" data-exam-origin="specimen"}
+
+## Question 115: A Student-t Interval and Test for Mean Snack-Bar Weight
+
+::: {.exam-prompt}
+
+Suppose $X_1,\dots,X_n$ is an IID sample from a $\mathcal{N}(\mu,\sigma^2)$ distribution, where both
+$\mu$ and $\sigma^2$ are unknown.
+
+(a) Write down a $100(1-\alpha)\%$ confidence interval for $\mu$ based on $\bar{X}$ and $S$, where
+    $$
+    \bar{X} = \frac{1}{n}\sum_{i=1}^n X_i,
+    \qquad
+    S^2 = \frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X})^2.
+    $$ State clearly the distribution used to obtain this interval. [\[3 marks\]]{.exam-part-marks}
+
+(b) A manufacturer produces snack bars, and the weight (in grams) of each bar is assumed to follow a
+    $\mathcal{N}(\mu,\sigma^2)$ distribution with unknown variance. The advertised weight is 50g.
+
+    A quality-control inspector takes a random sample of $n = 25$ bars and finds $$
+    \bar{x} = 52.8 \quad\text{grams},
+    \qquad s = 6.0 \quad\text{grams},
+    $$ where $s$ is the observed sample standard deviation.
+
+    Using a one-sample $t$-test at the 5% significance level, test the hypothesis $$
+    H_0: \mu = 50
+    \qquad\text{against}\qquad
+    H_1: \mu > 50.
+    $$ You should:
+
+    -   write down an appropriate test statistic,
+
+    -   give its distribution under $H_0$,
+
+    -   state the critical value (in terms of a suitable $t$-quantile),
+
+    -   and reach a clear conclusion in the context of the problem.
+
+    [\[4 marks\]]{.exam-part-marks}
+
+(c) For the same sampling scheme as in part (b), with $n = 25$ and using the same one-sample
+    $t$-test procedure, find the cutoff for the sample mean $\bar{X}$ above which the test rejects
+    $H_0$ at the 5% significance level. Use $s = 6.0$ grams.
+
+    Give your answer as a formula and as a numerical value. Briefly interpret your result.
+
+    [\[3 marks\]]{.exam-part-marks}
+
+You may use the Student-$t$ quantile $t_{24,0.95} = 1.711$.
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+(a) The pivot $(\bar X-\mu)/(S/\sqrt n)$ has a Student-$t$ distribution with $n-1$ degrees of
+    freedom. The $100(1-\alpha)\%$ interval is
+    $$
+    \bar X\ \pm\ t_{n-1,1-\alpha/2}\frac{S}{\sqrt n},
+    $$
+    where $t_{n-1,1-\alpha/2}$ is the lower-tail $1-\alpha/2$ quantile.
+
+(b) Under $H_0:\mu=50$, the statistic $T=(\bar X-50)/(S/\sqrt{25})$ has the $t_{24}$
+    distribution. The alternative $\mu>50$ gives the upper-tail critical value
+    $t_{24,0.95}=1.711$. The observed statistic is
+    $$
+    t_{\mathrm{obs}}=\frac{52.8-50}{6.0/\sqrt{25}}\approx2.33.
+    $$
+    Since $2.33>1.711$, reject $H_0$ at the 5% level. The data give evidence that the mean bar
+    weight exceeds 50 grams.
+
+(c) The rule $T>t_{24,0.95}$ is equivalent to
+    $$
+    \bar X>50+t_{24,0.95}\frac{S}{\sqrt{25}}.
+    $$
+    For $s=6.0$ the cutoff is $50+1.711(6.0/5)=52.0532$ grams, or about 52.05 grams. A sample
+    mean above that cutoff leads to rejection when the sample standard deviation is 6.0 grams.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style normal likelihood bayes conjugacy interpretation" data-difficulty="2" #q-specimen-3-q5 data-chapters="5 6" data-ready-after="6" data-exam-slot="b-bayes" data-exam-marks="20" data-exam-family="normal-mean-bayes" data-exam-origin="specimen"}
+
+## Question 116: Normal Conjugacy for a Change in Reaction Time
+
+::: {.exam-prompt}
+
+A cognitive scientist is studying the effect of a new training programme on reaction times in a
+simple computer task. For each participant, the change in reaction time (in milliseconds) after
+training is recorded, with negative values indicating an improvement (faster responses).
+
+Let $X_1, X_2, \ldots, X_n$ denote the IID changes in reaction time across participants. The
+scientist models these as $$
+X_i \mid \mu \sim \mathcal{N}\big(\mu,\ \sigma^{2}\big), \qquad i=1,\dots,n,
+$$ where $\mu$ is the unknown mean change in reaction time. It is convenient to express uncertainty
+in terms of the *precision* $$
+\tau = \frac{1}{\sigma^{2}},
+$$ which is assumed known and fixed. Thus $$
+X_i \mid \mu \sim \mathcal{N}\big(\mu,\ 1/\tau\big).
+$$
+
+The scientist places a conjugate Normal prior on $\mu$: $$
+\mu \sim \mathcal{N}\big(\mu_{0},\ 1/\tau_{0}\big),
+$$ where $\mu_{0}$ and $\tau_{0}$ are known hyperparameters and $\tau_{0}$ is the prior precision.
+
+(a) Explain what is meant by *conjugacy* in Bayesian inference. Describe briefly why conjugate
+    priors are helpful when computing posterior distributions. [\[3 marks\]]{.exam-part-marks}
+
+(b) (i) Show that the likelihood function $f(\underline{x}\mid\mu)$, after removing all terms that
+        do not depend on $\mu$, can be written as $$
+        f(\underline{x}\mid\mu)
+        \;\propto\;
+        \exp\!\left\{
+            -\frac{n\tau}{2}\bigl(\mu^{2} - 2\mu\bar{x}\bigr)
+        \right\}.
+        $$ [\[5 marks\]]{.exam-part-marks}
+
+    (ii) Write down the prior density $\pi(\mu)$ for the prior
+         $\mu \sim \mathcal{N}(\mu_0, 1/\tau_0)$, expressing your answer in terms of $\mu_0$ and
+         $\tau_0$. [\[2 marks\]]{.exam-part-marks}
+
+(c) Using Bayes' theorem, $$
+    \pi(\mu \mid \underline{x}) \;\propto\; \pi(\mu)\, f(\underline{x}\mid\mu),
+    $$ show that the posterior distribution of $\mu$ takes the form $$
+    \mu \mid \underline{x} \sim \mathcal{N}\big(M,\ 1/T\big),
+    $$ where $$
+    M= \frac{\tau_0\mu_0 + n\tau\bar{x}}{\tau_0 + n\tau}, \qquad T = \tau_0 + n\tau.
+    $$ [\[6 marks\]]{.exam-part-marks}
+
+(d) Suppose the study collects $n=20$ observations with sample mean $\bar{x} = -2.8$ ms (indicating
+    an average improvement) and precision $\tau = 1/25$ (i.e. observational standard deviation $5$
+    ms). Assume the prior parameters are $\mu_0 = 0$ and $\tau_0 = 1/100$.
+
+    Using your expression for the posterior mean $M$ and posterior precision $T$ from part (c):
+
+    (i) Write down the posterior distribution $$
+        \mu \mid \underline{x} \sim \mathcal{N}(M,\ 1/T)
+        $$ with the numerical values of $M$ and $1/T$.
+
+        [\[2 marks\]]{.exam-part-marks}
+
+    (ii) Compute the posterior probability $$
+         \Pr(\mu < 0 \mid \underline{x}),
+         $$ giving your answer using the standard Normal distribution function $\Phi(\cdot)$ and
+         evaluating it numerically. [\[2 marks\]]{.exam-part-marks}
+
+You may use the standard Normal CDF values $\Phi(2.48) = 0.9934$, $\Phi(2.49) = 0.9936$, and $\Phi(2.50) = 0.9938$.
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a)** A prior is conjugate to a likelihood when the prior and posterior belong to the same
+distribution family. This lets us compute the posterior by updating the prior parameters using the
+data. Here the Normal prior leads to a Normal posterior.
+
+**(b)(i)** Independence gives
+$$
+f(\underline{x}\mid\mu)
+= \left(\frac{\tau}{2\pi}\right)^{n/2}
+\exp\!\left\{-\frac{\tau}{2}\sum_{i=1}^n(x_i-\mu)^2\right\}.
+$$
+Expanding the sum of squares gives $\sum_i x_i^2-2n\mu\bar{x}+n\mu^2$.
+Dropping the factors independent of $\mu$ leaves
+$$
+f(\underline{x}\mid\mu)\propto
+\exp\!\left\{-\frac{n\tau}{2}(\mu^2-2\mu\bar{x})\right\}.
+$$
+
+**(b)(ii)** The prior density is
+$$
+\pi(\mu)=\sqrt{\frac{\tau_0}{2\pi}}\,
+\exp\!\left\{-\frac{\tau_0}{2}(\mu-\mu_0)^2\right\}.
+$$
+
+**(c)** Multiply the likelihood and the prior, keeping terms that depend on $\mu$.
+$$
+\pi(\mu\mid\underline{x})\propto
+\exp\!\left\{-\frac{1}{2}
+\left[(\tau_0+n\tau)\mu^2-2(\tau_0\mu_0+n\tau\bar{x})\mu\right]\right\}.
+$$
+Set $T=\tau_0+n\tau$ and $M=(\tau_0\mu_0+n\tau\bar{x})/T$. Then
+$\mu^2-2M\mu=(\mu-M)^2-M^2$. Dropping the constant term after completing the square gives the
+kernel of $\mathcal{N}(M,1/T)$.
+
+**(d)(i)** Here $T=0.01+20(0.04)=0.81$ and $M=20(0.04)(-2.8)/0.81=-2.24/0.81$.
+The posterior is
+$$
+\mu\mid\underline{x}\sim\mathcal{N}\!\left(-\frac{2.24}{0.81},\frac{1}{0.81}\right)
+\approx \mathcal{N}(-2.765,\,1.235).
+$$
+
+**(d)(ii)** Standardising using the posterior standard deviation $1/\sqrt{T}$ gives
+$$
+\Pr(\mu<0\mid\underline{x})
+=\Phi\bigl((0-M)\sqrt{T}\bigr)
+=\Phi(2.24/0.9)
+\approx \Phi(2.49) = 0.9936.
+$$
+Under the model and prior, the posterior probability that the mean reaction time decreased is
+about $99.4\%$.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style exponential gamma expectation estimator bias variance mse consistency" data-difficulty="3" #q-specimen-3-q6 data-chapters="1 4" data-ready-after="4" data-exam-slot="b-estimation" data-exam-marks="20" data-exam-family="exponential-rate" data-exam-origin="specimen"}
+
+## Question 117: Comparing Rate Estimators for Exponential Delivery Times
+
+::: {.exam-prompt}
+
+The Michael Scott Paper Company is analysing its delivery efficiency. Let $T_1,\dots,T_n$ be IID
+waiting times (in hours) until the next paper delivery is completed, with $n>2$.
+
+Experience from a rival paper company, Dunder Mifflin, suggests that these waiting times follow an
+Exponential distribution with unknown rate $\lambda>0$: $$
+T_i \sim \mathrm{Exp}(\lambda),
+\qquad
+f(t\mid\lambda)=\lambda e^{-\lambda t},\quad t>0.
+$$
+
+Let $$
+S_n = \sum_{i=1}^n T_i.
+$$ It is known that $S_n \sim \mathrm{Gamma}(n,\lambda)$ with density $$
+f_{S_n}(s) = \frac{\lambda^n}{\Gamma(n)} s^{n-1} e^{-\lambda s},\qquad s>0.
+$$
+
+Ryan, an employee at the Michael Scott Paper Company, proposes the estimator $$
+\hat{\lambda}_n = \frac{n}{S_n}.
+$$
+
+(a) (i) Using the fact that $S_n \sim \mathrm{Gamma}(n,\lambda)$ and starting from $$
+        \mathrm{E}\!\left[\frac{1}{S_n}\right]
+            = \int_0^\infty \frac{1}{s} \frac{\lambda^n}{\Gamma(n)} s^{n-1} e^{-\lambda s} \, \mathrm{d}s,
+        $$ show that $$
+        \mathrm{E}\!\left[\frac{1}{S_n}\right]
+            = \frac{\lambda}{n-1}
+              \int_0^\infty
+              \frac{\lambda^{\,n-1}}{\Gamma(n-1)} s^{n-2} e^{-\lambda s} \, \mathrm{d}s.
+        $$ *Hint:* You may use the fact that when $k$ is a positive integer $$
+        \Gamma(k) = (k-1)!.
+        $$ [\[3 marks\]]{.exam-part-marks}
+
+    (ii) Hence show that $$
+         \mathrm{E}\!\left[\frac{1}{S_n}\right] = \frac{\lambda}{n-1}.
+         $$ [\[2 marks\]]{.exam-part-marks}
+
+    (iii) Show that $$
+          \mathrm{E}[\hat{\lambda}_n]
+              = \lambda \cdot \frac{n}{n-1},
+          $$ and hence state whether $\hat{\lambda}_n$ is biased, and in which direction. [\[3 marks\]]{.exam-part-marks}
+
+(b) Using the fact that $S_n \sim \mathrm{Gamma}(n,\lambda)$ and starting from $$
+    \mathrm{E}\!\left[\left(\frac{1}{S_n}\right)^2\right]
+    = \int_0^\infty \frac{1}{s^2} \frac{\lambda^n}{\Gamma(n)} s^{n-1} e^{-\lambda s} \, \mathrm{d}s,
+    $$ show that $$
+    \mathrm{E}\!\left[\left(\frac{1}{S_n}\right)^2\right]
+    = \frac{\lambda^2}{(n-1)(n-2)}
+       \int_0^\infty
+       \frac{\lambda^{\,n-2}}{\Gamma(n-2)} s^{n-3} e^{-\lambda s} \, \mathrm{d}s,
+    $$ and hence conclude $$
+    \mathrm{E}\!\left[\left(\frac{1}{S_n}\right)^2\right]
+    = \frac{\lambda^2}{(n-1)(n-2)},
+    \qquad n>2.
+    $$ [\[3 marks\]]{.exam-part-marks}
+
+(c) Using the results from parts (a) and (b), compute $$
+    \mathrm{Var}(\hat{\lambda}_n)
+    $$ and hence show that $\hat{\lambda}_n$ is a *consistent estimator* of $\lambda$. [\[4 marks\]]{.exam-part-marks}
+
+(d) Now consider estimators of $\lambda$ of the form $$
+    \tilde{\lambda}_n = \frac{a_n}{S_n},
+    $$ where $a_n$ may depend on $n$ but not on the data.
+
+    (i) Find $a_n$ such that $\tilde{\lambda}_n$ is an *unbiased* estimator of $\lambda$. [\[2 marks\]]{.exam-part-marks}
+
+    (ii) For this choice of $a_n$ compute $\mathrm{Var}(\tilde{\lambda}_n)$, and briefly comment on
+         which estimator, $\hat{\lambda}$ or $\tilde{\lambda}$, you would recommend and why. [\[3 marks\]]{.exam-part-marks}
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a)(i)** Multiplying the density by $1/s$ changes the power of $s$ to $n-2$.
+Using $\Gamma(n)=(n-1)\Gamma(n-1)$ gives
+$$
+\mathrm{E}[S_n^{-1}]
+=\int_0^\infty\frac{\lambda^n}{\Gamma(n)}s^{n-2}e^{-\lambda s}\,\mathrm{d}s
+=\frac{\lambda}{n-1}\int_0^\infty
+\frac{\lambda^{n-1}}{\Gamma(n-1)}s^{n-2}e^{-\lambda s}\,\mathrm{d}s.
+$$
+
+**(a)(ii)** The remaining integral is that of a $\mathrm{Gamma}(n-1,\lambda)$ density, so it is
+$1$ and $\mathrm{E}[S_n^{-1}]=\lambda/(n-1)$.
+
+**(a)(iii)** Hence
+$$
+\mathrm{E}[\hat{\lambda}_n]=n\,\mathrm{E}[S_n^{-1}]=\lambda\frac{n}{n-1}.
+$$
+The bias is $\lambda/(n-1)>0$, so Ryan's estimator is biased upwards.
+
+**(b)** This time the power of $s$ is $n-3$. Using
+$\Gamma(n)=(n-1)(n-2)\Gamma(n-2)$ gives
+$$
+\begin{aligned}
+\mathrm{E}[S_n^{-2}]
+&=\int_0^\infty\frac{\lambda^n}{\Gamma(n)}s^{n-3}e^{-\lambda s}\,\mathrm{d}s\\
+&=\frac{\lambda^2}{(n-1)(n-2)}\int_0^\infty
+\frac{\lambda^{n-2}}{\Gamma(n-2)}s^{n-3}e^{-\lambda s}\,\mathrm{d}s\\
+&=\frac{\lambda^2}{(n-1)(n-2)}.
+\end{aligned}
+$$
+The integral equals $1$ because the integrand is the $\mathrm{Gamma}(n-2,\lambda)$ density,
+which is defined since $n>2$.
+
+**(c)** The variance is
+$$
+\begin{aligned}
+\mathrm{Var}(\hat{\lambda}_n)
+&=n^2\left(\frac{\lambda^2}{(n-1)(n-2)}-\frac{\lambda^2}{(n-1)^2}\right)\\
+&=\frac{n^2\lambda^2}{(n-1)^2(n-2)}.
+\end{aligned}
+$$
+This tends to zero, and the bias $\lambda/(n-1)$ also tends to zero. Thus the MSE tends to
+zero and $\hat{\lambda}_n$ converges in probability to $\lambda$.
+
+**(d)(i)** Since $\mathrm{E}[\tilde{\lambda}_n]=a_n\lambda/(n-1)$, set $a_n=n-1$ for
+unbiasedness.
+
+**(d)(ii)** With that choice,
+$$
+\mathrm{Var}(\tilde{\lambda}_n)=(n-1)^2\mathrm{Var}(S_n^{-1})
+=\frac{\lambda^2}{n-2}.
+$$
+Ryan's variance is larger by a factor of $n^2/(n-1)^2$. The estimator $(n-1)/S_n$ has both
+zero bias and smaller variance, so it has the smaller MSE.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style pareto likelihood mle fisher-information asymptotic-mle confidence-interval bayes conjugacy gamma" data-difficulty="3" #q-specimen-3-q7 data-chapters="5 6 7" data-ready-after="7" data-exam-slot="b-estimation" data-exam-marks="20" data-exam-family="pareto-likelihood" data-exam-origin="specimen"}
+
+## Question 118: Frequentist and Bayesian Inference for a Pareto Tail Index
+
+::: {.exam-prompt}
+
+A reliability engineer is studying the size (in kWh) of rare but severe energy surges in a new
+power-conversion system. Only surges exceeding a safety threshold of $x_{\min} = 100$ kWh are
+recorded. Let $T_1,\dots,T_n$ be the observed surge sizes, assumed IID with $$
+T_i \mid \alpha \sim \mathrm{Pareto}(x_{\min}, \alpha), \qquad i=1,\dots,n,
+$$ where the tail index $\alpha > 0$ is unknown and $x_{\min} = 100$ is known. The density of $T_i$
+is $$
+f(t \mid \alpha)
+= \frac{\alpha x_{\min}^{\alpha}}{t^{\alpha+1}},
+\qquad t \ge x_{\min}, \ \alpha > 0.
+$$
+
+A sample of $n = 40$ surges yields observed sizes $t_1,\dots,t_{40}$ with $$
+\sum_{i=1}^{40} \log\!\left(\frac{t_i}{x_{\min}}\right) = 20.
+$$
+
+(a) (i) Show that the log-likelihood function for $\alpha$ based on the sample $\underline{t}$ can
+        be written as $$
+        \ell(\alpha; \underline{t})
+            = n \log \alpha
+              + n \alpha \log x_{\min}
+              - (\alpha + 1)\sum_{i=1}^n \log t_i
+        $$ and hence that (up to an additive constant not depending on $\alpha$) $$
+        \ell(\alpha; \underline{t})
+            = n \log \alpha - \alpha \sum_{i=1}^n \log\!\left(\frac{t_i}{x_{\min}}\right) + \text{constant}.
+        $$ [\[4 marks\]]{.exam-part-marks}
+
+    (ii) Derive the maximum likelihood estimator (MLE) $\hat{\alpha}$ and evaluate it numerically
+         for the given data. [\[3 marks\]]{.exam-part-marks}
+
+(b) (i) Show that the second derivative of the log-likelihood is $$
+        \frac{\partial^2 }{\partial \alpha^2} \ell(\alpha; \underline{t})= -\frac{n}{\alpha^2}.
+        $$ Hence compute the Fisher information for $n$ observations, $\mathcal{I}_n(\alpha)$. [\[2 marks\]]{.exam-part-marks}
+
+    (ii) Using your result for $\mathcal{I}_n(\alpha)$, obtain the asymptotic distribution of the
+         MLE $\hat{\alpha}$ and write down an approximate $95\%$ confidence interval for $\alpha$,
+         expressing your answer in terms of $\hat{\alpha}$. [\[3 marks\]]{.exam-part-marks}
+
+(c) Engineers believe, based on past data from similar systems, that the tail index $\alpha$ is
+    likely to be around 2, but with moderate uncertainty.
+
+    They adopt a Gamma prior for $\alpha$: $$
+    \alpha \sim \mathrm{Gamma}(a_0, b_0),
+    $$ with density $$
+    \pi(\alpha) \propto \alpha^{a_0 - 1} e^{-b_0 \alpha}, \qquad \alpha > 0.
+    $$
+
+    (i) Show that the choice $a_0 = 4$ and $b_0 = 2$ is consistent with the prior belief that
+        $\alpha$ is likely to be near 2, with moderate uncertainty. [\[2 marks\]]{.exam-part-marks}
+
+    (ii) Using the prior in part (c)(i) and the given data, derive the posterior distribution of
+         $\alpha$. Identify the posterior as a Gamma distribution and state its mean and variance.
+
+         *Hint:* First show that the likelihood can be written in the form $$
+         f(\underline{t} \mid \alpha)
+             \propto \alpha^{\,n}
+             \exp\!\left\{-\alpha \sum_{i=1}^n
+                   \log\!\left(\frac{t_i}{x_{\min}}\right)\right\}.
+         $$
+
+         [\[6 marks\]]{.exam-part-marks}
+
+You may use the standard Normal quantile $z_{0.975} = 1.960$.
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a)(i)** The likelihood for the observed values is
+$$
+L(\alpha;\underline{t})
+=\prod_{i=1}^n\frac{\alpha x_{\min}^\alpha}{t_i^{\alpha+1}}
+=\alpha^n x_{\min}^{n\alpha}\prod_{i=1}^n t_i^{-(\alpha+1)}.
+$$
+Set $S=\sum_i\log(t_i/x_{\min})$. Taking logs and collecting the terms in $\alpha$ yields
+$$
+\begin{aligned}
+\ell(\alpha;\underline{t})
+&=n\log\alpha+n\alpha\log x_{\min}-(\alpha+1)\sum_i\log t_i\\
+&=n\log\alpha-\alpha S-\sum_i\log t_i.
+\end{aligned}
+$$
+
+**(a)(ii)** The score is $n/\alpha-S$. It vanishes at $\hat{\alpha}=n/S$ when $S>0$. The
+log-likelihood is strictly concave for $\alpha>0$, so this is its maximum. Here
+$\hat{\alpha}=40/20=2$.
+
+**(b)(i)** Differentiating the score gives
+$\ell''(\alpha;\underline{t})=-n/\alpha^2$. This is independent of the observations, so its
+negative expectation is $\mathcal{I}_n(\alpha)=n/\alpha^2$.
+
+**(b)(ii)** The large-sample approximation for the MLE is
+$\hat{\alpha}\overset{\text{approx.}}{\sim}\mathcal{N}(\alpha,\alpha^2/n)$. Substituting
+$\hat{\alpha}$ for the unknown $\alpha$ in the standard error gives the approximate $95\%$
+interval
+$$
+\hat{\alpha}\pm 1.960\frac{\hat{\alpha}}{\sqrt n}.
+$$
+For the given sample this is $2\pm 0.620$, or approximately $(1.38,2.62)$.
+
+**(c)(i)** The prior mean is $4/2=2$ and the variance is $4/2^2=1$. The prior is centred
+around $2$ with standard deviation $1$.
+
+**(c)(ii)** From part (a), the likelihood is proportional to $\alpha^n e^{-\alpha S}$.
+Multiplying by the Gamma prior gives
+$$
+\pi(\alpha\mid\underline{t})
+\propto \alpha^{a_0+n-1} e^{-(b_0+S)\alpha}.
+$$
+Thus $\alpha\mid\underline{t}\sim\mathrm{Gamma}(4+40,2+20)=\mathrm{Gamma}(44,22)$
+in shape–rate notation. Its mean is $44/22=2$ and its variance is $44/22^2\approx 0.0909$.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style poisson interpretation clt hypothesis-test two-sided power" data-difficulty="3" #q-specimen-3-q8 data-chapters="3 4 9" data-ready-after="9" data-exam-slot="b-testing" data-exam-marks="20" data-exam-family="poisson-rate" data-exam-origin="specimen"}
+
+## Question 119: Large-Sample Testing and Power for a Bird Visit Rate
+
+::: {.exam-prompt}
+
+A team of ecologists is studying whether installing small feeders changes the activity of woodland
+birds. Long-term monitoring has shown that, without feeders, the mean number of bird visits per
+observation period is $\lambda_0$.
+
+After installing a feeder, the ecologists record the number of bird visits in each of $n$
+observation periods.
+
+Let $Y_1, Y_2, \ldots, Y_n$ denote these counts, assumed IID with $$
+Y_i\sim \mathrm{Poisson}(\lambda),
+\qquad i = 1,\dots,n,
+$$ where $\lambda$ is the true mean number of visits per period.
+
+(a) Explain what it means to "estimate $\lambda$'' in the frequentist framework, and how uncertainty
+    about $\lambda$ is represented in the Bayesian framework. [\[2 marks\]]{.exam-part-marks}
+
+(b) The ecologists want to test whether the feeder changes bird activity, using $$
+    H_0 : \lambda = \lambda_0
+    \qquad \text{vs.} \qquad
+    H_1 : \lambda \neq \lambda_0.
+    $$ Because $\lambda$ is unknown and the data are Poisson, they decide to use a *large-sample
+    Central Limit Theorem (CLT) approximation* to construct a test.
+
+    (i) Define the *size* (significance level) of a hypothesis test. [\[2 marks\]]{.exam-part-marks}
+
+    (ii) Define the *rejection region* of a size-$\alpha$ test. [\[2 marks\]]{.exam-part-marks}
+
+    (iii) Let $\bar{Y} = \frac{1}{n}\sum_{i=1}^n Y_i$. Using the CLT, show that under $H_0$, $$
+          \sqrt{n}\,\frac{\bar{Y} - \lambda_0}{\sqrt{\lambda_0}}
+              \ \overset{\text{approx.}}{\sim}\
+              \mathcal{N}(0,1)
+              \qquad\text{for large } n.
+          $$ Hence show that a size-$\alpha$ two-sided test rejects $H_0$ when $$
+          \bar{Y} < \lambda_0 - k_\alpha
+              \quad \text{or} \quad
+              \bar{Y} > \lambda_0 + k_\alpha,
+          $$ where $k_\alpha > 0$ is chosen appropriately. [\[5 marks\]]{.exam-part-marks}
+
+    (iv) For the rejection region obtained in part (b)(iii), derive the approximate power function
+         $$
+         \beta(\lambda) = \Pr(\text{Reject } H_0 \mid \lambda),
+         $$ and express your answer in terms of the standard Normal CDF $\Phi(\cdot)$. [\[5 marks\]]{.exam-part-marks}
+
+(c) In a particular study, the ecologists take $n = 25$ observation periods. They wish to test $$
+    H_0 : \lambda = 5
+    \qquad \text{vs.} \qquad
+    H_1 : \lambda \neq 5
+    $$ using the CLT-based test from part (b) at the $1\%$ significance level.
+
+    Over the 25 periods, the total number of bird visits recorded is $$
+    \sum_{i=1}^{25} Y_i = 175.
+    $$
+
+    Using the approximate test derived in part (b):
+
+    (i) compute the observed value of the test statistic;
+
+    (ii) state the critical value(s) for a two-sided test at the $1\%$ level;
+
+    (iii) determine whether $H_0$ should be rejected, and briefly interpret your conclusion in the
+          context of the study.
+
+    [\[4 marks\]]{.exam-part-marks}
+
+You may use the standard Normal quantile $z_{0.995} = 2.576$.
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a)** In frequentist inference, $\lambda$ is fixed and unknown. We estimate it with a statistic
+such as $\bar{Y}$ and use the statistic's sampling distribution to quantify uncertainty over repeated
+samples. In Bayesian inference, the posterior distribution of $\lambda$, formed by updating a
+prior using the data, represents uncertainty about its value.
+
+**(b)(i)** With this simple null hypothesis, the size is the probability of rejecting $H_0$ when
+$\lambda=\lambda_0$, the Type I error probability.
+
+**(b)(ii)** The rejection region is the set of sample outcomes for which the test rejects $H_0$.
+For a test of size $\alpha$, that set has probability $\alpha$ under $H_0$.
+
+**(b)(iii)** The Poisson model gives $\mathrm{E}[\bar{Y}]=\lambda$ and
+$\mathrm{Var}(\bar{Y})=\lambda/n$. Setting $\lambda=\lambda_0$ in the CLT gives
+$$
+Z_0=\frac{\bar{Y}-\lambda_0}{\sqrt{\lambda_0/n}}
+\overset{\text{approx.}}{\sim}\mathcal{N}(0,1).
+$$
+A two-sided test of approximate size $\alpha$ rejects for
+$|Z_0|>z_{1-\alpha/2}$. Equivalently, it rejects when
+$\bar{Y}<\lambda_0-k_\alpha$ or $\bar{Y}>\lambda_0+k_\alpha$, where
+$k_\alpha=z_{1-\alpha/2}\sqrt{\lambda_0/n}$.
+
+**(b)(iv)** At the true rate $\lambda>0$, use the approximation
+$\bar{Y}\overset{\text{approx.}}{\sim}\mathcal{N}(\lambda,\lambda/n)$. Standardising the
+two rejection tails with this mean and variance gives
+$$
+\begin{aligned}
+\beta(\lambda)&\approx
+\Phi\!\left(\frac{\lambda_0-k_\alpha-\lambda}{\sqrt{\lambda/n}}\right)\\
+&\quad+1-\Phi\!\left(\frac{\lambda_0+k_\alpha-\lambda}{\sqrt{\lambda/n}}\right).
+\end{aligned}
+$$
+
+**(c)(i)** The sample mean is $175/25=7$, so the observed statistic is
+$(7-5)/\sqrt{5/25}=10/\sqrt{5}\approx 4.47$.
+
+**(c)(ii)** The $1\%$ two-sided critical values are $-2.576$ and $2.576$.
+
+**(c)(iii)** Since $4.47>2.576$, reject $H_0$. There is evidence that the mean number of visits
+differs from five per period. The observed mean suggests a higher visit rate after installing the
+feeder.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style estimator bias variance mse consistency" data-difficulty="1" #q-specimen-lotr-q2 data-chapters="4" data-ready-after="4" data-exam-slot="a-estimator" data-exam-marks="10" data-exam-family="estimator-properties" data-exam-origin="specimen"}
+
+## Question 120: Bias and Consistency of Gift-Value Estimators
+
+::: {.exam-prompt}
+
+At his eleventy-first (111th) birthday party, Bilbo Baggins distributes many small gifts to the
+hobbits of the Shire. Let $X_1,\ldots,X_n$ denote the values (in silver pennies) that guests place
+on their gifts, where the $X_i$ are modelled as IID with mean $\mu$ and variance $\sigma^2$.
+
+A young hobbit proposes the estimator $$
+\hat{\mu}_1 = \frac{1}{n}\sum_{i=1}^n X_i,
+$$ while another suggests the alternative $$
+\hat{\mu}_2 = \frac{1}{n+1}\sum_{i=1}^n X_i.
+$$
+
+(a) Show that $\hat{\mu}_1$ is an unbiased estimator of $\mu$, and determine the bias of
+    $\hat{\mu}_2$. [\[3 marks\]]{.exam-part-marks}
+
+(b) Compute $\mathrm{Var}(\hat{\mu}_1)$ and $\mathrm{Var}(\hat{\mu}_2)$. [\[3 marks\]]{.exam-part-marks}
+
+(c) For each estimator, compute the mean squared error (MSE). If the true mean were $\mu=0$, which
+    estimator has the smaller MSE for finite $n$? [\[2 marks\]]{.exam-part-marks}
+
+(d) State, with a brief justification, whether $\hat{\mu}_1$ and $\hat{\mu}_2$ are *consistent*
+    estimators of $\mu$. [\[2 marks\]]{.exam-part-marks}
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+(a) By linearity, the means are $\mathrm{E}[\hat\mu_1]=\mu$ and
+    $\mathrm{E}[\hat\mu_2]=n\mu/(n+1)$. Therefore $\hat\mu_1$ is unbiased and the bias of
+    $\hat\mu_2$ is $-\mu/(n+1)$.
+
+(b) Independence gives $\mathrm{Var}(\sum_{i=1}^n X_i)=n\sigma^2$. Dividing by the squared
+    denominators gives
+    $$
+    \mathrm{Var}(\hat\mu_1)=\frac{\sigma^2}{n},
+    \qquad
+    \mathrm{Var}(\hat\mu_2)=\frac{n\sigma^2}{(n+1)^2}.
+    $$
+
+(c) Adding variance and squared bias gives
+    $$
+    \mathrm{MSE}(\hat\mu_1)=\frac{\sigma^2}{n},
+    \qquad
+    \mathrm{MSE}(\hat\mu_2)=\frac{n\sigma^2+\mu^2}{(n+1)^2}.
+    $$
+    When $\mu=0$, the second MSE is the first multiplied by $(n/(n+1))^2$, so $\hat\mu_2$ has
+    the smaller MSE if $\sigma^2>0$. Both MSEs are zero in the degenerate case $\sigma^2=0$.
+
+(d) Both MSEs tend to zero as $n\to\infty$. For any $\varepsilon>0$ the probability that either
+    estimator differs from $\mu$ by more than $\varepsilon$ is bounded by its MSE divided by
+    $\varepsilon^2$, so both estimators are consistent.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style exponential likelihood mle lrt hypothesis-test two-sided interpretation" data-difficulty="2" #q-specimen-lotr-q3 data-chapters="5 9" data-ready-after="9" data-exam-slot="a-testing" data-exam-marks="10" data-exam-family="exponential-rate" data-exam-origin="specimen"}
+
+## Question 121: Likelihood Ratio Test for a Change in Message Rate
+
+::: {.exam-prompt}
+
+For years, Gandalf has sent messages to the Shire at a rate of once per week ($\theta_0 = 1$).
+However, Frodo suspects that the frequency of these messages has changed recently. He records the
+time intervals $T_1, \dots, T_n$ (in weeks) between the last $n+1$ consecutive messages he received.
+
+Suppose these time intervals are modelled as independent exponential random variables with density
+$$
+f(t \mid \theta) = \theta e^{-\theta t},\qquad t>0,
+$$ where $\theta > 0$ is the unknown rate. Frodo wishes to test the historical rate against a
+change: $$
+H_0 : \theta = 1
+\qquad \text{vs.} \qquad
+H_1 : \theta \neq 1,
+$$ using the likelihood ratio test.
+
+(a) Write down the log-likelihood $\ell(\theta; \underline{t})$ for the sample $T_1,\dots,T_n$, and
+    hence show that the maximum likelihood estimator is $$
+    \hat{\theta} = \frac{n}{S}, \qquad \text{where } S = \sum_{i=1}^n T_i.
+    $$ [\[3 marks\]]{.exam-part-marks}
+
+(b) Show that the likelihood ratio $$
+    \lambda = \frac{L(1; \underline{t})}{L(\hat{\theta};\underline{t})}
+    $$ may be written in the form: $$
+    \lambda
+    = \left(\frac{1}{\hat{\theta}}\right)^n
+    \exp\!\big(- (1 - \hat{\theta}) S\big).
+    $$ Hence, explain why a rejection region $\{\lambda < c\}$ corresponds to values of
+    $\hat{\theta}$ that are significantly different from 1. [\[4 marks\]]{.exam-part-marks}
+
+(c) Frodo records $n = 5$ intervals with a total duration of $S = 28$ weeks.
+
+    Compute the likelihood ratio $\lambda$ (you may leave your answer in the form $A e^{B}$).
+
+    [\[1 mark\]]{.exam-part-marks}
+
+(d) *Without computing any critical value or test threshold*, use the rule of thumb that values of
+    $\lambda$ close to $1$ give little evidence against $H_0$, while values close to $0$ give
+    stronger evidence against $H_0$.
+
+    Based on the value of $\lambda$ you obtained in part (c), what conclusion should Frodo draw?
+    [\[2 marks\]]{.exam-part-marks}
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+(a) Write $S=\sum_{i=1}^n t_i$ for the observed total. Independence gives
+    $L(\theta;\underline t)=\theta^n e^{-\theta S}$, hence
+    $\ell(\theta;\underline t)=n\log\theta-\theta S$. Its derivative $n/\theta-S$
+    vanishes at $\hat\theta=n/S$ and its second derivative is negative for every $\theta>0$,
+    establishing the maximum.
+
+(b) Substituting into the ratio gives
+    $$
+    \lambda=\frac{e^{-S}}{\hat\theta^n e^{-\hat\theta S}}
+    =\left(\frac{1}{\hat\theta}\right)^n\exp\!\big(-(1-\hat\theta)S\big).
+    $$
+    To see how $\lambda$ varies, set $r=S/n=1/\hat\theta$. Then
+    $\log\lambda=n(\log r+1-r)$, whose derivative with respect to $r$ is $n(1/r-1)$. The
+    ratio reaches its maximum of 1 at $r=1$ and decreases as $r$ moves away from 1 on either
+    side. Thus small $\lambda$ corresponds to estimates away from the null rate in either
+    direction.
+
+(c) With $n=5$ and $S=28$, the observed estimate is $5/28$ and
+    $$
+    \lambda=\left(\frac{28}{5}\right)^5 e^{-23}\approx5.65\times10^{-7}.
+    $$
+
+(d) This ratio is close to zero, so the observed intervals provide strong evidence that the
+    rate has changed. The estimate $5/28$ messages per week suggests that messages arrive less
+    frequently than the historical rate of one per week.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style poisson clt likelihood mle confidence-interval hypothesis-test one-sided" data-difficulty="2" #q-specimen-lotr-q4 data-chapters="4 5 7 9" data-ready-after="9" data-exam-slot="a-interval" data-exam-marks="10" data-exam-family="poisson-rate" data-exam-origin="specimen"}
+
+## Question 122: A Confidence Interval and Test for a Poisson Sighting Rate
+
+::: {.exam-prompt}
+
+At the Council of Elrond, scouts bring reports from the lands around Isengard. For each of $n$
+consecutive days, riders from Rohan record the number of enemy war-parties seen near the Gap of
+Rohan. Let $X_i$ denote the count on day $i$, and suppose $$
+X_1,\ldots,X_n \stackrel{\mathrm{iid}}{\sim} \mathrm{Poisson}(\lambda),
+$$ where $\lambda > 0$ is the (unknown) mean number of sightings per day.
+
+In earlier, quieter times, the rate was believed to be about $\lambda = 1$ sighting per day. The
+Council now wishes to assess whether enemy activity has increased.
+
+(a) Show that the maximum likelihood estimator (MLE) of $\lambda$ is $$
+    \hat{\lambda} = \bar{X} = \frac{1}{n}\sum_{i=1}^n X_i.
+    $$ Compute $\mathrm{E}[\hat{\lambda}]$ and $\mathrm{Var}(\hat{\lambda})$. [\[3 marks\]]{.exam-part-marks}
+
+(b) (i) Using the Central Limit Theorem (CLT), state an approximate distribution for $\hat{\lambda}$
+        when $n$ is large. [\[2 marks\]]{.exam-part-marks}
+
+    (ii) Hence write down an approximate $100(1-\alpha)\%$ confidence interval for $\lambda$ in
+         terms of $\hat{\lambda}$, $n$ and the normal quantile $z_{1-\alpha/2}$. [\[2 marks\]]{.exam-part-marks}
+
+(c) In one set of reports, the scouts observe $n = 36$ days and a total of $$
+    \sum_{i=1}^{36} x_i = 90
+    $$ enemy war-parties near the Gap of Rohan.
+
+    Using the CLT approximation, test $H_0:\lambda = 1$ against the one-sided alternative
+    $H_1:\lambda > 1$ at the 5% significance level.
+
+    State clearly whether $H_0$ should be rejected, and briefly interpret your conclusion in the
+    context of the safety of the route past Isengard. [\[3 marks\]]{.exam-part-marks}
+
+You may use the standard Normal quantile $z_{0.95} = 1.645$.
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+(a) By independence, the log-likelihood is
+    $$
+    \ell(\lambda;\underline x)=-n\lambda+\left(\sum_{i=1}^n x_i\right)\log\lambda
+    -\sum_{i=1}^n\log(x_i!).
+    $$
+    If the sample total is positive, setting the derivative
+    $-n+\big(\sum_{i=1}^n x_i\big)/\lambda$ to zero gives the MLE $\hat\lambda=\bar X$.
+    If all counts are zero, $\bar X=0$ gives the boundary estimate in the usual model allowing
+    $\lambda=0$. In the strictly positive parameter space the likelihood has its supremum
+    as $\lambda\downarrow0$. Using the Poisson mean and variance and independence gives
+    $$
+    \mathrm{E}[\bar X]=\lambda,\qquad
+    \mathrm{Var}(\bar X)=\frac{\lambda}{n}.
+    $$
+
+(b) (i) By the CLT, $\hat\lambda$ is approximately $\mathcal N(\lambda,\lambda/n)$ for large $n$.
+
+    (ii) Replacing $\lambda$ by $\hat\lambda$ in the standard error gives the approximate
+         $100(1-\alpha)\%$ confidence interval
+         $$
+         \hat\lambda\ \pm\ z_{1-\alpha/2}\sqrt{\frac{\hat\lambda}{n}}.
+         $$
+
+(c) Here $\hat\lambda=90/36=2.5$. Under $H_0$, the CLT gives
+    $Z=(\hat\lambda-1)/\sqrt{1/36}\overset{\mathrm{approx.}}{\sim}\mathcal N(0,1)$.
+    The observed $z$ is $(2.5-1)/(1/6)=9$. Since $9>1.645$, reject $H_0$ at the 5% level.
+    The data support an increase in the mean rate of sightings near the route, suggesting
+    greater danger to travellers.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style negative-binomial likelihood mle fisher-information bayes conjugacy beta asymptotic-posterior" data-difficulty="3" #q-specimen-lotr-q6 data-chapters="5 6" data-ready-after="6" data-exam-slot="b-bayes" data-exam-marks="20" data-exam-family="negative-binomial" data-exam-origin="specimen"}
+
+## Question 123: Likelihood and Bayesian Inference for Negative Binomial Counts
+
+::: {.exam-prompt}
+
+In the garden of Lothlórien, Galadriel invites Frodo to gaze into her Mirror. The Mirror displays a
+continuous sequence of visions. Due to the shifting nature of time, any single vision is either a
+*Vision of the Future* (with unknown probability $p$) or a fleeting *Reflection of the Past* (with
+probability $1-p$).
+
+Frodo watches the Mirror until he has witnessed exactly $r$ Visions of the Future. Let $X$ denote
+the number of Reflections of the Past he observes before the $r$-th Vision of the Future appears.
+The distribution of $X$ is modelled as $$
+X \sim \mathrm{NegBin}(r,p),
+$$ with probability mass function $$
+\Pr(X = x \mid p)
+= \binom{x + r - 1}{r - 1}
+  p^r (1-p)^x,
+\qquad x = 0,1,2,\ldots,
+$$ where $0 < p < 1$. It can be shown that $$
+\mathrm{E}[X] = \frac{r(1-p)}{p},
+\qquad
+\mathrm{Var}(X) = \frac{r(1-p)}{p^2}.
+$$
+
+Galadriel asks Frodo to repeat this trial on $n$ different occasions (assume these attempts are
+independent). On each occasion, Frodo watches the Mirror until he has witnessed $r$ Visions of the
+Future, and records $X_i$, the number of Reflections of the Past observed before the $r$-th Vision
+appears. The resulting observations are $X_1,\ldots,X_n$. Assume at least one is positive.
+
+(a) Show that the maximum likelihood estimator $\hat{p}$ of $p$ is given by $$
+    \hat{p}
+    = \frac{r}{r + \bar{X}},
+    \qquad \text{where } \bar{X} = \frac{1}{n}\sum_{i=1}^n X_i.
+    $$ [\[6 marks\]]{.exam-part-marks}
+
+(b) For a single observation $X \sim \mathrm{NegBin}(r,p)$, show that the second derivative of the
+    log-likelihood (with respect to $p$) can be written as $$
+    \frac{\partial^2}{\partial p^2} \log f(X \mid p)
+    = -\,\frac{X}{(1-p)^2} - \frac{r}{p^2}.
+    $$
+
+    Hence show that the Fisher information for a single observation is $$
+    \mathcal{I}_1(p)
+    = \frac{r}{p^2(1-p)},
+    $$ and deduce the Fisher information $\mathcal{I}_n(p)$ for the full sample. [\[5 marks\]]{.exam-part-marks}
+
+(c) Galadriel possesses ancient wisdom regarding the clarity of the Mirror. She places a
+    $\mathrm{Beta}(\alpha,\beta)$ prior on $p$, with density $$
+    \pi(p) \propto p^{\alpha-1}(1-p)^{\beta-1}, \qquad 0 < p < 1.
+    $$
+
+    (i) Show that the posterior distribution for $p$ given the data $x_1,\dots,x_n$ is $$
+        p \mid x_1,\dots,x_n
+        \sim \mathrm{Beta}\big(\alpha + nr,\; \beta + S\big),
+        \qquad \text{where } S = \sum_{i=1}^n x_i.
+        $$ [\[4 marks\]]{.exam-part-marks}
+
+    (ii) Hence write down the posterior mean and variance of $p$.
+
+         Using your expression for $$
+         \mathcal{I}_n(p)
+         $$ from part (b), derive the *asymptotic posterior distribution* for $p$.
+
+         Comment on the connection between the Bayesian posterior and the frequentist large-sample
+         distribution of the MLE. [\[5 marks\]]{.exam-part-marks}
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a)** Let $S=\sum_i x_i$. By independence, the likelihood is
+$$
+L(p;\underline{x})
+=p^{nr}(1-p)^S\prod_{i=1}^n\binom{x_i+r-1}{r-1}.
+$$
+Its log has derivative $nr/p-S/(1-p)$. Equating this to zero gives the estimate
+$nr/(nr+S)$. Because $S>0$, the solution is interior, and strict concavity gives a maximum.
+Writing the result in terms of the random sample yields
+$$
+\hat{p}=\frac{r}{r+\bar{X}}.
+$$
+
+**(b)** For a single observation the terms in the log-likelihood that depend on $p$ are
+$r\log p+X\log(1-p)$. Differentiating twice gives $-r/p^2-X/(1-p)^2$. Using the stated
+mean of $X$, the information is
+$$
+\mathcal{I}_1(p)=\frac{r}{p^2}+\frac{\mathrm{E}[X]}{(1-p)^2}
+=\frac{r}{p^2}+\frac{r}{p(1-p)}
+=\frac{r}{p^2(1-p)}.
+$$
+The log-likelihoods add over independent observations, so
+$\mathcal{I}_n(p)=nr/[p^2(1-p)]$.
+
+**(c)(i)** Multiplying likelihood and prior gives
+$$
+\pi(p\mid\underline{x})\propto
+p^{\alpha+nr-1}(1-p)^{\beta+S-1}.
+$$
+The posterior is therefore $\mathrm{Beta}(a,b)$ with $a=\alpha+nr$ and $b=\beta+S$.
+
+**(c)(ii)** The posterior mean and variance are
+$$
+\mathrm{E}[p\mid\underline{x}]=\frac{a}{a+b},
+\qquad
+\mathrm{Var}(p\mid\underline{x})=\frac{ab}{(a+b)^2(a+b+1)}.
+$$
+The prior parameters are fixed, so for large $n$ the posterior mean $a/(a+b)$ is close to
+$\hat{p}=nr/(nr+S)$ and $a+b+1$ is close to $nr+S=nr/\hat{p}$. Writing the posterior variance
+as $[a/(a+b)][b/(a+b)]/(a+b+1)$ gives a leading term of
+$\hat{p}^{\,2}(1-\hat{p})/(nr)$, the inverse Fisher information at $\hat{p}$.
+The resulting Normal approximation is
+$$
+p\mid\underline{x}\overset{\text{approx.}}{\sim}
+\mathcal{N}\!\left(\hat{p},\,\frac{\hat{p}^{\,2}(1-\hat{p})}{nr}\right).
+$$
+In the frequentist sampling distribution, $\hat{p}$ is random and centred approximately at the
+true $p_0$, with approximate variance $p_0^2(1-p_0)/(nr)$. Both approximations use inverse
+Fisher information. The posterior treats the data as fixed and uses $\hat p$ for its centre and
+variance calculation.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style poisson likelihood bayes conjugacy gamma interpretation" data-difficulty="2" #q-specimen-lotr-q7 data-chapters="5 6" data-ready-after="6" data-exam-slot="b-bayes" data-exam-marks="20" data-exam-family="poisson-gamma" data-exam-origin="specimen"}
+
+## Question 124: Gamma–Poisson Updating for Orc Sightings
+
+::: {.exam-prompt}
+
+On the eastern bank of the Anduin, beyond the borders of Gondor, Faramir's Rangers observe raiding
+parties of orcs moving along the river. Let $X_i$ denote the number of orcs sighted in the $i$th
+raiding party (crossing a fixed stretch of riverbank) during a scouting mission. Suppose that,
+conditional on the unknown average orc intensity $\lambda > 0$, $$
+X_1,\ldots,X_n \mid \lambda \stackrel{\mathrm{iid}}{\sim} \mathrm{Poisson}(\lambda).
+$$
+
+The Rangers, trained in the interpretation of scouting reports, model $\lambda$ using a conjugate
+prior, $$
+\lambda \sim \mathrm{Gamma}(\alpha_0,\beta_0).
+$$
+
+(a) (i) Write down the likelihood $L(\lambda; \underline{x})$ and show that $$
+        L(\lambda; \underline{x}) \propto \lambda^{n\bar{x}} e^{-n\lambda}.
+        $$ [\[3 marks\]]{.exam-part-marks}
+
+    (ii) Using the prior $\lambda \sim \mathrm{Gamma}(\alpha_0,\beta_0)$, show that the posterior
+         distribution takes the form $$
+         \lambda \mid \underline{x} \sim \mathrm{Gamma}(\alpha_0 + n\bar{x}, \, \beta_0+n).
+         $$ [\[3 marks\]]{.exam-part-marks}
+
+(b) Across $n = 10$ observed raiding parties, the Rangers record a total of $243$ orcs: $$
+    \sum_{i=1}^n x_i = 243.
+    $$ Suppose the Rangers choose prior parameters $\alpha_0 = 3$ and $\beta_0 = 0.25$.
+
+    (i) Write down the posterior distribution of $\lambda \mid \underline{x}$ and compute the
+        posterior mean. [\[2 marks\]]{.exam-part-marks}
+
+    (ii) Compute the posterior variance $\mathrm{Var}(\lambda \mid \underline{x})$ under the
+         posterior from part (b)(i). Comment briefly on whether the captains of Gondor are justified
+         in judging that the western bank is in grave danger if the expected orc count per raiding
+         party exceeds $15$. [\[3 marks\]]{.exam-part-marks}
+
+(c) Denethor, Steward of Gondor, refuses to accept growing signs of danger. Influenced by dark
+    visions from the palantír, he insists that even after receiving the Rangers' reports, the
+    *expected* orc count per raiding party is at most $15$, that is $$
+    \mathrm{E}[\lambda \mid \underline{x}] \le 15.
+    $$
+
+    Assume Denethor also uses a Gamma prior, $$
+    \lambda \sim \mathrm{Gamma}(\alpha_D,\beta_D),
+    $$ but with unknown parameters $\alpha_D,\beta_D > 0$.
+
+    Using the form of the posterior from part (a)(ii), derive a condition on $(\alpha_D,\beta_D)$
+    which must hold if $$
+    \mathrm{E}[\lambda \mid \underline{x}] \le 15
+    $$ under Denethor's posterior. [\[5 marks\]]{.exam-part-marks}
+
+(d) Briefly explain how Denethor's prior $\mathrm{Gamma}(\alpha_D,\beta_D)$ must differ from the
+    Rangers' prior $\mathrm{Gamma}(\alpha_0,\beta_0)$ to maintain such denial after seeing the same
+    evidence. [\[4 marks\]]{.exam-part-marks}
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a)(i)** The Poisson likelihood for independent observations is
+$$
+L(\lambda;\underline{x})
+=\prod_{i=1}^n\frac{e^{-\lambda}\lambda^{x_i}}{x_i!}
+=\frac{\lambda^{n\bar{x}} e^{-n\lambda}}{\prod_{i=1}^n x_i!}
+\propto \lambda^{n\bar{x}}e^{-n\lambda}.
+$$
+
+**(a)(ii)** Using the Gamma prior with shape $\alpha_0$ and rate $\beta_0$, the posterior kernel
+is
+$$
+\pi(\lambda\mid\underline{x})\propto
+\lambda^{\alpha_0+n\bar{x}-1}e^{-(\beta_0+n)\lambda}.
+$$
+Thus $\lambda\mid\underline{x}\sim\mathrm{Gamma}(\alpha_0+n\bar{x},\beta_0+n)$.
+
+**(b)(i)** The updated parameters are $3+243=246$ and $0.25+10=10.25$. The posterior
+is $\mathrm{Gamma}(246,10.25)$ with mean $246/10.25=24$.
+
+**(b)(ii)** The posterior variance is $246/10.25^2\approx 2.341$. The posterior mean count
+of $24$ exceeds the threshold of $15$ and the posterior standard deviation is about $1.53$.
+The captains' assessment is supported by these data and the Rangers' prior.
+
+**(c)** Denethor's posterior is $\mathrm{Gamma}(\alpha_D+243,\beta_D+10)$. Its mean satisfies
+$$
+\frac{\alpha_D+243}{\beta_D+10}\le 15
+\quad\Longleftrightarrow\quad
+15\beta_D-\alpha_D\ge 93.
+$$
+
+**(d)** Write $m_D=\alpha_D/\beta_D$ for Denethor's prior mean. The condition becomes
+$\beta_D(15-m_D)\ge 93$. He needs a prior mean below $15$ and a prior weight $\beta_D$
+of at least $93/(15-m_D)$ to offset the data. Since $m_D>0$, this requires $\beta_D>6.2$,
+compared with the Rangers' weight of $0.25$. For example, he could share their prior mean of
+$12$ by taking $\beta_D=31$ and $\alpha_D=372$, which gives a posterior mean of exactly $15$.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style bernoulli beta bayes conjugacy interpretation" data-difficulty="1" #q-specimen-4-q4 data-chapters="2 6" data-ready-after="6" data-exam-slot="a-bayes" data-exam-marks="10" data-exam-family="beta-binomial" data-exam-origin="specimen"}
+
+## Question 125: Sequential Beta–Bernoulli Updating for Riddle Outcomes
+
+::: {.exam-prompt}
+
+Deep in the Misty Mountains, Gollum challenges Bilbo Baggins to a game of riddles. For each riddle
+$t=1,2,3$, define $$
+X_t =
+\begin{cases}
+1, & \text{if Bilbo answers riddle } t \text{ correctly},\\[3pt]
+0, & \text{if he answers incorrectly}.
+\end{cases}
+$$
+
+From Gollum's perspective, Bilbo has an unknown *riddle-ability* $\theta \in (0,1)$, and $$
+\Pr(X_t = 1 \mid \theta) = \theta, \qquad t=1,2,3,
+$$ with the riddle outcomes independent given $\theta$.
+
+Gollum, believing Bilbo to be unlikely to survive a riddle contest, chooses the prior $$
+\theta \sim \mathrm{Beta}(\alpha_0,\beta_0), \qquad \alpha_0 = 1,\;\beta_0 = 9.
+$$
+
+He then observes the outcomes of three riddles:
+
+-   Riddle 1 (fairly easy): Bilbo answers correctly ($X_1 = 1$).
+
+-   Riddle 2 (somewhat tricky): Bilbo answers correctly ($X_2 = 1$).
+
+-   Riddle 3 (a very difficult riddle): Bilbo answers correctly ($X_3 = 1$).
+
+(a) Compute the prior mean of $\theta$ under the $\mathrm{Beta}(1,9)$ distribution and briefly
+    interpret this from Gollum's perspective. [\[2 marks\]]{.exam-part-marks}
+
+(b) Using the Beta--Bernoulli conjugate update, derive Gollum's posterior distribution for $\theta$:
+
+    (i) after observing $X_1 = 1$ only;
+
+    (ii) after observing $X_1 = 1$ and $X_2 = 1$;
+
+    (iii) after observing all three riddles: $X_1 = 1$, $X_2 = 1$, $X_3 = 1$.
+
+    Give each posterior in $\mathrm{Beta}(\alpha,\beta)$ form with updated parameters. [\[6 marks\]]{.exam-part-marks}
+
+(c) Although Gollum views Riddle 3 as far more difficult than the others, the Beta--Bernoulli model
+    treats all riddles identically. Briefly comment on this modelling assumption: does the model
+    adequately represent Gollum's beliefs about riddle difficulty? [\[2 marks\]]{.exam-part-marks}
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+(a) The prior mean is $1/(1+9)=0.10$. Before seeing the answers, Gollum expects Bilbo to have a
+    10% chance of answering any given riddle correctly under his model.
+
+(b) With $k$ successes in $m$ independent riddles, the likelihood kernel is
+    $\theta^k(1-\theta)^{m-k}$. Multiplying by the $\mathrm{Beta}(\alpha_0,\beta_0)$ prior
+    density gives
+    $$
+    \pi(\theta\mid\underline x)
+    \propto \theta^{\alpha_0+k-1}(1-\theta)^{\beta_0+m-k-1}.
+    $$
+    Hence each correct answer adds one to the first shape parameter and each incorrect
+    answer adds one to the second. All the answers here are correct.
+
+    (i) $\theta\mid X_1=1\sim\mathrm{Beta}(2,9)$.
+
+    (ii) $\theta\mid X_1=X_2=1\sim\mathrm{Beta}(3,9)$.
+
+    (iii) $\theta\mid X_1=X_2=X_3=1\sim\mathrm{Beta}(4,9)$.
+
+(c) The model gives every riddle the same conditional success probability $\theta$ and therefore
+    gives every correct answer the same weight. Representing Gollum's belief about difficulty
+    would require the success probability to depend on the riddle as well as Bilbo's ability.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style normal likelihood mle lrt hypothesis-test two-sided interpretation" data-difficulty="3" #q-specimen-4-q8 data-chapters="5 9" data-ready-after="9" data-exam-slot="b-testing" data-exam-marks="20" data-exam-family="moria-normal-lrt" data-exam-origin="specimen"}
+
+## Question 126: Gaussian Likelihood Ratio Test for a Trend in Echo Intensity
+
+::: {.exam-prompt}
+
+As the Fellowship travels through the Mines of Moria, Gandalf periodically halts the Company to
+listen for distant echoes of orc movement. At each listening point $i = 1,\ldots,n$, taken $t_i$
+hours after entering the mines, he assigns a numerical intensity $Y_i$ to the sound he hears.
+
+Because echo measurements fluctuate randomly, Gandalf models them as $$
+Y_i \sim \mathcal{N}(\beta t_i,\, \sigma^2),
+$$ independently, where $\sigma^2$ is known and $\beta$ is an unknown constant. Here $\beta$
+represents the *rate of change* of echo intensity over time.
+
+Gandalf wishes to test whether the echoes are changing in intensity: $$
+H_0 : \beta = 0
+\qquad\text{vs.}\qquad
+H_1 : \beta \neq 0.
+$$
+
+(a) Write down the likelihood function $L(\beta)$ and the log-likelihood $\ell(\beta)$. By
+    differentiating $\ell(\beta)$ and setting the derivative to zero, show that the maximum
+    likelihood estimator of $\beta$ is $$
+    \hat{\beta}
+    = \frac{\sum_{i=1}^n t_i Y_i}{\sum_{i=1}^n t_i^2}.
+    $$ [\[6 marks\]]{.exam-part-marks}
+
+(b) The likelihood ratio statistic is $$
+    \Lambda = \frac{L(\beta=0)}{L(\hat{\beta})}.
+    $$
+
+    (i) Show that $$
+        -2\log\Lambda
+        = \frac{1}{\sigma^2}
+        \left(
+          \sum_{i=1}^n Y_i^2
+          - \sum_{i=1}^n (Y_i - \hat{\beta} t_i)^2
+        \right).
+        $$ [\[4 marks\]]{.exam-part-marks}
+
+    (ii) State the approximate sampling distribution of $-2\log\Lambda$ under $H_0$ (you may quote
+         the likelihood ratio theorem), and hence give an approximate size-$\alpha$ rejection
+         region. [\[3 marks\]]{.exam-part-marks}
+
+(c) During one stretch of tunnels, the Fellowship takes $n=10$ measurements at times
+    $t_i = 0,1,2,\dots,9$, using a known $\sigma^2 = 1$. Gandalf computes $$
+    \hat{\beta} \approx 0.1373,
+    \qquad
+    -2\log\Lambda = 5.37.
+    $$
+
+    At the $5\%$ significance level, carry out the test and state whether the Fellowship should
+    reject $H_0$. [\[4 marks\]]{.exam-part-marks}
+
+(d) Briefly interpret your conclusion in the context of the journey through Moria. What would a
+    non-zero $\beta$ indicate about the dangers ahead? [\[3 marks\]]{.exam-part-marks}
+
+You may use the chi-squared quantile $\chi^2_{1,0.95} = 3.841$.
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+**(a)** By independence, the likelihood and log-likelihood for observed values $y_i$ are
+$$
+\begin{aligned}
+L(\beta)&=(2\pi\sigma^2)^{-n/2}
+\exp\!\left\{-\frac{1}{2\sigma^2}\sum_{i=1}^n(y_i-\beta t_i)^2\right\},\\
+\ell(\beta)&=-\frac{n}{2}\log(2\pi\sigma^2)
+-\frac{1}{2\sigma^2}\sum_{i=1}^n(y_i-\beta t_i)^2.
+\end{aligned}
+$$
+Differentiating gives $\ell'(\beta)=\sigma^{-2}\sum_i t_i(y_i-\beta t_i)$.
+Let $D=\sum_i t_i^2$. With $D>0$, setting the derivative to zero gives
+$\hat{\beta}=\sum_i t_iY_i/D$. Since $\ell''(\beta)=-D/\sigma^2<0$, this is a maximum.
+
+**(b)(i)** The log likelihood ratio is $\log\Lambda=\ell(0)-\ell(\hat{\beta})$.
+The constant cancels, giving
+$$
+-2\log\Lambda
+=2\{\ell(\hat{\beta})-\ell(0)\}
+=\frac{1}{\sigma^2}
+\left[\sum_iY_i^2-\sum_i(Y_i-\hat{\beta}t_i)^2\right].
+$$
+
+**(b)(ii)** The likelihood ratio theorem gives an approximate $\chi_1^2$ null distribution
+because the restriction $\beta=0$ removes one parameter. Reject $H_0$ when
+$-2\log\Lambda>\chi^2_{1,1-\alpha}$. In this model the null distribution is in fact exact.
+Expanding the square in part (b)(i) and using $\sum_i t_iY_i=D\hat{\beta}$ gives
+$-2\log\Lambda=D\hat{\beta}^{\,2}/\sigma^2$. Under $H_0$,
+$\hat{\beta}$ is Normal with mean zero and variance $\sigma^2/D$, so the statistic is the square
+of a standard Normal variable.
+
+**(c)** With $D=\sum_{t=0}^{9}t^2=285$ and $\sigma^2=1$, the statistic is
+$285(0.1373)^2\approx 5.37$. Since $5.37>3.841$, reject $H_0$ at the $5\%$ level.
+
+**(d)** The data provide evidence that the mean echo intensity changes with time. The positive
+estimated slope indicates intensifying echoes, which could signal approaching orcs and increasing
+danger. A negative slope would indicate fading echoes.
+
+</details>
+
+::::

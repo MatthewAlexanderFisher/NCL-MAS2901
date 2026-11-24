@@ -588,7 +588,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
- <span class="menu-text">Additional Material</span></a>
+ <span class="menu-text">Additional Materials</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -610,6 +610,12 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="../../../content/appendix/question-bank.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Question Bank</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../content/appendix/practice-exam.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Practice Exam Generator</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -3578,10 +3584,11 @@ document.addEventListener('DOMContentLoaded', () => {
     ]);
   };
 
-  const snapshot = (doc, chapter) => {
+  const snapshot = (doc, chapter, options) => {
     const source = doc.querySelector('main.content');
     if (!source) throw new Error(`No lecture content found in ${chapter.title}.`);
     const clone = source.cloneNode(true);
+    doc.defaultView?.Quarto?.typesetDeferredMath?.(clone, options.expandAll);
     const originals = source.querySelectorAll('input, select, textarea');
     clone.querySelectorAll('input, select, textarea').forEach((input, i) => {
       input.value = originals[i].value;
@@ -3772,7 +3779,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             doc = await loadChapter(iframe, chapter.href);
           }
-          await waitForContent(doc); pages.push(snapshot(doc, chapter));
+          await waitForContent(doc); pages.push(snapshot(doc, chapter, options));
         }
         if (cancelled || preview.closed) throw new Error('Print preparation cancelled.');
         status.textContent = 'Laying out the pages…';
@@ -3804,7 +3811,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.remove('reading-mode', 'lecture-zoom');
     document.body.classList.add('print-document');
     const style = paperStyle(document, defaults);
-    const restoreContent = prepareContent(main, defaults); const restoreFit = fitContent(main);
+    const restoreContent = prepareContent(main, defaults);
+    window.Quarto?.typesetDeferredMath?.(main, defaults.expandAll);
+    const restoreFit = fitContent(main);
     restoreNative = () => {
       restoreFit(); restoreContent(); style.remove(); document.body.className = oldClass;
       document.documentElement.className = oldRootClass;

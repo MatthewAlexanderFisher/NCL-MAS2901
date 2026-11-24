@@ -1,0 +1,418 @@
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style uniform likelihood mle bias variance mse consistency" data-difficulty="2" #q-uniform-upper-endpoint data-chapters="1 4 5" data-ready-after="5" data-exam-slot="b-estimation" data-exam-marks="20" data-exam-parts="4 5 5 6" data-exam-family="uniform-mle"}
+
+## Question 142: Estimating an Upper Limit from a Uniform Sample
+
+::: {.exam-prompt}
+
+A dispenser releases a variable amount of liquid. Let $X_1,\ldots,X_n$ be independent observations from $\operatorname{Uniform}(0,\theta)$, where $\theta>0$ is the unknown upper limit in millilitres. Take the density to be $1/\theta$ on $[0,\theta]$ and zero elsewhere. Let $M_n=\max(X_1,\ldots,X_n)$ and assume $n\ge 2$.
+
+1. Write down the likelihood for an observed sample and find the maximum likelihood estimator of $\theta$, assuming the observed sample maximum is positive.
+2. Find the CDF of $M_n$ and use its density to obtain $\mathrm E[M_n]$ and $\mathrm E[M_n^2]$.
+3. Find a constant $c_n$ such that $T_n=c_n M_n$ is unbiased for $\theta$. Calculate the mean squared error of $T_n$ and use it to establish consistency.
+4. The alternative estimator is $U_n=2\bar X$. Show that it is unbiased, compare its mean squared error with that of $T_n$, and identify the smaller one. For a sample of $12$ releases with maximum $49.5$ mL and mean $27.3$ mL, calculate $T_n$ and $U_n$.
+
+:::
+
+<details class="solution">
+<summary>Solution</summary>
+
+1. Write $m=\max_i x_i$. The likelihood for positive observations is
+   $$
+   L(\theta;\underline x)=\theta^{-n}\mathbf 1_{\{\theta\ge m\}}.
+   $$
+   It decreases on the set of feasible values with positive likelihood. The largest likelihood is at $\theta=m$, so $\hat\theta_{\mathrm{MLE}}=M_n$.
+
+2. For $0\le t\le \theta$, independence gives
+   $$
+   F_{M_n}(t)=\Pr(X_1\le t,\ldots,X_n\le t)=\left(\frac t\theta\right)^n.
+   $$
+   The CDF is zero for $t<0$ and one for $t>\theta$. Differentiating on $(0,\theta)$ gives density $nt^{n-1}/\theta^n$. For $j=1,2$,
+   $$
+   \mathrm E[M_n^j]
+   =\int_0^\theta t^j\frac{nt^{n-1}}{\theta^n}\,\mathrm dt
+   =\frac{n}{n+j}\theta^j.
+   $$
+   Thus $\mathrm E[M_n]=n\theta/(n+1)$ and $\mathrm E[M_n^2]=n\theta^2/(n+2)$.
+
+3. Take $c_n=(n+1)/n$. The resulting estimator is unbiased and
+   $$
+   \begin{aligned}
+   \operatorname{MSE}(T_n)
+   &=\operatorname{Var}(T_n)
+     =\left(\frac{n+1}{n}\right)^2\frac{n\theta^2}{n+2}-\theta^2\\
+   &=\frac{\theta^2}{n(n+2)}.
+   \end{aligned}
+   $$
+   For any $\varepsilon>0$, $\Pr(|T_n-\theta|\ge\varepsilon)\le \operatorname{MSE}(T_n)/\varepsilon^2\to 0$. Hence $T_n$ is consistent.
+
+4. Since $\mathrm E[X_i]=\theta/2$ and $\operatorname{Var}(X_i)=\theta^2/12$, we have $\mathrm E[U_n]=\theta$ and
+   $$
+   \operatorname{MSE}(U_n)=\operatorname{Var}(U_n)=\frac{4}{n}\frac{\theta^2}{12}=\frac{\theta^2}{3n}.
+   $$
+   Since $n+2>3$ for $n\ge2$, $T_n$ has the smaller MSE for every $\theta>0$. The observed estimates are
+   $$
+   T_{12}=\frac{13}{12}(49.5)=53.625\text{ mL},\qquad U_{12}=2(27.3)=54.6\text{ mL}.
+   $$
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style poisson likelihood mle fisher-information cramer-rao estimator variance" data-difficulty="2" #q-poisson-observation-exposure data-chapters="4 5" data-ready-after="5" data-exam-slot="b-estimation" data-exam-marks="20" data-exam-parts="5 5 5 5" data-exam-family="poisson-rate"}
+
+## Question 143: Comparing Rate Estimators with Unequal Observation Times
+
+::: {.exam-prompt}
+
+A fault monitor records counts of brief interruptions in $n$ disjoint observation windows. Window $i$ lasts a known $t_i>0$ hours. The counts $X_i$ are independent with $X_i\sim \operatorname{Poisson}(\lambda t_i)$, where $\lambda\ge0$ is the common hourly rate. Define
+$$
+S=\sum_{i=1}^n X_i,\qquad T=\sum_{i=1}^n t_i,\qquad A=\frac1n\sum_{i=1}^n\frac{X_i}{t_i}.
+$$
+
+1. Write down the likelihood for $\lambda$ and find its maximum likelihood estimator. Include the case $S=0$.
+2. Show whether the MLE and $A$ are unbiased for $\lambda$. Derive their variances.
+3. Obtain the expected Fisher information for $\lambda>0$ in the full sample. Identify which estimator attains the Cramér–Rao lower bound. State when $A$ has the same variance as the MLE. You may use $\left(\sum_i t_i\right)\left(\sum_i 1/t_i\right)\ge n^2$, with equality exactly when the $t_i$ are all equal.
+4. For four windows with lengths $(2,4,6,8)$ and counts $(3,11,16,22)$, calculate both rate estimates and the ratio $\operatorname{Var}(A)/\operatorname{Var}(\hat\lambda_{\mathrm{MLE}})$ for $\lambda>0$. Explain why the estimators weight the observed rates differently.
+
+:::
+
+<details class="solution">
+<summary>Solution</summary>
+
+1. With $s=\sum_i x_i$, independence gives
+   $$
+   L(\lambda;\underline x)
+   =\left(\prod_{i=1}^n\frac{t_i^{x_i}}{x_i!}\right)\lambda^s e^{-\lambda T}.
+   $$
+   For $s>0$ and $\lambda>0$, $\ell'(\lambda)=s/\lambda-T$ is zero at $\lambda=s/T$ and changes from positive to negative there. For $s=0$, $e^{-\lambda T}$ decreases on $[0,\infty)$ and is maximised at zero. Thus $\hat\lambda_{\mathrm{MLE}}=S/T$ in either case.
+
+2. The Poisson means and variances are $\lambda t_i$. Hence
+   $$
+   \mathrm E[S/T]=\lambda,\qquad \operatorname{Var}(S/T)=\lambda/T.
+   $$
+   Also $\mathrm E[X_i/t_i]=\lambda$ and $\operatorname{Var}(X_i/t_i)=\lambda/t_i$. Therefore
+   $$
+   \mathrm E[A]=\lambda,\qquad \operatorname{Var}(A)=\frac{\lambda}{n^2}\sum_{i=1}^n\frac1{t_i}.
+   $$
+
+3. The second derivative is $\ell''(\lambda)=-S/\lambda^2$. Its negative expectation is
+   $$
+   \mathcal I_n(\lambda)=\frac{\lambda T}{\lambda^2}=\frac T\lambda.
+   $$
+   The MLE is unbiased and has variance $\mathcal I_n(\lambda)^{-1}$, so it attains the bound for $\lambda>0$. The given inequality yields $\operatorname{Var}(A)\ge\lambda/T$. For $\lambda>0$ equality holds when all window lengths are equal.
+
+4. The total count is $52$ over $20$ hours, giving $S/T=2.60$ per hour. The unweighted average rate is
+   $$
+   A=\tfrac14\left(\tfrac32+\tfrac{11}4+\tfrac{16}6+\tfrac{22}8\right)
+   =\tfrac{29}{12}\approx 2.42\text{ per hour}.
+   $$
+   The variance ratio at any $\lambda>0$ is
+   $$
+   \frac{T}{n^2}\sum_{i=1}^n\frac1{t_i}
+   =\frac{20}{16}\left(\frac12+\frac14+\frac16+\frac18\right)
+   =\frac{125}{96}\approx1.30.
+   $$
+   The MLE can be written as $\sum_i(t_i/T)(X_i/t_i)$. It gives more weight to longer windows because their individual rate estimates have smaller variances. $A$ weights the windows equally.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style log-normal normal likelihood mle bias variance consistency" data-difficulty="2" #q-lognormal-mean-bias-correction data-chapters="4 5" data-ready-after="5" data-exam-slot="b-estimation" data-exam-marks="20" data-exam-parts="4 4 7 5" data-exam-family="lognormal-mean"}
+
+## Question 144: Bias Correction for a Lognormal Mean
+
+::: {.exam-prompt}
+
+The time $X_i$ taken for a coating to dry is positive. The observations are independent and $Y_i=\log X_i\sim \mathcal N(\mu,\sigma^2)$, where $\mu\in\mathbb R$ is unknown and $\sigma^2>0$ is known. The arithmetic mean drying time is $m=\mathrm E[X_i]=e^{\mu+\sigma^2/2}$. You may use $\mathrm E[e^{tZ}]=e^{ta+t^2v/2}$ for $Z\sim\mathcal N(a,v)$.
+
+1. Write down the log-likelihood for $\mu$ in terms of $y_i=\log x_i$, up to a term independent of $\mu$, and derive the MLE of $\mu$.
+2. Find the MLE $\hat m$ of the arithmetic mean and show that it is biased at finite $n$. State the direction of bias.
+3. Find a multiplicative correction to $\hat m$ that makes the corrected estimator $\tilde m$ unbiased. Derive $\operatorname{Var}(\tilde m)$ and use it to show that $\tilde m$ is consistent.
+4. A sample of $25$ observations has $\bar y=\log 20$ and $\sigma^2=0.36$. Compute the two estimates of $m$. With the same model, what factor would multiply the variance of $\tilde m$ if the sample size increased from $25$ to $50$?
+
+:::
+
+<details class="solution">
+<summary>Solution</summary>
+
+1. The log-likelihood, up to a term independent of $\mu$, is
+   $$
+   \ell(\mu)=-\frac{1}{2\sigma^2}\sum_{i=1}^n(y_i-\mu)^2.
+   $$
+   Using the $Y_i$ instead of the $X_i$ discards only a Jacobian factor independent of $\mu$. The score is $n(\bar y-\mu)/\sigma^2$, so $\hat\mu=\bar Y$.
+
+2. Invariance of maximum likelihood estimates under this one-to-one transformation gives $\hat m=e^{\bar Y+\sigma^2/2}$. Since $\bar Y\sim\mathcal N(\mu,\sigma^2/n)$,
+   $$
+   \mathrm E[\hat m]=e^{\sigma^2/2}e^{\mu+\sigma^2/(2n)}
+   =m e^{\sigma^2/(2n)}>m.
+   $$
+   The bias is positive.
+
+3. Set $\tilde m=e^{-\sigma^2/(2n)}\hat m$, so $\mathrm E[\tilde m]=m$. Applying the given formula with $t=2$ gives
+   $$
+   \mathrm E[\tilde m^2]
+   =e^{\sigma^2-\sigma^2/n}e^{2\mu+2\sigma^2/n}
+   =m^2 e^{\sigma^2/n}.
+   $$
+   Thus $\operatorname{Var}(\tilde m)=m^2(e^{\sigma^2/n}-1)$. It tends to zero as $n$ increases. Since $\tilde m$ is unbiased, its MSE tends to zero, which proves consistency.
+
+4. The MLE is $20e^{0.18}\approx23.94$ and the corrected estimate is $20e^{0.18-0.36/50}\approx23.77$, in the original time units. The variance at $n=50$ is the variance at $n=25$ multiplied by
+   $$
+   \frac{e^{0.36/50}-1}{e^{0.36/25}-1}\approx0.498.
+   $$
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style bernoulli exponential likelihood mle fisher-information confidence-interval" data-difficulty="3" #q-two-thresholds-lifetime-likelihood data-chapters="5 7" data-ready-after="7" data-exam-slot="b-estimation" data-exam-marks="20" data-exam-parts="5 6 5 4" data-exam-family="bernoulli-information"}
+
+## Question 145: Likelihood from Two Lifetime Thresholds
+
+::: {.exam-prompt}
+
+A device's lifetime has an Exponential distribution with rate $\lambda>0$ per hour. Its exact lifetime is unavailable, but a status check records whether the device is still working at a specified time. Set $p=e^{-\lambda}$. The first group of $n$ devices is checked after one hour and the second group of $m$ different devices is checked after two hours. The binary readings are all independent. The first group has readings $X_i\sim\operatorname{Bernoulli}(p)$ and the second has readings $Z_j\sim\operatorname{Bernoulli}(p^2)$. Let $x$ and $z$ be the observed totals of the two groups.
+
+1. Obtain the likelihood and log-likelihood of $p$ in terms of $x,z,n,m$.
+2. Show that an interior MLE satisfies
+   $$
+   (n+2m)p^2+(n-x)p-(x+2z)=0.
+   $$
+   For $n=60$, $m=48$, $x=36$, and $z=18$, find the MLEs of $p$ and $\lambda$.
+3. Obtain the expected Fisher information for $p$ from the full set of readings.
+4. Using the large-sample approximation $\hat p\overset{\mathrm{approx.}}{\sim}\mathcal N(p,\mathcal I(p)^{-1})$ for this two-group model, calculate an approximate $95\%$ confidence interval for $p$ with these data. Use $z_{0.975}=1.960$.
+
+:::
+
+<details class="solution">
+<summary>Solution</summary>
+
+1. Multiplying the Bernoulli likelihood factors gives
+   $$
+   L(p)=p^x(1-p)^{n-x}(p^2)^z(1-p^2)^{m-z}.
+   $$
+   The log-likelihood for the individual binary readings is
+   $$
+   \ell(p)=(x+2z)\log p+(n-x)\log(1-p)+(m-z)\log(1-p^2).
+   $$
+
+2. Differentiating gives
+   $$
+   \ell'(p)=\frac{x+2z}{p}-\frac{n-x}{1-p}-\frac{2p(m-z)}{1-p^2}.
+   $$
+   Multiply $\ell'(p)=0$ by $p(1-p^2)$ and collect terms. This gives the stated equation. With the observed data it becomes $156p^2+24p-72=0$, whose only root in $(0,1)$ is
+   $$
+   \hat p=\frac{-24+\sqrt{24^2+4(156)(72)}}{312}\approx0.6068.
+   $$
+   The likelihood tends to zero at both endpoints for these data, so this is the maximum. By invariance, $\hat\lambda=-\log\hat p\approx0.4996$ per hour.
+
+3. Differentiating again gives
+   $$
+   -\ell''(p)=\frac{x+2z}{p^2}+\frac{n-x}{(1-p)^2}+\frac{2(m-z)(1+p^2)}{(1-p^2)^2}.
+   $$
+   Use $\mathrm E[x]=np$ and $\mathrm E[z]=mp^2$, with the totals viewed as random in this expectation. The first group gives $n/p+n/(1-p)$ and the second gives $2m+2m(1+p^2)/(1-p^2)$. Thus
+   $$
+   \mathcal I(p)=\frac{n}{p(1-p)}+\frac{4m}{1-p^2}.
+   $$
+
+4. Evaluating the information at $\hat p$ gives $\mathcal I(\hat p)\approx555.36$ and estimated standard error $1/\sqrt{\mathcal I(\hat p)}\approx0.04243$. The interval is
+   $$
+   \hat p\pm1.960(0.04243)\approx(0.524,\ 0.690).
+   $$
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style normal gamma inverse-gamma likelihood bayes conjugacy map variance" data-difficulty="3" #q-bayes-calibrated-precision data-chapters="5 6" data-ready-after="6" data-exam-slot="b-bayes" data-exam-marks="20" data-exam-parts="5 5 6 4" data-exam-family="normal-variance"}
+
+## Question 146: Bayesian Precision with Unequal Measurement Weights
+
+::: {.exam-prompt}
+
+A technician measures reference objects with known true values $\mu_1,\ldots,\mu_n$. The readings $Y_i$ are conditionally independent with
+$$
+Y_i\mid\tau\sim\mathcal N\!\left(\mu_i,\frac{1}{w_i\tau}\right),
+$$
+where $w_i>0$ are known measurement weights and $\tau>0$ is the unknown baseline precision. Write $S=\sum_i w_i(y_i-\mu_i)^2$ for the observed weighted sum of squared errors. Take the prior to be $\tau\sim\operatorname{Gamma}(4,3)$, using shape and rate.
+
+1. Obtain the likelihood kernel for $\tau$ and use it to identify the posterior distribution in terms of $n$ and $S$.
+2. In a set of $6$ measurements with $S=18$, calculate the posterior mean and MAP estimate of $\tau$.
+3. Let $v=1/\tau$ be the baseline variance. Identify its posterior distribution and calculate its posterior mean and MAP estimate. Compare the MAP of $v$ with the reciprocal of the MAP of $\tau$. You may use that the reciprocal of a $\operatorname{Gamma}(a,b)$ variable is $\operatorname{InvGamma}(a,b)$, whose mean for $a>1$ is $b/(a-1)$ and whose mode is $b/(a+1)$.
+4. Calculate and interpret $\Pr(v>2\mid\underline y)$ for these data. For a $\operatorname{Gamma}(r,b)$ distribution with a positive integer shape $r$ and rate $b$, you may use
+   $$
+   F(t)=1-e^{-bt}\sum_{j=0}^{r-1}\frac{(bt)^j}{j!},\qquad t\ge0.
+   $$
+
+:::
+
+<details class="solution">
+<summary>Solution</summary>
+
+1. The density of each reading contributes a factor proportional to $\tau^{1/2}\exp\{-w_i\tau (y_i-\mu_i)^2/2\}$. Multiplication gives the likelihood kernel $\tau^{n/2}\exp(-\tau S/2)$. Combining with the prior yields
+   $$
+   \pi(\tau\mid\underline y)\propto \tau^{4+n/2-1}e^{-(3+S/2)\tau},\qquad \tau>0,
+   $$
+   so $\tau\mid\underline y\sim\operatorname{Gamma}(4+n/2,3+S/2)$.
+
+2. The posterior is $\operatorname{Gamma}(7,12)$. Its mean is $7/12\approx0.5833$. The derivative of the log posterior is $6/\tau-12$, which changes from positive to negative at $6/12$. The MAP estimate is $0.5$.
+
+3. The reciprocal relationship gives $v\mid\underline y\sim\operatorname{InvGamma}(7,12)$. Its posterior mean is $12/(7-1)=2$ and its MAP estimate is $12/(7+1)=1.5$. The reciprocal of the MAP for $\tau$ is $1/0.5=2$. Modes of continuous densities can change under reparameterisation because the transformed density includes a Jacobian factor. Here the factor is $v^{-2}$.
+
+4. Since $\tau$ is positive, $v>2$ is equivalent to $\tau<0.5$. By continuity and the supplied CDF,
+   $$
+   \Pr(v>2\mid\underline y)=F(0.5)=1-e^{-6}\sum_{j=0}^{6}\frac{6^j}{j!}\approx0.3937.
+   $$
+   Given the data, model and prior, the baseline variance has about a $39.4\%$ probability of exceeding $2$.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style gamma likelihood bayes map credible-interval" data-difficulty="2" #q-gamma-discrete-shape-posterior data-chapters="5 6 8" data-ready-after="8" data-exam-slot="b-bayes" data-exam-marks="20" data-exam-parts="5 5 6 4" data-exam-family="gamma-discrete-shape"}
+
+## Question 147: A Discrete Posterior for a Gamma Shape Parameter
+
+::: {.exam-prompt}
+
+A manufacturer models the elapsed time $X$ for a sensor to stabilise as $\operatorname{Gamma}(K,2)$, with shape $K$ and rate $2$. Previous tests suggest three possible values for $K$. The prior probabilities are
+$$
+\Pr(K=1)=0.7,\qquad \Pr(K=2)=0.1,\qquad \Pr(K=4)=0.2.
+$$
+Conditional on $K$, three independent times are observed as $(0.5,1,1.5)$. You may use the density $f(x\mid k)=2^k x^{k-1}e^{-2x}/\Gamma(k)$ for $x>0$ and $\Gamma(1)=\Gamma(2)=1$, $\Gamma(4)=6$.
+
+1. Find the likelihood at each of the three possible shapes relative to its value at $K=1$.
+2. Obtain the posterior mass function of $K$.
+3. Find its posterior mean, median and MAP estimate.
+4. Find a posterior credible set with probability at least $85\%$ that contains as few possible values of $K$ as possible. Give its posterior probability and translate the set into possible values of the population mean stabilisation time.
+
+:::
+
+<details class="solution">
+<summary>Solution</summary>
+
+1. For a proposed shape $k$ the likelihood is
+   $$
+   L(k)=\frac{2^{3k}}{\Gamma(k)^3}\left(\prod_{i=1}^3 x_i\right)^{k-1}
+         e^{-2\sum_{i=1}^3x_i}.
+   $$
+   Here $\prod_i x_i=3/4$. Dividing by $L(1)$ cancels the final exponential. The three relative likelihoods are
+   $$
+   1,\qquad 2^3\left(\frac34\right)=6,\qquad
+   \left(\frac{2^3}{6}\right)^3\left(\frac34\right)^3=1.
+   $$
+
+2. Multiplying these values by the prior masses gives unnormalised weights $(0.7,0.6,0.2)$, whose sum is $1.5$. Therefore
+   $$
+   \bigl(\Pr(K=1\mid\underline x),\Pr(K=2\mid\underline x),\Pr(K=4\mid\underline x)\bigr)
+   =\left(\frac7{15},\frac6{15},\frac2{15}\right).
+   $$
+
+3. The posterior mean is $(1\cdot7+2\cdot6+4\cdot2)/15=27/15=1.8$. The cumulative probability is $7/15<1/2$ at $K=1$ and $13/15>1/2$ at $K=2$, so the median is $2$. The largest posterior mass is at $K=1$, which is the MAP estimate.
+
+4. The largest single mass is $7/15$, below $0.85$. The set $\{1,2\}$ contains two possibilities and has posterior mass $13/15\approx0.867$, meeting the target. The population mean is $K/2$, so the data and prior give the mean a posterior probability of $13/15$ of belonging to $\{0.5,1\}$ in the original time units.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style uniform likelihood bayes credible-interval" data-difficulty="3" #q-bayes-uniform-bound-credible-interval data-chapters="5 6 8" data-ready-after="8" data-exam-slot="b-bayes" data-exam-marks="20" data-exam-parts="5 5 6 4" data-exam-family="uniform-mle"}
+
+## Question 148: Posterior Uncertainty about a Damper's Maximum Travel
+
+::: {.exam-prompt}
+
+Under randomly chosen loads, an adjustable damper travels distances $X_1,\ldots,X_n$ that are independent $\operatorname{Uniform}(0,\theta)$ observations conditional on the upper limit $\theta$. The density is $1/\theta$ on $[0,\theta]$ and zero elsewhere. Analysis of the design gives a prior density
+$$
+\pi(\theta)=\alpha L_0^\alpha\theta^{-(\alpha+1)}\quad\text{for }\theta\ge L_0,
+$$
+and zero below $L_0$, where $L_0>0$ and $\alpha>0$ are known.
+
+1. Write down the likelihood and find the posterior kernel, including its support, in terms of $L_0$, $\alpha$, $n$, and the sample maximum $m$.
+2. Normalise the posterior density and obtain its CDF.
+3. Suppose $L_0=40$ mm, $\alpha=2$, $n=4$, and $m=60$ mm. Find the posterior median and the $90\%$ equal-tailed credible interval for $\theta$.
+4. Given the same data, calculate the posterior probability that the maximum travel exceeds $80$ mm. Interpret this and the credible interval from part 3 in context.
+
+:::
+
+<details class="solution">
+<summary>Solution</summary>
+
+1. The likelihood is $\theta^{-n}$ when $\theta\ge m$ and is zero otherwise. Combining likelihood and prior gives a posterior kernel proportional to $\theta^{-(\alpha+n+1)}$ for $\theta\ge L=\max(L_0,m)$.
+
+2. Let $a=\alpha+n$. Since $\int_L^\infty\theta^{-a-1}\,\mathrm d\theta=L^{-a}/a$, the normalised density is $a L^a\theta^{-a-1}$ on $[L,\infty)$. The CDF for $t\ge L$ is
+   $$
+   F(t)=\int_L^t a L^a\theta^{-a-1}\,\mathrm d\theta
+       =1-(L/t)^a.
+   $$
+   It is zero below $L$.
+
+3. Here $L=60$ and $a=6$. Solving $F(t)=u$ gives $t=60(1-u)^{-1/6}$. The median is $60(0.5)^{-1/6}\approx67.35$ mm. The $5\%$ and $95\%$ posterior quantiles give the interval
+   $$
+   \bigl[60(0.95)^{-1/6},\ 60(0.05)^{-1/6}\bigr]\approx[60.52,\ 98.85]\text{ mm}.
+   $$
+
+4. The posterior probability that the upper limit exceeds $80$ mm is
+   $$
+   1-F(80)=\left(\frac{60}{80}\right)^6\approx0.1780.
+   $$
+   Given the data, model and prior, the damper's upper limit has about a $17.8\%$ chance of exceeding $80$ mm and a $90\%$ chance of being within the interval in part 3. The equal-tailed construction assigns $5\%$ posterior probability to each side outside that interval.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style normal likelihood mle fisher-information bayes map asymptotic-posterior" data-difficulty="3" #q-normal-mean-laplace-prior data-chapters="5 6" data-ready-after="6" data-exam-slot="b-bayes" data-exam-marks="20" data-exam-parts="5 6 4 5" data-exam-family="normal-mean-bayes"}
+
+## Question 149: A Shrinking MAP Estimate for a Normal Mean
+
+::: {.exam-prompt}
+
+A quality team measures $n$ signed deviations from a target thickness. Conditional on the unknown mean deviation $\mu$, the measurements $X_i$ are independent with $X_i\sim\mathcal N(\mu,\sigma^2)$, where $\sigma^2$ is known. The prior density is
+$$
+\pi(\mu)=\frac{1}{2b}e^{-|\mu|/b},\qquad -\infty<\mu<\infty,
+$$
+with known $b>0$.
+
+1. Obtain the likelihood kernel as a function of $\mu$. Find the MLE and expected Fisher information for the full sample.
+2. Write down the posterior log-density up to an additive constant. By treating positive and negative $\mu$ separately and considering $\mu=0$, derive a rule for the MAP estimate in terms of $\bar x$, $\sigma^2$, $n$, and $b$.
+3. For $\sigma=4$, $b=1$, and $n=16$, calculate the MAP estimate for an observed mean $\bar x=1.25$. Calculate it again for a hypothetical repeat with $\bar x=-0.75$. Explain how the prior influences these two estimates.
+4. A larger sample of $400$ deviations with the same $\sigma$ and $b$ has $\bar x=1.25$. Give the large-sample Normal approximation to the posterior and use it to estimate $\Pr(\mu>1\mid\underline x)$. State how the centring of this posterior approximation differs from the sampling distribution of the MLE. You may use $\Phi(1.25)=0.8944$.
+
+:::
+
+<details class="solution">
+<summary>Solution</summary>
+
+1. The identity
+   $$
+   \sum_i(x_i-\mu)^2=\sum_i(x_i-\bar x)^2+n(\bar x-\mu)^2
+   $$
+   gives a likelihood kernel $\exp\{-n(\bar x-\mu)^2/(2\sigma^2)\}$. The MLE is $\hat\mu=\bar X$. The second derivative of the log-likelihood is $-n/\sigma^2$, so the information is $\mathcal I_n(\mu)=n/\sigma^2$.
+
+2. The posterior log-density, up to an additive constant, is
+   $$
+   -\frac{n}{2\sigma^2}(\mu-\bar x)^2-\frac{|\mu|}{b}.
+   $$
+   Put $c=\sigma^2/(nb)$. For $\mu>0$ the derivative is $n(\bar x-\mu)/\sigma^2-1/b$, which vanishes at $\bar x-c$ if $\bar x>c$. For $\mu<0$ it is $n(\bar x-\mu)/\sigma^2+1/b$, which vanishes at $\bar x+c$ if $\bar x<-c$. The derivative decreases on each side and jumps down at zero. For $-c\le\bar x\le c$, the log-density increases up to zero and decreases thereafter. The resulting MAP rule is
+   $$
+   \hat\mu_{\mathrm{MAP}}=
+   \begin{cases}
+   \bar x-c,&\bar x>c,\\
+   0,&|\bar x|\le c,\\
+   \bar x+c,&\bar x<-c.
+   \end{cases}
+   $$
+
+3. The threshold is $c=4^2/(16\cdot1)=1$. For $\bar x=1.25$ the MAP is $0.25$. For $\bar x=-0.75$ it is zero. The prior has its peak at zero, so it shifts the mode towards zero. When the magnitude of $\bar x$ lies within the threshold, the posterior mode sits at zero.
+
+4. The observed MLE is $1.25$ and the inverse information is $16/400=0.04$. Thus $\mu\mid\underline x$ is approximately $\mathcal N(1.25,0.04)$. Its standard deviation is $0.2$ and the estimated posterior probability is
+   $$
+   1-\Phi\!\left(\frac{1-1.25}{0.2}\right)=\Phi(1.25)=0.8944.
+   $$
+   The approximate posterior is centred at the MLE for the observed data. The sampling distribution of $\hat\mu=\bar X$ is centred at the true $\mu$ and describes how the estimate varies over repeated samples.
+
+</details>
+
+::::

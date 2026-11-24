@@ -1,0 +1,99 @@
+#exam-question-pool,
+#practice-exam[hidden] {
+  display: none !important;
+}
+
+.exam-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-block: 1rem .5rem;
+}
+
+#practice-exam-status {
+  color: var(--bs-secondary-color);
+  margin-block-end: 1rem;
+}
+
+#practice-exam h2,
+.exam-question h3 {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  column-gap: .75rem;
+}
+
+#practice-exam h2 span,
+.exam-question h3 span {
+  font-size: .78em;
+  font-weight: 500;
+}
+
+.exam-question {
+  margin-block: 1.5rem 2rem;
+}
+
+.exam-question h3 {
+  margin-block-end: .75rem;
+}
+
+.exam-source-note {
+  font-size: .875em;
+  color: var(--bs-secondary-color);
+}
+
+.exam-part-marks {
+  white-space: nowrap;
+}
+
+.exam-review {
+  border-top: 1px solid var(--bs-border-color);
+  margin-block: 2rem;
+  padding-block-start: 1rem;
+}
+
+#practice-exam-solutions {
+  margin-block-start: .75rem;
+}
+
+.exam-solution {
+  border: 1px solid var(--bs-border-color);
+  border-radius: .375rem;
+  margin-block: .5rem;
+}
+
+.exam-solution > summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: .6rem .85rem;
+}
+
+.exam-solution > .exam-source-solution {
+  padding: .25rem .85rem .85rem;
+}
+
+.exam-source-solution > :last-child {
+  margin-block-end: 0;
+}
+
+.print-document .exam-review {
+  display: none !important;
+}
+
+@media print {
+  .exam-controls,
+  #practice-exam-status,
+  .exam-source-note,
+  .exam-review {
+    display: none !important;
+  }
+
+  #practice-exam section + section {
+    break-before: page;
+  }
+
+  .exam-question {
+    margin-block: 12pt 16pt;
+  }
+}

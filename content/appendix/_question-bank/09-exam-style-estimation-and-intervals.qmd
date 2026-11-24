@@ -1,0 +1,338 @@
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style bernoulli estimator bias variance" data-difficulty="1" #q-bernoulli-variance-bias data-chapters="4" data-ready-after="4" data-exam-slot="a-estimator" data-exam-marks="10" data-exam-parts="4 3 3" data-exam-family="bernoulli-variance"}
+
+## Question 127: Correcting Bias in a Bernoulli Variance Estimate
+
+::: {.exam-prompt}
+
+A quality inspector records $X_i=1$ if the thickness of panel $i$ exceeds a tolerance and
+$X_i=0$ otherwise. Suppose $X_1,\ldots,X_n$ are independent $\mathrm{Bernoulli}(p)$ variables,
+with $0<p<1$ and $n\ge 2$. The inspector wishes to estimate the population variance $v=p(1-p)$
+and considers $T=\bar X(1-\bar X)$.
+
+1. Find $\mathrm{E}[T]$ and the bias of $T$ as an estimator of $v$.
+2. Find a constant $c_n$ depending only on $n$ such that $c_nT$ is unbiased for $v$.
+3. Use $X_i^2=X_i$ to show that $c_nT$ equals the usual sample variance $S^2=\frac{1}{n-1}\sum_{i=1}^n(X_i-\bar X)^2$.
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+1. Independence gives $\mathrm{E}[\bar X]=p$ and $\mathrm{Var}(\bar X)=v/n$. Thus
+   $$
+   \mathrm{E}[\bar X^2]=\mathrm{Var}(\bar X)+\{\mathrm{E}[\bar X]\}^2
+   =\frac{v}{n}+p^2.
+   $$
+   Since $T=\bar X-\bar X^2$,
+   $$
+   \mathrm{E}[T]=p-p^2-\frac{v}{n}=\frac{n-1}{n}v,
+   \qquad
+   \mathrm{Bias}(T)=-\frac{v}{n}.
+   $$
+
+2. Multiplying by $c_n=n/(n-1)$ gives $\mathrm{E}[c_nT]=v$. This factor is finite because $n\ge 2$.
+
+3. Expanding the squared deviations and using $X_i^2=X_i$ gives
+   $$
+   \sum_{i=1}^n(X_i-\bar X)^2
+   =\sum_{i=1}^n X_i^2-n\bar X^2
+   =n\bar X-n\bar X^2.
+   $$
+   Hence $S^2=\frac{n}{n-1}\bar X(1-\bar X)=c_nT$.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style normal estimator bias variance mse consistency" data-difficulty="2" #q-normal-mean-benchmark-estimator data-chapters="4" data-ready-after="4" data-exam-slot="a-estimator" data-exam-marks="10" data-exam-parts="3 4 3" data-exam-family="normal-mean-shrinkage"}
+
+## Question 128: Comparing a Sample Mean with an Estimate that Uses a Benchmark
+
+::: {.exam-prompt}
+
+The mass of a filled container is modelled by independent observations $X_i\sim\mathcal N(\mu,9)$,
+where the second parameter is the variance in squared grams. A technician uses a fixed target of
+$12$ g when estimating the unknown mean mass $\mu$. The proposed estimator is
+$T_n=\frac34\bar X+\frac14(12)$.
+
+1. Find the bias and variance of $T_n$.
+2. For a sample of size $n=28$, find the values of $\mu$ for which $T_n$ has strictly smaller MSE than $\bar X$.
+3. Consider the estimator $U_n=(1-1/n)\bar X+12/n$. Use its bias and variance to show that it is consistent for every fixed $\mu$.
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+1. Since $\mathrm{E}[\bar X]=\mu$ and $\mathrm{Var}(\bar X)=9/n$,
+   $$
+   \mathrm{Bias}(T_n)=\frac{12-\mu}{4},
+   \qquad
+   \mathrm{Var}(T_n)=\left(\frac34\right)^2\frac{9}{n}
+   =\frac{81}{16n}.
+   $$
+
+2. The sample mean is unbiased, so $\mathrm{MSE}(\bar X)=9/n$. For $T_n$,
+   $$
+   \mathrm{MSE}(T_n)=\frac{81}{16n}+\frac{(12-\mu)^2}{16}.
+   $$
+   The strict inequality $\mathrm{MSE}(T_n)<\mathrm{MSE}(\bar X)$ is equivalent to $(12-\mu)^2<63/n$. At $n=28$, this is $|12-\mu|<1.5$, or $10.5<\mu<13.5$ g. The reduction in variance outweighs the squared bias within that range.
+
+3. The bias is $(12-\mu)/n$ and the variance is $(1-1/n)^2\,9/n$. These both tend to zero for each fixed $\mu$. Hence $\mathrm{MSE}(U_n)\to 0$ and $U_n$ is consistent.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style gamma likelihood mle fisher-information" data-difficulty="1" #q-gamma-fixed-shape-rate data-chapters="5" data-ready-after="5" data-exam-slot="a-likelihood" data-exam-marks="10" data-exam-parts="4 3 3" data-exam-family="gamma-rate"}
+
+## Question 129: Maximum Likelihood for a Gamma Rate
+
+::: {.exam-prompt}
+
+An instrument measures the elapsed time, in minutes, to complete four stages of a cycle.
+Model the elapsed times $X_1,\ldots,X_n$ from independent cycles as $\mathrm{Gamma}(4,\lambda)$,
+with known shape $4$ and unknown rate $\lambda>0$. The density for one cycle is
+$$
+f(x\mid\lambda)=\frac{\lambda^4}{\Gamma(4)}x^3 e^{-\lambda x},
+\qquad x>0.
+$$
+
+1. Write down the likelihood. Give the log-likelihood up to an additive constant independent of $\lambda$.
+2. Obtain the MLE of $\lambda$. Evaluate it for $n=16$ observed cycles with $\sum_{i=1}^{16} x_i=80$ minutes.
+3. Find the expected Fisher information for the whole sample, then evaluate it at the estimate from part 2.
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+1. With $S=\sum_{i=1}^n x_i$, independence gives
+   $$
+   L(\lambda)
+   =\frac{\prod_{i=1}^n x_i^3}{\Gamma(4)^n}
+    \lambda^{4n}e^{-\lambda S}.
+   $$
+   Therefore $\ell(\lambda)=4n\log\lambda-\lambda S+C$.
+
+2. The score is $\ell'(\lambda)=4n/\lambda-S$. Setting it to zero gives $\widehat\lambda=4n/S=4/\bar x$. The second derivative is $-4n/\lambda^2<0$, so the stationary point maximises $\ell$. The data give $\widehat\lambda=64/80=0.8$ per minute.
+
+3. The second derivative is constant in the observations. Hence
+   $$
+   \mathcal I_n(\lambda)
+   =-\mathrm{E}_\lambda[\ell''(\lambda)]
+   =\frac{4n}{\lambda^2}.
+   $$
+   Evaluating at the estimate gives $\mathcal I_{16}(0.8)=64/(0.8)^2=100$.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style weibull likelihood mle" data-difficulty="2" #q-weibull-shape-bracket data-chapters="5" data-ready-after="5" data-exam-slot="a-likelihood" data-exam-marks="10" data-exam-parts="4 3 3" data-exam-family="weibull-likelihood"}
+
+## Question 130: Locating the Maximum Likelihood Estimate of a Weibull Shape
+
+::: {.exam-prompt}
+
+Three independent device lifetimes have a $\mathrm{Weibull}(k,1)$ model, with unknown shape $k>0$
+and scale fixed at $1$. In the units used for the lifetimes, the density is
+$$
+f(x\mid k)=k x^{k-1}\exp(-x^k), \qquad x>0.
+$$
+The observed lifetimes are $\tfrac12$, $1$ and $2$. You may use $\log 2\approx 0.6931$.
+
+1. Derive the log-likelihood $\ell(k)$ for the three observations. Simplify it using $\log(\tfrac12)+\log 1+\log 2=0$.
+2. Find the score $\ell'(k)$ and evaluate it at $k=1$ and $k=2$.
+3. Show that $\ell''(k)<0$ for $k>0$. Use this fact and your score values to give a bracket for the unique MLE of $k$.
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+1. Independence gives a product of three densities. Taking logs,
+   $$
+   \ell(k)=3\log k+(k-1)\bigl(\log(\tfrac12)+\log 1+\log 2\bigr)
+   -\bigl((\tfrac12)^k+1+2^k\bigr)
+   =3\log k-2^{-k}-1-2^k.
+   $$
+
+2. Differentiating gives $\ell'(k)=3/k-(\log 2)(2^k-2^{-k})$. At the two trial values,
+   $$
+   \ell'(1)=3-1.5\log 2\approx 1.960,
+   \qquad
+   \ell'(2)=1.5-3.75\log 2\approx -1.099.
+   $$
+
+3. A second differentiation gives
+   $$
+   \ell''(k)=-\frac{3}{k^2}-(\log 2)^2(2^k+2^{-k})<0.
+   $$
+   The score is continuous and strictly decreasing, and it changes sign between $1$ and $2$. It therefore has exactly one zero, with the log-likelihood increasing to that zero and decreasing after it. Thus $1<\hat k<2$.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style negative-binomial likelihood mle" data-difficulty="1" #q-negbin-relative-likelihood data-chapters="5" data-ready-after="5" data-exam-slot="a-likelihood" data-exam-marks="10" data-exam-parts="4 3 3" data-exam-family="negative-binomial"}
+
+## Question 131: Comparing Likelihoods for Negative Binomial Counts
+
+::: {.exam-prompt}
+
+For each of three independent runs, a sensor sends packets until two packets have arrived intact.
+With a fixed probability $p$ that a packet arrives intact and independent transmissions, let $X_i$
+be the number of packets sent in run $i$. Its Negative Binomial model has mass function
+$$
+\Pr(X_i=x\mid p)=(x-1)p^2(1-p)^{x-2},
+\qquad x=2,3,\ldots.
+$$
+The only settings under consideration have $p\in\{1/4,1/2,3/4\}$. The observed counts are $3$, $5$ and $4$.
+
+1. Write down and simplify the likelihood $L(p)$ for the observed counts.
+2. Calculate the likelihood of each setting as a proportion of $L(1/2)$. Give the maximum likelihood estimate within the specified parameter set.
+3. Explain how the counts of packets that did and did not arrive intact account for the two settings that give equal likelihood.
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+1. Multiplying the three mass functions gives
+   $$
+   L(p)=(2\cdot4\cdot3)p^{2+2+2}(1-p)^{1+3+2}
+   =24p^6(1-p)^6=24\{p(1-p)\}^6.
+   $$
+
+2. At $p=1/2$, the relative likelihood is $1$. At both $p=1/4$ and $p=3/4$, it is
+   $$
+   \frac{L(p)}{L(1/2)}=\left(\frac{3/16}{1/4}\right)^6
+   =\left(\frac34\right)^6\approx 0.178.
+   $$
+   The greatest likelihood in the given parameter set occurs at $p=1/2$, so $\hat p=1/2$.
+
+3. Each run contributes two intact packets, so six arrived intact overall. Of the $3+5+4=12$
+   packets sent, six therefore failed to arrive intact. The likelihood contains equal powers
+   of $p$ and $1-p$. Complementary settings $1/4$ and $3/4$ exchange those factors and fit these counts equally well.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style uniform clt confidence-interval interpretation" data-difficulty="2" #q-uniform-mean-clt-interval data-chapters="4 7" data-ready-after="7" data-exam-slot="a-interval" data-exam-marks="10" data-exam-parts="3 5 2" data-exam-family="uniform-mean"}
+
+## Question 132: A Large-Sample Interval for Mean Waiting Time
+
+::: {.exam-prompt}
+
+The time $X_i$ from a passenger's arrival at a stop to the next shuttle is modelled as Uniform on
+$(0,\theta)$, in minutes, with unknown $\theta>0$. The $n$ waiting times are independent and have
+mean $\mu=\theta/2$ and variance $\theta^2/12$. In a sample of $n=100$ waiting times the mean was
+$\bar x=4.50$ minutes. You may use $z_{0.975}=1.960$.
+
+1. State the large-sample approximate distribution of $\bar X$, with its mean and variance expressed in terms of $\mu$ and $n$.
+2. Use $\bar x$ as an estimate of $\mu$ when computing the standard error. Find the resulting approximate two-sided $95\%$ confidence interval for $\mu$.
+3. Explain the meaning of the $95\%$ confidence level in repeated sampling and state why the coverage is approximate here.
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+1. Because $\theta=2\mu$, the population variance is $\mu^2/3$. The central limit theorem gives
+   $$
+   \bar X\ \overset{\text{approx.}}{\sim}\ \mathcal N\left(\mu,\frac{\mu^2}{3n}\right).
+   $$
+
+2. Substituting $\bar x$ into the standard error gives
+   $$
+   \widehat{\mathrm{SE}}(\bar X)=\frac{4.50}{\sqrt{3\cdot100}}\approx 0.2598\ \text{minutes}.
+   $$
+   The interval is $4.50\pm 1.960(0.2598)$, approximately $(3.991,\,5.009)$ minutes.
+
+3. Across repeated independent samples of size $100$, approximately $95\%$ of intervals constructed by this method would contain the fixed $\mu$. The method relies on a large-sample Normal approximation for the Uniform sample mean and uses an estimated standard error.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style normal confidence-interval standard-error" data-difficulty="1" #q-normal-known-variance-interval-precision data-chapters="7" data-ready-after="7" data-exam-slot="a-interval" data-exam-marks="10" data-exam-parts="4 4 2" data-exam-family="normal-mean-interval"}
+
+## Question 133: A Normal Confidence Interval and Sample Size for a Target Width
+
+::: {.exam-prompt}
+
+A technician models the mass of independently sampled tablets as $X_i\sim\mathcal N(\mu,\sigma^2)$,
+with unknown mean $\mu$ and known standard deviation $\sigma=0.9$ mg. The mean of the first $16$
+observations is $11.4$ mg. Use $z_{0.95}=1.645$.
+
+1. Compute an exact two-sided $90\%$ confidence interval for $\mu$ using the first $16$ observations.
+2. For a new sample from the same model, what is the smallest sample size that gives a two-sided $90\%$ confidence interval of total width at most $0.40$ mg?
+3. Explain how changing the observed sample mean, while keeping the sample size, variance and confidence level fixed, affects the centre and width of the interval.
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+1. The known standard deviation gives a standard error of $0.9/\sqrt{16}=0.225$ mg. The exact $90\%$ interval is
+   $$
+   11.4\pm 1.645(0.225),
+   $$
+   approximately $(11.030,\,11.770)$ mg.
+
+2. The total width is $2(1.645)(0.9)/\sqrt n$. The target requires
+   $$
+   n\ge \left(\frac{2(1.645)(0.9)}{0.40}\right)^2
+   \approx 54.80.
+   $$
+   The smallest integer sample size is $55$.
+
+3. The centre is the observed sample mean, so it moves by the same amount as that mean. The width depends only on $n$, $\sigma$ and the confidence level, so it stays fixed.
+
+</details>
+
+::::
+
+:::: {.callout-important .question appearance="minimal" data-tags="exam-style normal variance mle fisher-information confidence-interval asymptotic-mle" data-difficulty="2" #q-normal-variance-mle-interval data-chapters="5 7" data-ready-after="7" data-exam-slot="a-interval" data-exam-marks="10" data-exam-parts="4 4 2" data-exam-family="normal-variance"}
+
+## Question 134: An Approximate MLE-Based Interval for a Normal Variance
+
+::: {.exam-prompt}
+
+A calibrated gauge has independent errors $X_1,\ldots,X_n\sim\mathcal N(0,\theta)$, measured in
+millimetres. The mean $0$ is known and the error variance $\theta>0$ is unknown. The recorded errors
+have $n=200$ and $\sum_{i=1}^n x_i^2=450$ squared millimetres. You may use the expected Fisher
+information $\mathcal I_n(\theta)=n/(2\theta^2)$ and $z_{0.975}=1.960$.
+
+1. Derive the MLE of $\theta$ and evaluate it for these data.
+2. Use the large-sample distribution of the MLE to estimate its standard error and compute an approximate two-sided $95\%$ confidence interval for $\theta$.
+3. A colleague suggests using the usual one-sample Student-$t$ interval instead. Which parameter would that interval target, and why is it unsuitable for the objective here?
+
+:::
+
+<details class="solution">
+  <summary>Solution</summary>
+
+1. The Normal model with known mean gives the log-likelihood
+   $$
+   \ell(\theta)=-\frac n2\log\theta-\frac{S}{2\theta}+C,
+   \qquad S=\sum_{i=1}^n x_i^2.
+   $$
+   The score is $(S-n\theta)/(2\theta^2)$. For these data, it is positive below $S/n$ and negative
+   above $S/n$, so the MLE is $\widehat\theta=S/n=2.25$ squared millimetres.
+
+2. The plug-in standard error is
+   $$
+   \sqrt{\mathcal I_n(\widehat\theta)^{-1}}
+   =\widehat\theta\sqrt{\frac{2}{n}}
+   =2.25\sqrt{\frac{2}{200}}=0.225.
+   $$
+   Thus the approximate $95\%$ interval is $2.25\pm1.960(0.225)=(1.809,\,2.691)$ squared millimetres.
+
+3. The usual one-sample Student-$t$ interval targets an unknown population mean, using the sample variance to estimate the standard error of that mean. Here the mean is already known and the target is the population variance $\theta$ itself.
+
+</details>
+
+::::
